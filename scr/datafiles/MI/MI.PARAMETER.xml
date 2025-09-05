@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>MI</product>
+<table>MI.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This file holds the system level parameters for the Management Information module. </p>
+            <p>  Information on this file applies to all Management Information databases, and includes: </p>
+            <p>  - Retention period for MI databases, and input files only used by MI - Default refinancing rates - 1st day of week (for weekly MI databases) </p>
+            <p>  Only one record (with an id of SYSTEM) will be used by MI. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>MI.PARAMETER.ID</field>
+<desc>
+            <p>Only one record on the MI.PARAMETER file will be used by the MI system. This must have an MI.PARAMETER.ID of 'SYSTEM'. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Must be 'SYSTEM' (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>GL.BAL.REPORT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>RETENTION</field>
+<desc>
+            <p>The retention period sets the number of months for which MI information is stored.  Records older than this will be purged next time the appropriate job is run. </p>
+            <p>  Records from the following files are eligable to be purged; </p>
+            <p>  MI.ENTRY MI.AUTO.ENTRY MI.BUDGET MI.BUDGET.LINE MI.DATA...  (ie all MI databases.) </p>
+            <p>  The date on the MI record which determines whether it is to be removed is the MI period it falls into, not the creation date.  Thus if you have RETENTION set to 18 months, and you regenerate 2 years of an MI database, the first 6 months of the database will be purged when the next EOD is run. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Must be between 0 and 999</p>
+        </desc>
+</t>
+<t>
+<field>SELECTION</field>
+<desc>
+            <p />
+            <p>  Fields SELECTION to ADD.COF.DEPT form a related multi-value set and  used as pool funding parameters. The details are used to default the refinancing  as well as additional cost of funds parameters in the records of BALANCE.MOVEMENT (BM) file. </p>
+            <p />
+            <p>  While BM records are created for an Account or Contract, the first matching Selection condition would be identified for defaulting values.  If the Account or contract does not match any of the defined conditions,  then no defaulting (explained below) would take place..</p>
+            <p />
+            <p>  In case of   accounts and contracts (in LD, MM and MG Applications)   if matched refinancing rates are not defined for an individual account or contract, then values defined  for refinancing (MI.CR.INT.KEY to FUNDING.DEPT) in the matched Selection, would be defaulted in their BM records. </p>
+            <p />
+            <p>  Further, if both  refinancing rates and additional cost of funds details are not defined for an individual account or contract (in LD, MM and MG Applications), in addition to the refinancing parameters (as explained above), the parameters for additional cost of funds (ADD.COF.TYPE to ADD.COF.DEPT)  in the matched Selection, would be also defaulted in their BM  records.</p>
+            <p />
+            <p>  For other applications, if BM  records are created, the parameters defined in  the matched Selection, would be used to default  both the refinancing and additional cost of funds values in their BM records.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Must be a valid record on the MI.SELECTION file.</p>
+            <p />
+            <p>  Optional Input.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MI.DR.INT.KEY</field>
+<desc>
+            <p>This field specifies the basic rate code which will be used by records which match the selections specified for this multi value group. This is used in conjunction with the currency of the incoming record to determine the key of the record on the BASIC.INTEREST file which will be used as a base for the debit refinancing rate. </p>
+            <p>  The rate extracted will be that applicable at the end of the month for the incoming BALANCE.MOVEMENT record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Must be a valid record on the BASIC.RATE.TEXT file.</p>
+            <p>  Optional Input.</p>
+        </desc>
+</t>
+<t>
+<field>SOURCE.FIELD.DR</field>
+<desc>
+            <p />
+            <p />
+            <p>  The source field to be used when calculating debit    cost of funds or additional costs on debit balances is defined in this field,   which must be a field on the BALANCE.MOVEMENT file.</p>
+            <p />
+            <p>  The field defined here should be one of the following:</p>
+            <p>  DR.AVG.BAL, ADJ.DR.AVG.BAL, POST.DR.AVG.BAL</p>
+            <p>  DR.AVG.BAL.MTH, ADJ.DR.AVG.BAL.MTH, POST.DR.AVG.BAL.MTH</p>
+            <p />
+            <p>  But may be any field on the file.</p>
+            <p />
+            <p>  Refer to the BALANCE.MOVEMENT file for further helptext   regarding  these fields.</p>
+            <p />
+            <p>  The source field is used in the calculation of    debit cost of funds as the amount, as follows:</p>
+            <p />
+            <p>  DEBIT COST OF FUNDS = AMOUNT * RATE * YEAR.FRACTION</p>
+            <p />
+            <p>  where RATE is the debit balances refinancing rate   assigned to the contract in the REFIN.RATE.DR field.</p>
+            <p />
+            <p>  The source field is used in the calculation of    additional costs on debit  balances as the amount, as follows:</p>
+            <p />
+            <p>  ADDITIONAL COST OF FUNDS </p>
+            <p>  ON DEBIT BALANCES = AMOUNT * RATE * YEAR.FRACTION</p>
+            <p />
+            <p>  where RATE is the  rate of additional costs on debit    balances assigned to the contract in the ADD.COF.RATE.DR field.</p>
+            <p />
+            <p>  In both cases, YEAR.FRACTION is the portion of the year   according to the interest basis of the contract. If no interest basis is held   on the contract, then the interest basis of the local currency is used.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Must be a valid field on the BALANCE.MOVEMENT file.</p>
+            <p />
+            <p />
+            <p>  .</p>
+        </desc>
+</t>
+<t>
+<field>MI.CR.INT.KEY</field>
+<desc>
+            <p>This field specifies the basic rate code which will be used by records which match the selections specified for this multi value group. This is used in conjunction with the currency of the incoming record to determine the key of the record on the BASIC.INTEREST file which will be used as a base for the credit refinancing rate. </p>
+            <p>  The rate extracted will be that applicable at the end of the month for the incoming BALANCE.MOVEMENT record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Must be a valid record on the BASIC.RATE.TEXT file.</p>
+            <p>  Optional Input.</p>
+        </desc>
+</t>
+<t>
+<field>ENTRY.TYPE.CR</field>
+<desc>
+            <p>The entry type which will be assigned to the credit cost of funds entry on the MI.COF.ENTRIES file is held in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Must be the key to a valid record on the MI.ENTRY.TYPE file.</p>
+        </desc>
+</t>
+<t>
+<field>PL.CATEGORY.ASST</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>POST.DATE.BAL.UPD</field>
+<desc>
+            <p>Specifies whether the POST  Average Balance  fields need to be updated in BALANCE.MOVEMENT.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Valid values are YES/NO.</p>
+            <p>  Atleast one of the fields POST.DATE.BAL.UPD, ADJ.DATE.BAL.UPD,       VAL.DATE.BAL.UPD should have a value.</p>
+        </desc>
+</t>
+<t>
+<field>FUNDING.DEPT</field>
+<desc>
+            <p>This field is used to set the profit centre which funded the contract (or account) which has matched the related SELECTION. </p>
+            <p>  Once evaluated, the content of this field will be assigned to the BALANCE.MOVEMENT records when the refinancing process is run, and will be used in the generation of cost of funds entries - MI.COF.ENTRIES. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Must be the key to a valid record on the DEPT.ACCT.OFFICER file, enclosed in either single or double qoutes or must be a valid field on the BALANCE.MOVEMENT file, either as a field name or a field number.</p>
+        </desc>
+</t>
+<t>
+<field>ENTRY.TYPE.DR</field>
+<desc>
+            <p>The entry type which will be assigned to the debit cost of funds entry on the MI.COF.ENTRIES file is held in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Must be the key to a valid record on the MI.ENTRY.TYPE file.</p>
+        </desc>
+</t>
+<t>
+<field>PL.CATEGORY</field>
+<desc>
+            <p>This field is used to hold the Profit and Loss category which will be used on the refinancing entries produced on the MI.COF.ENTRIES file. This category should then be mapped, using the MI.AUTO.MAPPING application, to the PL.CATEGORY field on the resulting MI.AUTO.ENTRY records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Must be the key to a valid record on the CATEGORY file.</p>
+            <p>  Must be in the range 50000 to 69999</p>
+            <p>  Mandatory</p>
+        </desc>
+</t>
+<t>
+<field>BASE.CURRENCY</field>
+<desc>
+            <p>This field is used to specify the base currency of the MI system, and is used in each company, regardless of local currency, as the base currency. This allows multiple companies, with differing local currencies, to produce meaningful figures in the base currency which may be included within the database. </p>
+            <p>  This is the currency which will be used to perform the conversion where a COLUMN.TYPE of ACCUM.BCY or INT.ACCR.BCY is specified on the MI.COLUMN record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Must be the key to a valid CURRENCY record.</p>
+            <p>  Defaults to Local Currency.</p>
+        </desc>
+</t>
+<t>
+<field>UOF.PL.PREV.MONTH</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>UOF.PL.CURR.MONTH</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>VAL.DATE.BAL.UPD</field>
+<desc>
+            <p>Specifies whether the Value date   Average Balance  fields need to be updated in BALANCE.MOVEMENT.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Valid values are YES/NO.</p>
+            <p>  Atleast one of the fields POST.DATE.BAL.UPD, ADJ.DATE.BAL.UPD,     VAL.DATE.BAL.UPD should have a value.</p>
+        </desc>
+</t>
+<t>
+<field>COF.PL.PREV.YEAR</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>MI.CR.INT.MGN</field>
+<desc>
+            <p>This field holds the margin which will be applied to the rate extracted for the credit refinancing rate (if any). It is possible to enter only a margin, implying that the refincing rate will be fixed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Standard T24 rate field, negative rates allowed.</p>
+            <p>  Optional input, mandatory if no MI.CR.INT.KEY present.</p>
+        </desc>
+</t>
+<t>
+<field>OPERAND</field>
+<desc>
+            <p>This field is used to define the operand which applies to the selections specified in the field SELECTION. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Must be either AND or OR.</p>
+            <p>  Mandatory Input. Defaults to AND.</p>
+        </desc>
+</t>
+<t>
+<field>TP.POSTING.STYLE</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>MI.DR.INT.MGN</field>
+<desc>
+            <p>This field holds the margin which will be applied to the rate extracted for the debit refinancing rate (if any). It is possible to enter only a margin, implying that the refincing rate will be fixed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Standard T24 rate field, negative rates allowed.</p>
+            <p>  Optional input, mandatory if no MI.DR.INT.KEY present.</p>
+        </desc>
+</t>
+<t>
+<field>BAL.MVMT.APPS</field>
+<desc>
+            <p>Specifies for which Applications the BALANCE.MOVEMENT related data needs to be maintained.</p>
+            <p>  A value of ALL would specify that the BALANCE.MOVEMENT related data would be maintained for all MI relevant Applications.</p>
+            <p>  Even though the field would accept any valid EB.SYSTEM.ID, only meaningful EB.SYSTEM.IDs, for which BALANCE.MOVEMENT data would be relevant,  should be specified. </p>
+            <p>  It would be possible to generate BALANCE.MOVEMENT records either during Batch or on-line processing, only for the Applications specified here.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  ID of a  valid EB.SYSTEM.ID  record.</p>
+            <p>  If ALL is specified, other values would not be accepted.</p>
+            <p>  Duplicates are not allowed.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>COF.RATE.DR</field>
+<desc>
+            <p />
+            <p />
+            <p>  Represents the financing rate for the default Additional   Cost of Funds. </p>
+            <p />
+            <p>   The rate would be applied while MI.COF.ENTRIES are generated,   on  the debit  balances field of accounts/contracts in the file   BALANCE.MOVEMENT,   identified by  the field SOURCE.FIELD.DR of   MI.PARAMETER. </p>
+            <p />
+            <p>  This is a multivalue field associated with ADD.COF.TYPE.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  1-10 Numeric characters plus a decimal point.   </p>
+            <p>  Mandatory  if  ADD.COF.TYPE is specified.</p>
+        </desc>
+</t>
+<t>
+<field>PL.CATEGORY.LIAB</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>COF.PL.CURR.MONTH</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>COMPANY</field>
+<desc>
+            <p>Company to which the following Default Funding Dept. for refinancing of Contracts (in LD, MM and MG applications) / Accounts applies.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Should be  ID of  a valid record in COMPANY file.</p>
+            <p>  Optional.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>UOF.PL.PREV.YEAR</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>BM.FOR.INT.ACC</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>BUILD.PL.ENTRIES</field>
+<desc>
+            <p>Specifies whether the CATEG.ENTRY records  are to be consolidated in  MI Database by BOOKING.DATE  or ACCOUNTING.DATE.</p>
+            <p>  ACCOUNTING.DATE  for CATEG.ENTRY records  could be specified only for records generated by  entries input through DATA.CAPTURE application, provided  the POST CLOSING module is installed.</p>
+            <p>  If an ACCOUNTING.DATE   is specified in  CATEG.ENTRY records, consolidation  would  depend on  the date of the earliest Post Closing (PC) Database updated (i.e. earliest PC.PERIOD.END in the entries, provided the field PC.APPLIED=Y). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Allowed values are BOOKING and     ACCOUNTING.</p>
+            <p>  Default value is Null when the     CATEG.ENTRY records would be consolidated in MI Database based on     BOOKING.DATE.</p>
+            <p>  Change of value not allowed     from  ACCOUNTING.</p>
+        </desc>
+</t>
+<t>
+<field>START.OF.WEEK.DAY</field>
+<desc>
+            <p>The calendar day for the start of the week. Used when MI databases have a frequency of weekly. Default is MONDAY. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Must be a valid weekday:  MONDAY (default) TUESDAY WEDNESDAY THURSDAY FRIDAY SATURDAY SUNDAY</p>
+        </desc>
+</t>
+<t>
+<field>BUILD.BD.BALANCES</field>
+<desc>
+            <p>Specifies whether Book-Date related fields in BALANCE.MOVMENT (Fields: OPEN.BD.BALANCE to BK.AVG.BAL.CAL) records of Accounts have to be populated or not.</p>
+            <p>  When the field value is set to YES,  Book-Date related fields of  BALANCE.MOVEMENT records of  Accounts would be populated based on the BOOKING.DATE in STMT.ENTRY records.   If the  STMT.ENTRY records specify  an ACCOUNTING.DATE  (when the Post Closing Module is installed), then these fields would be updated based on  the earliest PC.PERIOD in STMT.ENTRY records, provided the entries  have been applied to  Post Closing Database. </p>
+            <p>  When the field value is set to NO, Book-Date related fields of BALANCE.MOVEMENT records would not be populated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Allowed values are YES and     NO.</p>
+            <p>  Default value is Null     equivalent to NO.</p>
+            <p>  Once the value is set to YES,     it cannot be changed.</p>
+        </desc>
+</t>
+<t>
+<field>TRANS.CODE.DR</field>
+<desc>
+            <p>This field is used to hold the transaction code which will be used on the refinancing entries produced on the MI.COF.ENTRIES file to populate the debit transaction code field. </p>
+            <p>  When the MI.AUTO.ENTRY records are created, this transaction should be used as the transaction code for the debitting entry. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Must be the key to a valid record on the TRANSACTION file.</p>
+            <p>  Mandatory</p>
+        </desc>
+</t>
+<t>
+<field>DEFLT.FUND.DEPT</field>
+<desc>
+            <p />
+            <p />
+            <p>  Specifies the  default Funding Dept. for Contracts (in LD, MM and MG applications) and Accounts,  when either MIS.INEREST.KEY or MIS.INTEREST.RATE  are entered in the individual contracts/accounts. </p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Must be the key to a valid record on the DEPT.ACCT.OFFICER file.</p>
+            <p>  Mandatory  if COMPANY is specified. </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>COF.PL.PREV.MONTH</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>POST.BACK.VALUE</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>SOURCE.FIELD.CR</field>
+<desc>
+            <p />
+            <p>  The source field to be used when calculating credit cost of funds or additional costs on credit balances is defined in this field, which must be a field on the BALANCE.MOVEMENT file.</p>
+            <p />
+            <p>  The field defined here should be one of the following: </p>
+            <p>  CR.AVG.BAL, ADJ.CR.AVG.BAL, POST.CR.AVG.BAL</p>
+            <p>  CR.AVG.BAL.MTH, ADJ.CR.AVG.BAL.MTH, POST.CR.AVG.BAL.MTH</p>
+            <p />
+            <p>  But may be any field on the file.</p>
+            <p />
+            <p>  Refer to the BALANCE.MOVEMENT file for further helptext regarding  these fields.</p>
+            <p />
+            <p>  The source field is used in the calculation of  credit cost of funds as the amount, as follows:</p>
+            <p />
+            <p>  CREDIT COST OF FUNDS = AMOUNT * RATE * YEAR.FRACTION</p>
+            <p />
+            <p>  where RATE is the  refinancing rate on credit balances assinged to the contract in the REFIN.RATE.CR field.</p>
+            <p />
+            <p>  The source field is also used in the calculation of  additional costs on credit balances as the amount, as follows:</p>
+            <p />
+            <p>  ADDITIONAL COST OF FUNDS </p>
+            <p>  ON CREDIT BALANCES             = AMOUNT * RATE * YEAR.FRACTION</p>
+            <p />
+            <p>  where RATE is the  rate of additional costs on credit balances assigned to the contract in the ADD.COF.RATE.CR field.</p>
+            <p />
+            <p>  In both cases, YEAR.FRACTION is the portion of the year according to the interest basis of the contract. If no interest basis is held on the contract, then the interest basis of the local currency is used.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Must be a valid field on the BALANCE.MOVEMENT file.</p>
+            <p />
+            <p />
+            <p>  .</p>
+        </desc>
+</t>
+<t>
+<field>TRANS.CODE.CR</field>
+<desc>
+            <p>This field is used to hold the transaction code which will be used on the refinancing entries produced on the MI.COF.ENTRIES file to populate the credit transaction code field. </p>
+            <p>  When the MI.AUTO.ENTRY records are created, this transaction should be used as the transaction code for the creditting entry. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Must be the key to a valid record on the TRANSACTION file.</p>
+            <p>  Mandatory</p>
+        </desc>
+</t>
+<t>
+<field>COF.RATE.CR</field>
+<desc>
+            <p />
+            <p />
+            <p>  Represents the financing rate for the default Additional   Cost of Funds.  </p>
+            <p />
+            <p>   The rate would be applied while MI.COF.ENTRIES are generated, on    the credit balances field of accounts/contracts in the file   BALANCE.MOVEMENT,   identified by  the field SOURCE.FIELD.CR of   MI.PARAMETER.  </p>
+            <p />
+            <p>  This is a multivalue field associated with ADD.COF.TYPE.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  1-10 Numeric characters plus a decimal point.   </p>
+            <p>  Mandatory  if  ADD.COF.TYPE is specified.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>TP.POSTING.METHOD</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>BOOK.MARKET</field>
+<desc>
+            <p>Accepts BOOK.COST/MARKET.VALUE based on which cost of funds is arrived for own book and customer portfolio.</p>
+            <p> If this field holds MARKET.VALUE, by default CURR.MARKET.VALUE is used as SOURCE.FIELD.</p>
+            <p> If this field holds BOOK.COST, SOURCE.FIELD defined in SOURCE.FIELD.DR and SOURCE.FIELD.CR is considered when calculated cost of funds.</p>
+            <p> Mandatory inpuut if any of the APPLICATION multi value field holds SC</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ADD.COF.DEPT</field>
+<desc>
+            <p />
+            <p />
+            <p />
+            <p>  This field is used  to define the Department which   funded the Additional Cost of Funds Type.  </p>
+            <p>  This is a multivalue field associated with ADD.COF.TYPE.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Must be a  key to a valid record on the DEPT.ACCT.OFFICER file.</p>
+            <p>  Mandatory  if  ADD.COF.TYPE is  specified.</p>
+        </desc>
+</t>
+<t>
+<field>ADD.COF.TYPE</field>
+<desc>
+            <p />
+            <p />
+            <p>  Specifies the default additional cost of funds type that is applicable to the current selection. </p>
+            <p />
+            <p>  This field is a multivalue field associated with COF.RATE.CR , COF.RATE.DR , ADD.COF.DEPT .</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Must be a valid record on the MI.COF.TYPE file. </p>
+            <p />
+            <p>  Optional. </p>
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>ADJ.DATE.BAL.UPD</field>
+<desc>
+            <p>Specifies whether the ADJ   Average Balance  fields need to be updated in BALANCE.MOVEMENT.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Valid values are YES/NO.</p>
+            <p>  Atleast one of the fields POST.DATE.BAL.UPD, ADJ.DATE.BAL.UPD,     VAL.DATE.BAL.UPD should have a value.</p>
+        </desc>
+</t>
+<t>
+<field>APPLICATION</field>
+<desc>
+            <p>Accepts valid Application, REST and ALL. This is to define application wise SOURCE.FIELD for credit and debit which is used when calculating COST OF FUNDS.</p>
+            <p> For SC contracts, in case of own book portfolio, CURR.MARKET.VALUE should be given.</p>
+            <p> For SC contracts, in case of customer portfolio, Any other valid field in BALANCE.MOVEMENT can be given.</p>
+            <p />
+            <p> Default value is ALL</p>
+            <p> If ALL is input, multi value field should not accept other application/REST</p>
+            <p> If REST is input, multi value field should not accept ALL.</p>
+            <p />
+            <p> Associated multi vaue field with SOURCE.FIELD.DR and SOURCE.FIELD.CR</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

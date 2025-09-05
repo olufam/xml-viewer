@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FX</product>
+<table>FX.GROUP.CONDITION</table>
+</header>
+<overview>
+<ovdesc>
+<p> Identifies the Group of Customers, or the individual customer for which the conditions apply. </p></ovdesc>
+<p> For a group of customers, the group number must be defined in the FX.GEN.CONDITION table which contains the selection criteria for proper allocation of Customers to specific groups. </p>
+<p> For an individual customer the customer number must exist on the CUSTOMER file. </p> 
+<p> If the ID 'C- CUSTOMER NUMBER' is defined for an individual customer, it gets automatically defaulted to the field ACTUAL.GROUP pertaining to FX application, in the customer's CUSTOMER.CHARGE record and also updates the FX.GROUP.COND.ID field of SEC.ACC.MASTER.</p>
+<p> On creation of condition specific  to individual customer,  system will update the customer charge with “ALL” as the portfolio in CUSTOMER.CHARGE. When there exists multiple group condition on multiple portfolio basis  in CUSTOMER.CHARGE , system deletes these definitions and updates only one portfolio definition with PORTFOLIO.ID as “ALL” and  TR.ACT.GROUP as the customer group condition. </p>
+<p> On reversal of condition specific to individual customer, system will update the Actual group with the Default group available for the “ALL” portfolio definition. </p>
+<p> The regrouping of group condition for each of the portfolios will be done only during close of business.</p>
+<p> On creation or reversal of condition specific  to individual customer, the SAM gets updates based on the updates happened to CUSTOMER.CHARGE. </p>
+<p> However, for condition specific to individual customer, the updates to customer charger and SEC.ACC.MASTER happens only when FX.MARGIN condition priority is available in TR.APPLICATION field of CUSTOMER.CHARGE. </p>
+<p> For upgrading clients it is advisable to create condition specific to individual customer only after a close of business and also to go for close of business when customer specific group conditions are reversed. </p>
+<p> In addition ,Date can be appended with a hyphen in the id of FX.GROUP.CONDITION, provided a corresponding CONDITION.PRIORITY record and XX.GEN.CONDITION record exists with this date . </p>
+<p> Values for any one of the group condition record to be left blank for all the fields so that it gets classified as the default group </p>
+<p> While defining margins for individual customers, it is advisable to define margin for all DEAL TYPES. </p>
+
+<p>
+
+<p>Validation Rules: </p>
+<p> 1 to 4 numeric characters (Mandatory input). or C - 3 to 10 alphanumeric customer mnemonic or C - 1 to 6 digit CUSTOMER number. >/p>
+</p>
+
+</p>
+
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>PORTFOLIO</field>
+<p> Defines the portfolio suffix for which the associated margin are defined for each of the deal types. </p> 
+<p> Input allowed only for group conditions specific to individual customer. </p>
+<p> The default definition of “ALL”  portfolios is mandatory. </p>
+<p>
+<p> Validation rules: </p>
+<p>The portfolio number must be a valid record of SEC.ACC.MASTER.</p>
+<p>Duplicate definitions are not allowed.</p>
+</p>
+</t>
+<t>
+
+</t>
+<t>
+<field>DEAL.TYPE</field>
+<desc>
+           <p> Defines the deal types for which the associated margins are defined. </p>
+            <p>This can be a field from another file.</p>
+            <p>
+                <p>Validation Rules:</p>
+                <p> Accepts the following values - SP,FW or SW </p>
+                <p> Duplicate definitions are not allowed. </p>
+            </p>
+            <p />
+            
+        </desc>
+</t>
+
+
+<t>
+<field>MARGIN</field>
+<desc><p /><p>Define the margin in terms of percentage that has to be considered to derive the contract rate at the FX contract level for the defined associated portfolio and deal type.</p></desc>
+<p>
+                <p>Validation Rules:</p>
+                <p> Input allowed only when FX.COMM.GRP is null. </p>
+                <p> Accepts a value of zero as the margin percentage. </p>
+                <p> Accepts 9 decimals if Extended.perc is set in SPF otherwise 6 decimals.
+                </p>
+            </p>
+</t>
+
+<t>
+<field>FX.COMM.GRP</field>
+<desc> <p />
+
+<p> Defines the reference to FX.COMM.GROUP file from which the margin percentage has to considered to derive the contract rate at the FX contract level for the defined associated portfolio and deal type. </p>
+<p> On input of FX contract, the margin percentage from FX.COMM.GROUP will be derived for the non base currency amount. </p>
+
+<p>
+<p>Validation rules: </p>
+<p>Input allowed only when MARGIN field is null. </p>
+<p>Must be a valid record of FX.COMM.GROUP. </p>
+</p>
+</desc>
+
+</t>
+<t><field>FX.GROUP.NO</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>CUS.POS.ENQ.PARAM</table>
+</header>
+<overview>
+<ovdesc>
+<p>This application controls the format of the enquiries based on the CUSTOMER.POSITION file.</p><p>This can control:</p><p>- The order of display of transaction types; - The format of the narrative to use when displaying additional details; - Whether the full value of the deal, or the margin (percentage) value is   displayed; - The application (and version) to be displayed when drilldown is   requested; - Whether the amount is to be treated as an Asset or Liability.</p><p>Details may be defined at the following level:</p><p>- Category and Enquiry Type; - Application type and Enquiry Type; - Category; - Application.</p><p>An enquiry can be allocated a specific Enquiry Type by defining the element "CPE.TYPE" with a constant value in the Enquiry record. This grouping is optional, when checking for the most relevant parameter record the above order of preference will be used.</p><p>The parameter record applicable to a given CUSTOMER.POSITION record can be accessed in an enquiry by using the I-Descriptor "CPEP.RECORD". This returns the relevant record with fields separated by "&gt;" and Values by a "]".</p></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>DISPLAY.AMOUNT</field>
+<desc><p>Defines which amount is to be displayed for a given Category/System id/ enquiry type.</p><p>The CUSTOMER.POSITION file contains a DEAL.AMOUNT, the full amount of the deal in DEAL.CCY, and PERC.AMOUNT which is the margin, or percentage value of the deal amount which is used to update the limits system, or in the case of securities is the total margin value of the seecuties held.</p><p>For certain types of application (e.g FX deals, IRS) the full value does not reflect the true risk, and the percentage value should be displayed.</p><p><p>Validation Rules:</p></p><p>Optional input.  Input must be PERC or FULL.</p></desc>
+</t>
+<t>
+<field>NARR.TYPE</field>
+<desc><p>Contains the key to the STMT.NARR.FORMAT record used to define the format of narrative to be displayed with details relevant to a CUSTOMER.POSITION record.</p><p>The details of the format narrative should be defined using the application STMT.NARR.FORMAT, the id of which is identified by this field. Narrative details should be based on the CUSTOMER.POSITION file.</p><p>CONVERSION @ E.CUS.NARRATIVE ---------------------------- The conversion @ E.CUS.NARRATIVE can be used to build the narrative defined by the NARR.TYPE. The value passed to the conversion should be the NARR.TYPE extracted from the CPEP.RECORD I-descriptor.</p><p>The conversion will populate field DISPLAY.NARRATIVE in the work record used by ENQUIRY. This can then be extracted and displayed as any other enquiry field, using another field name. The narrative built may be multi-valued.</p><p>Example:</p><p>1) Build the narrative</p><p>10.20 FIELD.NAME..... NARRATIVE    11.20. 1 OPERATION... FIELD CPEP.RECORD    13.20 LENGTH.MASK.... 30L    14.20. 1 CONVERSION.. FIELD &gt;,3,1    14.20. 2 CONVERSION.. @ E.CUS.NARRATIVE    15.20. 1 COMMENTS.... This should not be displayed    15.20. 2 COMMENTS.... directly, but should extracted    15.20. 3 COMMENTS.... from the field DISPLAY.NARR...    15.20. 4 COMMENTS.... to ensure multi vlaues are    15.20. 5 COMMENTS.... preserved    18.20 SINGLE.MULTI... M</p><p>2) Display the result</p><p>10.21 FIELD.NAME..... DISPLAY.NARRATIVE    11.21. 1 OPERATION... DISPLAY.NARRATIVE    12.21 COLUMN......... 26    16.21 TYPE........... L    18.21 SINGLE.MULTI... M</p><p><p>Validation Rules:</p></p><p>Optional input.  Input must exist in STMT.NARR.FORMAT.</p></desc>
+</t>
+<t>
+<field>USER.SELECT.RTN</field>
+<desc><p>The name of a local api routine to return a list of local application contract ids and application file ids.</p></desc>
+</t>
+<t>
+<field>EXT.FILE.RET.DAYS</field>
+<desc><p>Inputs allowed is numeric value and days 30D, 90D etc. A COB routine will look for any external file data that needs to be deleted from T24 that has crossed the retention period by comparing with the UPLOAD.DATE field. If a record has not been updated for a period more than retention period, then that record will be deleted</p></desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc><p>Contains the description of the customer position parameters defined.</p><p><p>Validation Rules:</p></p><p>Optional Input</p></desc>
+</t>
+<t>
+<field>SORT.POSITION</field>
+<desc><p>Defines a value to be used when sorting the display order of customer position records.</p><p>This allows a value to be attached to a CUSTOMER.POSITION record which can be used to sort information into a required order.</p><p>I-Descriptor SORT.POSITION -------------------------- The I-Descriptor SORT.POSITION in the CUSTOMER.POSITION Standard Selection record is intended to provide a means of sorting Customer Position records into a designated Category code order.</p><p>Where a SORT.POSITION is defined in this field, this value will be used, otherwise the CATEGORY.CODE is used. In this way items such as Commitments (category code 21095-99) can be allocated a Sort Position of 40000 to ensure they appear at the end of deal processing. Similarly items without a category code (e.g CO, LI, SC applications) can be assigned a value.</p><p><p>Validation Rules:</p></p><p>Optional input.  Up to 5 alpha numeric characters allowed.</p></desc>
+</t>
+<t>
+<field>APPLICATION</field>
+<desc><p>Specifies the application (and VERSION) to be used as the drilldown for a deal with details contained in CUSTOMER.POSITION linked to this parameter record.</p><p>When individual deal details are displayed in an enquiry based on the customer position file, the details of the application to view should be defined in this field. An existing application, or Version of an application should be defined.</p><p>Applications can be identified by the I-descriptor EB.SYSTEM.ID which extracts element 3 of the CUSTOMER.POSITION key. Alternatively the CATEGORY.CODE could also be used to identify the application.</p><p>CONVERSION @ E.CUS.POS.NEXT.LEVEL --------------------------------- Within CUSTOMER.POSITION enquiries the conversion routine @ E.CUS.POS.NEXT.LEVEL can be used to define the next level for drilldown. This performs the following processing:</p><p>The element DETAIL.NEXT.LEVEL should be defined either as a SELECTION field or as an element in the ENQUIRY record. IF the value associated with this is not "NO" then:</p><p>- For system id = AC the enquiry STMT.ENT.BOOK will be used. This will   show the entries accross the account for the last 7 working days, unless   a number of days is defined in the SELECTION AC.NO.DAYS, in which case   this number of days will be shown.</p><p>- For system id = SC the enquiry SC.SEC.ACC.HOLD.SUM will be used. This   shows all securities held for the portfolio.</p><p>- For all other applications the underlying application record will be   displayed according to the defininition of this field. If no relevant   record applies, the APPLICATION defined in the EB.SYSTEM.ID record will   be used if present.</p><p>If the DETAIL.NEXT.LEVEL value is NO:</p><p>- If the Limit referenc in the CUSTOMER.POSITION key is SCPORT, the   enquiry SC.PORT.HOLD.SUM will be run for the customer.</p><p>- A limit reference beginning CURR will run the enquiry ACCT.BAL.LAST to   display the accounts held for the customer.</p><p>- A limit reference of COLL will run enquiry CO.001 for the customer to   display collateral details.</p><p>- A limit reference of COMMIT will run the enquiry LD.COMMITMENTS to show   commitment contracts held by the customer.</p><p>- A limit refernce of type FX will run FX.ENQ.SUMMARY to show FX deals   held by the customer.</p><p>- A global limit reference will run the enquiry LIAB showing all limits.</p><p>- All other limit reference values will run LIM.TXN to show limit details.</p><p /><p /><p>Details are returned to the enquiry in the following format:</p><p>Next application / enquiry "&gt;" Selection 1 "&gt;" Selection 2 "&gt;" Selection 3</p><p>Where Application / Enquiry contains either:    Application Name S id (E.g FOREX S FX9501212345) for an application or STMT.ENT.BOOK</p><p>Selection 1 to 3 contains the required selection criteria for the next level enquiry, and is null for application drilldown.</p><p><p>Validation Rules:</p></p><p>Must refer to an existing application of types H,U,L,T,W in the PGM.FILE.  If a VERSION is specified (id contains ",") the record must exist in the VERSION application.</p></desc>
+</t>
+<t>
+<field>ASSET.LIAB</field>
+<desc><p>Specifies whether the Customer Position record should be displayed as an Asset or Liability item.</p><p>When CUSTOMER.POSITION records are created, each item is designated as an ASSET or LIABILITY according to the sign of the DEAL.AMOUNT. A positive value is defined as an ASSET, a -ve value as an asset. The field ASSET.LIAB.MARKER is updated with an A or L respectively.</p><p>Should this value wish to be reversed for a given record type, this field should be defined to contain the correct marker, which can then be referred to as required in the enquiry.</p><p><p>Validation Rules:</p></p><p>Optional input.</p><p>A or L only allowed.</p></desc>
+</t>
+<t>
+<field>CATEG.APPL.ENQ</field>
+<desc><p>The key to the customer position enquiry parameter record.</p><p>Records may be defined at the level of:</p><p>- Category and Enquiry Type (Separated by a '*') - System id and Enquiry Type (Separated by a '*') - Category - System id</p><p>Enquiry Type is an arbitrary value assigned to an enquiry or group of enquiries, identified by the FIELD.NAME "CPE.TYPE" with a constant value in the Enquiry records.</p><p>Category may be any category code which may or may not be specified in the system, and is not validated. The system will check the CATEGORY field in the CUSTOMER.POSITION record when attempting to extract the record.</p><p>System Id is the system id held in the 3rd element of the CUSTOMER.POSITION record key.</p><p>The I-descriptor CPEP.RECORD contains the most relevant record, the order for checking the most relevent record is described above.</p><p>Examples of keys:</p><p>21095*CP1  - Category code 21095 for enquiry type CP1 LD*CP1     - LD application id for enquiry type CP1 21096      - Category 21096 LD         - LD application</p><p>Examples of records applied:</p><p>1) Enquiry type CP1, CUSTOMER.POSITION for LD commitment (cat code 21095).    This will use 21095*CP1 as both elements are defined.</p><p>2) Enquiry type CP1, CUSTOMER.POSITION for LD commitment (cat code 21096).    This will use LD*CP1 as there is no specific record for the category    and type. The record 21096 is NOT used as there is a specific record    for the application and enquiry type.</p><p>3) Enquiry type CP2, CUSTOMER.POSITION for LD commitment (cat code 21095).    This will use LD, no records exist for the enquiry type.</p><p>4) Enquiry type CP1, CUSTOMER.POSITINO for MD commitment (cat code 21096).    This will use 21096 as there is no match on category or application    for the record.</p><p><p>Validation Rules:</p></p><p>Mandatory input.  Elements category and system id must be separated by a "*".  Any valid alphanumeric character is allowed.</p></desc>
+</t>
+<t>
+<field>CUS.EXT.RTN</field>
+<desc><p>The name of a local api routine to return a populated CUSTOMER.POSITION record.</p></desc>
+</t>
+<t>
+<field>INCL.TDGL.MVMT</field>
+<desc>
+<p>This field indicates if the TDGL movements must be included when calculating Customer Position. This can be set at both Category as well Application level. System would first check at category level, if blank then would take the Application level setup. </p>
+<p> Validation Rules: </p>
+<p> YES:  Indicates to include the TDGL movements while calculating Customer Position.</p>
+<p> NO/BLANK: Indicates to exclude the TDGL movements while calculating Customer Position.</p>
+</desc>
+</t>
+<t>
+<field>SUPPRESS.ZERO.POS</field>
+<desc>
+<p>Field to indicate whether to include the zero Security position records in CUSTOMER.POSITION.</p>
+<p/>
+<p>Validation Rules: </p>
+<p>YES : Will Supress zero position.</p>
+<p>NO or BLANK : Includes the zero position.</p>
+</desc>
+</t>
+</menu>
+</t24help>
+

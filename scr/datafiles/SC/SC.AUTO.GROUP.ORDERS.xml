@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SC</product>
+<table>SC.AUTO.GROUP.ORDERS</table>
+</header>
+<overview>
+<ovdesc>
+
+        <p data-mc-conditions="DOCTYPES.Helptext">
+            <p>OVERVIEW</p>
+            <p>SC.AUTO.GROUP.ORDERS is triggered by GROUP.ORDER field in SC.PARAMETER. If this field is set to AUTOMATIC then automatic grouping of orders is triggered. The grouping will be based on the SC.GROUP.PARAM application. Based on the cut off date and time defined in the SC.AUTO.GROUP.ORDERS record the grouping will be done and grouped SEC.OPEN.ORDER will be created. A ALL record is mandatory in SC.AUTO.GROUP.ORDERS. </p>
+        </p>
+    </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>ORDER.NUMBER</field>
+<desc>
+            <p />
+            <p>System updated sub-valued field carrying reference to the order numbers which have been grouped under this SC.AUTO.GROUP.ORDERS id. If GROUP.ORDER field in SC.PARAMETER is set to automatic, then on authorisation of a SEC.OPEN.ORDER, the following is done</p>
+            <p>a)</p>
+            <p />The system will check if an SC.AUTO.GROUP.ORDER record has been set-up for the particular security.  <p>b)</p><p />If not, the next level of check is if a SC.AUTO.GROUP.ORDER record has been set-up for the relevant sub-asset type of the Security.  <p>c)</p><p />If not then, the next level of check would be at Asset type level.  <p>d)</p><p />If no suitable record is available for any of the above, then the system will check for a SC.AUTO.GROUP.ORDER record with the id &amp;#8220;ALL&amp;#8221;.   <p>Based on the checks above, the relevant SC.AUTO.GROUP.ORDER id would be identified and then checks would be made if there are existing groups in that record matching those parameters set in SC.GROUP.PARAM. If a match is found then the SEC.OPEN.ORDER would be placed in that group otherwise the order is placed in a new group(a new record of SC.GROUP.ORDERS). The order, once it is automatically grouped, would figure in the SC.GROUP.ORDERS record </p><p />(which will be in &amp;#8216;INAU&amp;#8217; status). The reference to those SC.GROUP.ORDERS record is given in GROUP.ORDER.NO field  <p>This field would be cleared when the SC.GROUP.ORDERS records are authorised and a grouped SEC.OPEN.ORDER is created. No history will be maintained for changes done in this field.</p><p /><p /><p><p>Validation Rules:</p></p><p /><p /><p />System updated multi-valued field   <p /><p /><p />No-input field   <p /></desc>
+</t>
+<t>
+<field>SECURITY.TYPE</field>
+<desc>
+            <p>A SC.AUTO.GROUP.ORDERS can be created with the following id</p>
+            <p />
+            <p />
+            <p>An     individual security number  which will validate against the     SECURITY.MASTER file.</p>
+            <p />
+            <p>L- followed by a SECURITY.TYPE</p>
+            <p>     (BOND/SHARE)</p>
+            <p />
+            <p />
+            <p />
+            <p>S-     followed by a SUB.ASSET.TYPE code  which will validate against the     SUB.ASSET.TYPE file.</p>
+            <p />
+            <p>A-     followed by an Asset Type code  which will validate against the     ASSET.TYPE file.</p>
+            <p />
+            <p>ALL</p>
+        </desc>
+</t>
+<t>
+<field>CUT.OFF.DATE</field>
+<desc>
+            <p />
+            <p>If &amp;#8216;Automatic&amp;#8217; grouping is adopted, this field will carry the date when the Sec.Open.orders would get grouped. On the specified date, at the specified time in CUT.OFF.TIME field, a phantom job will generate OFS messages to authorize the SC.GROUP.ORDERS whose Ids are available in field GROUP.ORDER.NO. On authorization of SC.GROUP.ORDERS, the following additional OFS messages are generated.</p>
+            <p>a)</p>
+            <p />OFS messages for reversal of the basic orders   <p>b)</p><p />OFS message for input of a grouped SEC.OPEN.ORDER.  <p>All the above messages are placed in the in-directory defined in the related OFS.SOURCE records linked in SC.STD.SEC.TRADE.</p><p /><p>If a cut off frequency is defined then based on the frequency, the date will get automatically reset at the time of grouping. However, the primary check would be on CUT.OFF.EXPIRY.DATE and that date should be greater than the current date. Otherwise the whole record becomes irrelevant for auto-grouping.</p><p><p>Validation Rules:</p></p><p /><p /><p />1-11 date field(optional)  <p /><p /><p />Mandatory field  <p /><p /><p />A valid date is allowed.   <p /><p /><p />Cut off Date can be today or in future, but cannot be less than today.   <p /><p /><p />Cut off Date cannot be set for a holiday(for the local country).   <p /><p /><p />Cut off Date cannot be greater than Cut off Expiry Date   <p /></desc>
+</t>
+<t>
+<field>CUT.OFF.EXPRY.DATE</field>
+<desc>
+            <p />
+            <p>This field will control the EXPIRY DATE of the record. When this date is reached then grouping will not be processed under this record. </p>
+            <p>A date greater than or equal to the CUT.OFF.DATE can be input. </p>
+            <p>If a date equal to CUT.OFF.DATE is input, then on that date no grouping will take place since the record becomes irrelevant for processing. This will facilitate stoppage of grouping through a particular SC.AUTO.GROUP.ORDER id, in case such stoppage is desired.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />1-11 date feild  <p /><p /><p />Valid date field   <p /><p /><p />No input allowed if order number &amp; group order number exists i.e if any SC.GROUP.ORDERS record exists in INAU status, waiting for grouping.  <p /><p /><p />Cannot be less than cut off date   <p /><p /><p />No-input field if the id of SC.AUTO.GROUP.ORDERS is 'ALL'   <p /><p /></desc>
+</t>
+<t>
+<field>CUT.OFF.FREQ</field>
+<desc>
+            <p />
+            <p>A valid frequency is allowed to be entered. Frequency will be allowed to be input only if Cut off date is defined. After grouping is complete and a grouped SEC.OPEN.ORDER is created, the cut off date will be reset based on the cut off frequency.</p>
+            <p>E.g.</p>
+            <p>M0101                    -    Monthly Frequency</p>
+            <p>DAILY                     -    Daily Frequency</p>
+            <p>BSNSS                    -    BUSINESS DAY</p>
+            <p>WEEK1                    -    Weekly Frequency (WEEK2)</p>
+            <p>TWMTH                   -    Twice a month on 15th and Last day of the Month</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />1-19 alphanumeric field  <p /><p /><p />Standard T24 frequency field.     </desc>
+</t>
+<t>
+<field>CUT.OFF.TIME</field>
+<desc>
+            <p />
+            <p>Field carrying valid time. Automatic groping of Sec.open.orders will be done based on the time set in this field. Relevant only for the CUTOFF.DATE specified in the record. If the CUT.OFF.TIME is reached then OFS message would be generated and placed in a specific in-directory(OFS.SOURCE record linked in SC.STD.SEC.TRADE) for authorizing those SC.GROUP.ORDERS which appear in GROUP.ORDER.NO field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />1-11 mandatory field  <p /><p /><p />Mandatory field.   <p /><p /><p />A valid time is allowed as input.     </desc>
+</t>
+<t>
+<field>GROUP.ORDER.NO</field>
+<desc>
+            <p />
+            <p>System updated multi-valued field carrying reference to the SC.GROUP.ORDERS which have been generated (and held in unauthorized status) consequent to the parameters set in this SC.AUTO.GROUP.ORDER record.</p>
+            <p>The SC.GROUP.ORDERS id is recorded in this field by the system to facilitate reversal of basic orders which would get grouped. This field is cleared once grouping is complete by authorizing SC.GROUP.ORDERS and grouped SEC.OPEN.ORDERs are created.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />System updated field.   <p /><p /><p />No-input field.   <p /><p /></desc>
+</t>
+<t>
+<field>DAY.CONVENTION</field>
+<desc>
+            <p>Allowed value is FOLLOWING_PRECEDING </p>
+            <p>If the computed CUT.OFF.DATE is a holiday then if this field is set, the corresponding working day will be computed based on PRECEDING or FOLLOWING as previous working day or next working day respectively</p>
+</desc>
+</t>
+<t>
+<field>ACT.CUT.OFF.DATE</field>
+<desc>
+            <p>This will be a Noinput field</p>
+            <p>The value will be populated with the actual cut-off date before applying the day convention and will be used in determining of future cut off dates</p>
+</desc>
+</t>
+<t>
+<field>PREV.CUT.OFF.DATE</field>
+<desc>
+            <p>This will be a Noinput field</p>
+            <p> The value will be populated with the previous actual cut-off date when the date is recycled</p>
+</desc>
+</t>
+<t>
+<field>PARENT.CHILD</field>
+<desc>
+            <p>Allowed value is YES </p>
+            <p>This is the flag to indicate whether the group order be created as parent child order or single order</p>
+</desc>
+</t>
+</menu>
+</t24help>
+

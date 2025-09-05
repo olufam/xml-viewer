@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>MESSAGE.CONTROL</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The MESSAGE.CONTROL table contains the basic message control values for passing through to the delivery system whenever an application requests the delivery of an advice/confirmation or payment.The delivery of these items can be specified on a transaction by transaction or contract by contract basis by input into the delivery link field on the transaction or contract. </p>
+            <p>By far the largest number of contracts would call for standard delivery i.e. Delivery Link 1, which relates to the record 1 on the MESSAGE.CONTROL table. However, there may well be times when a User wishes to specify other than standard delivery, for example, for a particular customer, the User may want the delivery message to be sent as urgent or priority or the User may wish to specify that a delivery message be sent by a particular method such as Telex or Print. </p>
+            <p>In this case the User must set up a record on this table (eg record 2) with these parameters and then input delivery link 2 in the transaction or contract. </p>
+            <p>Thus the MESSAGE.CONTROL table allows the User the flexibility of specifying various combinations of priority status (normal, urgent or priority) and delivery method (Swift, Telex or Print). He would then input the corresponding delivery link code when loading up a transaction or contract and the system will then apply the delivery method specified on the MESSAGE.CONTROL file corresponding to that delivery code. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>TEST.KEY.REQ</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 2 characters may be entered.</p>
+            <p>The following values are permitted:       Y      NO</p>
+        </desc>
+</t>
+<t>
+<field>PRIORITY</field>
+<desc>
+            <p>Records the value of the delivery type e.g.normal, urgent or priority </p>
+            <p>This field gives a value to the delivery type and the following values have been defined: </p>
+            <p>           i)   N is Normal            ii)  U is Urgent            iii) P is Priority </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Single character alpha field - (only input allowed is N, U or P and these are expanded to Normal, Urgent and Priority respectively) (Optional input; default is Normal)</p>
+        </desc>
+</t>
+<t>
+<field>STATUS</field>
+<desc>
+            <p>Specifies whether a delivery is to be immediate or held on the delivery system queue for later release. </p>
+            <p>It may be that a User wishes to refrain from sending a delivery message to a customer immediately in which case he may take advantage of this hold facility. Thus when a contract is authorised no delivery is sent automatically (as would be the case under non-hold status) but rather the User has to manually release the message  (done within the delivery system) when he decides he wants the message to be sent. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Alpha field - 4 characters allowed. (Only HOLD may be input otherwise the field is blank.) (Optional input; default is blank which means 'do NOT hold')</p>
+        </desc>
+</t>
+<t>
+<field>CARRIER</field>
+<desc>
+            <p>Defines the carrier method to be used for the delivery message. </p>
+            <p>This field is used to specify the carrier method by which the delivery message is to be sent.  Valid carriers on defined on the carrier file, DE.CARRIER. </p>
+            <p>This field is normally set to null so that the delivery system can choose the most appropriate delivery medium. (eg S.W.I.F.T. if the customer is a S.W.I.F.T. customer ). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Type "A" field, 8 characters</p>
+            <p>Carrier must exist on the carrier file, DE.CARRIER</p>
+            <p>Optional input</p>
+            <p>Default is blank which means use the delivery system parameters</p>
+        </desc>
+</t>
+<t>
+<field>DELIVERY.LINK</field>
+<desc>
+            <p>This field is used to identify a specific group of conditions which will be applied to a delivery message. </p>
+            <p>Each type of delivery can have its own particular specifications, e.g.:- </p>
+            <p>      1)    Delivery link 1 might contain the            following conditions:- </p>
+            <p>           i)   Standard delivery            ii)  Priority value            iii) No hold status            iv)   Via telex </p>
+            <p>      2)    Delivery link 2 might contain the            following conditions:- </p>
+            <p>           i)   Standard delivery            ii)  Normal value            iii) Hold status            iv)  Via print. </p>
+            <p>Thus each combination of delivery conditions will be identified by its own unique delivery link code number. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Numeric field - up to 3 characters.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Specifies the type of delivery conditions for this record e.g. standard or urgent </p>
+            <p>This is a descriptive field and is simply a way of recording the title of the delivery method. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Alpha-numeric field.Up to 20 characters. (Multivalue, multilingual field) (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>DEST.CODE</field>
+<desc>
+            <p>This field allows the location for the printing of a message to be specified. </p>
+            <p>Should a User wish to have the printout of a message in his own department/area he can enter this field to specify the location (by department code) of the printer which will actually print the hard copy message. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4 Character alphanumeric field which must exist on the Dept.Acct. Officer table. (Optional input; default is blank which means use the delivery system parameters)</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

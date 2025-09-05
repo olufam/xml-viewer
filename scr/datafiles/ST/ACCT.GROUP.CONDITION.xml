@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>ACCT.GROUP.CONDITION</table>
+</header>
+<overview>
+<ovdesc>
+<p>This application replaces the pre G8 file SAVINGS.COND that was used to implement parameters used by savings accounts on the system. Even though the file takes on the parameters set up inside the old SAVINGS.COND file it does not restrict itself to just that and can be used more generically to set up parameters for other types of accounts.</p><p>  Validation Rules</p><p>  Changes to some parameters which are used in the update processing of the ACCT.AVAILABILITY file is controlled and can be only made in a record that has a date appended to the id. This date specifies day on which the new parameters are transferred into the active record (ID without a date appended to it). The change made will be effected in the end of day process and will obviously also rebuild the ACCT.AVAILABILITY file.</p><p>  A record must be created for each group and currency combination in order to allow the underlying accounts in the combination to use the parameter set up.</p></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CR.INT.TOT.RND</field>
+<desc><p>Indicates the type of rounding to apply to the total amount of credit interest, i.e. the amount stored in the TOTAL.INTEREST field of either INFO.ACCT.CR, ACCR.ACCT.CR or STMT.ACCT.CR. (Or CR2 )</p><p>  The default is to perform natural rounding relevant to the currency of the interest amount.</p><p>  Any value entered should be the key to an EB.ROUNDING.RULE record. This record will determine the type of rounding to be applied to the calculated interest amount.</p><p>  Take the example of a currency with 0 decimal places, where the interest amounts are unrounded and the total is rounded down.</p><p>         amt1 = 1.666</p><p>         amt2 = 2.666</p><p>         amt3 = 3.666</p><p>         The total interest will be 7.998 which will be rounded down to 7.</p><p>         Now perform the same calculation with the interest amounts naturally rounded.</p><p>         amt1 = 1</p><p>         amt2 = 2</p><p>         amt3 = 3</p><p>         total interest will be 6.</p><p>         Alphanumeric field, can be:-</p><p>         blank = default natural rounding</p><p>         key to EB.ROUNDING.RULE to determine the type of rounding to apply.</p></desc>
+</t>
+<t>
+<field>DEBIT.RESTRICT</field>
+<desc><p>This field can be used to restrict the accounts that belong to this group and currency from making debit transactions if set to "Y".</p><p><p>Validation Rules:</p></p><p>  Optional Input</p><p /><p>  Allowed input of either "YES" or "NO".</p></desc>
+</t>
+<t>
+<field>MAX.NO.WDLS</field>
+<desc><p>This field defines the maximum number of withdrawals allowable within the specified period defined above for the corresponding transaction code.</p><p><p>Validation Rules:</p></p><p>  Input to this field is optional, but must not be input if the corresponding WDL.TXN.CODE has not been entered.</p><p>  2 numeric characters.</p></desc>
+</t>
+<t>
+<field>DEFER.CHARGE.DAYS</field>
+<desc><p>This field can be used to allow the system to defer the charge posting to the account on which they are due in order to facilitate a means of notifying the customer of the details in advance. The number of days specified here will equal to the number of days in the notification period. It is also possible to specify a specific day in the month after capitalisation, for examaple if charges are deferred until the last day of the following month then 31A is entered. The actual posting will take place on the last COB of the month following capitalisation.</p><p /><p><p>Validation Rules:</p></p><p>  Optional input.</p><p>  Must be input if the field CHARGE.PENDING.CAT has been entered.</p><p>  3 alphanumeric characters - nnA, nnC or nnW format.</p><p>  If nnA is entered then the numeric value must be between 1 and 32.</p><p>  If nnC entered, the number of days is taken to be calendar days.</p><p>  If nnW entered, the number of days is taken to be business days.</p></desc>
+</t>
+<t>
+<field>MAXIMUM.DEPOSIT</field>
+<desc><p>This field defines the maximum deposit allowable in the specified period above.</p><p>  This field is used in validating against the sum of all the deposits within the specified period.</p><p><p>Validation Rules:</p></p><p>  Input to this field is optional, but input is only allowed if and only if the DEPOSIT.PERIOD is populated.</p><p>  19 numeric characters.</p></desc>
+</t>
+<t>
+<field>PENALTY.CODE</field>
+<desc><p>This field contains the penalty code that may be applied to the account whenever penalty is due.</p><p><p>Validation Rules:</p></p><p>          Input to this field is optional, but must not be input if the corresponding transaction code has not been entered.</p><p>          Only valid 'CHARGE' or 'COMMISSION' types can be entered.</p><p>          11 alphanumeric characters.</p></desc>
+</t>
+<t>
+<field>WITHDRAWAL.UNIT</field>
+<desc><p>This field indicates the denomination in which a withdrawal can be made.</p><p><p>Validation Rules:</p></p><p>          Optional input.</p><p>          19 numeric characters.</p></desc>
+</t>
+<t>
+<field>MAX.DEP.INC</field>
+<desc><p>This savings premium field associated with DEPOSIT.PERIOD defines the maximum increase allowable in the specified period.</p><p>  This field is used in validating against the increase in balance within the specified period.</p><p /><p><p>Validation Rules:</p></p><p>  Input to this field is optional, but input is only allowed if and only if the DEPOSIT.PERIOD is populated.</p><p>  11 numeric characters.</p></desc>
+</t>
+<t>
+<field>DEP.PERIOD.TYPE</field>
+<desc><p>This field defines the type of the DEPOSIT.PERIOD entered above. Effective from G14.1, a user defined routine can be attached to this field with a prefix of @</p><p /><p><p>Validation Rules:</p></p><p /><p>  'CALENDAR' or 'VARIABLE'. </p><p>  Any number of the first characters may be entered, e.g. 'C' or 'CA' will suffice for CALENDAR and will also be expanded to CALENDAR on the screen.</p><p>  Input will be mandatory if and only if DEPOSIT.PERIOD has been populated.</p><p /></desc>
+</t>
+<t>
+<field>MAX.WDL.AMT</field>
+<desc><p>This field defines the maximum withdrawal amount in the period defined above for the corresponding transaction code.</p><p><p>Validation Rules:</p></p><p>  Input to this field is optional, but must not be input if the corresponding WDL.TXN.CODE has not been populated.</p><p>  11 numeric characters.</p></desc>
+</t>
+<t>
+<field>LIQU.FT.TYPE</field>
+<desc><p>This field is used to specify the FT.TXN.TYPE.CONDITION record that will be used to generate FUNDS.TRANSFER in HOLD status, when the interest amount is greater than the maximum of the threshold amount(s).</p></desc>
+</t>
+<t>
+<field>CORR.AT.CAP.DATE</field>
+<desc><p>Setting this field TO "YES" will delay correction processing for entries effecting interest amounts for previous capitalisation periods to the next capitalisation date of the account.</p><p>  Setting this field to "NO" or leaving it blank will ensure that interest correction processing will take place on the day that the back valued entry is booked. This will include corrections that take place during a deferred interest period, for example where debit interest posting has been deferred for 30 days and a back valued entry for the previous capitalisation period has been input between the last capitalisation date and the deferred posting date.</p><p><p>Validation Rules:</p></p><p>apos;YES apos; or apos;NO apos; blank defaults to NO.</p><p /></desc>
+</t>
+<t>
+<field>CHARGE.PENDING.CAT</field>
+<desc><p>This field defines the category code to be used when forming a suspense account to which the charge settling on an account will be posted to when the field DEFER.CHARGE.DAYS has been specified. The amount posted into this suspense account will be reversed after the notification period has been served.</p><p><p>Validation Rules:</p></p><p>          Optional input.</p><p>          Must be input if the field DEFER.CHARGE.DAYS has been entered.</p><p>          If input must be a valid category code set up on the CATEGORY file.</p><p>          If input must be in the range 10000-19999.</p></desc>
+</t>
+<t>
+<field>DEP.TXN.CODE</field>
+<desc><p>A list of all valid credit transaction codes that may be used by this group of accounts.</p><p /><p>  A default transaction code may be defined as 'DEFAULT'.  This will be used for any transaction code used that is not found in this list.</p><p><p>Validation Rules:</p></p><p>  Must be a valid transaction code. </p><p>  Duplicate entries are not allowed.</p><p>  Optional input.</p></desc>
+</t>
+<t>
+<field>PREMIUM.TYPE</field>
+<desc><p>Defines the premium type associated with this file.</p><p><p>Validation Rules:</p></p><p>          Input must exist on the SAVINGS.PREMIUM file. (Optional Input)</p></desc>
+</t>
+<t>
+<field>INC.TXN.CODE</field>
+<desc><p>This sub valued savings premium field associated with DEPOSIT.PERIOD stores the transaction codes relevant to the deposit period and type.</p><p /><p><p>Validation Rules:</p></p><p>  Optional input </p><p>  Must be a valid TRANSACTION code</p><p>  Duplicates not allowed</p></desc>
+</t>
+<t>
+<field>CR.INT.CALC.RND</field>
+<desc><p>Indicates the type of rounding to apply to individual credit interest calculations, i.e. the amount stored in the CR.INT.AMT field of either INFO.ACCT.CR, ACCR.ACCT.CR or STMT.ACCT.CR (or CR2).</p><p>         The default is to perform natural rounding relevant to the currency of the interest amount.</p><p>         NONE indicates that no rounding is to be applied to the calculated interest amount. In this case the total interest will be the sum of the unrounded amounts, and then the total interest will be rounded. </p><p>         Any other value should be the key to an EB.ROUNDING.RULE record. This record will determine the type of rounding to be applied to the calculated interest amount.</p><p /><p>         Take the example of a currency with 2 decimal places, where the interest amounts are unrounded and the total is naturally rounded.</p><p>         amt1 = 1.333</p><p>         amt2 = 2.333</p><p>         amt3 = 3.333</p><p>         The total interest will be 6.999 which will be naturally rounded to 7.00.</p><p>         Now perform the same calculation with the interest amounts naturally rounded.</p><p>         amt1 = 1.33</p><p>         amt2 = 2.33</p><p>         amt3 = 3.33</p><p>         total interest will be 6.99.</p><p>         Alphanumeric field, can be:-</p><p>         blank = default natural rounding</p><p>         NONE = interest amount not rounded</p><p>         key to EB.ROUNDING.RULE to determine the type of rounding to apply.</p><p /><p /></desc>
+</t>
+<t>
+<field>MINIMUM.BAL</field>
+<desc><p>This field indicates the minimum balance that the account is supposed to maintain.</p><p>          If a withdrawal transaction is going to make the account go below this balance then an override will be required.</p><p><p>Validation Rules:</p></p><p>          Optional input.</p><p>          19 Numeric characters.</p></desc>
+</t>
+<t>
+<field>CHECK.ROUTINE</field>
+<desc><p>This field is reserved for future use</p><p><p>Validation Rules:</p></p><p /><p /><p>          No input.field</p></desc>
+</t>
+<t>
+<field>WDL.TXN.CODE</field>
+<desc><p>This multivalued field will contain a list of all valid withdrawal transaction codes that may be used by this group of accounts.</p><p>          A default transaction code may be defined as 'DEFAULT'.  This will be used of any debit transaction code used that is not found in this list.</p><p><p>Validation Rules:</p></p><p>          This field is associated with field range MAXIMUM.PER.WDL to PENALTY.CODE.</p><p>          Duplicate entries are not allowed.</p><p>          Optional input.</p><p>          Must be a valid debit transaction code.</p></desc>
+</t>
+<t>
+<field>DB.INT.TOT.RND</field>
+<desc><p>Indicates the type of rounding to apply to the total amount of debit interest, i.e. the amount stored in the TOTAL.INTEREST field of either INFO.ACCT.DR, ACCR.ACCT.DR or STMT.ACCT.DR. (Or DR2 )</p><p /><p>  The default is to perform natural rounding relevant to the currency of the interest amount.</p><p /><p>  Any value entered should be the key to an EB.ROUNDING.RULE record. This record will determine the type of rounding to be applied to the calculated interest amount.</p><p /><p>  Take the example of a currency with 0 decimal places, where the interest amounts are unrounded and the total is rounded down.</p><p>         amt1 = 1.666     </p><p>         amt2 = 2.666</p><p>         amt3 = 3.666</p><p>  The total interest will be 7.998 which will be rounded down to 7.</p><p>  Now perform the same calculation with the interest amounts naturally rounded.</p><p /><p>         amt1 = 1</p><p>         amt2 = 2</p><p>         amt3 = 3</p><p>         total interest will be 6.</p><p>         Alphanumeric field, can be:-</p><p>         blank = default natural rounding</p><p>         key to EB.ROUNDING.RULE to determine the type of rounding to apply.</p></desc>
+</t>
+<t>
+<field>NOTICE.AMOUNT</field>
+<desc><p>Specifies the maximum amount which can be withdrawn without notification being required.</p><p>          The maximum local currency amount that can be withdrawn in a single transaction without incurring an override message. If this value is exceeded then the override message:</p><p>          ACCOUNT &amp; - NOTICE CONDS FOR WITHDRAWAL NOT MET</p><p>          will be displayed.</p><p><p>Validation Rules:</p></p><p>          19 numeric characters.</p></desc>
+</t>
+<t>
+<field>MAXIMUM.INCREASE</field>
+<desc><p>Defines the maximum annual balance increase allowed for this category of account.</p><p>          The maximum amount an account balance can be increased by per year. The calculation is based on the start of year opening balance (START.YEAR.BAL) in the account record and the current online cleared balance (ONLINE.CLEARED.BAL).</p><p>          e.g.  If an account balance can only be increased by 10,000.00 per annum, from a start of year balance of 50,000.00 and with a current online balance of 43,000.00 then the maximum increase which will be allowed is 17,000.00.</p><p>          Similarly if the online balance is 58,000.00 then the maximum increase will be 2,000.00.</p><p>          If this amount is exceeded then the override message:</p><p>          MAXIMUM ALLOWED DEPOSIT = &amp; is displayed. Thereafter the message:</p><p>          MAXIMUM INCREASE ALREADY EXCEEDED will be displayed for all further deposits.</p><p><p>Validation Rules:</p></p><p>          19 numeric characters - local currency.</p></desc>
+</t>
+<t>
+<field>LIQU.CCY.MARKET</field>
+<desc><p>This field specifies the CURRENCY.MARKET id which would be used for converting the interest amounts up to the associated threshold amount.</p></desc>
+</t>
+<t>
+<field>DEFER.ADJ.ADVICE</field>
+<desc><p>YES indicates that adjustment advices are sent when a back valued correction results in the deferred amount changing.</p><p><p>Validation Rules:</p></p><p>  Optional input.</p><p>  Allowed input of "YES" or blank.</p></desc>
+</t>
+<t>
+<field>INT.POST.PERIOD</field>
+<desc><p>This field can be used to define the interest posting period, So that while interest can be capitalised at any time the actual posting date can be set to the end of the next month, quarter, semi annual period or annual period.</p><p>  This caters for certain countries where for example interest has to be calculated on a monthly basis but is only posted at the end of every 6 months, to prevent interest being calculated on interest in the 6 months period.</p><p>  For example interest is calculated separately for January, February, March, April, May, June and July and it is all posted at the end of July.</p><p /><p><p>Validation Rules:</p></p><p>  Optional input</p><p>  "M" monthly</p><p>  "Q" Quarterly</p><p>  "S" Semi-annually</p><p>  "A" Annual</p><p /></desc>
+</t>
+<t>
+<field>AVAILABLE.BAL.UPD</field>
+<desc><p>Identifies the options available for building the available balance on an account. The unauthorised movement fields will be updated but may not necessarily be used for balance checking. This is to enable a new type of balance check to be made if the parameter settings are changed. </p><p /><p>  Unauthorised debits or Unauthorised credits , or both or none of them</p><p>  It will be selected in the following order:</p><p>  1.ACCOUNT</p><p>  2.ACCT.GROUP.CONDITION (if ACCOUNT is blank)</p><p>  3.ACCOUNT.PARAMETER (if ACCT.GROUP.CONDITION is blank)</p><p>  For example if nothing is set at ACCOUNT level then the ACCT.GROUP.CONDITION is checked and if still nothing is set at this level, the ACCOUNT.PARAMETER is checked.</p><p /><p><p>Validation Rules:</p></p><p>  BOTH - Unauthorised debits and credits to be included in the available balance </p><p>  NONE - No unauthorised movements to be included in the available balance </p><p>  DEBITS - Only unauthorised debits to make up available balance </p><p>  CREDITS - Only unauthorised credits to make up available balance </p><p>  The default will be No authorised movements to be included in the available balance</p><p /></desc>
+</t>
+<t>
+<field>DEPOSIT.UNIT</field>
+<desc><p>This savings premium field indicates the denomination in which a deposit can be made.</p><p><p>Validation Rules:</p></p><p>  Optional input.</p><p>  19 numeric characters.</p></desc>
+</t>
+<t>
+<field>DB.INT.CALC.RND</field>
+<desc>
+            <p>Indicates the type of rounding to apply to individual debit interest calculations, i.e. the amount stored in the DR.INT.AMT field of either INFO.ACCT.DR, ACCR.ACCT.DR or STMT.ACCT.DR.</p>
+            <p />
+            <p>  The <b>default</b> is to perform natural rounding relevant to the currency of the interest amount.</p>
+            <p />
+            <p><![CDATA[  ]]><b>NONE</b> indicates that no rounding is to be applied to the calculated interest amount. In this case the total interest will be the sum of the un-rounded amounts, and then the total interest will be rounded. </p>
+            <p />
+            <p>  Any other value should be the <b>key to an EB.ROUNDING.RULE</b> record. This record will determine the type of rounding to be applied to the calculated interest amount.</p>
+            <p />
+            <p>  Take the example of a currency with 2 decimal places, where the interest amounts are un-rounded and the total is naturally rounded.</p>
+            <p>         amt1 = 1.333     </p>
+            <p>         amt2 = 2.333</p>
+            <p>         amt3 = 3.333</p>
+            <p>  The total interest will be 6.999 which will be naturally rounded to 7.00.</p>
+            <p>  Now perform the same calculation with the interest amounts naturally rounded.</p>
+            <p>         amt1 = 1.33</p>
+            <p>         amt2 = 2.33</p>
+            <p>         amt3 = 3.33</p>
+            <p>  Total interest will be 6.99.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Alphanumeric field, can be:-</p>
+            <p>
+                <p value="1">         blank = default natural rounding</p>
+                <p value="2">         NONE = interest amount not rounded</p>
+                <p value="3">         Key to EB.ROUNDING.RULE ,to determine the type of rounding to apply.</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>TXN.THRESHOLD</field>
+<desc><p>This field is used to define the threshold for each transaction code or group in the field</p><p>          TXN.CODE.GRP</p><p>          WAIVE.CREDIT.INT</p><p>          NO.VIOLATION</p><p>          This threshold applies to each statement period.</p><p>          The associated</p><p>          TXN.CODE.GRP</p><p>          Fields</p><p>          TXN.THRESHOLD</p><p>          NO.VIOLATION</p><p><p>Validation Rules:</p></p><p /><p>          A maximum of 2 characters may be entered.</p><p>          Standard T24 numeric field.</p></desc>
+</t>
+<t>
+<field>MAXIMUM.PER.WDL</field>
+<desc><p>This field indicates the maximum amount allowable per withdrawal for the transaction code associated to this field.</p><p><p>Validation Rules:</p></p><p>          Input to this field is optional, but must not be entered if the corresponding WDL.TXN.CODE is not entered.</p><p>          11 numeric characters.</p></desc>
+</t>
+<t>
+<field>CREDIT.CHECK</field>
+<desc><p>Identifies on which balance, overdraft and limit checking should be made. It can be set at ACCOUNT level or at the ACCT.GROUP.CONDITION or ACCOUNT.PARAMETER level.</p><p /><p>  The flag will be selected in the following order:</p><p>  1. ACCOUNT</p><p>  2. ACCT.GROUP.CONDITION, if not set at ACCOUNT level</p><p>  3. ACCOUNT.PARAMETER, if not set at ACCT.GROUP.CONDITION level</p><p /><p><p>Validation Rules:</p></p><p /><p>  AVAILABLE: </p><p>  Credit checking is made using AVAILABLE.BAL</p><p /><p>  WORKING: </p><p>  Credit checking is made using WORKING.BALANCE</p><p /><p>  FORWARD: </p><p>  Credit checking is made using WORKING.BALANCE plus today's forward movements.</p><p /><p>  AVAILWORK: </p><p>  Credit checking is made using AVAILABLE.BAL and WORKING.BALANCE.</p><p /><p>  AVAILFWD: </p><p>  Credit checking is made using AVAILABLE.BAL and WORKING.BALANCE plus today's forward movements.</p><p /><p>  BLANK: The default checking is against WORKING.BALANCE</p></desc>
+</t>
+<t>
+<field>RETENTION.PERIOD</field>
+<desc><p>This field defines how long transactions remain on the live account violations file (</p><p>          Additionally, this field will also be used to determine when transactions will be deleted from the history file (</p><p>          For example, if '12M' is entered in this field, a violation record will remain on the live file for 12 months before being transferred to the history file. The record will then remain on the history file for a further 24 months before being deleted.</p><p><p>Validation Rules:</p></p><p /><p /><p>          A maximum of 4 characters may be entered. The first 3         characters define the length of the period and the final         character defines the type of period i.e. :- D = Days W =         Weeks M = Months Y = Years e.g. 30D (30 days), 8W (8         weeks), 12M (12 months), 2Y (2 years)</p></desc>
+</t>
+<t>
+<field>MINIMUM.DEPOSIT</field>
+<desc><p>This field indicates the minimum amount that can be deposited into the account in any one transaction.</p><p><p>Validation Rules:</p></p><p>          Optional input.</p><p>          19 numeric characters.</p></desc>
+</t>
+<t>
+<field>NOTICE.PERIOD</field>
+<desc><p>Defines the notice in days, weeks or months which must be given before the amount specified in NOTICE.AMOUNT can be withdrawn.</p><p>          The number of days, weeks or months which constitute the period. e.g. 20D, 7W, 3M, etc.</p><p><p>Validation Rules:</p></p><p>          3 alphanumeric characters - nnD, nnM or nnW format.</p></desc>
+</t>
+<t>
+<field>RATE.CHANGE.ADVICE</field>
+<desc><p>This field decides whether or not to produce advices for those accounts in the above group.</p><p>          YES  Produce advices according to the value in</p><p>          ADVICE.TYPE</p><p><p>Validation Rules:</p></p><p>          If no value is specified in the field</p><p>          ADVICE.TYPE,</p></desc>
+</t>
+<t>
+<field>DEFER.DB.INT.DAYS</field>
+<desc><p>This field can be used to allow the system to defer the debit interest posting to the account on which they are due in order to facilitate a means of notifying the customer of the details in advance. The number of days specified here will equal to the number of days in the notification period.</p><p><p>Validation Rules:</p></p><p>  Optional input.</p><p>  Must be input if the field DB.INT.PENDING.CAT has been entered.</p><p>  3 alphanumeric characters - nnA, nnC or nnW format.</p><p>  If nnA is entered then the numeric value must be between 1 and 32.</p><p>  If nnC entered, the number of days is taken to be calendar days.</p><p>  If nnW entered, the number of days is taken to be business days.</p></desc>
+</t>
+<t>
+<field>LIQU.SUSP.CATEG</field>
+<desc><p>This field is used to specify the suspense CATEGORY code to which entries will be raised through FUNDS.TRANSFER application, when the interest amount exceeds the threshold amount(s).</p></desc>
+</t>
+<t>
+<field>MAX.NO.DEPOSITS</field>
+<desc><p>This field will contain the maximum number of deposits allowable on the account before which an override will be required.</p><p><p>Validation Rules:</p></p><p>  Optional input.</p><p>  2 numeric characters.</p></desc>
+</t>
+<t>
+<field>CR.BALANCE.TYPE</field>
+<desc><p>This field is used in conjunction with BAL.CALC.ROUTINE to allow locally developed average or minimum balance routines to be used.</p><p>  "AVERAGE" indicates that the local routine will calculate an average balance and that the interest calculation settings applicable to average balance will be used. </p><p>  "MINIMUM" indicates that the local routine will calculate a minimum balance and that the interest calculation settings applicable to minimum balance will be used. If input then the BAL.CALC.ROUTINE must be populated.</p></desc>
+</t>
+<t>
+<field>SINGLE.LIMIT.DEFLT</field>
+<desc><p>Single limit default field can be set to Y/N. The value set here will be defaulted to single limit field in account, for the new account opened with the group condition. If single limit field in account is defaulted to "Y" then only one account is allowed to utilize the limit. If set to "N" then multiple accounts can utilize the same limit.</p><p><p>Validation Rules:</p></p><p>          Optional Input</p><p>          Input can be Y/N/Blank</p></desc>
+</t>
+<t>
+<field>CONTINGENT.INT</field>
+<desc><p>If the current group is for contingent accounts then this field defines how any calculated interest on the account is processed.</p><p>  The default values defined here for the group can be overridden at individual account level.</p><p><p>Validation Rules:</p></p><p>  Possible inputs are B,C,O and "" and as follows</p><p>  B - Indicates non-contingent interest, i.e. the interest must be liquidated to a non contingent account</p><p>  C - Indicates contingent interest , not reported on balance sheet</p><p>  O - Indicates contingent interest, reported as a off balance sheet item</p><p>  "" - Indicates account is not contingent</p><p /><p><p>Validation Rules:</p></p><p /><p>          At present only B, C, O or "" allowed and input is only allowed if the group is for contingent accounts.</p></desc>
+</t>
+<t>
+<field>WDL.PRD.TYPE</field>
+<desc><p>This field defines the type of WDL.PERIOD entered.</p><p><p>Validation Rules:</p></p><p>          'CALENDAR' or 'VARIABLE'. Any number of the first characters may be entered, e.g. 'C' or 'CA' will suffice for CALENDAR and will also be expanded to CALENDAR on the screen.</p><p>          Input to this field is mandatory only if the corresponding WDL.PERIOD is entered.</p></desc>
+</t>
+<t>
+<field>LOCKED.WITH.LIMIT</field>
+<desc><p>It identifies whether credit checking on Locked amounts will  include the Limit if account  has locked funds and is linked to a Limit. It will be selected in the following order:</p><p> 1. ACCOUNT</p><p> 2. ACCT.GROUP.CONDITION (if ACCOUNT is blank)</p><p> 3. ACCOUNT.PARAMETER (if ACCT.GROUP.CONDITION is blank)</p><p> For example if nothing is set at ACCOUNT level then the ACCT.GROUP.CONDITION is checked and if still nothing is set at this level, the ACCOUNT.PARAMETER is checked.</p><p><p>Validation Rules:</p></p><p> YES:  Locked amount checking to use Limit</p><p> NO:   Locked amount checking not to use Limit</p><p> Blank: The default setting is not to use Limit</p><p /></desc>
+</t>
+<t>
+<field>RESTRICTED.MSG</field>
+<desc><p>When the Field DEBIT.RESTRICT is set to YES, then this field is used to specify the OVERRIDE message, at the time of committing debit entries in the account belonging to this group.</p><p>          This is a text field and any user defined override message can be given in this field</p><p><p>Validation Rules:</p></p><p /><p /><p>          Optional field</p><p>          Text Field</p><p>          Value can be inputted only when the field DEBIT.RESTRICT is set to YES.     Otherwise this is a NOINPUT field</p></desc>
+</t>
+<t>
+<field>TAX.CORR.CAP</field>
+<desc><p> Setting this field to "YES" will delay the previous capitalisation period correction process for tax entries. </p><p> Setting this field to "NO" or leaving it blank will ensure that both interest and corresponding tax correction processing will take place on the day that the back valued entry is booked. </p><p /><p> Relation between the fields CORR.AT.CAP.DATE and TAX.CORR.CAP </p><p /><p>     Setting CORR.AT.CAP.DATE to YES will delay both the interest and tax of previous capitalisation periods until next capitalisation date. </p><p>     Where as, Setting TAX.CORR.CAP to YES will delay only the tax on interest of previous capitalisation periods. </p><p>     Both the fields CORR.AT.CAP.DATE and TAX.CORR.CAP can be input at a time. </p><p /><p><p>Validation Rules:</p></p><p /><p>     Valid Input - YES or NO </p><p /><p> Example </p><p /><p>     Assume that the customer account is having a Credit balance of US $10,000 and the field TAX.CORR.CAP is set to YES. </p><p>     Interest rate to be applied is 10% and tax is 5% </p><p /><p>  DescriptionA/c BalanceInterestTaxComments</p><p /><p>  After first Capitalisation$10,000$1,000$ 50-&gt; Normal process.</p><p>  Correction Entry Cr to the A/c$ 6,000$  600$ 50-&gt; $30 Tax is not applied here.</p><p>  After Next Capitalisation$17,550$1,755$117.75-&gt; Tax combined. ($87.75 + $30)</p><p /></desc>
+</t>
+<t>
+<field>FREE.WDWL.PERIOD</field>
+<desc><p>this former savings premium field is no longer in use.</p><p>  validation Rules</p><p>  No input allowed.</p></desc>
+</t>
+<t>
+<field>NO.VIOLATION</field>
+<desc><p>This field allows the related transaction threshold set, not to be used for calculating account violations. This means that transactions in this group will be recorded on the</p><p>          TXN.STATUS</p><p>          VIOLATION.STATUS</p><p>          This is to allow a transaction threshold set to be used for specifying the conditions for the waiving of credit interest without affecting</p><p>          VIOLATION.STATUS</p><p>          Input of NO or null, results in the transaction threshold set being used for violation processing.</p><p><p>Validation Rules:</p></p><p /><p>          Allowed inputs are YES, NO or null</p><p /></desc>
+</t>
+<t>
+<field>INACTIVE.MONTHS</field>
+<desc><p>Indicates the number of months without customer activity before an account is declared as inactive.</p><p> In company record we specify the default inactive month here we can specify a different value. For the account in this group this value will be considered not the default one.</p><p>If not specified default value from company record will be considered.</p><p><p>Validation Rules:</p></p><p>    1-2 numeric characters. </p></desc>
+</t>
+<t>
+<field>DEPOSIT.PERIOD</field>
+<desc><p>This savings premium field indicates the deposit period.</p><p /><p><p>Validation Rules:</p></p><p>  Optional input.</p><p>  Duplicate entries are not allowed.</p><p>  This field is associated with field range DEP.PERIOD.TYPE to MAX.DEP.INC.</p><p>  3-4 alphanumeric characters - nnnD, nnW or nnM format.</p><p /></desc>
+</t>
+<t>
+<field>DEP.MATURITY</field>
+<desc><p>Used in Savings premium processing.</p><p>  This field will define a period after which the deposit amount of the associated transaction code becomes available for withdrawal without incurring a penalty fee.</p><p /><p><p>Validation Rules:</p></p><p>  Optional input.</p><p>  3-4 alphanumeric characters - nnnD, nnW or nnM format.</p><p>  Cannot input into this field if the corresponding DEPOSIT.TXN.CODE has not been entered.</p></desc>
+</t>
+<t>
+<field>ADVICE.TYPE</field>
+<desc><p>This field decides the type of advice produced for those accounts in the above group, provided the field RATE.CHANGE.ADVICE is set to YES</p><p><p>Validation Rules:</p></p><p>  Must be a defined on EB.ADVICES</p><p /><p /></desc>
+</t>
+<t>
+<field>ALLOW.TXN.CODE</field>
+<desc><p>This field can be entered to have a list of valid debit transaction codes to which debit transactions done for accounts belonging to this group will be restricted.</p><p><p>Validation Rules:</p></p><p>  Optional input.</p><p>  If entered must be a valid debit transaction code.</p></desc>
+</t>
+<t>
+<field>AUTO.SETTLE</field>
+<desc><p>Specifies whether the system must automatically raise the accounting transactions to move the IC P&amp;L to xxxxxSP when an account is suspended and then move the xxxxxSP to P&amp;L when the suspense is removed.</p><p>          If the indicator on ACCT.GROUP.CONDITION is not set, then the indicator on ACCOUNT.ACCRUAL is checked.</p><p>          Valid Option : 'YES', 'NO' or Null</p></desc>
+</t>
+<t>
+<field>AVAILABILITY</field>
+<desc><p>The period for which the funds will be available once notice has been given. This field defines the number of days, months or working days for which funds subject to notice conditions will be available. e.g.  if three months notice is given for withdrawal then the bank can stipulate that the funds will only be available for two weeks after which a further three months notice must be given.</p><p><p>Validation Rules:</p></p><p>          2-3 alphanumeric characters in the format:     nnD, nnM or nnW.</p></desc>
+</t>
+<t>
+<field>LIQU.FCY.THRESHOLD</field>
+<desc><p>This field is used to specify the threshold amounts. The amount will be converted at the mid rate of the associated CURRENCY.MARKET. Interest amounts exceeding the threshold amount(s) will be posted to suspense by way of a FUNDS.TRANSFER record raised in hold, which would require manual intervention for rates.</p><p>A maximum of 35 characters may be entered.</p><p>Standard T24 amount field.</p></desc>
+</t>
+<t>
+<field>LOCK.INC.THIS.MVMT</field>
+<desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc>
+</t>
+<t>
+<field>TAX.PENDING.CAT</field>
+<desc><p>This field defines the category code to be used when forming a suspense account to which the tax amount calculated on interest &amp; or charges on an account needs to be posted to in case either the field DEFER.CHARGE.DAYS or the field DEFER.DB.INT.DAYS has been specified. The amount posted into this suspense account will reversed after the notification period has been served.</p><p><p>Validation Rules:</p></p><p>          Optional input.</p><p>          Must be input if the either of DEFER.DB.INT.DAYS or DEFER.CHARGE.DAYS has been entered.</p><p>          If input must be a valid category code set up on the CATEGORY file.</p><p>          If input must be in the range 10000-19999.</p></desc>
+</t>
+<t>
+<field>WDL.PERIOD</field>
+<desc><p>This field defines a withdrawal period for the transaction code associated to this field.</p><p><p>Validation Rules:</p></p><p>          This field is associated with field range WDL.PRD.TYPE to MAX.NO.WDLS.</p><p>          Input to this field is optional, but must not be entered if the corresponding transaction is not entered.</p><p>          3-4 alphanumeric characters - nnnD, nnW or nnM.</p></desc>
+</t>
+<t>
+<field>MAXIMUM.BAL</field>
+<desc><p>This field indicates the maximum balance that the account is supposed to maintain.</p><p>  If a deposit transaction will make the account go above this balance then an override message will be required.</p><p><p>Validation Rules:</p></p><p>  Optional input.</p><p>  19 numeric characters.</p></desc>
+</t>
+<t>
+<field>DB.INT.PENDING.CAT</field>
+<desc><p>This field defines the category code to be used when forming a suspense account to which the debit interest settling on an account will be posted to when the field DEFER.DB.INT.DAYS has been specified. The amount posted into this suspense account will reversed after the notification period has been served.</p><p /><p /><p><p>Validation Rules:</p></p><p /><p>  Optional input.</p><p /><p /><p>  Must be input if the field DEFER.DB.INT.DAYS has been entered.</p><p>  If input must be a valid category code set up on the CATEGORY file.</p><p>  If input must be in the range 10000-19999.</p></desc>
+</t>
+<t>
+<field>GROUP.CCY.DATE</field>
+<desc><p>The file id consists of the account general condition group attached to the currency code and optionally attached to a rebuild date.</p><p>  In addition , a Date can be appended with a hyphen in condition that a corresponding CONDITION.PRIORITY record and XX.GEN.CONDITION file  exists with this date .</p><p><p>Validation Rules:</p></p><p /><p>  The condition group must be entered and must exist on the ACCT.GEN.CONDITION file or the NEW.ACCT.GEN.CONDITION file.</p><p>  The currency must be entered and must be a valid currency.</p><p>  If the 'Rebuild' Date is not entered the record signifies a active record, i.e. the one that will be used in the validation for the accounts.</p><p>  If the 'Rebuild' Date is entered the record will be treated as a change request record to change some of the fields that pertain to validation related to the ACCT.AVAILABILITY file.</p><p>  If the 'Rebuild' Date has not been entered the following fields will be NOINPUT fields: </p><p>  1.  DEP.TXN.CODE </p><p>  2.  DEP.MATURITY </p><p>  3.  MAX.NO.DEPOSITS </p><p>  4.  DEPOSIT.PERIOD </p><p>  5.  DEP.PERIOD.TYPE </p><p>  6.  MAXIMUM.DEPOSIT </p><p>  7.  MAX.DEP.INC </p><p>  8.  WDL.TXN.CODE </p><p>  9.  MAXIMUM.PER.WDL </p><p>  10. WDL.PERIOD </p><p>  11. WDL.PRD.TYPE </p><p>  12. MAX.WDL.AMT </p><p>  13. MAX.NO.WDLS </p><p>  14. PENALTY.CODE</p><p /><p>  If the 'Rebuild' Date is entered the following fields will become inputtable: </p><p>  1.  DEP.TXN.CODE </p><p>  2.  DEP.MATURITY </p><p>  3.  MAX.NO.DEPOSITS </p><p>  4.  DEPOSIT.PERIOD </p><p>  5.  DEP.PERIOD.TYPE </p><p>  6.  MAXIMUM.DEPOSIT </p><p>  7.  MAX.DEP.INC </p><p>  8.  WDL.TXN.CODE </p><p>  9.  MAXIMUM.PER.WDL </p><p>  10. WDL.PERIOD </p><p>  11. WDL.PRD.TYPE </p><p>  12. MAX.WDL.AMT </p><p>  13. MAX.NO.WDLS </p><p>  14. PENALTY.CODE</p></desc>
+</t>
+<t>
+<field>TXN.CODE.GRP</field>
+<desc><p>This field is used to define the transaction code or codes within which a threshold has been set in the field</p><p>          TXN.THRESHOLD</p><p>          e.g.</p><p /><p>          36.1 TXN.THRESHOLD 6</p><p /><p>          37.1.1 TXN.CODE.GRP 15</p><p /><p>          36.2 TXN.THRESHOLD 3</p><p /><p>          37.2.1 TXN.CODE.GRP 99</p><p /><p>          36.3 TXN.THRESHOLD 5</p><p /><p>          37.3.1 TXN.CODE.GRP 135</p><p /><p>          or</p><p /><p>          36.1 TXN.THRESHOLD 6</p><p /><p>          37.1.1 TXN.CODE.GRP 15</p><p /><p>          37.1.2 TXN.CODE.GRP 99</p><p /><p>          36.2 TXN.THRESHOLD 5</p><p /><p>          37.2.1 TXN.CODE.GRP 135</p><p>          Fields</p><p>          TXN.THRESHOLD</p><p>          NO.VIOLATION</p><p><p>Validation Rules:</p></p><p /><p>          A maximum of 7 characters may be entered.</p><p>          Must be the key to a valid entry on the</p><p>          Standard T24 alphanumeric field.</p></desc>
+</t>
+<t>
+<field>BAL.CALC.ROUTINE</field>
+<desc><p> This field is used to specify a local routine to calculate minimum or average balance of an account during interest calculation. And this routine is called only if the field CR.BALANCE.TYPE is set as MINIMUM or AVERAGE. </p><p>   The Local routine requires following arguments (5 incoming and 1 outgoing) to do the Interest amount calculation:</p><p>   1. Account Number</p><p>   2. Interest Calculation Start Date</p><p>   3. Interest Calculation End Date</p><p>   4. ACCT.ACTIVITY dates for the period</p><p>   5. ACCT.ACTIVITY amounts for the period</p><p>   6. Minimum Balance (OUTGOING ARGUMENT)</p><p>   This local routine will calculate the minimum or average Balance for the Nepali month Ends or any other specialised local requirements, whereas core will calculate the minimum balance using Gregorian calendar.</p><p>   For example:</p><p>   CR.BALANCE.TYPE    MINIMUM</p><p>   BAL.CALC.ROUTINE   LOC.CALC.MIN.BAL      Routine to calculate Minimum Balance</p><p /><p>   Validation rules:</p><p>   Optional Input.</p><p>   The specified routine should have a valid entry in EB.API.</p></desc>
+</t>
+<t>
+<field>WAIVE.CR.INT</field>
+<desc><p>If this field is set to YES then no credit interest will be paid for the next interest cycle on any account breaking the conditions of the transaction threshold group.</p><p>          The details of the qualifying transactions are stored on the</p><p><p>Validation Rules:</p></p><p>          Valid values are "YES" or "NO"</p></desc>
+</t>
+<t><field>GENERATE.IBAN</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

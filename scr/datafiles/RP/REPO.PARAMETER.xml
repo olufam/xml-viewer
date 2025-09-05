@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>RP</product>
+<table>REPO.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This is a top-level parameter file that is keyed by the id of the company to which the parameter record refers.</p>
+            <p>It holds the definitions of:</p>
+            <p>o  the valid portfolio suffixes for the counterparty margin portfolio</p>
+            <p>o  the booking method of the initial margin</p>
+            <p>o  the limit update treatment for REPO contracts</p>
+            <p>o  the no. of days post maturity that contracts are moved to history</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>PROCESS.REPO.SOD</field>
+<desc>
+            <p>This field determines the the following events to happen at SOD instead of at EOD</p>
+            <p>a. Forward dated REPO contracts become LIVE</p>
+            <p>b. Maturity of the REPO contracts</p>
+            <p>NULL                -    Both (a) and (b) happen at EOD</p>
+            <p>FWD TO LIVE    -    Only (a) happen at SOD</p>
+            <p>MATURITY        -    Only (b) happen at SOD</p>
+            <p>BOTH              -    Both (a) and (b) happen at SOD</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>If UPDATE.SC.POS.SOD is set to YES, then this field can accept only MATURITY or BOTH as the near leg SECURITY.TRANSFER record gets generated immediately on authorisation of the REPO contract.</p>
+        </desc>
+</t>
+<t>
+<field>SPLIT.DEBIT.CPN</field>
+<desc>
+            <p>If the field is set to YES then the REPO accounting for the Nostro will be separated  from the normal accounting in the Corporate Actions process (DIARY  ENTITLEMENT).</p>
+            <p>In case of REPO entries, the global cash amount will be shown in the multi-values set prefixed by RP in the DIARY record.</p>
+            <p>The details of the REPO entries per depository are shown in the RP.ALT.NOSTRO record which is keyed on the DIARY id.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The default value is null.</p>
+            <p>Only YES or NO is allowed.</p>
+        </desc>
+</t>
+<t>
+<field>RESO.MARGIN.SUF</field>
+<desc>
+            <p>This field specifies the suffix for the reverse repo counterparty margin portfolio.</p>
+            <p>In practice, one margin portfolio must be setup for each counterparty who may involve in Reverse REPO contracts.</p>
+            <p>Fields RESO.MARGIN.SUF to RS.MRGN form a related multi value set. Standard T24 numeric field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input.</p>
+            <p>A maximum of 3 characters may be entered.</p>
+            <p>Valid input must be in the range 700 - 998.</p>
+        </desc>
+</t>
+<t>
+<field>REPO.MARGIN.SUF</field>
+<desc>
+            <p>This field specifies the suffix for the repo counterparty margin portfolio.</p>
+            <p>In practice, one margin portfolio must be setup for each counterparty who may involve in REPO contracts.</p>
+            <p>Fields REPO.MARGIN.SUF to RP.MRGN form a related multi value set. Standard T24 numeric field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input.</p>
+            <p>A maximum of 3 characters may be entered.</p>
+            <p>Valid input must be in the range 700 - 998.</p>
+        </desc>
+</t>
+<t>
+<field>RS.MRGN</field>
+<desc>
+            <p>This field holds the description of the previous field.</p>
+            <p>Fields RESO.MARGIN.SUF to RS.MRGN form a related multi value set. This is a sub valued language field. Standard T24 alphanumeric field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input.</p>
+            <p>A maximum of 35 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>INIT.MRGN.BOOKING</field>
+<desc>
+            <p>The initial margin of a REPO contract can be used as a device to undervalue the securities involved; hence to cover the risk of the adverse movement of the securities which may arise before a margin call can be paid.</p>
+            <p>This field indicates the booking method of the initial margin. NOTIONAL for customer REPOs only - initial margin will be included in margin portfolio valuation. NONE - for information only.</p>
+            <p>Note : Initial margin for Banks own book trading can be specified at the capture of the REPO / RESO by using either SC.INIT.MGN.RTE or INIT.MARGIN.RATE fields</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input.</p>
+            <p>A maximum of 10 characters may be entered.</p>
+            <p>This is a NOCHANGE field.</p>
+            <p>The following values are permitted: NONE NOTIONAL</p>
+        </desc>
+</t>
+<t>
+<field>ENT.CPN.SUSP</field>
+<desc>
+            <p>This field should be set up if a special account has to be used for the Reso entries in the Corporate Actions process (DIARY  ENTITLEMENT).</p>
+            <p>The CATEGORY value is used to built the ACCOUNT.NO value in the ENTITLEMENT record for the RESO portfolio.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>the default value is null.</p>
+            <p>Only a valid CATEGORY can be input.</p>
+        </desc>
+</t>
+<t>
+<field>UPDATE.SC.POS.SOD</field>
+<desc>
+            <p>A no change field.</p>
+            <p>YES / NO field. Null has the same effect as NO.</p>
+            <p>If NO or NULL is selected,</p>
+            <p>The SECURITY.TRANSFER record for both legs of the REPO contract will get generated n days before the value date or maturity date of the repo contract</p>
+            <p>- where n is</p>
+            <p>a) if DAYS.DELIVERY field is input by the user</p>
+            <p>b) otherwise the value input in DAYS.PRIOR.EVENT for activity RP-0140 in EB.ACTIVITY.</p>
+            <p>The SECURITY.POSITION gets updated immediately on creation of the SECURITY.TRANSFER.</p>
+            <p />
+            <p>If YES is selected,</p>
+            <p>1. Irrespective of the value date, the SECURITY.TRANSFER record for the near leg will get generated immediately upon authorisation of the REPO contract. The SECURITY.POSITION gets updated on creation of the SECURITY.TRANSFER.</p>
+            <p>2. The security transfer record for the far leg of the REPO contract will get generated n days before the actual maturity date of the repo contract</p>
+            <p>- where n is</p>
+            <p>a) if DAYS.DELIVERY field is input by the user</p>
+            <p>b) otherwise the value input in DAYS.PRIOR.EVENT for activity RP-0140 in EB.ACTIVITY.</p>
+            <p>3. If the far leg SECURITY.TRANSFER record is generated prior to maturity date, (as would happen where n has a value) the SECURITY.POSITION will not get updated immediately on generation of the SECURITY.TRANSFER, but it will get updated in the SOD of the maturity date of the REPO.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid input either YES, NO or NULL. Null has the same effect as NO.</p>
+        </desc>
+</t>
+<t>
+<field>DAYS.POST.MATURITY</field>
+<desc>
+            <p>This field states the number of days after maturity that a contract is removed from the live file and written to History. A typical input would be 30 so that monthly reports could include contracts that matured during the month without having to interrogate History files.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 3 characters may be entered.</p>
+            <p>The following values are permitted:       1 to 366</p>
+        </desc>
+</t>
+<t>
+<field>REPO.LIMIT.UPDATE</field>
+<desc>
+            <p>A REPO contract is treated as a loan of securities and a deposit of cash. However, the bank may see the loan of the securities as a potential risk, and may wish a repo contract to update the T24 limit processing as if it were a loan - thus decreasing the available limit.</p>
+            <p>This field allows the user to define whether the limit for a REPO is regarded as either a LOAN or a DEPOSIT.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input.</p>
+            <p>A maximum of 7 characters may be entered.</p>
+            <p>This is a NOCHANGE field.</p>
+            <p>The following values are permitted:       LOAN      DEPOSIT</p>
+        </desc>
+</t>
+<t>
+<field>RP.MRGN</field>
+<desc>
+            <p>This field holds the description of the previous field.</p>
+            <p>Fields REPO.MARGIN.SUF to RP.MRGN form a related multi value set. This is a sub valued language field. Standard T24 alphanumeric field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input.</p>
+            <p>A maximum of 35 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>AC.BLOCK.CLOSE.UPD</field>
+<desc>
+            <p>This field can be set to NO to prevent the automatic update of AC.BLOCK.CLOSURE from the REPO application for REPO field NEW.CU.ACCT.NO.</p>
+            <p>If set to NO then no updates will be made and the ACCOUNT.CLOSURE application will be able to close accounts used in live REPO contracts so caution should be used when setting it to NO as internal processes must exist to prevent such occurrences.</p>
+        </desc>
+</t>
+<t>
+<field>AUTO.CALC.NOMINAL</field>
+<desc>
+            <p>When inputting a REPO contract, if the TRANS.TYPE is set to CASH  this field is set to YES, the system will take the cash amount entered in PRINCIPAL.AMOUNT.1 plus any initial margin  calculate the amount of nominal required to exceed the cash amount.</p>
+            <p>If this field is set to NO then manual calculations by the user will be required in the REPO contract.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>YES or NO</p>
+            <p>Mandatory if CALCULATION.LINK is set to YES</p>
+            <p>NOINPUT if CALCULATION.LINK is set to NO</p>
+        </desc>
+</t>
+<t>
+<field>CALCULATION.LINK</field>
+<desc>
+            <p>This field contains the default which will be copied into each REPO record as it is created.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>YES or NO</p>
+        </desc>
+</t>
+<t>
+<field>COMPANY</field>
+<desc>
+            <p>This is the key to the REPO.PARAMETER file.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input.</p>
+            <p>A maximum of 12 characters may be entered.</p>
+            <p>Must be the key to a valid entry on the COMPANY file.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

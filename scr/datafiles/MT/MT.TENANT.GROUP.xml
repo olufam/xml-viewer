@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+	<header>
+		<product>MT</product>
+		<table>MT.TENANT.GROUP</table>
+	</header>
+	<overview>
+		<ovdesc>
+			<p>This table is to define tenant grouping, according to the tenant type and purpose of grouping. The tenant group level can be one of three basic settings:</p>
+			<p>1. COB </p>
+			<p>2. SERVICE</p>
+			<p>3. GENERIC. </p>
+			<p>For the COB settings, each tenant has options which dictate how their TSA.SERVICE id for the COB is composed. The COB.STYLE, COMPANY.GROUP and COMPANY.ID fields are used to create a style such as COB, COB-companygroupid or COB-companyid during event generation via MT.TSA.SERVICE.CONSOLE table.</p>
+			<p>For the SERVICE setup, the TSA.SERVICE name from the MT.TSA.SERVICE.CONSOLE table will be prefixed with the value of SERVICE.COMP.MNE with '/' as delimiter so that a record id such as BNK/SERVICENAME can be used for one tenant in the group and BR2/SERVICENAME for another.</p>
+			<p>The GENERIC setup, is used to create tenant groups for the MT.REPLICATE.CONSOLE. </p>
+			<p>In addition to the TENANT.GROUP.LEVEL which controls the processing content we also have a TENANT.GROUP.TYPE, this is to allow the distinction of which tenants are running LIVE and which are not (NON-LIVE). When handling a large number of tenants, some of them are testing or setting up a new configuration whilst the others are live and in production, it would be quite a common to expect the test systems to ask for a COB to be run at odd times and even several times a day. Considering the impact of a live production tenant being selected and their COB was started instead of their test system we need to ensure their is enough control to prevent this type of error occurring.</p>
+			<p>To this effect we have a control field on both the MT.TSA.SERVICE.CONSOLE and MT.REPLICATE.CONSOLE tables so the operator must decide whether the tenant or group they have selected is a LIVE or NON-LIVE status. A second warning is given when the records are authorised and set to issue the event commands in the form of an override.</p>
+			<p>So in summary this table controls the settings for a group of tenants with a similar type (LIVE or NON-LIVE) and allows for settings to control COB, Service and replicate t24 table records (like configuration or parameter records).</p>
+			<p>To allow the type of group to be self evident the id of this table has been left flexible enough for the user to establish a suitable naming convention (no restricted id format). </p>
+			<p>So as an example only for illustration a record id called LIVE-EASTCOAST-COB could be set to group together the settings for all the banks on the east coast who are live.</p>
+		</ovdesc>
+		<ovimage/>
+	</overview>
+	<menu>
+		<t>
+			<field>TENANT.GROUP.ID</field>
+			<desc>
+				<p>Unique reference to identify tenant group record. To allow the type of group to be self evident the id of this table has been left flexible enough for the user to establish a suitable naming convention.</p>
+				<p>Validation Rules:</p>
+				<p>Maximum of 35 characters allowed.</p>
+			</desc>
+		</t>
+		<t>
+			<field>DESCRIPTION</field>
+			<desc>
+				<p>Used to provide a narrative or explanation of the groups usage. </p>
+                <p>For example to indicate the group is a set of time zone related institutions.</p>
+				<p>Validation Rules: </p>
+				<p>maximum of 50 alphanumerics allowed.</p>
+				<p>Mandatory field </p>
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.GROUP.TYPE</field>
+			<desc>
+				<p>Defines the type of tenant grouping, either LIVE or NON-LIVE tenant(s) grouping. This value will be used by the MT.REPLICATE.CONSOLE and MT.TSA.SERVICE.CONSOLE for a safety check (when trying to execute COB or Service or replicating table record in tenant system) to ensure that the correct group has been selected. </p>
+				<p>Validation Rules: </p>
+				<p>Acceptable values are: </p>
+				<p>1. LIVE - Indicates LIVE tenant grouping. </p>
+				<p>2. NON-LIVE - indicates grouping of non-live tenants such as DEMO, TRAINING, UAT etc. </p>
+				<p>Mandatory field.</p>
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.GROUP.LEVEL</field>
+			<desc>
+				<p>This field is to define the level of tenant grouping. Whether the grouping is for COB settings or Service or a generic group for replicating t24 table records.</p>
+				<p>Validation Rules:</p>
+				<p>Acceptable values are: </p>
+				<p>1. COB :- indicates the COB level tenant grouping which can be used in MT.TSA.SERVICE.CONSOLE designed to run COB for group of tenants.</p>
+				<p>2. SERVICE :- indicates the SERVICE level tenant grouping which can be used in MT.TSA.SERVICE.CONSOLE designed to run SERVICE for group of tenants.</p>
+				<p>3. GENERIC :- indicates the generic tenant grouping which can be used in MT.REPLICATE.CONSOLE designed to replicate table content for group of tenants. </p>
+				<p>If this field has value but no COB or Service related fields given, then this tenant grouping can be considered for standard COB or Service.</p>
+				<p> Mandatory field</p>
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.ID</field>
+			<desc>
+				<p>Defines a valid tenant id as part of the group. </p>
+				<p>The TENANT.ID , COB.STYLE, COMPANY.GROUP.ID, COMPANY.ID and SERVICE.COMP.MNE fields are associated multi-value set. </p>
+				<p>Only a LIVE type tenant can be added to a LIVE type group; and of course NON-LIVE tenant for a NON-LIVE group.</p>
+				<p>Validation Rules:</p>
+				<p>Must be valid entry in MT.TENANT table.</p>
+				<p>The TENAT.GROUP.TYPE must equate to the TENANT.TYPE.GROUP (from TENANT.TYPE) of that tenant  (LIVE or NON-LIVE).</p>
+				<p>Maximum of 35 characters allowed. </p>
+				<p>Mandatory field.</p>
+			</desc>
+		</t>
+		<t>
+			<field>COB.STYLE</field>
+			<desc>
+				<p>Defines the  COB style for each tenant in the group.</p>
+				<p>This value will be used during MT.TSA.SERVICE.CONSOLE authorization stage to decide on TSA service id.</p>
+				<p>Validation Rules:</p>
+				<p>Acceptable values are: </p>
+				<p>1. STANDARD :-  denotes standard COB </p>
+				<p>2. COMPANY.GROUP :-  denotes company group level COB, requires input in COMPANY.GROUP.ID field.</p>
+				<p>3. COMPANY  :-  denotes company specific COB, requires input in COMPANY.ID field.</p>
+				<p>Input allowed only for COB level tenant grouping (TENANT.GROUP.LEVEL = COB).</p>
+				<p>This field is mandatory if COMPANY.GROUP.ID or COMPANY.ID are set and when TENANT.GROUP.LEVEL is COB.</p>
+			</desc>
+		</t>
+		<t>
+			<field>COMPANY.GROUP.ID</field>
+			<desc>
+				<p>Defines the company group id for each tenant in group which requires company group level COB. </p>
+				<p>Validation Rules:</p>
+				<p>Allowed maximum of 3 characters.</p>
+				<p>Input allowed only for:</p>
+				<p>1. COB level tenant grouping (TENANT.GROUP.LEVEL=COB).</p>
+				<p>2. COB.STYLE = COMPANY.GROUP (with this setup COMPANY.GROUP.ID become mandatory field).</p>
+				<p>Must be a valid company group from MT.TENANT table field LEAD.COMP.GROUP.</p>
+			</desc>
+		</t>
+		<t>
+			<field>COMPANY.ID</field>
+			<desc>
+				<p>Defines the company id for each tenant in the group which requires company level COB. </p>
+				<p>Validation Rules:</p>
+				<p>Maximum of 11 characters allowed. </p>
+				<p>Input allowed only for: </p> 
+				<p>1. COB level tenant grouping (TENANT.GROUP.LEVEL=COB).</p>
+				<p>2. COB.STYLE = COMPANY (with this setup COMPANY.ID become mandatory field).</p>
+				<p>Must be a valid company id from MT.TENANT table fields such as LEAD.COMPANY or LINK.COMPANY.</p>
+			</desc>
+		</t>
+		<t>
+			<field>SERVICE.COMP.MNE</field>
+			<desc>
+				<p>Defines the service company mnemonic for each tenant in a service level tenant group.</p>
+				<p>Validation Rules:</p>
+				<p>Minimum and maximum allowed character is 3. </p>
+				<p>Input allowed for service level tenant grouping (TENANT.GROUP.LEVEL = SERVICE).</p>
+				<p>Valid company mnemonic from MT.TENANT table fields such as LEAD.COMP.MNE or LINK.COMP.MNE.</p>
+
+			</desc>
+		</t>
+	</menu>
+</t24help>
+

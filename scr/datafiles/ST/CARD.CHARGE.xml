@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>CARD.CHARGE</table>
+</header>
+<overview>
+<ovdesc>
+<p>This table holds details of the charging structure to be applied to all CARD types for issues and periodic charges. </p><p>For each CARD type it is possible to define individual transaction codes for debit and credit and a profit/loss category for charges. Issue and periodic charges can then be set up or defined as zero to effectively waive charges if required. </p><p>Issue charges are raised online at the time of issue. Periodic charges are raised by an end of day process based on a cycle and frequency. </p><p>This may be related to a specific date for all cards of a particular type or be based on the issue date of individual cards. </p><p>Issue charges for cards are raised on authorisation of the issue instruction once only. The default charge for a card issue is taken from this table or it may be overwritten by the user in the issue transaction itself. </p><p>All charges are in local currency. The value date of the charge entry will be taken as the CHARGE.DATE defined on the issue instruction. </p></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>PL.CATEGORY</field>
+<desc><p>Specifies the profit and loss category code to which the charges raised by the CARD control system for this type of CARDs will be booked. </p><p><p>Validation Rules:</p></p><p>1-5 numeric characters.  Mandatory input.  Category entered must exist on the CATEGORY table.</p></desc>
+</t>
+<t>
+<field>TRANSACTION.CR</field>
+<desc><p>Specifies the transaction code for credit entries produced by the charging process. </p>
+<p><p>Validation Rules:</p></p>
+<p> 1-10(Max Value) numeric characters Transaction Code. (Mandatory Input)</p>
+<p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p>
+<p> Mandatory input. Transaction code entered must exist on the TRANSACTION table.</p></desc>
+</t>
+<t>
+<field>PERIODIC.CHARGE</field>
+<desc><p>Defines a periodic charge for use of the card. </p><p>A periodic charge to be applied for the usage or possession of the card. The charge will be raised by an end of day process at the date and frequency defined by the CHARGE.CYCLE and CHARGE.FQU fields for all current cards (no CANCELLATION.DATE). </p><p>It is important to note that periodic charging is disabled (for a particular card) by the entry of a cancellation date on the original card issue transaction record. The card issue record should not be reversed since this would reverse the original issue charges. </p><p><p>Validation Rules:</p></p><p>1-19 numeric characters.  Optional input.</p></desc>
+</t>
+<t>
+<field>TRANSACTION.DR</field>
+<desc><p>Specifies the transaction code for debit entries produced by the charging process. </p>
+<p><p>Validation Rules:</p></p>
+<p> 1-10(Max Value) numeric characters Transaction Code. (Mandatory Input)</p>
+<p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p>
+<p> Mandatory input.  Transaction code entered must exist on the TRANSACTION table.</p></desc>
+</t>
+<t>
+<field>CARD.TYPE</field>
+<desc><p>Specifies the CARD type to which the charges refer. </p><p>Defines the type of CARDs for which the charging structure is to apply. The id should be one of the four letter CARD types defined on CARD.TYPE such as: </p><p>"AMEX"   American Express CARDs "VISA"   VisaCARDs </p><p><p>Validation Rules:</p></p><p>1-4 alphanumeric characters.</p><p>CARD type entered must exist on the CARD.TYPE table.</p></desc>
+</t>
+<t>
+<field>CHARGE.CYCLE</field>
+<desc><p>Defines the frequency at which periodic charges will be raised. </p><p>The charge cycle defines when the end of day routine will raise periodic card charges. Charges will be activated when the date portion of this field is less than the next working day. </p><p>Periodic charges will be raised on this date for all current cards of this type. A card is said to be current when: </p><p>(a) The expiry date of the card is greater than the charge date, and </p><p>(b) There is no cancellation date on the card issue record. </p><p>The exception to the above rule depends on the CHARGE.FQU field and allows periodic charges to be raised at a frequency based on the original issue date of the card rather than the same date/frequency for all cards. This is explained with examples in the CHARGE.FQU field. </p><p /><p>Example (a): </p><p>All holders of Eurocheque cards are charged GBP 8.00 per year, in advance, for the use of their card. This charge is for the calendar year (i.e. from 1st January to 31st December) but is actually applied around the middle of January to minimise end of year processing. </p><p>Fields on the CARD.CHARGE table are set as follows: </p><p>5 PERIODIC.CHARGE... 8.00 6 CHARGE.CYCLE...... 15 JAN 1992 M1215 7 CHARGE.FQU........ </p><p>On 15th January 1992, the card issue file is selected for records with an expiry date later than this date (which selects only the current records) and with no cancellation date (which excludes any exceptions). Charges of GBP 8.00 are applied to each and the charge date is cycled forward to 15 JAN 1993. </p><p>Because these cards may be issued at any time during the year, the period between issue and the first periodic charges is charged by entering an issue charge of GBP 8.00 as follows: </p><p>4 ISSUE.CHARGE...... 8.00 </p><p>This is applied online when the card is issued and is effectively an advance charge for the remainder of the year. </p><p>Consequently the bank may choose to reduce this at times during the year in order to discount the first years charges as the date approaches the end of the year. When a card is issued in the first two weeks of January this issue charge should be removed altogether, the correct charges will be applied for the year on the 15th. </p><p>Example (b): </p><p>The situation is similar to example (a) except there is an additional flat charge of GBP 5.00 for the issue of the card along with the GBP 8.00 for periodic usage. </p><p>Fields are entered as follows: </p><p>4 ISSUE.CHARGE...... 13.00 5 PERIODIC.CHARGE... 8.00 6 CHARGE.CYCLE...... 15 JAN 1992 M1215 7 CHARGE.FQU........ </p><p>On 15th January 1992 the identical selection to example (a) is made, i.e. all cards current at this date. They are each charged GBP 8.00 for the period 1st January 1992 to 31st December 1992. </p><p>Cards issued during the year will each be charged online at GBP 13.00. This consists of the advance GBP 8.00 usage charge for the year ahead (which can be reduced as the year approaches its end) plus the GBP 5.00 issue charge. Thus during the first two weeks of January the issue charge would have been reduced to GBP 5.00. </p><p><p>Validation Rules:</p></p><p>17 alphanumeric characters.  Standard date frequency field.</p></desc>
+</t>
+<t>
+<field>CHARGE.FQU</field>
+<desc><p>Specifies that the chargeable period for usage of cards is not the same as the periodic frequency on which charges are applied. This is intended to permit annual charging based on the anniversary of the issue of the card. </p><p>This field allows charges to be raised periodically at a given frequency but based on the issue date of the card rather than a fixed date for all cards of this type. The best example is annual charging based on the date of issue of the card. </p><p /><p>Example: </p><p>Unlike Eurocheque cards which may all be charged on the same date yearly the bank may choose to issue its own credit card which expires at the end of the month two years after its issue date. Furthermore this card carries an annual usage charge of GBP 10.00 which is raised at the end of the month each year after issue. Thus this annual charge is applied once a month charging only those card holders whose cards were issued in the same month one year previously: </p><p>4 ISSUE.CHARGE...... 8.00 5 PERIODIC.CHARGE... 10.00 6 CHARGE.CYCLE...... 30 SEP 1991 M0131 7 CHARGE.FQU........ M1231 </p><p>The CHARGE.FQU field in this case defines the period over which the charge will apply, ie yearly. On the 30th September 1991, the card issue file is selected for records with an expiry date later than this date and no cancellation date. The charging routine now makes an additional check based on the CHARGE.CYCLE frequency (monthly). </p><p>Thus for the period from 30 SEP 1991 to 31 OCT 1991 charges will be raised at GBP 10.00 if: </p><p>(a) If the anniversary of the issue date (or the issue date itself falls     within the charging period). </p><p>(b) The expiry date falls later than this period. </p><p>The anniversary is obtained by cycling forward the issue date according to the CHARGE.FQU (in this case 12 months). </p><p><p>Validation Rules:</p></p><p>5 alphanumeric characters.  Standard frequency field.</p></desc>
+</t>
+<t>
+<field>ISSUE.CHARGE</field>
+<desc><p>Specifies an issue charge amount to be applied to each CARD issue. </p><p>This amount will be used as the default charge amount for issue of cards of this type by the CARD.ISSUE application if the user makes no input to the CHARGES field during issue. The amount is always expressed in local currency. </p><p><p>Validation Rules:</p></p><p>1-19 numeric characters.  Optional input.</p></desc>
+</t>
+</menu>
+</t24help>
+

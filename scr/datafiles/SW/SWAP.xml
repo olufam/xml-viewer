@@ -1,0 +1,2163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SW</product>
+<table>SWAP</table>
+</header>
+<overview>
+<ovimage>SW_SWAP_OVERVIEW.gif</ovimage>
+<ovdesc>
+            <p>This is the main Swap contract file.</p>
+            <p>The details supporting the swap transaction will be held on a single contract. A Swap contract consists of two legs, Asset and Liability, both of which are maintained on the contract. It stores details of the counterparty of the swap, the notional principal(s), rates, schedules for both swap legs, payment instructions etc. A swap contract is an agreement to exchange interest payments in a fixed obligation for interest payments in a floating rate obligation (Interest Rate Swap), or one currency for another (Currency Swap), and reverse the exchange at a later date.</p>
+            <p>An Interest Rate Swap (IRS) contract is a contract in which two counterparties agree to exchange interest payments of differing character based on an underlying notional principal amount that is never exchanged.</p>
+            <p>In a Currency Interest Rate Swap (CIRS) contract the underlying principal amount is usually real (not notional) and is usually exchanged (Principal Exchange PX and Principal Re-exchange RX schedules).</p>
+            <p>Typically, a swap contract exchanges fixed rate obligations for a floating rate instrument in the same currency for an IRS contract and different currencies for a CIRS contract.</p>
+            <p>In its simplest form, the two parties to an Interest Rate Swap exchange the interest payment obligations (IRS - no principal changes hands, CIRS - principal changes hands) on two different kinds of debt instruments, one being a fixed interest rate, the other being a floating rate.</p>
+            <p>The following are examples of Interest Swaps :</p>
+            <p />
+            <p>Coupon swap or exchange of fixed rate for floating rate instruments in the same currency</p>
+            <p>Basis swaps or the exchange of floating rate to floating rate instruments in the same     currency.</p>
+            <p>Cross currency interest rate swaps involving the exchange of fixed rate instruments in     one currency for floating rate in another.</p>
+            <p>Exchange of floating rate to floating rate instruments in different currencies.</p>
+            <p>For example : (See Figure Below)</p>
+            <p />
+            <p>Notional Amount : $10 Million</p>
+            <p>Maturity: 5 Years</p>
+            <p>Payment Freq. : Both fixed and floating rate payments made semi-annually.</p>
+            <p>A Foreign Exchange (FOREX) swap differs from an Interest Rate Swap (See Foreign Exchange module for more information on FOREX swaps). A Foreign Exchange swap contract within the FOREX application is the simultaneous buying and selling of a currency in approximately equal amounts for different maturity dates. The swap price is the difference in price between the two maturity dates of the swap.</p>
+        </ovdesc>
+</overview>
+<menu>
+<t>
+<field>ACTIVITY</field>
+<desc>
+            <p>This field displays the Swap activity code, as defined on the SWAP.ACTIVITY file, for which the delivery message was raised.</p>
+            <p>This field is a no-input field and is part of a multi-valued set.</p>
+            <p>Example Swap Activity codes :</p>
+            <p>o  101  Contract confirmation   o  102  Principal exchange   o  103  Principal increase/decrease   o  110  Payment of premium   o  202  Payment</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 Numeric characters. (No-input field.  Default = Automatically updated by the system).</p>
+            <p>Any valid definition on the SWAP.ACTIVITY file.</p>
+        </desc>
+</t>
+<t>
+<field>AS.COUNTRY.RISK</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>AS.PROCESSED</field>
+<desc>
+            <p>Signifies the date that the associated schedule was last processed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format. (No-input field.  Automatically updated by the Swap system).</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.REF</field>
+<desc>
+            <p>Defines the customer's own reference number.</p>
+            <p>The reference number input in this field will be printed on all advices and confirmations etc. with the bank's contract number.</p>
+            <p>This field may be changed at any time in the life of the contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-16 alphanumeric characters.</p>
+            <p>Must be valid Swift characters.</p>
+            <p>Free format client reference.</p>
+        </desc>
+</t>
+<t>
+<field>AS.NARR</field>
+<desc>
+            <p>Optional multi-valued field to input additional data that is to be included on advices and confirmations.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Free format text of up to 4 lines, maximum 35 alpha-numeric characters per line. (Optional input.  Multi-valued field).</p>
+        </desc>
+</t>
+<t>
+<field>AS.CAP.RATE</field>
+<desc>
+            <p>Specifies the maximum interest rate that can be specified on the Asset leg. (Optional input.  Can be overridden).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 type "R" (Rate) numeric characters plus a decimal point.</p>
+        </desc>
+</t>
+<t>
+<field>LB.DATE.FREQ</field>
+<desc>
+            <p>Specifies the date and frequency of the schedule.</p>
+            <p>The date of the schedule is defined along with the frequency of future process dates of the schedule. Schedules can be processed on any day of the month and at a frequency of either daily, monthly, quarterly, half-yearly, or yearly.</p>
+            <p>When a schedule is processed :</p>
+            <p>o If the schedule has no frequency then the schedule is removed from the swap contract.</p>
+            <p>o If the schedule has a frequency then the next process date is updated according to the frequency. Eg. Schedule processed on 01 Jan 95 frequency M0101, then the date.freq field is updated with 01 Feb 95 frequency M0101.</p>
+            <p>The swap balance file, "SWAP.BALANCES", is updated accordingly.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>16 Character standard date/frequency code format (type A         FREQ). (Mandatory input if the associated schedule type         has been defined).</p>
+            <p>A frequency is disallowed for "PX" and         "RX" schedules.</p>
+            <p>For all schedules, the date must be GE the value date of         the contract and LE the maturity date of the contract.</p>
+            <p>The date must be equal to the Liability interest         effective date for schedule type "PX".</p>
+            <p>The date must be greater than the liability interest         effective date and today for schedule type "IP"         (Interest payment).</p>
+            <p>If schedule type is IP or AP and Day convention is         Following or Modified then daily and business day freq is         not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER</field>
+<desc>
+            <p>Identifies the counterparty with whom the Bank makes the contract.</p>
+            <p>This is the identification assigned to the Customer on first contact with the bank.  The customer will be referred to by this identification in all subsequent operations with the Bank.  The system will make use of this number to:</p>
+            <p>a)         Identify the Counterparty of the transaction engaged in            by the Bank,</p>
+            <p>b)         Print the Customer's name and address on all contracts            and/or advices produced by this module,</p>
+            <p>c)         Locate the liability number for limit checking on            Placement contracts.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-10 alphanumeric customer mnemonic or, 1-10 numeric character customer number.  (Mandatory input).</p>
+            <p>Must be a valid Customer number or mnemonic.</p>
+            <p>Once the contract has been authorised, this field cannot be changed.</p>
+        </desc>
+</t>
+<t>
+<field>LB.FIXED.INTEREST</field>
+<desc>
+            <p>Specifies whether the current interest amount payments on the liability leg are of a fixed or floating amount.</p>
+            <p>This field is a no-input field and is set to either "Y" for fixed interest amounts, and "NO" (default) for floating interest amounts.</p>
+            <p>This field is determined by the interest payment schedules ("IP") defined on the Asset side of the contract.</p>
+            <p>o  If the IP schedule (LB.TYPE) has an amount specified       (LB.AMOUNT) then fixed interest is "Y".    o  If the IP schedule (LB.TYPE) does not have an amount       specified (LB.AMOUNT) then fixed interest is "NO".</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 Alpha characters. "Y" signifies a fixed interest amount for the current period. "NO" signifies a floating interest amount for the current period. (No-input field.  Default = "NO").</p>
+        </desc>
+</t>
+<t>
+<field>BROKERAGE</field>
+<desc>
+            <p>Contains the amount of brokerage to be paid to the broker defined above.  The brokerage will be expressed in either the asset currency or the liability currency depending on the value in the BROKERAGE.BASE field.</p>
+            <p>If no value is entered here but a broker code is defined above, then the system will attempt to calculate a default brokerage amount based on the conditions set up on the BROKER file.  If an amount is calculated succesfully then it will be defaulted in this field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 standard amount format. (Optional input.  Default calculated using the BROKER file.)</p>
+            <p>Mandatory input if BROKER.CODE is specified.</p>
+            <p>NOCHANGE field.</p>
+        </desc>
+</t>
+<t>
+<field>AS.AMOUNT</field>
+<desc>
+            <p>The use of this field is dependent on the schedule type. It specifies the amount for which the schedule is to use, ie. schedule amount.</p>
+            <p>This field is mandatory for schedules the following schedules :</p>
+            <p>o  PI  Principal increase   o  PD  Principal decrease   o  PM  Payment   o  RV  Receipt   o  IP  Interest payment  (If interest payments are fixed,                             ie. fixed rate (AS.FIXED.RATE) and                             the rate key (AS.RATE.KEY) are null).</p>
+            <p>Must be null for the following schedules :</p>
+            <p>o  PX  Principal exchange (uses the outstanding principal amount)   o  RX  Principal re-exchange (uses the outstanding principal          amount).   o  RR  Rate reset (rate specified in rate field AS.RATE)   o  CC  Charge or commission   o  DY  Diary note   o  IP  Interest Payment  (If interest payments are floating. The                             interest amount is calculated using the                             outstanding contract principal amount                             and the current interest rate for the                             period (AS.CURRENT.RATE).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 Type AMT numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>BROKER.AMOUNT</field>
+<desc>
+            <p>Contains the amount of brokerage to be credited to the broker account specified in the broker currency defined above.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 Type AMT Numeric characters. Standard amount format for currency. (Optional input).</p>
+            <p>Input is not allowed in this field when the broker code has not been entered.</p>
+            <p>NOCHANGE field.</p>
+        </desc>
+</t>
+<t>
+<field>LB.FINAL.SCHED</field>
+<desc>
+            <p>Defines the final date for the schedule.</p>
+            <p>If a schedule is defined with a process date and frequency (LB.DATE.FREQ) then the final process date is the date defined in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>16 Alpha-numeric standard date format. (Optional input.  No default).</p>
+        </desc>
+</t>
+<t>
+<field>LB.CURRENT.RATE</field>
+<desc>
+            <p>Specifies the interest rate for the current interest period of the Swap liability leg.</p>
+            <p>This field contains the current rate of interest to be used when accruing interest on the outstanding balance of the liability side of the contract.</p>
+            <p>This field is a no-input field and is defaulted via :</p>
+            <p>o  The fixed interest rate (LB.FIXED.RATE) or,    o  The combined/calculated floating interest rate using       LB.RATE.KEY and LB.SPREAD</p>
+            <p>This rate can only be changed by defining and processing a Rate Reset schedule (type "RR") on the contract.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 numeric characters. (No-input field).</p>
+            <p>If the current rate is not greater than zero, an override message is set.</p>
+        </desc>
+</t>
+<t>
+<field>LINK.REFERENCE</field>
+<desc>
+            <p>Defines the Transaction link reference of the Swap contract.</p>
+            <p>The TRANS.LINK.REFERENCE file enables transactions to be linked together for reporting purposes.</p>
+            <p>Eg. A Swap contract to a backing Loans and Deposits contract.</p>
+            <p />
+            <p>The updating of the file is fully automatic :</p>
+            <p>o  If the user enters a reference id that does not exist on the    reference file, a new record is created, and the contract Id    concerned is held.</p>
+            <p>o  If the user changes the reference id, the contract Id concerned    is moved to the new reference record.  Should no other contracts    exist on the reference, then that reference is removed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-12 Alpha-numeric characters. (Optional input).</p>
+        </desc>
+</t>
+<t>
+<field>LB.PROCESSED</field>
+<desc>
+            <p>Signifies the date that the associated schedule was last processed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format. (No-input field.   Automatically updated by the Swap system).</p>
+        </desc>
+</t>
+<t>
+<field>AS.ADVICE.SENT</field>
+<desc>
+            <p>Signifies whether contract details have been sent to the Delivery system for onward transmission to the associated counterparty.</p>
+            <p>Valid definitions on this field are :</p>
+            <p>o  null  signifies that no advice has been sent.</p>
+            <p>o  "Y"   signifies that an advice has been sent.</p>
+            <p>The field will be updated with Y, even if there is no message to be produced. The updating is to indicate that the Asset Leg has been considered for message processing as per the definitions in the system for the counter party under reference.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 Alpha-numeric character. (No-input field.  Default = null).</p>
+        </desc>
+</t>
+<t>
+<field>SOURCE.FILE</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>LB.CURRENCY</field>
+<desc>
+            <p>Indicates the currency of the liability side of the swap contract.</p>
+            <p>This field indicates the currency of the liability side of the swap contract and will be the same as the currency of the various accounts where the accounting movements in respect of the contract will be debited or credited.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 type SSS (uppercase alpha) characters. or     1-3 numeric character currency code. (Optional input; Default = Asset currency).</p>
+            <p>The currency code must exist on the CURRENCY table.  Any existing currency code will be accepted and the name redisplayed for checking.</p>
+            <p>Defaults to the currency defined on the Asset leg (AS.CURRENCY).</p>
+            <p>Once the contract has been authorised this field cannot be changed.</p>
+        </desc>
+</t>
+<t>
+<field>AS.PRINCIPAL</field>
+<desc>
+            <p>The Principal amount of the Asset side of the swap contract which will always be expressed in the currency defined in the previous field.</p>
+            <p>In order to facilitate the efficient entry of the amount, an input feature has been provided which allows for the suppression of trailing zeros.</p>
+            <p>In English Language text this is accomplished by using a 'T' to indicate the thousands and an 'M' to indicate the millions. Other languages will require the provision of translation values.</p>
+            <p>E.g.       INPUT              VALUE</p>
+            <p>1T               1,000.00              2M               2,000,000.00</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 type AMT (standard amount format) characters plus a decimal point. (Mandatory input) The amount must be greater than Zero.</p>
+        </desc>
+</t>
+<t>
+<field>BROKER.CURRENCY</field>
+<desc>
+            <p>Indicates the currency code of the associated broker.</p>
+            <p>Settlement of the brokerage can be made in any currency, ie. different than the currencies defined for each of the legs of the contract, providing that it has been defined in the brokerage conditions on the BROKER table.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 Type CCY character Currency code. (Input only allowed when brokerage has been defined).</p>
+            <p>Must be a valid definition on the CURRENCY file.</p>
+            <p>Input is not allowed in this field when the broker has not been specified.</p>
+            <p>NOCHANGE field.</p>
+        </desc>
+</t>
+<t>
+<field>SET.PAY.RECEIPT</field>
+<desc>
+            <p>Specifies the type of entries that are to be posted to the account number specified in the corresponding set of settlement instructions.</p>
+            <p>Valid definitions are as follows :</p>
+            <p>o  null     All accounting entries are to be posted to the               corresponding settlement account number.</p>
+            <p>o  PAYMENT  Only "payment" accounting entries are to be posted               to the corresponding settlement account number.</p>
+            <p>o  RECEIPT  Only "receipt" accounting entries are to be posted               to the corresponding settlement account number.</p>
+            <p>The set up of this field should be either :</p>
+            <p>o  null   or,   o  a set of defined instructions for both "PAYMENT" and      "RECEIPT".</p>
+            <p>The main key to the settlement instructions to identify the associated account number is the Currency (SET.CURRENCY).</p>
+            <p>If a set of settlement instructions for a currency is defined with a type of "PAYMENT", and a set of associated instructions for "RECEIPT" is not defined, then the same settlement account will be used for both payment and receipt type entries.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-8 Alpha-numeric characters. (Optional input.  Default = null).</p>
+            <p>Valid definitions are null, "PAYMENT", and "RECEIPT".</p>
+        </desc>
+</t>
+<t>
+<field>AS.SPREAD</field>
+<desc>
+            <p>Indicates the spread (also known as the margin) which will be applied to the percentage interest rate related to the INTEREST KEY.</p>
+            <p>Note:   T24 allows the user to define, on Floating rate         contracts, a spread which can be added to or subtracted         from the percentage interest rate related to the         INTEREST KEY.  The subtraction of the INTEREST         SPREAD from the INTEREST KEY must be specifically         indicated by the insertion of the '-' (minus) sign in         front of the INTEREST SPREAD.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Upto 11 numeric characters plus a decimal point. A minus sign has to be placed in front if the spread is to be deducted from the INTEREST KEY.  Input is optional when a rate key has been define, ie. AS.RATE.KEY, otherwise input is not allowed.  (Default value = null)</p>
+            <p>Input in this field is only allowed for contracts when a rate key has been specified, ie. AS.RATE.KEY is not null.</p>
+        </desc>
+</t>
+<t>
+<field>LB.OPTION.NOTICE</field>
+<desc>
+            <p>Definition of the number of days notice for the call option on the Liability leg.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 Numeric characters. (Optional input).</p>
+        </desc>
+</t>
+<t>
+<field>AS.CURRENCY</field>
+<desc>
+            <p>Indicates the currency of the asset side of the swap contract.</p>
+            <p>This field indicates the currency of the asset side of the swap contract and will be the same as the currency of the various accounts where the accounting movements in respect of the contract will be debited or credited.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 type SSS (uppercase alpha) characters. or     1-3 numeric character currency code. (Optional input; Default = local currency).</p>
+            <p>The currency code must exist on the CURRENCY table.  Any existing currency code will be accepted and the name redisplayed for checking.</p>
+            <p>Once the contract has been authorised this field cannot be changed.</p>
+        </desc>
+</t>
+<t>
+<field>AS.RATE.KEY</field>
+<desc>
+            <p>Contains the key to the MARKET.RATE.TEXT table which indicates the underlying market rate that is to be applied if the asset side of the swap contract is floating.</p>
+            <p>This is only a mechanism to indicate the asset side of the swap contract is floating.  The user is required to give a basis rate for the calculation of interest for the interest period.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric characters. Input is mandatory if the interest rate type is floating, ie. AS.FIXED.RATE has not been defined, otherwise it is not allowed. (Default value is blank.)</p>
+            <p>The key entered in this field must be a valid key on the MARKET.RATE.TEXT table.</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.AMOUNT</field>
+<desc>
+            <p>Signifies the amount utilised on the associated Limit.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 Type AMT Numeric characters. (No-input field.  Default = Amount utilised on Limit).</p>
+        </desc>
+</t>
+<t>
+<field>LB.COUNTRY.RISK</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>LB.PRINCIPAL</field>
+<desc>
+            <p>The Principal amount of the Liability side of the swap contract which will always be expressed in the currency defined in the previous field.</p>
+            <p>In order to facilitate the efficient entry of the amount, an input feature has been provided which allows for the suppression of trailing zeros.</p>
+            <p>In English Language text this is accomplished by using a 'T' to indicate the thousands and an 'M' to indicate the millions. Other languages will require the provision of translation values.</p>
+            <p>E.g.       INPUT              VALUE</p>
+            <p>1T               1,000.00              2M               2,000,000.00</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 type AMT (standard amount format) characters plus a decimal point. (Mandatory input) The amount must be greater than Zero.</p>
+            <p>Defaults to the principal amount defined on the Asset leg (AS.PRINCIPAL).</p>
+        </desc>
+</t>
+<t>
+<field>LB.TYPE</field>
+<desc>
+            <p>Defines the type of the Liability Swap schedule.</p>
+            <p>Can be any valid type as defined on the SWAP.SCHEDULE.TYPE file. The Swap Schedule Type file defines all of the schedules which are permitted on a Swap contract. Details such as the transaction codes to be used on entries, P&amp;L category codes, Charge codes etc., are also defined on the Swap Schedule Type table.</p>
+            <p>The first two characters of the schedule type id determine the type of schedule.</p>
+            <p>When a schedule is processed the Swap balances file (SWAP.BALANCES) is updated accordingly.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-6 Alpha-numeric characters.</p>
+            <p>Must be a valid definition of the SWAP.SCHEDULE.TYPE file. Different schedules can be     added but the first two characters must be one of the specified fixed schedule types.</p>
+            <p>The schedules AC, AM, AY, CI, and CM, which are system generated schedules, cannot be     input by the user.</p>
+            <p>Only one "PX"/"IS" schedule and one principal re-exchange     "RX" schedule can be specified on the Liability leg of the contract. Input of an     "RX" scheduled is disallowed if there is no "PX"/"IS"     schedule defined(except on flexible currency swaps)</p>
+            <p>On deals with the</p>
+            <p>SWAP.TYPE</p>
+            <p>FLEX.PRIN.PAYMENT</p>
+        </desc>
+</t>
+<t>
+<field>AS.FLOOR.RATE</field>
+<desc>
+            <p>Specifies the minimum interest rate that can be specified on the Asset leg. (Optional input.  Can be overridden).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 type "R" (Rate) numeric characters plus a decimal point.</p>
+        </desc>
+</t>
+<t>
+<field>AS.INT.EFFECTIVE</field>
+<desc>
+            <p>Identifies the start date of the first interest period and therefore the true Value date of the Asset leg.</p>
+            <p>It is the date on which interest accruals commence on the outstanding balance of the contract.</p>
+            <p>This date can be entered as either the current date (today) or a date in the past (less than the contract value date).  It cannot be greater than the contract value date.</p>
+            <p>If forward dated, ie. both the value date and interest effective date are forward, then the contract status will be null until the effective date is reached, at which time, the principal amount will be drawn down and the contract status changed to "CUR".</p>
+            <p>An input of a null value will result in the date being defaulted to the contract value date.</p>
+            <p>If backdated or 'today' dated then the contract will be drawn down, put on-line, and the contract status set to "CUR".</p>
+            <p>If backdated into a prior month, interest will be accrued on-line up to the end of the previous month.</p>
+            <p>Input of a non working day will require an override.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Date format.</p>
+            <p>Defaults to the contract Value Date.</p>
+            <p>Cannot be greater than the contract Value Date.</p>
+            <p>Input is prohibited was the contract status has been set to "CUR" (Current).</p>
+            <p>An override will be required if this date is a non-working day.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.NUMBER</field>
+<desc>
+            <p>A unique reference number which identifies a particular Swap contract.</p>
+            <p>Contract numbers can be generated either manually or automatically. Where automatic generation is supported depression of the F3 key at the "Awaiting ID" prompt supplies the next available contract number.</p>
+            <p>To avoid the necessity to manually input the complete reference number (contract number), the User has the facility to input only the sequence number of the transaction which has been input that day. The Application will automatically generate the seven first digits and append them to the front of the sequence number in order to retrieve the requested transaction. Access to any Swap transaction from a previous day requires the input of the corresponding julian day and year if the contract has been done in a previous year.</p>
+            <p>The reference has the following format SWyydddnnnnn, where :</p>
+            <p>o SW = Application indicator for the Swaps application. o yy = The last two digits of the year when the transaction is processed. o ddd = Julian day number within the year when the Swap transaction is processed. o nnnnn = Five digit sequential number.</p>
+            <p>The above numbering convention enables 99,999 deals to be struck on any one day.</p>
+            <p>When a deal is to be confirmed (using the Verify function) the type of confirmation (either customer or broker) may be defined by prefixing either CU (for customer confirmations) or BR (for broker confirmations) to the contract number of the deal to be confirmed. If this prefix is missing and the deal is to be verified the user will be requested to specify which type of confirmation is required. Once the prefix is chosen it remains the same until changed (i.e. the prefix can be specified once and then omitted for subsequent contracts).</p>
+            <p>Certain versions will automatically append the BR or CU prefix to the contract number. If the prefix BR or CU is present during any other function it will be removed from the contract number and will have no effect on the processing of the contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>10 numeric characters, prefixed by "SW" :         SWyydddnnnnn - SW followed by 10N (See details).         (Mandatory Input).</p>
+            <p>If the reference number is entered, during initial input,         it will be validated for uniqueness.</p>
+            <p>When input, this field will only be allowed in the format         above.</p>
+            <p>This transaction number can never be changed.</p>
+        </desc>
+</t>
+<t>
+<field>AS.FINAL.SCHED</field>
+<desc>
+            <p>Defines the final date for the schedule.</p>
+            <p>If a schedule is defined with a process date and frequency (AS.DATE.FREQ) then the final process date is the date defined in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>16 Alpha-numeric standard date format. (Optional input.  No default).</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.STATUS</field>
+<desc>
+            <p>Defines the current status of the Swap contract.</p>
+            <p>The following values are possible :</p>
+            <p>o  null  contract either unauthorised, or has not yet            reached the contract Value Date, ie. the contract            is forward.   o  CUR   contract has reached the contract Value Date, ie.            the contract is current ("live").   o  MAT   contract has Matured.</p>
+            <p>This no-input field is automatically updated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 Alpha-numeric characters. (No-input field.  Default = the status of the contract.).</p>
+        </desc>
+</t>
+<t>
+<field>ACT.LEG.TYPE</field>
+<desc>
+            <p>Identifies the leg type associated with the set of Delivery details.</p>
+            <p>Will be defined as A (asset) or L (liability).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 Alpha character. (No-input.  Default = Swap leg type "A" or "L").</p>
+        </desc>
+</t>
+<t>
+<field>LB.DATE.ADJUSTMENT</field>
+<desc>
+            <p>Defines the type of date adjustments that are to be followed on the Liability leg.</p>
+            <p>Depending on the date adjustment, the process date of the schedules and the interest effective dates are calculated.</p>
+            <p>Valid date adjustments and their effects are as follows :</p>
+            <p>DATE.ADJUSTMENT   ENTRY.DATE      EFFECTIVE.DATE   ===============   ==========      ==============</p>
+            <p>o  null           SCHEDULE.DATE   SCHEDULE.DATE   o  VALUE          PROCESS.DATE    SCHEDULE.DATE   o  PERIOD         PROCESS.DATE    PROCESS.DATE</p>
+            <p>Where,</p>
+            <p>ENTRY.DATE      is the process date of the schedule determined                 by the Date Adjustment specified                 (LB.DATE.ADJUSTMENT).</p>
+            <p>EFFECTIVE.DATE  is the end date of the current interest period                 determined by the Date Adjustment specified                 (LB.DATE.ADJUSTMENT).</p>
+            <p>SCHEDULE.DATE   is the date of the schedule as specified in the                 swap contract (LB.DATE.FREQ).</p>
+            <p>PROCESS.DATE    is the process date of the schedule determined by                 the Asset Day Convention (LB.DAY.CONVENTION).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-6 Alpha-numeric characters. (Optional input.  Default = null).</p>
+            <p>Must be set to either "null", "VALUE", or "PERIOD".</p>
+        </desc>
+</t>
+<t>
+<field>LB.DAY.CONVENTION</field>
+<desc>
+            <p>Defines the Day Convention to follow.</p>
+            <p>Based on the Day Convention (LB.DAY.CONVENTION) and the Business Centres (LB.BUS.CENTRES) the process date of the Liability leg schedules are determined.</p>
+            <p>Valid Day Conventions are as follows :</p>
+            <p>o  null       the process date is the date of the schedule.</p>
+            <p>o  FOLLOWING  the process date is the next business day                 after the date of the schedule.</p>
+            <p>o  MODIFIED   the process date is the next business day                 after the date of the schedule providing this                 date does not fall into the next calendar month.                 In which case the process date is the first                 preceding business day.</p>
+            <p>o  PRECEDING  the process date is the first preceding business                 day.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-10 Alpha-numeric characters. (Optional input.  Default = null).</p>
+            <p>Valid Day Conventions are either "null", "FOLLOWING", "PRECEDING", or "MODIFIED".</p>
+        </desc>
+</t>
+<t>
+<field>AS.BUS.CENTRES</field>
+<desc>
+            <p>Indicates those countries whose calendars must be checked with regard to holiday (working day) validation.</p>
+            <p>The default value will be the Country of the currency of the Asset side of the contract, but additional Country codes can be manually input if required.  For example, the country codes of the participants and/or the Liability leg.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 Alpha characters. (Optional input.  Multi-valued field).</p>
+            <p>The code must be a a valid definition on the COUNTRY table and must have a valid entry on the REGION/HOLIDAY table.</p>
+            <p>Defaulted to the Country of the Asset leg Currency.</p>
+        </desc>
+</t>
+<t>
+<field>AS.TRSRY.RATE</field>
+<desc>
+            <p>Specifies the treasury rate to be used on a Rate Reset ("RR") schedule.</p>
+            <p>The rate reset schedule for non-treasury customer  will not be processed if this field is null.</p>
+            <p />
+            <p>On processing the rate reset schedule the treasury rate (AS.CUR.TRSRY.RATE) used for the current interest period will have the spread applied.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-11 Numeric characters plus a decimal point. (Optional input).</p>
+            <p>Only allowed for a Rate Reset ("RR") swap schedule.</p>
+            <p>Fields AS.TYPE to AS.PROCESSED form a related multi value set.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>LB.RATE</field>
+<desc>
+            <p>Specifies the basis rate to be used on a Rate Reset ("RR") schedule.</p>
+            <p>The rate reset schedule will not be processed if this field is null.</p>
+            <p>On processing the rate reset schedule the interest rate (LB.CURRENT.RATE) used for the current interest period will have the spread applied.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 Numeric characters plus a decimal point. (Optional input).</p>
+            <p>Only allowed for a Rate Reset ("RR") swap schedule.</p>
+        </desc>
+</t>
+<t>
+<field>AS.FIXED.RATE</field>
+<desc>
+            <p>Specifies the fixed interest rate at which interest is to be accrued on the Asset leg.</p>
+            <p>Once the contract has been drawn down, ie. the contract status is "CUR", this field cannot be changed.  However, the interest rate can be changed at any time via the definition of a Rate Reset ("RR") schedule.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 numeric characters. (Optional Input).</p>
+            <p>Input is prohibited if data is present in the fields AS.RATE.KEY and AS.SPREAD.</p>
+            <p>A rate must be present in this field if the fields AS.RATE.KEY and AS.SPREAD are null.</p>
+            <p>Field will be no-input once the contract has reached the Interest effective date, ie. contract status = "CUR".</p>
+        </desc>
+</t>
+<t>
+<field>AS.OPTION.NOTICE</field>
+<desc>
+            <p>Definition of the number of days notice for the call option on the Asset leg.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 Numeric characters. (Optional input).</p>
+        </desc>
+</t>
+<t>
+<field>AS.OPTION.DATE</field>
+<desc>
+            <p>The date of a call option (if appropriate).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format (11 characters). (Optional input).</p>
+        </desc>
+</t>
+<t>
+<field>LB.NARR</field>
+<desc>
+            <p>Optional multi-valued field to input additional data that is to be included on advices and confirmations.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Free format text of up to 4 lines, maximum 35 alpha-numeric characters per line. (Optional input.   Multi-valued field).</p>
+        </desc>
+</t>
+<t>
+<field>LIABILITY.STATUS</field>
+<desc>
+            <p>Defines the current status of the liability leg of the Swap contract.</p>
+            <p>The following values are possible :</p>
+            <p>o  null  leg either unauthorised, or has not yet            reached the Interest Effective Date, ie. the leg            is forward.   o  CUR   leg has reached the Interest Effective Date, ie.            the leg is current ("live").   o  MAT   leg has Matured.</p>
+            <p>This no-input field is automatically updated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 Alpha-numeric characters. (No-input field.  Default = the status of the contract.).</p>
+        </desc>
+</t>
+<t>
+<field>AS.FIXED.INTEREST</field>
+<desc>
+            <p>Specifies whether the current interest amount payments on the asset leg are of a fixed or floating amount.</p>
+            <p>This field is a no-input field and is set to either "Y" for fixed interest amounts, and "NO" (default) for floating interest amounts.</p>
+            <p>This field is determined by the interest payment schedules ("IP") defined on the Asset side of the contract.</p>
+            <p>o  If the IP schedule (AS.TYPE) has an amount specified       (AS.AMOUNT) then fixed interest is "Y".    o  If the IP schedule (AS.TYPE) does not have an amount       specified (AS.AMOUNT) then fixed interest is "NO".</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 Alpha characters. "Y" signifies a fixed interest amount for the current period. "NO" signifies a floating interest amount for the current period. (No-input field.  Default = "NO").</p>
+        </desc>
+</t>
+<t>
+<field>AS.CUR.TRSRY.RATE</field>
+<desc>
+            <p>Specifies the treasury interest rate for the current interest period of the Swap asset leg.</p>
+            <p />
+            <p>This field along with AS.CURRENT.RATE forms the market interest rate  to be used when accruing interest on the outstanding balance of the asset side of the contract.</p>
+            <p />
+            <p>This field is a no-input field and is defaulted via :</p>
+            <p>The treasury interest rate (AS.TRSY.FIXED.RATE)</p>
+            <p />
+            <p>This rate can only be changed by defining and processing a Rate Reset schedule (type "RR") on the contract.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 numeric characters. (No-input field).</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SET.TYPE</field>
+<desc>
+            <p>Specifies the type of movements that are to be posted to the account specified in the corresponding set of settlement instructions.</p>
+            <p>Valid definitions are as follows :</p>
+            <p>o  null       All movements are to be posted to the                 corresponding settlement account number.   o  PRINCIPAL  Only "prinicpal" movements are to be posted to                 the corresponding settlement account number.   o  INTEREST   Only "interest" movements are to be posted to                 the corresponding settlement account number.</p>
+            <p>Either :</p>
+            <p>o  one set of instructions should be defined for the currency      with type set to null</p>
+            <p>o  or, two sets of instructions should be defined for the      currency - one each type, "PRINCIPAL and "INTEREST".</p>
+            <p>The main key to the settlement instructions to identify the associated currency account number is the currency (SET.CURRENCY).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-12  Alpha-numeric characters. (Optional input. Default = null).</p>
+            <p>Valid definitions are null, "PRINCIPAL", and "INTEREST".</p>
+        </desc>
+</t>
+<t>
+<field>AS.RATE</field>
+<desc>
+            <p>Specifies the basis rate to be used on a Rate Reset ("RR") schedule.</p>
+            <p>The rate reset schedule will not be processed if this field is null.</p>
+            <p>On processing the rate reset schedule the interest rate (AS.CURRENT.RATE) used for the current interest period will have the spread applied.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 Numeric characters plus a decimal point. (Optional input).</p>
+            <p>Only allowed for a Rate Reset ("RR") swap schedule.</p>
+        </desc>
+</t>
+<t>
+<field>LB.TRSY.FIXED.RATE</field>
+<desc>
+            <p>Specifies the treasury interest rate for the Liability leg.</p>
+            <p />
+            <p>Once the contract has been drawn down, ie. the contract status is "CUR", this field cannot be changed. However, the interest rate can be changed at any time via the definition of a Rate Reset ("RR") schedule.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-11 numeric characters. (Optional Input).</p>
+            <p>Input is prohibited if data is present in the fields LB.RATE.KEY and LB.SPREAD and TREASURY.CUSTOMER is not set as NO..</p>
+            <p>A rate must be present in this field if the fields LB.RATE.KEY and LB.SPREAD are null.</p>
+            <p>Field will be no-input once the contract has reached the Interest effective date, ie. contract status = "CUR".</p>
+        </desc>
+</t>
+<t>
+<field>LIQUIDATION.MODE</field>
+<desc>
+            <p>This field identifies the manner in which overdue payments are handled. The default for all contracts is AUTOMATIC.</p>
+            <p>There are three options available:           AUTOMATIC           SEMI-AUTOMATIC           MANUAL</p>
+            <p>AUTOMATIC will liquidate across the settlement accounts on the contract.</p>
+            <p>MANUAL will create a PD contract instead.</p>
+            <p>SEMI-AUTOMATIC will only raise a PD contract if insufficient funds exist on the settlement account. For further details see the helptext in PD.PARAMETER where these settings are controlled from.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>If the PD product is not installed for the current company then the only allowed setting is AUTOMATIC.</p>
+            <p>Only AUTOMATIC allowed for liability contract types.</p>
+        </desc>
+</t>
+<t>
+<field>LB.INTEREST.DET</field>
+<desc>
+            <p>The interest details of the liability leg of the swap transaction are stored here. This field will only be used when the liability leg is floating, and is used when the MARKET.RATE.TEXT record does not hold sufficient detail for the generation of the SWIFT message. In this case the value 'OTHER' is used in field 14F on the SWIFT message and the value in this field is used.</p>
+            <p>This field will not be used if the liability leg is fixed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory Input when the MARKET.RATE.TEXT record specified in the field LB.RATE.KEY has a rate text which does not correspond to the format       alpha / alpha / alpha.  Refer to the helptext on field RATE.TEXT on the file MARKET.RATE.TEXT</p>
+            <p>A maximum of six multi values are allowed for this field.</p>
+        </desc>
+</t>
+<t>
+<field>MSG.REF</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>AS.TYPE</field>
+<desc>
+            <p>Defines the type of the Asset Swap schedule.</p>
+            <p>Can be any valid type as defined on the SWAP.SCHEDULE.TYPE file. The Swap Schedule Type file defines all of the schedules which are permitted on a Swap contract. Details such as the transaction codes to be used on entries, P&amp;L category codes, Charge codes etc., are also defined on the Swap Schedule Type table.</p>
+            <p>The first two characters of the schedule type ID determine the type of schedule.</p>
+            <p>When a schedule is processed the Swap balances file (SWAP.BALANCES) is updated accordingly.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-6 Alpha-numeric characters.</p>
+            <p>Must be a valid definition of the SWAP.SCHEDULE.TYPE file. Different schedules can be     added but the first two characters must be one of the specified fixed schedule types.</p>
+            <p>The schedules AC, AM, AY, CI, and CM, which are system generated schedules, cannot be     input by the user.</p>
+            <p>Only one "PX"/"IS" schedule and one principal re-exchange     "RX" schedule can be specified on the Asset leg of the contract. Input of an     "RX" scheduled is disallowed if there is no "PX"/"IS"     schedule defined (except on flexible currency swaps)</p>
+            <p>On deals with the</p>
+            <p>SWAP.TYPE</p>
+            <p>FLEX.PRIN.PAYMENT</p>
+        </desc>
+</t>
+<t>
+<field>AS.BASIS</field>
+<desc>
+            <p>Defines the Interest Day Basis which indicates the calculation method to be used for interest amount calculations on the asset leg.</p>
+            <p>Input can be any valid basis type defined on the INTEREST.BASIS table.</p>
+            <p>Eg. Basis Calculation method signified ===== ============================</p>
+            <p>A 360/360 A2 30/360 B 366/360 C Act/Act (ISDA) C2 Act/Act (AFB) D 360/366 E 366/365 E1 365/365 F 360/365 F2 30/365 S SPECIAL</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-10 Alphanumeric characters. (Mandatory input). The Basis type entered must be a valid key on the INTEREST.BASIS table. Defaulted to the Interest Day Basis specified on the CURRENCY file for the Asset currency (AS.CURRENCY). For Basis type 'S' the INTEREST amount will be Mandatory. Also FIXED.RATE and RATE.KEY are not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>LB.RATE.KEY</field>
+<desc>
+            <p>Contains the key to the MARKET.RATE.TEXT table which indicates the underlying market rate that is to be applied if the liability side of the swap contract is floating.</p>
+            <p>This is only a mechanism to indicate the liability side of the swap contract is floating.  The user is required to give a basis rate for the calculation of interest for the interest period.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric characters. Input is mandatory if the interest rate type is floating, ie. LB.FIXED.RATE has not been defined, otherwise it is not allowed. (Default value is blank.)</p>
+            <p>The key entered in this field must be a valid key on the MARKET.RATE.TEXT table.</p>
+        </desc>
+</t>
+<t>
+<field>BROKERAGE.BASE</field>
+<desc>
+            <p>Indicates whether the asset or the liability side will be used in the brokerage calculation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid input is either ASSET or LIABILITY. (Optional input field. Default to the fixed rate sied.)</p>
+            <p>Mandatory input if BROKER.CODE is specified.</p>
+            <p>NOCHANGE field.</p>
+        </desc>
+</t>
+<t>
+<field>LB.TRSRY.RATE</field>
+<desc>
+            <p>Specifies the treasury rate to be used on a Rate Reset ("RR") schedule for the liability leg of the contract.</p>
+            <p />
+            <p>The rate reset schedule for non-treasury customer  will not be processed if this field is null.</p>
+            <p />
+            <p>On processing the rate reset schedule the treasury rate (LB.CUR.TRSRY.RATE) used for the current interest period will have the spread applied.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-11 Numeric characters plus a decimal point. (Optional input).</p>
+            <p>Only allowed for a Rate Reset ("RR") swap schedule.</p>
+            <p>Fields LB.TYPE to LB.PROCESSED form a related multi value set.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ACC.WITH.ADD</field>
+<desc>
+            <p>Defines the Bank's address.</p>
+            <p>If the Customer account of the back is unknown, ACCT.WITH.BANK is undefined, then this multi-valued field should contain the name and address of the bank.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 to 35 alphanumeric Swift characters. (Optional input).</p>
+            <p>No input allowed should ACCT.WITH.BANK be defined.</p>
+            <p>A maximum of four lines is allowed.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.NUMBER</field>
+<desc>
+            <p>Identifies the Account number for the specified set of settlement instructions.</p>
+            <p>It defines the account to be credited or debited on the contract value date and for the appropriate contract schedules.</p>
+            <p>Should the account indicated be a Nostro account then further input may be required in the appropriate fields listed below :</p>
+            <p>o  ACCT.WITH.BANK   o  ACC.WITH.ADD   o  BEN.ACCOUNT</p>
+            <p>The system will default to the first current account of the customer for the currency (SET.CURRENCY).  The account indicated in this field will be used to default the remaining customer/ account fields within the settlement instructions if no further details are specified.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-16 numeric characters relating to a Customer account or a Nostro Account. Or, 3-10 type A (alpha-numeric) account mnemonic. (Mandatory input.  Default = Current account in settlement ccy).</p>
+            <p>This field will only be defaulted if the settlement currency field (SET.CURRENCY) is left blank.</p>
+            <p>Must be of the same currency as defined in the settlement currency (SET.CURRENCY).</p>
+            <p>This field can be changed at any time, but after the Value date of the contract, it will only affect future contract schedule movements.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.OFFICER</field>
+<desc>
+            <p>Identifies the account officer respnsible for the relationship with the counterparty. This information will be used by the Management Information System (MIS) for the determination of the Customer Profitability Analysis.</p>
+            <p>This field has been provided to enable the user to override at transaction level the counterparty default account officer defined on the Customer file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 Numeric characters. Optional input. (Default value = Account Officer specified on the counterparty's Customer file).</p>
+            <p>Must be defined on the DEPT.ACCT.OFFICER table.</p>
+        </desc>
+</t>
+<t>
+<field>ACCT.WITH.BANK</field>
+<desc>
+            <p>Specifies the Customer code of the correspondent bank.</p>
+            <p>This field will be defaulted only if the settlement currency field (SET.CURRENCY) is left blank.  It will be defaulted from the CUSTOMER.CCY.ACCT table and then, if not identified, from the NOSTRO.ACCOUNT table and the AGENCY table.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 6 Numeric character Customer code, or 3 to 10 Customer mnemonic. (Optional input.  Default = See Details).</p>
+            <p>For a Nostro account, must have this field defined or ACC.WITH.ADD, but not both.</p>
+        </desc>
+</t>
+<t>
+<field>BALANCE.SHEET</field>
+<desc>
+            <p>This field details whether the SWAP contract is to be treated as an ON balance sheet instrument or an OFF balance sheet instrument. This value is defaulted from the SWAP.TYPE of the swap contract.</p>
+            <p>When this field contains the value OFF the contract will undergo the currency revaluation processing. Each night each leg of the contract id revalued against the local currency if</p>
+            <p>1) The leg is not notional (ie the NOTIONAL field on the SWAP.BALANCES file is set to NO).   2) The currency of the leg is not the local currency.</p>
+            <p>And any difference between this value and the value as of last night is posted as unreleasied profit and loss to the category specified on the SWAP.PARAMETER record.</p>
+            <p>When this field contains the value of ON the contract will not be revalued.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must contain either ON or OFF, which is set from the SWAP.TYPE. Input is not allowed to this field.</p>
+        </desc>
+</t>
+<t>
+<field>BANK.INFO</field>
+<desc>
+            <p>Provides instructions or additional information from the sending bank for the receiver, intermediary account with institution or beneficiary institution.</p>
+            <p>Any details input by the user will be relayed to the receiver.</p>
+            <p>Whenever this field is used in a message transmitted between countries with different languages, it is recommended that English is used.</p>
+            <p>(Bank to bank information - Swift field 72).</p>
+</desc>
+</t>
+
+
+
+
+<t>
+<field>BANK.NARR</field>
+<desc>
+            <p>Provides instructions or additional information from the Sending bank for the receiver, intermediary account with institution, or beneficiary institution.</p>
+            <p>For outward payments, any details input will be relayed to the Receiver bank.</p>
+            <p>For Inward payments/receipts which are processed directly from Delivery, all transactions where bank to bank information has been found will be placed in hold status (IHLD) to force the user to review the bank to bank information from the sending bank.</p>
+            <p>Whenever this field is used in a message transmitted between countries with different languages, it is recommended that English is used.</p>
+            <p>The values of this field gets updated to handoff file in position 5.16, which can be mapped to  tag 72 on SWIFT messages, and must never be used for information for which another field is intended, or for instructions not required in a message.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 Type S characters (uppercase alpha or numeric). Multi-valued field. A maximum of 6 lines of 35 characters each will be allowed.</p>
+            <p>If this field is used, the first multivalue must contain a code word followed by further information.</p>
+            <p>All Swift code words must be present on the SWIFT.CODE.WORDS file, and must be enclosed between slashes "/".</p>
+            <p>Further code words and information can be entered in subsequent multivalues, but additional information contained on a new line must be preceded by double slashes "//".</p>
+        </desc>
+</t>
+<t>
+<field>BASE.CURRENCY</field>
+<desc>
+            <p>Identifies the base currency of the contract and will be used to verify the exchange rate.</p>
+            <p>When the Base Currency is not specified and the transaction involves local Currency, the System will default to the local Currency provided that the Quotation code of the other Currency is NULL.  If this is not the case (the Quotation code of the other Currency is not equal to null) then the other Currency will become the default.</p>
+            <p>When the base Currency is not specified and the transaction involves two currencies where none is the Local Currency, it will default to the Currency which yields a cross-rate greater than unity (One).</p>
+            <p>Please refer to Forex for more details.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 characters currency code (uppercase alpha or numeric) - Type SSS (Optional input. See details for default.)</p>
+            <p>The currency entered must appear on the Currency table.</p>
+            <p>The currency must be the same as either the asset or liability currency.</p>
+            <p>Proper verification of the exchange rate will be performed by the system against the Exchange Rate values contained in the Currency table.</p>
+            <p>When the Swap contract involves the local currency and the quotation code on the Foreign currency is equal to or greater than '0' (zero), the base currency can only be the Foreign Currency.</p>
+            <p>Once authorised the Base currency cannot be amended.</p>
+        </desc>
+</t>
+<t>
+<field>CONDITIONS</field>
+<desc>
+            <p>Multi-value field used to define any additional agreement type conditions.</p>
+            <p>Combined with the Swap Agreement Type definition, corresponds to field 77 on Swift messages.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 Type S Alpha-numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>CONFIRM.BY.BROKER</field>
+<desc>
+            <p>This field is used by the confirmation facility (function code "V") to store automatically  the user identification, date and time the broker note, confirmation, was received and reconciled with the swap contract.</p>
+            <p>Values :</p>
+            <p>o  User + DateTime of confirmation   o  "ONESIDED"   o  NULL - awaiting confirmation.</p>
+            <p>Once an event has been confirmed, this field must be blanked out (a NULL input into this field) before the next event may be confirmed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-15 Alphanumeric characters. (Optional input).</p>
+            <p>System generated field or "ONESIDED" to signify .</p>
+        </desc>
+</t>
+<t>
+<field>CONFIRM.BY.CUST</field>
+<desc>
+            <p>This field is used by the confirmation facility (function code "V") to store automatically the user identification, date, and time the customer note, confirmation, was received and reconciled with the swap contract.</p>
+            <p>Values :</p>
+            <p>o  User + DateTime of confirmation   o  "ONESIDED"   o  NULL - awaiting confirmation.</p>
+            <p>Once an event has been confirmed, this field must be blanked out (a NULL input into this field) before the next event may be confirmed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-15 Alphanumeric characters. (Optional Input).</p>
+            <p>System generated field or "ONESIDED" to signify .</p>
+        </desc>
+</t>
+<t>
+<field>CONTACT.DETAILS</field>
+<desc>
+            <p>This field specifies the contact name and telephone number the Receiver may contact for any queries concerning this transaction.</p>
+            <p>This field corresponds to SWIFT field 29A.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 type S characters.</p>
+            <p>Maximum of 4 multi values is permitted.</p>
+        </desc>
+</t>
+<t>
+<field>DAYS.DELIVERY</field>
+<desc>
+            <p>Specifies the number of working days, in advance of the Process Date, that an advice/confirmation is to be sent by the Delivery application.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 Numeric characters. (Optional input.  Default = null.)</p>
+        </desc>
+</t>
+<t>
+<field>DEALER.DESK</field>
+<desc>
+            <p>Identifies the dealer desk relating to the transaction.</p>
+            <p>Each deal on the system will be allocated a two-digit dealer desk code.  This code will be used to maintain position at the dealer desk level.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 numeric characters. Mandatdory field. Default taken from user profile (Field 41), Input Optional.</p>
+            <p>Must be an existing code on the DEALER.DESK table.</p>
+        </desc>
+</t>
+<t>
+<field>DISCOUNT.RATE</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>EB.ACCRUAL.PARAM</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>ENTRY.IDS</field>
+<desc>
+            <p>Multi-valued field which identifies the entries raised by the contract.</p>
+            <p>The entry Ids are generated automatically by the system and identify either a statement entry or a category entry in respect of the contract.</p>
+            <p>The number automatically generated is unique to the associated contract and is built in the following way :</p>
+            <p>Eg.  673732684.48</p>
+            <p>o  The first four digits "6737" indicates the number of days      since the 1st of January 1968.   o  The next five "32684" indicates the number of seconds since      midnight.   o  The last two digits "48" indicates the number of hundreds      of seconds.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>29 Alphanumeric characters. (No-input.  System generated).</p>
+        </desc>
+</t>
+<t>
+<field>FLEX.PRIN.PAYMENT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>FWD.REVAL.AMOUNT</field>
+<desc>
+            <p>No-input field that identifies the current value of the Swap contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 Type AMT characters. Standard amount field. (No-input.  Default = Oustanding value of contract).</p>
+        </desc>
+</t>
+<t>
+<field>FWD.REVAL.CCY</field>
+<desc>
+            <p>Specifies the currency of the FWD.REVAL.AMOUNT field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 Type CCY currency code. (No input field.  Default = AS.CURRENCY)</p>
+        </desc>
+</t>
+<t>
+<field>FWD.REVAL.PL.LCY</field>
+<desc>
+            <p>FWD.REVAL.AMOUNT local equivalent.</p>
+            <p>This field will be null if no p&amp;l entry is raised.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 Type AMT numeric characters. (No input field)</p>
+        </desc>
+</t>
+<t>
+<field>INTERM.ADD</field>
+<desc>
+            <p>Defines the address of the intermediary address.</p>
+            <p>If an intermediary bank is used and the customer number of the intermediary is not known (INTERMEDIARY), this multi-valued field should contain the name and address of the intermediary.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 to 35 alphanumeric Swift characters. (Optional input).</p>
+            <p>No input allowed if INTERMEDIARY has been defined.</p>
+            <p>A maximun of four lines is allowed.</p>
+        </desc>
+</t>
+<t>
+<field>INTERMEDIARY</field>
+<desc>
+            <p>Identifies the Customer code of any intermediary bank involved in the contract.  This will be specified by the counterparty.</p>
+            <p>If the intermediary is known (ie. there is an associated customer record), the customer number of the intermediary bank will be entered.  If not, details should be entered into the INTERM.ADD field.</p>
+            <p>This field will be defaulted only if the settlement currency field (SET.CURRENCY) is left blank.  The intermediary will be defaulted from CUSTOMER.CCY.ACCT table and then, if not identified, from the NOSTRO.ACCOUNT table and the AGENCY table.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 6 Numeric character Customer code, or, 3 to 10 character Customer mnemonic. (Optional input.  Default = See Details.)</p>
+            <p>No input allowed if INTERM.ADD is defined.</p>
+        </desc>
+</t>
+<t>
+<field>LB.ADVICE.SENT</field>
+<desc>
+            <p>Signifies whether contract details have been sent to the Delivery system for onward transmission to the associated counterparty.</p>
+            <p>Valid definitions on this field are :</p>
+            <p>o  null  signifies that no advice has been sent.</p>
+            <p>o  "Y"   signifies that an advice has been sent.</p>
+            <p>The field will be updated with Y, even if there is no message to be produced. The updating is to indicate that the Liability Leg has been considered for message processing as per the definitions in the system for the counter party under reference.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 Alpha-numeric character. (No-input field.   Default = null).</p>
+        </desc>
+</t>
+<t>
+<field>LB.AMORT.DATE</field>
+<desc>
+            <p>Defines the end date on the Liability leg to amortise the premium.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 characters Standard date format. (Optional input).</p>
+        </desc>
+</t>
+<t>
+<field>LB.AMOUNT</field>
+<desc>
+            <p>The use of this field is dependent on the schedule type. It specifies the amount for which the schedule is to use, ie. schedule amount.</p>
+            <p>This field is mandatory for schedules the following schedules :</p>
+            <p>o  PI  Principal increase   o  PD  Principal decrease   o  PM  Payment   o  RV  Receipt   o  IP  Interest payment  (If interest payments are fixed,                             ie. fixed rate (LB.FIXED.RATE) and                             the rate key (LB.RATE.KEY) are null).</p>
+            <p>Must be null for the following schedules :</p>
+            <p>o  PX  Principal exchange (uses the outstanding principal amount)   o  RX  Principal re-exchange (uses the outstanding principal          amount).   o  RR  Rate reset (rate specified in rate field LB.RATE)   o  CC  Charge or commission   o  DY  Diary note   o  IP  Interest Payment  (If interest payments are floating. The                             interest amount is calculated using the                             outstanding contract principal amount                             and the current interest rate for the                             period (LB.CURRENT.RATE).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 Type AMT numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>LB.BASIS</field>
+<desc>
+            <p>Defines the Interest Day Basis which indicates the calculation method to be used for interest amount calculations on the liability leg.</p>
+            <p>Input can be any valid basis type defined on the INTEREST.BASIS table.</p>
+            <p>Eg. Basis Calculation method signified ===== ============================</p>
+            <p>A 360/360 A2 30/360 B 366/360 C Act/Act (ISDA) C2 Act/Act (AFB) 366/366 for leap years D 360/366 E 366/365 E1 365/365 F 360/365 F2 30/365 S SPECIAL</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-10 Alphanumeric characters. (Mandatory input). The Basis type entered must be a valid key on the INTEREST.BASIS table. Defaulted to the Interest Day Basis specified on the CURRENCY file for the Liability currency (LB.CURRENCY). For Basis type 'S' the INTEREST amount will be Mandatory. Also FIXED.RATE and RATE.KEY are not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>MAT.PAYMENT.DATE</field>
+<desc>
+            <p>Specifies whether the value date (Payment date)  for the schedules that fall on the maturity date should be updated with the next working day of the deal currency when the maturity date of the Swap contract is a holiday.</p>
+            <p>This functionality will be applicable only for the schedules that fall on the maturity date, provided DAY.CONVENTION is set as Following/ Modified. In case of Modified, if the last day of the month is a non-working day, then the value date will be the previous working day (as per PRECEDING).</p>
+            <p>Irrespective of the input given in the field DATE.ADJUSTMENT (PERIOD or VALUE), System treats this as VALUE for the schedules falling on the maturity date, when the DAY.CONVENTION is set as Following/ Modified (excepting month end scenario).</p>
+            <p>The new functionality of populating the value date will be applicable only when the field is set to YES.</p>
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p />
+            <p>Input in this field is allowed only when the field MAT.PAYMENT.DATE in SWAP.PARAMETER is set to 'YES'.</p>
+            <p>'YES','NO' and ‘NONE’ are the proposed values </p>
+            <p>This field will be defaulted to ‘YES’ if the field MAT.PAYMENT.DATE in SWAP.PARAMETER is set to 'YES'</p>
+            <p>No input field after first authorisation</p>
+        </desc>
+</t>
+<t>
+<field>MATURITY.DATE</field>
+<desc>
+            <p>Identifies when the swap contract is due to terminate.</p>
+            <p>This field represents the latter date of when the principals are re-exchanged as scheduled, (AS/LB.TYPE = RX,CM) or when the final interest payment is made.</p>
+            <p>The asset and liability dates for the re-exchange of principals or interest payments  may not always be the same.</p>
+            <p>The Maturity Date is the date on which the deal will be liquidated.  At liquidation, all the corresponding amounts of principal (if appropriate) and interest will be passed to the appropriate accounts as designated within the transaction.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Type DD (standard date format in range 1000 - 2049) or, 3 numeric characters representing a number of days: (Mandatory input)</p>
+            <p>The date will be checked against the HOLIDAY table. Any non-working day will require an override prior to acceptance.</p>
+            <p>The maturity date must be greater than the value date.</p>
+            <p>This date cannot be changed after authorisation when INTEREST BASIS = 'S' (Special).</p>
+            <p>For Asset type contract, an override will be required when this date is smaller than the EXPIRY DATE of the corresponding Credit line.</p>
+        </desc>
+</t>
+<t>
+<field>MESSAGE</field>
+<desc>
+            <p>Confirmation that the contract details have been passed over to the Delivery system for onward communication to the counterparty.</p>
+            <p>This field is defaulted to the Delivery message Id (DE.MESSAGE) of the message sent to the Delivery system.</p>
+            <p>Eg. 360 = Single currency IRS confirmation     361 = Multi currency IRS confirmation     362 = Interest Rate Swap Reset.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 Numeric character. (No-input field.  Default = DE.MESSAGE Id).</p>
+        </desc>
+</t>
+<t>
+<field>MSG.DATE</field>
+<desc>
+            <p>Identifies the date that the associated Delivery message was produced or "NOT PRODUCED" for messages not yet made.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>12 Alphanumeric characters. (No-input field.  Default = See details.)</p>
+            <p>Must be a valid date or "NOT PRODUCED".</p>
+        </desc>
+</t>
+<t>
+<field>NEGATIVE.RATES</field>
+<desc>
+            <p>This field accepts input of YES, NO or NULL</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Default value is NULL</p>
+            <p>No input field after first authorisation</p>
+            <p>Liquidation mode should be AUTOMATIC for this field to be set as YES</p>
+        </desc>
+</t>
+<t>
+<field>NET.AMOUNT</field>
+<desc>
+            <p>Identifies the net payment amount of a 202 (Payment) or 210 (Advice to receive) swap activity.</p>
+            <p>Part of a multi-valued set of Delivery details.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 Type AMT numeric characters (Amount field). (No-input field).</p>
+            <p>Automatically updated with the net amount relating to a 202 or 210 activity.</p>
+        </desc>
+</t>
+<t>
+<field>NET.PAY.VAL.DT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>NET.PAYMENTS</field>
+<desc>
+            <p>Identifies whether the Asset and Liability payments and receipts are to be netted.</p>
+            <p>Depending on the resulting movement, ie pay or receive, an entry is created based on the contract settlement instructions.</p>
+            <p>Note that CRF entries cannot be netted.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 Alpha characters. Valid values are "Y" and "NO". (Default = "NO").</p>
+        </desc>
+</t>
+<t>
+<field>OVERDUE.STATUS</field>
+<desc>
+            <p>If the contract is overdue, then this field identifies the status of the underlying PAYMENT.DUE contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Contains all the Override messages which the user agreed to during input of the contract.</p>
+            <p>During the validation stage of a swap contract, the system may provide the user with a series of screen messages to indicate warnings - such as "Date Entered Is A Non-working Day". In the event that the user confirms the override, the full text of the override message will be stored, for reference purposes only, in this multi-valued field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 Alphanumeric characters. (No-input field.  Default = See details).</p>
+        </desc>
+</t>
+<t>
+<field>PORTFOLIO.NUMBER</field>
+<desc>
+            <p>Identifies the customer portfolio number to which the Swap contract will be associated with. This will be used for the portfolio valuation for the customer.  No input will result in the deal to be excluded from the portfolio valuation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Upto 3 Numeric characters. (Optional input).</p>
+        </desc>
+</t>
+<t>
+<field>POSITION.TYPE</field>
+<desc>
+            <p>Identifies the position type applicable to the swap transaction.</p>
+            <p>This field is not used at present and is reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 alpha-numeric characters.</p>
+            <p>No-input field.  System default "TR" (Trading).</p>
+        </desc>
+</t>
+<t>
+<field>PRODCCY</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>PRODUCT.CATEGORY</field>
+<desc>
+            <p>Contains the Product Category Code to which the transaction will be assigned.</p>
+            <p>The Category code must be within the range :</p>
+            <p>o  20000 - 49999</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>5 Numeric character Category Code. (Mandatory input.  No Default value).</p>
+            <p>Must be defined on the CATEGORY table.</p>
+            <p>Once the contract has been authorised, the contract Category code can only be changed to another number within the original Category range.</p>
+        </desc>
+</t>
+<t>
+<field>REVALUATION.TYPE</field>
+<desc>
+            <p>This field specifies the revaluation type for the Swap NPV Revaluation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-13 Alpha-numeric characters. (Default from SWAP.TYPE&gt;REVAL.TYPE) No-input field.</p>
+            <p>Must be null if SWAP.TYPE&gt;INT.CAT.REVAL.LOSS is null.</p>
+        </desc>
+</t>
+<t>
+<field>SEND.ADVICE</field>
+<desc>
+            <p>Field to signify whether advices are to be sent or not.</p>
+            <p>o  "Y"   Send advices and confirmations   o  "NO"  Do not send any advices or confirmations.</p>
+            <p>Swap confirmations are message types 360 and 361. All other non payment message types (100, 202, 210) are treated as ADVICES.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 Alpha-numeric characters. (Optional input.  Default = "Y").</p>
+            <p>Field must be "Y" or "NO".</p>
+        </desc>
+</t>
+<t>
+<field>SEND.CONFIRMATION</field>
+<desc>
+            <p>Field to signify whether confirmations are to be sent or not.</p>
+            <p>o  "Y"   Send advices and confirmations   o  "NO"  Do not send any advices or confirmations.</p>
+            <p>Swap confirmations are message types 360 and 361. All other non payment message types are treated as ADVICES and can be suppressed by using the field SEND.ADVICE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 Alpha-numeric characters. (Optional input.  Default = "Y").</p>
+            <p>Field must be "Y" or "NO".</p>
+        </desc>
+</t>
+<t>
+<field>SEND.PAYMENT</field>
+<desc>
+            <p>Field to control whether Swift payment messages are to be sent or not.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 2 Alphanumeric characters. (Optional input.  Default = "Y").</p>
+            <p>Valid field entries are, "Y" to send payment messages and "NO" to signify that no messages are to be sent.</p>
+        </desc>
+</t>
+<t>
+<field>SET.CURRENCY</field>
+<desc>
+            <p>Identifies the currency for contract settlements.</p>
+            <p>This field is part of a set of settlement instructions to which credits and debits of a swap contract are made.</p>
+            <p>There must be a set of settlement instructions for each currency defined on the contract.</p>
+            <p>Therefore if the asset leg currency is the same as the liability leg currency, then one set of settlement instructions with a settlement currency of the same must be defined. The settlement currency is defaulted to this currency.</p>
+            <p>If the leg currencies are different then two sets of settlement instructions are required (one for each currency).</p>
+            <p>Both settlement currencies are defaulted - one to each leg of the contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 Characters Type CCY (Currency code). (Mandatory input.  Defaults to leg currencies).</p>
+            <p>Must be a valid currency code as defined on the Currency file.</p>
+        </desc>
+</t>
+<t>
+<field>TRADE.DATE</field>
+<desc>
+            <p>Represents the actual day that the swap transaction was agreed between all parties to the contract.</p>
+            <p>Contains the actual date that the deal was struck.</p>
+            <p>This date should not be confused with the value date of the contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-9 type A (alphanumeric) characters. (Optional Input).</p>
+            <p>An override is required should the date not be defined or is defined as a non-working day on the Holiday table.</p>
+            <p>This date must be equal to or prior to the value date of the contract.</p>
+            <p>Default today.</p>
+        </desc>
+</t>
+<t>
+<field>TRADE.TYPE</field>
+<desc>
+            <p>Swap Trade type.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-5 Alpha-numeric characters.</p>
+            <p>Valid types are "TRADE" and "HEDGE".  (Optional input.  Default = "TRADE").</p>
+        </desc>
+</t>
+<t>
+<field>TREASURY.CUSTOMER</field>
+<desc>
+            <p>The field will either hold values NULL or NO. By default it will hold NULL value, meaning that the customer in the deal is a treasury customer.  It can be set to NO at the input level, wherein the interest rate charged to the customer is different from the treasury interest rate. Once this field is set to NO, then it becomes mandatory to input the treasury interest rate in the asset or liability side or both. When both the asset and liability side interest rate is set to floating, then TREASURY.CUSTOMER cannot be set to NO.The value in the field cannot be changed from NULL to NO or vice versa after authorization of the SWAP contract.</p>
+            <p>The following input will be allowed in this field:</p>
+            <p />
+            <p>'NULL' = which means that the CPARTYof the deal is a Treasury</p>
+            <p>Customer.</p>
+            <p>'NO'   = which means that the CPARTYof the deal is not a</p>
+            <p>Treasury Customer.</p>
+            <p />
+            <p>(Optional input; default value = Null, i.e. the CPARTY is a</p>
+            <p>Treasury Customer.)</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>Contains the value date of the contract and is therefore the date from which the system will start to accrue interest.  This date must be prior to the Maturity Date of the Contract such that the system may calculate interest.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Type DD (standard date format in range 1000 - 2049). (Optional input; Default value = Run date).</p>
+            <p>The system will automatically access the HOLIDAY table to ensure that the value date is a working day and not a holiday in the country associated to the currency of the contract.  Any Holiday will require an override.</p>
+        </desc>
+</t>
+<t>
+<field>ASSET.STATUS</field>
+<desc>
+            <p>Defines the current status of the asset leg of the Swap contract.</p>
+            <p>The following values are possible :</p>
+            <p>o  null  leg either unauthorised, or has not yet            reached the Interest Effective Date, ie. the leg            is forward.   o  CUR   leg has reached the Interest Effective Date, ie.            the leg is current ("live").   o  MAT   leg has Matured.</p>
+            <p>This no-input field is automatically updated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 Alpha-numeric characters. (No-input field.  Default = the status of the contract.).</p>
+        </desc>
+</t>
+<t>
+<field>AS.DATE.FREQ</field>
+<desc>
+            <p>Specifies the date and frequency of the schedule.</p>
+            <p>The date of the schedule is defined along with the frequency of future process dates of the schedule. Schedules can be processed on any day of the month and at a frequency of either daily, monthly, quarterly, half-yearly, or yearly.</p>
+            <p>When a schedule is processed :</p>
+            <p>o If the schedule has no frequency then the schedule is removed from the swap contract.</p>
+            <p>o If the schedule has a frequency then the next process date is updated according to the frequency. Eg. Schedule processed on 01 Jan 95 frequency M0101, then the date.freq field is updated with 01 Feb 95 frequency M0101.</p>
+            <p>The swap balance file, "SWAP.BALANCES", is updated accordingly.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>16 Character standard date/frequency code format (type A         FREQ). (Mandatory input if the associated schedule type         has been defined).</p>
+            <p>A frequency is disallowed for "PX" and         "RX" schedules.</p>
+            <p>For all schedules, the date must be GE the value date of         the contract and LE the maturity date of the contract.</p>
+            <p>The date must be equal to the Asset interest effective         date for schedule type "PX".</p>
+            <p>The date must be greater than the asset interest         effective date and today for schedule type "IP"         (Interest payment).</p>
+            <p>If schedule type is IP or AP and Day convention is         Following or Modified then daily and business day freq is         not allowed.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BEN.ACCOUNT</field>
+<desc>
+            <p>Defines the contract beneficiary account number.</p>
+            <p>This field is used when the counterparty of the contract instructs payment/receipt to be made to another party who does not have an account the associated bank.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 35 Type S Alphanumeric characters. (Mandatory when ACC.WITH.BANK or ACC.WITH.ADD has been  specified.  Default = ).</p>
+            <p>May contain whatever account details required, in order to uniquely identify the Beneficiary account.</p>
+        </desc>
+</t>
+<t>
+<field>SOD.MAT</field>
+<desc>
+            <p>This field specifies whether the deal is to be processed at the start of day or at the end of day.</p>
+            <p>Input Yes to make the swap mature or take value during the start of day procedure (</p>
+            <p>SW.START.OF.DAY</p>
+            <p>SW.END.OF.DAY</p>
+            <p>Limit exposures for the swap are also updated during the start of day procedure (</p>
+            <p>SYSTEM.LIMIT.SOD</p>
+            <p>SYSTEM.LIMIT.EOD</p>
+            <p>All accounting entries, payments, payment messages and limit updates for deals maturing or taking value are raised during the start of day procedure.</p>
+            <p>If this field is left blank, the value of</p>
+            <p>SOD.MAT</p>
+            <p>SWAP.TYPE</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Y or N or Blank</p>
+        </desc>
+</t>
+<t>
+<field>LB.FIXED.RATE</field>
+<desc>
+            <p>Specifies the fixed interest rate at which interest is to be accrued on the Liability leg.</p>
+            <p>Once the contract has been drawn down, ie. the contract status is "CUR", this field cannot be changed.  However, the interest rate can be changed at any time via the definition of a Rate Reset ("RR") schedule.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 numeric characters. (Optional Input).</p>
+            <p>Input is prohibited if data is present in the fields AS.RATE.KEY and AS.SPREAD.</p>
+            <p>A rate must be present in this field if the fields AS.RATE.KEY and AS.SPREAD are null.</p>
+            <p>Field will be no-input once the contract has reached the Interest effective date, ie. contract status = "CUR".</p>
+        </desc>
+</t>
+<t>
+<field>SWAP.TYPE</field>
+<desc>
+            <p>Defines the type of Swap contract.</p>
+            <p>All Swap types allowed on the system are defined in the SWAP.TYPE file.  It holds the description of the Swap type, the forward rate methods, etc.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Any valid Swap type defined on the SWAP.TYPE file.</p>
+            <p>1-6 alpha-numeric characters. (Mandatory input).</p>
+        </desc>
+</t>
+<t>
+<field>AS.DATE.ADJUSTMENT</field>
+<desc>
+            <p>Defines the type of date adjustments that are to be followed on the Asset leg.</p>
+            <p>Depending on the date adjustment, the process date of the schedules and the interest effective dates are calculated.</p>
+            <p>Valid date adjustments and their effects are as follows :</p>
+            <p>DATE.ADJUSTMENT   ENTRY.DATE      EFFECTIVE.DATE   ===============   ==========      ==============</p>
+            <p>o  null           SCHEDULE.DATE   SCHEDULE.DATE   o  VALUE          PROCESS.DATE    SCHEDULE.DATE   o  PERIOD         PROCESS.DATE    PROCESS.DATE</p>
+            <p>Where,</p>
+            <p>ENTRY.DATE      is the process date of the schedule determined                 by the Date Adjustment specified                 (AS.DATE.ADJUSTMENT).</p>
+            <p>EFFECTIVE.DATE  is the end date of the current interest period                 determined by the Date Adjustment specified                 (AS.DATE.ADJUSTMENT).</p>
+            <p>SCHEDULE.DATE   is the date of the schedule as specified in the                 swap contract (AS.DATE.FREQ).</p>
+            <p>PROCESS.DATE    is the process date of the schedule determined by                 the Asset Day Convention (AS.DAY.CONVENTION).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-6 Alpha-numeric characters. (Optional input.  Default = null).</p>
+            <p>Must be set to either "null", "VALUE", or "PERIOD".</p>
+        </desc>
+</t>
+<t>
+<field>AS.AMORT.DATE</field>
+<desc>
+            <p>Defines the end date on the Asset leg to amortise the premium.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 characters Standard date format. (Optional input).</p>
+        </desc>
+</t>
+<t>
+<field>LB.CUR.TRSRY.RATE</field>
+<desc>
+            <p>Specifies the treasury interest rate for the current interest period of the Swap liability leg.</p>
+            <p />
+            <p>This field along with LB.CURRENT.RATE forms the market interest rate  to be used when accruing interest on the outstanding balance of the liability side of the contract.</p>
+            <p />
+            <p>This field is a no-input field and is defaulted via :</p>
+            <p />
+            <p>The treasury interest rate (LB.TRSY.FIXED.RATE)</p>
+            <p />
+            <p>This rate can only be changed by defining and processing a Rate Reset schedule (type "RR") on the contract.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 numeric characters. (No-input field).</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>LB.INT.SET.DATE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.REFERENCE</field>
+<desc>
+            <p>Identifies the LIMIT REFERENCE number to be checked for Limit control on transactions.</p>
+            <p>Specifies the Credit Line number under which the transaction was granted.</p>
+            <p>If no input is made in this field, then the Limits system will provide a default value according to the Limit Reference record which  has its field application identifier set tyo "SW".  If no match is found in selective Reference, the default value will be the Reference with its field reference blank.</p>
+            <p>The credit line number generated will be NNNN-01 where NNNN is the Id of the Limit Reference record described above.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 - 10 numeric character LIMIT REFERENCE code. (Optional Input.  Default value).</p>
+            <p>Input in this field must be a valid LIMIT REFERENCE number.</p>
+            <p>If no Limit exists for the counterparty a corresponding error message will be displayed by the system with an override facility.</p>
+            <p>If the transaction amount exceeds the availability amount of the Limit, a corresponding error message will be displayed with an override facility.</p>
+        </desc>
+</t>
+<t>
+<field>BROKER.CODE</field>
+<desc>
+            <p>Indicates the Customer code of the broker that applies to the contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-10 type CUS Numeric characters. (Optional input).</p>
+            <p>Must be a valid definition on the CUSTOMER file.</p>
+            <p>BROKERAGE.PAYABLE must be previously defined on SWAP.PARAMETER.</p>
+            <p>NOCHANGE field.</p>
+        </desc>
+</t>
+<t>
+<field>LB.BUS.CENTRES</field>
+<desc>
+            <p>Indicates those countries whose calendars must be checked with regard to holiday (working day) validation.</p>
+            <p>The default value will be the Country of the currency of the Liability side of the contract, but additional Country codes can be manually input if required.  For example, the country codes of the participants and/or the Asset leg.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 Alpha characters. (Optional input.  Multi-valued field).</p>
+            <p>The code must be a a valid definition on the COUNTRY table and must have a valid entry on the REGION/HOLIDAY table.</p>
+            <p>Defaulted to the Country of the Liability leg Currency.</p>
+        </desc>
+</t>
+<t>
+<field>LB.CAP.RATE</field>
+<desc>
+            <p>Specifies the maximum interest rate that can be specified on the Liability leg. (Optional input.  Can be overridden).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 type "R" (Rate) numeric characters plus a decimal point.</p>
+        </desc>
+</t>
+<t>
+<field>NPV.PL.TODAY</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>AS.TRSY.FIXED.RATE</field>
+<desc>
+            <p>Specifies the treasury interest rate for the Asset leg.</p>
+            <p />
+            <p>Once the contract has been drawn down, ie. the contract status is "CUR", this field cannot be changed. However, the interest rate can be changed at any time via the definition of a Rate Reset ("RR") schedule.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-11 numeric characters. (Optional Input).</p>
+            <p>Input is prohibited if data is present in the fields AS.RATE.KEY and AS.SPREAD and TREASURY.CUSTOMER is not set as NO..</p>
+            <p>A rate must be present in this field if the fields AS.RATE.KEY and AS.SPREAD are null.</p>
+            <p>Field will be no-input once the contract has reached the Interest effective date, ie. contract status = "CUR".</p>
+        </desc>
+</t>
+<t>
+<field>AS.DAY.CONVENTION</field>
+<desc>
+            <p>Defines the Day Convention to follow.</p>
+            <p>Based on the Day Convention (AS.DAY.CONVENTION) and the Business Centres (AS.BUS.CENTRES) the process date of the Asset leg schedules are determined.</p>
+            <p>Valid Day Conventions are as follows :</p>
+            <p>o  null       the process date is the date of the schedule.</p>
+            <p>o  FOLLOWING  the process date is the next business day                 after the date of the schedule.</p>
+            <p>o  MODIFIED   the process date is the next business day                 after the date of the schedule providing this                 date does not fall into the next calendar month.                 In which case the process date is the first                 preceding business day.</p>
+            <p>o  PRECEDING  the process date is the first preceding business                 day.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-10 Alpha-numeric characters. (Optional input.  Default = null).</p>
+            <p>Valid Day Conventions are either "null", "FOLLOWING", "PRECEDING", or "MODIFIED".</p>
+        </desc>
+</t>
+<t>
+<field>LB.OPTION.DATE</field>
+<desc>
+            <p>The date of a call option (if appropriate).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format (11 characters). (Optional Input).</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY.MARKET</field>
+<desc>
+            <p>Identifies which Currency Market is accessed for this transaction.</p>
+            <p>The use of this field will only be applicable for those countries where the exchange authorities have defined different markets for foreign currency dealing.</p>
+            <p>A typical example would be Belgium where foreign currencies are dealt with on the Regular Market and also on the Free Market.</p>
+            <p>The default value of '1' means that, for the majority of countries, where only one exchange rate market exists, input in this field will not be necessary.</p>
+            <p />
+            <p>Note:      In the present release, only one market can be defined on            the CURRENCY.MARKET table.  Consequently, for the            time being, only the value of '1' will be accepted in this            field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>One Numeric digit Currency Market code. (No input.  System value is 1.)</p>
+            <p>Any input in this field must be a valid code on the CURRENCY.MARKET table.</p>
+        </desc>
+</t>
+<t>
+<field>LB.FLOOR.RATE</field>
+<desc>
+            <p>Specifies the minimum interest rate that can be specified on the Liability leg. (Optional input.  Can be overridden).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 type "R" (Rate) numeric characters plus a decimal point.</p>
+        </desc>
+</t>
+<t>
+<field>ACT.SCHED.INDEX</field>
+<desc>
+            <p>Internal index that references back to the swap schedule associated with the set of Delivery details.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 Numeric characters. (No-input field.  Default = index back to associated swap schedule).</p>
+        </desc>
+</t>
+<t>
+<field>LB.SPREAD</field>
+<desc>
+            <p>Indicates the spread (also known as the margin) which will be applied to the percentage interest rate related to the INTEREST KEY.</p>
+            <p>Note : T24 allows the user to define, on Floating rate contracts, a spread which can be added to or subtracted from the percentage interest rate related to the INTEREST KEY. The subtraction of the INTEREST SPREAD from the INTEREST KEY must be specifically indicated by the insertion of the '-' (minus) sign in front of the INTEREST SPREAD.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Upto 11 numeric characters plus a decimal point. A minus         sign has to be placed in front if the spread is to be         deducted from the INTEREST KEY. Input is optional when a         rate key has been define, ie. LB.RATE.KEY, otherwise         input is not allowed. (Default value = null)</p>
+            <p>Input in this field is only allowed for contracts when a         rate key has been specified, ie. LB.RATE.KEY is not null.</p>
+        </desc>
+</t>
+<t>
+<field>AS.CURRENT.RATE</field>
+<desc>
+            <p>Specifies the interest rate for the current interest period of the Swap asset leg.</p>
+            <p>This field contains the current rate of interest to be used when accruing interest on the outstanding balance of the asset side of the contract.</p>
+            <p>This field is a no-input field and is defaulted via :</p>
+            <p>o  The fixed interest rate (AS.FIXED.RATE) or,    o  The combined/calculated floating interest rate using       AS.RATE.KEY and AS.SPREAD</p>
+            <p>This rate can only be changed by defining and processing a Rate Reset schedule (type "RR") on the contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 numeric characters. (No-input field).</p>
+            <p>If the current rate is not greater than zero, an override message is set.</p>
+        </desc>
+</t>
+<t>
+<field>AS.INTEREST.DET</field>
+<desc>
+            <p>The interest details of the asset leg of the swap transaction are stored here. This field will only be used when the assest leg is floating, and is used when the MARKET.RATE.TEXT record does not hold sufficient detail for the generation of the SWIFT message. In this case the value 'OTHER' is used in field 14F on the SWIFT message and the value in this field is used.</p>
+            <p>This field will not be used if the asset leg is fixed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory Input when the MARKET.RATE.TEXT record specified in the field AS.RATE.KEY has a rate text which does not correspond to the format       alpha / alpha / alpha.  Refer to the helptext on field RATE.TEXT on the file MARKET.RATE.TEXT</p>
+            <p>A maximum of six multi values are allowed for this field.</p>
+        </desc>
+</t>
+<t>
+<field>AGREEMENT.TYPE</field>
+<desc>
+            <p>Defines the swap contract Agreement type. If a matster agreement type is entered then the default full agreement type (eg TYPE / DATE // VERSION) will be used on the SWAP contract if such an agreement type has been entered on the master SWAP.AGREEMENT.TYPE record.</p>
+            <p>Eg. ISDA  (International Swap Dealers Association),     BBAIRS, MASTER, etc.</p>
+            <p />
+            <p>This is also used to define Swift Message conditions. Corresponds to field 77 on Swift messages.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-12 Alphanumeric characters. (Mandatory input).</p>
+            <p>Must be a valid definition on the SWAP.AGREEMENT.TYPE file.</p>
+            <p>Each contract must be linked to an agreement type.</p>
+        </desc>
+</t>
+<t>
+<field>AS.INT.SET.DATE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>LB.INT.EFFECTIVE</field>
+<desc>
+            <p>Identifies the start date of the first interest period and therefore the true Value date of the Liability leg.</p>
+            <p>It is the date on which interest accruals commence on the outstanding balance of the contract.</p>
+            <p>This date can be entered as either the current date (today) or a date in the past (less than the contract value date).  It cannot be greater than the contract value date.</p>
+            <p>If forward dated, ie. both the value date and interest effective date are forward, then the contract status will be null until the effective date is reached, at which time, the principal amount will be drawn down and the contract status changed to "CUR".</p>
+            <p>An input of a null value will result in the date being defaulted to the contract value date.</p>
+            <p>If backdated or 'today' dated then the contract will be drawn down, put on-line, and the contract status set to "CUR".</p>
+            <p>If backdated into a prior month, interest will be accrued on-line up to the end of the previous month.</p>
+            <p>Input of a non working day will require an override.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Date format.</p>
+            <p>Defaults to the contract Value Date.</p>
+            <p>Cannot be greater than the contract Value Date.</p>
+            <p>Input is prohibited was the contract status has been set to "CUR" (Current).</p>
+            <p>An override will be required if this date is a non-working day.</p>
+        </desc>
+</t>
+
+<t>
+<field>COLLATERALISATION</field>
+<desc>
+             <p>Part of Regulatory Reporting information to a Trade Repository. </p>
+	<p>specifies whether collateralisation was performed.</p>
+	<p>Input to this field is allowed only when OC module is installed. </p>
+			<p>
+                <p>Validation Rules: </p>
+            </p>
+	  <p> This is an OPTIONAL field</p>
+  <p> Allowed optional values are U (Uncollateralised), PC (Partially Collateralised), OC (One way collateralised), FC (Fully Collateralised) and NULL.</p>
+</desc>
+</t>
+
+
+<t>
+<field>COLLAT.PORT.IND</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p>	
+<p>Specifies if the collateralisation was performed on a portfolio basis.</p> 
+	<p>Input to this field is allowed only when OC module is installed. </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	  <p> This is an OPTIONAL field.</p>
+	  <p> Input not allowed when COLLATERALISATION is NULL. </p>
+	  <p> Allowed optional values are Y, N or NULL.</p>
+	  <p> ‘Y’ indicates that the collateralisation was performed on a portfolio basis. </p>
+	  <p> ‘N’ indicates that the collateralisation was not performed on a portfolio basis. </p>
+</desc>
+</t> 
+		
+<t>
+<field>COLLAT.PORT.CODE</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository.</p>	
+	 <p> An unique code given by the reporting counterparty to identify the portfolio, if collateralization is reported on a portfolio basis.</p>
+	 <p> Input to this field is allowed only when OC module is installed. </p>
+		
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	  <p> This is a conditionally mandatory field.</p>
+	  <p> Mandatory if the COLLAT.PORT.IND is set to 'Y'.</p>
+                      <p> Numeric field up to 10 digits. </p>
+</desc>
+</t>			
+		 
+<t>
+<field>UNI.TRAN.ID</field>
+<desc>
+ <p>Part of Regulatory Reporting information to a Trade Repository</p>     
+ <p>All Trades should have a Unique Transaction Identifier (UTI) which is generated, communicated and matched</p>
+ <p>Determination of who generates the UTI should follow the existing industry best practices for that Asset class</p>
+ <p>The UTI.USI.API attached in OC.PARAMETER and invoked during FRA deal capture determines who is the party responsible for UTI generation and does the following.</p>
+<p>•	If a value is present during deal capture the API is not invoked, on the assumption that the UTI is generated and supplied by the other Counterparty.</p>
+<p>•	If no value is present during the deal capture, the API is invoked to determine the party responsible for generating the UTI. If the Other counterparty is responsible, still an UTI is generated with a suffix as TEMP to show that the UTI from the other counterparty is awaited and in the meantime, the reporting is done with a Temporary ID. If T24 Bank is responsible for UTI generation, then the same is generated without TEMP.</p> 
+<p>•	Where a reporting has been made with UTI having TEMP as suffix and subsequently the Counterparty supplies the UTI, the following procedure has to be followed to ensure reporting with actual UTI.</p>
+<p>•	The field Action Type needs to be changed to ‘E’ and record to be authorized. Later, the UTI field should be modified with the actual UTI received. Set the Action Type field to ‘N’ and authorize the record. In this way, the previous reporting gets cancelled and the new reporting goes with correct UTI. </p>
+ <p> Input to this field is allowed only when OC module is installed. </p>
+             <p>
+                <p>Validation Rules : </p>
+            </p>
+	<p> can contain up to 52 alphanumeric characters </p>
+			
+</desc>
+</t>
+
+
+<t>
+<field>EXEC.VENUE</field>
+<desc>  
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Specifies the unique code that identifies the venue of execution.</p>
+<p> Provides a drop down list of the OC.EXCHANGE.FACILITY records. </p>
+<p> Input to this field is allowed only when OC module is installed or ‘BR’.</p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	<p> This is an OPTIONAL field. </p>
+	<p> Can contain up to 10 alphanumeric characters. </p>
+			
+</desc>
+</t>
+
+<t>
+<field>PORT.COMPRESSION</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Specifies if the trade is as a result of a portfolio compression event.</p>
+<p> Input to this field is allowed only when OC module is installed. </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is an OPTIONAL field. </p>
+		<p> Allowed optional values are Y or N or NULL. </p>
+		<p> Y denotes that the contract results from a portfolio compression event.</p>
+		<p> N denotes that the contract is not due to portfolio compression event. </p>
+                                                  
+</desc>
+</t>
+
+<t>
+<field>ACTION.TYPE</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p>Under the Regulatory Reporting to a Trade Repository, it is not only the initial trade that is reported but also the life cycle events of the Trade that follow. A change in the action type is indicative of an event on the contract and requires to be reported.  Change in Action Types is allowed both manually and automatically. </p>
+<p> Specifies the ACTION.TYPE that is populated based on the event on trade. </p>
+<p> Input to this field is allowed only when OC module is installed.  </p>
+
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	 <p> Allowed optional values are N, M, E, C, Z and O </p>
+	 <p> N denotes that the ACTION.TYPE is NEW. Value of 'N' is defaulted for a new contract. User is also allowed to change the status to N if the previous status is E. </p>
+	 <p> E denotes that the ACTION.TYPE is REVERSE or Correction. In case of wrongly entered UTI values or a Temporary UTI was used previously, the old UTI should be reported with ACTION.TYPE as 'E' for error reporting first and then change the Action Type to NEW after keying in the actual UTI. This way the previous reporting with temporary UTI is replaced by the one with final UTI. Action Type ‘E’ is also used to undo the reporting of a particular transaction done which should not have been done reported at all in the first instance.</p>
+	<p> M denotes that the ACTION.TYPE is MODIFIED. In case of change in the RATE.FIXING.DATE the ACTION.TYPE is set to 'M'.</p>
+<p> C denotes that the ACTION.TYPE is CANCELLED. In case of any change in maturity/value date i.e. early termination of the contract should be reported with C. In FRA this MATURITY.DATE field is No change field. So ACTION.TYPE never gets populated automatically with type as C but It can be manually updated as ‘c’ and the contract can be cancelled. </p> 
+<p> Z denotes Compression update. This means the trade being reported is generated out of a compression activity. </p>
+<p> O denotes OTHER types. When OTHER is used, additional information as to what OTHER mean should be mentioned separately. </p>
+</desc>
+</t>
+
+<t>
+<field>ADDL.REP.INFO</field>
+<desc>
+<p>Part of Regulatory Reporting info to a Trade Repository. </p> 
+<p> Denotes the additional report info when the ACTION.TYPE is 'O'.</p>
+<p> Input to this field is allowed only when OC module is installed. </p>
+
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	<p> This is a conditionally mandatory field. </p> 
+	<p> Value to be entered only when ACTION.TYPE is 'O'. </p>
+			
+</desc>
+</t>
+
+<t>
+<field>OWN.BOOK.PORT</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the Bank’s own book portfolio ID. </p>
+<p> Input to this field is allowed only when OC module is installed. </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	 <p> This is an OPTIONAL field. </p>
+	 <p> The own book portfolio should be a valid SEC.ACC.MASTER record and also be an own book. </p>
+<p>The logic to update the Portfolio with the trade details will be introduced in the next phase of OC module development. </p>
+			
+</desc>
+</t>
+
+
+<t>
+<field>NON.STND.FLAG</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes if the contract is a standard or a non-standard contract. </p>
+<p> Input to this field is allowed only when OC module is installed. </p>
+<p>The significance of this field is better appreciated in the context of clearing of OTC derivatives. </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is an OPTIONAL field. </p>
+		<p> Allowed optional values are Y, N or NULL.</p>
+		<p> Y denotes that the contract is a non-standard contract. </p>
+		<p> N denotes that the contract is a standard contract. </p>
+</desc>
+</t>
+
+<t>
+<field>PRE.UTI.ID.1</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the Previous UNI.TRAN.ID value. When UNI.TRAN.ID is changed, it replaces the previous one and the previous one is moved into this field. </p>
+<p> Input to this field is allowed only when OC module is installed. </p>
+
+             <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is an OPTIONAL field. </p>
+		<p> Can contain upto 52 alphanumeric characters. </p>
+
+</desc>
+</t>
+
+<t>
+<field>PRE.UTI.ID.2</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the Previous PRE.UTI.ID.1 value. When UNI.TRAN.ID is changed, it replaces the previous one and the previous value in PRE.UTI.ID.1 is moved into this field. </p>
+<p> Input to this field is allowed only when OC module is installed. </p>
+
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	  <p> This is an OPTIONAL field. </p>
+	  <p> Can contain upto 52 alphanumeric characters. </p>
+
+</desc>
+</t>
+
+<t>
+<field>EXEC.TIME.STAMP</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the date and time of execution of the transaction and is User inputtable field. </p>
+<p> Input to this field is allowed only when OC module is installed.</p>
+             <p>
+                <p>Validation Rules :</p>
+            </p>
+	<p> This is an OPTIONAL field </p>
+	<p> The format should be "YYYYMMDDTHH:MM:SS+/-(UTC.TIME.ZONE)"  or "YYYYMMDDTHH:MM:SSZ"</p>
+	<p> Example 20150101T10:10:10+05:30</p>
+	<p> Example 20150101T10:10:10-05:30</p>
+	<p> Example 20150101T10:10:10Z</p>
+</desc>
+</t>
+
+<t>
+<field>CP.TRADE.PURPOSE</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes if the contract is objectively measurable as directly linked to the other counterparty’s commercial or treasury financial activity.</p>
+<p> Input to this field is allowed only when OC module is installed. </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	<p> This is an OPTIONAL field and value is User inputted.</p>
+	<p> Allowed optional values are YES, NO or NULL </p>
+	<p> YES denotes that the contract is directly linked to the other counterparty’s commercial or treasury financial activity.</p>
+	<p> NO denotes that the contract is not directly linked to the other counterparty’s commercial or treasury financial activity.</p>
+	<p> Input allowed only when the Other counterparty is a NON FINANCIAL COUNTERPARTY.</p>
+	<p> This is a no change field. </p>
+
+</desc>
+</t>
+
+<t>
+<field>UNIQUE.PROD.ID</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p>
+<p> Denotes the unique product identifier. When a Unique Product Identifier (UPI) is available the same is mentioned here. When it UPI is not available there are other alternatives allowed like ISIN, AII, CFI. Hence no validations are created. </p>
+<p> Input to this field is allowed only when OC module is installed. </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+                     <p> This is an OPTIONAL field. </p>  			
+</desc>
+</t>
+
+<t>
+<field>CLG.MEMBER.ID</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the clearing member identifier. It contains the reporting counterparty ID. If the reporting counterparty is not a clearing member, its clearing member shall be identified in this field by a unique code. In case of an individual, a client code, as assigned by the CCP, shall be used. </p>
+<p> Input to this field is allowed only when OC module is installed. </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is a conditionally mandatory field.</p>
+<p> This is mandatory when the clearing status (OC.CLG.STATUS) of the contract is CLEARED.</p>
+		<p> This is a no change field. </p>
+			
+</desc>
+</t>
+
+<t>
+<field>BILATERAL.REF</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the Bilateral Reference. It contains the transaction ID of the Bilateral Trade that is cleared. </p>
+<p> Input to this field is allowed only when OC module is installed. </p>
+           <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is a conditionally mandatory field.</p>
+<p> This field is mandatory when the clearing status (OC.CLG.STATUS) of the contract is CLEARED.</p>
+		<p> This is a no change field. </p>
+			
+</desc>
+</t>
+
+
+<t>
+<field>OC.CLG.STATUS</field> 
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the OC Clearing Status. </p>
+<p> Input to this field is allowed only when OC module is installed. </p>
+
+              <p>
+                <p>Validation Rules: </p>
+            </p>
+<p> Allowed optional values are Bilateral, Submitted, Accepted, Rejected, Cleared and Terminated. </p>
+<p> BILATERAL - when a fresh contract is inputted this field should be updated as BILATERAL.</p>
+                <p>The previous status should be null.</p>
+<p> SUBMITTED - when the inputted contract is submitted to Trade Repository it should get updated as SUBMITTED. 
+                              <p>The previous clearing status of the contract should be BILATERAL.</p>
+	          <p>when OC.CLG.STATUS of the contract is SUBMITTED both CLG.MEM.ID and CENTRAl.CLG.PARTY fields cannot be NULL.</p>
+</p>
+<p> ACCEPTED - when the contract is accepted by the Trade Repository it should get updated as ACCEPTED. 
+         <p>The previous status should be SUBMITTED</p>
+</p>
+<p> REJECTED - when the contract is rejected by the Trade Repository it should get updated as REJECTED.
+         <p>The previous status should be SUBMITTED</p>
+</p>
+<p> CLEARED - When the status of the contract is ACCEPTED, User is expected to reverse the contract and enter a new one with Trade status as CLEARED.
+	       <p>When the status is CLEARED, fields like CENTRAL.CLG.PARTY, CLG.MEM.ID, BILATERAL.REF are mandatory.</p>
+</p>
+<p> Terminated - A cleared contract when cancelled/terminated by the Trade Repository should be updated as TERMINATED. 
+        <p>The previous status should be CLEARED.</p>
+</p>
+<p> This is a no change field. </p>		
+</desc>
+</t>
+
+<t>
+<field>CENTRAL.CLG.PARTY</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository.</p> 
+<p> Denotes the central clearing party. If it doesn’t contain any value it gets defaulted with the clearing member id (CLG.MEM.ID). </p>
+<p> Input to this field is allowed only when OC module is installed.</p>
+           <p>
+                <p>Validation Rules : </p>
+            </p>
+	<p> This is a conditionally mandatory field.</p>
+<p> This field is mandatory when the clearing status (OC.CLG.STATUS) of the contract is CLEARED.</p>
+	<p> This is a no change field.</p>
+</desc>
+</t> 
+
+<t>
+<field>TRADE.REPOSITORY</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the trade repository information.</p>
+<p> Input to this field is allowed only when OC module is installed. </p>
+           <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is an OPTIONAL field. </p>
+		<p> Defaulted with value from OC.PARAMETER record. </p>
+		<p> User can override with a valid value in OC.TRADE.REPOSITORY record. </p>
+		<p> This is a no change field. </p>
+</desc>
+</t>
+<t><field>UNI.PROD.ID</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>CONTRACT.GRP</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FTT.TAX.TYPE.KEY</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FTT.TAX.KEY</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FTT.TAX.BASE.CCY</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FTT.TAX.BASE.AMT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FTT.TAX.AMT.BASE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FTT.TAX.AMT.EUR</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FTT.TAX.AMT.LCY</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FTT.COLL.CPTY.TAX</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

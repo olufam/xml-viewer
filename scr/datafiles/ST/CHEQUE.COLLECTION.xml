@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>CHEQUE.COLLECTION</table>
+</header>
+<overview>
+<ovdesc>
+<p>This file contains the cheque details for those cheques that have been processed through the cheque collection processing.</p><p> The cheque collection processing is triggered off by setting the relevant parameter fields in the ACCOUNT.PARAMETER file that are used to specify a list of transaction codes that must invoke the processing related to depositing, collecting or returning cheques.</p><p> The process is described as under:</p><p /><p /><p /><p /><p /><p /><p> When the cheques have cleared or been returned it will be possible to manually update the status of every cheque on the CHEQUE.COLLECTION file or manually update the status an entire batch or partial batch of cheques through the CHEQUE.BATCH application.</p><p /><p /><p> As and when the cheques have cleared or been returned the CHEQUE.COLLECTION application will be used to post the cleared cheques from the suspense accounts to the client accounts on collection or from the collection suspense to the returned suspense on return of cheques.</p><p /><p /><p> In the case where the collection is handled with a data file it will be possible for the users to process the cheque collections via GTS.</p><p /><p /><p> It will be possible to specify a charge associated with cheques that have cleared or returned at both a batch level and an individual cheque level.</p><p /><p> The currency of the cheque and the credit account should be the same.</p><p /><p> Accounting rules:</p><p /><p /><p> Cheque is presented for deposit:</p><p /><p /><p /><p /><p /><p /><p> DR Cheque Clearing&amp;#9;&amp;#9;&amp;#9;CR Collection Suspense A/c</p><p /><p /><p> Forward Entry:</p><p /><p /><p /><p /><p> CR Actual Account</p><p /><p /><p> Optional Charge &amp; Tax entries</p><p /><p /><p> Cheque has been collected:</p><p /><p /><p /><p /><p> DR Collection Suspense A/c&amp;#9;&amp;#9;CR Actual Account</p><p /><p /><p> Raise any Charges &amp; Tax entries</p><p /><p /><p /><p /><p> Delete all the forward entry</p><p /><p /><p> Cheque has been returned:</p><p /><p /><p /><p /><p> DR Collection Suspense A/c&amp;#9;&amp;#9;CR Return Suspense A/c</p><p /><p /><p> Raise any Charges &amp; Tax entries</p><p /><p /><p /><p /><p> Delete all the forward entry</p><p /><p /></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CHQ.STATUS</field>
+<desc><p>This field can be used to indicate a new status for the cheque. The field will be used to indicate the current status of the cheque. These statuses could any of the following:</p><p /><p /><p> DEPOSITED - When the cheque is initially deposited on an         application it is updated with this status.</p><p> CLEARING - This status indicates that the cheque has now         been batched on the CHEQUE.BATCH application record</p><p> CLEARED - This status indicates that the funds on the         cheque have been collected.</p><p> RETURNED - This status indicates that the funds on the         cheque could not be cleared and the cheque was returned</p><p> It is possible to change the status of a cheque mannually here if the cheque has not been batched. Once the cheque has been batched all changes of the status field must be handled through the CHEQUE.BATCH application.</p><p> If the status of the cheque is changed from 'DEPOSITED' to 'CLEARED' the system will automatically raise accounting entries to credit the original client account and debit the collection suspense account for the cheque amount. This action would also prompt the deletion of the forward entries created when the cheque was initially deposited. Any charges and/or tax amounts due will be raised.</p><p><p>Validation Rules:</p></p><p /><p /><p> No Input Allowed if the cheque collection record has been         batched</p><p> If change allowed the valid changes to the status include         DEPOSITED to CLEARED or DEPOSITED to RETURNED</p><p> Valid values are DEPOSITED, CLEARING, CLEARED or RETURNED</p></desc>
+</t>
+<t>
+<field>CHQ.TXN.ID</field>
+<desc><p>This is the ID field on the CHEQUE.COLLECTION record. It will comprise of the application id 'CC' concatenated with a julian date and a sequence number. Eg. {CC9502000001}</p><p><p>Validation Rules:</p></p><p /><p /><p> No New record can be set up</p><p> Records are created automatically when depositing cheques         with a transaction code specified in the CHQ.DEP.TXN         field on the ACCOUNT.PARAMETER record</p><p> No reversal allowed.</p><p> The record does not allow any inputs if it has been         included on a batch (CHEQUE.BATCH)</p></desc>
+</t>
+<t>
+<field>STATUS.DATE</field>
+<desc><p>This field is related to the STATUS field and holds the date of the last change in status on the record.</p><p><p>Validation Rules:</p></p><p /><p /><p> No Input Allowed</p><p> Automatically updated on the change of the STATUS field</p></desc>
+</t>
+<t>
+<field>STMT.NO</field>
+<desc><p>Contains the STMT.ENTRY references for any charges made at authorisation of the issue.</p><p><p>Validation Rules:</p></p><p /><p /><p> This is a NOINPUT field.</p><p> System updated field.</p></desc>
+</t>
+<t>
+<field>CHARGE.AMT</field>
+<desc><p>This field pertains to the charge amount calculated for the charge type specified.</p><p><p>Validation Rules:</p></p><p /><p /><p> No Input Allowed</p><p> Automatically updated</p></desc>
+</t>
+<t>
+<field>CCY.MARKET</field>
+<desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc>
+</t>
+<t>
+<field>NARRATIVE</field>
+<desc><p>This field may be used as a note line with free formatted text.</p><p><p>Validation Rules:</p></p><p /><p /><p> Optional Input</p><p> Multi valued</p></desc>
+</t>
+<t>
+<field>NARRATION</field>
+<desc><p>This field opens up when the value in the previous field (field no.24 Collateral) is made to 'NO'. This field shall be populated with the reason for delinking.</p><p><p>Validation Rules:</p></p><p /><p /><p> This is a multi-value free text field.</p></desc>
+</t>
+<t>
+<field>CHARGE.ACC</field>
+<desc><p>This field is used to specify the account on which the charges are to be raised. This account number will be defaulted to the CREDIT.ACC.NO field if not entered.</p><p><p>Validation Rules:</p></p><p /><p /><p> Optional Input</p><p> Must be entered if the CHARGE.TYPE has been specified</p><p> Must be a valid ACCOUNT on the system</p><p> The account number here and the CREDIT.ACC.NO must belong         to the same customer</p></desc>
+</t>
+<t>
+<field>ORIG.VALUE.DATE</field>
+<desc><p>This field contains the original value date based on the TRANSACTION code or BC.SORT.CODE while creating the CHEQUE.COLLECTION.</p><p> This is field is meant for information purpose only and no input is allowed</p><p><p>Validation Rules:</p></p><p /><p /><p> Standard date format.</p></desc>
+</t>
+<t>
+<field>CHEQUE.NO</field>
+<desc><p>This field contains the cheque number entered on the underlying application used to deposit this cheque.</p><p><p>Validation Rules:</p></p><p /><p /><p> No Input Allowed</p><p> Automatically updated</p></desc>
+</t>
+<t>
+<field>TAX.TYPE</field>
+<desc><p>This field specifies the tax type applicable on the charge type specified.</p><p><p>Validation Rules:</p></p><p /><p /><p> No Input Allowed</p></desc>
+</t>
+<t>
+<field>SUSP.POSTED.TO</field>
+<desc><p>This field will contain the suspense account to which this cheque amount has been posted to in place of the original client account whicle the cheque is sent for collection. The category code used in the suspense account number is defined either on the BC.SORT.CODE file or a default value on the ACCOUNT.PARAMETER record.</p><p><p>Validation Rules:</p></p><p /><p /><p> No Input Allowed</p><p> Automatically Updated</p></desc>
+</t>
+<t>
+<field>EXPOSURE.DATE</field>
+<desc><p>The exposure date is the date on which the customer will have access to the funds.</p><p> The field value is defaulted from the application -that has created the record-i.e. (teller, FT, DC etc) </p><p /><p><p>Validation Rules:</p></p><p /><p /><p> Rule 1:- Input can only be a valid date</p><p> Rule 2:-</p></desc>
+</t>
+<t>
+<field>COLLATERAL.LINK</field>
+<desc><p>This field recognises three values viz., null, YES and NO.</p><p> When the CC record is not attached to any account as Collateral, the field is defaulted to 'null'.</p><p> When the field Application.ID in COLLATERAL application is populated with CQ.XXXXXX.XXXXX ( CQ.CUSTOMER. ACCOUNT), this field immediately defaults to 'YES' which enable it to link the CC record with the COLLATERAL record.</p><p> This defaulted value 'YES' shall be changed to 'NO' for delinking an already linked CC from the COLLATERAL record.</p><p><p>Validation Rules:</p></p><p /><p /><p> The only input that shall be manually input is 'NO'. The value can be input as 'NO' only if the previous value is 'YES'.</p></desc>
+</t>
+<t>
+<field>CREDIT.ACC.NO</field>
+<desc><p>This field will contain the original account number involved in the transaction. The field will be used later on by the cheque collection processing to re-credit the client account after the funds on the cheque have been collected.</p><p> From release G14.1.00- in Teller field Amount and the associated fields can be multi-valued- which results in multi-value of this field and the associated amount field- if the teller is input with 2 or more multivalues on the credit side.</p><p><p>Validation Rules:</p></p><p /><p /><p> No Input Allowed</p><p> Authomatically Updated</p></desc>
+</t>
+<t>
+<field>TAX.AMT</field>
+<desc><p>This field pertains to any tax amount applicable on the charge type specified.</p><p><p>Validation Rules:</p></p><p /><p /><p> No Input Allowed</p></desc>
+</t>
+<t>
+<field>CHARGE.TYPE</field>
+<desc><p>This field can be used to specify charges that need to be applied for collected or returned cheques.</p><p><p>Validation Rules:</p></p><p /><p /><p> Optinal Input</p><p> Must be a valid FT.CHARGE.TYPE or FT.COMMISSION.TYPE         record</p></desc>
+</t>
+<t>
+<field>CHARGE.ACC.CCY</field>
+<desc><p>This field specifies the currency of the account number specified in the CHARGE.ACC field.</p><p><p>Validation Rules:</p></p><p /><p /><p> No Input Allowed</p><p> Updated automatically</p></desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc><p>This field indicates the currency of the amount on the cheque.</p><p><p>Validation Rules:</p></p><p /><p /><p> No Input Allowed</p><p> Automatically Updated</p></desc>
+</t>
+<t>
+<field>TXN.CODE</field>
+<desc><p>This field will contain the transaction code used in the credit transaction involved in depositing this cheque.</p><p><p>Validation Rules:</p></p><p /><p /><p> No Input Allowed</p><p> Automatically Updated</p></desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc><p>Override text.</p><p><p>Validation Rules:</p></p><p /><p /><p> Alphanumeric characters. System updated field.</p><p> This is a NOINPUT field.</p></desc>
+</t>
+<t>
+<field>TXN.ID</field>
+<desc><p>This field reflects the transaction id of the application record on which this cheque was deposited.</p><p><p>Validation Rules:</p></p><p /><p /><p> No Input Allowed</p></desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc><p>The forward or backward date on which the collection credit will be taken into customer account, for the purpose of interest calculations, when the cheque/ collection instrument is Cleared. In the case of return of the cheque/ collection instrument, the debit to the specified internal account will be taken into account, on this date.</p><p> Whenever the user wishes to change the original value date for reasons like postponement of clearing etc., this field can be used.</p><p> This field is available in CHEQUE.COLLECTION and in CHEQUE.BATCH also, under each cheque collection record included in the batch. User has the option to use this field or the OVERALL.VALUE.DATE in the batch.</p><p><p>Validation Rules:</p></p><p /><p /><p> Optional field</p><p /><p /><p> Standard Date format</p><p /><p /><p> The date entered here will be validated against the range         of minimum/ maximum backward and forward values specified         in DATES file.</p></desc>
+</t>
+<t>
+<field>AMOUNT</field>
+<desc><p>This field indicates the amount on the cheque.</p><p><p>Validation Rules:</p></p><p /><p /><p> No Input Allowed</p><p> Automatically Updated</p></desc>
+</t>
+<t>
+<field>AZ.MAT.DATE</field>
+<desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc>
+</t>
+<t>
+<field>BANK.SORT.CODE</field>
+<desc><p>This field will contain the sort code related to the cheque number.</p><p><p>Validation Rules:</p></p><p /><p /><p> No Input Allowed</p><p> Automatically populated from the value entered in the         sort code field on the underlying application.</p></desc>
+</t>
+<t>
+<field>BATCH.ID</field>
+<desc><p>This field will contain the ID of the CHEQUE.BATCH record on which this cheque could have been batched.</p><p><p>Validation Rules:</p></p><p /><p /><p> No Input Allowed</p><p> Automatically updated by the system when the cheque has         been batched on the CHEQUE.BATCH application.</p></desc>
+</t>
+</menu>
+</t24help>
+

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FD</product>
+<table>FD.CHARGE.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This application is used to define the default charge details used for calculating the commission amount payable by the customer on a Fiduciary Order. </p>
+            <p>The parameters can be defined at the level of the CATEGORY code of the order, or the Order Type. For the type or category the following parameters can be defined: </p>
+            <p>When commission is taken, i.e. in ADVANCE or ARREARS, The base amount used to calculate the commission, i.e. PRINCIPAL, INTEREST or INCOME (PRINCIPAL plus INTEREST); </p>
+            <p>Whether commission on NOTICE orders is taken on movements of interest, principal or both; </p>
+            <p>Whether the commission amount is calculated at the start or the end when taken in arrears; </p>
+            <p>Whether the minimum commission amount applies for NOTICE orders on movement of principal, interest or both, and if charges are to be taken by default; </p>
+            <p>When an a FD.FID.ORDER record is entered, the fields COMM.TAKEN and COMM.BASIS wil be defaulted on line from the relevant record on this file. </p>
+            <p>Any category code or type that is to be defined on the FD.GROUP.CONDITION file must be defined in this application first. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>RESERVED1</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>START.END.CALC</field>
+<desc>
+            <p>Specifies whether the commission amount should be calculated as soon as all information required is available, or only at the time commission is taken. </p>
+            <p>When commission is taken in arrears, the user may wish to calculate the commission only when the commission is actually taken, or in advance. Once the commission amount is present on the FD.FID.ORDER record, it is not recalculated by the system. In the case of NOTICE contracts when the START is requested, the amount will only be calculated when the interest settlement, or principal movement date is known. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>"START" or "END" or any abbreviation thereof. (Optional input)</p>
+            <p>Input only allowed when COMM.TAKEN is ARREARS.</p>
+        </desc>
+</t>
+<t>
+<field>MIN.MOVEMENT</field>
+<desc>
+            <p>Defines for commission taken in ARREARS when the minimum and maximum commission amount should be checked while calculating the commission amount. </p>
+            <p>Minimum and Maximum commission is always applied at maturity of an order, but for Notice orders, the minimum and maximum can be applied at only principal or interest movements, or both. If minimum commission is taken only on principal or interest movement, the minimum amount will apply if the total commission taken since the last movement type specified for minimum commission is less than the minimum. </p>
+            <p>e.g: Minimum amount = 100 USD applies at INTEREST movement       31/12/93 - Last interest movement       31/01/94 - Principal movement comm = 20 USD (min not applied)       31/03/94 - Principal movement comm = 30 USD (min not applied)       30/06/94 - Interest movement comm calculated = 40 USD The total commission amount is 90 USD since the previous interest movement, so the minimum applies making the commission actually taken 50 USD. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>"PRINCIPAL", "INTEREST" or "BOTH" or any abbreviation thereof. (Optional input.)</p>
+            <p>No input allowed when COMM.TAKEN is ADVANCE.</p>
+            <p>No input allowed for FIXED type, or FIXED category records.</p>
+        </desc>
+</t>
+<t>
+<field>TYPE.CATEGORY</field>
+<desc>
+            <p>The category code or Fiduciary Order type used as unique identifier to the FD.CHARGE.PARAMETER file. </p>
+            <p>Charge defaults can be defined at the level of order category code. If the category code of the order is not deined, the Type will be used. If the type is not defined either, the user will receive an error message when entering the order. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>NOTICE or FIXED or 5-digit CATEGORY code. (Mandatory input)</p>
+            <p>If a category code is specified, this must exist on the CATEGORY file.</p>
+        </desc>
+</t>
+<t>
+<field>BASE.AMOUNT</field>
+<desc>
+            <p>The default value used as the base amount for calculation of commission. </p>
+            <p>The contents of this field will be used as the default value of COMM.BASIS in the FD.FID.ORDER application. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>"PRINCIPAL", "INTEREST" or "INCOME" or any abbreviation thereof. (Mandatory field)</p>
+            <p>For NOTICE type records, or category records defined for NOTICE contracts, only PRINCIPAL is allowed when COMM.TAKEN is ADVANCE.</p>
+        </desc>
+</t>
+<t>
+<field>COMM.PRIN.INT</field>
+<desc>
+            <p>Defines when or if commission is actually calculated. </p>
+            <p>This field specifies for NOTICE orders with commission taken in arrears, whether commission should be taken at movement of principal, interest or both. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>"PRINCIPAL", "INTEREST" or "BOTH" or any abbreviation thereof. (Optional input)</p>
+            <p>No input allowed for FIXED type orders or FIXED order categories.</p>
+            <p>No input allowed when COMM.TAKEN is ADVANCE.</p>
+        </desc>
+</t>
+<t>
+<field>COMM.TAKEN</field>
+<desc>
+            <p>Defines when commission is to be taken for a Fiduciary Order. </p>
+            <p>Commission can be taken in ADVANCE, ie at the start of the order, or in ARREARS. If taken in ARREARS, the commission will be taken at maturity and additionally at principal or interest movements or both. </p>
+            <p>The contents of this field will be used to default the COMM.TAKEN field on the FD.FID.ORDER application. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>ADVANCE or ARREARS. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.CHARGES</field>
+<desc>
+            <p>Specifies whether charges should be defaulted from FD.GROUP.CONDITION for the Order. </p>
+            <p>Default value is NO. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Y or NO. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED2</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>AA</product>
+<table>AA.PERIODIC.ATTRIBUTE.CLASS</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The AA.PERIODIC.ATTRIBUTE.CLASS records are released by Temenos and also available for User to create their own rules. This file will contain standard rule definitions.  </p>
+            <p>    This table will contain the definitions of </p>
+            <p>        •property class that it can be linked to</p>
+            <p>        •the comparison type to be used</p>
+            <p>        •the action that should trigger this rule to be validated</p>
+            <p>        •the value routine used to derive the data values to be compared as part of the validation</p>
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>SYSTEM.GENERATED</field>
+<desc>
+        <p>If it is set as YES, it indicates that the record is released by Temenos.</p>
+    </desc>
+</t>
+<t>
+<field>RULE.VAL.RTN</field>
+<desc>
+            <p> This field represents a routine which returns the value for the comparison routine to do the compare from property record. </p>
+            <p />
+            <p>      Should be valid entry in EB.API file.</p>
+            <p />
+            <p>      Mandatory Input. </p>
+            <p />
+            <p>Routine Arguments:</p>
+            <p />
+            <p>Incoming     : </p>
+            <p>PROPERTY.ID  : Property ID to which the rule is attached.</p>
+            <p>START.DATE   : Start Date for the Rule. (Depends on the Period Type and Period defined in AA.PERIODIC.ATTRIBUTE)</p>
+            <p>END.DATE     : End Date for the Rule. (Depends on the Period Type and Period defined in AA.PERIODIC.ATTRIBUTE)</p>
+            <p>CURRENT.DATE : Effective Date on which rule is validated (Activity Effective Date)</p>
+            <p>BALANCE.TYPE : Balance Type that is to be used for rule validation. (Balance Type defined in BALANCE.TYPE field in Activity Restriction)</p>
+            <p>ACTIVITY.IDS : Activity  that  will be used for Rule Evaluation. </p>
+            <p>CURRENT.VALUE: Currently not used.</p>
+            <p />
+            <p>Return       : </p>
+            <p>START.VALUE  : The value for the attribute on the Start Date.</p>
+            <p>END.VALUE    : The value for the attribute on the End Date.</p>
+            <p />
+            <p>Sample Setup:</p>
+            <p />
+            <p>AA.PERIODIC.ATTRIBUTE.CLASS:</p>
+            <p />
+            <p>    PR.ATTRIBUTE.CLASS RATE.INCREASE.TOLERANCE</p>
+            <p>------------------------------------------------------------------------</p>
+            <p>  1. 1 GB DESCRIPTION. Rate Increase Tolerance</p>
+            <p>  2 PROPERTY.CLASS.... INTEREST            Interest Calculation</p>
+            <p>  3. 1 ACTION......... UPDATE</p>
+            <p>  4 COMPARISON.TYPE... +TOLERANCE          Percent (%) GT default.</p>
+            <p>  5 RULE.VAL.RTN...... AA.GET.RATE.VALUE   GET RATE VALUE</p>
+            <p>------------------------------------------------------------------------</p>
+            <p />
+            <p>AA.PERIODIC.ATTRIBUTE:</p>
+            <p />
+            <p>     PR.ATTTRIBUTE.ID.. RATE.INC.TOL.1M</p>
+            <p>------------------------------------------------------------------------</p>
+            <p>   1. 1 GB DESCRIPTION. Rate increase tolerance per month.</p>
+            <p>   2 PR.ATTR.CLASS..... RATE.INCREASE.TOLERANCE Rate Increase Tolerance</p>
+            <p>   3 PERIOD.TYPE....... INITIAL</p>
+            <p>   4 PERIOD............ 1M</p>
+            <p>   6 RULE.START........ ARRANGEMENT</p>
+            <p>------------------------------------------------------------------------</p>
+            <p />
+            <p>Sample Routine:</p>
+            <p />
+            <p>This sample program will return interest rate on rule start and rule end date.</p>
+            <p />
+            <p> SUBROUTINE AA.GET.RATE.VALUE(PROPERTY.ID, START.DATE, END.DATE, CURRENT.DATE, BALANCE.TYPE, ACTIVITY.IDS,CURRENT.VALUE, START.VALUE, END.VALUE)</p>
+            <p>*** &lt;region name= Inserts&gt;</p>
+            <p>*** &lt;desc&gt;File inserts and common variables used &lt;/desc&gt;</p>
+            <p>* Inserts</p>
+            <p>    $INSERT I_COMMON</p>
+            <p>    $INSERT I_EQUATE</p>
+            <p>    $INSERT I_AA.APP.COMMON</p>
+            <p>    $INSERT I_F.AA.INTEREST</p>
+            <p>*** &lt;/region&gt;</p>
+            <p />
+            <p>************************************************************************</p>
+            <p />
+            <p>*** &lt;region name= Main control&gt;</p>
+            <p>*** &lt;desc&gt;main control logic in the sub-routine&lt;/desc&gt;</p>
+            <p />
+            <p>    GOSUB INITIALISE</p>
+            <p>    GOSUB GET.PROPERTY.RECORD</p>
+            <p>    GOSUB GET.RETURN.VALUES</p>
+            <p />
+            <p>    RETURN</p>
+            <p>*** &lt;/region&gt;</p>
+            <p />
+            <p>************************************************************************</p>
+            <p />
+            <p>*** &lt;region name= Initialise&gt;</p>
+            <p>*** &lt;desc&gt;File variables and local variables&lt;/desc&gt;</p>
+            <p>INITIALISE:</p>
+            <p>*----------</p>
+            <p>    R.PROPERTY.RECORD = ""</p>
+            <p>    R.START.PROPERTY.RECORD = ""</p>
+            <p>    R.END.PROPERTY.RECORD = ""</p>
+            <p />
+            <p>    REC.ERR = ''</p>
+            <p>    RET.ERROR = ''</p>
+            <p />
+            <p>    PROPERTY.CLASS = AA$PROPERTY.CLASS.ID</p>
+            <p>    ARR.PROPERTY.ID =  AA$ARR.PC.ID</p>
+            <p>    EFFECTIVE.DATE = START.DATE</p>
+            <p />
+            <p>    RETURN</p>
+            <p>*** &lt;/region&gt;</p>
+            <p />
+            <p>************************************************************************</p>
+            <p>*** &lt;region name= Property record&gt;</p>
+            <p>*** &lt;desc&gt;Get property record&lt;/desc&gt;</p>
+            <p>GET.PROPERTY.RECORD:</p>
+            <p>*-------------------</p>
+            <p>*</p>
+            <p />
+            <p>    CALL AA.GET.PERIODIC.RULE.PROPERTY.RECORD(PROPERTY.CLASS, ARR.PROPERTY.ID, EFFECTIVE.DATE, R.START.PROPERTY.RECORD, R.END.PROPERTY.RECORD, RET.ERROR)</p>
+            <p />
+            <p>    RETURN</p>
+            <p>*** &lt;/region&gt;</p>
+            <p />
+            <p>************************************************************************</p>
+            <p>*** &lt;region name= Return values&gt;</p>
+            <p>*** &lt;desc&gt;Get return values&lt;/desc&gt;</p>
+            <p>GET.RETURN.VALUES:</p>
+            <p>*-----------------</p>
+            <p />
+            <p>    START.VALUE = R.START.PROPERTY.RECORD&lt;AA.INT.EFFECTIVE.RATE&gt;</p>
+            <p />
+            <p>    END.VALUE = R.END.PROPERTY.RECORD&lt;AA.INT.EFFECTIVE.RATE&gt;</p>
+            <p />
+            <p>    RETURN</p>
+            <p />
+            <p> *** &lt;/region&gt;</p>
+            <p>END</p>
+        </desc>
+</t>
+<t>
+<field>RULE.ERR.MSG</field>
+<desc>
+            <p> This field represents error message that needs to be raised when the rule is broken.</p>
+            <p />
+            <p>  Should be valid record id of the file EB.ERROR</p>
+        </desc>
+</t>
+<t>
+<field>PR.ATTRIBUTE.CLASS</field>
+<desc>
+            <p> This field represents id of the file AA.PERIODIC.ATTRIBUTE.CLASS.  The id usually denotes the rule applied and the property class on which the rule is applied.</p>
+            <p />
+            <p />
+            <p>   Validation rules</p>
+            <p />
+            <p>    Maximum length - 30 chars</p>
+            <p>    Combination of alpha characters</p>
+        </desc>
+</t>
+<t>
+<field>TYPE</field>
+<desc>
+            <p>This field represents the TYPE that can be defined in AA.PRD.DES.XXX record.</p>
+            <p />
+            <p>      Possible Values are :</p>
+            <p>      CAP - The rule value to be used as CAP if rule is broken</p>
+            <p />
+            <p>       FLOOR - The rule value to be used as FLOOR if rule is broken</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PROPERTY.CLASS</field>
+<desc>
+            <p>Identifies which Property Class conditions allows this periodic attribute definition </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>      Mandatory Input. Input must be a valid AA.PROPERTY.CLASS ID.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>K.TYPE</field>
+<desc>
+            <p>This field represents the TYPE that can be defined in AA.PRD.DES.XXX record.</p>
+            <p />
+            <p>      Possible Values are :</p>
+            <p>      CAP - The rule value to be used as CAP if rule is broken</p>
+            <p />
+            <p>       FLOOR - The rule value to be used as FLOOR if rule is broken</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RULE.OVE.MSG</field>
+<desc>
+            <p>  This field represents override message that needs to be raised when the rule is broken.</p>
+            <p />
+            <p> Should be a valid record id of the file OVERRIDE</p>
+        </desc>
+</t>
+<t>
+<field>ACTION</field>
+<desc>
+            <p>This field represents the valid ACTION for the Property Class. </p>
+            <p />
+            <p>      Mandatory Input</p>
+        </desc>
+</t>
+<t>
+<field>COMPARISON.TYPE</field>
+<desc>
+        <p>Validation Rules:</p>
+        <p>
+            <p value="1">Input must be a valid ID in a EB.COMPARISON.TYPE file </p>
+            <p value="2">Mandatory Input</p>
+            <p value="3">This is a multi-value field</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>DATA.TYPE</field>
+<desc>
+            <p> This field represents the Valid Data Type. For example : AMT, R, D etc., </p>
+            <p>       The attribute to which the periodic rule is defined should have a data type specified so that the existing core routines validate the rule content. </p>
+            <p />
+            <p>      Mandatory Input</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>This field describes AA.PERIODIC.ATTRIBUTE.CLASS and is used for enrichment.</p>
+            <p />
+            <p>      This field can be expanded to allow the User to enter the Description of the AA.PERIODIC.ATTRIBUTE.CLASS in various languages. Each expansion of the field will correspond to a new Language as defined in the LANGUAGE table (Ref: GENERAL TABLES), and will indicate to the User the Language in which the Description must be entered.</p>
+            <p />
+            <p>      Mandatory Input</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

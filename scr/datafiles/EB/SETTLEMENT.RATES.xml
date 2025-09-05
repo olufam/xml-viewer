@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>SETTLEMENT.RATES</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>When a loan or deposit contract in LD is input with currencies of the liquidation account being different from that of deal currency, this file is created by the system on authorisation of such contract. The @ID of the file is the @ID of the LD deal. This file is used to store the exchange rates applied / to be applied for liquidation, for various event dates and event currencies, read from the relevant LD deal. The exchange rates derived by the system is based on currencies of the liquidation accounts, Settlement Market, Conversion Type (all defaulted from the deal) and Protection Clause. The user may also input an exchange rate for each currency that is to be considered for every liquidation.</p>
+            <p>EVENT.DATE, EVENT.CCY, EV.SYS.RATE and EV.APPL.RATE are associated multivalue set of fields.  Within this multivalue set EVENT.CCY, EV.SYS.RATE and EV.APPL.RATE are associated sub value set of fields.</p>
+            <p>The following example would illustrate the updation of this file;</p>
+            <p>If a LD contract is input with the following features;</p>
+            <table>
+                <tr>
+                    <td>LD LOAN CONTRACT @ID</td>
+                    <td>LD0012000001</td>
+                </tr>
+                <tr>
+                    <td>DEAL CCY</td>
+                    <td>GBP</td>
+                </tr>
+                <tr>
+                    <td>VALUE DATE </td>
+                    <td>Jan 01, 2001</td>
+                </tr>
+                <tr>
+                    <td>MATURITY DATE</td>
+                    <td>Jan 15, 2001</td>
+                </tr>
+                <tr>
+                    <td>PRN.LIQ.ACCOUNT</td>
+                    <td>18927 (DEM Currency)</td>
+                </tr>
+                <tr>
+                    <td>INT.LIQ.ACCOUNT</td>
+                    <td>18935 (USD Currency)</td>
+                </tr>
+                <tr>
+                    <td>SETTLEMENT.MARKET</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>CONVERSION.TYPE</td>
+                    <td>BUY</td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>SCHEDULE DATE</p>
+                        <p>- Principal liquidation</p>
+                    </td>
+                    <td>Jan 05, 2001</td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>SCHEDULE DATE</p>
+                        <p>- Principal liquidation</p>
+                        <p>- Interest liquidation</p>
+                    </td>
+                    <td>
+                        <p>Jan 10, 2001</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>SCHEDULE DATE</p>
+                        <p>- Principal liquidation</p>
+                        <p>- Interest liquidation</p>
+                    </td>
+                    <td>
+                        <p>Jan 15, 2001</p>
+                        <p />
+                    </td>
+                </tr>
+            </table>
+            <p />
+            <p />
+            <p>Once the LD deal is authorised, SETTLEMENT.RATES file is created by the system with ID as LD0012000001.</p>
+            <p>Value in SETTLEMENT.MARKET and CONVERSION.TYPE would be written from the deal. For each event (scheduled) date, the currencies involved (for liquidation) would be read from the deal and populated in this file. In the above example the file would be created as follows;</p>
+            <table>
+                <tr>
+                    <td>@ID</td>
+                    <td>LD0012000001</td>
+                </tr>
+                <tr>
+                    <td>CONTRACT.CURRENCY</td>
+                    <td>GBP</td>
+                </tr>
+                <tr>
+                    <td>SETTLEMENT.MARKET</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>CONVERSION.TYPE</td>
+                    <td>BUY</td>
+                </tr>
+                <tr>
+                    <td>PROTECTION.CLAUSE</td>
+                    <td>NO</td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>EVENT.DATE</p>
+                        <p>- EVENT.CCY</p>
+                        <p>- EV.SYS.RATE</p>
+                        <p>- EV.APPL.RATE</p>
+                    </td>
+                    <td>
+                        <p>Jan 05, 2001</p>
+                        <p>DEM</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>EVENT.DATE</p>
+                        <p>- EVENT.CCY</p>
+                        <p>- EV.SYS.RATE</p>
+                        <p>- EV.APPL.RATE</p>
+                        <p>- EVENT.CCY</p>
+                        <p>- EV.SYS.RATE</p>
+                        <p>- EV.APPL.RATE</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p>Jan 10, 2001</p>
+                        <p>DEM</p>
+                        <p />
+                        <p />
+                        <p>USD</p>
+                        <p />
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>EVENT.DATE</p>
+                        <p>- EVENT.CCY</p>
+                        <p>- EV.SYS.RATE</p>
+                        <p>- EV.APPL.RATE</p>
+                        <p>- EVENT.CCY</p>
+                        <p>- EV.SYS.RATE</p>
+                        <p>- EV.APPL.RATE</p>
+                    </td>
+                    <td>
+                        <p>Jan 15, 2001</p>
+                        <p>DEM</p>
+                        <p />
+                        <p />
+                        <p>USD</p>
+                        <p />
+                        <p />
+                    </td>
+                </tr>
+            </table>
+            <p />
+            <p />
+            <p>As can be observed from the above, the file is updated with event dates as input in the LD deal with the currencies involved for each date. In the above example for the event date Jan 05, 2001 only principal liquidation is envisaged. The Principal liquidation is in DEM currency and hence for this event date only DEM currency is populated. For event dates Jan 10, 2001 and Jan 15, 2001, both principal and interest liquidations are envisaged. Hence the respective liquidation account currencies are populated as associated sub value sets for the event dates.</p>
+            <p>The EV.SYS.RATE is updated with the system derived exhange rate.</p>
+            <p>The user may input the relevant exchange rate that is to be considered for liquidation in EV.APPL.RATE field. If the user has input any exchange rate in this field, the same would be used for liquidation and the system would continue to update its derived rate in EV.SYS.RATE.</p>
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>EVENT.CCY</field>
+<desc>
+            <p>Represents the currency of liquidation for the event specified in LD deal. For example if principal liquidation should be from a DEM account while the deal is in GBP, this field will hold the value DEM.</p>
+            <p>This field is an associated multivalue field and would be multivalued only when multiple currencies are involved for an event date.</p>
+            <p>Example</p>
+            <p>a)     Deal Currency    :    GBP</p>
+            <p>Event date          :    Jan 05, 2001</p>
+            <p>Events</p>
+            <p>Principal Liquidation in DEM</p>
+            <p>Interest Liquidation in CHF</p>
+            <p>In this case alongwith EV.SYS.RATE and EV.APPL.RATE  this field would be multivalued holding values DEM and CHF.</p>
+            <p>b)    Deal Currency    :    GBP</p>
+            <p>Event date          :    Jan 05, 2001</p>
+            <p>Events</p>
+            <p>Principal Liquidation in DEM</p>
+            <p>Interest Liquidation in DEM</p>
+            <p>In this case the associated set of fields would not be multivalued and this field will hold value DEM.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System written.</p>
+            <p>No input allowed</p>
+        </desc>
+</t>
+<t>
+<field>EV.SYS.RATE</field>
+<desc>
+            <p>The exchange rate for the event date for the event currency derived by the system. This field would be updated during END.OF.DAY or START.OF.DAY processing based on the setting in the field MATURE.SOD in LD deal.</p>
+            <p>For details on the basis of deriving the exchange rate please refer to the help text for CONVERSION.TYPE in LD deal.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System written</p>
+            <p>No input allowed</p>
+        </desc>
+</t>
+<t>
+<field>EV.APPL.RATE</field>
+<desc>
+            <p>If the exchange rate applicable for the event date and event currency needs to be specified, the user may input the value here. The exchange rate input here would be used for liquidation. The system would update its derived rate in EV.SYS.RATE field as usual.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Input allowed only on or prior to the event date for EOD maturity.</p>
+            <p>Input allowed only prior to event date for SOD maturity.</p>
+        </desc>
+</t>
+<t>
+<field>EXCG.RATE</field>
+<desc>
+            <p>This associated multivalue set of fields is used to store the exchange rate and account used for each of the amount type at the time of first authorisation of LD deal. The purpose of writing these fields is to use the historic exchange rate and account for reversal of deals.</p>
+            <p>At the time of first authorisation, the drawdown &amp; liquidation accounts over which accounting entries have been raised and the relevant exchange rates applied are captured. Should a deal be reversed, the reversal entries would be raised over the respective accounts at the respective exchange rate captured.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System written.</p>
+            <p>No input allowed.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EVENT.DATE</field>
+<desc>
+            <p>Represents a date for which an event (scheduled date) has been defined in the LD deal. The event could be principal liquidation, interest liquidation, commission liquidation etc.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System written.</p>
+            <p>No input allowed</p>
+        </desc>
+</t>
+<t>
+<field>SETTLEMENT.MARKET</field>
+<desc>
+            <p>Written from the LD Deal.  If SETTLEMENT.MARKET needs to be changed, it has to be done at the LD deal. On authorisation the new value in LD deal would be written here.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System written.</p>
+            <p>No input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>PROTECTION.CLAUSE</field>
+<desc>
+            <p>The field can hold value YES or NO. If the field is flagged to YES,  the system derived exchange rate for the event date for a particular currency would be compared with historic exchange rates applied for the currency and the best exchange rate (either current day's rate or one of the historic rates, whichever is more beneficial to the Bank) would be considered for liquidation.</p>
+            <p>If the field is flagged to NO, either the user input rate or the system derived rate (for no input by user) would be used for liquidation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Input must be either YES or NO</p>
+            <p>Default is NO</p>
+        </desc>
+</t>
+<t>
+<field>CONVERSION.TYPE</field>
+<desc>
+            <p>Written from the LD deal.  If value in this field needs to be changed, the change has to be done in the underlying LD deal. On authorisation of the LD deal, the new value would be written here.</p>
+            <p>For more details on the functionality, please refer to help text in LD deal for this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System written.</p>
+            <p>No input allowed</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT</field>
+<desc>
+            <p>This associated multivalue set of fields is used to store the exchange rate and account used for each of the amount type at the time of first authorisation of LD deal. The purpose of writing these fields is to use the historic exchange rate and account for reversal of deals.</p>
+            <p>At the time of first authorisation, the drawdown &amp; liquidation accounts over which accounting entries have been raised and the relevant exchange rates applied are captured. Should a deal be reversed, the reversal entries would be raised over the respective accounts at the respective exchange rate captured.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System written.</p>
+            <p>No input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT.TYPE</field>
+<desc>
+            <p>AMOUNT.TYPE, EXCG.RATE &amp; ACCOUNT are associated multivalue fields.</p>
+            <p>These set of fields are used to store the exchange rate and account used for each of the amount type at the time of first authorisation of LD deal. The purpose of writing these fields is to use the historic exchange rate and account for reversal of deals.</p>
+            <p>At the time of first authorisation, the drawdown &amp; liquidation accounts over which accounting entries have been raised and the relevant exchange rates applied are captured. Should a deal be reversed, the reversal entries would be raised over the respective accounts at the respective exchange rate captured.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System written.</p>
+            <p>No input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.CCY</field>
+<desc>
+            <p>Currency of the LD deal. Written from the LD deal.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System written.</p>
+            <p>No input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.NO</field>
+<desc>
+            <p>The ID is the @ID of the relevant LD deal.</p>
+            <p />
+        </desc>
+</t>
+</menu>
+</t24help>
+

@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SC</product>
+<table>SC.TRAIL.FEES.ARRANGEMENT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Application which holds the rules to be applied for calculating the Trailer fees. The parameter file SC.TR.FEE.PARAMETER should be set before inputting in this application. </p>
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>PAY.DATE</field>
+<desc>
+            <p>This field is a standard date field which holds each payment date for the issuer. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    This is a Noinput and multivalue field which gets populated by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PAYMENT.ACCOUNT</field>
+<desc>
+            <p>This field specifies the issuer account which will be used for payment of fees. This account gets defaulted in the SC.TRAIL.FEES.HOLDING record created for this arrangement.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>         It must be a valid T24 account. </p>
+        </desc>
+</t>
+<t>
+<field>FREQ.BASIS</field>
+<desc>
+            <p>Allowed values are “FIXED’, ‘AVERAGE’, ‘NULL’</p>
+            <p>         FIXED – Adhoc basis</p>
+            <p>         AVERAGE – used for frequency like Bi-Monthly, Bi-Quarterly, Semi-Annually</p>
+            <p>         NULL – normal frequency</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SC.TRAIL.FEES.KEY</field>
+<desc>
+            <p>Specifies the key to this application that would hold value as ISSUER or ISSUER.SECURITY.</p>
+            <p>         Rules can be either set at Issuer or at Security level.</p>
+            <p>         If arrangement is to be set ISSUER.SECURITY level then it is mandatory to have an Issuer level arrangement.</p>
+            <p>         Security level agreement takes precedence over the issuer level agreement.</p>
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p>         Mandatory field. </p>
+            <p>         For a Issuer level arrangement,</p>
+            <p>         Issuer should be the ID of a valid CUSTOMER file record</p>
+            <p>         For a Security level arrangement , </p>
+            <p>         Security must be the ID of a valid SECURITY.MASTER file record to which the TR.ISSUER is linked</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PL.CATEGORY</field>
+<desc>
+            <p>Specifies the category to which the trailer fees accrual amount will be credited</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Standard PL Category. Category code from 50000 – 59999).</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>TR.FEE.SUSP.CAT</field>
+<desc>
+            <p>Specifies the suspense category which is treated as a wash account for posting capitalization entry and apportioning of difference amount (if any)</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    This is a single value field which gets defaulted from SC.TR.FEE.PARAMETER table. </p>
+            <p>    Input is allowed only at the Issuer level arrangement.</p>
+            <p>    Standard Category field. (Category code from 10000 – 19999)</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>XRATE.CALC.PAY</field>
+<desc>
+            <p>Specifies the latest exchange rate applicable between the Calculation and Payment currency for the corresponding payment period. </p>
+        </desc>
+</t>
+<t>
+<field>THRESHOLD.AMT</field>
+<desc>
+            <p>Species the threshold amount above which client level apportioning has to be applied. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    This is a single value field which accepts numeric character. </p>
+            <p>    Input is allowed only at the Issuer level arrangement.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TOLERANCE.MIN.AMT</field>
+<desc>
+            <p>Field to capture the minimum tolerance amount. Either percentage can be set or Tolerance minimum and maximum amount can be set.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SECURITY.NO</field>
+<desc>
+            <p>This field stores the security number, incase of the arrangement being held at the security level.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>         Noinput field </p>
+            <p>         Automatically updated by the system from the second component of the record ID.</p>
+            <p>         This field will be null when ARRANGEMENT is created for ISSUER level</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CALC.END.DATE</field>
+<desc>
+            <p>Optional field to capture the trailer fee calculation end date. The date on which further calculation of the fees is brought to an end. If it is set at security level, then the rules set in issuer level arrangement will be applied for the securities.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>         Date cannot be less than or equal to CALC.DATE</p>
+            <p>         Standard date field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>LAST.PAY.DATE</field>
+<desc>
+            <p>Specifies the latest of the payment dates when SC.TRAIL.FEES.HOLDING record is marked as complete. Initially it will get defaulted to one calendar day prior to the START.PAY.DATE </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>     This is a single value and Noinput field.</p>
+            <p>     Defaulted by the system only for the Issuer level Arrangement.</p>
+            <p />
+            <p>     For example, consider two payment cycle is crossed and two SC.TRAIL.FEES.HOLDING records (as on 01st Jan and 01st Feb) is generated on the payment date.  If the second payment record generated on 01st Feb is marked as Complete, then LAST.PAY.DATE will be updated with 01st Feb. Even after subsequent payment completion of the first payment record generated on 01st Jan, this field will not be overridden with 01st Jan and will still retain the latest of the payment dates.</p>
+        </desc>
+</t>
+<t>
+<field>GST.CALC.INV</field>
+<desc>
+            <p>Field which would only allow the vaues as ‘Y’ or ‘N’. Reserved for future use.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TOLERANCE.MAX.AMT</field>
+<desc>
+            <p>Field to capture the maximum tolerance amount. Either percentage can be set or Tolerance minimum and maximum amount can be set.</p>
+        </desc>
+</t>
+<t>
+<field>FEE.CODE</field>
+<desc>
+            <p>Identifies the commission/charge record to be used in calculating trailer fees for an issuer. Rate component of the calculation formula is picked up from the record attached in this field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>         Mandatory field </p>
+            <p>         Up to 11 characters (alphanumeric) charge type code. Must exist on the FT.CHARGE.TYPE table or the FT.COMMISSION.TYPE table</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Multivalue fied which stores the overrides.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PAYMENT.CCY</field>
+<desc>
+            <p>This field stores the currency in which the trailer fee accrual entry is raised and payment is received from the Issuer.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    This is a single value and No change field.</p>
+            <p>    Input is allowed only at the Issuer level arrangement.</p>
+        </desc>
+</t>
+<t>
+<field>CALC.FORMULA</field>
+<desc>
+            <p>This field is used to indicate the various calculation formulae supported. The values allowed are ‘1’,’2’,’3’,’4’,5’,’6’ and the supported formulae are as follows</p>
+            <p />
+            <p>         1 – Asset value * Rate * Period</p>
+            <p>         2 – Asset Holding * Index * Rate</p>
+            <p>         3 – Asset Holding * Rate * trailer ref level / initial ref level</p>
+            <p>         4 – Asset Holding * Rate * Price</p>
+            <p>         5 – Asset Holding * Rate * 100</p>
+            <p>         6 – Asset Holding * Rate</p>
+            <p />
+            <p>         When CALC.FREQ  is </p>
+            <p>         BSNSS then Period = No. of days / 365</p>
+            <p />
+            <p>         Month basis then Period = No. of month / 12</p>
+            <p />
+            <p>         Asset Value = Asset Holding * Price</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>         Mandatory field</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CALC.DATE</field>
+<desc>
+            <p>Mandatory field to capture the trailer fee calculation date. </p>
+            <p>      This field should be set in such a way that the final calculation date coincides with the payment generation date set at the issuer level arrangement.</p>
+            <p />
+            <p>      For example, </p>
+            <p>      Case 1:  Consider the below values</p>
+            <p>                   CALC.DATE   01 JAN 2008</p>
+            <p>                   CALC.FREQ   01 JAN 2008 M0101</p>
+            <p>                   PAYMENT.FREQ 01JUN2008M0601</p>
+            <p>                   In the above case, there will be six calculation before the payment generation and the final calculation date (01JUN2008) coincides with the payment date. So this setup is allowed.</p>
+            <p />
+            <p>      Case 2: Consider the below values</p>
+            <p>                   CALC.DATE  01 JAN 2008</p>
+            <p>                   CALC.FREQ 01 JAN 2008 M0201</p>
+            <p>                   PAYMENT.FREQ 01 JUN 2008 M0601</p>
+            <p>                   In the above case, there will be three calculation viz., 01JAN, 01MAR, 01MAY and the next calculation date will be cycled to 01JUL. The calculation date (01 MAY 2008) before the payment generation date does not coincide with the PAYMENT.FREQ date and hence this setup is not allowed.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>      Date cannot be less than Today</p>
+            <p>      Standard date field.</p>
+        </desc>
+</t>
+<t>
+<field>ISSUER</field>
+<desc>
+            <p>This field stores the issuer reference. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>         Noinput field </p>
+            <p />
+            <p>         Automatically updated by the system from the first component of the record ID</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TOLERANCE.LEVEL</field>
+<desc>
+            <p>Field to capture the tolerance percentage. Either percentage can be set or Tolerance minimum and maximum amount can be set.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>START.PAY.DATE</field>
+<desc>
+            <p>Specifies the start date of the current payment period. Initially it will be defaulted with Today’s date.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    0 - 11 date characters. The year must be in the range 1950 – 2049</p>
+            <p>    This is a single value and Noinput field.</p>
+            <p>    Defaulted by the system only for the Issuer level Arrangement.</p>
+        </desc>
+</t>
+<t>
+<field>TRADE.SETT.DATE</field>
+<desc>
+            <p>Value in this field determines whether TRADE or VALUE dated positions are to be considered for fees calculation.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>         Values allowed are ‘TRADE’, ‘VALUE’</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>GST.INCL</field>
+<desc>
+            <p>Field which would only allowed the values as ‘Y’ or ‘N’</p>
+            <p>         Reserved for future use</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DIFF.AMT</field>
+<desc>
+            <p>Specifies the difference between the amount received from the issuer and the actual accrued amount. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>     This is a Noinput and multivalue field which gets populated by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TOLERANCE.CCY</field>
+<desc>
+            <p>Field to capture the tolerance currency. Tolerance currency is used in tandem with field tolerance min and max amount, if the currency is different from payment currency, then absolute values of tolerance are converted into payment currency and are used for tolerance checks.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>GST.REF.ID</field>
+<desc>
+            <p>Field to capture the GST rate reference. Reserved for future use</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PAYMENT.FREQ</field>
+<desc>
+            <p>Specifies the frequency on which the Holding record will be created for allowing the trailer fee payment and the date on which issuer is expected to pay the fees to the bank.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Must comply with the rules as laid down for the frequency tables. (Mandatory input)  Payment frequency must be month related and should be greater than the frequency set in CALC.FREQ.</p>
+            <p>    Input is allowed only at the Issuer level arrangement.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>NEXT.PAY.DATE</field>
+<desc>
+            <p>Defines when next holding will be created based on PAYMENT.FREQ.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>         Noinput field. </p>
+        </desc>
+</t>
+<t>
+<field>CALC.FREQ</field>
+<desc>
+            <p>Field to store the calculation frequency. BSNSS and month basis frequencies are only allowed.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>         When FREQ.BASIS is ‘FIXED’ this field becomes null.</p>
+            <p>         When FREQ.BASIS is ‘AVERAGE’ this field allows only M01, M06, M12 </p>
+            <p>         Standard frequency field</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RECEIVABLE.ACC</field>
+<desc>
+            <p>This is the account to which the F entry / CAP entries needs to be raised.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    This is a single value field and input is allowed only at the Issuer level arrangement.</p>
+            <p>    This field accepts a valid account in payment currency. System raises an override if the account does not belong to the issuer.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CALC.CCY</field>
+<desc>
+            <p>Defines currency based on which trailer fees calculation for this arrangement is to be done. The trailer fee calculation will be done for the issuer / security level arrangement only if this field holds value, otherwise there will not be any trailer fee calculation.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       This is a single value field which accepts a valid currency.</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.AMT.PAY.CCY</field>
+<desc>
+            <p>Specifies the accrued trailer fee amount in equivalent Payment currency corresponding to the payment period. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       This is a Noinput and multivalue field which gets populated by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ACCRUAL.POST.DAY</field>
+<desc>
+            <p>Field to capture the day on which the accrual needs to be happen. Values allowed are ‘LAST’ or ‘FIRST’ or ‘’. This field doesnot have significance if ACCRUAL.METHOD is set to "DAILY" in SC.TR.FEE.PARAMETER table.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>         Based on the value specified, the posting of the Calculated trailer fee accrual amount happens</p>
+            <p>         LAST -  Posted on Month end</p>
+            <p>         FIRST - Posted only at start of month</p>
+            <p>         '' - Posted on that days COB</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ACCRUED.AMOUNT</field>
+<desc>
+            <p>Specifies the accrued trailer fee amount corresponding to the payment period.  </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       This is a Noinput and multivalue field which gets populated by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BV.EFFECTIVE.DATE</field>
+<desc>
+            <p>Specifies the date from which the back valuation of trailer fee is to be triggered.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>      This is a single value and standard Date field. This field can accept value which is greater than    LAST.PAY.DATE and less than today’s date.</p>
+            <p />
+        </desc>
+</t>
+<t><field>CALC.RTN</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>TR.REIM.SUSP.CAT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

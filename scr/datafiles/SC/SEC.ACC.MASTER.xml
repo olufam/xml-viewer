@@ -1,0 +1,2443 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SC</product>
+<table>SEC.ACC.MASTER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This file contains information relating to a customers security account (portfolio).  Any number of portfolios may be opened for a given client, each uniquely identified by a separate suffix.  A SEC.ACC.MASTER record can only be opened after the CUSTOMER.SECURITY record for that CUSTOMER has been created with a "CUSTOMER.TYPE" of Customer.</p>
+            <p>                    Examples of the information held in this file would be:</p>
+            <p>                    a)         Defaults for financial accounts b)         The frequency of portfolio statements c)         The discount (if any) on safekeeping charges d)         Portfolio turnover e)         Contributions and withdrawals f)         Average invested capital</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>ADVISORY.FREQ</field>
+<desc>
+            <p>The date of the next calculation of Advisory Fees for this portfolio and frequency to be used in defining the subsequent Advisory Fees Runs.</p>
+            <p>                    Input is only allowed if the calculation frequency for Advisory Fees is defined at a portfolio level (i.e. the COMPANY.CALC field on SAFECUSTODY.VALUES associated with a CHARGE.TYPE of 'IC' is set to 'N'). Otherwise the value in this field will be taken from the CHARGE.FREQ field on the SAFECUSTODY.VALUES record for the company associated with a chanrge type of 'iC'.</p>
+            <p>                    This field consists of two components as follows -</p>
+            <p>                    1)    Next Statement Date:           1-9 Date characters. The default value calculated by the           system depending on the frequency.</p>
+            <p>                    2)    Frequency:           1-5 type SS (uppercase alpha or numeric, first character           alpha) characters.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Input only allowed for Customer portfolios in the COMPANY.CALC flag is set to 'NO'.</p>
+            <p>                    Standard T24 frequency field.</p>
+            <p>                    Any frequency input must be a monthly frequency.</p>
+        </desc>
+</t>
+<t>
+<field>PF.FEES.ACML</field>
+<desc>
+            <p>Total accumulated fees in reference currnecy. Editable.</p>
+        </desc>
+</t>
+<t>
+<field>FX.COMM.GROUP.ID</field>
+<desc>
+            <p>Commission code used for FX contracts linked to this portfolio.</p>
+        </desc>
+</t>
+<t>
+<field>NET.OPN.ORD.VAL</field>
+<desc>
+            <p>The valuation amount in reference currency of any net open orders for the portfolio.</p>
+        </desc>
+</t>
+<t>
+<field>CAP.PAID.CAT</field>
+<desc>
+            <p>Specifies the Category Code to which the paid accumulated capitalised interest is to be posted.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    5 numeric characters. Optional Input.</p>
+            <p>                    Must be between 52000-59999</p>
+            <p>                    Must be Valid Category.</p>
+            <p>                    Not allowed if field 35 (DEALER.BOOK) not entered, otherwise must be entered.</p>
+        </desc>
+</t>
+<t>
+<field>AC.DEF.SYS.CODE</field>
+<desc>
+            <p>Identifies the System code with which to assign a category, account number, currency or security account number when accounts are to be defaulted in applications. eg(FT,MM,LD,SC-SSL,MF-BUY)</p>
+            <p>                    'ALL' can be specified to allow a Category of account, Currency type account or a particlar Account number to be defaulted independent of the Application type (SYS.CODE)</p>
+            <p>                    The System Code may have an optional sub group added separated by hyphen to define Drawdown , Interest or Principal account as with Securities subgroups eg ( MM-DD )This would imply Money Market Drawdown Account</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    No duplicate System codes are allowed</p>
+            <p>                    Optional input</p>
+            <p>                    2 to 8 alphanumeric characters</p>
+        </desc>
+</t>
+<t>
+<field>NEW.RFCCY.EFF.DATE</field>
+<desc>
+            <p>Standard T24 date field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    A maximum of 11 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>ADV.CHG.SCALE</field>
+<desc>
+            <p>This field is a no input field that records the Advisory Fees scale that the portfolio is linked to (i.e. the key to the SCPM.GEN.CONDITION and hence SCPM.GROUP.CONDITION records that define the Advisory Fees scale).</p>
+            <p>                    Will always be blank if the portfolio is a Dealer Book portfolio or if Advisory Fees are not set-up to be charged (via SAFECUSTODY.VALUES).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    No input field automatically updated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>PP.ADJ.FACTOR</field>
+<desc>
+            <p> Percentage applied on buying power to calculate the actual Buying power. </p>
+            <p> Can be set only if field BUYING.POWER in OV.PARAMETER is set to YES. Cannot be set if MARGIN.LENDING is set to YES. </p>
+        </desc>
+</t>
+<t>
+<field>DISCOUNT.CAT</field>
+<desc>
+            <p>Specifies which category is to be utilised to build both the accrual and P/L accounting entries.</p>
+            <p>                    On a daily basis at the end of day accounting entries will be generated to post the amount of discount accrued or amortised for each trading position for the banks own portfolio.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    5 Numeric characters category code (Optional input)</p>
+            <p>                    Must exist in the Category table if entered.</p>
+            <p>                    Input is mandatory for own portfolios (i.e. Dealer book field is not null).</p>
+            <p>                    Must be in the range of 50000 to 59999</p>
+        </desc>
+</t>
+<t>
+<field>INT.RECD.ACCOUNT</field>
+<desc>
+            <p>Specifies the Account No. to which Interest Receivable will be posted.</p>
+            <p>                    This field will accept any valid internal account, provided it has  been set-up in LOCAL currency.</p>
+            <p>                    NOTE  -  Normally, the end-of-day interest accruals are posted to the P/L accounts specified in the fields :</p>
+            <p>                    INT.PAID.CAT  and  INT.RECD.CAT</p>
+            <p>                    You should only enter an account if you do NOT wish the  end-of-day interest receivable accruals on securities in the underlying portfolio to be posted to a P/L account.</p>
+            <p>                    Must be a valid internal account number.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    5 numeric characters. Optional Input.</p>
+            <p>                    Must be a valid local Ccy Internal Account.</p>
+            <p>                    Not allowed if field 35 (DEALER.BOOK) not entered, Is a NOCHANGE field.</p>
+        </desc>
+</t>
+<t>
+<field>INITIAL.MARGIN</field>
+<desc>
+            <p> Margin rate used in calculation of buying power. Only FACILITY or INITIAL.MARGIN can be set. </p>
+            <p> Cannot exceed the related field in OV.PARAMETER. Cannot be set without MARGIN.LENDING.Can be input only if setup at OV.PARAMETER. </p>
+        </desc>
+</t>
+<t>
+<field>APP.FIELD</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Input is optional. If there is an input to field DEFAULT.DEPO, then input to this field becomes mandatory</p>
+            <p>                    Input restricted to fields defined on the SECURITY.MASTER standard selection file</p>
+        </desc>
+</t>
+<t>
+<field>BLOCKING.NARR</field>
+<desc>
+            <p>Field containing the reason that the portfolio has been blocked from the date entered in the BLOCKING.DATE field. If the portfolio has been blocked - i.e. a date has been input into the BLOCKING.DATE field - then the narrative input here will form the override message produced by the system when a user tries to input a transaction involving this portfolio.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Optional free-form input of up to 35 characters.</p>
+        </desc>
+</t>
+<t>
+<field>INT.PAID.ACCOUNT</field>
+<desc>
+            <p>Specifies the Account No. to which Interest Payable will be posted.</p>
+            <p>                    This field will accept any valid internal account, provided it has  been set-up in LOCAL currency.</p>
+            <p>                    NOTE  -  Normally, the end-of-day interest accruals are posted to the P/L accounts specified in the fields :</p>
+            <p>                    INT.PAID.CAT  and  INT.RECD.CAT</p>
+            <p>                    You should only enter an account if you do NOT wish the  end-of-day interest accruals on securities in the underlying portfolio to be posted to a P/L account.</p>
+            <p>                    Must be a valid internal account number.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    5 numeric characters. Optional Input.</p>
+            <p>                    Must be Valid Local Ccy Internal Account Number</p>
+            <p>                    Not allowed if field 35 (DEALER.BOOK) not entered, This field once entered cannot be changed.</p>
+        </desc>
+</t>
+<t>
+<field>SELL.OUT.MGN.DATE</field>
+<desc>
+            <p>Date on which sell-out margin call is breached.</p>
+        </desc>
+</t>
+<t>
+<field>PF.FEES.START</field>
+<desc>
+            <p>Start day of performance fees. If it is changed, it can be either today or greater than today.</p>
+        </desc>
+</t>
+<t>
+<field>INT.RECD.CAT</field>
+<desc>
+            <p>Specifies the CATEGORY code to which Interest Receivable accounting entries will be posted.</p>
+            <p>                    This field is used to advise T24 of 2 things :</p>
+            <p>                    1. The IENC Asset type (within CONSOLIDATED.ASST.LIAB) 2. The P/L category to which the daily accruals are to be posted</p>
+            <p>                    Must be in a valid P&amp;L category</p>
+            <p>                    NOTE that you may elect to have the daily interest accruals posted to an internal account rather than P/L. This is specified in the fields INT.PAID.ACCOUNT and INT.RECD.ACCOUNT.</p>
+            <p>                    Whichever option you decide, you will still be required to populate this field.</p>
+            <p>                    Must be a valid P&amp;L Category</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    5 Numeric characters. (Optional input) (No Change field)</p>
+            <p>                    Must exist on CATEGORY table.</p>
+            <p>                    If a value has been entered in the "DEALER.BOOK" field then a CATEGORY must be entered in this field otherwise this field must be left blank.</p>
+        </desc>
+</t>
+<t>
+<field>MARGIN.VALUE</field>
+<desc>
+            <p>Where the client is allowed a margin facility, this is the calculated margin value of the securities held.</p>
+            <p>                    This field is automatically updated every time a valuation is printed for this portfolio.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Standard Amount format (Internal field)</p>
+        </desc>
+</t>
+<t>
+<field>MAINT.MARGIN.AMT</field>
+<desc>
+            <p> Amount calculated using MAINT.MARGIN field in OV.PARAMETER applied on the total of MARGIN.VALUE, SHORT.POS.MGN.AMT and LOAN.MARGIN.AMT .</p>
+            <p> Value will be held in reference currency. Amount will be compared against the MARGIN.VALUE field to trigger margin call </p>
+        </desc>
+</t>
+<t>
+<field>REFERENCE.CURRENCY</field>
+<desc>
+            <p>Specifies the currency in which the Security Portfolio is to be maintained.</p>
+            <p>                    Any individual portfolio can only have one reference currency for valuation purposes.  Any securities valued within this portfolio will be converted into the reference currency for the estimation of portfolio value.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    3 Alphanumeric characters (Mandatory input)</p>
+            <p>                    Must exist on CURRENCY Code table.</p>
+        </desc>
+</t>
+<t>
+<field>CHECK.LIMIT</field>
+<desc>
+            <p>Input is only accepted for accounts where the DEALER.BOOK field is populated, i.e. the banks own books where a securities trading position is maintained.</p>
+            <p>                    A value of 'Y' indicates that Limits should be checked for all security trades for this book where the SECURITY.MASTER record has the LIMIT.REF field populated.</p>
+            <p>                    On first input of 'Y' limits will be checked and updated for all relevant trades on this book, when the record is authorised.</p>
+            <p>                    If this field is changed and was previously set to 'Y' then limits will be backed out for all trades on this book, when the record is authorised.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    One character of 'Y', 'N' or null. Optional Input. DEALER.BOOK must be populated.</p>
+        </desc>
+</t>
+<t>
+<field>PORTFOLIO.TYPE</field>
+<desc>
+            <p>Defines the portfolio type for Security Account.</p>
+            <p>                    In certain countries a different tax rate is applicable if Securities are bought or sold for investment or commercial purposes. This field will enable users to define SEC.ACC.MASTER portfolios as being for investment or commercial purposes.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    0 - 12 Alphabetic characters (Mandatory input if DEALER BOOK entered otherwise not allowed)</p>
+            <p>                    The user can only input a value in this field if the portfolio is a DEALER.BOOK portfolio.</p>
+            <p>                    Only the values INVESTMENT, TRADING or PLACEMENT can be entered in this field.</p>
+        </desc>
+</t>
+<t>
+<field>SHORT.POS.MGN.AMT</field>
+<desc>
+            <p> Total of all short positions margin from SC.POS.ASSET excluding accounts. </p>
+            <p>   Will be updated only if field ADJ.SHORT.POS is NO in OV.PARAMETER and INITIAL.MARGIN is set. </p>
+            <p>   Value will be held in reference currency.</p>
+        </desc>
+</t>
+<t>
+<field>F.FEE.LST.PY.DT</field>
+<desc>
+            <p>Date on which  fee was last paid.</p>
+            <p>             System populated.</p>
+            <p>             Standard T24 Date format.</p>
+            <p>             Fields from FUND.FEE.DESC to F.FEE.ACCR.AMT would be associated and multi-valued.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SAFEKEEPING.AMOUNT</field>
+<desc>
+            <p>Records amount to be charged if the amount calculated from "PERCENT.CHARGE" is lower than this amount.</p>
+            <p>                    Note:      When safekeeping charges are calculated using the            CUSTOMER.CHARGE records, then any value in this field            is ignored.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    0 - 12 numeric characters. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>FUND.ID</field>
+<desc>
+            <p>Fund id, currently unused by T24.</p>
+        </desc>
+</t>
+<t>
+<field>OLD.CCY.DATE</field>
+<desc>
+            <p>This is a multi valued field that will contain the contents of the PERFORM.DATE field before the new currency change over was effected.</p>
+        </desc>
+</t>
+<t>
+<field>F.FEE.ACCR.ACC</field>
+<desc>
+            <p>The account to which fee accruals would be posted. If this accrual has to affect the NAV, then this account needs to be included in ACCOUNT.NOS field of fund investment portfolio. The daily accruals would be posted to this account and on pay date, accruals would be reversed and posted to payable account of the portfolio. The contra entry for accruals would be to the charge account as defined in FT.COMMISSION.TYPE record attached.</p>
+            <p>             Valid ACCOUNT record</p>
+            <p>             Fields from FUND.FEE.DESC to F.FEE.ACCR.AMT would be associated and multi-valued.</p>
+            
+        </desc>
+</t>
+<t>
+<field>MT536.FREQUENCY</field>
+<desc>
+            <p>This field specifies the frequency for generating MT536 message for the portfolio. Only those transactions that are inputted after setting up the frequency in this field will be included in the message.</p>
+            
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Standard frequency field.</p>
+            <p>       Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>CLOSURE.DATE</field>
+<desc>
+            <p>The date when the Security Account is to be closed.</p>
+            <p>                    N.B. This date can not be changed once authorised.</p>
+            <p>                    If a date is entered in this field then the Safekeeping Charges and Management fees will be calculated and posted on that date.</p>
+            <p>                    If no account has been set in the SAFEKEEP.CHARG.ACC field then an override is issued stating</p>
+            <p>                    FEES WILL BE POSTED TO SUSPENSE.</p>
+            <p>                    However if there has are any unposted Outstanding Safekeeping Charges or Management Fees then an</p>
+            <p>                    Override message of SAFE CUSTODY FEES NOT POSTED or MANAGEMENT FEES NOT POSTED is produced.</p>
+            <p>                    An override message of NO ACCOUNTS ON PORTFOLIO will be generated if CLOSURE.DATE</p>
+            <p>                    is entered and the ACCOUNT.NOS field is null.</p>
+            <p>                    The system checks to see if there are any unsettled Corporate Action Entitlements, unsettled</p>
+            <p>                    Trades or unsettled Transfers In of Stock then the system issues an override of</p>
+            <p>                    UNSETTLED TRANSACTION followed by the transaction key.</p>
+            <p>                    The system also checks for the following cases and issues Overrides when there is an</p>
+            <p>                    Outstanding Corporate Actions on the closing Portfolio</p>
+            <p>                    OUTSTANDING CORPORATE ACTION followed by the transaction key</p>
+            <p>                    Outstanding Orders on the closing Portfolio</p>
+            <p>                    OUTSTANDING ORDER followed by the transaction key.</p>
+            <p>                    Unauthorised SEC.TRADE, SECURITY.TRANSFER or DIARY</p>
+            <p>                    UNAUTHORISED TRANSACTION followed by the transaction key.</p>
+            <p>                    Or OUTSTANDING CORPORATE ACTION followed by the transaction key.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Standard date format. (Optional input)</p>
+            <p>                    No change field</p>
+        </desc>
+</t>
+<t>
+<field>F.FEE.ACCR.AMT</field>
+<desc>
+            <p>Specifies the fee accrual amount. </p>
+            <p>             System populated.</p>
+            <p>             Standard T24 Amount format.</p>
+            <p>             Fields from FUND.FEE.DESC to F.FEE.ACCR.AMT would be associated and multi-valued.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MIS.INTEREST.RATE</field>
+<desc>
+            <p>   Identifies the refinancing rate for the corresponding</p>
+            <p>    transaction.  It will be used to determine the Management</p>
+            <p>    Information System (M.I.S) Customer Profitability</p>
+            <p>    Analysis.</p>
+            <p />
+            <p>    Thus the User should input the rate at the contract level when the</p>
+            <p>    individual refinancing rate is available.</p>
+            <p />
+            <p>    This would be the case, for example, for contracts which have been</p>
+            <p>    MATCHED or for contracts where the Marketing Department has agreed</p>
+            <p>    with the Treasury Department on a particular Cost-of-Funds Rate.</p>
+            <p>    The rate will be entered as a FIXED Interest Rate Type.  It should</p>
+            <p>    normally be greater than the contract interest rate for Deposits and</p>
+            <p>    smaller than the contract interest rate for Placements.</p>
+            <p>    The system will use the Pool Rate when this field and the M.I.S.</p>
+            <p>    INTEREST KEY field are not present.</p>
+            <p />
+            <p>    Note:      Default means that no input was made in the M.I.S.</p>
+            <p>               INTEREST KEY nor in the M.I.S. Interest Rate.</p>
+            <p />
+            <p>               The input will be entered in the M.I.S. Interest Key or in</p>
+            <p>               the M.I.S. Interest Rate depending on whether the User</p>
+            <p>               wants to input an interest key or a rate.</p>
+            <p />
+            <p>    This field may be changed at any time during the life of the contract but</p>
+            <p>    will take effect from the current month unless accruals had not yet been</p>
+            <p>    performed on the particular contract (back-value initiation).</p>
+            <p>   __________________________________________________</p>
+            <p />
+            <p>       (1) 1 to 10 Numeric characters plus a decimal point (Standard</p>
+            <p>           rate format 6.9).</p>
+            <p>           (Optional input; Default value = None).</p>
+            <p />
+            <p>       (2) Input in this field will only be accepted if the</p>
+            <p>           M.I.S. Interest key was left blank.</p>
+            <p />
+            <p>       (3) Input will also be accepted for the account</p>
+            <p>           receivable and sundry contract types.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>UNREAL.FX.PRT</field>
+<desc>
+            <p> If specified, the revaluation gain on account of exchange rate movements will be posted to this category account else will be posted to existing UNREAL PL CAT PRT category account. </p>
+            <p> Input can only be internal account category.</p>
+        </desc>
+</t>
+<t>
+<field>END.PERFORM</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Up to 9 date (type 'D') characters.</p>
+        </desc>
+</t>
+<t>
+<field>MT536.RECIPIENT</field>
+<desc>
+            <p>SWIFT address of the recipients of the statement of transactions.</p>
+        </desc>
+</t>
+<t>
+<field>SAFEKEEP.ACCR.ACCT</field>
+<desc>
+            <p>The suspense account to be used for posting fees. If specified, the currency of the internal account must be the same as reference currency. If not, the account is defaulted from the ACCRUAL CATEG defined in SAFECUSTODY.VALUES</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Valid internal account</p>
+        </desc>
+</t>
+<t>
+<field>RECLASS.DATE</field>
+<desc>
+            <p> RECLASS.DATE field holds Today date and the fields UNREAL.PL.CAT.PRT, UNREAL.PL.CAT.LOSS will allow Internal categories when RECLASSIFICATION is set YES.</p>
+        </desc>
+</t>
+<t>
+<field>MV.ALERT.RES6</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>WASH.PORTFOLIO</field>
+<desc>
+            <p>Yes or No field used to denote if corporate actions processing is required for this Portfolio.</p>
+        </desc>
+</t>
+<t>
+<field>PORT.CLASS.TYPE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>SAFE.LAST.RUN</field>
+<desc>
+            <p>Records the last time that Safecustody fees were calculated for the portfolio.</p>
+        </desc>
+</t>
+<t>
+<field>DIV.ACCR.TYPE</field>
+<desc>
+            <p>Dividend accrual type, either NET or GROSS.</p>
+        </desc>
+</t>
+<t>
+<field>OLD.CCY.WITHDR</field>
+<desc>
+            <p>This is a multi valued field that will contain the contents of the WITHDRAWALS field before the new currency change over was effected.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    No Input Allowed</p>
+        </desc>
+</t>
+<t>
+<field>DISCSOLD.TO.REALPL</field>
+<desc>
+            <p>Flag for posting discount accrued, which has been sold, to realised P &amp; L.</p>
+            <p>                    When a sale transaction is entered, if any discount has been accrued/amortised prior to the sale, then a proportion of this amount is calculated based on the quantity sold over the stock purchased.</p>
+            <p>                    This amount will then be debited from the discount provision P &amp; L and the Realised P &amp; L will be credited if this field is set to "Y".</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    "Y", "NO" or Null may be entered. (Optional input)</p>
+            <p>                    This field becomes mandatory if this is a dealer book portfolio, otherwise it must be kept null.</p>
+        </desc>
+</t>
+<t>
+<field>ACCRUE.DISCOUNT</field>
+<desc>
+            <p>Input determines whether a discounted bond will be accrued/amortised or not.</p>
+            <p>                    This is a Y or NO flag which is used to accrue/amortise discounted instruments for the banks own portfolio.  If it is left blank then the true discounts will not be calculated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Valid input is Y or NO (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>POST.UNREAL.PL</field>
+<desc>
+            <p>Defines whether post unrealised profits and/or loss for this portfolio are to be posted.</p>
+            <p>                    This flag indicates how unrealised profit and losses for this own book portfolio is to be handled.</p>
+            <p>                    Value "BOTH" means that unrealised profits and unrealised losses are to be posted.</p>
+            <p>                    Value "LOSS" means that unrealised losses are to be posted, while unrealised profits are not posted.</p>
+            <p>                    Value "RVAL" means that unrealised losses are to be posted using the REVALUATION.PRICE held on the SC.TRADING.POSITION (the lowest recorded market price)</p>
+            <p>                    Value "LOWER.COST" indicates that the underlying position will always be carried at either the cost price or market price - whichever is lowest.</p>
+            <p>                    Value "NONE" means that unrealised profits and unrealised loss are not to be posted.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Input only allowed for DEALER.BOOK portfolios</p>
+            <p>                    Only "BOTH", "LOSS", "RVAL", "LOWER.COST" or "NONE" can be entered in this field.</p>
+            <p>                    If REVALUATION is "NO" then this field must be         "NONE".</p>
+            <p>                    If REVALUATION is "Y" then this field must be         "BOTH", "RVAL", "LOWER.COST" or "LOSS"</p>
+        </desc>
+</t>
+<t>
+<field>MT536.LAST.SENT.DT</field>
+<desc>
+            <p>Specifies the date and time of the last generated MT536 message. This field is automatically updated by the system upon generation of every message. Initially this field gets updated with the date and time at which MT536.FREQUENCY is set.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Single value and No input field.</p>
+        </desc>
+</t>
+<t>
+<field>UNREAL.PL.CAT.LOSS</field>
+<desc>
+            <p>Specifies the CATEGORY Code to which unrealised loss accounting entries will be posted.</p>
+            <p>If PORTFOLIO.TYPE is set as AVAIL.SALE then an Internal category account is allowed.</p>
+            <p>Otherwise a P/L Category must be specified.</p>
+            <p>Must be in the range 50000 - 59999.</p>
+            <p />
+            <p />
+            <p>This field is mandatory for dealer book if POST.UNREAL.PL is set to BOTH or LOSS otherwise input is not allowed. </p>
+            <p>A dealer book portfolio is a bank's own portfolio and is denoted by an input having been made in the DEALER.BOOK field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>5 Numeric characters.</p>
+            <p>Any input made must exist on the CATEGORY file.</p>
+        </desc>
+</t>
+<t>
+<field>OLD.CCY.VALUE</field>
+<desc>
+            <p>This is a multi valued field that will contain the contents of the COMPARE.VALUE field before the new currency change over was effected.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    No Input Allowed</p>
+        </desc>
+</t>
+<t>
+<field>EXT.VALUATION.AMT</field>
+<desc>
+            <p>Holds valuations amount pertaining to external custody positions. Will be updated on running valuation from SC.POS.ASSET if there is a value in field EXT.CUSTODIAN.</p>
+        </desc>
+</t>
+<t>
+<field>COMPARE.FREQ</field>
+<desc>
+            <p>The frequency of the comparison with model for this portfolio. Used by AM.BATCH.COMPARE batch job.</p>
+            <p>                    This field consists of two components as follows -</p>
+            <p>                    1) Next Statement Date: 1-9 Date characters. The default value calculated by the system depending on the frequency.</p>
+            <p>                    2) Frequency: 1-5 type SS (uppercase alpha or numeric, first character alpha) characters.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>                    Input only allowed if the Asset Management product is install.</p>
+            <p>                    Standard T24 frequency field.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRIBUTIONS</field>
+<desc>
+            <p>Details any additional contributions made to this portfolio that will affect profit and loss figures and more importantly the performance of the account executive.</p>
+            <p>                    The information is recorded at inception of the portfolio and monthly for the last 12 months.</p>
+            <p>                    Multi-value 1 contains the inception details. Multi-values 2-13 contain the last 12 month's details.</p>
+            <p>                    Each multi-value contains the cumulative contributions for the 12 months (or since inception) up to the "PERFORM.DATE".</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Standard Amount format. Multi-valued field associated with fields "PERFORM.DATE" and "WITHDRAWALS" to COMPARE.VALUE (No input field)</p>
+        </desc>
+</t>
+<t>
+<field>ASSET.CAT</field>
+<desc>
+            <p>Specifies the account to which the entries relating to assets purchased and sold within this portfolio will be posted. This may be a CATEGORY code or CRF00 for posting to the CONSOLIDATE.ASST.LIAB.</p>
+            <p>                    Must be in range 10000 - 19999 or CRF00</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    5 Alphanumeric characters.</p>
+            <p>                    If Numeric, input must exist on the CATEGORY table.</p>
+            <p>                    If a value is entered in the "DEALER.BOOK"         field then a CATEGORY code or CRF00 must be entered in         this field, otherwise this field must be left blank.</p>
+        </desc>
+</t>
+<t>
+<field>EVENT</field>
+<desc>
+            <p>This field is defaulted with the ID of the TEC.ITEMS that are subscribed by the customer through EB.ALERT.REQUEST application.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.OF.VALUATION</field>
+<desc>
+            <p>Specifies the last date a valuation was printed for this portfolio.</p>
+            <p>                    This field is automatically updated every time a valuation is printed for this portfolio.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Standard date format (Internal field)</p>
+        </desc>
+</t>
+<t>
+<field>DAILY.POST.DATE</field>
+<desc>
+            <p>Day number for appearance of fees, only valid when using daily accruals and if company calc is set to N</p>
+        </desc>
+</t>
+<t>
+<field>REVALUATION</field>
+<desc>
+            <p>Holds a flag to determine whether or not stock will be revalued and then unrealised profit or loss will be calculated.</p>
+            <p>                    The current stock will be revalued and an unrealised profit or loss will be calculated based on the last price on the Security Master record.</p>
+            <p>                    Any discount accrued or amortised will be deducted from the amount calculated.</p>
+            <p>                    Only used by Dealer Book portfolios.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Valid input is "Y" or "NO".</p>
+            <p>                    Input is mandatory if the dealer book field is not null, otherwise input is not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>MIS.COF.DEPT</field>
+<desc>
+            <p>FUNDING.DEPT for the Additional COF type given in above related field </p>
+            <p> MIS.COF.TYPE</p>
+            <p>    __________________________________________________</p>
+            <p />
+            <p>        (1) 1 - 4 Digit numeric field. Must be the key to a valid record on the</p>
+            <p>              DEPT.ACCT.OFFICER file.</p>
+            <p />
+            <p>        (2) Mandatory when MIS.COF.TYPE and MID.COF.RATE is given</p>
+            <p />
+            <p>        (3) Fields MIS.COF.TYPE, MIS.COF.RATE and MIS.COF.DEPT</p>
+            <p>             are associated multi value fields</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MT536.LAST.STMT.NO</field>
+<desc>
+            <p>Specifies the statement number of the previously generated message for the portfolio.                            </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Single value and No Input field which gets incremented when a MT536 message is generated.</p>
+        </desc>
+</t>
+<t>
+<field>COUPON.TAX.STATUS</field>
+<desc>
+            <p>Specifies the coupon tax status of the portfolio.  This field and two other fields on COUPON.TAX.CODE (TAX.TO.BE.PAID and TAX.RECOVERABLE) determine whether coupon tax should be deducted or not. Please refer to User Guide for more information.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Optional input field.</p>
+            <p>                    Input must be either EXEMPT or NON.EXEMPT.</p>
+        </desc>
+</t>
+<t>
+<field>REAL.PL.CAT.LOSS</field>
+<desc>
+            <p>Specifies the CATEGORY Code to which realised loss accounting entries will be posted.</p>
+            <p>                    Must be in the range 50000 - 59999.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    5 Numeric characters.</p>
+            <p>                    Any input must exist on the CATEGORY file.</p>
+            <p>                    If the portfolio is a dealer book portfolio then this field is mandatory otherwise input is not allowed. (A dealer book portfolio is a banks own portfolio denoted by input being made into the DEALER.BOOK field).</p>
+        </desc>
+</t>
+<t>
+<field>ADDNL.MGN.DATE</field>
+<desc>
+            <p>Date on which additional margin call is breached.</p>
+        </desc>
+</t>
+<t>
+<field>PORTFOLIO.FEES</field>
+<desc>
+            <p>Field indicating whether portfolio fees are calculated automatically, manually or not at all.</p>
+            <p>                    If this field is set to NONE no Management or Safecustody fees will be calculated for this portfolio.</p>
+            <p>                    If this field is set to 'MANUAL' then the user will calculate the Management and Safecustody fees manually.</p>
+            <p>                    If this field is set to 'AUTOMATIC' then the system will automatically calculate the Management and Safecustody fees on the dates given in the ADVISORY.FREQ and SAFECUSTODY.FREQ fields respectively.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Input only allowed for customer portfolios.</p>
+            <p>                    Only input of 'AUTOMATIC', 'MANUAL' or 'NONE' allowed.</p>
+            <p>                    Will default to AUTOMATIC.</p>
+        </desc>
+</t>
+<t>
+<field>ADVISORY.ACCR.ACCT</field>
+<desc>
+            <p>Insert text here</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Rule 1</p>
+            <p>                    Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>UNREAL.FX.LOSS</field>
+<desc>
+            <p>If specified, the revaluation loss on account of exchange rate movements will be posted to this category account else will be posted to existing UNREAL PL CAT LOSS  category account.</p>
+            <p> Input can only be internal account category. </p>
+        </desc>
+</t>
+<t>
+<field>RECLASSIFICATION</field>
+<desc>
+            <p> RECLASSIFICATION is set only for Dealer book portfolio and specifies whether portfolio is reclassified or not.</p>
+            <p> Inputtable values are YES or NO.</p>
+            <p> If YES,Fields POST.DISC.UPFRONT, UNREAL.LOSS.PROV, UNREAL.PROFIT.SUSP can be allowed to change.</p>
+            <p> Reclassification has to be done only once in a day.</p>
+            <p> POST.DISC.UPFRONT field cannot be allowed to change from "NO" to "YES", When Reclassification is set to YES.</p>
+        </desc>
+</t>
+<t>
+<field>TOP.UP.MARGIN.AMT</field>
+<desc>
+            <p> Margin amount calculated using TOP.UP.MARGIN specified at various levels. </p>
+            <p> Will be compared against the field LOAN.MARGIN.AMT before triggering a margin call. Value will be held in reference currency </p>
+        </desc>
+</t>
+<t>
+<field>WR.REPORTING</field>
+<desc>
+            <p>Denotes whether the WR (Wealth Reporting) product will generate reports for this portfolio or not.  If this flag is set, this portfolio will be included in report data generation for WR, otherwise it will be ignored.</p>
+            <p />
+            <p>If the WR module has not been installed for the current company, this flag has no effect, and setting the flag will generate an appropriate error.</p>
+        </desc>
+</t>
+<t>
+<field>INVESTMENT.PROGRAM</field>
+<desc>
+            <p>Identifies the investment policy followed by the Account.Officer e.g. High performance, Low risk etc.</p>
+            <p>                    Note: This field can be linked to reports and valuations for analysis and comparison.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    1 - 12 characters (Mandatory input). Must exist on the INVESTMENT.PROGRAM file.</p>
+        </desc>
+</t>
+<t>
+<field>PERFORM.DATE</field>
+<desc>
+            <p>Specifies the date to which the details in the "CONTRIBUTIONS", "WITHDRAWALS", "INVESTED.CAPL" and "COMPARE.VALUE" fields relate.</p>
+            <p>                    The information is recorded at inception of the portfolio and monthly for a previous number of months as specified in the PERFORM.MONTHS field on the SC.PARAMETER record for the company.</p>
+            <p>                    Multi-value 1 contains the inception details. Further multi-values contain previous month's details.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Standard date format. Multi-valued field associated with         fields "CONTRIBUTIONS" to         "COMPARE.VALUE". (No Input field)</p>
+        </desc>
+</t>
+<t>
+<field>OLD.CCY.INV.CAP</field>
+<desc>
+            <p>This is a multi valued field that will contain the contents of the INVESTED.CAPL field before the new currency change over was effected.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    No Input Allowed</p>
+        </desc>
+</t>
+<t>
+<field>JOINT.HOLDER</field>
+<desc>
+            <p>This field can be used to associate a Customer to this Portfolio as a Joint Holder.  No Special Validation is done and this field is merely for Reporting Purposes.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Should be a valid Customer</p>
+            <p>                    Cannot be same as the Portfolio Customer</p>
+        </desc>
+</t>
+<t>
+<field>DISC.TYPE</field>
+<desc>
+            <p>This would specify whether discount, if any, is in terms of percentage or amount</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>               Allowed values are "PERCENTAGE" or "AMOUNT"</p>
+            <p>               Fields from FUND to DISC.AMT would be associated multi-value fields and fields from TRANS.TYPE to DISC.AMT would be associated sub value fields.  </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TAX.RECLAIMED.CAT</field>
+<desc>
+            <p>Specifies the CATEGORY code to which tax reclaimed will be posted.</p>
+            <p>                    Must be in the range 10000 - 19999.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    5 Numeric characters. (Optional input)</p>
+            <p>                    Must exist on CATEGORY table.</p>
+            <p>                    If a value has been entered in the "DEALER.BOOK" field then a CATEGORY must be entered in this field otherwise this field must be left blank.</p>
+        </desc>
+</t>
+<t>
+<field>START.PERFORM</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Up to 9 date (type "D") characters.</p>
+        </desc>
+</t>
+<t>
+<field>PF.FEES.TYPE</field>
+<desc>
+            <p>Link to AM.PF.FEES.TYPE.</p>
+        </desc>
+</t>
+<t>
+<field>EXT.CUSTODIAN</field>
+<desc>
+            <p>To identify external custodian where position is held.</p>
+        </desc>
+</t>
+<t>
+<field>IMPAIRMENT.CATEG</field>
+<desc>
+            <p>Profit and loss category to be posted for impairment.</p>
+            <p> Mandatory, if IMPAIRMENT set to YES </p>
+        </desc>
+</t>
+<t>
+<field>FUND.FEE.DESC</field>
+<desc>
+            <p>Description of charges to be levied on the fund</p>
+            <p>             eg:- Trustee Fees, Management Fees etc.</p>
+            <p>             Input allowed only if LINK.FUND is set.</p>
+            <p>             Free format text. Upto 35 Alpha numeric characters.</p>
+            <p>             Fields from FUND.FEE.DESC to F.FEE.ACCR.AMT would be associated and multi-valued.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PORT.COMP.ID</field>
+<desc>
+   <p>Denotes the company in which security transaction will happen for a portfolio, only set when the file is shared across companies.</p>
+            <p>The field will be defaulted from HUB.COMPANY of SC.PARAMETER</p>
+            <p> 
+                <p>Validation Rules:</p>
+            </p>
+            <p>                Allowed only when SEC.ACC.MASTER is shared.</p>
+            <p>                Accepts a valid company code.</p>
+            <p>                The field will not accept a company to which SEC.ACC.MASTER is not shared.</p>
+        </desc>
+</t>
+<t>
+<field>UNREAL.LOSS.PROV</field>
+<desc>
+            <p>Specifies the CATEGORY code to which loss provision will be posted for this portfolio.</p>
+            <p>                    Only valid for dealer book portfolios which have Revaluation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    5 Numeric characters. (Optional input)</p>
+            <p>                    Any input must exist on CATEGORY table and be in the range 10000 - 19999.</p>
+            <p>                    If a value has been entered in the DEALER.BOOK field and the REVALUATION field has been set to 'Y' then this field is mandatory otherwise input is not allowed.  If value is entered in this field then the unrealised losses is posted to this provision account else to CRB or ASSET.CAT Is a NOCHANGE field if instruments are traded in this Book.</p>
+        </desc>
+</t>
+<t>
+<field>OPERAND</field>
+<desc>
+            <p>This field will be defaulted with the operand given in 'OPERAND' of TEC.ITEMS.</p>
+        </desc>
+</t>
+<t>
+<field>VALUATION.AMT</field>
+<desc>
+            <p>Contains the valuation of the portfolio in the reference currency.</p>
+            <p>                    This field is automatically updated every time a valuation is printed for this portfolio.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Standard amount format (multi-valued field) (Internal field)</p>
+        </desc>
+</t>
+<t>
+<field>REVAL.POST.METHOD</field>
+<desc>
+            <p>Defines the portfolio unrealised revaluation posting method.</p>
+            <p>                    Two different methods can be adopted in posting the reval amounts. 1. Reverse previous day reval amount &amp; Post current day's reval . 2. Post only the difference in previous days reval and current day's    reval amount.    There are 2 different methods under ADJ,     i)  If the unrealised profit &amp; loss categories are diff.    ii)  If the categories are same.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Valid values are null, I/O &amp; ADJ. If null or I/O posting is done as in 1 explained above. If ADJ, posting is as explained in 2.</p>
+            <p>                    The user can only input a value in this field if the portfolio is a DEALER.BOOK portfolio.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>SAFECUSTDY.FEES</field>
+<desc>
+            <p>Multi-valued no input field associated with the MONTH.END.DATE and ADVISORY.FEES fields to form a multi-valued set of fields containing the fees due from the portfolio but not yet taken.</p>
+            <p>                    Where SAFECUSTODY.VALUES&gt;PERFORM.ACCRUAL for Charge.Type 'SC' is set to "MONTHLY", this field will contain the Safecustody Fees due for each of the months in the associated MONTH.END.DATE field. This field will be cleared down when the fees are taken and the SAFEKEEP.HOLDING record for the portfolio is updated with them.</p>
+            <p>                    Only updated for customer portfolios where the PORTFOLIO.FEES field is AUTOMATIC.</p>
+            <p>                    Not updated by DAILY accrual</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    No input field, automatically updated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>VALUATION.CURRENCY</field>
+<desc>
+            <p>Identifies the currency in which the valuation reports are printed.</p>
+            <p>                    When producing the valuation reports, the amounts printed will be converted to this currency if it is present.  If the value in this field is null then the reference currency will be used to produce the reports.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    3 characters  currency code (Optional input)</p>
+            <p>                    Must be present on the CURRENCY file.</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.DEPO</field>
+<desc>
+            <p>Individual portfolio default depository level.</p>
+            <p>                    Can be a multi-valued field to enable correct depository default.</p>
+            <p>                    If this field is populated with a depository and the conditions are met in the below associated fields this depository will override any depositories specified in the SECURITY.MASTER, CUTOMER.SECURITY and the current holdings functionality in (SEC.OPEN.ORDER).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Input is optional</p>
+            <p>                    Input restricted to customers defined as depositories on the CUSTOMER.SECURITY file</p>
+            <p>                    Right click on the field to display an enquiry with a list of all the depositories defined on CUSTOMER.SECURITY</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT</field>
+<desc>
+            <p>Reserved for future use.</p>
+        </desc>
+</t>
+<t>
+<field>CNT.REAL.PL.CAT.PR</field>
+<desc>
+            <p>This field represents the Category to which Contingent Profit entries have to be posted till the value date.</p>
+            <p>                    For a forward dated Dealer book Trade which has a profit attached to it, an entry will be raised only on the Value Date.</p>
+            <p>                    (When the field TRADE.SETTLE.ACCTG is set as "SETTLEMENT" in SC.STD.SEC.TRADE)</p>
+            <p>                    This functionality will enable posting of the profit on the Trade to this Contingent bucket until value date when the entry will be reversed and the profit will be posted to the original bucket.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    VALID INPUT - Profit and Loss categories between 52-000         and 59-999</p>
+            <p>                    INPUT allowed only if the Portfolio is an own Book         Portfolio and the field POST.CONT.REAL.PL is set to "YES"         in SC.STD.SEC.TRADE</p>
+        </desc>
+</t>
+<t>
+<field>PF.FEES.ACCR.LCY</field>
+<desc>
+            <p>Accrued fees in local currency. System generated.</p>
+        </desc>
+</t>
+<t>
+<field>OPENING.DATE</field>
+<desc>
+            <p>The date on which to portfolio was opened.</p>
+        </desc>
+</t>
+<t>
+<field>EXTERNAL.ACC.NO</field>
+<desc>
+            <p>Multivalue field to store and record extra notational information regarding Settlement Instructions, Delivery and Payment etc.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    0 - 35 Alphanumeric characters. (Optional Input)</p>
+        </desc>
+</t>
+<t>
+<field>SAFE.GROUP.PORT</field>
+<desc>
+            <p>If the portfolio belongs to a group as specified in SC.FEE.GROUP then the primary portfolio will be shown here.</p>
+        </desc>
+</t>
+<t>
+<field>CPN.ADJ.DR.CAT</field>
+<desc>
+            <p>Specifies the CATEGORY code to which Adjustments in respect of coupons payable will be posted.</p>
+            <p>                    Must be in the range 10000 - 19999.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    5 Numeric characters. (Optional input)</p>
+            <p>                    Must exist on CATEGORY table.</p>
+            <p>                    If a value has been entered in the "DEALER.BOOK" field then a CATEGORY must be entered in this field otherwise this field must be left blank.</p>
+        </desc>
+</t>
+<t>
+<field>SAFEKEEP.CCY</field>
+<desc>
+            <p>Currency of the "SAFEKEEP.CHRG.ACC".</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    3 Alphabetic characters (No input field)</p>
+        </desc>
+</t>
+<t>
+<field>TAX.PAYABLE.CAT</field>
+<desc>
+            <p>Specifies the tax payable category for the gross-up entry where the instrument is traded net of coupon tax and coupon receivable is gross of coupon tax because of the customer's tax status.</p>
+            <p>                    This field is used to form the internal account number for the gross up tax entry.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Optional input field.</p>
+            <p>                    Mandatory field if COUPON.TAX.STATUS is defined.</p>
+            <p>                    Must be a valid CATEGORY code.</p>
+        </desc>
+</t>
+<t>
+<field>MANAGED.ACCOUNT</field>
+<desc>
+            <p>Defines the management regime to be applied to this portfolio.  (e.g. Does the Account Executive have a Client's mandate to execute order or conduct business on his client's behalf).</p>
+            <p>                    Example:   1    = Nondiscretionary Account            DIS  = Discretionary Account</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    1 - 5 Alphanumeric characters (Mandatory Input)</p>
+            <p>                    Must exist on MANAGED.ACCOUNT file.</p>
+        </desc>
+</t>
+<t>
+<field>OLD.REFERENCE.CCY</field>
+<desc>
+            <p>This field will contain the old reference currency that the record used to be populated with before the change over to the new currency was effected.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    No Input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>JOINT.NOTES</field>
+<desc>
+            <p>General Notes on the Joint Holder</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Optional Field</p>
+            <p>                    Will be allowed INPUT only if an Holder is INPUT</p>
+        </desc>
+</t>
+<t>
+<field>CLEAN.BOOK.COST</field>
+<desc>
+            <p>Indicates whether the amount traded is the amount traded plus costs to be posted to CRF.</p>
+            <p>                    The Y or NO flag determines how the amount to be posted to the customers account is to be calculated.  If flag is set to "Y" then the Gross amount Traded is the amount posted.  If Flag is "NO" then the Gross amount Traded plus any commissions and fees is the amount posted.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Y or NO are accepted as valid input (Optional input)</p>
+            <p>                    Input is mandatory only if the portfolio is a dealer book.</p>
+        </desc>
+</t>
+<t>
+<field>MIS.FUNDING.DEPT</field>
+<desc>
+            <p />
+            <p>    This field is used within the Management Information module to define the</p>
+            <p>    profit centre which funded this contract. It is used in the generation of</p>
+            <p>    cost of funds entries when either the MIS.INTEREST.KEY or</p>
+            <p>    MIS.INTEREST.RATE field is used.</p>
+            <p>    __________________________________________________</p>
+            <p />
+            <p>       (1) 1 - 4 Digit numeric field. Must be the key to a valid record on the</p>
+            <p>             DEPT.ACCT.OFFICER file.</p>
+            <p />
+            <p>       (2) Optional</p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>TRANS.TYPE</field>
+<desc>
+            <p>The transaction type for which this charge would be applicable. If ALL is specified, this charge would be applicable for all transaction types, if ALL.CREDIT is specified, this would be applicable for all credit (subscription) transactions, if ALL.DEBIT is specified, this would be applicable for all redemptions. By using different transaction types, it is possible to levy different charges for initial subscription, partial redemptions, full redemptions, switches, etc.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>               Allowed values are "ALL" or "ALL.CREDIT" or "ALL.DEBIT" or a valid SC.TRANS.NAME record</p>
+            <p>               Fields from FUND to DISC.AMT would be associated multi-value fields and fields from TRANS.TYPE to DISC.AMT would be associated sub value fields.  </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>APP.VALUE</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Input is optional and can be anything. If there is an input to field DEFAULT.DEPO, then input to this field becomes mandatory</p>
+        </desc>
+</t>
+<t>
+<field>MV.ALERT.RES2</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>F.FEE.PAY.DT</field>
+<desc>
+            <p>Date on which the fee would be paid. Defined as a frequency and would automatically be recycled by the system.</p>
+            <p>             Valid date with frequency - example, 20051231M0331</p>
+            <p>             Standard T24 Frequency format.</p>
+            <p>             Fields from FUND.FEE.DESC to F.FEE.ACCR.AMT would be associated and multi-valued.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DEALER.BOOK</field>
+<desc>
+            <p>Specifies that the portfolio is an "Own Account Trading/Investment" portfolio.</p>
+            <p>                    A customer record has to be set up for each own book portfolio and it is this customer number that is entered here.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    1 - 10 Numeric characters. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>NOMINEE.CUS.ID</field>
+<desc>
+            <p>Field used to record Nominee's Customer ID. </p>
+            <p>               ID of CUSTOMER record.</p>
+            <p>               Input allowed only if FUND.PORTFOLIO is set to "Y"</p>
+            <p>               Would be required only in cases when it differs from details specified in CUSTOMER.SECURITY.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RELATION.CODE</field>
+<desc>
+            <p>The Relation of the Joint Holder with Portfolio. Mandatory if Joint Holder is entered</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Should be a valid Relation from RELATION table</p>
+        </desc>
+</t>
+<t>
+<field>IMPAIRMENT</field>
+<desc>
+            <p> enable Impairment processing. Allowed value is YES</p>
+            <p> Can be set only if set at SC.PARAMETER level. </p>
+        </desc>
+</t>
+<t>
+<field>LOAN.MARGIN.AMT</field>
+<desc>
+            <p>Total of all account balances in the corresponding SC.POS.ASSET record. Value will be held in reference currency.</p>
+        </desc>
+</t>
+<t>
+<field>LINK.SEC.MASTER</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Up to 10 type "SEC" characters. Input must be an ID of a SECURITY.MASTER record. (Multivalue field)</p>
+        </desc>
+</t>
+<t>
+<field>CPN.RECEIVABLE.CAT</field>
+<desc>
+            <p>Specifies the CATEGORY code to which Coupons Receivable will be posted.</p>
+            <p>                    Must be in the range 10000 - 19999.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    5 Numeric characters. (Optional input)</p>
+            <p>                    Must exist on CATEGORY table.</p>
+            <p>                    If a value has been entered in the "DEALER.BOOK" field then a CATEGORY must be entered in this field otherwise this field must be left blank.</p>
+        </desc>
+</t>
+<t>
+<field>INT.PAID.CAT</field>
+<desc>
+            <p>Specifies the Category Code to which Interest Payable will be posted.</p>
+            <p>                    This field is used to advise T24 of 2 things :</p>
+            <p>                    1. The IENC Liability type (within CONSOLIDATED.ASST.LIAB) 2. The P/L category to which the daily accruals are to be posted</p>
+            <p>                    Must be in a valid P&amp;L category</p>
+            <p>                    NOTE that you may elect to have the daily interest accruals posted to an internal account rather than P/L. This is specified in the fields INT.PAID.ACCOUNT and INT.RECD.ACCOUNT.</p>
+            <p>                    Whichever option you decide, you will still be required to populate this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    5 numeric characters. Optional Input.</p>
+            <p>                    Must be Valid Category.</p>
+            <p>                    Not allowed if field 35 (DEALER.BOOK) not entered, otherwise must be entered.</p>
+        </desc>
+</t>
+<t>
+<field>COMPARE.VALUE</field>
+<desc>
+            <p>Details the portfolio valuation amounts to be used in comparison with the current portfolio value for portfolio performance evaluations.</p>
+            <p>                    The information is recorded at inception of the portfolio and monthly for the last 12 months.</p>
+            <p>                    Multi-value 1 contains the inception details. Multi-values 2-13 contain the last 12 month's details.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Standard Amount format. Multi-valued field associated with fields "PERFORM.DATE" to "INVESTED.CAPL". (No input field)</p>
+        </desc>
+</t>
+<t>
+<field>CAP.RECD.CAT</field>
+<desc>
+            <p>Specifies the Category Code to which the received accumulated capitalised interest is to be posted.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    5 numeric characters. Optional Input.</p>
+            <p>                    Must be between 52000-59999</p>
+            <p>                    Must be Valid Category.</p>
+            <p>                    Not allowed if field 35 (DEALER.BOOK) not entered, otherwise must be entered.</p>
+        </desc>
+</t>
+<t>
+<field>DIVERSIFICATION</field>
+<desc>
+            <p> Diversified margins will be used for computing the security value of the portfolio provided the portfolio has complied with the diversification criteria.This field will accept a value Y.</p>
+        </desc>
+</t>
+<t>
+<field>START.DATE</field>
+<desc>
+            <p>The date Security Account opened.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Standard date format.</p>
+        </desc>
+</t>
+<t>
+<field>SECURITIES.ACC.No.</field>
+<desc>
+            <p>Portfolio id. The key to the record.</p>
+        </desc>
+</t>
+<t>
+<field>REC.TAX.ACCRUAL</field>
+<desc>
+            <p>This field is used to specify whether the recoverable tax should be included in the valuation and performance calculation .</p>
+            <p>                    CUM  The recoverable Tax will be accumulated and shown in valuation files (SC.POS.ASSET and SC.VALUATION.EXTRACT) as field REC.TAX.CUM.AMT. This field will be reset to 0 when the Reset occurs through the EOD process EOD.RECOVERABLE.TAX. This option is</p>
+            <p>                    only available if AM is installed.</p>
+            <p>                    BOOK - The recoverable tax amount will be added to the valuation tables on the same day and will not be accumulated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Standard     T24 Amount (A) field.</p>
+            <p>                    Allowed     values are CUM_BOOK.</p>
+            <p>                    If     left Blank considered as BOOK.</p>
+        </desc>
+</t>
+<t>
+<field>MEMO.ACCOUNT</field>
+<desc>
+            <p>Indicates whether or not the portfolio is a MEMO account.</p>
+            <p>                    If "Y" is entered in this field then: </p>
+            <p>                       a)   Account numbers are not required.</p>
+            <p>                       b)   The customer will specify the accounting, for example in SEC.TRADE it will be necessary to specify the customer account manually and it may be an internal account.</p>
+            <p>                       c)   Gross and net costs will be updated.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    1 - 2 Alphabetic characters (Optional input) - Default value is NO</p>
+            <p>                    Only "Y" or "NO" may be entered in this field.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.CCY</field>
+<desc>
+            <p>Fields ACCOUNT.NOS to ACCOUNT.CCY form a related multi value set. Standard T24 currency field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    A maximum of 3 characters may be entered.</p>
+            <p>                    This is a NOINPUT field.</p>
+            <p>                    Must be the key to a valid entry on the CURRENCY file.</p>
+        </desc>
+</t>
+<t>
+<field>PF.ACCR.ACCT</field>
+<desc>
+            <p>Internal account to accrue fees.</p>
+        </desc>
+</t>
+<t>
+<field>MAINT.MGN.DATE</field>
+<desc>
+            <p>Date on which maitenance margin call is breached.</p>
+        </desc>
+</t>
+<t>
+<field>MV.ALERT.RES1</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>REVAL.FREQ</field>
+<desc>
+            <p>Indicates the frequency required to revalue the trading positions.</p>
+            <p>                    Revaluation of the banks own portfolio trading positions will be carried out based on the frequency entered.  This may be daily, weekly, monthly or yearly.  Accounting entries will be generated during the batch run, to post unrealised P/L entries based on current prices from the Security Master.  This will be rolled over at the requested frequency.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    17 characters frequency code.</p>
+            <p>                    Valid inputs are: B - Bank business date D - Daily W - Weekly T - Each twelfth month (year end) M - Monthly</p>
+            <p>                    Input only allowed if the portfolio is a Dealer Book portfolio with REVALUATION set to "Y".</p>
+        </desc>
+</t>
+<t>
+<field>SAFEKEEP.CHRG.ACC</field>
+<desc>
+            <p>Specifies the account to which all safecustody charges are to be posted.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    2 - 16 Numeric characters Customer Account number (Optional input)</p>
+            <p>                    Account number must have been entered in the "ACCOUNT NOS" field and therefore must be unique to this security account.</p>
+            <p>                    Input is not allowed if a value is entered in the "DEALER.BOOK" field.</p>
+        </desc>
+</t>
+<t>
+<field>AMORT.METHOD</field>
+<desc>
+            <p>When this field is set to PRICE, amortization calculation is based on difference between gross cost and true cost.  Gross cost is consideration amount calculated using excel price formula with current yield but settlement date as next business day. True cost is consideration amount using current price</p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p />
+            <p>This is no change field. </p>
+            <p>Accepts either PRICE or ""</p>
+            <p>Input to this field is valid only for COMPOUND method accrual. </p>
+        </desc>
+</t>
+<t>
+<field>INVESTED.CAPL</field>
+<desc>
+            <p>Details the average capital invested in this portfolio.</p>
+            <p>                    The information is recorded at inception of the portfolio and monthly for the last 12 months.</p>
+            <p>                    Multi-value 1 contains the inception details. Multi-values 2-13 contain the last 12 month's details.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Standard Amount format. Multi-valued field associated with fields "PERFORM.DATE" to "WITHDRAWALS" and "COMPARE.VALUE". (No input field)</p>
+        </desc>
+</t>
+<t>
+<field>NOMINEE.ADDR</field>
+<desc>
+            <p>Nominee's address is recorded here in case no customer record exists for the Nominee.</p>
+            <p>               Multi-value field. Free format text.</p>
+            <p>               Input allowed only if FUND.PORTFOLIO is set to 'Y'</p>
+            <p>               Would be required only in cases when it differs from details specified in CUSTOMER.SECURITY.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AGENT.CODE</field>
+<desc>
+            <p>The agent linked to the customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>               Must be a valid CUSTOMER.SECURITY record with AGENT flag set to 'Y'</p>
+            <p>               Input allowed only if FUND.PORTFOLIO is set to 'Y'</p>
+            <p>               Would be required only in cases when it differs from details specified in CUSTOMER.SECURITY.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>FACILITY</field>
+<desc>
+            <p> Maximum facility that bank will provide to increase buying power. Cannot exceed the related field in OV.PARAMETER. </p>
+            <p> Cannot be set without MARGIN.LENDING. Can be set only if setup at OV.PARAMETER.</p>
+        </desc>
+</t>
+<t>
+<field>UNREAL.PROFIT.SUSP</field>
+<desc>
+            <p>Specifies the CATEGORY code to which the provision for unrealised profits will be posted for this portfolio.</p>
+            <p>                    Must be in the range 10000 to 19999</p>
+            <p>                    Input only valid for Dealer Book portfolios that have revaluation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Any input must exist on CATEGORY table and be in the range 10000 to 19999</p>
+            <p>                    If a value has been entered in the DEALER.BOOK field and the REVALUATION field is set to 'Y' then this field is mandatory otherwise input is not allowed. "DEALER.BOOK" field then a CATEGORY must be entered in this field otherwise this field must be left blank.  If value is entered then unrealised profits are posted to this provision account, else profit is posted to CRB or ASSET.CAT based on CRF.POST flag in SC.STD.SEC.TRADE Is a NOCHANGE field if instruments are traded in this book.</p>
+        </desc>
+</t>
+<t>
+<field>DISC.AMT</field>
+<desc>
+            <p>This is either discount percentage or amount. If DISC.TYPE is blank, then this would be considered in terms of percentage. The discount would be limited to the extent of fees calculated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>               If DISC.TYPE is percentage, this should be 1- 100 ( %) else any numeric character indicating amount. Standard T4 Amount format.</p>
+            <p>               Fields from FUND to DISC.AMT would be associated multi-value fields and fields from TRANS.TYPE to DISC.AMT would be associated sub value fields.  </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MARGIN.LENDING</field>
+<desc>
+            <p> Allowed value is YES. Enable buying power calculation based on facility OR Margin. </p>
+            <p> Can be set only if setup in OV.PARAMETER </p>
+        </desc>
+</t>
+<t>
+<field>MIS.INTEREST.KEY</field>
+<desc>
+            <p>Identifies the Interest Key whose rate is used in Management Information System to calculate </p>
+            <p> Cost-of-Funds amount. </p>
+            <p />
+            <p />
+            <p>    __________________________________________________</p>
+            <p />
+            <p>       (1) 1-3 numeric characters.</p>
+            <p>           (Optional input.)</p>
+            <p />
+            <p>       (2) Once the contract has been authorised, this field cannot be</p>
+            <p>           amended.</p>
+            <p />
+            <p>       (3) Input in this field will only be allowed if MIS.INTEREST.RATE is</p>
+            <p>           blank</p>
+            <p />
+            <p>       (4) The key will be checked against the BASIC</p>
+            <p>           INTEREST table.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>MIS.COF.TYPE</field>
+<desc>
+            <p>Identifies the Additional Cost-of-Funds Type. </p>
+            <p />
+            <p> The value is checked against MI.COF.TYPE.</p>
+            <p />
+            <p> COF entries are raised for this Additional COF type, using the rate given in</p>
+            <p> MIS.COF.RATE</p>
+            <p>    __________________________________________________</p>
+            <p />
+            <p>       (1) Mandatory when MIS.COF.RATE and MIS.COF.DEPT is given</p>
+            <p />
+            <p>       (2) Fields MIS.COF.TYPE, MIS.COF.RATE and MIS.COF.DEPT</p>
+            <p>           are associated multi value fields</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.NOS</field>
+<desc>
+            <p>Identifies customer's account relating to this Security portfolio.</p>
+            <p>                    The account numbers in this field identify the account over which the account entries for this portfolios transactions are to be passed.</p>
+            <p>                    If only a GBP account is entered and client deals in DMK securities the System will default to the GBP account and use the standard exchange conversion rates to convert amount from DMK to GBP.</p>
+            <p>                    However if a GBP account and DMK account stored then the System will identify the DMK requirement and default to that account.</p>
+            <p>                    If an account number entered to this field, has been defined on a Security portfolio elsewhere, either for that customer, or for another (in the AC.DEF.SC.ACCT field), then the system will not allow for the account number to be used again.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Optional Input.</p>
+            <p>                    2 - 16 Numeric characters. Must be a valid      ACCOUNT number.</p>
+            <p>                    ACCOUNT must belong to the customer of the      portfolio.</p>
+            <p>                    If DEALER.BOOK field is entered then this      field will allow input only for an Internal Account.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Up to 35 Alphanumeric (type A) characters Multivalue, no input field.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.NAME</field>
+<desc>
+            <p>Contains the Security Account title.</p>
+            <p>                    The contents of this field are not automatically defaulted as for various reasons the portfolio name is likely to be more than just the customers name.</p>
+            <p>                    Example:   Examples of likely contents of this field for Mr Smith are:</p>
+            <p>                    Mr.John Smith's Portfolio Account.            Sterling Securities for Mr.J.Smith.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    1 - 35 Alphanumeric characters. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>EXT.ACCT.BANK</field>
+<desc>
+            <p>Name of bank with whom customer maintains an account.Customer ID of the bank needs to be specified here.</p>
+            <p>
+                <p>Validation Rules:</p>.</p>
+            <p>               Valid CUSTOMER ID of bank</p>
+            <p>               Input allowed only if FUND.PORTFOLIO is set to 'Y'</p>
+            <p>               Fields EXT.ACCT.NO to EXT.ACCT.CCY would be associated and multi valued. This would allow specification of different accounts for different currency.</p>
+            <p>               Would be required only in cases when it differs from details specified in CUSTOMER.SECURITY.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MARGIN.CALL.AMT</field>
+<desc>
+            <p>Difference between margin value, loan margin amount and sum of previous margin call amount maintained until loan amount is covered. Associated multivalue with MGN.CALL.EFF.DATE</p>
+        </desc>
+</t>
+<t>
+<field>CPN.PAYABLE.CAT</field>
+<desc>
+            <p>Specifies the CATEGORY code to which coupons payable will be posted.</p>
+            <p>                    Must be in the range 10000 - 19999.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    5 Numeric characters. (Optional input)</p>
+            <p>                    Must exist on CATEGORY table.</p>
+            <p>                    If a value has been entered in the "DEALER.BOOK" field then a CATEGORY must be entered in this field otherwise this field must be left blank.</p>
+        </desc>
+</t>
+<t>
+<field>PRODCAT</field>
+<desc>
+            <p>Category number, only populated for dealer books where ASSET.CAT is CRF00. Set to 22999.</p>
+        </desc>
+</t>
+<t>
+<field>DIV.ACC.MANDATORY</field>
+<desc>
+            <p>This field is no longer used in T24.</p>
+        </desc>
+</t>
+<t>
+<field>PF.FEES.LAST</field>
+<desc>
+            <p>Last date of fees calculation. System updated.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.OFFICER</field>
+<desc>
+            <p>Account officer for this portfolio.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.CODE</field>
+<desc>
+            <p>This is the ID of FT.COMMISSION.TYPE record where fee details are stored.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>               Must be a valid FT.COMMISSION.TYPE record</p>
+            <p>               Fields from FUND to DISC.AMT would be associated multi-value fields and fields from TRANS.TYPE to DISC.AMT would be associated sub value fields.  </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MV.ALERT.RES3</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>MARGIN.ALLOWED</field>
+<desc>
+            <p>Defines whether or not the client is entitled to a margin facility on the collateral value of this portfolio.</p>
+            <p>                 Only "Y", "NO"  or NONE can be entered in this field. Using Y or NO will calculate a margin value for the holding and this will be store in SC.POS.ASSET. Using NONE will use a margin value of zero which will be store in SC.POS.ASSET.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MV.ALERT.RES4</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>CARRY.LOSS</field>
+<desc>
+            <p>Default from AM.PF.FEES.CONFIG.</p>
+            <p />
+            <p>valid input Yes_No</p>
+        </desc>
+</t>
+<t>
+<field>FIELD</field>
+<desc>
+            <p>This field will be defaulted with the field name given in "FIELD" of TEC.ITEMS.</p>
+        </desc>
+</t>
+<t>
+<field>OLD.CCY.CONTRIB</field>
+<desc>
+            <p>This is a multi valued field that will contain the contents of the CONTRIBUTIONS field before the new currency change over was effected.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    No Input Allowed</p>
+        </desc>
+</t>
+<t>
+<field>EXT.ACCT.NO</field>
+<desc>
+            <p>Field used to record the external account number of the customer if the customer does not maintain an account with the entity.</p>
+            <p>               Free Format Alpha numeric.</p>
+            <p>               Input allowed only if FUND.PORTFOLIO is set to "Y"</p>
+            <p>               Fields EXT.ACCT.NO to EXT.ACCT.CCY would be associated and multi valued. This would allow specification of different accounts for different currency.</p>
+            <p>               Would be required only in cases when it differs from details specified in CUSTOMER.SECURITY.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXT.PORT.FLAG</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>REQUEST.ID</field>
+<desc>
+            <p>This field will be defaulted with ID of the EB.ALERT.REQUEST record, This indicates through which subscription ID the event was subscribed by the portfolio.</p>
+        </desc>
+</t>
+<t>
+<field>MONTH.END.DATE</field>
+<desc>
+            <p>Multi-valued no input field associated with the SAFECUSTDY.FEES and ADVISORY.FEES fields to form a multi-valued set of fields containing the fees due from the portfolio but not yet taken.</p>
+            <p>                    This field will contain the month end dates for which the fees dues are applicable.</p>
+            <p>                    Only updated for customer portfolios where the PORTFOLIO.FEES field is AUTOMATIC.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    No input field, automatically updated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>LINK.FUND</field>
+<desc>
+            <p>This field specifies the fund id that is linked to the Fund Investment Portfolio.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>               Valid MF.FUND.MASTER ID </p>
+            <p>               Cannot be set if FUND.PORTFOLIO is set to "Y"</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>FUND.PORTFOLIO</field>
+<desc>
+            <p>Field to identify that the portfolio is created for dealing in funds.</p>
+            <p>               "Y" would be the only value that could be input here.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ADVICE.INDEX</field>
+<desc>
+        <p>Description</p>
+        <p>Sends communication to clients, by their portfolio/portfolio groups. </p>
+        <p>It is achieved by mapping the field value of ADVICE.INDEX, with the DE.PRODUCT id of respectvie SEC.ACC.MASTER (Portfolio).</p>
+        <p>Validation:</p>
+        <p>
+            <p value="1">Up to 6 characters. </p>
+            <p value="2">Value specified will be used in deriving portfolio address.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>ADVISORY.ACCR.PL</field>
+<desc>
+        <p>Description</p>
+        <p>Specifies the Accrual PL category for Advisory.</p>
+    </desc>
+</t>
+<t>
+<field>INC.ACCOUNT.CCY</field>
+<desc>
+        <p>Specifies the currency of the income account.</p>
+        <p>Associated with <b>INC.ACCOUNT.NO</b>field.</p>
+        <p><b>INC.ACCOUNT.NO</b> and <b>INC.ACCOUNT.CCY</b> are associated multi-value fields to facilitate specification of default income accounts by currency. </p>
+        <p>The income account cannot be same as capital account which is linked to the portfolio (or any other portfolio). </p>
+        <p>An income account used in one portfolio cannot be used in another portfolio.</p>
+    </desc>
+</t>
+<t>
+<field>INC.ACCOUNT.NO</field>
+<desc>
+        <p>Specifies the account number to which the income and charges are posted (in case segregation is required).</p>
+        <p> If the <b>SEGREG.INCOME</b> or <b>SEGREG.CHARGE</b>is selected, then at least one income account must be specified in this field.</p>
+    </desc>
+</t>
+<t>
+<field>SAFEKEEP.ACCR.PL</field>
+<desc>
+        <p>Description</p>
+        <p>Specifies the Accrual PL category for Safekeep.</p>
+    </desc>
+</t>
+<t>
+<field>SEGREG.CHARGE</field>
+<desc>
+        <p>A Check Box field. </p>
+        <p>
+            <p value="1">If selected, the charges are segregated and posted to the Income account. </p>
+            <p value="2">If not selected, the charges are posted under the capital account.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>SEGREG.INCOME</field>
+<desc>
+        <p> A Check box field. </p>
+        <p>
+            <p value="1">If selected, the accrued interest (bought or sold) is segregated and posted to the income account.</p>
+            <p value="2"> If not selected, the accrued interest is posted under the capital account.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>SAFECUSTODY.FREQ</field>
+<desc>
+            <p>The date of the next calculation of Safecustody Fees for this portfolio and frequency to be used in defining the subsequent Safecustody Fees Runs.</p>
+            <p>                    Input is only allowed if the calculation frequency for Safecustody Fees is defined at a portfolio level (i.e. the COMPANY.CALC field on SAFECUSTODY.VALUES associated with a CHARGE.TYPE of 'SC' is set to 'N'). Otherwise the value in this field will be taken from the CHARGE.FREQ field on the SAFECUSTODY.VALUES record for the company associated with a chanrge type of 'SC'.</p>
+            <p>                    This field consists of two components as follows -</p>
+            <p>                    1)    Next Statement Date:           1-9 Date characters. The default value calculated by the system depending on the frequency.</p>
+            <p>                    2)    Frequency:           1-5 type SS (uppercase alpha or numeric, first character           alpha) characters.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Input only allowed for Customer portfolios in the COMPANY.CALC flag is set to "NO".</p>
+            <p>                    Standard T24 frequency field.</p>
+            <p>                    Any frequency input must be a monthly frequency.</p>
+        </desc>
+</t>
+<t>
+<field>F.FEE.ACCR.DT</field>
+<desc>
+            <p>Frequency of  fee accrual. This specifies the first date of accrual of  fee and the frequency thereafter. If not specified, there would be no accrual of this fee.</p>
+            <p>             Valid date with frequency - example, 20051231 BSNSS. This specifies every business day.</p>
+            <p>             Standard T24 Frequency format.</p>
+            <p>             Fields from FUND.FEE.DESC to F.FEE.ACCR.AMT would be associated and multi-valued.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>F.FEE.CODE</field>
+<desc>
+            <p>ID of FT.COMMISSION.TYPE record where fee details are stored.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>             Must be a valid FT.COMMISSION.TYPE record</p>
+            <p>             Fields from FUND.FEE.DESC to F.FEE.ACCR.AMT would be associated and multi-valued.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>WITHDRAWALS</field>
+<desc>
+            <p>Details any withdrawals made to a this portfolio that will affect profit and loss figures, and more importantly the performance of the account executive.</p>
+            <p>                    The information is recorded at inception of the portfolio and monthly for the last 12 months.</p>
+            <p>                    Multi-value 1 contains the inception details. Multi-values 2-13 contain the last 12 month's details.</p>
+            <p>                    Each multi-value contains the cumulative contributions for the 12 months (or since inception) up to the "PERFORM.DATE".</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Standard Amount format. Multi-valued field associated with fields "PERFORM.DATE" to "CONTRIBUTIONS" and "INVESTED.CAPL" to "COMPARE.VALUE" (No input field)</p>
+        </desc>
+</t>
+<t>
+<field>UNREAL.PL.CAT.PRT</field>
+<desc>
+            <p>Specifies the CATEGORY Code to which unrealised loss accounting entries will be posted.</p>
+            <p>If PORTFOLIO.TYPE is set as AVAIL.SALE then an Internal category account is allowed.</p>
+            <p>Otherwise a P/L Category must be specified.</p>
+            <p>Must be in the range 50000 - 59999.</p>
+            <p />
+            <p>This field is mandatory for dealer book if POST.UNREAL.PL is set to BOTH otherwise input is not allowed. </p>
+            <p>A dealer book portfolio is a bank's own portfolio and is denoted by an input having been made in the DEALER.BOOK field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>5 Numeric characters.</p>
+            <p>Any input made must exist on the CATEGORY file.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>FEE.ADJUSTMENT.TYPE</field>
+<desc>
+        <p>Defaults from AM.PARAMETER, but can be modified any number of times. </p>
+        <p>When a new back dated transaction is input, it defines the posting of SAFEKEEP/ADVISORY fee for a POSTED record.</p>
+        <p> The portfolio must be unlocked for the posting to occur.</p>
+    </desc>
+</t>
+<t>
+<field>AC.DEF.ACCT</field>
+<desc>
+            <p>Identifies the Account number to be used as the Default account if the selection criteria being the fields AC.SYS.CODE, AC.DEF.CATEG, and AC.DEF.CCY match the application criteria.</p>
+            <p>                    Must exist on the Account file</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Mandatory when AC.DEF.CCY has been specified</p>
+            <p>                    Mnemonic can be entered</p>
+        </desc>
+</t>
+<t>
+<field>AC.DEF.CATEG</field>
+<desc>
+            <p>Identifies the category code or ACCOUNT.CLASS record to be used as the default account for account defaulting.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    11 character alphanumeric input.</p>
+            <p>                    Optional input field</p>
+            <p>                    If the input is a CATEGORY then it must be in the range 1000 to 9999.</p>
+            <p>                    If input is an ACCOUNT.CLASS ID then the ACCOUNT.CLASS record must be a CLASS type ACCOUNT.CLASS record.</p>
+        </desc>
+</t>
+<t>
+<field>AC.DEF.CCY</field>
+<desc>
+            <p>Identifies the Currency Code to be used for defaulting accounts under the associated system code. An account must accompany in the field AC.DEF.ACCT.</p>
+            <p>                    Must exist on the Currency file</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    3 Alphanumeric field</p>
+            <p>                    Optional input</p>
+        </desc>
+</t>
+<t>
+<field>AC.DEF.SC.ACCT</field>
+<desc>
+            <p>Identifies the default account to be used only if the associated field, AC.DEF.SYS.CODE, is is a securities transaction type (i.e. must exist on the SC.TRANS.NAME file prefixed by SC-).</p>
+            <p>    The system will not accept any account input to this field that has already been defined on a Security portfolio elsewhere (on the ACCOUNT.NOS field). This account does not have to belong to the portfolio owner.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Mandatory input with SC transaction types, otherwise not allowed.</p>
+            <p>    2 - 16 Numeric characters. Must be a valid ACCOUNT number.</p>
+        </desc>
+</t>
+<t>
+<field>ADVISORY.FEES</field>
+<desc>
+            <p>Multi-valued no input field associated with the MONTH.END.DATE and SAFECUSTDY.FEES fields to form a multi-valued set of fields containing the fees due from the portfolio but not yet taken.</p>
+            <p>                    Where SAFECUSTODY.VALUES&gt;PERFORM.ACCRUAL for Charge.Type 'IC' is set to 'MONTHLY', this field will contain the Management Fees due for each of the months in the associated MONTH.END.DATE field. This field will be cleared down when the fees are taken and the SC.ADVISORY.CHG record for the portfolio is updated with them.</p>
+            <p>                    Only updated for customer portfolios where the PORTFOLIO.FEES field is AUTOMATIC.</p>
+            <p>                    Not updated by DAILY accrual</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    No input field, automatically updated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>OTHER.OFFICER</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>BELGIUM.TAX.CAT</field>
+<desc>
+            <p>Specifies the CATEGORY code to which Belgium tax will be posted.</p>
+            <p>                    Must be in the range 54000 to 54999</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    4 - 5 Numeric characters (Optional input if the "POST.BELGIUM.TAX" field in SC.STD.SEC.TRADE is set to "Y" otherwise this is a No input field)</p>
+            <p>                    Must exist on CATEGORY table.</p>
+        </desc>
+</t>
+<t>
+<field>SAFE.CHG.SCALE</field>
+<desc>
+            <p>This field is a no input field that records the Safecustody Fees scale that the portfolio is linked to (i.e. the key to the SCSK.GEN.CONDITION and hence SCSK.GROUP.CONDITION records that define the Safecustody Fees scale).</p>
+            <p>                    Will always be blank if the portfolio is a Dealer Book portfolio or if Safecustody Fees are not set-up to be charged (via SAFECUSTODY.VALUES).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    No input field automatically updated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>REAL.PL.CAT.PROFIT</field>
+<desc>
+            <p>Specifies the CATEGORY Code to which realised profit accounting entries will be posted.</p>
+            <p>                    Must be in the range 50000 - 59999.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    5 Numeric characters.</p>
+            <p>                    Any input must exist in the Category File.</p>
+            <p>                    This field is mandatory for Dealer Book portfolios otherwise input is not allowed. (A dealer book portfolio is signified by input being made in the DEALER.BOOK field).</p>
+        </desc>
+</t>
+<t>
+<field>NOMINEE.NAME</field>
+<desc>
+            <p>Nominee's name is specified here. In case, no customer record exists for the nominee, the nominee name is recorded here.</p>
+            <p>               Free format text.</p>
+            <p>               Input allowed only if FUND.PORTFOLIO is set to 'Y'</p>
+            <p>               Would be required only in cases when it differs from details specified in CUSTOMER.SECURITY.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TOP.UP.MGN.DATE</field>
+<desc>
+            <p>Date on which top-up margin call is breached.</p>
+        </desc>
+</t>
+<t>
+<field>MIS.COF.RATE</field>
+<desc>
+            <p>Identifies the rate for calculating the Additional</p>
+            <p> COF for the Type given in above related field MIS.COF.TYPE</p>
+            <p>    __________________________________________________</p>
+            <p />
+            <p>        (1) Mandatory when MIS.COF.TYPE and MIS.COF.DEPT is given</p>
+            <p />
+            <p>        (2)Fields MIS.COF.TYPE, MIS.COF.RATE and MIS.COF.DEPT</p>
+            <p>           are associated multi value fields</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>ONLINE.VAL</field>
+<desc>
+            <p>indicate whether automatic online valuation need to be activated for the portfolio or not.</p>
+            <p> Mandatory field and the possible value can be either YES or NO. </p>
+        </desc>
+</t>
+<t>
+<field>POST.DISC.UPFRONT</field>
+<desc>
+            <p>Indicates whether or not discount is to be posted upfront.</p>
+            <p>                    "Y" means discount amount is posted upfront.  "NO" means that discount amount is treated as a normal interest accrual. Upfront methodology requires the underlying assets to be grossed up to par/face value.</p>
+            <p>                    It is possible to post discounts and premiums upfront without daily accruals taking place.</p>
+            <p>                    If discount is not posted upfront and discount accrued, then on maturity date a fictitious sale is assumed to post the discount accrued.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Y or NO are accepted as valid input. (Optional input)</p>
+            <p>                    Input is mandatory if portfolio is a dealer book.</p>
+        </desc>
+</t>
+<t>
+<field>CATEGORY</field>
+<desc>
+            <p>Category number, only populated for dealer books where ASSET.CAT is CRF00. Set to 22999.</p>
+        </desc>
+</t>
+<t>
+<field>FX.REVAL</field>
+<desc>
+            <p>If set to 'Y', then revaluation processing for exchange rate movements will also be done with current SC Revaluation processing.</p>
+        </desc>
+</t>
+<t>
+<field>PF.FEES.FREQ</field>
+<desc>
+            <p>Fee calculation frequency. This will be used if COMPANY.WIDE frequency is not set in AM.PF.FEES.CONFIG.</p>
+        </desc>
+</t>
+<t>
+<field>MV.ALERT.RES5</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>ADDNL.MARGIN.AMT</field>
+<desc>
+            <p> Amount calculated using ADDNL.MARGIN field in OV.PARAMETER applied on the total of MARGIN.VALUE, SHORT.POS.MGN.AMT and LOAN.MARGIN.AMT.</p>
+            <p> Value will be held in reference currency. Amount will be compared against the MARGIN.VALUE field to trigger margin call </p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.NUMBER</field>
+<desc>
+            <p>CUSTOMER number extracted automatically from the ID (field 0).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    1 - 6 Numeric characters (No input field)</p>
+        </desc>
+</t>
+<t>
+<field>ADV.LAST.ACCR.DTE</field>
+<desc>
+            <p>A system-maintained, no-input field which is only utilised where SAFECUSTODY.VALUES&gt;PERFORM.ACCRUAL for Charge.Type 'IC' is set to DAILY.</p>
+            <p />
+            <p>         While Advisory charges are being accrued on a daily basis (via 'F' entries) this field holds the start date of the accrual period. Once the charges are approved, real accounting entries replace the accrual entries and the date in this field is moved on to the start of the next charge period.</p>
+            <p />
+            <p>         Because the date in this field is static until after the charges are approved, it is unaffected by the Close Of Business (COB) which runs on the day that the Advisory charge falls due and it can therefore be used to communicate a consistent charge period start date to core accounting (the COB which runs on the charge frequency date updates both SEC.ACC.MASTER&gt;SAFE.LAST.RUN and SEC.ACC.MASTER&gt;SAFECUSTODY.FREQ so these fields cannot be used for the purpose).</p>
+        </desc>
+</t>
+<t>
+<field>BLOCKING.DATE</field>
+<desc>
+            <p>Indicates the date from which the movement of securities into or out of the portfolio are to be considered as blocked.</p>
+            <p>                    If a date is entered, all transactions involving the movement of securities will on or after that date give rise to an override message at validation time.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Standard date format (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>PORTFOLIO.TURNOVER</field>
+<desc>
+            <p>Specifies the total Turnover for this portfolio.</p>
+            <p>                    This field is automatically updated with the turnover figure every time there is a movement over the portfolio.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    0 - 18 Numeric characters (No input field)</p>
+        </desc>
+</t>
+<t>
+<field>GEARING</field>
+<desc>
+            <p>Maximum gearing that bank will provide for a portfolio.</p>
+        </desc>
+</t>
+<t>
+<field>PF.ACCR.LAST</field>
+<desc>
+            <p>Last date of fees accrual. System updated.</p>
+        </desc>
+</t>
+<t>
+<field>ADV.GROUP.PORT</field>
+<desc>
+            <p>If the portfolio belongs to a group as specified in SC.FEE.GROUP then the primary portfolio will be shown here.</p>
+        </desc>
+</t>
+<t>
+<field>NEW.REFERENCE.CCY</field>
+<desc>
+            <p>This field can be used to convert the existing reference currency on the record. This feature is being developed for the change over to the EURO. On entering a value in this field a program in the end of day will perform the actual change over of the reference currency to the currency specified in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    The currency must be linked to the existing reference currency with a fixed rate.</p>
+            <p>                    Can only be entered if the EURO module has been installed.</p>
+            <p>                    Cannot be changed if the end of day has already processed the change over.</p>
+            <p>                    Must be a valid currency</p>
+        </desc>
+</t>
+<t>
+<field>FUND</field>
+<desc>
+            <p>The charges defined in the subsequent fields would be applicable to this fund or fund family or all funds depending on the values specified here. If ALL is specified, this would be the entry load applicable for all funds for this customer.  The input could either be ALL or Asset type or Sub asset type (fund families) or specific fund Ids.</p>
+            <p>               Valdation Rules</p>
+            <p>               Multi-value field.</p>
+            <p>               Input allowed only if FUND.PORTFOLIO is set to 'Y'</p>
+            <p>               Allowed values are 'ALL' or 'A-' followed by an ASSET.TYPE or 'S-' followed by a SUB.ASSET.TYPE or a specific MF.FUND.MASTER ID.</p>
+            <p>               Fields from FUND to DISC.AMT would be associated multi-value fields and fields from TRANS.TYPE to DISC.AMT would be associated sub value fields.  </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXT.ACCT.CCY</field>
+<desc>
+            <p>The currency of the external account.</p>
+            <p>
+                <p>Validation Rules:</p>.</p>
+            <p>               Must be a valid CURRENCY code.</p>
+            <p>               Input allowed only if FUND.PORTFOLIO is set to 'Y'</p>
+            <p>               Fields EXT.ACCT.NO to EXT.ACCT.CCY would be associated and multi valued. This would allow specification of different accounts for different currency.</p>
+            <p>               Would be required only in cases when it differs from details specified in CUSTOMER.SECURITY.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>IENC.CAT</field>
+<desc>
+            <p>Specifies that "Interest Earned Not Collected" within this portfolio will be posted to the CRF.</p>
+            <p>                    If "DEALER.BOOK" field has a value then this field is set to CRF00, indicating that "Interest Earned Not Collected" is to be maintained in the CRF base.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    5 Alphanumeric characters. (No input field)</p>
+        </desc>
+</t>
+<t>
+<field>ADV.LAST.RUN</field>
+<desc>
+            <p>Records the last date that Advisory fees were calculated for the portfolio.</p>
+        </desc>
+</t>
+<t>
+<field>CPN.ADJ.CR.CAT</field>
+<desc>
+            <p>Specifies the CATEGORY code to which Adjustments in respect of coupons receivable will be posted.</p>
+            <p>                    Must be in the range 10000 - 19999.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    5 Numeric characters. (Optional input)</p>
+            <p>                    Must exist on CATEGORY table.</p>
+            <p>                    If a value has been entered in the "DEALER.BOOK" field then a CATEGORY must be entered in this field otherwise this field must be left blank.</p>
+        </desc>
+</t>
+<t>
+<field>SELL.OUT.MARGN.AMT</field>
+<desc>
+            <p> Margin amount calculated using SELL.OUT.MARGIN specified at various levels.</p>
+            <p> Will be compared against the field LOAN.MARGIN.AMT before triggering a margin call. Value will be held in reference currency </p>
+        </desc>
+</t>
+<t>
+<field>LINEAR.COMP.ACCR</field>
+<desc>
+            <p>Specifies whether discounts are to be accrued or amortised.</p>
+            <p>                    The different values will determine the formula used for the discount accrued.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Valid input is "LINEAR" or "NONE". (Optional input) Default "LINEAR".</p>
+            <p>                    Input is mandatory when the portfolio is a dealer book otherwise it must be null.</p>
+        </desc>
+</t>
+<t>
+<field>PENDING.MARGIN.VAL</field>
+<desc>
+            <p>Field to hold the margin value for the orders based on nominals that are to be executed.</p>
+        </desc>
+</t>
+<t>
+<field>CNT.REAL.PL.CAT.LO</field>
+<desc>
+            <p>This field represents the Category to which Contingent Loss entries will be posted till the value date. For a Foward dated Dealer Book trade, which has a Loss attached to it, an entry will be raised only on the Value Date.</p>
+            <p>                    (When the field TRADE.SETTLE.ACCTG is set as 'SETTLEMENT' in SC.STD.SEC.TRADE)</p>
+            <p>                    This functionality will enable posting of the Loss on the Trade to this Contingent bucket until value date when the entry will be reversed and the Loss will be posted to the original bucket.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    VALID INPUT - Profit and Loss categories between 52-000         and 59-999</p>
+            <p>                    INPUT allowed only if the Portfolio is an own Book         Portfolio and the field POST.CONT.REAL.PL is set to 'YES'         in SC.STD.SEC.TRADE</p>
+        </desc>
+</t>
+<t>
+<field>SAFEKEEPING.PERCNT</field>
+<desc>
+            <p>Specifies the percentage rate of safe custody charges to be levied on the security account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    1 - 5 Numeric characters (Optional input)</p>
+            <p>                    The default value is 100%</p>
+            <p>                    Used in conjunction with "SAFEKEEPING.AMOUNT".  It dictates how much of the  charge is to be levied.  The SAFEKEEPING.AMOUNT field is used to store a minimum charge which will override any smaller amount. Note:When safekeeping charges are calculated using the CUSTOMER.CHARGE records, then any value in this field is ignored.</p>
+        </desc>
+</t>
+<t>
+<field>LOWER.COST.DAYS</field>
+<desc>
+            <p>Insert text here</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Rule 1</p>
+            <p>                    Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>SAFE.LAST.ACCR.DTE</field>
+<desc>
+            <p>A system-maintained, no-input field which is only utilised where SAFECUSTODY.VALUES&gt;PERFORM.ACCRUAL for Charge.Type 'SC' is set to DAILY.</p>
+            <p />
+            <p>         While Safekeeping charges are being accrued on a daily basis (via 'F' entries) this field holds the start date of the accrual period. Once the charges are approved, real accounting entries replace the accrual entries and the date in this field is moved on to the start of the next charge period.</p>
+            <p />
+            <p>         Because the date in this field is static until after the charges are approved, it is unaffected by the Close Of Business (COB) which runs on the day that the Safekeeping charge falls due and it can therefore be used to communicate a consistent charge period start date to core accounting (the COB which runs on the charge frequency date updates both SEC.ACC.MASTER&gt;SAFE.LAST.RUN and SEC.ACC.MASTER&gt;SAFECUSTODY.FREQ so these fields cannot be used for the purpose).</p>
+        </desc>
+</t>
+<t>
+<field>APP.OPERAND</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Input is optional. If there is an input to field DEFAULT.DEPO, then input to this field becomes mandatory</p>
+            <p>                    Input is an operand. Selection is done using the drop down list of operands which consist of:</p>
+            <p>                    EQ  Equal to</p>
+            <p>                    GE  Greater than or equal to</p>
+            <p>                    GT  Greater than</p>
+            <p>                    LE  Less than or equal to</p>
+            <p>                    LT  Less than</p>
+            <p>                    NE  Not equal to</p>
+        </desc>
+</t>
+<t>
+<field>VALUE</field>
+<desc>
+            <p>This field depend on the INHERIT field of TEC.ITEMS, if INHERIT field set to YES then value is defaulted from EB.ALERT.REQUEST application else if INHERIT field set to NO then value is defaulted from the TEC.ITEMS application.</p>
+        </desc>
+</t>
+<t>
+<field>MGN.CALL.EFF.DATE</field>
+<desc>
+            <p>Date pertaining to margin call amount.</p>
+        </desc>
+</t>
+ <t>
+            <field>WAIVE.CU.COMM</field>
+              <desc>
+                <p> This Field will accept the id of SC.WAIVE.COMM application Where conditions for waiving Brokerage for customer will be defined. </p>
+              </desc>
+        </t>
+<t>
+<field>BENCHMARK</field>
+<desc>
+            <p>Benchmarks linked to this portfolio.</p>
+        </desc>
+</t>
+<t>
+<field>PF.FEES.ACCRUED</field>
+<desc>
+            <p>Accrued fees in portfolio reference currency. System generated.</p>
+        </desc>
+</t>
+<t>
+<field>FX.GROUP.COND.ID</field>
+<desc>
+            <p>Holds the ID used to fetch the margin percentage to derive the contract rate at the FX contract level, if Portofilo ID is present in  the  FX Contract.  </p> 
+            <p>Any changes to the values  in FX.GEN.CONDITION may lead to regrouping of condition IDs ,which will be reflected in CUSTOMER.CHARGE and SAM during the authorization of the SAM record. </p>
+            <p>Any changes to the values of the fields present in SAM that are defined in FX.GEN.CONDITION may also lead to regrouping of condition IDs, which will be reflected in CUSTOMER.CHARGE and SAM during the authorization of record. </p>
+            <p>
+                <p>Validation Rules:</p>
+                <p>Noinput Field</p>
+            </p>
+</desc>
+</t>
+<t>
+<field>MASTER.PORTFOLIO</field>
+<desc>
+<p>List of portfolios to which the this portfolio record is attached as the child portfolio in the SC.VALUATION.GROUP application</p>
+</desc>
+</t>
+<t>
+<field>SECOND.MRKT.VALUE</field>
+<desc>
+<p>Total of estimation from SC.POS.ASSET provided margin value is greater than zero. In case of margin value being negative or zero, Second market value will be considered as zero while being added here.</p>
+</desc>
+</t>
+<t>
+<field>INIT.MGN.VALUE</field>
+<desc>
+<p>Margin value prior to diversification being applied</p>
+</desc>
+</t>
+<t>
+<field>SEC.MARGIN.RATIO</field>
+<desc>
+<p>This field is calculated based on the following fields of the portfolio SECOND.MRKT.VALUE, SHORT.POS.AMT, LOAN.MGN.AMT, MARGIN.VALUE by this formula MARGIN.RATIO = (SECOND.MRKT.VALUE � (SHORT.POS.AMT+ LOAN.MGN.AMT))/( SECOND.MRKT.VALUE � (MARGIN.VALUE + (SHORT.POS.AMT+ LOAN.MGN.AMT))) * 100</p>
+</desc>
+</t>
+<t>
+<field>ASSET.ESTMTN</field>
+<desc>
+<p>Total of positive ESTIMATION positions of the portfolio in the SC.POS.ASSET.</p>
+</desc>
+</t>
+<t>
+<field>GRP.ESTIMATION</field>
+<desc>
+<p>Total of ESTIMATION from SC.GROUP.POS.ASSET</p>
+</desc>
+</t>
+<t>
+<field>GRP.SEC.MKT.VALUE</field>
+<desc>
+<p>Total of SECOND.MRKT.VALUE from SC.GROUP.POS.ASSET in portfolio reference currency</p>
+</desc>
+</t>
+<t>
+<field>GRP.MARGIN.VALUE</field>
+<desc>
+<p>Total of MARGIN.VALUE field from SC.GROUP.POS.ASSET in portfolio reference currency</p>
+</desc>
+</t>
+<t>
+<field>GRP.INIT.MGN.VALUE</field>
+<desc>
+<p>Total of INIT.MGN.VALUE from SC.GROUP.POS.ASSET if APPLICATION is SC in SC.GROUP.POS.ASSET otherwise, total of MARGIN.VALUE field.</p>
+</desc>
+</t>
+<t>
+<field>GRP.LIABILITY</field>
+<desc>
+<p>Holds the total liability of the group given in the SC.VALUATION.GROUP in portfolio reference currency</p>
+</desc>
+</t>
+<t>
+<field>GRP.SEC.MGN.RATIO</field>
+<desc>
+<p>This field is calculated based on the following fields of the group GRP.SEC.MKT.VALUE, GRP.LIABILITY, GRP.MARGIN.VALUE by this formula GRP.SEC.MGN.RATIO = (GRP.SEC.MKT.VALUE � GRP.LIABILITY)/( GRP.SEC.MKT.VALUE � (GRP.MARGIN.VALUE + GRP.LIABILITY))</p>
+</desc>
+</t>
+<t>
+<field>TOP.UP.MGN.RATE</field>
+<desc>
+<p>Margin rate for top up that will be compared with security margin ratio to determine margin call.</p>
+</desc>
+</t>
+<t>
+<field>SELL.OUT.MGN.RATE</field>
+<desc>
+<p>Margin rate for sell out that will be compared with security margin ratio to determine margin call.</p>
+</desc>
+</t>
+<t>
+<field>GLOBAL.LIMIT</field>
+<desc>
+<p>To specify the global limit (i.e. In format 10000.xxx). Enquiry for limit utilization will pick the right limit reference by prefixing the customer of the portfolio based on the query run (group, individual portfolio, etc.)</p>
+</desc>
+</t>
+<t>
+<field>GRP.TOP.UP.MGN.AMT</field>
+<desc>
+<p>Total of TOP.UP.MARGIN.AMT field from SC.GROUP.POS.ASSET in portfolio reference currency</p>
+</desc>
+</t>
+<t>
+<field>GRP.SELL.MGN.AMT</field>
+<desc>
+<p>Total of SELL.OUT.MARGN.AMT field from SC.GROUP.POS.ASSET in portfolio reference currency</p>
+</desc>
+</t>
+<t>
+<field>GRP.ASSET.ESTMTN</field>
+<desc>
+<p>Holds the total asset of the group given in the SC.VALUATION.GROUP</p>
+</desc>
+</t>
+<t>
+<field>OWN.COMP.ID</field>
+<desc>
+<p>Company to which the portfolio belongs, only set when the file is shared across companies.</p>
+<p>The field will be defaulted to current company code for new records and it will be defaulted to PORT.COMP.ID for existing records.</p>
+<p>  
+<p>Validation Rules:</p>
+</p>
+<p>Allowed only when SEC.ACC.MASTER is shared.</p>
+<p>Accepts a valid company code.</p>
+<p>The field will not accept a company to which SEC.ACC.MASTER is not shared.</p>
+</desc>
+</t>
+<t>
+<field>IFRS.SUB.TYPE</field>
+<desc>
+<p> This field will hold a valid IFRS.SUB.TYPE </p>
+<p> Input not allowed if IA module is not installed or when LINEAR.COMP is not set to EIR.</p>
+</desc>
+</t>
+<t>
+<field>MGN.MAINT.LMT.AMT</field>
+<desc>
+            <p>This field will hold the margin maintenance limit amount in reference currency of the portfolio. </p>
+            <p>This field is only for information purpose. </p>             
+</desc>
+</t>
+<t>
+<field>IAM.PORTFOLIO</field>
+<desc>
+     <p>This field is to indicate ,whether a portfolio is being managed by Independent Asset Managers or not.</p>
+     <p>If Set to Yes the client's Account will be debited for the fees and a Suspense (internal) account will be credited.There will be no accruals for IAM fees.</p>
+     <p>If not set to YES then management fees, will be accrued and posted to PL on a monthly basis.</p>           
+</desc>
+</t>
+<t><field>CUS.RELATIONSHIP</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>SEL.CCY</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>SECURITY</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>SUB.ASSET.TYPE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>REIMBURSE.TR.FEE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>INTEG.DATA.ITEM</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>INTEG.DATA.VALUE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

@@ -1,0 +1,1317 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FX</product>
+<table>ND.DEAL</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Overview A NDF is a product where one of the currencies is unable to be settled. Because of this the deal must be fixed at a time and from a rate source arranged at the time of the original trade. When the rate is fixed on the fixing date the settlement will be a net settlement in the deliverable currency only, calculated by using the difference between the original Foreign exchange  rate and the fixing rate.  There are 2 types of NDF transactions to take into account: Vanilla  this is a standard NDF transaction type, which has a rate fixing of 2 working days before  settlement date  no exceptions. Exotic  which is based on the Vanilla NDF, with a variation that allows the fixing date to be set at any date during the life of the transaction. If a NDF is fixed early, then a discount to the profit is taken by the bank. This discount amount needs to be amortised. Settlement date remains the same and is unchanged.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>DEALER.DESK</field>
+<desc>
+            <p>Identifies the dealer desk position which needs to be updated by the deal being created. The dealer desk code is held on the position record so that the exchange position can be displayed at  dealer desk level.   Each deal on the system will be allocated a two-digit dealer desk code. This code will be used to maintain position at the dealer desk level. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory input.</p>
+            <p>2 alphanumeric character dealer code in the range A-Z, a-z, plus 0-9. Default = dealer desk defined on the user profile.</p>
+            <p> The code entered must appear on the DEALER.DESK table. </p>
+            <p>The field cannot be changed once the deal has been authorised. </p>
+        </desc>
+</t>
+<t>
+<field>CPARTY.CORR.NO</field>
+<desc>
+            <p>Identifies the bank to which the counterparty wishes the settlement amount to be paid. This will either be the bank of the counterparty or the bank of their nominated beneficiary.   If the bank is known to us (i.e. a customer record exists), the customer number of the bank will be entered in this field. If not, the details should be entered in the CPARTY.COR.ADD field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-6 Numeric character Customer Number or 3-10 character customer mnemonic (uppercase alphanumeric or '.') - Type MNE Input in this       field is optional. Default = as per Agency file when settlement account = Nostro.</p>
+            <p>Input must represent a valid customer on the Customer file. </p>
+            <p>Input in this field is not allowed when details have been entered in the correspondent address field.</p>
+        </desc>
+</t>
+<t>
+<field>CPARTY.BANK.ACC</field>
+<desc>
+            <p>Contains the account number of the counterparty or nominated beneficiary at their correspondent bank. </p>
+            <p>The field will be used to provide the correspondent with the necessary details to credit the counterparty's or beneficiary's account. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>35 character account number.</p>
+        </desc>
+</t>
+<t>
+<field>SETTLEMENT.ACCT</field>
+<desc>
+            <p>Indicates the settlement account. This is an account where the SETTLEMENT PL will be credited to/debited from. Default will be in accordance to SETTLEMENT.CCY.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Must be a valid account on the ACCOUNT file.</p>
+        </desc>
+</t>
+<t>
+<field>NETTING.STATUS</field>
+<desc>
+            <p>Indicates that the contract has been elected for settlement by a netted payment. </p>
+            <p>YES - Meaning that the contract will be included to net the settlement of the NDF contracts for the same counterparty when they settle on the same day in the same deliverable currency </p>
+            <p>NO - Meaning that the contract will be excluded from any valid net settlement.</p>
+            <p> Default is "NO".</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Default is "NO". (No input)</p>
+        </desc>
+</t>
+<t>
+<field>CATEGORY</field>
+<desc>
+            <p>Contains the category code to which the deal will be accounted. This information will be used for MIS reporting and will identify the product being processed.   A default category code may be specified for each deal type on the ND.TYPE file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>5 numeric digits in range 20000-20999. (No input)</p>
+            <p>The category code must be defined on the CATEGORY table. </p>
+        </desc>
+</t>
+<t>
+<field>BK.TO.BK</field>
+<desc>
+            <p>Provides instructions or additional information from the sending bank for the receiver, intermediary account with institution or beneficiary institution.   Any details input by the user will be relayed to the receiver.   Whenever this field is used in a message transmitted between countries with different languages, it is recommended that English is used.   This field corresponds to field 72 on SWIFT messages, and must never be used for information for which another field is intended, or for instructions not required in a message.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 35 characters (uppercase alpha or numeric) - Type S. Multivalue field. </p>
+            <p>If this field is used, the first multivalue must contain a code word followed by further information.</p>
+            <p>All code words must be present on the SWIFT.CODE.WORDS files, and must be enclosed between slashes '/' at the beginning of the line.</p>
+            <p>Further code words and information can be entered in subsequent       multivalues, but additional information continued on a new line must be preceded by double slashes '//'.</p>
+        </desc>
+</t>
+<t>
+<field>MESSAGE.CLASS</field>
+<desc>
+            <p>Identifies the message class. It is normally the name of a message that will be produced. (i.e. Confirmation, Advice, Payment)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input. Updated automatically by system.</p>
+            <p>Must be a valid message class in EB.MESSAGE.CLASS table.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>Indicates the value date of NDF contract.Value date has to be greater than number of SPOT.MARKET days specified in FX.PARAMETERS.  Input can be 1D, 1M, which means 1 day after spot date and 1 month after spot date respectively.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory input.</p>
+            <p>Once the contract has be authorised the value date cannot be amended.</p>
+        </desc>
+</t>
+<t>
+<field>SETTLEMENT.CCY</field>
+<desc>
+            <p>Indicates the currency that will be used for the settlement amount. Normally this field will hold the deliverable currency.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory Input.</p>
+            <p>Once the deal has been authorised, this field cannot be amended.</p>
+        </desc>
+</t>
+<t>
+<field>SETTL.INT.RATE</field>
+<desc>
+            <p>Identifies interest rate of the settlement currency. Interest rate used to discount PL if NDF is fixed early. (For option type contract.)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory input for OPTION NDF.</p>
+            <p>Input is not allowed for FIXED NDF.</p>
+            <p>1-10 type R (Standard Rate Format - up to 8 integer and 6 decimal) characters plus a decimal point.</p>
+            <p>The rate must be in an acceptable format.</p>
+            <p>No change allowed after the deal has been authorized.</p>
+        </desc>
+</t>
+<t>
+<field>DISCOUNT.PERIOD</field>
+<desc>
+            <p>Displays number of days for the fixing profit or loss will be amortised.</p>
+            <p>In the case of an exotic NDF which allows the fixing date to be set at any date during the life of the transaction before the vanilla date. If the NDF is fixed and settled "early", the fixing profit or loss is discounted. The discount amount will be amortised from the settlement date to the value date of the NDF.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System calculated. (No input)</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>POSITION.TYPE</field>
+<desc>
+            <p>Identifies the position type applicable to the transaction.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>2 characters. (No input; Default = TR for Trading)</p>
+            <p>The code entered must appear on the FX.POS.TYPE table.</p>
+        </desc>
+</t>
+<t>
+<field>NDF.LCY.EQUIV</field>
+<desc>
+            <p>Shows the local currency equivalent of the  DEAL.AMOUNT and NOTIONAL.SETTL.AMT. The field will be calculated by the system and no operator 
+input will be allowed. This local currency equivalent will be used when updating the currency position after successful validation.</p>
+            <p />
+            <p>The following rules are applicable:</p>
+            <p>a) When the contract involves local currency</p>
+            <p>It is always the local currency amount  which is populated in this field.</p>
+            <p>b) When the contract does not involve local currency</p>
+            <p>The Base Currency  amount of the contract will be converted at the contract NOTIONAL.RATE to arrive at the Non-base Amount  and using the 
+forward rate of the other currency (non base currency) the local currency value is generated.</p>
+        </desc>
+</t>
+<t>
+<field>STMT.NO</field>
+<desc>
+            <p>A number generated automatically by the system which identifies either a statement entry or a category entry in respect of a contract. </p>
+        </desc>
+</t>
+<t>
+<field>PAYMNT.NARR</field>
+<desc>
+            <p>This field allows the user to enter free text narrative which is to appear on payments relating to the deal record.   It will also be part of the Bank to Bank information printed on the confirmation sent to the CPARTY except if overridden by another narrative.  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Multi lines of 35 characters. </p>
+        </desc>
+</t>
+<t>
+<field>BUS.DAY.VALUATION</field>
+<desc>
+            <p>Indicates a valid REGION in respect of NDF.CURRENCY. Default will be "00" region. i.e. GB00.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>2 characters; type N (Numeric) </p>
+            <p>Must be a valid code in the REGION table.  </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>XX.LOCAL.REF......</field>
+<desc>
+            <p>Local Reference for user defined field.</p>
+        </desc>
+</t>
+<t>
+<field>CONSOL.KEY</field>
+<desc>
+            <p>Indicates the consolidation keys which have been generated for this contract. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System generated. The first four parameters will always contain the Application ID (i.e. ND), the Currency Market, the Position       Type and the Currency Code. The other parameters will default on the conditions defined in the file       CONSOLIDATE.COND. </p>
+        </desc>
+</t>
+<t>
+<field>OVR.CARRIER</field>
+<desc>
+            <p>Specify override carrier.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input.</p>
+        </desc>
+</t>
+<t>
+<field>RECEIVER.BNK.NO</field>
+<desc>
+            <p>The Receiver Bank is the location where the funds will be made available for the Receiver.   The presence of the Receiver Bank, indicates that two payment messages should be generated:   - Payment Order.   - Cover Cable.   This field corresponds to field 58A (in cover payment) in SWIFT messages. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-6 Numeric character Customer Number or 3-10 character customer mnemonic (uppercase alphanumeric or '.') - Type MNE Input in this       field is optional. </p>
+            <p>Input must represent a valid customer on the Customer file.</p>
+        </desc>
+</t>
+<t>
+<field>SETTLEMENT.DATE</field>
+<desc>
+            <p>Indicated the settlement date of the NDF contract. Default will be the same as VALUE.DATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>For FIXED type, no input allowed.</p>
+            <p>For OPTION type, the input date should not be later than VALUE.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>DEAL.AMOUNT</field>
+<desc>
+            <p>Indicates the deal currency amount of the contract which will always be expressed in the currency defined in the previous field.   This field contains the principal amount of the contract expressed in the currency defined in the previous field. In order to facilitate the efficient entry of the amount, an input feature has  been provided which allows for the suppression of trailing zeros.  In English Language text this is accomplished by using a 'T' to indicate the thousands and an 'M' to indicate the millions. Other languages will require the provision of translation values.  </p>
+            <p>e.g. INPUT VALUE   1T 1,000.00 2M 2,000,000.00  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-19 type AMT (standard amount format) characters plus a decimal point. (Mandatory input) The amount must be greater than Zero.     </p>
+        </desc>
+</t>
+<t>
+<field>INTERMED.BNK.NO</field>
+<desc>
+            <p>Identifies any intermediary bank involved in the transaction and will be specified by the counterparty.   If the intermediary is known to us (i.e. their is an associated customer record), the customer number of the intermediary bank will be entered in this field. If not, details should be entered  in the INTERMED.ADD field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-6 Numeric character Customer Number or 3-10 character customer mnemonic (uppercase alphanumeric or '.') - Type MNE Input in this       field is optional.</p>
+            <p>Input must represent a valid customer on the Customer file. </p>
+            <p>Input in this field is not allowed when details have been entered in the intermediary bank address field. </p>
+            <p>Input will only be allowed if details of the correspondent have been entered.</p>
+        </desc>
+</t>
+<t>
+<field>DELIVERY.REF</field>
+<desc>
+            <p>Identifies the reference numbers allocated by Delivery for all payments, advices, messages sent by the NDF to the Delivery Application. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Content is automatically generated. </p>
+        </desc>
+</t>
+<t>
+<field>NDF.TYPE</field>
+<desc>
+            <p>Indicates NDF type for the contract to take into account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-7 characters; type A (alphanumeric)</p>
+            <p>Mandatory input.</p>
+            <p>Must be a valid code on the ND.TYPE table. </p>
+            <p>Once record has been authorised this field cannot be changed. </p>
+        </desc>
+</t>
+<t>
+<field>NET.SETTL.AMT</field>
+<desc>
+            <p>Identifies the settlement PL after discounted for the "fixed early" NDF. Net settlement amount will be the same as fixing amount for the normal NDF case.</p>
+            <p>The formula will be: NET.SETTL.AMT = SETTLEMENT.AMT - DISCOUNT.PL</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System calculated. (No input)</p>
+        </desc>
+</t>
+<t>
+<field>NOTIONAL.RATE</field>
+<desc>
+            <p>Indicates the notional exchange rate between the deal currency and the settlement currency. System default will be calculated from MID.REVAL.RATE of DEAL.CURRENCY and SETTLEMENT.CCY</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-10 type R (Standard Rate Format - up to 8 integer and 6 decimal)       characters plus a decimal point.</p>
+            <p>The rate must be in an acceptable format.</p>
+            <p>Once the contract has be authorised the deal currency cannot be amended.</p>
+        </desc>
+</t>
+<t>
+<field>LAST.UPD.DATE</field>
+<desc>
+            <p>This field is for accounting purpose. It will be updated during authorization.</p>
+            <p>Default value is TODAY date.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input. Updated automatically by system.</p>
+        </desc>
+</t>
+<t>
+<field>DEAL.DATE</field>
+<desc>
+            <p>Indicates the value date of the NDF contract. System defaults TODAY.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Once the contract has be authorised the deal date cannot be amended.</p>
+        </desc>
+</t>
+<t>
+<field>SETTLEMENT.AMT</field>
+<desc>
+            <p>This field will be automatically calculated by the system with two possibilities: If buy NDF contract: SETTLEMENT.AMT = NOTIONAL.SETTL.AMT - FIXED.AMOUNT If sell NDF contract: SETTLEMENT.AMT = FIXED.AMOUNT - NOTIONAL.SETTL.AMT For optional type: It is meant to retain full amount, not pay/receive amount.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input.</p>
+        </desc>
+</t>
+<t>
+<field>DEAL.CURRENCY</field>
+<desc>
+            <p>Indicates the NDF currency, has to be specified in NDF.ALLOW.CCY in ND.PARAMETER table. If not a single NDF.ALLOW.CCY is specified then deal currency can be any valid currency.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory input.</p>
+            <p>Must be a valid currency on the CURRENCY file. </p>
+            <p>Must be listed in NDF.ALLOW.CCY in ND.PARAMETER table.</p>
+            <p>Once the contract has be authorised the deal currency         cannot be amended.</p>
+        </desc>
+</t>
+<t>
+<field>DEAL.NOTE</field>
+<desc>
+            <p>This element allows the user to record any special information or free form narrative. This narrative is for information only and will not be printed on the confirmation sent to the customer.   These notes are for the benefit of the back/front office department and as such will not be output on the confirmation sent to the CPARTY. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Multi lines of 35 character narrative. </p>
+        </desc>
+</t>
+<t>
+<field>LINK.REFERENCE</field>
+<desc>
+            <p>Enables transactions to be linked together for reporting purposes.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-16 alpha-numeric characters. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.REFERENCE</field>
+<desc>
+            <p>Contains the limit reference number for the counterparty.   The reference can be entered by the operator or left blank. If left blank the system will provide the default Limit reference number for NDF deals. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 10 characters identifying a valid Limit Reference. (Optional input. Default = As defined on LIMIT.PARAMETER file.)     </p>
+        </desc>
+</t>
+<t>
+<field>SEND.MESSAGE</field>
+<desc>
+            <p>Indicates a YES/NO flag to indicate whether the message should be sent.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>A maximum of 3 characters may be entered. </p>
+            <p>The following values are permitted: YES  NO</p>
+        </desc>
+</t>
+<t>
+<field>BUY.SELL.IND</field>
+<desc>
+            <p>Indicates whether it is Buy or Sell Deal currency contract. Two values can be used BUY or SELL.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory input. (Valid input is BUY, SELL)</p>
+            <p>Once the contract has be authorised the buy sell indicator cannot be amended.</p>
+        </desc>
+</t>
+<t>
+<field>NDF.METHOD</field>
+<desc>
+            <p>Indicates Fixing Method. It is defaulted from ND.TYPE table of the corresponding ND.TYPE. Two values can be used FIXED or OPTION  FIXED meaning the NDF contracts with this NDF type will be fixed following the defined Fixing date in the NDF contract  OPTION meaning Fixing date is variation and can be any date prior to the settlement date-System defaults to FIXED</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input.</p>
+        </desc>
+</t>
+<t>
+<field>BUS.DAY.SETTLEMNT</field>
+<desc>
+            <p>Indicates a valid REGION in respect of SETTLEMENT.CCY. Default will be "00" region. i.e. US00.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>2 characters; type N (Numeric) </p>
+            <p>Must be a valid code on the REGION table.  </p>
+        </desc>
+</t>
+<t>
+<field>PORTFOLIO.NUMBER</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>NOTIONAL.SETTL.AMT</field>
+<desc>
+            <p>Indicates the deal amount equivalent in settlement currency using NOTIONAL.RATE. if left blank, will be calculated by the system by using values present in NOTIONAL.RATE and DEAL.AMOUNT. When input along with NOTIONAL.RATE system will calculate and default DEAL.AMOUNT (if blank). When input along with DEAL.AMOUNT, system will calculate the NOTIONAL.RATE (if blank)</p>
+            <p>In order to facilitate the efficient entry of the amount, an input feature has been provided which allows for the suppression of trailing zeros. In English Language text this is accomplished by using a 'T' to indicate the thousands and an 'M' to indicate the millions. Other languages will require the provision of translation values. </p>
+            <p />
+            <p>e.g. INPUT VALUE 1T  = 1,000.00; 2M = 2,000,000.00 </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 type AMT (standard amount format) characters plus a decimal point. (Mandatory input) The amount must be greater than Zero.</p>
+        </desc>
+</t>
+<t>
+<field>NET.SETTL.LCY</field>
+<desc>
+            <p>Displays the net settlement amount equivalent in local currency.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System calculated. (No input)</p>
+        </desc>
+</t>
+<t>
+<field>MESSAGE.TYPE</field>
+<desc>
+            <p>Identifies the message type, and should generally be the same as the SWIFT message number corresponding to the same type of  transaction. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input. Updated automatically by system.</p>
+            <p>Must be a valid message type in DE.MESSAGE table.</p>
+        </desc>
+</t>
+<t>
+<field>SEND.DATE</field>
+<desc>
+            <p>Specify sending date. This can be treated as schedule date for confirmation or payment to be sent out.</p>
+        </desc>
+</t>
+<t>
+<field>NDF.DEAL.NO</field>
+<desc>
+            <p>Identifies each NDF transaction.   The Reference Number will be shown on all output generated from the transaction and will be generated automatically when specified as such in the Company table for the NDF Application. Otherwise, it will need to be entered for each transaction and subsequently checked by the System for uniqueness.   To avoid the necessity to input the complete Reference Number, the User has the facility to input only the sequence number of the transaction to access any transaction which has been input that day. The Application will automatically generate the seven first digits and append them to the front of the sequence number in order to retrieve the requested transaction.  Access to any NDF transaction from a previous day requires the input of the corresponding julian day and the year if the contract has been done in a previous year.   The reference number has the following format NDYYDDDNNNNN where:   ND = Application indicator for the NDF Application.   YY = The last two digits of the year when the transaction is processed   DDD = Julian day number within year when the NDF is processed.   NNNNN = Five digit sequential number.   The above numbering convention enables 99,999 deals to be struck on any one day.   Thus : ND8530500010 is the 10th NDF transaction of the 2nd of November 1985, i.e:   . ND = NDF Application Id. . 85 = Year 1985 . 305 = 2nd of November (305th day 1985) . 00010 = 10th transaction on that day. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>10 numeric characters, prefixed by ND: NDyydddnnnnn ND followed by 10 numbers (see Details) (Mandatory input)       If the Reference Number is entered, during initial input, it will be validated for uniqueness.       When input, this field will only be allowed in the        format specified above.</p>
+            <p>This field can never be changed.</p>
+        </desc>
+</t>
+<t>
+<field>INTERMED.ADD</field>
+<desc>
+            <p>Identifies any intermediary bank involved in the transaction and will be specified by the counterparty.   If the intermediary is known to us (i.e. their is an associated customer record), the customer number of the intermediary bank should be entered in the INTERMED.BK.NO field. If not, details should be entered in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Multi lines of 35 characters.</p>
+            <p>Input in this field is not allowed when details have been entered in the intermediary bank number field.</p>
+            <p> Input will only be allowed if details of the correspondent have been entered.     </p>
+        </desc>
+</t>
+<t>
+<field>SETTL.LCY.EQUIV</field>
+<desc>
+            <p>Displays the settlement amount equivalent in local currency. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System calculated. (No input)</p>
+        </desc>
+</t>
+<t>
+<field>BENFICIARY.ADDR</field>
+<desc>
+            <p>This field is used when the counterparty of the deal instructs us to pay funds to another party who does not have an account with us.</p>
+            <p>If the beneficiary is known to us (i.e. there is a customer record), the beneficiary details should be entered in the BENEFICIARY.NO field. If unknown to us, details should be entered in this multi-value field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Multi lines of 35 characters.</p>
+            <p>Input is not allowed when a beneficiary number has been entered. </p>
+        </desc>
+</t>
+<t>
+<field>SETTL.INT.BASIS</field>
+<desc>
+            <p>Identifies the settlement currency's interest basis. This will be used to discount PL if NDF is fixed early. System default from INTEREST.BASIS field of the SETTLEMENT.CCY in  CURRENCY table.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Must be a valid basis on the INTEREST.BASIS table.</p>
+            <p>No change allowed after the deal has been authorized.</p>
+        </desc>
+</t>
+<t>
+<field>FIXED.DATE</field>
+<desc>
+            <p>Indicates NDF fixing date.  System default - calculate from FIXING.DAYS of the corresponding FIXING.CURRENCY from ND.PARAMETER table.  This date cannot be later than VALUE.DATE.   In case of FIXED method, override message will be given, if the date is changed to other date than the default one.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>The date may be entered in the standard date format.</p>
+            <p>Once the deal is fixed (FIXED.RATE is input), fixed date cannot be amended.</p>
+        </desc>
+</t>
+<t>
+<field>REC.ADV.NARR</field>
+<desc>
+            <p>This field allows the user to enter free text narrative which is to appear on the advice to receive relating to the deal record.   It will also be part of the Bank to Bank information printed on the confirmation sent to the CPARTY except if overridden by another narrative.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Multi lines of 35 characters.</p>
+        </desc>
+</t>
+<t>
+<field>EB.ACTIVITY</field>
+<desc>
+            <p>Defines the delivery activity code.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input. Updated automatically by system.</p>
+            <p>Must be a valid activity code in EB.ACTIVITY table.</p>
+        </desc>
+</t>
+<t>
+<field>FIXED.RATE</field>
+<desc>
+            <p>Indicates the rate to fix the NDF contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-10 type R (Standard Rate Format - up to 8 integer and 6 decimal) characters plus a decimal point.</p>
+            <p>The rate must be in an acceptable format. </p>
+            <p>No input allowed for new contract.</p>
+            <p>No change allowed after the input value has been authorized.</p>
+        </desc>
+</t>
+<t>
+<field>FIXED.AMOUNT</field>
+<desc>
+            <p>Display the settlement amount using fixing rate.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System calculated. (No input)</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY.MARKET</field>
+<desc>
+            <p>Defines the market to identify the correct exchange and revaluation Rates to be applied to each currency.</p>
+            <p>Default is 1.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input field.</p>
+            <p>Must be a valid entry in CURRENCY.MARKET file.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.OFFICER</field>
+<desc>
+            <p>Identifies the account officer responsible for the relationship with the CPARTY. This information will be used by the Management Information System (MIS) for the determination of the Customer  Profitability Analysis.   This field has been provided to enable the user to override at transaction level the CPARTY default account officer defined in the CUSTOMER file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-4 digit numeric field. (Optional input; Default value = account officer specified on the        CPARTY's customer file.)</p>
+            <p>The Account Officer Code must appear on the DEPT.ACCT.OFFICER table. </p>
+        </desc>
+</t>
+<t>
+<field>ADDRESSEE</field>
+<desc>
+            <p>Free text for addressee. If input, the message will be re-route using the addressee value instead of counterparty's address.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Rule 1</p>
+            <p>Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>AGREEMENT.TYPE</field>
+<desc>
+            <p>Defines the ND.DEAL contract agreement type.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional input.</p>
+            <p>Must be a valid definition on the EB.AGREEMENT.TYPE file. </p>
+        </desc>
+</t>
+<t>
+<field>BASE.CURRENCY</field>
+<desc>
+            <p>Indicates the base currency, can be either DEAL.CURRENCY or SETTLEMENT.CCY. System default would be: In case of cross currency, it will hold the bigger currency. In case of against local currency, it will conform to rate  quotation in CURRENCY table. In general, this indicates multiply/divide of two exchange rate.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Must be a valid code on the CURRENCY table. </p>
+            <p>Default value must be imposed in accordance to T24 base currency default method.</p>
+        </desc>
+</t>
+<t>
+<field>DEALER.NOTE</field>
+<desc>
+            <p>This element allows the Dealer to record any special information or free form narrative on first level input which is referred to by the back office.   These details are for the benefit of the back office user. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Multi lines of 35 character narrative. </p>
+        </desc>
+</t>
+<t>
+<field>COUNTERPARTY</field>
+<desc>
+            <p>Contains the counterparty with whom the dealer has arranged the NDF transaction. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory Input.</p>
+            <p>Must be a valid customer on the CUSTOMER table.</p>
+            <p>Once record has been authorised this field cannot be changed.</p>
+            <p>When OC module is installed and NDF contracts are required to be reported to a trade repository, the Customer ID of the Counterparty must be a valid record in OC.CUSTOMER  table. </p>
+        </desc>
+</t> 
+<t>
+<field>DISCOUNT.PL</field>
+<desc>
+            <p>Displays discount PL for the "fixed early" NDF. It is the difference between the Settlement amount and the Settlement amount after discounted.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System calculated. (No input)</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONF.NARR</field>
+<desc>
+            <p>This field allows the user to enter free text narrative relating to the deal record.   Using SWIFT this information will appear on the Bank-to-Bank information field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Multi lines of 35 characters.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Keep any override message raised during input or amendment.</p>
+        </desc>
+</t>
+<t>
+<field>BENEFICIARY.NO</field>
+<desc>
+            <p>This field is used when the counterparty of the deal instructs us to pay funds to another party who does not have an account with us.</p>
+            <p>Entry in this field will be accepted where the beneficiary is known to the bank (i.e. there is a customer record for the beneficiary). If the beneficiary is not known to us, the beneficiary details may be entered in the Beneficiary address field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-6 numeric characters Customer Number or 3-10 character customer mnemonic (uppercase alphanumeric or '.') - Type MNE. (Input in       this field is optional. Default value = counterparty.) </p>
+            <p>Input must represent a valid customer on the Customer file.</p>
+            <p>Input in this field is not allowed when details have been entered in the beneficiary address field.     </p>
+        </desc>
+</t>
+<t>
+<field>CPARTY.COR.ADD</field>
+<desc>
+            <p>Identifies the bank to which the counterparty wishes the settlement amount to be paid. This will either be the bank of the counterparty or the bank of their nominated beneficiary.   If the bank is known to us (i.e. a customer record exists), details should be entered in the CPARTY.CORR.NO field. If not, the should be entered in this multi-valued field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Multi lines of 35 character narrative.</p>
+            <p>Input is not allowed when a correspondent number has been entered. </p>
+        </desc>
+</t>
+<t>
+<field>STATUS</field>
+<desc>
+            <p>Indicates the status of the deal. Four values can be used OPN, FIX, MAT or REV.  OPN - For new contract and has yet to be fixed. FIX - If contract has already been fixed. MAT - If contract pass the VALUE.DATE REV - If contract is canceled using reverse function.  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input. Updated automatically by system.</p>
+            <p>Valid input is OPN, FIX, MAT, REV</p>
+        </desc>
+</t>
+
+<t>
+<field>SWIFT.COMMON.REF</field>
+<desc>
+            <p>This field is automatically populated by the system on committing the NDF contract.  This common reference will be used on all messages transmitted through SWIFT. </p>
+            <p>The common reference consists of the SWIFT confirmation address codes of the two counterparties, i.e. ourselves and the CPARTY of the transaction. These codes will appear in alphabetical order.  From the CPARTY SWIFT confirmation address specified in the Agency file, the system will automatically select the first four digits plus the seventh and eighth digit. </p>
+            <p>The two codes are separated by four figures from the notional rate(fixed rate after deal fixing) on the contract as agreed by the two counterparties.  The notional /fixed rate itself is expressed in the following form: </p>
+            <p>           Rate               Shown as </p>
+            <p>           2.4560               2456            0.2450               0245            0.2400               0024            24.000               0024 </p>
+            <p>Thus for a NDF deal between ourselves with SWIFT confirmation address XXXXXX and a CPARTY with SWIFT address ABCAZACP at notional rate of 1.855129400
+, say,  then the Swift Common Reference should be constructed as follows: </p>
+            <p>           ABCACP1294XXXXXX </p>
+            <p>The system will then display the above reference at this field and it would be used on all SWIFT message types relating to this contract and on all the entries generated by Accounting. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A six digit code followed by notional/fixed rate followed by another six digit code.  Type SS characters.</p>
+        </desc>
+</t>
+<t>
+<field>COLLATERALISATION</field>
+<desc>
+             <p>Part of Regulatory Reporting information to a Trade Repository. </p>
+	<p>specifies whether collateralisation was performed</p>
+	<p>Input to this field is allowed only when OC module is installed </p>
+			<p>
+                <p>Validation Rules: </p>
+            </p>
+	  <p> This is an OPTIONAL field</p>
+  <p> Allowed optional values are U (Uncollateralised), PC (Partially Collateralised), OC (One way collateralised), FC (Fully Collateralised) and NULL</p>
+</desc>
+</t>
+
+
+<t>
+<field>COLLAT.PORT.IND</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p>	
+<p>Specifies if the collateralisation was performed on a portfolio basis</p> 
+	<p>Input to this field is allowed only when OC module is installed </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	  <p> This is an OPTIONAL field</p>
+	  <p> Input not allowed when COLLATERALISATION is NULL </p>
+	  <p> Allowed optional values are Y, N or NULL </p>
+	  <p> ‘Y’ indicates that the collateralisation was performed on a portfolio basis </p>
+	  <p> ‘N’ indicates that the collateralisation was not performed on a portfolio basis </p>
+</desc>
+</t> 
+		
+<t>
+<field>COLLAT.PORT.CODE</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository</p>	
+	 <p> An unique code given by the reporting counterparty to identify the portfolio, if collateralization is reported on a portfolio basis </p>
+	 <p> Input to this field is allowed only when OC module is installed </p>
+		
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	  <p> This is a conditionally mandatory field </p>
+	  <p> Mandatory if the COLLAT.PORT.IND is set to 'Y' </p>
+      <p> Numeric field up to 10 digits </p>
+</desc>
+</t>			
+		 
+<t>
+<field>UNI.TRAN.ID</field>
+<desc>
+ <p>Part of Regulatory Reporting information to a Trade Repository</p>     
+ <p>All Trades should have a Unique Transaction Identifier (UTI) which is generated, communicated and matched</p>
+ <p>Determination of who generates the UTI should follow the existing industry best practices for that Asset class</p>
+ <p>The UTI.USI.API attached in OC.PARAMETER and invoked during NDF deal capture determines who is the party responsible for UTI generation and does the following.
+•	If a value is present during deal capture the API is not invoked, on the assumption that the UTI is generated and supplied by the other Counterparty.
+•	If no value is present during the deal capture, the API is invoked to determine the party responsible for generating the UTI. If the Other counterparty is responsible, still an UTI is generated with a suffix as TEMP to show that the UTI from the other counterparty is awaited and in the meantime, the reporting is done with a Temporary ID. If T24 Bank is responsible for UTI generation, then the same is generated without TEMP. 
+•	Where a reporting has been made with UTI having TEMP as suffix and subsequently the Counterparty supplies the UTI, the following procedure has to be followed to ensure reporting with actual UTI.
+•	The field Action Type needs to be changed to ‘E’ and record to be authorized. Later, the UTI field should be modified with the actual UTI received. Set the Action Type field to ‘N’ and authorize the record. In this way, the previous reporting gets cancelled and the new reporting goes with correct UTI. </p>
+ <p> Input to this field is allowed only when OC module is installed </p>
+             <p>
+                <p>Validation Rules : </p>
+            </p>
+	<p> can contain up to 52 alphanumeric characters </p>
+			
+</desc>
+</t>
+
+
+<t>
+<field>EXEC.VENUE</field>
+<desc>  
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Specifies the unique code that identifies the venue of execution </p>
+<p> Provides a drop down list of the OC.EXCHANGE.FACILITY records </p>
+<p> Input to this field is allowed only when OC module is installed or ‘BR’</p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	<p> This is an OPTIONAL field </p>
+	<p> Can contain up to 10 alphanumeric characters </p>
+			
+</desc>
+</t>
+
+<t>
+<field>PORT.COMPRESSION</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Specifies if the trade is as a result of a portfolio compression event</p>
+<p> Input to this field is allowed only when OC module is installed </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is an OPTIONAL field </p>
+		<p> Allowed optional values are Y or N or NULL </p>
+		<p> Y denotes that the contract results from a portfolio compression event</p>
+		<p> N denotes that the contract is not due to portfolio compression event </p>
+                                                  
+</desc>
+</t>
+
+<t>
+<field>ACTION.TYPE</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p>Under the Regulatory Reporting to a Trade Repository, it is not only the initial trade that is reported but also the life cycle events of the Trade that follow. A change in the action type is indicative of an event on the contract and requires to be reported.  Change in Action Types is allowed both manually and automatically. </p>
+<p> Specifies the ACTION.TYPE that is populated based on the event on trade </p>
+<p> Input to this field is allowed only when OC module is installed  </p>
+
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+<p> Allowed optional values are N, M, E, C, Z and O </p>
+<p> N denotes that the ACTION.TYPE is NEW. Value of 'N' is defaulted for a new contract. User is also allowed to change the status to N if the previous status is E. </p>
+<p> E denotes that the ACTION.TYPE is REVERSE or Correction. In case of wrongly entered UTI values or a Temporary UTI was used previously, the old UTI should be reported with ACTION.TYPE as 'E' for error reporting first and then change the Action Type to NEW after keying in the actual UTI. This way the previous reporting with temporary UTI is replaced by the one with final UTI. Action Type ‘E’ is also used to undo the reporting of a particular transaction done which should not have been done reported at all in the first instance.</p>
+<p> M denotes that the ACTION.TYPE is MODIFIED. In case of change in the RATE.FIXING.DATE the ACTION.TYPE is set to 'M'</p>
+<p> C denotes that the ACTION.TYPE is CANCELLED.In case of any change in maturity/value date i.e. early termination of the contract should be reported with C.In NDF this MATURITY.DATE field is No change field. So ACTION.TYPE never gets populated automatically with type as C but It can be manually updated as ‘c’ and the contract can be cancelled.</p> 
+<p> Z denotes Compression update. This means the trade being reported is generated out of a compression activity. </p>
+<p> O denotes OTHER types. When OTHER is used, additional information as to what OTHER mean should be mentioned separately. </p>
+</desc>
+</t>
+
+<t>
+<field>ADDL.REP.INFO</field>
+<desc>
+<p>Part of Regulatory Reporting info to a Trade Repository. </p> 
+<p> Denotes the additional report info when the ACTION.TYPE is 'O'</p>
+<p> Input to this field is allowed only when OC module is installed </p>
+
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	<p> This is a conditionally mandatory field </p> 
+	<p> Value to be entered only when ACTION.TYPE is 'O' </p>
+			
+</desc>
+</t>
+
+<t>
+<field>OWN.BOOK.PORT</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the Bank’s own book portfolio ID </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	 <p> This is an OPTIONAL field </p>
+	 <p> The own book portfolio should be a valid SEC.ACC.MASTER record and also be an own book </p>
+<p>The logic to update the Portfolio with the trade details will be introduced in the next phase of OC module development. </p>
+			
+</desc>
+</t>
+
+
+<t>
+<field>NON.STND.FLAG</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes if the contract is a standard or a non-standard contract </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+<p>The significance of this field is better appreciated in the context of clearing of OTC derivatives. </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is an OPTIONAL field </p>
+		<p> Allowed optional values are Y, N or NULL</p>
+		<p> Y denotes that the contract is a non-standard contract </p>
+		<p> N denotes that the contract is a standard contract </p>
+</desc>
+</t>
+
+<t>
+<field>PRE.UTI.ID.1</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the Previous UNI.TRAN.ID value. When UNI.TRAN.ID is changed, it replaces the previous one and the previous one is moved into this field. </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+
+             <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is an OPTIONAL field </p>
+		<p> Can contain upto 52 alphanumeric characters </p>
+
+</desc>
+</t>
+
+<t> 
+<field>PRE.UTI.ID.2</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the Previous PRE.UTI.ID.1 value. When UNI.TRAN.ID is changed, it replaces the previous one and the previous value in PRE.UTI.ID.1 is moved into this field. </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	  <p> This is an OPTIONAL field </p>
+	  <p> Can contain upto 52 alphanumeric characters </p>
+
+</desc>
+</t>
+
+<t>
+<field>EXEC.TIME.STAMP</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the date and time of execution of the transaction and is User inputtable field. </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+             <p>
+                <p>Validation Rules :</p>
+            </p>
+	<p> This is an OPTIONAL field </p>
+	<p> The format should be "YYYYMMDDTHH:MM:SS+/-(UTC.TIME.ZONE)"  or "YYYYMMDDTHH:MM:SSZ"</p>
+	<p> Example 20150101T10:10:10+05:30</p>
+	<p> Example 20150101T10:10:10-05:30</p>
+	<p> Example 20150101T10:10:10Z</p>
+</desc>
+</t>
+
+<t>
+<field>CP.TRADE.PURPOSE</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes if the contract is objectively measurable as directly linked to the other counterparty’s commercial or treasury financial activity</p>
+<p> Input to this field is allowed only when OC module is installed </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	<p> This is an OPTIONAL field and value is User inputted</p>
+	<p> Allowed optional values are YES, NO or NULL </p>
+	<p> YES denotes that the contract is directly linked to the other counterparty’s commercial or treasury financial activity</p>
+	<p> NO denotes that the contract is not directly linked to the other counterparty’s commercial or treasury financial activity</p>
+	<p> Input allowed only when the Other counterparty is a NON FINANCIAL COUNTERPARTY</p>
+	<p> This is a no change field </p>
+
+</desc>
+</t>
+
+<t>
+<field>TRADE.REPOSITORY</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the trade repository information</p>
+<p> Input to this field is allowed only when OC module is installed </p>
+           <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is an OPTIONAL field </p>
+		<p> Defaulted with value from OC.PARAMETER record </p>
+		<p> User can override with a valid value in OC.TRADE.REPOSITORY record </p>
+		<p> This is a no change field </p>
+</desc>
+</t>
+
+<t>
+<field>UNIQUE.PROD.ID</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p>
+<p> Denotes the unique product identifier. When a Unique Product Identifier (UPI) is available the same is mentioned here. When it UPI is not available there are other alternatives allowed like ISIN, AII, CFI. Hence no validations are created </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+                     <p> This is an OPTIONAL field </p>  			
+</desc>
+</t>
+
+<t>
+<field>CLG.MEMBER.ID</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the clearing member identifier. It contains the reporting counterparty ID. If the reporting counterparty is not a clearing member, its clearing member shall be identified in this field by a unique code. In case of an individual, a client code, as assigned by the CCP, shall be used. </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is a conditionally mandatory field </p>
+<p> This is mandatory when the clearing status (OC.CLG.STATUS) of the contract is CLEARED. </p>
+		<p> This is a no change field </p>
+			
+</desc>
+</t>
+
+<t>
+<field>BILATERAL.REF</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the Bilateral Reference. It contains the transaction ID of the Bilateral Trade that is cleared. </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+           <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is a conditionally mandatory field</p>
+<p> This field is mandatory when the clearing status (OC.CLG.STATUS) of the contract is CLEARED</p>
+		<p> This is a no change field </p>
+			
+</desc>
+</t>
+
+
+<t>
+<field>OC.CLG.STATUS</field> 
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the OC Clearing Status. </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+
+              <p>
+                <p>Validation Rules: </p>
+            </p>
+<p> Allowed optional values are Bilateral, Submitted, Accepted, Rejected, Cleared and Terminated. </p>
+<p> BILATERAL - when a fresh contract is inputted this field should be updated as BILATERAL</p>
+<p> SUBMITTED - when the inputted contract is submitted to Trade Repository it should get updated as SUBMITTED. 
+                              <p>The previous clearing status of the contract should be BILATERAL</p>
+	          <p>when OC.CLG.STATUS of the contract is SUBMITTED both CLG.MEM.ID and CENTRAl.CLG.PARTY fields cannot be NULL</p>
+</p>
+<p> ACCEPTED - when the contract is accepted by the Trade Repository it should get updated as ACCEPTED. 
+         <p>The previous status should be SUBMITTED</p>
+</p>
+<p> REJECTED - when the contract is rejected by the Trade Repository it should get updated as REJECTED.
+         <p>The previous status should be SUBMITTED</p>
+</p>
+<p> CLEARED - When the status of the contract is ACCEPTED, User is expected to reverse the contract and enter a new one with Trade status as CLEARED
+	       <p>when the status is CLEARED fields like CENTRAL.CLG.PARTY, CLG.MEM.ID, BILATERAL.REF are mandatory</p>
+</p>
+<p> Terminated - A cleared contract when cancelled/terminated by the Trade Repository should be updated as TERMINATED. 
+        <p>The previous status should be CLEARED</p>
+</p>
+<p> This is a no change field </p>		
+</desc>
+</t>
+
+<t>
+<field>CENTRAL.CLG.PARTY</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository.</p> 
+<p> Denotes the central clearing party. If it doesn’t contain any value it gets defaulted with the clearing member id (CLG.MEM.ID) </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+           <p>
+                <p>Validation Rules : </p>
+            </p>
+	<p> This is a conditionally mandatory field</p>
+<p> This field is mandatory when the clearing status (OC.CLG.STATUS) of the contract is CLEARED</p>
+	<p> This is a no change field </p>
+</desc>
+</t> 
+
+
+<t>
+<field>CONTRACT.GRP</field>
+<desc>
+<p> 1.Allows particular groups of contracts to be identified.</p> 
+<p> 2.The conditions which determine a particular CONTRACT.GRP code are defined in the ND.DEAL record of the APPL.GEN.CONDITION application </p>
+<p> 3.Each time the contract is changed the conditions will be re-evaluated which can result in a new CONTRACT.GRP code. If the CONTRACT.GRP value changes then this can result in a new FTT.TAX.TYPE.KEY being allocated depending on the set up of the relevant TAX.TYPE.CONDITION record.However, the conditions will not re-evaluated after authorization. </p>
+           <p>
+                <p>Validation Rules : </p>
+            </p>
+	<p> 5 character alphanumeric</p>
+</desc>
+</t> 
+
+<t>
+<field>FTT.TAX.TYPE.KEY</field>
+<desc>
+<p> Using this field together with the CONTRACT.GRP field it is possible to determine a particular tax code from conditions based on</p> 
+<p> a. General tax type as defined in the TAX.TYPE.CONDITION application  </p>
+<p> b. Type of customer as defined in the CUSTOMER.CHARGES application  </p>
+<p> c. Type of contract as defined in the CONTRACT.GRP field.  </p>
+<p> The value in this field must equate to a record in the TAX.TYPE.CONDITION application which contains tax codes related to customer tax group and contract group.  </p>
+<p> Whenever tax is to be recalculated the correct tax code will be determined and the Tax related fields gets updated accordingly.</p>
+           <p>
+                <p>Validation Rules : </p>
+            </p>
+	<p> Optional input, must be present as a record on TAX.TYPE.CONDITION. The actual TAX.TYPE.CONDITION key value will be prefixed by the "*" character (asterisk).</p>
+</desc>
+</t> 
+
+<t>
+<field>FTT.TAX.KEY</field>
+<desc>
+<p> Identifies the Key from the Tax Table when the transaction is subjected for a Financial Tax. This field can be defaulted if the TAX.INTEREST.TYPE field is used. </p> 
+	    <p>
+                <p>Validation Rules : </p>
+            </p>	
+	<p>No input field, system defaulted.</p>
+</desc>
+</t> 
+
+<t>
+<field>FTT.TAX.BASE.CCY</field>
+<desc>
+<p> Identifies the Tax Base Currency in which Tax amount is calculated.</p>
+<p> System will default Settlement Currency if there is no user input and it can be overridden by the user during Input/INAU stage</p>
+	    <p>
+                <p>Validation Rules : </p>
+            </p>
+	<p> Can be either Deal or Settlement Currency</p>
+	<p> No Change field after authorization. Associated with TAX.BASE.AMT</p>
+</desc>
+</t> 
+
+<t>
+<field>FTT.TAX.BASE.AMT</field>
+<desc>
+<p> Identifies the Tax Base amount for Tax calculation.It will be either Notional Settlement amount/Deal amount. The amount defaults corresponding to the currency present in the field FTT.TAX.BASE.CCY. In case, the Tax Base Notional amount requires any adjustment (for example tenor adjustment) to the contract notional, a customized routine can be attached to BASE.AMT.ROUTINE field of TAX application.  </p> 
+	    <p>
+                <p>Validation Rules : </p>
+            </p>
+	<p> No input field. Associated with TAX.BASE.CCY</p>
+	
+</desc>
+</t> 
+
+<t>
+<field>FTT.TAX.AMT.BASE</field>
+<desc>
+<p> Identifies the Tax Amount calculated in Tax Base Currency.The basis for the calculation would be the value in FTT.TAX.BASE.AMT field and the Tax rate defined in the corresponding FTT tax key. </p> 
+	    <p>
+                <p>Validation Rules : </p>
+            </p>
+	<p> No input field.</p>
+	
+</desc>
+</t> 
+
+<t>
+<field>FTT.TAX.AMT.EUR</field>
+<desc>
+<p> Identifies the Tax Amount calculated in EUR, which is the Tax payable currency under EUFTT. The notional conversion between the FTT.TAX.BASE.CCY and EUR is based on mid-reval rate in currency record. </p> 
+<p> Value populated in FTT.TAX.AMT.BASE is converted to EUR. </p> 
+ 
+	    <p>
+                <p>Validation Rules : </p>
+            </p>
+	<p> No input field.</p>
+	
+</desc>
+</t> 
+
+<t>
+<field>FTT.TAX.AMT.LCY</field>
+<desc>
+<p> Local equivalent of Financial Transaction Tax amount. Where the Tax currency and PL currency are different, using Mid-reval rate from the tax currency record, the LCY equivalent is calculated and accounting entries are based on this value.   </p>
+	    <p>
+                <p>Validation Rules : </p>
+            </p>
+	<p> No input field.</p>
+	
+</desc>
+</t> 
+
+<t>
+<field>FTT.COLL.CPTY.TAX</field>
+<desc>
+<p>Provides the option to T24 bank to collect the Financial Transaction Tax payable by the Counterparty also. If yes, accounting entries are raised to collect counterparty’s tax wherein customer Account is debited and Tax suspense Account is credited. The values No or Null means T24 bank does not collect the FTT payable by the counterparty or in other words the counterparty himself remits the FTT. This option is provided on the premise that where the counterparty is a customer of the bank ( not an interbank counterparty) the T24 bank assumes responsibility to collect and pay the FTT payable by the customer</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+	    <p>Values allowed are Yes, No or Null.</p>
+	    <p>Default value will be from ND.PARAMETER but can be overridden by the User. </p>
+        </desc>
+</t>
+
+<t>
+<field>INT.FLD.ID</field>
+<desc>
+<p>A multi-value pair to capture the external reference for the equivalent record in another system Eg.TAP </p>
+<p>This field is used to enter the identifier field name from other Temenos products </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        <p> Mandatory if INT.FLD.VAL is present </p>
+        </desc>
+</t>
+
+<t>
+<field>INT.FLD.VAL</field>
+<desc>
+<p>A multi-value pair to capture the external reference for the equivalent record in another system Eg.TAP </p>
+<p>This field is used to enter the value of the field from another Temenos Products  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        <p> INT.FLD.ID field must be present if this field is input  </p>
+        </desc>
+</t>
+
+</menu>
+</t24help>
+

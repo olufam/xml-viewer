@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>ACCT.GEN.CONDITION</table>
+</header>
+<overview>
+<ovdesc>
+<p>The purpose of this table is to define rules for grouping together Accounts for which the same interest and charges conditions apply. </p><p>Conditions for the calculation and application of interest and charges may then be specified for Groups of Accounts and overridden with special conditions for individual Accounts. </p><p>Account Groups are determined on the basis of Customer and Account details such as Residence, Sector and Account Category.  The criteria used and their order of priority are specified in the Condition Priority file in the record whose id is ACCOUNT.  A maximum of 4 fields may be used.  Only the fields selected in the CONDITION.PRIORITY file are included General Condition records. </p><p>Each General Condition record specifies the combination of field values defining one Account Group.  The id of the General Condition record is referred to in other parts of the system as the Condition Group. </p><p>Before any Account can be opened, a suitable General Condition record must exist in order to determine the Group to which the Account belongs, and a Capitalisation Frequency record and Debit and Credit Interest conditions (in the Currency of the Account) for that Group must have been defined. </p></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>VALUE</field>
+<desc><p>This field contains the actual value (priority)</p><p /><p>If the associated PRTY.VALIDATION field on CONDITION.PRIORITY has been defined as a FILE&gt;FIELD.NAME then the value entered must exist as a key on the file mentioned and the field name will be the enrichment for the VALUE field.</p><p /><p>For example if ACCOUNT&gt;CATEGORY is set in PRT.VALIDATION on CONDIITON.PRIORITY record , then the value input in this field should  have an entry in CATEGORY file.</p><p /><p>If the associated PRTY.VALIDATION field on CONDITION.PRIORITY has been defined as a @routine.name then this routine will be run to check if the value entered is valid.</p><p /><p>e.g.</p><p /><p /><p>On the CONDITION PRIORITY record.</p><p /><p /><p>3.1 PRIORITY.ITEM is CUSTOMER&gt;SECTOR.</p><p /><p /><p>4.1 PRTY.VALIDATION is SECTOR&gt;DESCRIPTION</p><p /><p /><p /><p /><p /><p>Then on XX.GEN.CONDITION record </p><p /><p /><p>2.1.1 ITEM is CUSTOMER&gt;SECTOR.</p><p /><p /><p>3.1.1 PRIORITY is 1</p><p /><p /><p>4.1.1VALUE is 1000</p><p /><p /><p /><p /><p /><p>Then the value 1000 will be checked against the SECTOR file and if there is record for 1000 then the DESCRIPTION will be displayed as an enrichment otherwise the value will be rejected with a record missing message.</p><p /><p>Thus if the SECTOR code record was for Private Customers then</p><p /><p /><p /><p>4.1.1VALUE is 1000</p><p />Private Customers <p /><p /><p>If the associated PRTY.VALIDATION field on CONDITION.PRIORITY has been defined as a @routine.name then this routine will be run to check if the value entered is valid. If not then the error will be raised.</p><p /><p /><p /><p /><p /><p>e.g.</p><p /><p /><p>On the CONDITION PRIORITY record.</p><p /><p /><p>3.1 PRIORITY.ITEM is CUSTOMER&gt;SECTOR.</p><p /><p /><p>4.1 PRTY.VALIDATION is @ING.SECTOR.CHECK</p><p /><p /><p /><p /><p /><p>Then the routine INFG.SECTOR.CHECK will be run to validate the value entered in the filed VALUE.</p><p><p>Validation Rules:</p></p><p /><p /></desc>
+</t>
+<t>
+<field>PRIORITY</field>
+<desc><p>This field gives the priority.</p><p>The value is calculated  from the position of the PRIORITY.ITEM in   CONDITION.PRIORITY  record </p><p>No input field.</p><p>No change field.</p><p>Sub value field</p><p><p>Validation Rules:</p></p><p /><p /></desc>
+</t>
+<t>
+<field>SECTOR.CODE</field>
+<desc><p>Field defaulted based on the hierarchy given in CONDITION.PRIORITY for ACCOUNT.  For example in CONDITION.PRIORITY for account, if SECTOR  is given as priority no.2,then in this table (ACCOUNT.GEN.CONDITION) field no. 2.2 will be defaulted with SECTOR and so on.  </p><p>At the time of committing the system will check online whether any record is available with identical combination of the values in the fields, and if so throw online error message.  This is to ensure the group as UNIQUE.</p><p><p>Validation Rules:</p></p><p /><p>Optional Field</p><p>The combination of various fields must be unique.</p></desc>
+</t>
+<t>
+<field>CATEGORY.CODE</field>
+<desc><p>Field defaulted based on the hierarchy given in CONDITION.PRIORITY for ACCOUNT.  For example in CONDITION.PRIORITY for account, if CATEGORY is given as priority no.1,then in this table (ACCOUNT.GEN.CONDITION) field no. 2.1 will be defaulted with CATEGORY and so on.  </p><p>At the time of committing the system will check online whether any record is available with identical combination of the values in the fields, and if so throw online error message.  This is to ensure the group as UNIQUE.</p><p><p>Validation Rules:</p></p><p /><p>Optional Field</p><p>The combination of various fields must be unique.</p></desc>
+</t>
+<t>
+<field>CONDITION.CODE</field>
+<desc><p>This is the code by which the General Condition details can be identified and is referred to in other parts of the system as the Condition Group number. </p><p>The value of this field is used as part of the key to records defining conditions for the calculation and application of interest and charges for the corresponding Group of Accounts in the GROUP.DEBIT.INT, GROUP.CREDIT.INT and GROUP.CAPITALISATION tables. </p><p>In addition to the numeric code , a date can be appended with a hypen where  a corresponding CONDITION.PRIORITY  record with this date exists and this id should not exists in GEN.COND.KEEP field of CONDITION.PRIORITY </p><p><p>Validation Rules:</p></p><p /><p>1 to 4 numeric characters. (Mandatory input)</p><p>when RECORD ID with date is input , corresponding CONDITION.PRIORITY record   with this date should exists .</p><p>when RECORD ID with date is input , this ID should not exists in   GEN.COND.KEEP  field of CONDITION.PRIORITY record.</p></desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc><p>Describes the General Condition code. </p><p>This field is used as a Description of the General Condition which is used for reporting or enrichment. </p><p><p>Validation Rules:</p></p><p>1-35 type A (alphanumeric) characters. Multivalue field. (Mandatory input)</p></desc>
+</t>
+<t>
+<field>ITEM</field>
+<desc><p>This is a No input field and will contain value from CONDITION.PRIORITY s PRIORITY.ITEM field.</p><p>This field will contain a valid field name with  a file name ( seperated by a ' &gt;'  ) from which it is derived which is used to set priority condition.</p><p>The entire multi value set of the  PRIORITY.ITEM  field from the CONDITION.PRIORITY record  will be defaulted as values (sub values) in this field.</p><p>For example </p><p>if  ACCOUNT&gt;CATEGORY  &amp; CUSTOMER&gt;SECTOR are  the 2 multivalue set  of  values in  PRIORITY.ITEM  field in CONDITION.PRIORITY of  ACCOUNT file  ,  then these values will be copied as sub values in this field as shown below.</p><p /><p>2. 1. 1 ITEM........ ACCOUNT&gt;CATEGORY</p><p>3. 1. 1 PRIORITY.... 1</p><p>4. 1. 1 VALUE....... 1001 Current Account</p><p>2. 1. 2 ITEM........ CUSTOMER&gt;SECTOR</p><p>3. 1. 2 PRIORITY.... 2</p><p>4. 1. 2 VALUE....... 4100 Private Individuals</p><p>2. 2. 1 ITEM........ ACCOUNT&gt;CATEGORY</p><p>3. 2. 1 PRIORITY.... 1</p><p>4. 2. 1 VALUE....... 1001 Current Account</p><p>No Input field.</p><p>No Change field.</p><p>Sub Valued field.</p><p><p>Validation Rules:</p></p><p /><p /></desc>
+</t>
+<t>
+<field>MULTIVALUE</field>
+<desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc>
+</t>
+</menu>
+</t24help>
+

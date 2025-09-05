@@ -1,0 +1,770 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>MF</product>
+<table>MF.ORDER.BY.CUST</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The agent, front office or branch operations of Mutual Fund companies would receive applications for subscriptions, redemptions and fund switching. Subscriptions are performed when a customer decides to invest into a fund. Redemptions are performed when the customer wishes to sell some holdings. MF.ORDER.BY.CUST  is a Pre-Order application which is used for introducing new subscribers to the fund and also handle subscription or redemption requests of existing clients. It will perform four functions: -</p>
+            <p>       1. It will record details of customer order like the Fund ID, amount proposed to be invested or redeemed, payment mode (cheque, cash, switch, account debit, etc.), special order instructions like order type, expiry date, etc.</p>
+            <p>       2. Handle bulk subscription/redemption requests</p>
+            <p>       3. Record the details of plans that the customer would like to enter into – Systematic Investment Plans (SIP), Systematic Withdrawal Plan (SWP) or the Systematic Switching Plans (SSP).</p>
+            <p>       4. Handle Fund Switches – Switch from one fund to other</p>
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>SEND.CONFIRMATION</field>
+<desc>
+            <p>This would determine whether an advice has to be sent to customer.</p>
+            <p> Would be 'YES' or BLANK</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SWITCH.FROM</field>
+<desc>
+            <p>Specifies the ID of the Fund from which the customer wishes to switch.</p>
+            <p> Input allowed only if switch is allowed for the fund.( field ALLOW.FUND.SWITCH in MF.FUND.MASTER must be set to 'YES' )</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Valid MF.FUND.MASTER ID. Input allowed only if ORDER.TYPE is SWITCH</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SETTLEMENT.CCY</field>
+<desc>
+            <p>Currency of the account defined in SETTLEMENT.ACC field. Would be system populated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Valid CURRENCY code</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BULK.CR.TXN</field>
+<desc>
+            <p>Field to determine the purchase transaction towards which the redemption would be allocated. Input allowed only for Debit TRANS.TYPE (redemptions). </p>
+            <p>   In case of redemptions, the same would be allocated towards the credit transaction specified. If the number of units in the Credit Transaction is more than the redemption amount, then units would be redeemed only to the extent of  the redemption amount and balance units would remain. If the credit transaction units are not sufficient to cover the redemption amount, then the redemptions would be allocated towards the remaining Credit transactions on FIFO basis. If there are no other credit transactions, the redemption would only be executed to the extent of units available.</p>
+            <p>   If the order in which units are to be redeemed is not provided here, the redemptions would be allocated on a FIFO basis. This field could be sub-valued to specify multiple credit transactions.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Valid MF.TRADE ID that pertains to a purchase for the fund and by the customer in the order.</p>
+            <p />
+            <p>   Fields from BULK.FUND.ID to BULK.CR.TXN would be associated multi value fields. Input would be allowed only if ORDER.TYPE is 'BULK'</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ORDER.PRICE</field>
+<desc>
+            <p>Specifies the price cap for the order. Input mandatory if LIMIT.TYPE is 'PRICE' else no input is allowed</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Standard T24 PRICE format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PLAN.PERCENT</field>
+<desc>
+            <p>Input allowed only for plan types SWP and SSP. This reflects whether the amount specified in the PLAN.AMT field is a percentage. If this is set to Yes, the above field would represent the percentage of nominal to be redeemed/switched as per the frequency set.</p>
+            <p> YES is the only value allowed</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PAYMENT.MODE</field>
+<desc>
+            <p>Specifies the mode of payment.</p>
+            <p> Allowed values are CHEQUE / CASH / CARD / ACCOUNT / TRANSFER / OTHER. </p>
+            <p> OTHER would be used for fund switch.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>FUND.CCY</field>
+<desc>
+            <p>Defines the currency of the fund. Defaulted by the system from SECURITY.MASTER.</p>
+            <p>   No input field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHEQUE.AMOUNT</field>
+<desc>
+            <p>Amount of the cheque.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 Amount format.</p>
+            <p>   Fields from CHEQUE.NO to CHEQUE.AMOUNT would be multi-valued and associated.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BULK.ORD.PRICE</field>
+<desc>
+            <p>Specifies the price cap for the order. Input mandatory if BULK.LIMIT.TYPE is 'PRICE' else no input is allowed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 PRICE format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BULK.FUND.ID</field>
+<desc>
+            <p>ID of fund master to which the customer proposes to subscribe to or redeem from.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Multi-value field. Must be a valid MF.FUND.MASTER ID. Input allowed only for ORDER.TYPE 'BULK'</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PLAN.AMT</field>
+<desc>
+            <p>For SIP, this would be amount that is proposed to be invested in regular intervals and for SWP and SSP, this could be either number of units to be redeemed/switched or amount to be redeemed/switched based on UNIT.AMOUNT field.</p>
+            <p> If the PLAN.PERCENT field is set to Yes, then this amount would reflect the quantity to be redeemed as per the frequency set. For example, if this field has a value of 10 (for SSP and SWP), then 10 % of available quantity would be either redeemed or switched.</p>
+            <p />
+            <p> If the PLAN.AMT is proposed to be increased after a specified period, the Multi value could be expanded and PLAN.AMT could be changed with new Start and End Dates.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Standard T24 nominal / amount ( NOMAMT ) format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TRANS.TYPE.CR</field>
+<desc>
+            <p>Defines the credit transaction type if the ORDER.TYPE is SWITCH. Input allowed only for SWITCH</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Valid SC.TRANS.NAME ID to be provided in this field. A credit SC.TRANS.NAME (as provided in SC.TRANS.TYPE) would represent subscription</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DRAWN.ON</field>
+<desc>
+            <p>Bank on which the cheque is drawn on. Free format text.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Alpha-numeric characters</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXT.ACCT.BRANCH</field>
+<desc>
+            <p>Branch of the bank in EXT.ACCT.BANK field where the account is maintained.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Free Format</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>LIMIT.TYPE</field>
+<desc>
+            <p>Specifies whether the order is a Price or Market order. In case of Market orders, the order would be executed at prevailing NAV. In case of Price orders, the price cap would be specified and if the NAV at which the order is being executed is greater than (for subscriptions) or less than (for redemptions) this price, the order would not be executed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Allowed values are 'PRICE' or 'MARKET'. Mandatory field for SINGLE and SWITCH order types.</p>
+            <p>   For order type 'BULK', input of 'PRICE' is not allowed here. A separate field called BULK.LIMIT.TYPE is provided below</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TRANS.TYPE.DR</field>
+<desc>
+            <p>Defines the debit transaction type if the ORDER TYPE is SWITCH. Input allowed only for SWITCH</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Valid SC.TRANS.NAME ID to be provided in this field. A debit SC.TRANS.NAME (as provided in SC.TRANS.TYPE) would represent redemption</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ORDER.TYPE</field>
+<desc>
+            <p>Specifies whether this is an order for subscription / redemption to a single fund or whether this is a bulk order or whether this is a switch order</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Mandatory field. Allowed values are SINGLE, BULK or SWITCH</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BULK.ORDER.AMT</field>
+<desc>
+            <p>System calculated field based on ORDER.AMOUNT and BULK.SHARE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 nominal / amount ( NOMAMT ) format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PLAN.START.DATE</field>
+<desc>
+            <p>Specifies the Start Date of the plan.</p>
+            <p> The start date of second multi value should not be before end date of first multi value. There should be no overlap of plans.</p>
+            <p> Standard T24 Date format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PLAN.CASH.BAL</field>
+<desc>
+            <p>This would be the amount of cash to be retained in the account or the percentage of cash to be retained in the account if  PLAN.CASH is set.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Standard T24 Amount format.Input should be between 1-100 if PLN.CSH.BAL.TYP is percentage.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BULK.SETT.CCY</field>
+<desc>
+            <p>Currency of the account defined in BULK.SETT.ACC field. Would be system populated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Valid CURRENCY code</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.AMOUNT</field>
+<desc>
+            <p>The amount for which the order is being placed. For subscriptions, this represents the amount and for redemptions, this could be either units or amount.</p>
+            <p>   In case of bulk orders, this represents the amount that is proposed to be invested across funds.</p>
+            <p>   In case of switch, this represents (either in terms of amount or units), the units to be redeemed from one fund for subscribing to the other fund.</p>
+            <p>   In case of Redemptions in terms of units :</p>
+            <p>   (1) This cannot exceed the actual holding of the customer.</p>
+            <p>   (2) This field would be automatically populated by the system if AUTO.SELECT is set to YES. </p>
+            <p>   Input of either this or PLAN.AMOUNT is mandatory.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 nominal / amount ( NOMAMT ) format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SWITCH.TRIGGER</field>
+<desc>
+            <p>If AUTO.SELECT is set to YES, this would calculate the ORDER.AMOUNT based on SWITCH.PERCENTAGE</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Y' is the only value that would be accepted.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CARD.EXP.DATE</field>
+<desc>
+            <p>Expiry date of the card.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 Date format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BULK.SETT.ACC</field>
+<desc>
+            <p>Input allowed only if PAYMENT.MODE is 'ACCOUNT'. If not specified here, the default would be from SETTLEMENT.ACC field above else it would be from SEC.ACC.MASTER. If not specified here, the same could be specified in MF.ORDER application also</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be a valid ACCOUNT record.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CASH.PYMT.RECD</field>
+<desc>
+            <p>Amount of payment made by cash. This is mandatory if the payment mode is 'CASH'.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 Amount format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXT.ACCT.BANK</field>
+<desc>
+            <p>Bank with which external account is maintained.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Free Format</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CARD.AMOUNT</field>
+<desc>
+            <p>Amount of payment made by card.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 Amount format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SWITCH.TO</field>
+<desc>
+            <p>Funds to which the holdings in SWITCH.FROM would be switched. </p>
+            <p> Multi-value field. Valid MF.FUND.MASTER ID</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>FUND.ID</field>
+<desc>
+            <p>The ID of the fund where the customer proposes to invest. Input allowed only if ORDER.TYPE is SINGLE</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be a valid MF.FUND.MASTER ID. Input is required in this field only if customer proposes to subscribe to / redeem from one fund else this would be provided in fields provided for bulk fund id or switch from / switch to fields.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CASH.PYMT.DATE</field>
+<desc>
+            <p>Date of which payment was made.Would default to the Order Date.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 Date format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BULK.SHARE</field>
+<desc>
+            <p>Percentage or order amount that is assigned for this fund. This would be read in tandem with BULK.ALLOCATION field. If BULK.ALLOCATION is percentage, the sum of Bulk Shares that is assigned to various funds should be 100 else this should be equal to the order amount.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 Amount format. Input should be between 1-100 if percentage.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PLAN.TYPE</field>
+<desc>
+            <p>Defines the type of the plan. There could be three kinds of plans:</p>
+            <p> SIP – Systematic Investment Plan</p>
+            <p> SWP – Systematic Withdrawal Plan</p>
+            <p> SSP – Systematic Switching Plan</p>
+            <p> Plans could be defined simultaneously (it is possible to have an SIP running for a period, followed by a Switch or SSP. But they would not run simultaneously. i.e. There cannot be overlap of plans within a particular period.</p>
+            <p> The plans need not necessarily be entered at the time of placing the order. They could be entered separately at a later date using this application.</p>
+            <p> Input allowed only if plans are allowed for the fund ( field PLAN.ALLOWED in MF.FUND.MASTER must be set to 'YES'). SSP would be allowed only if switch is allowed for the fund ( field ALLOW.FUND.SWITCH in MF.FUND.MASTER must be set to 'YES' )</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Multi-value field. Allowed values are SIP / SWP / SSP.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SWITCH.PERCENTAGE</field>
+<desc>
+            <p />
+            <p> If AUTO.SELECT is set to YES, this field would determine the percentage of holding to be switched. Input allowed only if AUTO.SELECT is set to YES</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Input should be between 1-100.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>WAIVE.FEES</field>
+<desc>
+            <p>Field to determine whether fees are to be waived on this transaction. If in the normal course, this type of transaction would be subject to fees and for some specific reason, the fees has to be waived on this particular transaction, this field should be set to 'YES'</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  'YES' is the only accepted value. Blank would be equivalent to 'No'.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SWITCH.SHARE</field>
+<desc>
+            <p>Allocations to various funds to which the holdings are being switched. The sum should add to 100.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Multi-value field.Input should be between 1-100.</p>
+            <p> Fields SWITCH.TO and SWITCH.SHARE are associated multi-value fields.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SETTLEMENT.ACC</field>
+<desc>
+            <p>Specifies the account from where the customer would be making payment (if PAYMENT.MODE is ACCOUNT). The field is required only if customer maintains account with the bank. If the payment is by cheque/credit card/cash or by transfer from outside bank account, no input is required in this field. In any case, this field is not mandatory in this application. The settlement account could also be provided in the order. For orders to a single fund, this would default from SEC.ACC.MASTER based on the order currency specified</p>
+            <p> In case of bulk subscriptions/redemptions, separate settlement accounts are provided as part of bulk multi-value set. With this, it would be possible to specify different settlement accounts for subscription to different funds. If this field is populated for bulk orders, then the same settlement account would be used in all orders.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Must be a valid ACCOUNT record.Mandatory if PAYMENT.MODE is 'ACCOUNT'</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BULK.ALLOCATION</field>
+<desc>
+            <p>The input to this field is allowed only if the ORDER.TYPE is BULK. This specifies whether the amount to be allocated towards various funds is in terms of Percentage or Amount</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Allowed values are 'PERCENTAGE' or 'AMOUNT'</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PARTICIPATION.ACC</field>
+<desc>
+            <p>The participation account of the customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Mandatory field. Must be a valid SEC.ACC.MASTER record ID.</p>
+            <p> The system would default the first SEC.ACC.MASTER created for the customer but this could be changed by the user.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHEQUE.NO</field>
+<desc>
+            <p>Identifies the cheque no. If the Mode of payment is 'CHEQUE', then this field would be mandatory.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Alpha-numeric character</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CARD.ISSUE.BNK</field>
+<desc>
+            <p>Bank that has issued the card.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Alpha-numeric characters</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ORDER.NO</field>
+<desc>
+            <p>ID of the MF.ORDER.BY.CUST application.</p>
+            <p> Sixteen Digit ID – e.g. MFORDC0500100001 (where MFORDC would be constant, 05 stands for year, 001 stands for Julian date and 00001 stands for the sequence number. The ID would be automatically generated by the system on entry of F3.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BULK.LIMIT.TYPE</field>
+<desc>
+            <p>Specifies whether the order is a Price or Market order. In case of Market orders, the order would be executed at prevailing NAV. In case of Price orders, price cap would be specified and if the NAV at which the order is being executed is greater than (for subscriptions) or less than (for redemptions) this price, the order would not be executed</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Allowed values are 'PRICE' or 'MARKET'. Input allowed only for ORDER.TYPE 'BULK'</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CASH.RECPT.NO</field>
+<desc>
+            <p>Unique identifier if any for the cash receipt.</p>
+            <p>   Free format text. Optional input</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>PLAN.END.DATE</field>
+<desc>
+            <p>Specifies the End date of the plan. This should be in line with start date and frequency specified.</p>
+            <p> Standard T24 Date format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.ID</field>
+<desc>
+            <p>Specifies the Customer placing the order.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Mandatory field. Must be defined on the CUSTOMER.SECURITY record with CUSTOMER.TYPE set as 'CUSTOMER'.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PLAN.FREQUENCY</field>
+<desc>
+            <p>Frequency in which the amount has to be invested or redeemed or switched. For example, if START.DATE is 1st April 2005 and the customer wishes to invest 1000 USD on 1st of every month, frequency is defined as '20050401M0101'</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Standard T24 Frequency format. </p>
+        </desc>
+</t>
+<t>
+<field>ORDER.CCY</field>
+<desc>
+            <p>This field represents the currency of the ORDER.AMOUNT. If the order currency is different to Fund currency, the fund currency equivalent would be determined using the mid rate.  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be a valid CURRENCY code.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BULK.TRIGGER</field>
+<desc>
+            <p>Trigger for calculating the allocations to various funds based on ORDER.AMOUNT and BULK.SHARE fields.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Y' is the only value that would be accepted.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CREDIT.TXN.ID</field>
+<desc>
+            <p>Multi-value field to determine the purchase transaction towards which the redemption would be allocated. Input allowed only for Debit TRANS.TYPE (redemptions). No input here if ORDER.TYPE is BULK.For bulk orders, separate field is provided in the bulk multi-value set below.</p>
+            <p>   In case of redemptions, the same would be allocated towards the credit transaction specified. If the number of units in the Credit Transaction is more than the redemption amount, then units would be redeemed only to the extent of  the redemption amount and balance units would remain. If the credit transaction units are not sufficient to cover the redemption amount, then the redemptions would be allocated towards the remaining Credit transactions on FIFO basis. If there are no other credit transactions, the redemption would only be executed to the extent of units available.</p>
+            <p>   If the order in which units are to be redeemed is not provided here, the redemptions would be allocated on a FIFO basis</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Valid MF.TRADE ID that pertains to a purchase for the fund and by the customer in the order</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CARD.NO</field>
+<desc>
+            <p>Identifies the card no. If the mode of payment is 'CARD', this field would be mandatory.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Free format numeric characters.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>UNIT.AMOUNT</field>
+<desc>
+            <p>Specifies whether the order amount is in terms of Unit or Amount. For subscriptions, this would always be 'AMOUNT'  and for redemptions, this could be either 'UNIT' or 'AMOUNT'.</p>
+            <p> If AUTO.SELECT is set to YES, only 'UNIT' would be allowed</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Mandatory Input. Allowed values are 'UNIT' or 'AMOUNT'</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>FEE.INCLUSIVE</field>
+<desc>
+            <p>Field to specify whether the order amount is inclusive or exclusive of all charges. This is valid only for cases where the order is in terms of amount (all subscriptions and few redemptions). If the FEE.INCLUSIVE is set to YES, the amount that the customer is willing to expend including all charges is the amount specified in ORDER.AMOUNT field. The order amount in that case would be adjusted for the charges and the unit calculation would be adjusted in such a way that the total settlement amount for the customer does not exceed the order amount. It must be noted that this calculation (fee calculation) would be based on current NAV prevailing in the system at this price. If the unit allocation has to be based on future NAV, then there could be some variation and the amount of settlement could be less than or more than the order amount specified.</p>
+            <p>   This should be set to 'YES' if PAYMENT.MODE is not Account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    'YES' is the only accepted value. Blank would be equivalent to 'No'.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXT.ACCT.NO</field>
+<desc>
+            <p>Specifies the external account number if the payment mode is 'TRANSFER', i.e. the payment is being made by direct transfer from an outside account maintained by the customer or through standing instruction. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Free format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PLAN.EXEC.DATE</field>
+<desc>
+            <p>Specifies the Execution Date of the plan and would be system populated based on start date and frequency.</p>
+            <p> Standard T24 Date format.</p>
+            <p> Noinput field.</p>
+        </desc>
+</t>
+<t>
+<field>TRANS.TYPE</field>
+<desc>
+            <p>Defines the transaction type. This is used only for subscriptions and redemptions. No input is allowed if ORDER.TYPE is SWITCH. </p>
+            <p> In a bulk order, the same trans type would be used for all orders.</p>
+            <p />
+            <p> Different transaction types could be used for different subscriptions and redemptions. For e.g., one TRANS.TYPE could be used for initial subscriptions and one for subsequent subscriptions so that different fee structure could be applicable. Similarly, different TRANS.TYPE could be used for Switches so that fee structure for switches could be different (even within this category, further trans types could be used so as to levy different charges for different switches).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Valid SC.TRANS.NAME ID to be provided in this field. A credit SC.TRANS.NAME (as provided in SC.TRANS.TYPE) would represent subscription and a debit would represent redemption.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PLN.CSH.BAL.TYP</field>
+<desc>
+            <p>This specifies whether the previous field PLAN.CASH.BAL is in terms of amount or percentage.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Allowed values are AMOUNT / PERCENTAGE</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ORDER.EXP.DATE</field>
+<desc>
+            <p>Specifies the date on which the order would expire. If not input, this would be defaulted based on the order expiry days ( field ORD.EXP.DAYS) provided in MF.PARAMETER. The default days would be added to the ORDER.DATE (working days) and this field would be populated. </p>
+            <p> If the order is not executed prior to that date, the order would be moved to history as part of COB on the date subsequent to order expiry date.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Standard T24 Date format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PLAN.CASH</field>
+<desc>
+            <p>This field is required only for systematic investment plans. If this is set, the available cash in the account (less the cash balance to be maintained as specified in next field) would be invested as per the frequency set. PLAN.AMT need not be specified in this case. This could be specified only if the customer maintains an account with the entity</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> YES is the only input allowed. No input is allowed if  PLAN.AMT is set.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ORDER.DATE</field>
+<desc>
+            <p>The date on which the order is being placed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Would be defaulted to the current system date, if not specified. Standard T24 Date format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHEQUE.DATE</field>
+<desc>
+            <p>The date of the cheque.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 Date format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXT.ACCT.CCY</field>
+<desc>
+            <p>Currency of the external account</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be a valid CURRENCY code.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.OFFICER</field>
+<desc>
+            <p>Represents the Account officer of the customer. Would be defaulted from SEC.ACC.MASTER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Must be a valid DEPT.ACCT.OFFICER ID</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AGENT</field>
+<desc>
+            <p>Specifies the customer ID of the Agent through whom the order is being placed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Must be a valid CUSTOMER.SECURITY record with AGENT flag set to 'Y'. Would be defaulted from the CUSTOMER.SECURITY record ( field AGENT.CODE ) defined for the customer placing the order.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>AUTO.PERCENTAGE</field>
+<desc>
+            <p>If AUTO.SELECT is set to Yes, this would determine the percentage of existing holdings to be redeemed.</p>
+            <p>   Input should be between 1-100.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AUTO.SELECT</field>
+<desc>
+            <p>This field is for automatically selecting the funds to be redeemed based on AUTO.PERCENTAGE specified in next field. If AUTO.SELECT is set to YES, the system would select all the funds in which the customer has a holding, for redemption to the extent of percentage specified in next field. For example, if a customer holds 1000 units in a fund and AUTO.PERCENTAGE is set to 50, then 500 units would be redeemed. This would be done for all the funds in which customer has a holding.</p>
+            <p>   Input allowed only for redemptions in terms of units.</p>
+            <p />
+            <p>   If ORDER.TYPE is SWITCH, setting this field to YES would automatically populate the ORDER.AMOUNT field on entry of Switch Trigger</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    'YES' is the only accepted value. Blank would be equivalent to 'No'.</p>
+            <p />
+        </desc>
+</t>
+</menu>
+</t24help>
+

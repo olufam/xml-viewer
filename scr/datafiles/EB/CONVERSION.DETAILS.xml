@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>CONVERSION.DETAILS</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This application is used by Temenos to hold the details of any conversions which are need to modify existing records and update them to the latest file layout. </p>
+            <p>   On a customer site, updates are not permitted to this file and the only available functions are See, List and Verify. </p>
+            <p>   Verifying a record on this file will cause the specified conversion to be run online. If the conversion has already been run for the current company, an override will be required to re run the conversion. </p>
+            <p />
+            <p>  This will also facilitate specifying the file name/record id which has to be reversed during an upgrade. This will be specified as a CONVERSION.DETAILS record and this conversion record will not contain other attributes such as adding field/routines etc. </p>
+            <p />
+            <p>  i.e. Standard T24 conversion and now Reversal are two different facilities offered by Conversion Details. Both of them should be specified together in same Conversion Details record.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>DEL.FIELD.NO</field>
+<desc>
+            <p>This field is used to define the number of fields to remove from each of the records on the file, whilst the related field DEL.FIELD.START defines at which position in the record these fields will be removd from. </p>
+            <p>   If more than one group of fields are to be removed then these should be defined in multi values two and onwards. </p>
+            <p>   This field and the field ADD.FIELD.START form a related multi value set. </p>
+            <p />
+            <p>Validation Rules:</p>
+            <p>   Up to three numeric characters. Optional Input.</p>
+        </desc>
+</t>
+<t>
+<field>RMV.OTHER.INFO</field>
+<desc>
+            <p />
+            <p />
+            <p>  This field could be used to provide meaningful description about the reversal.</p>
+            <p />
+            <p>   Validations:</p>
+            <p>   1. 35 Characters in length, non-mandatory field.</p>
+            <p>   2. Will accept alphanumeric characters.</p>
+            <p>   3. Mandatory input if RMV.FILE.NAME is populated.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>FILE.NAME</field>
+<desc>
+            <p>Holds the file name that must be converted. The file name must be a valid record from the FILE.CONTROL file. </p>
+            <p>All the related files are converted automatically - e.g. for type H file - live, unauthorised and history files are maintained. Each of these files are updated by the conversion.</p>
+            <p>   If only one file must be updated, then a routine can be specified in the FILE.ROUTINE field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p data-mc-conditions="FROMRELEASE.R14">   Allows up to 40 alphanumeric characters. </p>
+            <p data-mc-conditions="FROMRELEASE.R14"> Mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>RE.RUN.FLAG</field>
+<desc>
+            <p>This field is used to define whether the routine may be rerun or not. Each conversion should be able to be rerun and hence the default value for this field is YES when there is a value present in the NEW.CO.CODE.POS field, as records in the new format will be checked against the expected position to see if the record has already been converted. </p>
+            <p>   When there is no value present in the NEW.CO.CODE.POS field (ie the file is not of type H, U or W) then the default value of this field is NO. However, it is possible to set this value to YES to indicate that the routine is able to be re run (for instance a FILE.ROUTINE is specified which sets the value of a given field to null). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Input must be either YES or NO. Defaults to YES when data is present in the NEW.CO.CODE.POS field, otherwise defaults to NO.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.8</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>NEW.CO.CODE.POS</field>
+<desc>
+            <p>This field is used to define the expected position of the company code on the records after they have been converted. By checking the value in this field for each incoming record it is determined whether the conversion should be run on this record. </p>
+            <p>   If the record has a company code in the field specified, the record has already been converted and the record is not processed. </p>
+            <p>   The number of records which were not converted for this reason is detailed in the RUN.INFO field as ALREADY CONVERTED. </p>
+            <p>   N.B. This is a numeric only field, as using field names may cause problems      when multiple upgrades are run at the same time and the same field is      converted more than once. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Up to three numeric characters.  Mandatory input for file types H, U and W.</p>
+        </desc>
+</t>
+<t>
+<field>OLD.CO.CODE.POS</field>
+<desc>
+            <p>This field is used to define the expected position of the company code on the records before they are converted. By checking the value in this field for each incoming record it is determined whether the conversion should be run on this record. </p>
+            <p>   If the record is not in the expected format, the record if not converted. The number of records which were not converted for this reason is detailed in the RUN.INFO field as NOT CONVERTED. </p>
+            <p>   N.B. This is a numeric only field, as using field names may cause problems      when multiple upgrades are run at the same time. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Up to three numeric characters.  Mandatory input for file types H, U and W.</p>
+        </desc>
+</t>
+<t>
+<field>RMV.ACTION</field>
+<desc>
+            <p />
+            <p>  This field is used to specify the action we need to perform on the File Name &amp; ID specified in RMV.FILE.NAME &amp; RMV.REC.ID respectively.</p>
+            <p>   For now this field accepts a value OBSOLETE only. When the action is specified as OBSOLETE then the Conversion will write the data item out to history and remove from the live file.</p>
+            <p />
+            <p>   Validations:</p>
+            <p />
+            <p>   1. Will accept a value OBSOLETE.</p>
+            <p>   2. Non-mandatory field, becomes mandatory when the field RMV.FILE.NAME is populated in the corresponding m/v set.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RMV.REC.ID</field>
+<desc>
+            <p />
+            <p />
+            <p>  Will hold the ID of the record which needs to be reversed out from the file specified in RMV.FILE.NAME.  Cannot be specified without populating the file name in RMV.FILE.NAME.</p>
+            <p />
+            <p>   Validations:</p>
+            <p />
+            <p>   1. 35 characters in length, non-mandatory field.</p>
+            <p>   2. The ID's of files like F.BATCH or F.TSA.SERVICE should not be prefixed with Mnemonics. The system automatically takes care of prefixing the company mnemonics.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRE.ROUTINE</field>
+<desc>
+            <p>This field is used to define a routine which will be called prior to the processing which adds and/or removes fields. </p>
+            <p>   For example, such a routine may be used to populate a parameter record, or load a COMMON area for later use in a RECORD.ROUTINE. </p>
+            <p>        11 PRE.ROUTINE....... @PRE.ROUTINE.NAME </p>
+            <p>   This routine is called with no arguments and should be specified as </p>
+            <p>        SUBROUTINE PRE.ROUTINE.NAME </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>   Must be a valid catalogued subroutine, preceded by the '@' character.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.6</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>This field should contain a description of the conversion program and is displayed on the screen whenever the conversion is run. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>   Up to 30 alphanumeric charcters per line. Multi valued to         allow longer descriptions. Mandatory Input.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.3</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>SHORT.DESC</field>
+<desc>
+            <p>A short description of the conversion. This field is used as an enrichment in the CONVERSION.PGMS for field PROGRAM.NAME, if a record does not exist on PGM.FILE for the conversion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>   Up to 20 alphanumneric characters.  Mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>RUN.FROM</field>
+<desc>
+            <p>This field holds information regarding where the conversion was run from, either manually in which case this field will contain 'ON.LINE' or via RUN.CONVERSION.PGMS in which case it will hold the ID (release number) of the CONVERSION.PGMS record from which it was called from </p>
+            <p>   Fields RUN.INFO to RUN.AT.REL form a related sub value set, and each subvalue indicates a seperate occassion on which the conversion was run. </p>
+            <p>   Fields CO.SELECTED to RUN.AT.REL form a related multi value set which contains the run history for the conversion routine for each company which the conversion has been run in. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RUN.PGM</field>
+<desc>
+            <p>For each company for which the conversion has been run for, this field holds a flag which shows the status of the conversion. This field has three possible values; </p>
+            <p>      0 - The did not need to be run for the company.    1 - The conversion needs to be run for the company, but has not yet        been run.    2 - The conversion has already been run for the company. However, this        flag does not give any indication as to whether the conversion ran        correctly, only that it has actually run. </p>
+            <p>   Fields CO.SELECTED to RUN.AT.REL form a related multi value set which contains the run history for the conversion routine for each company which the conversion has been run in. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be either 0, 1 or 2.</p>
+            <p>   This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RECORD.ROUTINE</field>
+<desc>
+            <p>This field is used to define a routine which will be called after EACH record has gone through the processing which adds and/or removes fields but BEFORE the record is written. </p>
+            <p>   For example, such a routine may be used to null a given field or other tasks which would best be performed at record level. </p>
+            <p>   If file pointers or parameter records are required as part of this routine they should be opened / read into a COMMON area (the loading of the COMMON area should be done in a routine specified in the PRE.ROUTINE field) to avoid repetive and slow processing. </p>
+            <p>        12 RECORD.ROUTINE.... @RECORD.ROUTINE.NAME </p>
+            <p>   This routine is called with three arguments, being the record id, dynamic record array and the file name which is currently being processed, and should be specified as </p>
+            <p>        SUBROUTINE RECORD.ROUTINE.NAME(YID, R.RECORD, FN.FILE) </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>   Must be a valid catalogued subroutine, preceded by the '@' character.</p>
+        </desc>
+</t>
+<t>
+<field>ERROR.MSG</field>
+<desc>
+            <p>If an error occured when the routine was run for the comapny the error message is held in this field. </p>
+            <p>   Fields CO.SELECTED to RUN.AT.REL form a related multi value set which contains the run history for the conversion routine for each company which the conversion has been run in. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RUN.INFO</field>
+<desc>
+            <p>This field is used to hold details of the running of the conversion. For each of the files which the conversion ran on (live, unauthorised and history) the following information is recorded ; </p>
+            <p>        The number of records successfully converted.      The number of records already converted.      The number of records which were not converted due to not being in      the expected format for the conversion to deal with. </p>
+            <p>   In addition , the user who ran the conversion and the time the conversion was run are detailed in this field. </p>
+            <p>   Fields RUN.INFO to RUN.AT.REL form a related sub value set, and each subvalue indicates a seperate occassion on which the conversion was run. </p>
+            <p>   Fields CO.SELECTED to RUN.AT.REL form a related multi value set which contains the run history for the conversion routine for each company which the conversion has been run in. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>MC.FILE.ROUTINE</field>
+<desc>
+            <p>This field determines whether the routine specified in the field FILE.ROUTINE is called once  - for all companies being converted - or is called for each comapny being converted. </p>
+            <p>   If the 'YES' is held in this field then the FILE.ROUTINE will be called for each comapny being converted, otherwise the routine will only be called once. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Input into this field must be YES.</p>
+            <p>   Optional.</p>
+        </desc>
+</t>
+<t>
+<field>DEL.FIELD.START</field>
+<desc>
+            <p>This field is used to define the position from which fields will be removed from each of the records on the file, whilst the related field DEL.FIELD.NO defines how many fields will be removed from this position. </p>
+            <p>   e.g. If the value in this field is four then the first field to be removed will be the field at position four. If one field was being removed, the old field five would now be in field four. </p>
+            <p>   If more than one group of fields are to be added then these should be defined in multi values two and onwards. </p>
+            <p>   N.B. That if more than one set of numbers is used then. Fields should be      removed starting from the bottom of the record, and thus the highest      numbered positions should be input first. </p>
+            <p>   Field names should never be used during conversions as this may cause errors when a customer receives several releases at once and the file is being converted more than once. </p>
+            <p>   This field and the field DEL.FIELD.NO form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Up to three numeric characters. Optional Input.</p>
+            <p>   Each multi value must be less than the previous.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.10</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RMV.FILE.NAME</field>
+<desc>
+            <p>RMV.FILE.NAME</p>
+            <p>  RMV.REC.ID</p>
+            <p>  RMV.OTHER.INFO</p>
+            <p>  RMV.ACTION</p>
+            <p />
+            <p>  These are four associated m/v fields. </p>
+            <p>  These fields facilitate specifying the file name/record id which has to be reversed during an upgrade.</p>
+            <p />
+            <p />
+            <p> RMV.FILE.NAME will hold the FILE.NAME from which we need to reverse out a record based on the ID specified in the field RMV.REC.ID.</p>
+            <p />
+            <p>   Validations:</p>
+            <p>   1. 35 characters in length, non-mandatory field.</p>
+            <p>   2. Should have a valid entry in F.FILE.CONTROL</p>
+            <p>   3. Will accept only INT level files.</p>
+            <p>   4. If populated, then the associated m/v fields RMV.REC.ID, RMV.OTHER.INFO, RMV.ACTION cannot be left blank.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RESERVED.1</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.11</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RELEASE</field>
+<desc>
+            <p>Holds the release information of the CONVERSION.DETAIL record.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Allows up to three characters. the RELEASE must be "Rnn" (e.g. R14)</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.4</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RUN.AT.REL</field>
+<desc>
+            <p>This field holds information regarding the release at which the conversion was run and holds the exact release number at which the conversion was run, e.g. G7.0.06. This information is obtained from the SPF record. </p>
+            <p>   Fields RUN.INFO to RUN.AT.REL form a related sub value set, and each subvalue indicates a seperate occassion on which the conversion was run. </p>
+            <p>   Fields CO.SELECTED to RUN.AT.REL form a related multi value set which contains the run history for the conversion routine for each company which the conversion has been run in. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.12</field>
+<desc>
+            <p>This field is reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.5</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.2</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>FILE.ROUTINE</field>
+<desc>
+            <p>This field is used to define a routine which will be called after the processing which adds and/or removes fields. </p>
+            <p>   For example, such a routine may be used to populate given fields with values from a parameter record or perhaps convert only the history file. </p>
+            <p>        13 FILE.ROUTINE..... @POST.ROUTINE.NAME </p>
+            <p>   This routine is called with no arguments and should be specified as </p>
+            <p>        SUBROUTINE POST.ROUTINE.NAME </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>   Must be a valid catalogued subroutine, preceded by the '@' character.</p>
+        </desc>
+</t>
+<t>
+<field>PRODUCT</field>
+<desc>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>   2 characters of type A.</p>
+            <p />
+            <p />
+            <p>   Must be a valid T24 application</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RESERVED.9</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>ADD.FIELD.NO</field>
+<desc>
+            <p>This field is used to define the number of fields to add to each of the records on the file, whilst the related field ADD.FIELD.START defines at which position in the record these fields will be added. </p>
+            <p>   If more than one group of fields are to be added then these should be defined in multi values two and onwards. </p>
+            <p>   This field and the field ADD.FIELD.START form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Up to three numeric characters. Optional Input.</p>
+        </desc>
+</t>
+<t>
+<field>ADD.FIELD.START</field>
+<desc>
+            <p>This field is used to define the position from which fields will be added to each of the records on the file, whilst the related field ADD.FIELD.NO defines how many fields will be added in this position. </p>
+            <p>   e.g. If the value in this field is four then the first field to be added will be a new field at position four. If one field was being added, the old field four would now be in field five. </p>
+            <p>   If more than one group of fields are to be added then these should be defined in multi values two and onwards. </p>
+            <p>   N.B. That if more than one set of numbers is used then. Fields should be      added starting from the bottom of the record, and thus the highest      numbered positions should be input first. </p>
+            <p>   Field names should never be used during conversions as this may cause errors when a customer receives several releases at once and the file is being converted more than once. </p>
+            <p>   This field and the field ADD.FIELD.NO form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Up to three numeric characters. Optional Input.</p>
+            <p>   Each multivalue must be less than the previous.</p>
+        </desc>
+</t>
+<t>
+<field>CO.SELECTED</field>
+<desc>
+            <p>This field holds the company codes of the companies in which the conversion routine has been run. </p>
+            <p>   Fields CO.SELECTED to RUN.AT.REL form a related multi value set which contains the run history for the conversion routine for each company which the conversion has been run in. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Up to nine alphanumeric characters.  Must be the key to a valid record on the COMPANY file.</p>
+            <p>   This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>CONVERSION.NAME</field>
+<desc>
+            <p>A unique key that holds the conversion routine name. </p>
+            <p>   The standard naming convention of the routine is, </p>
+            <p data-mc-conditions="FROMRELEASE.R14">CONV.&lt;Application. Name&gt; </p>
+            <p data-mc-conditions="FROMRELEASE.R14">  e.g. CONV.CATEGORY </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p data-mc-conditions="FROMRELEASE.R14">   Allows up to 45 alphanumeric characters.</p>
+            <p data-mc-conditions="FROMRELEASE.R14">Mandatory input.</p>
+            <p data-mc-conditions="FROMRELEASE.R14">Application name must have a valid PGM entry (PGM.TYPE = "HULTW").</p>
+            <p>&#160;</p>
+            <p>&#160;</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

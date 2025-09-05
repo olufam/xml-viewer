@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t24help>
+	<header>
+		<product>MT</product>
+		<table>MT.TENANT</table>
+	</header>
+	<overview>
+		<ovdesc>
+			<p>This is the table in which the tenant details can be maintained.</p>
+			<p>Important fields and their usage during event generation:</p>
+			<p>TENANT.TYPE :- Used during TENANT.TYPE.CHECK validation (before authorisation) with the help of TENANT.TYPE.GROUP value from MT.TENANT.TYPE table.</p>
+			<p>TENANT.CONTACT :- The tenant contact details extracted and populated as part of event xml so that an ESB can extract the details and use them whenever required to send notifications to tenants via email or mobile etc</p>
+			<p>TENANT.STATUS :- Used to identify the status of tenant (and to do a quick de-activate) and event can be generated only for active tenants. </p>
+			<p>LEAD.COMPANY, LEAD.COMP.MNE, LEAD.COMP.GROUP :- Used to define lead company details (id, group, mnemonic) of a tenant, this is used in validating such values given in other MT tables for that tenant. </p>
+			<p>LINK.COMPANY , LINK.COMP.MNE :- Used to define branch company details (id , mnemonic) of each lead companies given in LEAD.XXX.XXX fields. This is used in validating such values given in other MT tables for that tenant. </p>
+			<p>OFS.USR.TSA.SERVICE :- User sign-on name required for OFS message (user part) formed during MT.TSA.SERVICE.CONSOLE table event generation. </p>
+			<p>OFS.USR.REPLICATE :- User sign-on name required for OFS message (user part) formed during MT.REPLCIATE.CONSOLE table event generation. </p>
+			<p>OFS.PGM.VERSION :- Version suffix (pgm version) required for OFS(header) message formed during MT.TSA.SERVICE.CONSOLE as well as MT.REPLICATE.CONSOLE table's event generation. </p>
+			<p>The OFS.PGM.VERSION given in MT.REPLICATE.CONSOLE will take precedence </p>
+		</ovdesc>
+		<ovimage/>
+	</overview>
+	<menu>
+		<t>
+			<field>TENANT.ID</field>
+			<desc>
+				<p>Unique reference to identify each tenants</p>
+				<p>Validation Rules:</p>
+				<p>Maximum of 35 characters allowed.</p>
+				<p>Id prefixed with value MT followed by julian date and then sequence number</p>
+				<p>For example MTJJJJJNNNNN </p>
+				<p>MT - id prefix </p>
+				<p>JJJJJ - Julian date </p>
+				<p>NNNNN - Sequence number</p>
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.NAME</field>
+			<desc>
+				<p>Specifies the name of the tenant. </p>
+				<p>Validation Rules: </p>
+				<p>Maximum of 35 characters allowed.</p>
+				<p>Mandatory field </p>
+			</desc>
+		</t>
+		<t>
+			<field>BANK.REFERENCE.CODE</field>
+			<desc>
+				<p>Specifies a unique identification or reference for each institution so that the list of tenants systems belonging to that institution can be identified. </p>
+				<p>Validation Rules:</p>
+				<p>Maximum of 35 characters allowed.</p>
+				<p>Mandatory field </p>
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.TYPE</field>
+			<desc>
+				<p>This field defines the type of tenant system e.g. LIVE, DEMO, TRAINING, UAT etc. </p>
+				<p>Validation Rules:</p>
+				<p>must be a valid entry in MT.TENANT.TYPE table.</p>
+				<p>Maximum of 35 characters allowed.</p>
+				<p>Mandatory field </p>
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.STATUS</field>
+			<desc>
+				<p>The status of tenant based on which the master system is permitted or not allowed to send messages to them.</p>
+				<p>Validation Rules:</p>
+				<p>Acceptable values are: </p>
+				<p>1. ACTIVATED :- indicates the tenant system is activated and can receive messages</p>
+				<p>2. DEACTIVATED :- indicates the tenant system is deactivated messages are not to be sent.
+				<p>3. Blank, acts the same as DEACTIVATED option. </p>
+				</p>
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.CONTACT</field>
+			<desc>
+				<p>Specifies a tenant contact id. </p>
+				<p>Validation Rules:</p>
+				<p>Maximum of 35 characters allowed.</p>
+				<p>Must be a valid entry in MT.TENANT.CONTACT table </p>
+			</desc>
+		</t>
+		<t>
+			<field>LEAD.COMPANY</field>
+			<desc>
+				<p>Defines a valid lead company(s) from tenant system.</p>
+				<p>The MT Administrator must ensure it is a valid lead company id for the tenant. </p>
+				<p>Validation Rules:</p>
+				<p>Follows generic company id format</p>
+				<p>For example AANNNNNNN - first 2 digits alphabetic, last 7 digits are numeric.</p>
+			</desc>
+		</t>
+		<t>
+			<field>LEAD.COMP.MNE</field>
+			<desc>
+				<p>Defines a valid company mnemonic of that LEAD.COMPANY from tenant system. </p>
+				<p>The MT Administrator must ensure it is a valid mnemonic for the corresponding lead company. </p>
+				<p>Validation Rules:</p>
+				<p>Minimum and maximum allowed character is 3 </p>
+			</desc>
+		</t>
+		<t>
+			<field>LEAD.COMP.GROUP</field>
+			<desc>
+				<p>Defines a valid company group of the LEAD.COMPANY from a tenant system. </p>
+				<p>The MT Administrator must ensure it is a valid id of the corresponding company group of that lead company.</p>
+				<p>Validation Rules:</p>
+				<p>Maximum of 3 numeric characters</p>
+			</desc>
+		</t>
+		<t>
+			<field>LINK.COMPANY</field>
+			<desc>
+				<p>This is the field to define branch company id from tenant system for every lead company defined in LEAD.COMPANY field. </p>
+				<p>The MT Administrator must ensure it is a valid id of the corresponding branch company of that lead company from the tenant system. </p>
+				<p>Validation Rules:</p>
+				<p>Follows generic company id format</p>
+				<p>For example AANNNNNNN where first 2 digits alphabetic, last 7 digits are numeric.</p>
+			</desc>
+		</t>
+		<t>
+			<field>LINK.COMP.MNE</field>
+			<desc>
+				<p>Defines a branch company mnemonic of every branch company given in LINK.COMPANY field.</p>
+				<p>The MT Administrator must ensure it is a valid id of a corresponding company mnemonic of that branch company from the tenant system.</p>
+				<p>Validation Rules:</p>
+				<p>Minimum and maximum allowed character is 3</p>
+			</desc>
+		</t>
+		<t>
+			<field>OFS.USR.TSA.SERVICE</field>
+			<desc>
+				<p>Defines the User sign-on name to be used for OFS message(s)for MT.TSA.SERVICE.CONSOLE table event generation.</p>
+				<p>The MT Administrator must ensure it is a valid sign-on name in the tenant system. </p>
+				<p>Validation Rules:</p>
+				<p>Maximum of 35 characters allowed.</p>
+				<p>Mandatory field</p>
+			</desc>
+		</t>
+		<t>
+			<field>OFS.USR.REPLICATE</field>
+			<desc>
+				<p>Defines the User sign-on name to be used for OFS message(s)for MT.REPLICATE.CONSOLE table event generation.</p>
+				<p>The MT Administrator must ensure it is a valid sign-on name in the tenant system. </p>
+				<p>Validation Rules:</p>
+				<p>Maximum of 35 characters allowed.</p>
+				<p>Mandatory field</p>
+			</desc>
+		</t>
+		<t>
+			<field>OFS.PGM.VERSION</field>
+			<desc>
+				<p>Version suffix (pgm version) required for OFS(header) message formed during MT.TSA.SERVICE.CONSOLE and MT.REPLICATE.CONSOLE table event generation.</p>
+				<p>Validation Rules:</p>
+				<p>Maximum of 35 characters allowed.</p>
+				<p>The OFS.PGM.VERSION set in MT.REPLICATE.CONSOLE will take precedence.</p>
+				<p>Optional input. By default zero authoriser(0) will be used in OFS messages sent.</p>
+			</desc>
+		</t>
+	</menu>
+</t24help>

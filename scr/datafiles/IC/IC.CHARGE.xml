@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>IC</product>
+<table>IC.CHARGE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The generic charging structure for accounts or group of accounts or group of accounts in a particular currency is defined here. IC.CHARGE for a particular account is prefixed with 'A-' followed by account number, for a group prefixed with 'G-'. If needed to specify for accounts in a group with a particular currency - the id is defined as G-group.no-currency</p>
+            <p>          The different charge products (IC.CHARGE.PRODUCT) with different capitalisation frequency, with different calculation period ( monthly or periodic) ,effective on different dates can be defined here.</p>
+            <p>          The IC.CHARGE defined for a particular account overrides the IC.CHARGE defined for its group or/and group with its currency . Similarly if IC.CHARGE is defined for an account's group and account's group - its currency , the latter takes higher precedence.</p>
+            <p>          Input is allowed in the field WAIVE.CHARGE only for IC.CHARGE defined for a particular account</p>
+            <p>          When the field WAIVE.ALL has value 'YES' in it, the input into other fields are not allowed. Input is allowed in the field WAIVE.CHARGE only for IC.CHARGE defined for a particular account.</p>
+            <p />
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field> AMORT.ADJUST</field>
+<desc>
+        <p>Defaulted when a valid IC.CHARGE.PRODUCT id is entered in IC.CHARGE record.</p>
+        <p> 
+	 This is a inputtable field and can override the default value
+         can be set to YES or NO or null
+      
+        </p>
+        <p>Field to decide, if during change in charge amount, should core accrual processing need to recalculate the already amortised amounts.</p>
+        <p>When set to “YES” would adjust the previously amortised charge, recalculate based on new charge amount.</p>
+        <p>When set to “” or “NO” - no recalculation of previously booked amortised amounts. i.e. the daily accrual figure from the date of adjustment will be a straight line on the new amount.</p>
+        <p>Input is allowed only when AMORT.TYPE is set to SPECIAL
+</p>
+    </desc>
+</t>
+<t>
+<field> AMORT.DIFF.CATEG.ACCT</field>
+<desc>
+        <p>Defaulted when a valid IC.CHARGE.PRODUCT id is entered in IC.CHARGE record 
+	 This is a inputtable field and can override the default value
+
+	</p>
+        <p>Either valid internal account number or suspense category or “”
+	When specified, would be used by eb accrual processing to credit difference in old and new charge amounts to this account as statement entry and opposite would be a spec entry, with PL category or AA balance type appended as CRF type of the consol key based on charge account.</p>
+        <p>	When both AMORT.DIFF.PL and AMORT.DIFF.CATEG.ACCNT are left blank, new amount is amortised from the change date to end date and any residual unamorised amount on the end date, could either be posted to internal account or P&amp;L based on the setting in AMORT.REMAIN.CATEG.ACCT
+	</p>
+        <p>This field is mutually exclusive with AMORT.DIFF.PL 
+	</p>
+        <p>Optional field,   can be set only for AMORT.TYPE equal to END or SPEICAL
+</p>
+    </desc>
+</t>
+<t>
+<field> AMORT.DIFF.PL</field>
+<desc>
+        <p>Defaulted when a valid IC.CHARGE.PRODUCT id is entered in IC.CHARGE record</p>
+        <p>This is a inputtable field and can override the default value</p>
+        <p>can be set to YES or “”</p>
+        <p>When set to YES, EB accrual processing would book the difference between old and new charge amount to PL category as defeined in FT.COMMISSION.TYPE</p>
+        <p>record attached to updated in eb.accrual record and opposite would be a spec entry, with this PL category or AA balance type appended as CRF type of the consol key based on charge account</p>
+        <p>When both AMORT.DIFF.PL and AMORT.DIFF.CATEG.ACCNT are left blank, new amount is amortised from the change date to end date and any residual unamorised amount on the end date, could either be posted to internal account or P&amp;L based on the setting in AMORT.REMAIN.CATEG.ACCT</p>
+        <p>This field is mutually exclusive with AMORT.DIFF.CATEG.ACCT</p>
+        <p>Optional field, can be set only for AMORT.TYPE equal to END or SPEICAL</p>
+    </desc>
+</t>
+<t>
+<field> AMORT.REMAIN.CATEG.ACCT</field>
+<desc>
+        <p>Defaulted when a valid IC.CHARGE.PRODUCT id is entered in IC.CHARGE record</p>
+        <p>This is a inputtable field and can override the default value</p>
+        <p>Either valid internal account number or suspense category or “”</p>
+        <p>When specified, if period end date reached or end date changed to current date and if there are unamortised charge amount (new.charge.amount - sum(amortised charge)), then it is credited to this suspense account and opposite is posted as spec entry,  with PL category or AA balance type appended as CRF type of the consol key based on charge account</p>
+        <p>This is mainly used when a loan is preclosed and hence the amortisation end date is changed to current date</p>
+        <p>When left blank, any unamortised charge amount would be booked against P&amp;L as it happens today</p>
+    </desc>
+</t>
+<t>
+<field> AMORT.TYPE</field>
+<desc>
+        <p>         Defaulted when a valid IC.CHARGE.PRODUCT id is entered in IC.CHARGE record 
+	 This is a inputtable field and can override the default value.</p>
+        <p>Indicate the Amortization method. Can be set to “” or END or SPECIAL.
+         Based on the value set in this field, either daily straight line amortization would happen 
+         or the entire chage amount would be posted to P&amp;L on the end date.</p>
+        <p>“”      - no change to existing straight line amortization processing
+</p>
+        <p>END     - no daily amortization and no booking would happen to P&amp;L.  On the end date, the charge amount would be booked to P&amp;L. In between, when amount / end date changes, either P&amp;L is booked (when AMORT.DIFF.PL = YES) for the difference or booked to AMORT.DIFF.ACCOUNT.
+</p>
+        <p>SPECIAL – Straight line amortisation would happen and booked to P&amp;L daily. Additional processing done during charge amount/ end date change and possible to adjust the amortised amount. Any change in charge amount or end date would result in
+</p>
+    </desc>
+</t>
+<t>
+<field> END.DATE</field>
+<desc>
+        <p>Used to specify the amortisation end date</p>
+        <p>Mandatory when AMORT.TYPE is set to END or SPECIAL</p>
+    </desc>
+</t>
+<t>
+<field>IC.CHARGE.ID</field>
+<desc>
+            <p>Identifies the generic charging structure table - IC.CHARGE .</p>
+            <p>          IC.CHARGE can be defined for a particular account or a group of account or group of account with currency.</p>
+            <p>          The id for IC.CHARGE for a particular account is defined as 'A-account number ' . Internal accounts are not allowed.</p>
+            <p>          The id for IC.CHARGE for a particular group is defined as 'G-group number'</p>
+            <p>          The id for IC.CHARGE for a particular group ,for a particular currency is defined as 'G-group number - currency'</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>          Alpha numberic character</p>
+            <p>          A- valid account number or G- valid group number (ACCT.GEN.CONDITION         id) or G-valid group number - valid currency.</p>
+        </desc>
+</t>
+<t>
+<field>CHRG.FREQUENCY</field>
+<desc>
+            <p>Defines the generic charge capitalising frequency that is the charge calculation period. This is a standard T24 frquency field, so charges can be capitalised at any time, though charges are normally capitalised monthly , quarterly, semi anually or annually.Needs to have a value when the field IC.CHG.PRODUCT has value. Care should be taken that the first date in the CHRG.FREQUENCY field is not less that the value in the CHRG.EFF.DATE field. if this occurs then charges will not be capitalised until the frequency field is changed.</p>
+            <p>          Associated with the fields IC.CHG.PRODUCT , CAL.STEP.PERIOD,CHRG.EFF.DATE.</p>
+            <p>          Input not allowed when WAIVE.ALL has value.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>          Standard T24 frequency field.</p>
+        </desc>
+</t>
+<t>
+<field>WAIVE.CHARGE</field>
+<desc>
+            <p>This field defines whether the specific product needs to be waived .</p>
+            <p>          Input allowed only for IC.CHARGE defined for an account.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>          Value 'YES' or 'NO' is allowed.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHRG.EFF.DATE</field>
+<desc>
+            <p>This field defines the date from which the generic charge is effective.</p>
+            <p>          Defaults to Today.</p>
+            <p>          Needs to have value when IC.CHG.PRODUCT has value. Existing value cannot be changed when IC.CHG.PRODUCT has value.</p>
+            <p>          Associated with the fields - IC.CHG.PRODUCT, CAL.STEP.PERIOD and CHRG.FREQUENCY .</p>
+            <p>          Input not allowed when WAIVE.ALL has value.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>          Standard T24 date field.</p>
+        </desc>
+</t>
+<t>
+<field>EB.ACCRUAL.PARAM</field>
+<desc>
+            <p>Oprional Input. Indicates whether non  standard accrual / amortisation processing is required. Normal accrual/amortisation processing will begin on the period start date and finish 1 day before the period end date, i.e. no accrual takes place on the last day.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ACCRUE.AMORT</field>
+<desc>
+            <p>Optional input. Indicates whether the calculated charge is to be accrued or amortised. If a charge is to be amortised the P&amp;L entry will be changed by the core accouting to a CRF CAP entry at the time the charge is booked. The P&amp;L will than be amortised by the core accrual pocess up to the next charge date. If accrual is to take place the projected charge will be accrued over the next charge period and the P&amp;L entry at the next charge date will also become a CRF CAP ENTRY. Any difference between the projected charge and the actual charge will result in an accrual adjustment at the end of the accrual period, i.e. when the customer account is debited.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>WAIVE.ALL</field>
+<desc>
+            <p>Optional input allowed values "YES" or "NO".                </p>
+            <p />
+            <p> This field defines whether the generic charges need to be waived.</p>
+            <p>       Input allowed only for IC.CHARGE defined for an account.</p>
+            <p />
+            <p>       Input into other fields is not allowed when WAIVE.ALL has value "YES".</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  If WAIVE.ALL and WAIVE.CHARGE both set as "YES", WAIVE.ALL will take the predence.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>IC.CHG.PRODUCT</field>
+<desc>
+            <p>This field identifies the basic charging information . The value of the field should be a key to IC.CHARGE.PRODUCT .</p>
+            <p>          Associated with the fields CAL.STEP.PERIOD,CHRG.FREQUENCY,CHRG.EFF.DATE.</p>
+            <p>          Null lines are not allowed. The multivalue set can be deleted or changed.</p>
+            <p>          When the field WAIVE.ALL has value, input is not allowed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>          Must be a valid key to IC.CHARGE.PRODUCT</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>CAL.STEP.PERIOD</field>
+<desc>
+            <p>Defines the calculation period for generic charge products .</p>
+            <p>          This field specifies whether the charges defined in the charge products should be calculated once to cover the full charge period, as specified in the field CHRG.FREQUENCY or in monthly steps.</p>
+            <p>          If ' M' (monthly) is specified the charges are calculated every month and the total charges is posted on the capitalisation date. If ' P' (periodic) is specified the charges are calculated for the whole capitalisation period.</p>
+            <p>          Defaults to 'P'</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>          M (monthly) or P (periodic)</p>
+            <p>          Input not allowed when WAIVE.ALL has value.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t><field>AMORT.DIF.ACCT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>AMORT.RMN.ACCT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>IC</product>
+<table>HIGHEST.DEBIT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The Highest Debit table allows the specification of a Percentage charge, based upon the Highest Debit balance recorded on an Account during the application period for Debit Interest (Debit 1). </p>
+            <p>Separate charges can be defined for specific Currencies, including local currency.  A default charge, in local currency equivalent, can be defined to cover all Accounts in Currencies not specifically mentioned. </p>
+            <p>The Highest Debit record in effect on the date of the debit interest capitalisation is applicable to the whole capitalisation period. </p>
+            <p>The GENERAL.CHARGE record, referred to in the relevant Group or Account Debit Interest record specifies whether or not this charge is applicable to an Account. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>SEQUENCE.YEAR.MTH</field>
+<desc>
+            <p>This is the Highest Debit code and effective date which form a key to which General Charge records may be linked. </p>
+            <p>The date may be entered as: </p>
+            <p>            1)  YYYY-MM  year-month             2)  YYYYMM   yearmonth             3)  MM-YY    month-year             4)  MMYY     monthyear    or       5)  MM       month (current year assumed) </p>
+            <p>The month may be 01-12 or 1-12. </p>
+            <p>It is always displayed formatted YYYY-MM.  For new input the date may not be earlier than today. </p>
+            <p>The Highest Debit record which is in effect on the date of the debit interest capitalisation is applicable for the whole capitalisation period. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1)  1-2 numeric characters (Mandatory input).  2)  '-' (Mandatory input if date is input, otherwise no input).     Prime Sites '.'  3)  1-7 date characters, year and month  (Optional input, default is current year and month).</p>
+        </desc>
+</t>
+<t>
+<field>PERCENTAGE</field>
+<desc>
+            <p>Specifies the rate used to calculate the Highest Debit charge as a Percentage of the Highest Debit balance during the debit interest application period. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 type R (standard rate format) characters plus a decimal point. (Mandatory input)</p>
+            <p>Not more than 6 integers may be entered.</p>
+            <p>Not more than 9 decimals may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>K.CURRENCY</field>
+<desc>
+            <p>Defines the Currency for which the Highest Debit Charge details in the associated Fields 11-13 apply.  For Accounts in Currencies not input to this Field, the Default Amounts specified in Fields 7-9 are used. </p>
+            <p>Fields 10-13 are used to define Amounts for adjusting Highest Debit Charges on Accounts denominated in specific Currencies.  For any Accounts in Currencies not specified in Field 10, the Default (local currency equivalent) Amount specified in Fields 7-9 are used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 type SSS (SWIFT) characters Currency code. or     1-3 numeric characters (will be converted to Currency code). Multivalue Field associated with fields 11-13. (Mandatory Input if any input in associated Fields 11-13 otherwise not allowed.) It must be a valid code on the CURRENCY table (Ref: General Tables).</p>
+        </desc>
+</t>
+<t>
+<field>TR.CODE.CR</field>
+<desc>
+            <p>Identifies the Transaction Code to be assigned to Profit and Loss entries generated for Highest Debit Charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. (Mandatory Input)</p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+            <p>Must be a valid code on the TRANSACTION table (Ref: General Tables).</p>
+            <p>The Debit Credit Indicator in the Transaction record must be 'CREDIT'.</p>
+        </desc>
+</t>
+<t>
+<field>MAXIMUM.AMOUNT</field>
+<desc>
+            <p>Specifies the Maximum Amount to be charged to the Account, for Accounts in the Currency specified in the associated CURRENCY field. </p>
+            <p>Fields CURRENCY to MAXIMUM.AMOUNT are used to define Amounts for calculating Highest Debit Charges in specific Currencies.  The Default Amounts specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT are used if there is no entry in CURRENCY field for the Currency of the Account. </p>
+            <p>If after the Free Amount has been subtracted from the calculated charge the result is greater than the Maximum Amount, the Maximum Amount is used. </p>
+            <p>The COMPANY record specifies when the charges are to be applied.  If, however, the associated GENERAL.CHARGE record specifies that charges should be calculated on a monthly basis (Calcul Step Period = M), the charge for each month is compared with the Maximum Amount and adjusted if necessary. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point.  Multivalue field associated with fields CURRENCY to MAXIMUM.AMOUNT.  (Optional input only allowed if CURRENCY is input.)  The number of decimals may not exceed the number for Currency in CURRENCY.</p>
+        </desc>
+</t>
+<t>
+<field>TR.CODE.DR</field>
+<desc>
+            <p>Identifies the Transaction Code to be assigned to Account entries generated for Highest Debit Charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. (Mandatory Input)</p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+            <p>It must be a valid code on the TRANSACTION table.</p>
+            <p>The Debit Credit Indicator in the Transaction record must be 'DEBIT'.</p>
+        </desc>
+</t>
+<t>
+<field>MINIMUM.AMOUNT</field>
+<desc>
+            <p>Specifies the Minimum Amount to be charged to the Account, for Accounts in the Currency specified in the associated CURRENCY field. </p>
+            <p>Fields CURRENCY to MAXIMUM.AMOUNT are used to define Amounts for calculating Highest Debit Charges in specific Currencies.  The Default Amounts specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT are used if there is no entry in CURRENCY field for the Currency of the Account. </p>
+            <p>If after the Free Amount has been subtracted from the calculated charge the result is less than the Minimum Amount, the Minimum Amount is used. Otherwise the Maximum Amount is checked. </p>
+            <p>The COMPANY record specifies when the charges are to be applied.  If, however, the associated GENERAL.CHARGE record specifies that charges should be calculated on a monthly basis (Calcul Step Period = M), the charge for each month is compared with the Minimum Amount and adjusted if necessary. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point.  Multivalue Field associated with fields CURRENCY to MAXIMUM.AMOUNT.  (Optional input only allowed if CURRENCY is input.  Default is zero.)  The number of decimals may not exceed the number for Currency in CURRENCY.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.CODE</field>
+<desc>
+            <p>Specifies the Tax record containing details of the calculation and processing of Tax applicable to the Highest Debit Charge. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 2 numeric character Tax code.  (Optional input)  There must be an existing record for this code on the TAX table (Ref: General Tables), with an effective date no later than the effective date of this record.</p>
+        </desc>
+</t>
+<t>
+<field>K.PERCENTAGE</field>
+<desc>
+            <p>Specifies the rate used to calculate the Highest Debit charge as a Percentage of the Highest Debit balance during the debit interest application period. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 type R (standard rate format) characters plus a decimal point. (Mandatory input)</p>
+            <p>Not more than 6 integers may be entered.</p>
+            <p>Not more than 9 decimals may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.MIN.AMT</field>
+<desc>
+            <p>Specifies the Minimum Amount, in local currency equivalent, to be charged if there is no entry in CURRENCY field for the Currency of the Account. </p>
+            <p>Amounts for adjusting Highest Debit Charges in specific Currencies can be specified in the multivalue associated group of fields CURRENCY to MAXIMUM.AMOUNT.  The Default Amounts specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT are used if there is no entry in CURRENCY field for the Currency of the Account. </p>
+            <p>The calculated amount is converted to local currency before making adjustments specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT. </p>
+            <p>If after the Default Free Amount has been subtracted from the calculated local currency charge, the result is less than the Default Minimum Amount, the Default Minimum Amount is used.  Otherwise the Default Maximum Amount is checked.  The result is converted to the Currency of the Account. </p>
+            <p>The COMPANY record specifies when the charges are to be applied.  If, however, the associated GENERAL.CHARGE record specifies that charges should be calculated on a monthly basis (Calcul Step Period = M), the charge for each month is compared with the Minimum Amount and adjusted if necessary. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point.  (Optional input, default is zero.)  The number of decimals may not exceed the number for local currency.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Describes the Highest Debit charge, and can be used for reporting. </p>
+            <p>The Description may be entered in each of the Languages defined in the LANGUAGE table (Ref: General Tables). </p>
+            <p>It will be displayed in the Language specified in the User Record of the person using the System. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-35 type A (alphanumeric) characters.  Multilanguage field.  (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>FREE.AMOUNT</field>
+<desc>
+            <p>Specifies the amount to be deducted from the total charge calculated, subject to the Minimum and Maximum Amounts, for Accounts in the Currency specified in associated CURRENCY field. </p>
+            <p>Fields CURRENCY to MAXIMUM.AMOUNT are used to define Amounts for adjusting Highest Debit charges in specific Currencies.  The Default Amounts specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT are used if there is no entry in CURRENCY field for the Currency of the Account. </p>
+            <p>The Free Amount is subtracted from the calculated charge and further adjustments are made as specified in fields MINIMUM.AMOUNT and MAXIMUM.AMOUNT. </p>
+            <p>The COMPANY record specifies when the charges are to be applied.  If, however, the associated GENERAL.CHARGE record specifies that charges should be calculated on a monthly basis (Calcul Step Period = M), the Free Amount is subtracted from the charge calculated for each month. </p>
+            <p>Note :  (i) The result may be zero, but not negative, i.e. the Customer             will not receive a Credit. </p>
+            <p>       (ii) Even if the Free Amount is greater than or equal to the             calculated charge, any Minimum specified in MINIMUM.AMOUNT, is             still applicable. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point.  Multivalue field associated with fields CURRENCY to MAXIMUM.AMOUNT.  (Optional input, only allowed if CURRENCY is input.)  The number of decimals may not exceed the number for Currency in CURRENCY.</p>
+        </desc>
+</t>
+<t>
+<field>CATEGORY</field>
+<desc>
+            <p>Identifies the Category code to be assigned to Profit and Loss entries generated for Highest Debit Charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4 or 5 numeric character Category code. (Mandatory input)</p>
+            <p>It must be a valid code on the CATEGORY table (Ref: General Tables).</p>
+            <p>System Indicator in Category record must be 'PL'.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>Defines the Currency for which the Highest Debit Charge details in the associated Fields 11-13 apply.  For Accounts in Currencies not input to this Field, the Default Amounts specified in Fields 7-9 are used. </p>
+            <p>Fields 10-13 are used to define Amounts for adjusting Highest Debit Charges on Accounts denominated in specific Currencies.  For any Accounts in Currencies not specified in Field 10, the Default (local currency equivalent) Amount specified in Fields 7-9 are used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 type SSS (SWIFT) characters Currency code. or     1-3 numeric characters (will be converted to Currency code). Multivalue Field associated with fields 11-13. (Mandatory Input if any input in associated Fields 11-13 otherwise not allowed.) It must be a valid code on the CURRENCY table (Ref: General Tables).</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.FREE.AMT</field>
+<desc>
+            <p>Specifies the Free Amount, in local currency equivalent, to be deducted from the total charge calculated subject to Minimum and Maximum Amounts. If there is no entry in CURRENCY field for the Currency of the Account. </p>
+            <p>Amounts for adjusting Highest Debit Charges in specific Currencies can be specified in the multivalue associated group of fields, CURRENCY to MAXIMUM.AMOUNT. The Default Amounts specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT are used if there is no entry in CURRENCY field for the Currency of the Account. </p>
+            <p>The calculated amount is converted to local currency before making adjustments specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT. </p>
+            <p>The Default Free Amount is subtracted from the calculated local currency charge and further adjustments are made as specified in fields DEFAULT.MIN.AMT and DEFAULT.MAX.AMT. The result is converted to the Currency of the Account. </p>
+            <p>The COMPANY record (Ref: General Tables) specifies when the charges are to be applied.  If, however, the associated GENERAL.CHARGE record specifies that charges should be calculated on a monthly basis (Calcul Step Period = M), the Free Amount is subtracted from the charge calculated for each month. </p>
+            <p>Note :  (i) The result may be zero, but not negative, i.e. the Customer             will not receive a credit. </p>
+            <p>       (ii) Even if the Free Amount is greater than or equal to the             calculated charge, any Minimum specified in DEFAULT.MIN.AMT,             is still applicable. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point.  (Optional input)  The number of decimals may not exceed the number for local currency.</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.MAX.AMT</field>
+<desc>
+            <p>Specifies the Maximum Amount, in local currency equivalent, to be charged if there is no entry in CURRENCY field for the Currency of the Account. </p>
+            <p>Amounts for adjusting Highest Debit Charges in specific Currencies can be specified in the multivalue associated group of fields CURRENCY to MAXIMUM.AMOUNT.  The Default Amounts specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT are used if there is no entry in CURRENCY field for the Currency of the Account. </p>
+            <p>The calculated amount is converted to local currency before making adjustments specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT. </p>
+            <p>If after the Default Free Amount has been subtracted from the calculated local currency charge, the result is greater than the Default Maximum Amount, the Default Maximum Amount is used.  The result is converted to the Currency of the Account. </p>
+            <p>The COMPANY record specifies when the charges are to be applied.  If, however, the associated GENERAL.CHARGE record specifies that charges should be calculated on a monthly basis (Calcul Step Period = M), the charge for each month is compared with the Maximum Amount and adjusted if necessary. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point.  (Optional input)  The number of decimals may not exceed the number for local currency.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DE</product>
+<table>DE.DISP.CONTROL</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>In addition to all the conditions available in the Delivery Product file this table can hold a variety of special controls.  For example, it may specify: </p>
+            <p>1) All messages for Hong Kong branch must be held until midnight. </p>
+            <p>2) All messages with amounts greater than two million dollars are urgent    and require immediate confirmation. </p>
+            <p>3) All messages for a particular carrier must be rerouted.    (In this case the Alternate Carrier List is looked up to find the new    carrier.) </p>
+            <p>4)  Print a copy of all messages which have a Message Type of 100 and an     amount of more than USD 500000 or GBP 200000. </p>
+            <p>5)  Hold all local clearing messages until the value date of the message. </p>
+            <p>The above is achieved by setting up conditions on which the message status and/or priority is set. </p>
+            <p>Disposition Control Table records are set up containing multivalue sets of:            Field name            Operand            Condition </p>
+            <p>Complex conditions can be built by setting up several simple conditions in a multivalue set.  All the conditions must be true before the status and/or priority will be applied. </p>
+            <p>When a new or amended Disposition Control record is authorised, the message disposition, status or priority in the header for each message that has been successfully formatted but not sent, is amended if the information in the header matches the condition(s) defined in that Disposition Control record.  NOTE:  Disposition Control records will NOT be applied to items in the Repair Queue.  The Disposition Control records will be applied to messages which are created by the Delivery System thereafter during formatting, unless the Disposition Control parameter in DE.PARM is set to 'N". </p>
+            <p>Each Header that is changed has the ID of the Disposition Control record placed in the appropriate 'Disposition No' field for each copy of a message affected.  (This ensures it is not subsequently changed by a less important Disposition Control record.  Lower IDs take precedence over higher IDs, e.g. 10 takes precedence over 100.) </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>STATUS.KEY</field>
+<desc>
+            <p>This is the key to the Disposition Control table.  It is a number defining the search sequence through the table.  Only the first record applicable to a particular message will be used, even if the message matches conditions on subsequent records. </p>
+            <p>Records are processed in Status Key sequence; records with smaller numbers come first on the table.  The first condition to match a particular message is used to set the status and priority. </p>
+            <p>Only one match is looked for so, if a matching condition is found that sets the priority to 'U' but has no value for the status, status will be left unchanged. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-5 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>OPERAND</field>
+<desc>
+            <p>Describes how FIELD.NAME is to be tested (in conjunction with Condition). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>One of the following:  'EQUAL'            'NOT EQUAL' 'GREATER THAN'     'LESS THAN'  FIELD.NAME, OPERAND and CONDITION form a multivalue set.  (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>STATUS</field>
+<desc>
+            <p>Specifies the Status or Disposition to be set in messages covered by conditions defined in this record. </p>
+            <p>'HOLD', 'WAIT' and 'RELEASE' affect the Status of a message: 'DELETE', 'RESUBMIT' and 'REROUTE' affect its Disposition while 'PRINT' only causes a copy of a message to be printed. </p>
+            <p>There are two ways that the Status may be applied: </p>
+            <p> i) To appropriate messages which are already on the queues. </p>
+            <p>ii) In the future to appropriate messages as they are Formatted. </p>
+            <p>'HOLD', 'WAIT', 'DELETE', 'RESUBMIT' and 'REROUTE' affect records with a Disposition of 'Formatted' and operate subsequently during Formatting on records that would have been set to 'Formatted'.  The period of time specified with a Status of 'WAIT' is added to the current time then appropriate messages are set to 'HOLD' with a time of day. </p>
+            <p>'RELEASE' affects records with a Status of 'Hold', and operates subsequently during Formatting on records that would have been set to 'Hold'. </p>
+            <p>'PRINT' immediately applies to records with a Disposition of 'Formatted', 'ACK' or 'WACK', but has no effect in the future. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'HOLD', 'HOLD HH:MM' (HH:MM is the time of day to release a               message.) 'WAIT HH:MM' (HH:MM is a period of time.) 'RELEASE' 'DELETE' 'RESUBMIT' 'REROUTE' 'PRINT'  (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>PRIORITY</field>
+<desc>
+            <p>Specifies the Priority to be set in messages covered by conditions defined in this record.  If it is not input the Priority will remain unchanged. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'U' (Urgent)        or 'P' (Priority)      or 'N' (Normal)  (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>CONDITION</field>
+<desc>
+            <p>Specifies a value that the FIELD.NAME is to be compared with. </p>
+            <p>OPERAND and CONDITION are entered to describe how FIELD.NAME is to be tested. </p>
+            <p>The following values will be interpreted by the system and should only be used with date checking. </p>
+            <p>"!TODAY"              The system run date will be used. </p>
+            <p>"!NEXT.WORKING.DAY"   The NEXT WORKING DAY from the DATES file will be                       used. </p>
+            <p>"!LAST.WORKING.DAY"   The LAST.WORKING DAY from the DATES file will be                       used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-30 type A (alphanumeric) characters.  Either:  a character string (no delimeters - eg. SMITH not 'SMITH')    or a numeric value (with sign and decimal point if required)     or a date (8 digits: 4-digit year, 2-digit month, 2-digit day.)  FIELD.NAME, OPERAND and CONDITION form a multivalue set. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.NAME</field>
+<desc>
+            <p>Specifies the name of a Field or a user defined routine to be used to control the Status and/or Priority. </p>
+            <p>Example: The multivalue sets below will be used to specify the Status and/or Priority of SWIFT messages which are Message Type 100: </p>
+            <p>                FIELDNAME     CARRIER                 OPERAND       EQUAL                 CONDITION     SWIFT                 FIELDNAME     MESSAGE.TYPE                 OPERAND       EQUAL                 CONDITION     100 </p>
+            <p>Example: To specify a routine the value in this field should contain the name of the routine to call prefixed by the '@' character. </p>
+            <p>                FIELDNAME     @EXAMPLE.NAME                 OPERAND       EQUAL                 CONDITION     EXAMPLE.CONDITION </p>
+            <p>The routine is passed the current DE.O.HEADER record in argument one, the OPERAND in argument two and the CONDITION in argument three. The return argument is argument four and should evaluate to true (1) or false (0 or null). </p>
+            <p>The routine itself should be specified as </p>
+            <p>           EXAMPLE.NAME(HEADER.REC, OPERAND, CONDITION, RETURN.FLAG) </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>One of the following:  'COUNTRY.CODE'    'LANGUAGE'         'VALUE.DATE' 'AMOUNT'          'TRANS.REF'        'CURRENCY' 'MESSAGE.TYPE'    'APPLICATION'      'ACCOUNT' 'CUSTOMER'        'COMPANY'          'CARRIER' 'TO.ADDRESS'      'MESSAGE.PRIORITY' 'FORMAT'          'APP.FORMAT'       'IN.PAY.TYPE' 'TEST.KEY.REQ'    'TEST.KEY.INP' 'TEST.KEY.AUTH'   'TELEX.BATCH.NO' 'BANK.DATE'  OR  @ROUTINE.NAME  FIELD.NAME, OPERAND and CONDITION form a multivalue set.  (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.POS</field>
+<desc>
+            <p>Specifies a field number in Outward Header corresponding to the Field Name to be used for Disposition Control.  This improves performance when checking whether conditions match. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 numeric characters.  Multivalue set.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>HOLD.UNTIL.DATE</field>
+<desc>
+            <p>Specifies the date that a message must be held in the delivery system before being released to the appropriate carrier. </p>
+            <p>This field should be used in cases where a message should be  held until a given date. A typical use of this field is for local clearing payments which should not be released until the value date of the message. </p>
+            <p>Entry of "VAL" will ensure that a message is held until the number of working days specified in the CURRENCY table before the value date contained on the DE.O.HEADER record. </p>
+            <p>The DE.MM.TIMECHECK phantom must be run to release the messages on the correct date. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Either a standard format date          or "VAL"  Optional Input.</p>
+            <p>Input is only allowed in this field when STATUS is set to HOLD.</p>
+            <p>If a date is entered it cannot be earlier than the current system date.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

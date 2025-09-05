@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SC</product>
+<table>DIV.COUP.DET</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This file contains Dividend/Interest Payment details for a particular security. </p>
+            <p>The file is accessed by entering as a key type input the Security Number, Depository Number and the Extraction date. </p>
+            <p>Example:  001234.6.200386 </p>
+            <p>Where 1234 is the Security ID No. the Depository Customer Number is 6 and the Ex date for calculating Client's positions eligible for the Dividend is 20th March'86. </p>
+            <p>Where omitted the system will assume all Depository holdings are eligible for the Dividend in Question.  The File contains details of the rate payable and whether that rate is a percentage type rate or not. There is also sufficient fields for input of commission &amp; Foreign changes. </p>
+            <p>Once these details have been input and authorised the System will use these parameters and create Customer records for each Customers holdings. </p>
+            <p>See DIV.COUP.CUS. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>RATE</field>
+<desc>
+            <p>Contains the interest rate applicable to the Security master. </p>
+            <p>For a fixed interest rate bond this field will default to the value as stored at SECURITY MASTER level and automatically RATE.INDICATOR will default to 'Y' for yes. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard rate format maximum 6 integers plus decimal points    OR Default = Security.Master Interest Rate.</p>
+        </desc>
+</t>
+<t>
+<field>COUPON.CODE</field>
+<desc>
+            <p>Defaults to the Coupon Tax Code stored for the specified security within the Security Master record. </p>
+            <p>The Coupon Tax code dictates whether Tax is to be charged on this particular Coupon/Interest payment or not. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>FOREIGN.CHARGES</field>
+<desc>
+            <p>This field specifies the percentage rate to be levied on the gross dividend payable which is to be charged by the Depository handling the payment. </p>
+            <p>The foreign charge amount can be overridden at transaction level. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Rate format up to 6 integers and decimal points.</p>
+            <p>Default is to standard Default Table SC.STD.DIV.COUP.  If no values held within Default Table, rate defaults as "0".</p>
+        </desc>
+</t>
+<t>
+<field>DEPOSITORY</field>
+<desc>
+            <p>Specifies the depository where stock is held on dividend day. </p>
+            <p>Defaults to Depository No, used in the input key. </p>
+            <p>Where entered the User is effectively telling the System that only Securities held in that particular Depot are eligible for the INT. payment.  Where it is not entered as part of the key the system assumes all customers irrespective of Depository are entitled to the payment. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT, internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>DUE.DATE</field>
+<desc>
+            <p>Specifies the ex date of the dividend/interest due. </p>
+            <p>Ex-date used in the record ID is for establishing positions payment.  Can only be after this date. </p>
+            <p>Examples:  Shell 10p Ord shares EX-Date for calculating Customers            holdings = 10 MAR'86 </p>
+            <p>           Div Due Date = 10 MAR'86 </p>
+            <p>           Payment Date however could be e.g. 24/MAR </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Date Format or Mandatory input.</p>
+            <p>Cannot be before Reference ID date must be equal to or greater than.</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.TAX.PERC</field>
+<desc>
+            <p>Rate of tax levied, by 'Local' Government by using the company domicile. </p>
+            <p>To calculate the tax payable the system will access the DIV.COUP.TAX tables where the rates applicable by company domicile are stored. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT internally generated field.</p>
+            <p>This calculation will only be called where the coupon tax code is set to 'Y' (tax to be levied).  If set to no default is '0.00'.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>This is a multi valued field. Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 35 characters may be entered.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>NO.POSTED</field>
+<desc>
+            <p>Along with fields DEP.NO, NO.CREATED &amp; NO.DELETED these form associated multivalue fields recording the Depository No, number of transactions for that depository and the number of deleted and posted transactions for that depository. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT, internally generated field or Multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>NOMINAL.CURRENCY</field>
+<desc>
+            <p>Currency of stock involved in DIV COUP Payment. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT, internally generated field.</p>
+            <p>Defaults to SECURITY MASTER file.</p>
+        </desc>
+</t>
+<t>
+<field>RATE.INDICATOR</field>
+<desc>
+            <p>Indicates whether rate is a percentage (Yes) or a unit (No). </p>
+            <p>Where a fixed rate bond has been set up at SECURITY MASTER level the rate will automatically default and accordingly the rate indicator will default to 'Y' yes. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only input allowed is (Y)es or (N)o.  Optional input.  Default value is 'YES' if Interest Rate from Security Master was used.</p>
+        </desc>
+</t>
+<t>
+<field>RERUN.CANCEL</field>
+<desc>
+            <p>Used only when C - want to cancel customer details, R - rerun Dividend Coupon Details. </p>
+            <p>If an error discovered in a Client's position after Customer records have been created.  The User has the facility to rerun the Dividend Coupon Detail records at E.O.D by entering R at the Dividend Coupon Detail record. </p>
+            <p>Similarly by entering C for Cancel the user can cancel all records created by a Dividend Coupon run; but again at E.O.D. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only input R or C or blank.</p>
+        </desc>
+</t>
+<t>
+<field>RECOVERABLE.TAX</field>
+<desc>
+            <p>Specifies the rate of tax to be withheld from any amount payable where US withholding tax applies. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters.  Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>SOURCE.TAX.CODE</field>
+<desc>
+            <p />
+            <p>The field contains either the key of a TAX record or the key of a TAX.TYPE.CONDITION record (prefixed by &amp;#8216;*&amp;#8217;), which depends on the COUPON.TAX.CODE record.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DIV.CURR</field>
+<desc>
+            <p>Defines the currency that the dividend is to be paid in. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 uppercase alpha characters (SSS)        or 1-3 numeric character currency code.  Default = Security Currency.</p>
+            <p>Must exist as a valid currency code.</p>
+        </desc>
+</t>
+<t>
+<field>ID.</field>
+<desc>
+            <p>Identifies uniquely each Security Dividend/Interest payment transaction. </p>
+            <p>1 - Specifies the security to which the dividend/ interest relates. </p>
+            <p>2 - Optional depository input.  Where omitted it means dividend is     payable for all depository holdings.  Where input it specifies only     holdings within that particular depository. </p>
+            <p>3 - Dividend Type i.e. whether interest payment, coupon or dividend. </p>
+            <p>4 - The date input is termed the 'EX' date. i.e. extraction date.  All     customer holdings up to and including that date are eligible for that     coupon/dividend payment. </p>
+            <p>Note : For Bonds the EX-Date is normally the Interest payment date. </p>
+            <p>       For shares the EX date is normally several weeks before the payment        date. </p>
+            <p>       Where the depository is used as part of the key the user will be        informed when authorising the customer record at DEP.NO that the        dividend/interest payment relates solely to the requested        depository. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The ID key is made up of the following format:  NNNNNN-NNN  - 10 numeric character Security Master number.               Mandatory input.  NNNNNN      - 1-10 numeric character customer number. Optional               input.  NNNNNN      - 1-5 Alpha numeric character Dividend Type.  Mandatory               input.  YYYYMMDD    -Standard Date format.  Mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>NO.OF.PAYMENTS</field>
+<desc>
+            <p>Indicates number of payments per year. </p>
+            <p>This field indicates the number of coupon/ dividend payments on a particular security within a given year. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Numeric (allows 1, 2, 3, 4, 6, 12, 13, 26 or 52 only) </p>
+            <p />
+            <p>Defaults to SECURITY MASTER (Field 24). </p>
+        </desc>
+</t>
+<t>
+<field>COUPON.END.DATE</field>
+<desc>
+            <p>The end date applicable to this event.</p>
+        </desc>
+</t>
+<t>
+<field>DEP.NO</field>
+<desc>
+            <p>Along with fields NO.CREATED, NO.DELETED &amp; NO.POSTED, these form associated multivalue fields recording the Depository No, number of transactions for that depository and the number of deleted and posted transactions for that depository. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT, internally generated field or Multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>COUPON.NUMBER</field>
+<desc>
+            <p>The known coupon number of the companies stock. </p>
+            <p>Usually attached to Bearer Certificates these coupons are individually numbered for specific payment at a specific date - depending on the frequency of one Dividend/Coupon payment. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>NO.DELETED</field>
+<desc>
+            <p>Along with fields DEP.N0, NO.CREATED &amp; NO.POSTED these form associated multivalue fields recording the Depository No, number of transactions for that depository and the number of deleted and posted transactions for that depository. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT, internally generated field or Multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>Specifies the payment date of the dividend due. </p>
+            <p>For Bonds the default date will be normally the value date.  For shares it will be different. </p>
+            <p>As bond interest dates are specified and normally pre-defined whereas shares are on an 'as if and when' basis. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Date Format.  (Default to Due Date) free input.</p>
+            <p>Must be valid date type format.  Cannot be less than due date (DIV.DUE.DATE).</p>
+        </desc>
+</t>
+<t>
+<field>SOURCE.TAX.PERC</field>
+<desc>
+            <p />
+            <p>Rate of tax levied, as specified and laid down by government in the country of which the security in question is domiciled. </p>
+            <p>The system will read the COUPON.TAX.CODE tables used to store these tax rates and uses the security domicile country code to access the correct file. </p>
+            <p>This calculation will only be called where the coupon tax code table is set to 'Y' (Tax to be levied). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>NO.CREATED</field>
+<desc>
+            <p>Along with fields DEP.NO, NO.DELETED &amp; NO.POSTED these form associated multivalue fields recording the Depository No, number of transactions for that depository and the number of deleted and posted transactions for that depository. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT, internally generated field or Multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>RATIO.DAYS</field>
+<desc>
+            <p>For Bonds, used for calculating number of interest days in any particular period. </p>
+            <p>The system calculates the number of days according to the last interest payment date and the next interest payment date. </p>
+            <p>Example :  Where the SECURITY.MASTER record has been opened with an            interest period calculation set to 'A' i.e. 360/360 the system            calculates on a 30 day month and actual number of days            involved in the interest period. </p>
+            <p>           Used in conjunction with RATIO.DAYS.PERIOD. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT internally generated field.</p>
+            <p>Picked up from SECURITY.MASTER record.</p>
+        </desc>
+</t>
+<t>
+<field>OLD.FACTOR</field>
+<desc>
+            <p>The oldfactor, for MBS securities, for this event.</p>
+        </desc>
+</t>
+<t>
+<field>COUPON.START.DATE</field>
+<desc>
+            <p>The start date applicable to this event.</p>
+        </desc>
+</t>
+<t>
+<field>NET.DIVIDEND.FLAG</field>
+<desc>
+            <p>Indicates whether dividend/interest is net [free] of charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only input allowed is (Y)es or (N)o  Default = No</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+            <p>This is a multi valued field. Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 35 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>RATIO.DAYS.PERIOD</field>
+<desc>
+            <p>Used along with RATIO.DAYS in calculating the number of days in any particular interest period. </p>
+            <p>The system calculates the actual number of days involved in any particular interest period using the last interest paid date and the next interest period date as per the SECURITY.MASTER record. </p>
+            <p>It uses this number of days when calculating the actual interest due on any particular bond. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.TAX.CODE</field>
+<desc>
+            <p />
+            <p>This field will hold the tax code that is to be used for calculating the local tax percentage. </p>
+            <p>The field will be initially defaulted from the COUPON.TAX.CODE file. </p>
+            <p>The field could point to a TAX record or to a TAX.TYPE.CONDITION record if pre-fixed with a '*'</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No Input Allowed</p>
+        </desc>
+</t>
+<t>
+<field>NEW.FACTOR</field>
+<desc>
+            <p>The new factor, for MBS securities, for this event.</p>
+        </desc>
+</t>
+<t>
+<field>SECURITY.NAME</field>
+<desc>
+            <p>The short description of the Security Name picked up from SECURITY MASTER (Field 3). </p>
+            <p>Displayed purely for information purposes. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>AFC.NUMBER</field>
+<desc>
+            <p>Reference Number supplied by Swiss Government to Custodian Banks. </p>
+            <p>Envisaged that for customers in Switzerland Standard Default Table will cause this number to be printed in client's advices. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-8 Alphanumeric characters.  Defaults to standard defaults file SC.STD.DIV.COUP.</p>
+        </desc>
+</t>
+<t>
+<field>BOND.SHARE.FLAG</field>
+<desc>
+            <p>Identifies if the security is a Bond or Share. </p>
+            <p>Is used when calculating source and local charges where the ratio may be different for bonds and shares. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field, internally generated.</p>
+            <p>Defaults to SECURITY MASTER.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGES.INDICATOR</field>
+<desc>
+            <p>Specifies whether the rate input at field FOREIGN.CHARGES is a percentage type rate or not. </p>
+            <p>If set to "Y"es Foreign Charge calculated at DIV.COUP.CUS will be based on a percentage value of the gross amount of Dividend payable. </p>
+            <p>If set to "N" the rate indicated at FOREIGN.CHARGES is a rate per nominal unit of stock. </p>
+            <p>Note : Care should be taken when entering these two fields as even an        entry of 1 and No in fields COMMISSION.PERC to FOREIGN.CHARGES.        Will calculate foreign charges equal to the nominal amount of stock        held per client. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only "Y" or "N" allowed.</p>
+        </desc>
+</t>
+<t>
+<field>COMMISSION.PERC</field>
+<desc>
+            <p>Percentage charge. Taken as commission on gross amount. Where this commission represents the Banks' commission for processing this Div/Coup payment. </p>
+            <p>The standard commission rate for a coupon/interest payment are picked up from the standard default table but these can be altered at transaction level. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard rate format up to 6 integers and decimal point only.</p>
+            <p>(Defaults to SC.STD.DIV.COUP).</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

@@ -1,0 +1,776 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DE</product>
+<table>DE.PARM</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Parameter is a file containing a single record that holds a number of parameters for controlling the processing of messages.  There are four types of data on the file: </p>
+            <p>1)   Parameters that allow the operator to shut down the carrier control      modules, and the inward and outward formatting modules. Shut-down can      be: </p>
+            <p>     a.   Urgent (after the message currently being processed.)      b.   Normal (when all queues have been processed.) </p>
+            <p>     See also Reset Active Flag </p>
+            <p>2)   Parameters that can be used to optimise the performance of all the      Carrier Control modules and the Inward and Outward Formatting      modules.  These give the following options: </p>
+            <p>     a.   After processing all 'Urgent' messages, a specified number of           'Priority' messages and a specified number of 'Normal' messages           are processed before returning to see whether there are any           'Urgent' messages. </p>
+            <p>     (Making these numbers larger increases the systems efficiency, but      causes slight delays to the processing of Urgent messages.) </p>
+            <p>     b.   A wait time can be specified.  This is the time that Carrier           Control and the Formatting modules will wait between finishing           the processing of all their queues and searching them again for           input. </p>
+            <p>     (A longer wait time gives other users a faster response, but causes      slight delays to messages.) </p>
+            <p>3)   Fields defining the way the Delivery System is installed. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>NETTING.PAYMENT</field>
+<desc>
+            <p>Specify whether MT203 to be generated instead of 202 from Funds.Transfer application.</p>
+            <p>When this field and Netting.Allowed field in DE.MESSAGE for Id equal to 202,both is set to "Yes" then Funds.Transfer will suppress the Message MT202 during delivery formatting and details are captured in NETTING.ENTRY application to generate MT203 subject to the value entered in Netting.Status in FT Contract level.</p>
+            <p>Thus 202 messages can be grouped and sent as a MT203 message.</p>
+            <p>Please note NETTING application is used by FT only to generate MT203 instead of MT202and transaction related to the message raised through FT application it self and not handled by NETTING. Ie No Accounting entries at Netting Level for FT</p>
+            <p>See Funds Transfer User guide for Details.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional field.   </p>
+            <p>Valid values "Yes" Or Null.</p>
+        </desc>
+</t>
+<t>
+<field>INWARD.CARRIERS</field>
+<desc>
+            <p>Specifies the valid inward carriers.  Note:  since one program handles inward and outward telexes, Telex is input only as an outward carrier. </p>
+            <p>An INWARD CARRIER may only be changed or removed if the corresponding SHUT IN CARRIER Field is 'C' - closed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'SWIFT', 'EUCLID' or nothing. INWARD CARRIERS and SHUT IN CARRIER (Field 6.1) form a multivalue set listing the inward carriers and giving their status. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>TELEX.HARDWARE</field>
+<desc>
+            <p>Defines the type of Telex machine that is to be linked for the system. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'HASLER' or 'TELEX BOX' (Optional input.)</p>
+            <p>If telex is a valid OUTWARD CARRIER, this field must be entered; if telex is not a valid OUTWARD CARRIER, this field must be blank.</p>
+        </desc>
+</t>
+<t>
+<field>SWIFT.MF.SEQUENCE</field>
+<desc>
+            <p>The message sequence number for controlling outgoing messages to the SWIFT device. No longer used. </p>
+            <p>The outgoing sequence number for controlling outgoing messages to the Swift device is now held on the LOCKING file, with an id of "OUT-SWIFT".  The sequence number can be adjusted by the DE.SEQUENCE.NUMBER application. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-5 numeric characters. System field, No Input Allowed.</p>
+        </desc>
+</t>
+<t>
+<field>READ.NORMAL</field>
+<desc>
+            <p>Specifies the number of priority 'N' records to be read after finishing the 'Urgent' queue (and reading the specified number of 'Priority' records) before returning to see whether any more 'Urgent' messages have arrived. </p>
+            <p>If this number is too large substantial delays in the processing of 'Urgent' messages may occur; if too small the system may waste processing time by reading the 'urgent' message queue when it has no messages, thus degrading performance. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>CLEARING.INTERFACE</field>
+<desc>
+            <p>Name of the software used to communicate with the national clearing system defined above. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>0 - 10 type A characters</p>
+            <p>Mandatory if an outward or inward carrier is a clearing system, i.e. 'SIC', 'BGC' or 'BACS'.  This field is used to build the name of the phantom interface programs.  i.e. DE.O.clearing interface.clearing system                 DE.I.clearing interface.clearing system  Must be one of the following: SPAC STACHEM</p>
+        </desc>
+</t>
+<t>
+<field>DATE.PSWD.CHGD</field>
+<desc>
+            <p>The last date the passwords were changed. Format;    DTE Fields 30.1-38.1 form a multivalue set containing information about each Euroclear account. Non-input, non-display. </p>
+            <p>This is the date that either the Euclid or Network password was last changed.  This field is updated by the Euclid Password Change application. </p>
+        </desc>
+</t>
+<t>
+<field>SHUTDOWN.OUTWARD</field>
+<desc>
+            <p>Specifies the status of the Outward Formatting process. It can be changed to request Outward Formatting to shut down so that End of Period processing can be run. </p>
+            <p>In addition to 'N' and 'U' (described above) this field may also contain the following values that cannot be set on-line: </p>
+            <p>'C'        Shutdown completed. 'E'        End of Period processing is being run. 'A'        Outward Formatting is active. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>If it contains 'A' it can be changed to 'N' or 'U'. Otherwise it cannot be changed. 'N' requests a normal shutdown after processing of all Unformatted Outward Messages has finished. 'U' requests an urgent shutdown after processing of the current message has been completed.</p>
+        </desc>
+</t>
+<t>
+<field>NEW.NTWK.PSWD</field>
+<desc>
+            <p>The new network password for Euclid for the EUCLID USER NO.  This field is held in encrypted format. </p>
+            <p>This is the new network password which will be used when the password change has been accepted by Euroclear.  Once the password change has been accepted, the OLD NTWK PASSWORD (Field 32.1) will be replaced by the NEW NTWK PASSWORD and the NEW NTWK PASSWORD blanked out. </p>
+            <p>Passwords are changed by the Euclid Password Exchange application. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>5-8 type A (alphanumeric) characters. Fields 30.1-38.1 form a multivalue set containing information about each Euroclear account. Non-input, non-display.</p>
+        </desc>
+</t>
+<t>
+<field>SWIFT.HARDWARE</field>
+<desc>
+            <p>Defines the SWIFT device in use. </p>
+            <p>Defines the SWIFT switch type connected to T24. For example the ST200 or ST400 devices. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-5 alphanumeric characters. (Mandatory input).</p>
+            <p>If SWIFT is a valid OUTWARD CARRIER, this field must be entered; if SWIFT is not a valid OUTWARD CARRIER, this field must be blank.</p>
+            <p>Must be one of the following: ST200 ST400 ST500 MERVA ALLIANCE</p>
+        </desc>
+</t>
+<t>
+<field>TELEX.LINE.NO.</field>
+<desc>
+            <p>The AMLC line number attached to the PC running the Protelex system. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 numeric characters. (Optional input.)</p>
+            <p>If telex is a valid OUTWARD CARRIER, this field must be entered; if telex is not a valid OUTWARD CARRIER, this field must be blank.</p>
+        </desc>
+</t>
+<t>
+<field>NO..VERIFY.ATTMPTS</field>
+<desc>
+            <p>Number of attempts allowed at verification of a testkey in an inward message. </p>
+            <p>If the number of attempts to verify a testkey in an inward message is exceeded the message will be placed in the inward repair queue. </p>
+            <p>If set to zero inward verification is not required. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 numeric characters. (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>EUCLID.IN.SEQU.</field>
+<desc>
+            <p>The next sequence number to be used for incoming messages. </p>
+            <p>Data received from Euclid is received in blocks of unformatted data, containing many messages.  This sequence number is used as the key for the block of data when written to the 'awaiting to be processed by Euclid' file.  The updating of this field is automatic. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric characters Fields 30.1-38.1 form a multivalue set containing information about each Euroclear account. Non-input, non-display.</p>
+        </desc>
+</t>
+<t>
+<field>EUCLID.BATCH..</field>
+<desc>
+            <p>The updating of this number is automatic.  Initially, when the EUCLID USER NO is first entered, this field will be set to 1. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-2 numeric characters. Fields 30.1-38.1 form a multivalue set containing information about each Euroclear account. Non-input.</p>
+        </desc>
+</t>
+<t>
+<field>PHANT.CHECK</field>
+<desc>
+            <p>This field holds the command which will be executed by UniVerse to check the status of the various delivery phantoms before they are able to be initiated. </p>
+            <p>Multi-values are used where the commands are too long to fit on one line. </p>
+            <p>If this field is blank then it will default to the following command, which shells out to Unix and runs a standard ps : </p>
+            <p>                 SH -c 'ps auxw | grep DE.PHANTOM.CALL' </p>
+            <p>The output from the command contained here is captured and then scanned for the phantom name to be started. </p>
+            <p>N.B. The UniVerse account id is appended to the name of the phantom to      uniquely identify each phantom where there may be phantoms running in      different accounts on a machine. </p>
+            <p />
+            <p>Example ======= </p>
+            <p>If the phantom DE.O.MAP.MESSAGES is running and the user tries to start the phantom again then the captured command will contain the following: </p>
+            <p>       phantom DE.PHANTOM.CALL DE.O.MAP.MESSAGES*bnk.run </p>
+            <p>where bnk.run is the UniVerse account name of the account. </p>
+            <p>The account name is then appended to the phantom name and searched for in the captured output. If found, the user will be unable to restart the phantom. </p>
+        </desc>
+</t>
+<t>
+<field>TANDEM.LINE.NO.</field>
+<desc>
+            <p>The AMLC line number attached to the Tandem mainframe. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 numeric characters. (Optional input) If Tandem is a valid OUTWARD CARRIER, this field must be entered; if Tandem is not a valid OUTWARD CARRIER, this field must be blank.</p>
+        </desc>
+</t>
+<t>
+<field>OLD.EUCLID.PSWD</field>
+<desc>
+            <p>The current Euclid password for the EUCLID USER NO. This field is held in encrypted format. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>5-8 type A (alphanumeric) characters. Fields 30.1-38.1 form a multivalue set containing information about each Euroclear account. (Optional input) This field can only be entered if it has not previously been entered and if EUCLID USER NO is present.</p>
+        </desc>
+</t>
+<t>
+<field>EUCLID.A.C.NO.</field>
+<desc>
+            <p>Specify the EUCLID account no in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>This field must be entered if EUCLID USER NO is present and cannot be     entered if EUCLID USER NO is not present.</p>
+        </desc>
+</t>
+<t>
+<field>DISP.CONTROL</field>
+<desc>
+            <p>Defines whether DISPOSITION CONTROL is to be used. Without it the system is simpler and slightly faster, but not as versatile. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'Y' (Use Disposition Control) 'NO' (Do not use it)</p>
+        </desc>
+</t>
+<t>
+<field>SHUT.IN.CARRIER</field>
+<desc>
+            <p>Specifies the status of Carrier Control for incoming messages from the carrier named in the previous field. </p>
+            <p>In  addition to  'N'  and  'U'  (described above) this field may also contain the following values that cannot be set on-line: </p>
+            <p>'C'        Shutdown completed. 'E'        End of Period processing is being run. 'A'        The relevant Inward Carrier Control is active. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'N' requests a normal shutdown after processing of all incoming messages for INWARD CARRIERS (Field 5.1) has finished. or 'U' requests an urgent shutdown after processing of the current message has been completed. INWARD CARRIERS and SHUT IN CARRIER form a multivalue set listing the inward carriers and giving their status.</p>
+        </desc>
+</t>
+<t>
+<field>EUCLID.ACCESS.LINE</field>
+<desc>
+            <p>Reserved for future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 alpha character. Non-input, non-display.</p>
+        </desc>
+</t>
+<t>
+<field>SWIFT.PROTOCOL</field>
+<desc>
+            <p>Defines the communications protocol between T24 and the SWIFT device. </p>
+            <p>Defines the actual communications protocol in use between the T24 host and the connected SWIFT device. For example 3270 or ATE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-5 alphanumeric characters. (Mandatory input).</p>
+            <p>If SWIFT is a valid OUTWARD CARRIER, this field must be entered; if SWIFT is not a valid OUTWARD CARRIER, this field must be blank.</p>
+            <p>Must be one of the following: 3270 ATE TCPIP</p>
+        </desc>
+</t>
+<t>
+<field>TELEX.MF.SEQUENCE</field>
+<desc>
+            <p>The message sequence number for controlling outgoing messages to the Telex device.  No longer used. </p>
+            <p>Outgoing telex sequence numbers can be found on the Locking file, with id "OUT-TELEX".  The sequence number can be adjusted by using the DE.SEQUENCE.NUMER application.. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-5 numeric characters. System field, No input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>USE.TTYSET</field>
+<desc>
+            <p>Specify whether to use the default ttyset command available for the operation system level or Not.</p>
+            <p>ttyset statement is used to set the characteristics of a terminal, line printer channel or tape unit.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional field</p>
+            <p>Valid values "Yes" or "NO" or Null.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ID</field>
+<desc>
+            <p>The key to the record. (There is only one record on Parameter.) </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>ID contains System Status but this never has to be entered because the record is created when the system is installed and for subsequent updates to the record the user simply enters the application Parameter and Function required; the system then automatically displays the System Status record.</p>
+        </desc>
+</t>
+<t>
+<field>COMM.PARAMETERS</field>
+<desc>
+            <p>Multivalue </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>0 - 50 type A characters.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>TELEX.SF.SEQUENCE</field>
+<desc>
+            <p>The message sequence number for controlling incoming messages from the Telex device. No longer used. </p>
+            <p>The incoming telex sequence number can be found on the Locking file with an id of "IN-TELEX".  The sequence number can be adjusted by using the DE.SEQUENCE.NUMBER application. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-5 numeric characters. System field, No input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>MAINTAIN.HISTORY</field>
+<desc>
+            <p>Defines whether copies of all messages are to be kept in history. </p>
+            <p>Always put 'Y' unless there is a very good reason for not doing so. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'Y' 'NO' or     nothing. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>DISPLAY.TEST.KEYS</field>
+<desc>
+            <p>Defines whether testkeys in outward and inward messages may be displayed on screen or printed when viewing messages. </p>
+            <p>If display of testkeys is not allowed the testkey in any message will be masked with asterisks whenever a message is viewed on screen or printed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'Y' or 'NO'. (Optional input.) Default is 'NO'.</p>
+        </desc>
+</t>
+<t>
+<field>EUCLID.BATCH.#</field>
+<desc>
+            <p>Fields EUCLID USER NO. to EUCLID IN SEQU. form a related multi value set. Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 2 characters may be entered.</p>
+            <p>This is a NV.NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>SWIFT.NETWORK</field>
+<desc>
+            <p>Defines whether the SWIFT device is connected to SWIFT I or SWIFT II and whether in training mode for SWIFT II. </p>
+            <p>During the transition between SWIFT I and SWIFT II it was necessary to provide a parameter switch between the two networks. This field specifies the network connection in use and whether the connection is in training mode for SWIFT II. Once all SWIFT I connections are moved to SWIFT II this field will become redundant except to distinguish a training session. </p>
+            <p>It is stongly recommended that this field not be modified if SWIFT messages are present in delivery to avoid the confusion of SWIFT I messages reaching a SWIFT II device and vice versa. It defines the syntax structure of SWIFT messages. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 alphanumeric characters. (Mandatory input)</p>
+            <p>If SWIFT is a valid OUTWARD CARRIER, this field must be entered; if SWIFT is not a valid OUTWARD CARRIER, this field must be blank.</p>
+            <p>Must be one of the following:  1  - Switch is connected via SWIFT I 2  - Switch is connected via SWIFT II 2T - Switch is connected via SWIFT II training mode.</p>
+        </desc>
+</t>
+<t>
+<field>DEBUG</field>
+<desc>
+            <p>Specifies whether diagnostic information is to be displayed on the screen when the message processing routines are run interactively. (See DE.PHANTOM) </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'Y'  (Display diagnostic messages on the screen.) 'NO' (No diagnostics.)  This field should normally be set to NO.</p>
+        </desc>
+</t>
+<t>
+<field>SWIFT.SF.SEQUENCE</field>
+<desc>
+            <p>The message sequence number for controlling incoming messages from the SWIFT device. No longer used. </p>
+            <p>The incoming Swift sequence number is now held on the Locking file with an id of "IN-SWIFT".  The sequence number can be reset by using the DE.SEQUENCE.NUMBER application. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-5 numeric characters. System field, No Input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>TIME.OUT.SECS.</field>
+<desc>
+            <p>Specifies the time that will elapse before terminating a read from message queues.</p>
+            <p>If no data is read from an elected input field in the specified time frame, the process will stop, reporting that it encountered a time out.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-3 numeric characters. (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>SHUTDOWN.INWARD</field>
+<desc>
+            <p>Specifies the status of the Inward Formatting process. It can be changed to request Inward Formatting to shut down so that End of Period processing can be run. </p>
+            <p>In  addition to  'N'  and  'U'  (described above) this field may also contain the following values that cannot be set on-line: </p>
+            <p>'C'        Shutdown completed. 'E'        End of Period processing is being run. 'A'        Inward Formatting is active. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>If it contains 'A' it can be changed to 'N' or 'U'. Otherwise it cannot be changed. 'N' requests a normal shutdown after processing of all Unformatted Inward Messages has finished. 'U' requests an urgent shutdown after processing of the current message has been completed.</p>
+        </desc>
+</t>
+<t>
+<field>OUTWARD.CARRIER</field>
+<desc>
+            <p>Specifies one of the outward carriers. Note that when OUTWARD CARRIER is 'TELEX' it applies to both inward and outward Telex and Telexp messages. </p>
+            <p>The carrier must be defined on DE.CARRIER.  If the carrier is a generic carrier (i.e. CARRIER.MODULE on DE.CARRIER contains "GENERIC"), messages are sent and received by the generic carrier control program, DE.CC.GENERIC. </p>
+            <p>An OUTWARD CARRIER may only be changed or removed if the corresponding SHUT OUT CARR field in 'C' - closed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must reference a record on DE.CARRIER, or null</p>
+            <p>OUTWARD CARRIER and SHUT OUT CARR (Field 8.1) form a multivalue set listing the outward carriers and giving their status.</p>
+            <p>Optional input</p>
+        </desc>
+</t>
+<t>
+<field>READ.PRIORITY</field>
+<desc>
+            <p>Specifies the number of priority 'P' records to be read after finishing the 'Urgent' queue before returning to see whether any more 'Urgent' messages have arrived. </p>
+            <p>If this number is too large substantial delays in the processing of 'Urgent' messages may occur; if too small the system may waste processing time by reading the 'urgent' message queue when it has no messages, thus degrading performance. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>INSTAL.PARAMETER</field>
+<desc>
+            <p>Specifies whether the customer and account files are available on line. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Either 'R' (The Delivery System is 'resident', ie. customer and account files are available to it.) or nothing (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>NO..AUTH..ATTEMPTS</field>
+<desc>
+            <p>The number of attempts allowed to authorise testkey on an outward message before the testkey is removed requiring re-input. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 numeric characters. (Optional Input).</p>
+            <p>If testkey authorisation is required (AUTHORISE.TEST.KEY in field 22 set to 'Y') the number of attempts must be 1 or greater.</p>
+            <p>If testkey authorisation is not required (AUTHORISE.TEST.KEY in field 22 set to 'NO'), the number of attempts must be 0.</p>
+        </desc>
+</t>
+<t>
+<field>EUCLID.USER.NO.</field>
+<desc>
+            <p>Contains the Euclid user number to send and receive Euroclear messages from. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>8 type A (alphanumeric) characters. Fields 30.1-38.1 form a multivalue set containing information about each Euroclear account. (Optional input.) If Euclid is a valid INWARD CARRIER or OUTWARD CARRIER, at least one Euclid user number must be entered.  If Euclid is neither a valid INWARD CARRIER nor a valid OUTWARD CARRIER, this field must be blank.</p>
+        </desc>
+</t>
+<t>
+<field>SWIFT.LINECOMM</field>
+<desc>
+            <p>Defines the line communications parameters for the connection to the SWIFT device. Applicable only for ATE and TCPIP protocols otherwise ignored. </p>
+            <p>If ATE protocol is specified in field SWIFT.PROTOCOL then this field will specify five pieces of information about the line communications as follows: </p>
+            <p>Line , Baud , Data , Stop , Parity </p>
+            <p>Where: </p>
+            <p>Line    Defines the &amp;DEVICES&amp; file devicename for the asynchronous line         connected to the SWIFT device. For example '8' will look for a tty         line called 'TTY08' or '0' will look for 'TTY00'. </p>
+            <p>Baud    Defines the baud rate of the line. </p>
+            <p>Data    Defines the number of data bits. </p>
+            <p>Stop    Defines the number of stop bits. </p>
+            <p>Parity  Defines parity as '0' - None                           '1' - Even                           '2' - Odd If TCPIP protocol is specified in the SWIFT.PROTOCOL field then this field will specify three pieces of information about the communications interface as follows : </p>
+            <p>Blocksize, Internet address and port, pipes location </p>
+            <p>Where: </p>
+            <p>Blocksize  Specifies the minimum datagram size in bytes which will be            exchanged with the 'c' server. This is present for performance            reasons since it allows a block of fixed size to be expected by            each side. It should be set at installation to a value            determined appropriate for likely message sizes. The default            should be 512. </p>
+            <p>Internet   Specifies the Internet address of the SWIFT device as connected address    on the network with a port number as an extension            e.g. 100.100.10.10:1234. This is the address the 'c' server            will connect its sockets to. </p>
+            <p>Pipes      Specifies the unix pathname of the directory containing the location   pipes used for communications between T24 and the 'c' server            for TCPIP. There are four pipes two for inward and two for            outward SWIFT. This path may be absolute or relative. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 -50 alphanumeric characters. (Optional input)</p>
+            <p>Mandatory input if SWIFT is a valid carrier and the ATE or TCPIP protocol is used.</p>
+            <p>For ATE protocols:  - Line must be numeric from 0 to 99  - Baud must be either 1200 or 2400  - Data must be numeric either 7 or 8  - Stop must be either 0, 1 or 2  - Parity must be either 0, 1 or 2</p>
+            <p>For TCPIP protocols:  - Blocksize must be numeric and larger than 100 bytes.  - Internet address must be structured as follows   nnn.nnn.nnn.nnn:nnnn where each numeric element is maximum three   characters. The '.' are literal, as is the ':'. The port number   is the last four numerics. All elements are mandatory.  - A valid Unix absolute or relative pathname</p>
+        </desc>
+</t>
+<t>
+<field>TIME.OUT(SECS)</field>
+<desc>
+            <p>Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 5 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>OLD.NTWK.PSWD</field>
+<desc>
+            <p>The current network password for Euclid for the EUCLID USER NO.  This field is held in encrypted format. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>5-8 type A (alphanumeric) characters. Fields 30.1-38.1 form a multivalue set containing information about each Euroclear account. (Optional input) This field can only be entered if it has not previously been entered and if EUCLID USER NO is present.</p>
+        </desc>
+</t>
+<t>
+<field>PRINT.BYPASS</field>
+<desc>
+            <p>Defines the message types where the message is not to be printed. </p>
+            <p>This field is used to indicate those message types, where the SWIFT, Telex etc. carrier's output is to be produced, but the PRINT Carrier output is not to be produced as the printed version of the message is being processed outside the delivery system. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 4 numeric characters. (Optional input)</p>
+            <p>The number entered must be a valid record on the file DE.MESSAGE.</p>
+            <p>The number entered cannot be duplicated.</p>
+            <p>This field cannot be modified if there are messages awaiting to be mapped.</p>
+            <p>This field cannot be modified if there are messages awaiting formatting.</p>
+            <p>This field cannot be modified if the delivery phantoms are active.</p>
+        </desc>
+</t>
+<t>
+<field>SHUTDOWN.MAPPING</field>
+<desc>
+            <p>Specifies the status of the Mapping process.  It can be changed to request Mapping to shut down so that End of Period processing can be run. </p>
+            <p>In  addition to  'N'  and  'U'  (described above) this field may also contain the following values that cannot be set on-line: </p>
+            <p>'C'        Shutdown completed. 'E'        End of Period processing is being run. 'A'        Mapping is active. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>If it contains 'A' it can be changed to 'N' or 'U'. Otherwise it cannot be changed. 'N' requests a normal shutdown after the Mapping of all Unmapped messages has finished. 'U' requests an urgent shutdown after the Mapping of the current message has been completed.</p>
+        </desc>
+</t>
+<t>
+<field>MACHINE.ID</field>
+<desc>
+            <p>Defines the host machine type. </p>
+            <p>This field defines the machine id and may be any of a predefined list of entries including the generic identifier 'UNIX'. It is used by the SWIFT carrier control modules to decide which interface routines to use for communications with the SWIFT device. </p>
+            <p>Users are strongly recommended not to modify this field without prior consultation with your support centre. Normally the parameters controlling interfaces installed at a T24 site remain unchanged following installation of the system. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-5 alphanumeric characters. (Mandatory input)</p>
+            <p>If SWIFT is a valid OUTWARD CARRIER, this field must be entered; if SWIFT is not a valid OUTWARD CARRIER, this field must be blank.</p>
+            <p>Must be one of the supported machine ids as defined by T24 or the generic 'UNIX' identifier if entered.</p>
+        </desc>
+</t>
+<t>
+<field>TANDEM.MF.SEQUENCE</field>
+<desc>
+            <p>The message sequence number for controlling outgoing messages to the Tandem mainframe. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-5 numeric characters. If Tandem is a valid OUTWARD CARRIER, this field must be entered; if Tandem is not a valid OUTWARD CARRIER, this field must be blank.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.1</field>
+<desc>
+            <p>Set the local time difference from the CET time. </p>
+            <p>This is optional field. </p>
+            <p>This field is used for formatting the SWIFT messages using conversion TIME.CET, with the time field.</p>
+            <p>HHMM</p>
+            <p>Or </p>
+            <p>-HHMM</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>HH  should be 00 to 12 (inclusive)</p>
+            <p>MM  should be 00 to 59 (inclusive)</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>NEW.EUCLID.PSWD</field>
+<desc>
+            <p>The new Euclid Password for the EUCLID USER NO. This field is held in encrypted format. </p>
+            <p>This is the new Euclid password which will be used when the password change has been accepted by Euroclear.  Once the password change has been accepted, the OLD EUCLID PASSWORD will be replaced by the NEW EUCLID PASSWORD and the NEW EUCLID PASSWORD blanked out. </p>
+            <p>Passwords are changed by the Euclid Password Change application. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>5-8 type A (alphanumeric) characters. Fields 30.1-38.1 form a multivalue set containing information about each Euroclear account. Non-input, non-display.</p>
+        </desc>
+</t>
+<t>
+<field>DMNL.DELIVERY.MODE</field>
+<desc>
+            <p>Determines if this is a live or test connection to DMNL. </p>
+            <p>If set to 'LIVE' the system will use the live 3270 terminal addresses, otherwise it will use the test bed 3270 terminal addresses for all communications with DMNL.  If DMNL is not available at this site then this field should be left blank. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'TEST' or 'LIVE'. (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>WAIT.TIME.SECS.</field>
+<desc>
+            <p>Specifies the time, in seconds, to wait after processing all the queues have been completed before returning to see if there are any more messages to be processed. </p>
+            <p>A longer wait time gives other users of the computer a better response, but causes slight delays to messages. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-3 numeric characters. (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>CLEARING.SYSTEM</field>
+<desc>
+            <p>Name of the clearing system used for national funds transfer between banks. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>0 - 10 type A characters</p>
+            <p>If one of the inward or outward carriers is 'SIC', 'BACS' or 'BGC', this field is mandatory.  Must be one of the following:      SIC      BGC      BACS  This field is used to build the name of the phantom interfaces.      DE.O. clearing interface.clearing system      DE.I. clearing interface.clearing system i.e. DE.O.SPAC.SIC, DE.I.STACHEM.SIC...</p>
+        </desc>
+</t>
+<t>
+<field>OFFSET</field>
+<desc>
+            <p>Specifies Tthe time difference between the T24 server time and the Universal standard time(UST)</p>
+            <p>Entered in  +HH:MM or –HH:MM format.</p>
+            <p />
+            <p>Example,</p>
+            <p>Time difference between the Server time (representing the time zone where the delivery services are started) and UST should be +01:00 hours (in Paris) or -06:00 hours (in Central America).</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>FULL.TO.ADDRESS</field>
+<desc>
+            <p>Defines whether the TO.ADDRESS for PRINT messages contains blank lines as defined in the DE.ADDRESS record, or whether blank lines are stripped out. This only affects the TO.ADDRESS on the DE.O.HEADER record. </p>
+            <p>Input of Y will ensure the full address, including blank lines is used. </p>
+            <p>When input is given as "NO" or Null, then the blank lines is suppressed while creating DE.O.HEADER record. In such cases the CUS related conversion like CUS*NAME.1 or CUS*STREET.ADDRESS may not fetch the correct field details since the field position would have changed after suppressing the blank line. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Y or NO. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>INWARD.ROUTING</field>
+<desc>
+            <p>Defines whether INWARD ROUTING is to be used. Without it the system though simpler and slightly faster, is less versatile as a particular message type will then always be routed inward to a particular banking application. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'Y' (Use Inward Routing) 'NO' (Do not use it)</p>
+        </desc>
+</t>
+<t>
+<field>SHUT.OUT.CARR</field>
+<desc>
+            <p>Specifies the status of the Carrier Control module processing the OUTWARD CARRIER named in the previous field.  Note that when the Outward Carrier is 'Telex' it applies to both inward and outward Telex messages. </p>
+            <p>OUTWARD CARRIER and SHUT OUT CARR form a multivalue set listing the outward carriers and giving their status. </p>
+            <p>In addition to 'N' and 'U'  (described above) this field may also contain the following values that cannot be set on-line: </p>
+            <p>'C'        Shutdown completed. 'E'        End of Period processing is being run. 'A'        The relevant Carrier Control module is active. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'N' requests a normal shutdown after processing all the outward messages for OUTWARD CARRIER (Field 7.1). (For Telex: All inward and outward Telex Messages.) or 'U' requests an urgent shutdown after processing of the current message.</p>
+        </desc>
+</t>
+<t>
+<field>SHUTDOWN.TIMECHECK</field>
+<desc>
+            <p>This field can contain a shutdown request to the Timecheck process.  (Timecheck looks at the 'Held' messages to see if it is time to release them.) </p>
+            <p>In addition to 'N' and 'U' (described above) this field may also contain the following values that cannot be set on-line: </p>
+            <p>'C'        Shutdown completed. 'E'        End of Period processing is being run. 'A'        Timecheck is active. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>If it contains 'A' it can be changed to 'N' or 'U'. Otherwise it cannot be changed. 'N' requests a normal shutdown after processing of all the 'Held' messages has finished. 'U' requests an urgent shutdown after processing of the current message has been completed.</p>
+        </desc>
+</t>
+<t>
+<field>EOP.AWACK.REPORT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT.FORMAT</field>
+<desc>
+            <p>Not used: Planned future enhancement. This defines the format to be used for the printing of amounts. </p>
+            <p>Depending on whether this field is 'S' (SWIFT), 'E' (European), or 'A' (American), amount fields will be printed as follows: </p>
+            <p>           SWIFT -    no separator for thousands, comma for            decimals.            European - point for thousands, comma for decimals.            American - comma for thousands, point for decimals. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'S' 'E' or 'A'. (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>AUTHORISE.TEST.KEY</field>
+<desc>
+            <p>Defines whether test keys must be authorised by a different user after being input. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>"Y" or "NO"- Optional Input   </p>
+            <p>Default is "NO"   </p>
+            <p>If authorisation is not required the number of authorisation attempts     allowed (NO.AUTH.ATTEMPTS in field 23) must be set to 0   </p>
+            <p>If authorisation is required the number of authorisation allowed must not     be 0</p>
+        </desc>
+</t>
+<t>
+<field>BATCHING.REQ.</field>
+<desc>
+            <p>Defines whether batching of normal priority telex messages is required. </p>
+            <p>If batching is required, normal priority messages will be batched into groups of not more than 10 messages and sent as a single telex. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'Y' or 'NO'. (Optional input.) Default is 'NO'</p>
+        </desc>
+</t>
+<t>
+<field>CET.TIME.DIFF</field>
+<desc>
+            <p>SWIFT allows certain message types to have reference to times based on Central European Time (CET), this field identifies the local time difference from the CET. It will be used in adding the CET time offset, after the time in the SWIFT message, where the conversion TIME.CET is specified for time field in the DE.FORMAT.SWIFT. </p>
+            <p>The format is for input is either HHMM or -HHMM. as a time offset, where HH is the hours component and MM is the minutes component.  </p>
+            <p>Input is made either as a positive unsigned value e.g 1230 meaning 12 1/2 hours after CET. Or as a negative signed value e.g. -1230 meaning 12 1/2 hours before CET. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Sign is "-" for negative or "" for positive </p>
+            <p>HH  components must be in range of 00 through to 13 </p>
+            <p>MM  components must be in range of 00 through to 59 </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+        <p>This is a multi valued field. Standard T24 alphanumeric field. </p>
+        <p>
+           <p>Validation Rules:</p>
+        </p>
+        <p> A maximum of 35 characters may be entered.</p>
+    </desc>
+</t>
+<t><field>USER.LANGUAGE.DATE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>STMT.CARR.CONS</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>INTERCO.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+<p>This file contains the details of whether a multi company accounting environment is being used and if so the details of the unique part of the customer account number for each company. </p><p>     There is only one record on this file and the Id (key) of this record is SYSTEM </p><p>     If the record is missing then T24 assumes that a non multi company accounting environment exists. </p><p>     Where inter-company accounting is required then this record must be input and authorised before creating the second company. </p><p>     Before this record is authorised for a inter-company accounting environment the record INTERCO must be present on the Account.Class file. </p><p>                    FIELD NO        FIELD NAME </p><p>                      0             ID                  1             BALANCE.INTERCOMP                  2             BALANCE.INTERDEPT                  3             BRANCH.CODE.START                  4             BRANCH.CODE.LENGTH                  5             DR.TXN.CODE                  6             CR.TXN.CODE                  7.1           COMPANY                  8.1           FIN.MNEMONIC                  9.1.1         BRANCH.CODE                 10             ACCOUNT.NO.LENGTH                 11             SPARE.4                 12             SPARE.3                 13             SPARE.2                 14             SPARE.1 </p></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>FIN.MNEMONIC</field>
+<desc><p>Contains the Company Mnemonic for the Company in the previous field. </p><p>     This field contains the Company Mnemonic for the company entered in the previous field and is set up by the system. </p><p><p>Validation Rules:</p></p><p>     3 type MNE (uppercase alpha).  This is a NOINPUT field.  Multivalue Associated field with fields COMPANY and BRANCH.CODE.</p></desc>
+</t>
+<t>
+<field>CR.TXN.CODE</field>
+<desc><p>Indicates the transaction code to be used on the credit account entries raised for the Interco Accounts. </p><p>     This field contains the transaction code that is used in the credit transactions that are raised for the Interco Accounts to transfer the amount from the processing Company to the account holders company. </p>
+<p><p>Validation Rules:</p></p>
+<p>     1-10(Max Value) numeric characters Transaction Code. </p>
+<p>     The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+<p>     This is a No Change field.</p>
+<p>     This field is mandatory when the BALANCE.INTERCOMP field is set to YES.</p><p>     There must be a record on the Transaction file for this code.</p><p>     The Debit/Credit Indicator on the Transaction file record must be set to CREDIT.</p></desc>
+</t>
+<t>
+<field>BRANCH.CODE.LENGTH</field>
+<desc><p>Indicates the length of the unique identification digits in the account number. </p><p>     This field indicates within the customer account number the length of the unique part of the account number. The unique part of the account number is referred to as the branch code and for each Company one or more branch codes can be allocated. </p><p><p>Validation Rules:</p></p><p>     1 numeric characters in the range 1-4.  This is a No Change field.  This field is mandatory when the BALANCE.INTERCOMP field is set to YES.</p></desc>
+</t>
+<t>
+<field>COMPANY</field>
+<desc><p>Identifies the company who's details are entered in the Branch Code field. </p><p>     This field contains the Company Code for the company whose Branch codes are entered in the Branch code field. </p><p><p>Validation Rules:</p></p><p>     9 type A (alphanumeric) characters.  Standard format: CCGGGLLLL or 3 type MNE (uppercase alpha).  Multivalue Associated field with fields FIN.MNEMONIC and BRANCH.CODE.</p><p>     This field is mandatory when the BALANCE.INTERCOMP field is set to YES.</p><p>     The initial company (referred to as the Master Company) that was set up must be the first Company specified in this multi value set.</p><p>     The Company must be a valid Company on the Company file.</p><p>     The Company can not be duplicated.</p></desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+            <p>This is a multi valued field. Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 35 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>SPARE.1</field>
+<desc><p>This field is reserved for future expansion. </p><p><p>Validation Rules:</p></p><p>     This is a NOINPUT field.</p></desc>
+</t>
+<t>
+<field>INTERCO.PARAMETER</field>
+<desc><p>Identifier for the record. </p><p><p>Validation Rules:</p></p><p>     Input must be SYSTEM.  Mandatory input.</p><p>     Only input allowed is SYSTEM.</p><p>     Record can only be loaded for first time if there is only one record on the Company file.</p><p>     Record can only be input if Master company has been initiated for the Multi Company application.</p></desc>
+</t>
+<t>
+<field>DR.TXN.CODE</field>
+<desc><p>Indicates the transaction code to be used on the debit account entries raised for the Interco Accounts. </p><p>     This field contains the transaction code that is used in the debit transactions that are raised for the Interco Accounts to transfer the amount from the processing Company tothe account holders company. </p>
+<p><p>Validation Rules:</p></p>
+<p>     1-10(Max Value) numeric characters Transaction Code. </p>
+<p>     The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+<p>     This is a No Change field.</p><p>     This field is mandatory when the BALANCE.INTERCOMP field is set to YES.</p><p>     There must be a record on the Transaction file for this code.</p><p>     The Debit/Credit Indicator on the Transaction file record must be set to DEBIT.</p></desc>
+</t>
+<t>
+<field>BRANCH.CODE.START</field>
+<desc><p>Indicates at which digit of the account number the unique identification digits start. </p><p>     This field indicates within the customer account number where the unique part of the account number starts. The unique part of the account number is referred to as the branch code and for each Company one or more branch codes can be allocated. </p><p><p>Validation Rules:</p></p><p>     1-2 numeric characters in the range 1-15.  This is a No Change field.  This field is mandatory when the BALANCE.INTERCOMP field is set to YES.</p></desc>
+</t>
+<t>
+<field>COMPANY.SELECT</field>
+<desc><p>The field controls the default select processing for enquiries in a multi book system.</p><p>Leaving this field blank would result in a user only being able to access records (subject to SMS control) that are owned by the branch they log in to. Setting it to "ALL" would result in the user being able to access records (subject to SMS control) for all branches of the lead company of the branch that they log in to.</p><p>Note that the default settings can be overridden at ENQUIRY level.</p></desc>
+</t>
+<t>
+<field>INTERCOMP.CO</field>
+<desc>
+            <p data-mc-conditions="FROMRELEASE.R13">This is set when intercompany entries are to be channeled through a selected company. The main reason for setting this field is to reduce the number of intercompany accounts required.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Fields LEAD.COMPNAY, ROUTING.COMPANY and ROUTING. MNEMONIC are not set for Transaction company’s lead company then transactions routed through this company.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">First precedence goes to ROUTING.COMPANY, if the same not set company in this field used as a Routing Company 1.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">If there is an intercompany entry between company A and company C then the following entries will be generated.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">In company A</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Debit account in company A</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Credit C from A intercompany account</p>
+            <p data-mc-conditions="FROMRELEASE.R13">In company C</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Debit A from C intercompany account</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Credit account in company C</p>
+            <p data-mc-conditions="FROMRELEASE.R13">This means that every company needs to keep intercompany accounts to link to all other companies.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Setting this field would generate the following entries if company B is                                                             set as the INTERCOMP.CO and a separate routing company not defined for company C.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">In company A</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Debit customer account</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Credit B from A intercompany account</p>
+            <p data-mc-conditions="FROMRELEASE.R13">In company B</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Debit  A from B intercompany account</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Credit C from B intercompany account</p>
+            <p data-mc-conditions="FROMRELEASE.R13">In company C</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Debit B from C intercompany account</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Credit customer account The advantage is fewer intercompany accounts, the disadvantage is more accounting entries</p>
+        </desc>
+</t>
+<t>
+<field>LEAD.COMPANY</field>
+<desc>
+        <p>Specifies the lead company code. It is a part of multi-valued set of fields and used to define the lead company and its routing company.</p>
+        <p>Each lead company can have individual routing company.</p>
+        <p>Validation Rules:</p>
+        <p>
+            <p value="1">A valid id in company table.</p>
+            <p value="2">A lead company – Branch company ids are disallowed.</p>
+            <p value="3">Optional Field</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>ROUTING.COMPANY</field>
+<desc>
+        <p>Specifies the routing company code. It is a part of multi-value set of fields and used to define the lead company and its routing company.</p>
+        <p>Maximum number of routing companies in a transaction is two.</p>
+        <p style="font-weight: bold;">For example</p>
+        <p>Transaction company is A, Debit account company is A, A’s LEAD.COMPANY is A,</p>
+        <p>A’s ROUTING.COMPANY is  A1 which is branch company under A, Credit Account Company is B, B’s Routing company is B1 which is branch under B.</p>
+        <p>For this setup the Transaction entries are raised as shown below:</p>
+        <p>In company A</p>
+        <p>Debit account in Company A</p>
+        <p>Credit A1 from A intercompany account</p>
+        <p>In Company A1</p>
+        <p>Debit A from A1 intercompany account.</p>
+        <p>Credit B1 from A1 intercompany account.</p>
+        <p>In Company B1</p>
+        <p>Debit A1 from B1 intercompany account</p>
+        <p>Credit B from B1 intercompany Account</p>
+        <p>In Company B</p>
+        <p>Debit B1 from B intercompany account.</p>
+        <p>Credit Account in Company B.</p>
+        <p>If Routing company of transaction company is not defined then value in INTERCOMP.CO is used as Routing company 1.</p>
+        <p>Validation Rules</p>
+        <p>
+            <p value="1">A valid id in company table.</p>
+            <p value="2">Routing company can either be lead company or one of the branches under the lead company. It cannot be another lead company or branch of another lead company.</p>
+            <p value="3">Optional field - when left blank, system will default the lead company code.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>ROUTING.MNEMONIC</field>
+<desc>
+        <p>Specifies the routing company mnemonic. It is a part of multi-valued set of fields and is used to define the lead company and its routing company.</p>
+        <p>Validation Rules:</p>
+        <p>
+            <p value="1">NOINPUT field - System is updated based on the routing company id.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>ACCOUNT.NO.LENGTH</field>
+<desc><p>Indicates the length of the Customer account. </p><p>     This field contains the length of the Customer account number. Any Customer accounts where the length of the account number differs from the length entered here is assumed to belong to the initial Company loaded (this company is referred to as the Master Company). </p><p><p>Validation Rules:</p></p><p>     1-2 numeric characters in the range 1-15.  This is a NoChange field.  This field is mandatory when the BALANCE.INTERCOMP field is set to YES.</p></desc>
+</t>
+<t>
+<field>BALANCE.INTERCOMP</field>
+<desc>
+            <p data-mc-conditions="FROMRELEASE.R13">Defines restriction for intercompany accounting conditions in a Multi company environment. </p>
+            <p data-mc-conditions="FROMRELEASE.R13">Intercompany transactions are allowed only if customers are shared between account companies and transaction companies.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Can be set to YES/NO/GROUP.</p>
+            <p data-mc-conditions="FROMRELEASE.R13"><b>YES</b> - Transactions between lead companies are allowed. For example, an intercompany transaction can originate from a lead company.</p>
+            <p data-mc-conditions="FROMRELEASE.R13"><b>GROUP</b> – Intercompany transactions between lead companies are allowed under the same group.</p>
+            <p data-mc-conditions="FROMRELEASE.R13"><b>NO</b> - Intercompany transactions  are allowed only if an account’s lead company is same as the Transaction company.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">This field is closely associated with BALANCE.INTERDEPT</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+                <p value="1" data-mc-conditions="FROMRELEASE.R13">Allowed values are YES or GROUP or NO.</p>
+                <p value="2" data-mc-conditions="FROMRELEASE.R13">Mandatory input. Default Value is NO.</p>
+                <p value="3" data-mc-conditions="FROMRELEASE.R13">NOCHANGE field if set as YES.</p>
+                <p value="4" data-mc-conditions="FROMRELEASE.R13">Not allowed to change from GROUP to NO</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>BALANCE.INTERDEPT</field>
+<desc>
+            <p data-mc-conditions="FROMRELEASE.R13">Defines restriction for inter branch/book transactions. </p>
+            <p data-mc-conditions="FROMRELEASE.R13">Can be set to Yes or No.</p>
+            <p data-mc-conditions="FROMRELEASE.R13"><b>YES</b> - Branch company can originate inter branch transactions.</p>
+            <p data-mc-conditions="FROMRELEASE.R13"><b>NO</b> - Branch company cannot originate inter branch transactions.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+                <p value="1" data-mc-conditions="FROMRELEASE.R13">Allowed values are YES or NO.</p>
+                <p value="2" data-mc-conditions="FROMRELEASE.R13">Mandatory input. Default Value is NO</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>BRANCH.CODE</field>
+<desc><p>Identifies the Branch Codes that can be used for the Company Specified. </p><p>     This field contains the Branch Codes that can be used in the Customer account for the Company specified in the Company field. </p><p>     There can be more than one branch code per company.  The codes are entered as individual codes and not ranges. </p><p><p>Validation Rules:</p></p><p>     1-4 numeric characters.  Multivalue Associated field with fields COMPANY and FIN.MNEMONIC.</p><p>     This field is mandatory when the BALANCE.INTERCOMP field is set to YES.</p><p>     For each company at least one Branch Code must be specified.</p><p>     A Branch Code can not be duplicated.</p></desc>
+</t>
+<t>
+<field>CUS.PL.SYS.ID</field>
+<desc>
+        <p>This Field can be used to setup the system id for which PL and TAX entries to be booked in Customer Account company.</p>
+        <p>Validation Rules:</p>
+        <p>
+            <p value="1">Currently we support FT, SC and DX so system ids belong to these modules will be allowed.</p>
+            <p value="2">To indicate that all entries with EB.SYSTEM.ID beginning with SC we can choose SC-ALL</p>
+            <p value="3">System ids other than supported modules will not be allowed for input.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>CUS.PL.MOVE</field>
+<desc>
+        <p>Using these associated fields we can choose whether booking PL and TAX at customer account company is applied also we can choose for which entries this is applied i.e. PL or AC (TAX) or BOTH.</p>
+        <p>Validation Rules:</p>
+        <p>
+            <p value="1">This is an option box field with values BOTH, PL, AC, PL-INCLUDE, PL-EXCLUDE, BOTH-PL-INCLUDE and BOTH-PL-EXCLUDE</p>
+            <p value="2">BOTH - for both accounting and PL entries (STMT.ENTRY and CATEG.ENTRY).</p>
+            <p value="3">AC - for accounting entries only (STMT.ENTRY)</p>
+            <p value="4">PL - for PL entries only (CATEG.ENTRY)</p>
+			<p value="5">PL-INCLUDE - only defined PL categories will be booked in the company of the customer account</p>
+			<p value="6">PL-EXCLUDE- all PL categories except those defined will be booked in the company of the customer account</p>
+			<p value="6">BOTH-PL-INCLUDE - defined PL and internal account categories will be booked in the company of the customer account</p>
+			<p value="6">BOTH-PL-EXCLUDE - defined internal categories and all PL except the defined PL categories will be booked in the company of the customer account</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>CUS.PL.AC.CATEG</field>
+<desc>
+        <p>Using this field we control which types of internal account should be considered to follow the customer account PL booking. For example it can be restricted to particular types of tax account. Depends on the PL.MOVE field AC or PL or both categories are allowed to define</p>
+        <p>Validation Rules:</p>
+        <p>
+            <p value="1">If PL.MOVE is AC or BOTH, only the Internal account categories are allowed.</p>
+			<p value="2">If PL.MOVE is PL, no category is allowed to define.</p>
+			<p value="3">If PL.MOVE is PL-INCLUDE or PL-EXCLUDE, only the PL categories are allowed.</p>
+			<p value="4">If PL.MOVE is BOTH-PL-INCLUDE or BOTH-PL-EXCLUDE, Internal account categories and PL categories are allowed.</p>
+        </p>
+    </desc>
+</t>
+</menu>
+</t24help>
+

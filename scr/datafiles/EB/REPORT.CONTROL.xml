@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>REPORT.CONTROL</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>REPORT.CONTROL </p>
+            <p>All reports that can be produced by the T24 system will be defined on this file. This includes Batch como's, P function output, FX deal slips ,and all message output from the delivery system, etc. </p>
+            <p>This file will contain a description of the report, the printer environment (form), the date and time last produced and spooled, an indicator to flag the report for micro-fiching, and a mnemonic to link it a product. If this is set a copy of the report will be taken each time it is produced and saved in a microfiche hold area. </p>
+            <p>The report name is hard-coded in the programs which produce the report. If the report name does not exist on this file then a fatal error will occur. </p>
+            <p>The definition of a new Repgen or CRF report will automatically update this file. </p>
+            <p>Report Routing </p>
+            <p>The routing of output to the correct printer is controlled in the following way: </p>
+            <p>1.        If the report control record states the report is a customer           report and the corresponding DE.ADDRESS record states           output is to be held then the output will be held on the           CUSTOMER.HOLD file and will not be printed unless           FORCED. </p>
+            <p>2.        If the report control record defines a specific form (field           3) and that form name on DE.FORM.TYPE has a default           printer defined, then this printer is used regardless of           any other setting. This is to allow a printer to be set up           with special stationary and ensure that it receives the           appropriate output. </p>
+            <p>3.        If the output is produced by an on-line user then then it           will be sent to the printer defined on the user record. If           this is not setup then the output will go to the system           printer (SYSTEM on PRINTER.ID). </p>
+            <p>4.        If the output is produced as part of the batch run the           reports etc will be sent to the printer defined in the Batch           record. If this is not defined then it will be sent to the           system printer. Another option exists (on SPF) to hold all           Batch output, so that it can be spooled in sorted order           (see SPOOL.BATCH.OUTPUT). </p>
+            <p>Report Attributes </p>
+            <p>Special report attributes can be defined, i.e. adjusting the left and right margins, pitch, page orientation etc.  This is primarily aimed at laser printers where these attributes are "soft". </p>
+            <p>Because different printers support different features the report attributes are specified for individual printer types.  That is to say, in order to define a report to be printed in landscape mode on a QMS laser printer the following steps should be taken. 1.        Set up the printer type.           For all printers on your PRINTER.ID file which are QMS           laser printers enter the type in field 3, eg. QMS. </p>
+            <p>2.        Set up the attribute "QMS.LANDSCAPE".           Define the printed sequence which will turn the QMS laser           printer into landscape mode on the file           PRINTER.ATTRIBUTES with a key QMS.LANDSCAPE.           Also define the reset sequence so that the printer is           returned to a default state. </p>
+            <p>3.        Set up the report form type.           Enter "LANDSCAPE" in a new or existing DE.FORM.TYPE           record in the RPT.ATTRIBUTES field. </p>
+            <p>4.        Link the form type to the report.           Modify the report control record to use this form type. </p>
+            <p>Hence, the next time this report is spooled to a QMS printer it will be printed in landscape mode. </p>
+            <p>Note: When printing in landscape mode you must take account of the "shorter" page length.  Adjust the form depth on DE.FORM.TYPE or consider adjusting the printer attributes to a smaller number of lines per inch. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>TIME.LAST.SPOOLED</field>
+<desc>
+            <p>Time the report was last spooled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>HHMM (No input Field)</p>
+        </desc>
+</t>
+<t>
+<field>DESC</field>
+<desc>
+            <p>Description of the report. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard T24 alphanumeric field.</p>
+            <p>A maximum of 50 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.LAST.SPOOLED</field>
+<desc>
+            <p>Date the report was last spooled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>YYYYMMDD (No input Field)</p>
+        </desc>
+</t>
+<t>
+<field>HELD.RPT.RETENTION</field>
+<desc>
+            <p>Defines the number of working days that held reports should be retained after spooling. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 6 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>LINES.PER.PAGE</field>
+<desc>
+            <p />
+            <p>Specify the lines per page in output file if specific conditions are met </p>
+            <p>Only specify this for Output File Type 10 (Paginated Text) in the TO FILE option in REPORT DESTINATION.</p>
+            <p>This field is used ONLY with Crystal Reports</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 4 numeric characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>REPORT.ORIENTATION</field>
+<desc>
+            <p />
+            <p>Description of the Report Orientation.</p>
+            <p>Defines the Orientation Format in which the report will be printed in.</p>
+            <p />
+            <p>DEFAULT- will have the report printed in the default orientation</p>
+            <p>PORTRIAT - As per normal printing orientation, if this is selected the report will print in this orientation</p>
+            <p>LANDSCAPE - As per normal printing orientation, if this is selected the report will print in this </p>
+            <p>Orientation</p>
+            <p>This field is used ONLY with Crystal Reports</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1 Numeric Character from the drop down list.</p>
+            <p>Only one selection may be made per REORT.CONTROL record.</p>
+        </desc>
+</t>
+<t>
+<field>PRODUCT</field>
+<desc>
+            <p>Defines the product to which the report belongs eg: FX, MM etc. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4 Alphanumeric. (Optional)</p>
+        </desc>
+</t>
+<t>
+<field>REPORT.TRANSFORM</field>
+<desc>
+            <p>Specifies the xml transformation that should be applied on the report.</p>
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p>Should be a record that exist in REPORT.TRANSFORM application. </p>
+        </desc>
+</t>
+<t>
+<field>REPORT.NAME</field>
+<desc>
+            <p>Insert text here</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Rule 1</p>
+            <p>Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>RPT.ARGUMENTS</field>
+<desc>
+            <p>Name of arguments to prompt user - prior to invoking report. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>30 Alphanumeric Characters (No input Field - not used in Phase 1)</p>
+        </desc>
+</t>
+<t>
+<field>OUTPUT.FILE.PATH</field>
+<desc>
+            <p />
+            <p>The path of output file.</p>
+            <p>This field is used ONLY with Crystal Reports</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>A maximum of 35 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>NO.COPIES</field>
+<desc>
+            <p />
+            <p>Number of copies to be printed.</p>
+            <p>This field is functioning only if Report Destination has selected the options:</p>
+            <p>TO PRINTER</p>
+            <p>TO FILE &amp; TO PRINTER.</p>
+            <p>This field is used ONLY with Crystal Reports</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 4 digits of numeric characters</p>
+        </desc>
+</t>
+<t>
+<field>SHORT.DESC</field>
+<desc>
+            <p>Short description of report. Will be printed on banner pages and used as an enrichment. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>50 Any Character.</p>
+        </desc>
+</t>
+<t>
+<field>REPORT.MNEMONIC</field>
+<desc>
+            <p>Defines whether the report is customer based or not. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-10 characters to form a mnemonic type. The first character must be an alpha and the characters '.' and '-' are not allowed. (Required if customer report equals 'Y')</p>
+        </desc>
+</t>
+<t>
+<field>TEMPLATE</field>
+<desc>
+            <p>Defines the WORD template that will be used to merge the data into a formatted message. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 20 characters may be entered. </p>
+        </desc>
+</t>
+<t>
+<field>REPORT.PAPER.SIZE</field>
+<desc>
+            <p />
+            <p>Description of the Report Paper Size</p>
+            <p>This field is used ONLY with Crystal Reports</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 2 Numeric Characters.</p>
+        </desc>
+</t>
+<t>
+<field>XML.TRANS.CONTEXT</field>
+<desc>
+            <p>Contains the  XML translation context that is to  be passed to T24 XSLT transform engine.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a record that exist in XML.TRANS.CONTEXT application.</p>
+        </desc>
+</t>
+<t>
+<field>FORM.NAME</field>
+<desc>
+            <p>Form name defined on DE.FORM.TYPE which holds the printer environment to build the report. i.e. Paper length, width, top bottom margin etc. </p>
+            <p>Special rules apply to margins in DE.FORM.TYPE for files generated by ENQUIRY.REPORT for FILE output. </p>
+            <p>The default for all reports, COMOs etc is SYSTEM. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>7 Alphanumeric characters - must be a valid form id on DE.FORM.TYPE.</p>
+        </desc>
+</t>
+<t>
+<field>REPORT.ROUTINE</field>
+<desc>
+            <p>Routine to invoke to build the report. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>27 Alphanumeric characters (No input field - not used in Phase 1)</p>
+        </desc>
+</t>
+<t>
+<field>TIME.LAST.RUN</field>
+<desc>
+            <p>Time when the report was last produced. </p>
+            <p>This is the time the report was last created not the time it was last spooled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>HHMM (No input Field)</p>
+        </desc>
+</t>
+<t>
+<field>MICROFICHE.OUTPUT</field>
+<desc>
+            <p>Flag to indicate if report should be copied to the microfiche area. </p>
+            <p>If 'Y' is specified then whenever the report is produced a copy will be sent to the microfiche area. This area is then sorted, formatted and copied to tape for microfiching. </p>
+            <p>It is not dependent on spooling the report and multiple copies, specified in the user record for batch reports, will not be duplicated on fiche. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Y or N.</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.REPORT</field>
+<desc>
+            <p>Defines whether the report is customer based or not. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Y or NO. (Optional)</p>
+        </desc>
+</t>
+<t>
+<field>REPORT.RETENTION</field>
+<desc>
+            <p>Number of working days after which the report will be purged from the HOLD file.  This will override the default retention defined on the SPF SYSTEM record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 3 Numeric Characters.</p>
+        </desc>
+</t>
+<t>
+<field>REPORT.TYPE</field>
+<desc>
+            <p>Defines whether the report is built using a routine, repgen, crf etc. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be REPGEN, CRF or ROUTINE. (No input field - not used in Phase 1)</p>
+        </desc>
+</t>
+<t>
+<field>DATE.LAST.RUN</field>
+<desc>
+            <p>Date when the report was last produced. </p>
+            <p>This the creation date of the report not the date of spooling. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>YYYYMMDD (No input Field)</p>
+        </desc>
+</t>
+<t>
+<field>FICHE.SORT.NUMBER</field>
+<desc>
+            <p>Sort sequence number. Reports will be stored on the microfiche tape using this field as the sort order. </p>
+            <p>This field is mandatory if the report is flagged for microfiche output. </p>
+            <p>Prior to loading the reports on the microfiche tape they will be sorted by FICHE.SORT.NUMBER and by REPORT.NAME. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 Numeric Characters.</p>
+        </desc>
+</t>
+<t>
+<field>REPORT.DESTINATION</field>
+<desc>
+            <p />
+            <p>Selection of Destinations the report follows once launched.</p>
+            <p>DEFAULT- whatever the default setting is defined to be.</p>
+            <p>TO WINDOW/SCREEN  Produces a Crystal report display</p>
+            <p>TO PRINTER- once the report has been launched it will go directly to printer and no other designations</p>
+            <p>TO FILE  once the report has been launched it will be saved in the file format determined by</p>
+            <p>OUTPUT.FILE.TYPE in the path defined by OUTPUT FILE PATH.</p>
+            <p>TO FILE &amp; TO PRINT- will behave like TO FILE option then go to printer in the selected format as defined by the TO FILE commands </p>
+            <p>TO FILE &amp; TO WINDOW/SCREEN- will behave like TO FILE option but produce an on screen report based on the format settings of the TO FILE selection</p>
+            <p>This field is used ONLY with Crystal Reports </p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1 Numeric Character from a drop down list</p>
+            <p>Only one may be selected per REPORT.CONTROL record.</p>
+        </desc>
+</t>
+<t>
+<field>OUTPUT.FILE.TYPE</field>
+<desc>
+            <p />
+            <p>Description of what File Type the report will be created in.</p>
+            <p>The File Type the report will be saved in if TO FILE option is selected in REPORT DESINATION.</p>
+            <p>This field is used ONLY with Crystal Reports</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 2 Numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>PRINTER.NAME</field>
+<desc>
+            <p />
+            <p>Name of printer</p>
+            <p>This field is used ONLY with Crystal Reports</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>A maximum of 35 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>ARG.VALIDATION</field>
+<desc>
+            <p>Validation to apply to the arguments specified by the user. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>30 Alphanumeric Characters (No input Field - not used in Phase 1)</p>
+        </desc>
+</t>
+<t>
+<field>BATCH.ONLY.RPT</field>
+<desc>
+            <p>Flag to indicate that the report can only be produced as part of the batch run and not requested on-line. </p>
+            <p>Used to avoid the production of large reports during the on-line. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Y or N. (No input Field - not used in Phase 1)</p>
+        </desc>
+</t>
+<t>
+<field>COPIES.ONLY</field>
+<desc>
+            <p>Flag to indicate that this report cannot be produced on an ad-hoc basis. Hence only copies of an existing report can be requested. </p>
+            <p>Set to 'Y' when the report is produced as part of another process, which cannot be run on an ad-hoc basis. Hence the user can only request copies of the report and not re-run the process on-line. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Y or N. (No input Field - not used in Phase 1)</p>
+        </desc>
+</t>
+<t>
+<field>CRYSTAL.REPORT</field>
+<desc>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>A maximum of 3 characters may be entered.</p>
+            <p>The following values are permitted:       YES       NO     </p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

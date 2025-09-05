@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>AA</product>
+        <table>AA.ARRANGEMENT.ACTIVITY</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>The Arrangement Activity application serves both as a mechanism to allow a user to initiate an Activity and as a record of each Activity that has been processed against the Arrangement.</p>
+            <p/>
+            <p>                The list of activities than can be performed for a given arrangement falling under a given product line is available in the application AA.ACTIVITY.For new arrangements the only activity available is &quot;New Arrangement&quot;. The user must input Customer and Product desired. For financial products the currency is also required.</p>
+            <p/>
+            <p>                 For existing arrangements, the user or API&apos;s (which create the record for transactions requiring AA processing) must specify the Arrangement ID, Activity and an Effective date.</p>
+            <p/>
+            <p>                 The activity input in this record may result in update of one or more property class templates (AA.ARR.XXXX, XXXX - Property Class) based on the information in AA.ACTIVITY.CLASS, where the action routines are processed to complete the transaction.</p>
+        </ovdesc>
+    </overview>
+    <menu>
+        <t>
+            <field>ARR.SEQUENCE</field>
+            <desc>
+                <p>Unique id to identify the record in AA.ARRANGEMENT.ACTIVITY. The ID can be in any of the following formats,</p>
+                <p/>
+                <p> When the record is requested for an Activity which is required very often like &quot;Accrue Interest&quot; activity, rather than generating a new sequence everytime, system does the activity on the same id everytime, by just modifying the content of Arrangement activity. The Id is of the format:</p>
+                <p> &lt;ARRANGEMENT.ID&gt;-&lt;INTEREST.PROPERTY&gt;-ACCRUAL</p>
+                <p> Where ACCRUAL is the keyword.</p>
+                <p/>
+                <p> For all other events, a unique ID is generated with the following format - AAACT YYDDD XXXXXXXX, </p>
+                <p> where AAACT - Arrangement Activity application identifier, </p>
+                <p>       YYDDD - Year and date of input in julian date format, </p>
+                <p>       XXXXXXXX - Alphanumeric random sequence</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ARRANGEMENT</field>
+            <desc>
+                <p>Unique identification number for the arrangement contract. The format of the ID is as follows</p>
+                <p/>
+                <p>              AA YYDDD xxxxx</p>
+                <p/>
+                <p>              where: AA - Arrangement Architecture module identifier, YYDDD - Year and date of input in julian date format, xxxxx - Is a system generated unique identifier.</p>
+                <p/>
+                <p>              For &quot;New Arrangement&quot; activity this field should be input as &quot;NEW&quot; and will be updated by the system while processing the activity with the unique reference number.</p>
+                <p/>
+                <p>        When attempting an activity for a existing arrangement and the arrangement has generated a underlying ACCOUNT record, then the ACCOUNT id may be used as an alternate id.</p>
+                <p/>
+                <p>              Validation rules</p>
+                <p/>
+                <p>              Must be &quot;NEW&quot; or an existing Arrangement ID</p>
+            </desc>
+        </t>
+        <t>
+            <field>AUTO.RUN</field>
+            <desc>
+                <p>The field is only relevant for AA.SIMULATION.CAPTURE application.</p>
+                <p/>
+                <p>Validation:</p>
+                <p/>
+                <p>Inputtable only for AA.SIMULATION.CAPTURE application.</p>
+                <p>Non mandatory field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHANNEL</field>
+            <desc>
+                <p>Indicates the channel through which the Arrangement contract was created.</p>
+                <p/>
+                <p>                Reserved for future use.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHILD.ACTIVITY</field>
+            <desc>
+                <p>This field holds the AA.ARRANGEMENT.ACTIVITY reference of the secondary activity that this activity has generated. For example, if an activity(AAA1) attracts an activity charge and the charge is due immediately, the charge is collected through another arrangement activity (AAA2). AAA1&apos;s CHILD.ACTIVITY would hold AAA2 whilst AAA2&apos;s LINK.ACTIVITY would AAA1.</p>
+                <p/>
+                <p> Validation rules:</p>
+                <p/>
+                <p> Should be a valid AA.ARRANGEMENT.ACTIVITY id.</p>
+                <p> System maintained and user input is prohibited.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>CLOSURE.NOTES</field>
+        </t>
+        <t>
+            <field>CLOSURE.REASON</field>
+        </t>
+        <t>
+            <field>CONTEXT.NAME</field>
+            <desc>
+                <p>This field represents various business field names associated to the values in field CONTEXT.VALUE.</p>
+                <p>Value in this field are defined under the virtual table(EB.LOOKUP) AA.CONTEXT.NAME.</p>
+                <p/>
+                <p>Example:</p>
+                <p>LAST.ACTIVE.TRANSACTION.DATE  - Last active transaction date of the arrangement in legacy system</p>
+                <p>LAST.DORMANCY.DATE            - Last dormancy status change date of the arrangement in legacy system</p>
+                <p>LAST.DORMANCY.STATUS          - last dormancy status of the arrangement in legacy system</p>
+                <p>TRANSACTION.INITIATION        - Transaction Initiation such as auto,bank,customer (System used field )</p>
+            </desc>
+        </t>
+        <t>
+            <field>CONTEXT.VALUE</field>
+            <desc>
+                <p>This field contains the value corresponding to the field in CONTEXT.NAME</p>
+            </desc>
+        </t>
+        <t>
+            <field>CURRENCY</field>
+            <desc>
+                <p>Currency of the Arrangement contract. Input is this field is required only for new financial products, i.e. for those products where LINE.ATTRIBUTE in AA.PRODUCT.LINE is &quot;CCY&quot;. When an existing Arrangement is required to be amended, this field is automatically updated by the system.</p>
+                <p/>
+                <p>              Validation rules</p>
+                <p/>
+                <p>              Must be a valid record in CURRENCY</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACTIVITY</field>
+            <desc>
+                <p>This field defines the Activity to be processed against the Arrangement. The activity may be an user activity or a system generated activity. When a user activity is input the property class templates (AA.ARR.XXXX, XXXX - Property Class) affected is based on the linked system activity and for all processing purposes the activity input is used.</p>
+                <p/>
+                <p>                Based on the definition of AA.ACTIVITY.CLASS, USER.INPUT field one or more property class templates may require user input. The dropdown only shows the list of activities which pertain to the properties defined in the product.</p>
+                <p/>
+                <p>                Validation rules</p>
+                <p/>
+                <p>                Must be a valid record in AA.ACTIVITY</p>
+            </desc>
+        </t>
+        <t>
+            <field>CUSTOMER</field>
+            <desc>
+                <p>This field denotes the customer(s) of the Arrangement contract.</p>
+                <p>This field is required to be input for new arrangement, takeover, and Change primary customer activities.</p>
+                <p>Associated multi-value with CUSTOMER.ROLE field.</p>
+                <p/>
+                <p>Validation rules</p>
+                <p>1 -6 numeric character customer number. or 3 - 10 alphanumeric character customer mnemonic. (mandatory input)</p>
+                <p>Must be either a valid customer number or customer mnemonic of a customer on the CUSTOMER file.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>CUSTOMER.ROLE</field>
+            <desc>
+                <p>Associated with CUSTOMER field. Denotes the role of the customer in the Arrangement.</p>
+                <p/>
+                <p>Validation rules</p>
+                <p>Mandatory input. If not input by the user, defaulted with the system created role &quot;Owner&quot;. </p>
+                <p>Must be a valid record in AA.CUSTOMER.ROLE table.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>DELIVERY.REF</field>
+            <desc>
+                <p/>
+                <p>      This field denotes the delivery reference generated for the activity. This is a no input field. The required delivery messages can be mapped in the DE.MAPPING. The property class ACTIVITY.MESSAGING will hold the list of delivery keys that needs to be generated for an activity or an activity class.</p>
+                <p/>
+                <p>     This field is updated if the activity triggered raised delivery messages.</p>
+            </desc>
+        </t>
+        <t>
+            <field>EFFECTIVE</field>
+            <desc>
+                <p>The fields PROPERTY, EFFECTIVE, FIELD.NAME and FIELD.VALUE are used for scripting test scenarios. The field PROPERTY will accept a valid property. The field EFFECTIVE will accept a valid date for the product, this field is mostly used to create forward dated conditions. The values in FIELD.NAME should correspond to the fields available in designer table of property defined in the field PROPERTY and values to these fields can be defined in FIELD.VALUE.         An ofs message would be formed for the given property with fields and values defined.</p>
+            </desc>
+        </t>
+        <t>
+            <field>EFFECTIVE.DATE</field>
+            <desc>
+                <p>Effective date of the Activity to be processed. This is always required for processing any activity.</p>
+                <p/>
+                <p>              Standard date field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ERROR.MESSAGE</field>
+            <desc>
+                <p>When  AA.ARRANGEMENT.ACTIVITY is put on hold due to processing error during COB ,this field will hold  the actual process error </p>
+            </desc>
+        </t>
+        <t>
+            <field>ERROR.SOURCE</field>
+            <desc>
+                <p>When  AA.ARRANGEMENT.ACTIVITY is put on hold due to processing error during COB ,this field will hold the source of the error (Property).</p>
+            </desc>
+        </t>
+        <t>
+            <field>EVENT.ID</field>
+            <desc>
+                <p>AAA Reference of activitity which triggered the current activity.</p>
+                <p/>
+                <p>              Its updated when Finacial activity has either Rewards or commission and it triggers Trigger activity to linked Rewards or Financial activity.</p>
+            </desc>
+        </t>
+        <t>
+            <field>EXPOSURE.DATE</field>
+            <desc>
+                <p>Exposure date of the originating transaction.</p>
+                <p/>
+                <p>              Fields TXN.AMOUNT to EXPOSURE.DATE are system maintained and are updated when AA processing is required for any transaction.</p>
+            </desc>
+        </t>
+        <t>
+            <field>EXT.EVENT.REF</field>
+            <desc>
+                <p>This field holds the external reference number when T24 is acting as DDA</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACTIVITY.CLASS</field>
+            <desc>
+                <p/>
+                <p>      This is a no input field and denotes the activity class id for the given activity.</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.NAME</field>
+            <desc>
+                <p>The fields from PROPERTY, FIELD.NAME and FIELD.VALUE are used for scripting test scenarios.  The field PROPERTY will accept a valid property. The values in FIELD.NAME should correspond to the fields available in designer table of property defined and values to these fields can be defined in FIELD.VALUE. </p>
+                <p>       An ofs message would be formed for the given property with fields and values defined.</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.VALUE</field>
+            <desc>
+                <p>The fields from PROPERTY, FIELD.NAME and FIELD.VALUE are used for scripting test scenarios.  The field PROPERTY will accept a valid property. The values in FIELD.NAME should correspond to the fields available in designer table of property defined and values to these fields can be defined in FIELD.VALUE. </p>
+                <p>       An ofs message would be formed for the given property with fields and values defined.</p>
+            </desc>
+        </t>
+        <t>
+            <field>INITIATION.TYPE</field>
+            <desc>
+                <p/>
+                <p> This field denotes the type of initiation for the current activity that is whether the activity was triggered by the user or by external transaction or it could be scheduled or secondary activity.  </p>
+                <p/>
+                <p> Validation rules:</p>
+                <p/>
+                <p> System maintained and User input is prohibited.</p>
+                <p> Valid values are : USER, SCHEDULED*SOD,SCHEDULED*EOD, SECONDARY, TRANSACTION, NOLOG,PAY*SOD,PAY*EOD.</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>LINKED.ACTIVITY</field>
+            <desc>
+                <p>This field indicates the AA.ARRANGEMENT.ACTIVITY reference of the parent which spawned this activity. This field is used during Secondary activity processing where child activities are generated at runtime during process. For example, if an activity(AAA1) attracts an activity charge and the charge is due immediately, the charge is collected through another arrangement activity (AAA2). AAA1&apos;s CHILD.ACTIVITY would hold AAA2 whilst AAA2&apos;s LINK.ACTIVITY would AAA1.</p>
+                <p/>
+                <p/>
+                <p> Validation rules:</p>
+                <p> Should be a valid AA.ARRANGEMENT.ACTIVITY id.</p>
+                <p> System maintained. Users should not look to input this field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>MAPPING.KEY</field>
+            <desc>
+                <p>   This field denotes the DE.MAPPING key defined for the activity. This is a no input field. The required delivery messages can be mapped in the DE.MAPPING. The property class ACTIVITY.MESSAGING will hold the list of delivery keys that needs to be generated for an activity or an activity class.</p>
+                <p/>
+                <p>     This field is updated if the activity triggered raised delivery messages.</p>
+            </desc>
+        </t>
+        <t>
+            <field>MASTER.AAA</field>
+            <desc>
+                <p>The field is system maintained and is used to indicate the Master arrangement activity which initiated this transaction. Used during the &apos;Reverse and Replay&apos; mechanism to indicate the original arrangement activity which triggered this activity.</p>
+            </desc>
+        </t>
+        <t>
+            <field>NARRATIVE</field>
+            <desc>
+                <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ORG.SYSTEM.DATE</field>
+            <desc>
+                <p>This field is system maintained and used to indicate the initial T24 system date while processing the activity</p>
+                <p/>
+                <p>Validate Rule:</p>
+                <p>Standard date filed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ORIG.CONTRACT.DATE</field>
+            <desc>
+                <p/>
+                <p>      This field denotes the original contract date of the arrangement that was taken over from the legacy system. The value in this field can be less than today but should not be greater than the effective date or start date of the arrangement in T24.</p>
+                <p/>
+                <p>    Input allowed only for takeover activity</p>
+                <p/>
+                <p>    Validation rule</p>
+                <p>    Standard date format</p>
+            </desc>
+        </t>
+        <t>
+            <field>ORIG.TXN.AMT</field>
+            <desc>
+                <p>This field denotes the original transaction amount of the Arrangement Activity.</p>
+                <p/>
+                <p>If an Arrangement Activity results in another (transaction type secondary) Activity the field TXN.AMOUNT would be updated with the difference between this amount and TXN.AMOUNT of the new Arrangement Activity.</p>
+                <p/>
+                <p>For example:</p>
+                <p/>
+                <p>A repayment to settle the bills were fed through FT for an Arrangement for USD 2000. If the total bill amount were only USD 1500, the remaining USD 500 would be applied based on the allocation rule setup by creating a new Activity (as defined in allocation rules) in this TXN.AMOUNT of the current activity would be updated as USD 1500 and for the new activity it would be USD 500. This field will always hold USD 2000. This is required when the original activity is replayed back.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ADJ.ACTIVITY</field>
+            <desc>
+                <p/>
+                <p>      This field is an extern field. It would accept a valid activity</p>
+            </desc>
+        </t>
+        <t>
+            <field>ORIG.TXN.AMT.LCY</field>
+            <desc>
+                <p>This field denotes the original transaction amount of the Arrangement Activity in local currency.</p>
+            </desc>
+        </t>
+        <t>
+            <field>OVERRIDE</field>
+            <desc>
+                <p>Records the overrides generated during processing of an activity. All the overrides generated in the property class templates (AA.ARR.XXXX, where XXXX - Property Class) for the Activity input are updated in this field.</p>
+                <p/>
+                <p>              Standard override field, Multi-valued.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PRICING.PLAN</field>
+            <desc>
+                <p>If “Automatic” is specified in PRICING.SELECTION field, then AA will determine the best plan and populate this field with the Plan Product ID.  If “Manual” is selected the user must enter the Plan Product ID.  AA will validate to ensure that a valid Relationship Pricing Arrangement exists for the customer.  This Plan ID/Variation will also be stored in AA.ARRANGEMENT.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PRICING.SELECTION</field>
+            <desc>
+                <p>Method used to assign a Relationship Pricing Arrangement(s) to the financial arrangement.</p>
+                <p>Automatic (or blank) – The conditions in the product’s Pricing Rules property will determine the pricing plan to apply.  This option is valid if the Pricing Rules are set to “Automatic” or “Automatic or Manual”.</p>
+                <p>Manual – The user will manually assign a plan with the following field.  This option is valid if the Pricing Rules are set to “Manual” or “Automatic or Manual”</p>
+                <p>No Pricing – No plan will be applied.</p>
+                <p>None – No plan will be applied.</p>
+                <p>This is an optional field.</p>
+                <p>Should be either AUTOMATIC, MANUAL or NO.PRICING or NONE</p>
+            </desc>
+        </t>
+        <t>
+            <field>PRODUCT</field>
+            <desc>
+                <p>Indicates the Product of the Arrangement contract. This is required for only new arrangements at the moment and product change is not permitted.</p>
+                <p/>
+                <p>              Validation rules</p>
+                <p/>
+                <p>              Must be a valid record in AA.PRODUCT</p>
+            </desc>
+        </t>
+        <t>
+            <field>PRODUCT.VARIATION</field>
+            <desc>
+                <p>The field specifies the variation of the product that the arrangement is running. When selecting a product from the catalogue, entering the customer number and validating, AA will automatically choose the correct variation based upon the eligibility rules and priority specified.  If a user manually specified the variation, eligibility will still be checked and if the user is not eligible but the rules are configured to raise an override, the user can choose to accept the override.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PROPERTY</field>
+            <desc>
+                <p>    The fields from PROPERTY, FIELD.NAME and FIELD.VALUE are used for scripting test scenarios.  The field PROPERTY will accept a valid property. The values in FIELD.NAME should correspond to the fields available in designer table of property defined and values to these fields can be defined in FIELD.VALUE. </p>
+                <p>       An ofs message would be formed for the given property with fields and values defined.</p>
+            </desc>
+        </t>
+        <t>
+            <field>REASON</field>
+            <desc>
+                <p>A text field to store the reason behind performing the current activity. For example, if the rate is manually revised or product changed or redeemed(and not restricted to the above activities alone), a user may record a reason for performing such activity for future verification and audit.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>REV.MASTER.AAA</field>
+            <desc>
+                <p>The field is system maintained and is used to indicate the Master arrangement activity which initiated the reversal of this transaction. Used during the &apos;Reverse and Replay&apos; mechanism to indicate the original arrangement activity which triggered this activity.</p>
+            </desc>
+        </t>
+        <t>
+            <field>REWARDS.ARR.ID</field>
+            <desc>
+                <p>Hold the Rewards’s arrangement ID, based on which rewards have to be calculated. Should be a valid AA.ARRANGEMENT (REWARDS LINE)</p>
+            </desc>
+        </t>
+        <t>
+            <field>ADJ.STATUS</field>
+            <desc>
+                <p/>
+                <p>      This field denotes the adjust status for the adj activity.  The available status are</p>
+                <p>    NEW, UNAUTH, UNAUTH-REV,  AUTH, AUTH-REV, DELETE-REV, DELETE etc </p>
+            </desc>
+        </t>
+        <t>
+            <field>SECONDARY.TYPE</field>
+        </t>
+        <t>
+            <field>SIGNATORY</field>
+            <desc>
+                <p>This filed holds the signatory customer(s) who visited/accessed the safe deposit box. it is multi value and system populated field. </p>
+                <p>When arrangement customer or account linked with EB.MANDATES then authorised signatory can be inputted in TRANS.CUSTOMER field. Then system will populate the signatory customers in field SIGNAORY.  Once Signatory field is populated then core mandate processing will validate signatory customer against the EB.SIGNATORY.GROUP customer. If user inputted singnatory customer doesn’t match with EB.SIGNATORY.GROUP customer then customer visit transaction will be restricted. </p>
+                <p>A core API – AA.GET.SDB.MANDATE.DETAILS developed to support mandates functionality for AA.ARRANGEMENT.ACTIVITY application. There is no Account field in AAA application to perform mandate processingt. So user  defined routine used to get the arrangement customer or arrangement customer number. This routine will attached in EB.MANDATE.PARAMETER record AA.ARRANGEMENT.ACTIVITY to extract the mandate record number ( Customer or Account based on input in Mandate Field).</p>
+                <p>Please refer Mandate processing Help text for more details.</p>
+                <p>Validation rules</p>
+                <p>1. Customer should be valid T24 customer. </p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SIM.RUN.REF</field>
+            <desc>
+                <p>Does not have any relevance for AA.ARRANGEMENT.ACTIVITY.</p>
+            </desc>
+        </t>
+        <t>
+            <field>STMT.NOS</field>
+            <desc>
+                <p>Records the statement numbers generated during processing of an activity. All the statement numbers generated in the property class templates (AA.ARR.XXXX, where XXXX - Property Class) for the Activity input are updated in this field.</p>
+                <p/>
+                <p>              Standard T24 field, Multi-valued.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TRADE.DATE</field>
+            <desc>
+                <p>Standard date field, which is the trade date of the contract. Can be input during NEW/ROLLOVER/CHANGE.PRODUCT activities, amendment during other activities would cause error.</p>
+                <p/>
+                <p>Validations</p>
+                <p>1. A date field type only.</p>
+                <p>2. Initially defaulted to the effective date, if it is a forward dated activity then the current system date will be defaulted.</p>
+                <p>3. Can be changed but must be equal to or less than the current system date.</p>
+                <p>4. A back dated date is acceptable but must be within the parameters of the Product Proofing.</p>
+                <p>5. Cannot have a date that is greater than the existing field EFFECTIVE.DATE in AA.ARRANGEMENT.ACTIVITY.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>TRANS.CUSTOMER</field>
+            <desc>
+                <p>This field holds the customer(s) who visited/accessed the safe deposit box. It is multi value field.</p>
+                <p>Validation rules </p>
+                <p>1. Input allowed only for SAFE.DEPOSIT.BOX-CUSTOMER.VISIT-SAFE.DEPOSIT.BOX activities. Those are CHECKIN and CHECKOUT.</p>
+                <p>2. Input should be valid T24 customer and he should be one of the customer who opens the safe deposit box new arrangement unless arrangement account or customer not linked to EB.MANDATES.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>TXN.AMOUNT</field>
+            <desc>
+                <p>When external applications credit/debit an arrangement, the details need to be fed into the Arrangement Activity so that the Actions can raise accounting entries based on this. The amount of transaction is recorded in this field. </p>
+                <p>              Fields TXN.AMOUNT to EXPOSURE.DATE are system maintained and are updated when AA processing is required for any transaction.</p>
+                <p/>
+                <p>If an Arrangement Activity results in another (transaction type secondary) Activity the field TXN.AMOUNT would be updated with the difference between ORIG.TXN.AMT and TXN.AMOUNT of the new Arrangement Activity.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TXN.AMOUNT.LCY</field>
+            <desc>
+                <p>Transaction amount in terms of local currency of the originating transaction.</p>
+                <p/>
+                <p>              Fields TXN.AMOUNT to EXPOSURE.DATE are system maintained and are updated when AA processing is required for any transaction.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TXN.CONTRACT.ID</field>
+            <desc>
+                <p>When external applications credit/debit an arrangement, the details need are stored onto the Arrangement Activity. The field holds the external transaction ID which initiated this AAA. This could be a valid FT, TT IDs etc.</p>
+                <p/>
+                <p/>
+                <p>              Fields TXN.AMOUNT to EXPOSURE.DATE are system maintained and are updated when AA processing is required for any transaction.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TXN.EXCH.RATE</field>
+            <desc>
+                <p>This field holds the exchange rate for converting a foreign currency amount to LCY amount.</p>
+                <p/>
+                <p> Fields TXN.AMOUNT to EXPOSURE.DATE are system maintained and are updated when AA processing is required for any transaction.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ADJUSTMENT</field>
+            <desc>
+                <p>The field is system maintained and is updated during the &apos;Reverse and replay&apos; functionality when the system automatically triggers an adjustment of Interest when the activity is backdated. The field is only updated for information purpose and indicates whether the initiating activity triggered an adjustment.</p>
+                <p/>
+                <p>System maintained NOINPUT field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TXN.SYSTEM.ID</field>
+            <desc>
+                <p>System ID of the originating transaction.</p>
+                <p/>
+                <p>              Fields TXN.AMOUNT to EXPOSURE.DATE are system maintained and are updated when AA processing is required for any transaction.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ADVICE.NO</field>
+            <desc>
+                <p/>
+                <p>      This field denotes the EB.ADVICE key defined for the activity. This is a no input field. The required delivery messages can be mapped in the DE.MAPPING. The property class ACTIVITY.MESSAGING will hold the list of delivery keys that needs to be generated for an activity or an activity class.</p>
+                <p/>
+                <p>     This field is updated if the activity triggered raised delivery messages.</p>
+            </desc>
+        </t>
+        <t>
+            <field>AGENT.ARR.ID</field>
+            <desc>
+                <p>Hold the agent’s arrangement ID, based on which commissions have to be calculated. Should be a valid AA.ARRANGEMENT (AGENT LINE)</p>
+            </desc>
+        </t>
+        <t>
+            <field>AGENT.ID</field>
+            <desc>
+                <p>Holds the agent ID from CUSTOMER table</p>
+            </desc>
+        </t>
+        <t>
+            <field>ARR.COMPANY.CODE</field>
+            <desc>
+                <p>This field denotes the company code where the Arrangement contract was created.</p>
+                <p/>
+                <p>                Reserved for future use.</p>
+            </desc>
+        </t>
+    </menu>
+</t24help>

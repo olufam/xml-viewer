@@ -1,0 +1,395 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FE</product>
+<table>FATCA.REPORTING.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The FATCA.REPORTING.PARAMETER is used to specify the high level details regarding FATCA regulatory reporting. </p> 
+           
+</ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>REP.EXTRACT.DATE</field>
+<desc>
+            <p>It is a standard date/frequency field to denote the date on which the base data for reporting will be extracted and consolidated in the FATCA TAX BASE file.</p>
+			<p>The COB will run on this date to update the base file with the ‘base’ data for all clients.</p>
+			<p>It is recommended that this date is always set to 31st December of the year. If the date happens to be a holiday,</p>
+			<p>the extraction will be on the previous working day. The account balances will always be updated on the last working day of the calendar year.</p>
+			<p>It will be recycled to the next date when the base update for a year is done.</p>
+			<p>
+			 <p>Validation Rules:</p>
+			 </p>
+            <p>Standard Date (frequency) field.</p>
+       </desc>
+</t>
+<t>
+<field>REPORTABLE.STATUS</field>
+<desc>
+            <p>Multi-value fields to identify the statuses (account classifications) to be reported to the regulator.</p>
+			 <p>The base file records will be built only for these statuses. The statuses to be reported are the specified US person,</p>
+			 <p>Passive NFFEs with US substantial owners, Owner documented FFIs, etc.</p>
+       	    <p>
+       	    <p>Validation Rules:</p>
+       	    </p>
+            <p>A valid FATCA TAX STATUS.</p>
+        </desc>
+</t>
+<t>
+<field>OWN.REP.STATUS</field>
+<desc>
+            <p>The statuses (multi-value) for which the owner details – beneficial and substantial - need to be reported.</p>
+			<p>For the accounts where the owner details are to be reported based on the status (classifications) defined here,</p> 
+			<p>the system will extract the details of beneficial and substantial owners (as applicable) and update the base file.</p>
+			<p>The beneficial and substantial owner roles will be identified based on roles defined in FATCA ROLE TYPE.</p> 
+			<p>As per the Form 8966 reporting, this will be required for OD FFIs and Passive NFFEs with identified US owners.</p>
+			 <p>
+			  <p>Validation Rules:</p>
+			  </p>
+            <p>A valid FATCA TAX STATUS that has been defined as a REPORTABLE STATUS.</p>
+</desc>
+</t>
+<t>
+<field>STATUS.TYPE</field>
+<desc>
+            <p>The field (multi-value), in conjunction with FATCA STATUS, will be used to identify the various classifications that fall under </p>
+			<p>RECALCITRANT/NONPARTICIPATING/ DORMANT /INACTIVE/PASSIVE_NFFE/OD_FFI/SPEC_US_PERSON category (only  values allowed). </p>
+			<p>Since the FATCA TAX STATUS definition is flexible, this field, in conjunction with FATCA STATUS, will be used to identify the relevant classifications.</p>
+			 <p>
+			  <p>Validation Rules:</p>
+			  </p>
+            <p>As per the values specified above.</p>
+</desc>
+</t>
+<t>
+<field>FATCA.STATUS</field>
+<desc>
+            <p>Field associated with STATUS TYPE to identify the FATCA statuses associated with the type (e.g. Recalcitrant, Non-Participating, Passive NFFE, etc.).</p>
+			<p>The field is multi-valued to associate multiple statuses with each type.</p>
+            <p>
+             <p>Validation Rules:</p>
+             </p>
+            <p>Must be a value from the FATCA.TAX.STATUS.</p>	
+</desc>
+</t>
+<t>
+<field>DEFAULT.ADDRESS</field>
+<desc>
+            <p>The field is used to specify the application from which the client’s address needs to be picked up for updating the FATCA TAX BASE.</p> 
+			<p>
+			<p>Validation Rules:</p>
+			</p>
+            <p>The field accepts only ‘CUSTOMER’ or ‘DE ADDRESS’.</p>            
+</desc>
+</t>
+<t>
+<field>ADDRESS.RECORD</field>
+<desc>
+        <p>If the DEFAULT ADDRESS is set to DE.ADDRESS, the field is used to identify the record from where the address of the customer will be picked up and updated in FATCA TAX BASE.</p>
+		<p>For example, if the   ADDRESS.RECORD is set as PRINT.1, for customer ID (100252) in Company 1 (GB0010001), the system will read the DE ADDRESS record GB0010001.C-100252.PRINT.1 and get the address.</p>
+		<p>If there is no matching DE ADDRESS record, then there will be no default.</p>
+	    <p>
+	    <p>Validation Rules:</p>
+	    </p>
+        <p>A valid carrier with the suffix (e.g. PRINT.1).</p> 
+</desc>
+</t>
+<t>
+<field>OWNER.TYPE</field>
+<desc>
+    <p>The owner type can be either Joint or Beneficial or Substantial. The field is associated with the relationship identifier and address identifier fields in FATCA REPORTING PARAMETER.</p>           
+         <p>
+         <p>Validation Rules:</p>
+         </p>
+        <p>JOINT, BENEFICIAL or SUBSTANTIAL.</p>
+</desc>
+</t>
+<t>
+<field>REL.IDENTIFIER</field>
+<desc>
+         <p>If set to FCSI, the related customers will be identified from FATCA CUSTOMER SUPPLEMENTARY INFO (FCSI) record.</p>
+		<p>If left blank, the related customers will be from Customer or Account (based on Relation level defined in FATCA AGGREGATION PARAMETER).</p>
+		 <p>For beneficial and substantial ownership, the relationships will be only from FCSI whereas for joint owners, </p>
+		 <p>the relationships can be at FCSI level or customer or account level. So, if the OWNER TYPE is Beneficial or substantial, only FCSI is allowed.</p>
+    <p>
+    <p>Validation Rules:</p>
+    </p>
+        <p>FCSI or Blank.</p>
+ </desc>
+</t>
+<t>
+<field>REL.CODE</field>
+<desc>
+          <p>If the REL.IDENTIFIER is left blank, the field is used to specify the relation codes for identifying the joint owners.</p>
+		  <p>This will only be used for defining relation codes for joint owners if the relationships are not defined in FATCA CUSTOMER SUPPLEMENTARY INFO or in FATCA AGGREGATION PARAMETER.</p>
+	 <p>
+	  <p>Validation Rules:</p>
+	  </p>
+        <p>Valid RELATION codes.</p>
+        </desc>
+</t>
+<t>
+<field>OWNER.ADDRESS</field>
+<desc>
+            <p>The application from where the owner’s address is updated in the base.</p>
+			<p>For the beneficial and substantial owners, this will be only from FATCA CUSTOMER SUPPLEMENTARY INFO for now.</p>
+    <p>
+    <p>Validation Rules:</p>
+    </p>
+        <p>FATCA CUSTOMER SUPPLEMENTARY INFO is the only allowed value for beneficial/substantial owners.</p>
+     </desc>
+</t>
+<t>
+<field>OWNER.ADD.RECORD</field>
+<desc>
+            <p>If the OWNER ADDRESS is set to DE.ADDRESS (for joint owners), the field is used to identify the record from where the address of the customer will be picked up and updated in FATCA TAX BASE.</p> 
+			<p>For example, if the   ADDRESS.RECORD is set as PRINT.1, for customer ID (100252) in Company 1 (GB0010001), the system will read the DE ADDRESS record GB0010001.C-100252.PRINT.1 and get the address.</p> 
+			<p>If there is no matching DE ADDRESS record, then there will be no default.</p>
+         <p>
+         <p>Validation Rules:</p>
+         </p>
+        <p>A valid carrier with the suffix (e.g. PRINT.1).</p>
+     </desc>
+</t>
+<t>
+<field>COUNTRY.SUB.ENTITY</field>
+<desc>
+            <p>Country Sub entity is one of the elements that needs to be part (e.g. a state or a province) of FATCA reporting (XML schema).</p>
+			<p>The field from where this data is obtained (could be a field in Customer or DE ADDRESS – core or local) is defined here.</p>
+          <p>
+            <p>Validation Rules:</p>
+            </p>
+        <p>A valid field from CUSTOMER or DE.ADDRESS.</p>
+     </desc>
+</t>
+<t>
+<field>FCY.ACC.REPORT</field>
+<desc>
+            <p>If the non-US currency accounts have to be reported in the currency in which they are denominated, </p>
+			<p>this field has to be set as ACCOUNT. Alternatively, if they are to be reported in USD,</p>
+			<p>this field has to be set as USD. By default, all accounts will be reported in USD.  </p>
+			<p>For portfolios, if the accounts are to be reported in the currency in which they are denominated, the system will report in Reference currency </p>
+		<p>
+		<p>Validation Rules:</p>
+		</p>
+        <p>Either ‘ACCOUNT’ or ‘USD’.</p>
+</desc>
+</t>
+<t>
+<field>RECAL.REPORT</field>
+<desc>
+            <p>If a pool report has to be prepared for the aggregated balances of recalcitrant accounts (recalcitrant, recalcitrant with indicia,</p>
+			<p>dormant, dormant with indicia), the field has to be set to YES. The system will update FATCA.RECAL.POOL.BALANCE with the aggregated balance of such accounts.</p>
+			<p>
+			<p>Validation Rules:</p>
+			</p>
+        <p>‘YES’ or Blank.</p>
+</desc>
+</t>
+<t>
+<field>NPFFI.REPORT</field>
+<desc>
+          <p>Aggregate reporting on non-participating (NPFFI) payments is not required in 2014. So, the field has to be set to YES only from 2015.</p>
+		 <p>
+		  <p>Validation Rules:</p>
+		  </p>
+		  <p>Allowed values are YES or blank with blank being treated as NO.</p>
+</desc>
+</t>
+<t>
+<field>MIN.BAL.CHECK</field>
+<desc>
+            <p>If this field is set to YES, the minimum balance checks will be performed. The depository accounts will be reported only if the balance is above $50000. Please refer to AGG BAL CHECK for aggregation rules.</p>
+           <p>
+            <p>Validation Rules:</p>
+            </p>
+			<p>‘YES’ is the only allowed value.</p>
+     </desc>
+</t>
+<t>
+<field>AGG.BAL.CHECK</field>
+<desc>
+            <p>If this field is set to YES, the minimum balance check (based on MIN BAL CHECK field) will be based on aggregate balances</p> 
+			<p>(total of custody and depository accounts). The depository accounts will be reported only if the aggregate balance is above $50000.</p>  
+			<p>If this field is left blank, then the minimum balance check will be based on individual account balances.</p>
+			<p>
+			<p>Validation Rules:</p>
+			</p>
+            <p>Allowed values are YES or blank with blank being treated as NO.</p>
+     </desc>
+</t>
+<t>
+<field>BASE.RETENTION</field>
+<desc>
+            <p>The number of years for which the data on base file needs to be retained. If set to 6, the 2014 base data will be retained till the end of 2020.</p>
+			<p>
+			<p>Validation Rules:</p>
+			</p>
+			<p>A number denoting the number of years.</p>
+</desc>
+</t>
+<t>
+<field>UPDATE.INC.BASE</field>
+<desc>
+            <p>The field is used to control the update of income details into FATCA TAX BASE. Since the income details are not required for 2014, the field has to be left blank for now</p>
+			<p>
+			<p>Validation Rules:</p>
+			</p>
+			<p>‘YES’ or Blank.</p>
+</desc>
+</t>
+<t>
+<field>NEW.ACCOUNT.ONLY</field>
+<desc>
+            <p>If this is set to YES, for 2014, only the accounts opened after 1st July 2014 will be included in the base file (FATCA TAX BASE) for reporting.</p>
+			<p>
+			<p>Validation Rules:</p>
+			</p>
+			<p>‘YES’ or Blank.</p>
+</desc>
+</t>
+<t>
+<field>NEW.ACCOUNT.ENT</field>
+<desc>
+            <p>If this field is set to YES, the accounts for entities opened till 1st Jan 2015 will be considered pre-existing and will not be included in the base (FATCA TAX BASE) for reporting. </p>
+			<p>
+			<p>Validation Rules:</p>
+			</p>
+			<p>‘YES’ or Blank.</p>
+</desc>
+</t>
+<t>
+<field>NEW.ACC.EXIST</field>
+<desc>
+            <p>If a new account is opened for an existing client (who already has existing accounts),</p>
+			<p>this will control whether these accounts are to be treated as new or pre-existing.  If set to YES, the accounts will be considered pre-existing.</p>
+			<p>
+			<p>Validation Rules:</p>
+			</p>
+			<p>‘YES’ or Blank.</p>
+</desc>
+</t>
+<t>
+<field>XML.DIR</field>
+<desc>
+            <p>The directory into which the generated XML will be updated is specified here.</p>
+			<p>
+			<p>Validation Rules:</p>
+			</p>
+			<p>A valid Directory reference.</p>
+</desc>
+</t>
+<t>
+<field>PAYMENT.TYPE</field>
+<desc>
+            <p>The field (multi-value), in conjunction with PAYMENT.CODE and TXN.CODE defines the type of Account to be reported.</p>
+            <p>The Account type may be custody or depository with interest or dividend or grossproceeds/redemption or oher incomes.</p>
+			<p>
+			<p>Validation Rules:</p>
+			</p>
+			<p>Take values DEP.INTEREST or CUS.DIVIDEND or CUS.INTEREST or CUS.GROSSPROCEEDS/REDEMPTION or CUS.OTHER.INCOME.</p>
+</desc>
+</t>
+<t>
+<field>PAYMENT.CODE</field>
+<desc>
+            <p>The associated multi-value field with PAYMENT.TYPE and TXN.CODE defines the payment code to be reported in the XML.</p>
+            <p>The Code includes FATCA501 for DIVIDEND, FATCA502 for INTEREST, FATCA503 for GROSSPROCEEDS/REDEMPTION, FATCA504 for OTHER.INCOME.This is for normal schema</p>
+            <p>For HMRC schema the codes are different.</p>
+			<p>
+			<p>Validation Rules:</p>
+			</p>
+			<p>Take values FATCA501 or FATCA502 or FATCA503 or FATCA504 or 00 or 01 0r 02 0r 03 0r 10</p>
+</desc>
+</t>
+<t>
+<field>TXN.CODE</field>
+<desc>
+            <p>The associated multi-value field with PAYMENT.TYPE and PAYMENT.CODE defines the transaction code of the income to be reported.</p>
+			<p>
+			<p>Validation Rules:</p>
+			</p>
+			<p>Must be a value from TRANSACTION.</p>
+</desc>
+</t>
+<t>
+<field>CLOSED.ACCTS.BAL</field>
+<desc>
+            <p>Specifies which balance to be captured while building FATCA.TAX.BASE for inactive FCSIs.</p>
+            <p>This field is applicable only for the FCSIs whose FATCA.STATUS change date is set as today. When nothing is selected then the Close Day will be considered as default.</p>
+			<p>
+			<p>Validation Rules:</p>
+			</p>
+			<p>Take values CLOSE.DAY or MONTH.END.</p>
+</desc>
+</t>
+<t>
+<field>REP.PMT.INCOME.ONLY</field>
+<desc>
+            <p>Defines the FATCA.STATUS for which only Payment related information has to be displayed in Report and Account Balance will be reported as 0.</p>
+			<p>
+			<p>Validation Rules:</p>
+			</p>
+			<p>Must be a value from FATCA.TAX.STATUS.</p>
+</desc>
+</t>
+<t>
+<field>RESERVED.9</field>
+<desc>
+        <p>Standard T24 reserved field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.8</field>
+<desc>
+            <p>Standard T24 reserved field.</p>           
+        </desc>
+</t>
+<t>
+<field>RESERVED.7</field>
+<desc>
+         <p>Standard T24 reserved field.</p>           
+        </desc>
+</t>
+<t>
+<field>RESERVED.6</field>
+<desc>
+          <p>Standard T24 reserved field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.5</field>
+<desc>
+        <p>Standard T24 reserved field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.4</field>
+<desc>
+            <p>Standard T24 reserved field.</p>           
+        </desc>
+</t>
+<t>
+<field>RESERVED.3</field>
+<desc>
+         <p>Standard T24 reserved field.</p>           
+        </desc>
+</t>
+<t>
+<field>RESERVED.2</field>
+<desc>
+          <p>Standard T24 reserved field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.1</field>
+<desc>
+            <p>Standard T24 reserved field.</p>
+     </desc>
+</t>
+</menu>
+</t24help>

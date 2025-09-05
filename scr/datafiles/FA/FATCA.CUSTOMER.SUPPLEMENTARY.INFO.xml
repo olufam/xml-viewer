@@ -1,0 +1,776 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FA</product>
+<table>FATCA.CUSTOMER.SUPPLEMENTARY.INFO</table>
+</header>
+<overview>
+<ovdesc>
+
+        <p>The FATCA.CUSTOMER.SUPPLEMENTARY.INFO table holds the supplementary information for a customer related to FATCA. The ID of the record will be the Customer number.</p>
+        <p>System updates this file when a different dated record for a customer is created in FATCA.CUSTOMER.SUPPLEMENTARY.INFO.</p>
+    </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>ACCT.INSTN.FROM</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">Specifies if the account has any instructions from a US address.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation Rules: </p>
+        <p>Allowed values are Yes or No.</p>
+        <p>Optional input</p>
+    </desc>
+</t>
+<t>
+<field>ADDR.COUNTRY</field>
+<desc>
+        <p>Determines the country of customer’s address for the address type specified in the ADDRESS.TYPE field. This field is part of multi value set, associated with the field ADDRESS.TYPE.</p>
+        <p>This field will be defaulted with DE.ADDRESS information based on the FATCA.PARAMETER definition.</p>
+        <p>Validation Rules:</p>
+        <p>
+            <p value="1">2-9 type SSS (uppercase alpha) characters.</p>
+            <p value="2">The code will be the ID of an existing record in the COUNTRY table.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>ADDR.TYPE</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">These are the various address types that need to be checked as per US indicia requirements for presence of US address.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">This field is part of multi value set, associated with the field ADDRESS.COUNTRY.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>The allowed values are:</p>
+        <p>
+            <p value="1">MAIL</p>
+            <p value="2">PERMANENT</p>
+            <p value="3">INCARE</p>
+            <p value="4">HOLD.MAIL</p>
+            <p value="5">PO.BOX</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>ADDRESS</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">Specifies the address of Joint or Beneficial or Substantial owner.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>
+            <p value="1">1 -35 type ANY characters</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>ALIAS</field>
+<desc>
+        <p>The field is used to specify the alias name of the joint, beneficial or substantial owner. The field is part of the associated multi-value set starting with ROLE.TYPE.
+</p>
+        <p>Validation Rules:
+</p>
+        <p>1-35 type A (uppercase alpha or numeric) characters.
+</p>
+    </desc>
+</t>
+<t>
+<field>BEN.SUBS.OWNER</field>
+<desc>
+        <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">Records whether the client (entity) has any substantial (for NFFEs) or beneficial owners (for FFI). </p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>
+            <p value="1">Input is allowed only for entity accounts.</p>
+            <p value="2">The allowed values are<p style="list-style-type: circle;"><p value="1">Yes</p><p value="2">No</p></p></p>
+            <p value="3">
+                <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">If NO is input, then it is considered that the account has no US beneficial or substantial owners.</p>
+            </p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>BIRTH.INCO.DATE</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">Records the birth/incorporation date of the beneficial owner.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>
+            <p value="1">1-9 Type D Standard date format -(YYYYMMDD)</p>
+            <p value="2">It will get populated from the BIRTH.INCORP.DATE of customer record. If not present, then it will get defaulted to value given in DATE.OF.BIRTH </p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>CHANGE.REASON</field>
+<desc>
+        <p>This field is used to record the reason for any status change. Automatic Status update can be manually overridden by specifying a value in this field.</p>
+        <p>Validation Rules:</p>
+        <p>1-35 ANY characters</p>
+    </desc>
+</t>
+<t>
+<field>CHANGE.PENDING.DOC</field>
+<desc>
+        <p>The field is updated to indicate there are pending documents from the customer. It is updated as YES when the documents are pending. The update to the field is removed when the documents are received or when the client status becomes recalcitrant on cut-off date.</p>
+    </desc>
+</t>
+<t>
+<field>CITIZENSHIP</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field is used to record the Citizenship details of the customer. This field is multi-valued to enable the capture of dual citizenship.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">If the Nationality or Citizenship of the customer is US, the customer will be considered a potential US customer with STRONG Indicia</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>
+            <p value="1">2-9 type SSS (uppercase alpha) characters.</p>
+            <p value="2">The code will be the ID of an existing record in the COUNTRY table.</p>
+            <p value="3">Will default based on the nationality defined in the Customer record, can be overridden if required</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>CLIENT.TYPE</field>
+<desc>
+        <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">The field is used to define the type of client – individual or Legal entity. The due diligence requirements vary based on nature of relationship (for e.g. individual/NFFE). The entity accounts can be classified as Legal Entity but if a further granular classification is required, they can be classified as FFI or NFFE. In fact, NFFEs, if required, can be classified as ACTIVE and PASSIVE NFFEs. NON.REG.LOCAL.BANK, RETIREMENT.FUND, NON.PROFIT.ORG, LOW.VALUE.FFI AND OWNER.DOC.FFI are all sub-classifications of FFIs</p>
+        <p>Validation Rules:</p>
+        <p>This is a mandatory field, the allowed values are:</p>
+        <p>
+            <p value="1">ACTIVE.NFFE</p>
+            <p value="2">FFI</p>
+            <p value="3">INDIVIDUAL</p>
+            <p value="4">LEGAL.ENTITY</p>
+            <p value="5">LOW.VALUE.FFI</p>
+            <p value="6">NFFE</p>
+            <p value="7">NON.PROFIT.ORG</p>
+            <p value="8">NON.REG.LOCAL.BANK</p>
+            <p value="9">OWNER.DOC.FFI</p>
+            <p value="10">PASSIVE.NFFE</p>
+            <p value="11">PRIVATE</p>
+            <p value="12">RETAIL</p>
+            <p value="13">RETIREMENT.FUND</p>
+            <p value="14">TRADED.NFFE</p>
+            <p value="15">US.CORP</p>
+            <p value="16">USFI</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>CUSTOMER.ID</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">If a customer record exists for the joint, beneficial or substantial owner, the ID of the customer record relating to that specific customer should be entered here.  The Nationality. Residence and Domicile details in FATCA CUSTOMER SUPPLEMENTARY INFO will default from the Customer record.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>
+            <p value="1">1-10 numeric character Customer Code or</p>
+            <p value="2"> 3-10 type MNE (uppercase alpha or numeric or '.') character Customer Mnemonic.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>CUT.OFF.DATE</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">This is the date by when the document specified in FORM.TYPE field has to be received.  This will be defaulted based on the settings in FATCA PARAMETER. </p>
+        <p data-mc-conditions="FROMRELEASE.R13">For a new client, this will be either the Opening or Request Date plus the number of days set in NEW CLNT DOC DAYS. </p>
+        <p data-mc-conditions="FROMRELEASE.R13">For an existing client,  the cut-off date will be determined based on the number of days specified in parameter (EXIST.FFI.DOC.DAYS or OTH.EXIST.DOC.DAYS). </p>
+        <p data-mc-conditions="FROMRELEASE.R13">The cut-off date can be manually changed. If the documents are not received within the cut-off date above, the account status will be changed to “recalcitrant”, provided automatic classification facility is available.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">The field is part of the associated multi-value set starting with FORM.OWNER.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>
+            <p value="1">1-9 Type D Standard date format -(YYYYMMDD)</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>DOMICILE</field>
+<desc>
+        <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">The field is used to record the domicile of Joint, Beneficial or Substantial owner.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>
+            <p value="1">2 type SSS (uppercase alpha) characters.</p>
+            <p value="2">The code must be the ID of an existing record in the COUNTRY table.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>DORMANT.NO.CONTACT</field>
+<desc>
+        <p>The field can be set to YES in case no contact could be established with the client. The automatic classification (FATCA STATUS update) of the account as dormant can be specified based on the settings in FATCA PARAMETER for dormant account identification with this value.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>
+            <p value="1">Allowed values are Yes or No.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>EIN</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The EIN (Employer identification Number) is a unique nine-digit number assigned by the Internal Revenue Service (IRS). Participating and deemed compliant FFI's will have to register with IRS and obtain an EIN.The EIN can be entered here or in the FORM ID field if EIN is defined as one of the Form Types (document).</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>
+            <p value="1">1- 35 alphanumeric characters</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>ENT.TAX.CLASS</field>
+<desc>
+		<p data-mc-conditions="FROMRELEASE.R13">This field is used in the implementation of the W9 Exempt from Reporting code field at the JO/BO level. </p>
+        <p data-mc-conditions="FROMRELEASE.R13">Mainly it is used in recording the status of beneficial owners.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>
+            <p value="1">Accepts only the FATCA.W9.EXEMPTION.CODES</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>ENTITY.STATUS</field>
+<desc>
+        <p>Records the self-classification received from entities. The self-classification will be one of the factors (besides documentation) determining the Account classification (FATCA Status).</p>
+        <p>Validation Rules:</p>
+        <p>A valid FATCA TAX STATUS ID can be input in this field.</p>
+    </desc>
+</t>
+<t>
+<field>EXCEPTION.LOG</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">If FATCA status is set for auto update, this field will be updated with the error conditions if there are situations where FATCA status could not be updated for whatsoever reason.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>
+            <p value="1">System updated field. No input</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>EXP.DATE</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">This is the expiry date of the document specified in FORM.TYPE field. The field is part of the associated multi-value set starting with FORM.OWNER.</p>
+        <p>If the documents are not renewed within the expiry date, the account status will be changed to “recalcitrant”, provided automatic classification facility is available.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>
+            <p value="1">1-9 Type D Standard date format -(YYYYMMDD)</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>FATCA.CUST.ID</field>
+<desc>
+        <p>The ID will be the CUSTOMER number.</p>
+        <p>Validation Rules:</p>
+        <p>Must be a valid record on the Customer table.</p>
+    </desc>
+</t>
+<t>
+<field>FATCA.STATUS</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field used to specify the FATCA STATUS or Account Classification of the client/entity based on documentation. The FATCA STATUS can be updated either manually or automatically. Even if the status is automatically updated, the same can be changed and the reasons for the change recorded in CHANGE REASON field.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>A valid FATCA TAX STATUS ID can be input in this field</p>
+    </desc>
+</t>
+<t>
+<field>FIRST.NAME</field>
+<desc>
+        <p>The field is used to specify the first name of the joint, beneficial or substantial owner. The field is part of the associated multi-value set starting with ROLE.TYPE.</p>
+        <p>Validation Rules:</p>
+        <p>1-35 type A (uppercase alpha or numeric) characters</p>
+    </desc>
+</t>
+<t>
+<field>FORM.ID</field>
+<desc>
+        <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">This field holds the document reference or ID. For example a Passport number if the document is a passport, or EIN number if the document type is EIN, etc</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>
+            <p value="1">Alpha-numeric (free format)</p>
+        </p>
+        <p data-mc-conditions="FROMRELEASE.R13">&#160;</p>
+        <p data-mc-conditions="FROMRELEASE.R13">&#160;</p>
+    </desc>
+</t>
+<t>
+<field>FORM.OWNER</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">This field is used to maintain document information for each owner.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">If the owner is not given, it will be assumed that the documents pertain to the Primary Customer. If these documents are being recorded for Beneficial and other owners, then the owner ID&#160;has to be recorded here. </p>
+        <p data-mc-conditions="FROMRELEASE.R13">It must be noted that for classification of accounts under FATCA, the documents have to be obtained from beneficial, joint and other owners as well.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">The fields from FORM.TYPE to EXP.DATE will be associated sub value fields within this FORM.OWNER multi-value field.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>FATCA CUSTOMER SUPPLEMENTARY INFO ID or HOLDER REF value can be specified here.</p>
+    </desc>
+</t>
+<t>
+<field>FORM.TYPE</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field is used to record the documents that are expected from the customer. The field is part of the associated multi-value set starting with FORM.OWNER.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules</p>
+        <p>A valid FATCA FORM TYPE ID is allowed to be input in this field.</p>
+    </desc>
+</t>
+<t>
+<field>GREENCARD</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field is for recording the Greencard details (ID) of the client   and has to be entered  if the customer holds a US Greencard.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p data-mc-conditions="FROMRELEASE.R13">Alpha-numeric</p>
+    </desc>
+</t>
+<t>
+<field>HOLDER.NAME</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field is used to specify the name of the joint, beneficial or substantial owner. The field is part of the associated multi-value set starting with ROLE.TYPE.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>
+            <p value="1">1-35 type A (uppercase alpha or numeric) characters.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>HOLDER.REF</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field is used to specify a unique ID for the joint, beneficial or substantial owner. The Unique ID is then used in the FORM OWNER field to record the documents received from other owners (joint and beneficial).</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>The value should contains two parts, first part should be FATCA CUSTOMER.SUPPLEMENTARY INFO ID, separator hyphen “-“, second part with sequence number.</p>
+        <p>For example, if the record is being input for customer 100291, the HOLDER REF will be 100291-1 for the first beneficial owner</p>
+        <p data-mc-conditions="FROMRELEASE.R13">&#160;</p>
+    </desc>
+</t>
+<t>
+<field>HOLDER.TIN</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field is used to specify the Tax Identification Number of the joint, beneficial or substantial owner. The field is part of the associated multi-value set starting with ROLE.TYPE.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules:</p>
+        <p>1-35 any characters</p>
+        <p data-mc-conditions="FROMRELEASE.R13">&#160;</p>
+    </desc>
+</t>
+<t>
+<field>INDICIA.STRENGTH</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13"> The system will update the field as STRONG, MEDIUM or WEAK based on the indicia details updated.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>No input field. System generated values:</p>
+        <p>
+            <p value="1">STRONG</p>
+            <p value="2">MEDIUM</p>
+            <p value="3">WEAK</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>JO.BO.STATUS</field>
+<desc>
+        <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">The field is used to record the status (account classification) of the owner in ROLE TYPE/HOLDER NAME field. If the system is set for automatic classification, JO.BO.STATUS will also be updated automatically based on the documentation received. The status of the JO/BO can be either:</p>
+        <p>
+            <p style="text-align: left;" value="1" data-mc-conditions="FROMRELEASE.R13">US Account</p>
+            <p style="text-align: left;" value="2" data-mc-conditions="FROMRELEASE.R13">Non US Account</p>
+            <p style="text-align: left;" value="3" data-mc-conditions="FROMRELEASE.R13">Recalcitrant</p>
+            <p style="text-align: left;" value="4" data-mc-conditions="FROMRELEASE.R13">Inactive</p>
+        </p>
+        <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">In view of the above, the only values allowed here will be the default statuses defined in FATCA PARAMETER for these classifications.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>A valid FATCA TAX STATUS ID (based on FATCA PARAMETER settings)</p>
+    </desc>
+</t>
+<t>
+<field>KYC.CHECK</field>
+<desc>
+        <p>Records whether the KYC check has been completed.</p>
+        <p>Validation Rules</p>
+        <p value="5">Allowed values Yes or No</p>
+    </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+        <p>Identifies any additional element which has been defined locally to meet a particular requirement.</p>
+        <p>As in the majority of T24 Applications, the User is allowed to define in the up to 999 Local elements in addition to the standard fields previously specified. These local elements should be defined by the User where deemed necessary according to local practice.</p>
+        <p>The name of the new element(s), as well as the Format and Validation Rules, must be defined in the Local Tables and LOCAL.REF.TABLE prior to their use in the FATCA.PARAMETER application.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules:</p>
+        <p>
+            <p value="1">Up to 35 characters as defined in the Local Table definition for this local reference field. Multi-value field. (Optional or Mandatory input according to definition in Local Table for this Local Reference element.)</p>
+            <p value="2">As defined by the User within the individual Local Table</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>NATIONALITY</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field is used to record the Nationality of Joint, Beneficial or Substantial owner.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>
+            <p value="1">2 type SSS (uppercase alpha) characters</p>
+            <p value="2">The code must be the ID of an existing record in the COUNTRY table.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>OLD.FATCA.STATUS</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">This field is updated by system with the old FATCA status value that is being modified.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules</p>
+        <p>System updated field. NOINPUT</p>
+    </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">This is a multi-valued field. Standard T24 alphanumeric field that will store the overrides.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p data-mc-conditions="FROMRELEASE.R13">NOINPUT field </p>
+        <p>A maximum of 35 characters may be entered.</p>
+    </desc>
+</t>
+<t>
+<field>POA.HOLDER.COUNTRY</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field is used to specify whether there is any POA (Power of Attorney)  to a person with US address</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules:</p>
+        <p>
+            <p value="1">Allowed values are Yes or No</p>
+            <p value="2">Optional input</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>POTENTIAL.US</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">This is a system generated field. The value of this field will be calculated by the system based on the indicia details that have been provided. A value of Yes means that the client is potentially US. Any updates to this field will be cleared once the FATCA STATUS is updated.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>Allowed value is “Yes”.</p>
+    </desc>
+</t>
+<t>
+<field>PRCNT.OWNERSHIP</field>
+<desc>
+        <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">The field to specify the percentage ownership for the owner specified above in the account.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>
+            <p value="1">A valid percentage</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>PROVEN.NONUS</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">This is a system generated field. The value of this field will be calculated based on the documentation provided. If a client has provided any non-US document, then this field will be updated as YES. Any updates to this field will be cleared once the FATCA STATUS is updated.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>
+            <p value="1">Allowed value is “Yes”.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>PROVEN.US</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">This is a system generated field. The value of this field will be calculated based on the documentation provided. If a client has provided any US document, then this field will be updated as YES. Any updates to this field will be cleared once the FATCA STATUS is updated</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>
+            <p value="1">Allowed value is “Yes”.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>RECV.DATE</field>
+<desc>
+        <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">This is the date of receipt of the document specified in FORM.TYPE field. The field is part of the associated multi-value set starting with FORM.OWNER.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>1-9 Type D Standard date format -(YYYYMMDD)</p>
+        <p data-mc-conditions="FROMRELEASE.R13">&#160;</p>
+        <p data-mc-conditions="FROMRELEASE.R13">&#160;</p>
+    </desc>
+</t>
+<t>
+<field>REQ.DATE</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The date on which the document specified in FORM TYPE has been requested from the client.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>
+            <p value="1">1-9 Type D Standard date format -(YYYYMMDD)</p>
+        </p>
+        <p data-mc-conditions="FROMRELEASE.R13">&#160;</p>
+        <p data-mc-conditions="FROMRELEASE.R13">&#160;</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.1</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.10</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.11</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.12</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.13</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.2</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.3</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.4</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.5</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.6</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.7</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.8</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.9</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>RESIDENCE</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field is used to record the residence of Joint, Beneficial or Substantial owner</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>
+            <p value="1">2 type SSS (uppercase alpha) characters</p>
+            <p value="2">The code must be the ID of an existing record in the COUNTRY table.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>ROLE.TYPE</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field is used to specify the role of the person(s) specified in the associated multi-value fields below – Joint in case of individual accounts, beneficial in case of FFI/individual accounts and substantial in case of NFFE accounts. The field is also used to capture the other capacities in which the person below is acting. The due diligence will be required only for joint, beneficial and substantial owners. Based on the documentation, JO BO STATUS will be updated only for these role types.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules:</p>
+        <p>Accepted values are</p>
+        <p>
+            <p value="1">JOINT</p>
+            <p value="2">BENEFICIAL</p>
+            <p value="3">SUBSTANTIAL</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>SOCIAL.SEC.NO</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field is used to record the customer’s Social Security Number.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>
+            <p value="1">1- 35 alphanumeric characters</p>
+        </p>
+        <p data-mc-conditions="FROMRELEASE.R13">&#160;</p>
+        <p data-mc-conditions="FROMRELEASE.R13">&#160;</p>
+    </desc>
+</t>
+<t>
+<field>STATUS.CHANGE.DATE</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">This fields holds the date on which the FATCA.STATUS of the customer have been changed.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>
+            <p value="1">1-9 Type D Standard date format - (YYYYMMDD).</p>
+            <p value="2">Updated by user</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>STATUS.EXPIRY.DATE</field>
+<desc>
+        <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">The field denotes the expiry date of the current status in the case of deemed compliant entities. If EIN is included as a document in FORM TYPE field, the expiry date can be specified in the EXP DATE field (part of the FORM OWNER multi-value set) instead of in this field.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>
+            <p value="1">1-9 Type D Standard date format -(YYYYMMDD)</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>STATUS.NARRATIVE</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field is used to record any free-format narrative relating to the FATCA STATUS (Account classification) updated. If the FATCA STATUS is automatically updated, the Narrative will also be automatically updated. </p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules: </p>
+        <p>1-35 ANY characters</p>
+    </desc>
+</t>
+<t>
+<field>STND.INSTRUCTION</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field denotes whether there is any standing instruction "to" an account in US.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>
+            <p value="1">Allowed values Yes or No</p>
+            <p value="2">Optional input</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>SUR.NAME</field>
+<desc>
+        <p>The field is used to specify the SUR name of the joint, beneficial or substantial owner. The field is part of the associated multi-value set starting with ROLE.TYPE.
+</p>
+        <p>Validations:</p>
+        <p>1-35 type A (uppercase alpha or numeric) characters.
+</p>
+    </desc>
+</t>
+<t>
+<field>TAX.DOMICILE</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field is used to record the tax domicile of the client.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>
+            <p value="1">2-9 type SSS (uppercase alpha) characters</p>
+            <p value="2">The code will be the ID of an existing record in the COUNTRY table.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>TAX.RESIDENCE</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field is used to record the tax residence of the client (generally based on substantial presence test). </p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>
+            <p value="1">2 type SSS (uppercase alpha) characters</p>
+            <p value="2">The code will be the ID of an existing record in the COUNTRY table.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>TELEPHONE.NUMBER</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field is used to specify whether the client has any US telephone number.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>
+            <p value="1">Allowed values are Yes or No.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>TIN.CODE</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The  field is used to record the Tax Identification number of the customer</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>
+            <p value="1">Free format field 35 characters</p>
+        </p>
+        <p data-mc-conditions="FROMRELEASE.R13">&#160;</p>
+        <p data-mc-conditions="FROMRELEASE.R13">&#160;</p>
+    </desc>
+</t>
+<t>
+<field>TIN.COUNTRY</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field is used to define the country that the associated Tax Identification Number (TIN) relates to.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Associated with the field TIN.CODE</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules</p>
+        <p>
+            <p value="1">2 type SSS (uppercase alpha) characters</p>
+            <p value="2">The code will be the ID of an existing record in the COUNTRY table.</p>
+        </p>
+        <p data-mc-conditions="FROMRELEASE.R13">&#160;</p>
+    </desc>
+</t>
+<t>
+<field>US.PLACE.OF.BIRTH</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">To record whether the client has a US place of birth.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>
+            <p value="1">Allowed values are Yes or No</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>CR.CUSTOMER.ID</field>
+<desc>
+        <p>When a TAX type of CUSTOMER.RELATIONSHIP record is linked to portfolio (SEC.ACC.MASTER), then a new record will be created in this table to update the FATCA.STATUS for the portfolio owned by joint customers.</p>
+        <p>Customer id of the customers who are a part of the CUSTOMER RELATIONSHIP record will be updated in this field.</p>
+        <p>Validations:</p>
+        <p>1. Valid customer id</p>
+        <p>2. NOINPUT field</p>
+    </desc>
+</t>
+<t>
+<field>CR.CUST.STATUS</field>
+<desc>
+        <p>Assiciated field with the  FATCA.CR.CUST field and stores the FATCA.STATUS of the corresponding customer.</p>
+        <p>Validations:</p>
+        <p>1. Valid record in FATCA.TAX.STATUS</p>
+        <p>2. NOINPUT field</p>
+    </desc>
+</t>
+<t>
+<field>PORTFOLIO.ID</field>
+<desc>
+        <p>When a TAX type of CUSTOMER.RELATIONSHIP record is linked to portfolio (SEC.ACC.MASTER), then a new record will be created in this table to update the FATCA.STATUS for the portfolio owned by joint customers.</p>
+        <p>This field stores the SEC.ACC.MASTER ids in which the CUSTOMER.RELATIONSHIP is linked.</p>
+        <p>Validations:</p>
+        <p>1. Valid SEC.ACC.MASTER record id</p>
+        <p>2. NOINPUT field</p>
+    </desc>
+</t>
+<t>
+<field>PORTFOLIO.STATUS</field>
+<desc>
+        <p>This is the final FATCA.STATUS for the portfolio, the status is arrived based on the TAX.STATUS.NO value from the FATCA.TAX.STATUS record.</p>
+        <p>Portfolio status will be highest level classification among the status of the joint customers.</p>
+        <p>Validations:</p>
+        <p>1. Valid record in FATCA.TAX.STATUS</p>
+        <p>2. NOINPUT field</p>
+    </desc>
+</t>
+<t>
+<field>W9.EXEMPT.CODE</field>
+<desc>
+        <p>This field is inputted when the customer has to be exempted from FATCA reporting.</p>
+        <p>Validations:</p>
+        <p>Accepts only the values from FATCA.W9.EXEMPTION.CODES</p>
+    </desc>
+</t>
+<t>
+<field>FA.STATUS.CHG.DATE</field>
+<desc>
+        <p>This field is updated by system with the date of change of FATCA status.</p>
+        <p>Validations:</p>
+        <p>1. 1-9 Type D Standard date format - (YYYYMMDD).</p>
+        <p>2. Updated by system. NOINPUT field</p>
+    </desc>
+</t>
+</menu>
+</t24help>

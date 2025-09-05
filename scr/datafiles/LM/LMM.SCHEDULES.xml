@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>LM</product>
+<table>LMM.SCHEDULES</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The LMM.SCHEDULES file is a diary for all authorised contracts in the Money Market and Loans system.  Each record contains a list of the scheduled activities that are due to occur on a particular date for a specific contract.  Each contract can have many LMM.SCHEDULES records because there are many activities that can occur on many dates throughout the life of a contract. </p>
+            <p>The type of information that each record contains is always of the "trigger" variety. i.e. It acts as a trigger to the end of day (off-line) to perform a particular process or activity.  The types of activities are as follows: </p>
+            <p>      (i)   Financial Movements            e.g. principal drawdowns, principal or            interest liquidations. </p>
+            <p>     (ii)   Sending of payments            i.e. sending payment instructions relating            to a financial movement. </p>
+            <p>    (iii)   Rate Revisions            i.e. revising the rate at which interest            is accrued. </p>
+            <p>All updates to this file are effected automatically by the system and the only functions users are allowed to perform are (L)IST, (E)XCEPTION, (S)EE and (P)RINT. </p>
+            <p>As soon as a particular schedule has been processed by the End of Day it is usually deleted form the LMM.SCHEDULES file and a record with the same key is written to the LMM.SCHEDULE.PAST file.  The only exception to this is when a Schedule record includes a 'Sending of Payment' activity.  In this case, the 'Sending of Payment' part of the Schedule remains on the LMM.SCHEDULES file until the financial Schedule, to which it relates, is also processed. </p>
+            <p>For example, if a Payment has to be sent two days prior to the value date of the payment (DAYS DELIVERY field in CURRENCY table) then any Sending of Payment activity will remain on the LMM.SCHEDULES file for two working days after it has been processed. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>TYPE.H</field>
+<desc>
+            <p>This field is reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>AMT.RATE.APPLD</field>
+<desc>
+            <p>This field is reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>NOTE.DENOM</field>
+<desc>
+            <p>Specifies the denomination of Notes which will be repurchased as part of a new Bond Issue. </p>
+            <p>Together with the field NOTE.QUANTITY, this field specifies the value of Bonds repurchased at this denomination. The total value of the notes purchesd,must equal the associated AMOUNT. A Bond issue may contain notes of different denominations so this field is sub-valued to allow such cases to be defined. </p>
+            <p>When a scheduled repayment takes place the system will attempt to reduce the value of the notes according to the denominations specifeid here and in NOTE.QUANT. </p>
+            <p>If it is not possible to allocate the amounts accross the denominations, an exception message will be raised. </p>
+        </desc>
+</t>
+<t>
+<field>TYPE.I</field>
+<desc>
+            <p>Specifies whether there is an interest movement due on this scheduled date or not. </p>
+            <p>If an interest movement is due to occur on a contract on a particular date then this field will contain a 'Y' on the Contracts LMM.SCHEDULES record for the scheduled date.  Whenever the Contract details specify that interest is due on a particular date, irrespective of whether the interest is then to be liquidated, capitalized or deferred, then this field will contain a 'Y' on the appropriate schedule record.  This is also true for non-interest bearing contracts such as account receivables and Sundry deposits because the system always assumes that every contract has an interest period.  It is only when the schedule is processed by the 'End of Day' that the system finds that there is no committed interest and therefore nothing to process. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only values are 'Y' meaning yes there is a Scheduled interest movement; or blank meaning there is not.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDES</field>
+<desc>
+            <p>Overrides given by the system relating to single schedules. </p>
+            <p>Whilst authorising an LD contract that has interim schedules, overrides can be received which do not appear on the main LD.LOANS.AND.DEPOSITS file. They are recorded on the schedule record to which they refer. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard override text, class of override, authoriser. (For LD.LOANS.AND.DEPOSITS only.)</p>
+        </desc>
+</t>
+<t>
+<field>FEE.INCL.CHG</field>
+<desc>
+            <p>Indicates whether the fee/charge is included in the annuity calculation or not.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System maintained</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.AMT.SPLIT</field>
+<desc>
+            <p>This field would be updated with the principal amount for the schedule date.
+The principal movement can from P schedule or B schedule.</p>
+        </desc>
+</t>
+<t>
+<field>COMMISSION.AMT</field>
+<desc>
+            <p>This field contains an amount only where a contract has had the commission amount set by the user. </p>
+            <p>If, on a LD contract only, the user has specified an amount of commission to be charged, rather than allowing the system to calculate it from an input rate, this field will contain that amount. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 AMT (Standard Amount format) type characters plus a decimal point. (For LD.LOANS.AND.DEPOSITS only.)</p>
+        </desc>
+</t>
+<t>
+<field>NEW.INT.DT</field>
+<desc>
+            <p>This field will get updated when rate change is done through    LD.LOANS.AND.DEPOSITS template.
+   It holds the value of INT.RATE.V.DATE of LD template</p>
+        </desc>
+</t>
+<t>
+<field>FEE.CHARGE.CODE</field>
+<desc>
+            <p>The code that specifies whether the fee will be on a cash basis or amortised. </p>
+            <p>The code from LMM.CHARGE.CONDITIONS which specifies which P/L account will be credited and whether to amortise the fee or apply on a cash basis. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 numeric characters. (For LD.LOANS.AND.DEPOSITS only.)</p>
+        </desc>
+</t>
+<t>
+<field>NOTE.QUANTITY</field>
+<desc>
+            <p>Specifies the number of notes of the associated NOTE.DENOM which will repaid when these bonds are repurchased. </p>
+            <p>Together with the field NOTE.DENOM, this field specifies the value of Bonds repurchased at this denomination. The total value of the notes issued, must equal the assocaited AMOUNT of the contract. A Bond issue may contain notes of different denominations so this field is multi-valued to allow such cases to be defined. </p>
+            <p>When a scheduled repayment takes place the system will attempt to reduce the value of the notes issued by the number specified here. </p>
+            <p>If it is not possible to allocate the amounts accross the denominations, an exception message will be raised. </p>
+        </desc>
+</t>
+<t>
+<field>SCHED.TYPE</field>
+<desc>
+            <p>Indicates the schedule type for Annuity processing. </p>
+            <p>Valid types which will appear here are:</p>
+            <p>P - Principal repayment schedule</p>
+            <p>B - Principal Increase schedule</p>
+            <p>A - Annuity schedule</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System maintained</p>
+        </desc>
+</t>
+<t>
+<field>TYPE.D</field>
+<desc>
+            <p>This field specifies whether a diary schedule has been created. </p>
+            <p>For the LD module only the user can create a 'diary' schedule containing brief text relating to a certain day. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The only values are: Y - a diary schedule has been created. Blank - a diary schedule has not been created. (For LD.LOANS.AND.DEPOSITS only.)</p>
+        </desc>
+</t>
+<t>
+<field>CAP.INT</field>
+<desc>
+            <p>Please refer helptext section of LD.SCHEDULE.DEFINE</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.AMT</field>
+<desc>
+            <p>This field contains an amount only where a contract has had the interest amount set by the user. </p>
+            <p>If, on an LD contract only, the user has specified an amount of interest to be charged/paid; rather than allowing the system to calculate it from an input rate, this field will contain that amount. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 AMT (Standard Amount format) type characters plus a decimal point. (For LD.LOANS.AND.DEPOSITS only.)</p>
+        </desc>
+</t>
+<t>
+<field>TYPE.S</field>
+<desc>
+            <p>Specifies whether there could be a payment instruction to send on this Schedule date or not. </p>
+            <p>If during the future life of a Contract, funds have to be delivered to the Customer then this field will Contain a 'Y' 'n' days prior to the value date of the movement of funds. </p>
+            <p>The number of days prior to the movement of funds value date is determined by the DAYS.DELIVERY in the payment CURRENCY record. </p>
+            <p>This is best explained by means of an example: </p>
+            <p>If a U.S. dollar deposit is due to mature on 11th March 1986 then a 'Financial Schedule' Will be written for the 11th March that includes type 'P' for Principal repayment, and type 'I' for interest payment. </p>
+            <p>If the U.S. dollar currency record states that there should be '1' day delivery then any physical payment instruction that needs to be sent must be sent one day prior to the payment value date.  In the example above this means that should a payment instruction need to be sent to repay the deposit, then it needs to be sent on the 10th March. </p>
+            <p>In order to 'trigger' this physical sending of a payment message, the system writes a Schedule 'type S' 'n' days prior to any movement of funds out of the bank.  The value for 'n' is derived from the days delivery field in the payment currency record and so continuing with the example above, a Schedule 'type S' will be written for 10th March. </p>
+            <p>It should be noted that at the time of writing the Schedules, the system does not determine whether a physical payment instruction is required or not - it merely establishes the 'trigger'.  When the 'End of Day' processes the 'S' schedule then it reviews the settlement instructions and either writes a payment entry (which usually results in the sending of a payment instruction) or it does nothing if the account to credit is an internal or current account. </p>
+            <p>To determine which financial movement any 'S' Schedule relates to, the next field 'S DATE', is completed with the schedule date of the financial movements. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only values are 'Y' meaning yes there could be a payment to send; or blank meaning there is not.</p>
+        </desc>
+</t>
+<t>
+<field>TYPE.N</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 1 characters may be entered.</p>
+            <p>This is a NOINPUT field.</p>
+            <p>The following values are permitted:       Y</p>
+        </desc>
+</t>
+<t>
+<field>TYPE.R</field>
+<desc>
+            <p>Specifies whether there is a rate revision due on the scheduled date or not. </p>
+            <p>If a new interest rate or spread is to be applied to the Contract on a particular date then this field will contain a 'Y' on the Contracts LMM.SCHEDULES record for the Scheduled date.  The new rate or spread is shown in the following field called INT EFFECT RATE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only values are 'Y' meaning yes there is a rate revision; or blank meaning there is not.</p>
+        </desc>
+</t>
+<t>
+<field>FEE.AMOUNT.DUE</field>
+<desc>
+            <p>This field specifies the amount of fee to be charged. </p>
+            <p>The amount of fee to be applied on the schedule date. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 AMT (Standard Amount format) type characters plus a decimal point. (For LD.LOANS.AND.DEPOSITS only.)</p>
+        </desc>
+</t>
+<t>
+<field>TYPE.F</field>
+<desc>
+            <p>This field specifies whether a forward fee has been requested. </p>
+            <p>For the LD module it is possible to specify forward and 'cyclic' fees. If so requested the system will produce an 'F' schedule for that date. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The only values are: Y - yes a fee is to be applied, Blank - there is no fee to be applied. (For LD.LOANS.AND.DEPOSITS only.)</p>
+        </desc>
+</t>
+<t>
+<field>NEW.SPREAD.DT</field>
+<desc>
+            <p>This field will get updated when spread change is done through    LD.LOANS.AND.DEPOSITS template.
+   It holds the value of SPREAD.V.DATE of LD template</p>
+        </desc>
+</t>
+<t>
+<field>SCHED.RATE</field>
+<desc>
+            <p>Indicates the rate for the schedule type for Annuity processing. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System maintained</p>
+        </desc>
+</t>
+<t>
+<field>FEE.EFF.RATE</field>
+<desc>
+            <p>This field is reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>CHRG.AMOUNT.DUE</field>
+<desc>
+            <p>This field is reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>INT.EFFECT.RATE</field>
+<desc>
+            <p>The new rate or interest spread that is to be effective. </p>
+            <p>This field is always present when the previous field TYPE R is set to 'Y'. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard rate format.</p>
+        </desc>
+</t>
+<t>
+<field>TYPE.P</field>
+<desc>
+            <p>Specifies whether there is a Principal Movement (or not) due on this Schedule date. </p>
+            <p>If a principal movement is due to occur on a Contract on a particular date then this field will contained a 'Y' on the Contracts LMM.SCHEDULES record for the scheduled date.  The only types of Scheduled Principal Movements that can occur in the Money Market system are Principal drawdowns, Principal increases and Principal repayments.  A 'Y' will appear in this field for any of these types of movements. </p>
+            <p>Although the statement entries/LMM.ACCOUNT.BALANCES movements will take effect on the scheduled date it should be noted that the new Principal amount of a contract will only affect the interest accrual according to the method of accrual. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only values are 'Y' meaning yes there is a Schedule Principal Movement; or blank meaning there is not.</p>
+        </desc>
+</t>
+<t>
+<field>FEE.BASE.TYPE</field>
+<desc>
+            <p>Fields FEE.CALC.TYPE to FEE.CHARGE.CODE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 1 characters may be entered.</p>
+            <p>This is a NOINPUT field.</p>
+            <p>The following values are permitted:       P      I</p>
+        </desc>
+</t>
+<t>
+<field>TAX.CODE.COMM</field>
+<desc>
+            <p>This field is reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>FEE.CALC.TYPE</field>
+<desc>
+            <p>This field is reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>PAST.MAT</field>
+<desc>
+            <p>Descriptor field</p>
+        </desc>
+</t>
+<t>
+<field>FULL.SCH.DATE</field>
+<desc>
+            <p>HDescriptor field</p>
+        </desc>
+</t>
+<t>
+<field>SCH.FWD.BWD</field>
+<desc>
+            <p>Key to how the schedule was created in the event of non-working days being met. </p>
+            <p>This indicates what criteria the Loans module was given in creating a schedule using the LD.SCHEDULE.DEFINE utility, when non-working days encountered. </p>
+            <p>           1  =  Use next working date. </p>
+            <p>           2  =  Use previous working date. </p>
+            <p>           3  =  Use next working date if in current                  month, if not, use previous working                  date. </p>
+            <p>           4  =  Not Automatic. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 numeric character. (For LD.LOANS.AND.DEPOSITS only.)</p>
+        </desc>
+</t>
+<t>
+<field>MARGIN.EFF.RATE</field>
+<desc>
+            <p>Specifies the date that the new margin (if specified) takes effect. </p>
+            <p>The effective date of the new margin to be applied. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Date format of 11 characters. (For LD.LOANS.AND.DEPOSITS only.)</p>
+        </desc>
+</t>
+<t>
+<field>SCHED.DT</field>
+<desc>
+            <p>Holds the schedule date of processing </p>
+        </desc>
+</t>
+<t>
+<field>SCHED.AMT</field>
+<desc>
+            <p>Indicates the schedule amount related to the corresponding field SCHED.TYPE for the Annuity processing. </p>
+            <p>Valid schedule types are:</p>
+            <p>P - Principal repayment schedule</p>
+            <p>B - Principal Increase schedule</p>
+            <p>A - Annuity schedule</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System maintained</p>
+        </desc>
+</t>
+<t>
+<field>LD.ID</field>
+<desc>
+            <p>Holds the LD contract ID for which schedules is updated</p>
+        </desc>
+</t>
+<t>
+<field>MATURITY</field>
+<desc>
+            <p>Descriptor field </p>
+        </desc>
+</t>
+<t>
+<field>TYPE.M</field>
+<desc>
+            <p>This field specifies whether there is a margin change due or not. </p>
+            <p>For the LD module it is possible to specify a forward dated spread amendment. If this is so then the system will produce an 'M' schedule for that date. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The only values are: Y - Yes there is a margin change due, Blank - There is not a margin change due. (For LD.LOANS.AND.DEPOSITS only.)</p>
+        </desc>
+</t>
+<t>
+<field>DIARY.ACTION</field>
+<desc>
+            <p>The date of a specified diary event. </p>
+            <p>The date that the diary schedule relates to. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Date format of 11 characters. (For LD.LOANS.AND.DEPOSITS only.)</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.NO</field>
+<desc>
+            <p>The identification of the record.  One record for each date that a contract has scheduled activities for. </p>
+            <p>At authorisation of a Loans or Money Market deal, LMM.SCHEDULES records are written for each date that at least one schedule event is due to occur on the contract.  This field is the key to those LMM.SCHEDULES records. </p>
+            <p>The composition of the key is as follows: </p>
+            <p>        .   Contract number of e.g. MM/97255/00123 </p>
+            <p>        .   Event date (julian) e.g. 1997349 </p>
+            <p>        .   Suffix always 00 </p>
+            <p>Continuing with the above example, the record with the key of 'MM/97255/00123/1997349/00' contains the 'trigger' for Schedule events in Contract number MM/97255/00123 to be performed by the 15th December 1997 End of Day. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard contract number plus seven digit julian date (event date) plus two digit Suffix which is always '00', resulting in a 21 character key.</p>
+        </desc>
+</t>
+<t>
+<field>TYPE.C</field>
+<desc>
+            <p>Specifies whether there is a commission movement due on this Scheduled date or not. </p>
+            <p>If a commission movement is due to occur on a contract on a particular date then this field will contain a 'Y' on the Contracts LMM.SCHEDULES record for the Scheduled date. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only values are 'Y' meaning yes there is a Scheduled commission movement; or blank meaning there is not.</p>
+        </desc>
+</t>
+<t>
+<field>S.DATE</field>
+<desc>
+            <p>This field contains the value, and therefore Schedule, date of the financial movement to which the 'S' Schedule relates. </p>
+            <p>When the End of Day processes a type 'S' Schedule it needs to know what components need to be paid.  This field contains the julian date of the financial schedule to which this 'S' Schedule relates.  It is the financial schedule that specifies the components that are to be paid. Example: A deposit maturing on 11th March 1997 will have a schedule as follows: </p>
+            <p>Key =Contract Number/97070/00 (11th March) Schedule Types = P and I </p>
+            <p>The trigger to check whether a payment needs to be sent for this Contract will appear on 10th March (given one day delivery) and will appear as follows: </p>
+            <p>Key = Contract Number/97069/00 (10th March) Schedule Types = S S Date = 1997070 (the 11th March) </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Seven digit julian date where the first four digits are year (e.g. 1997) and the last three digits are day number (e.g. 001 is January 1st).</p>
+        </desc>
+</t>
+<t>
+<field>SCHED.PRIN.VAL</field>
+<desc>
+            <p>Shows the  value of the asset on which the financial charge is calculated. The setting for FIN.CHRG.CALC.TYPE in LD.LOANS.AND.DEPOSITS has to be RB (Reducing Balance).</p>
+        </desc>
+</t>
+<t>
+<field>TAX.CODE.INT</field>
+<desc>
+            <p>This field is reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>NEW.COMM.DT</field>
+<desc>
+            <p>This field will get updated when commission rate change is done through    LD.LOANS.AND.DEPOSITS template.
+   It holds the value of COM.RATE.V.DATE of LD template</p>
+        </desc>
+</t>
+<t>
+<field>FEE.BASE.SCHED</field>
+<desc>
+            <p>Holds the schedule type from which the Fees or charge is generated </p>
+        </desc>
+</t>
+<t>
+<field>PAYMENT.CURR.NO</field>
+<desc>
+            <p>This field is reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.CODE</field>
+<desc>
+            <p>This field is reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>PRIN.AMOUNT.DUE</field>
+<desc>
+            <p>Specifies the amount and sign of the Principal Movement that was indicated in the previous field. </p>
+            <p>This field specifies the amount and sign of the principal movement in relation to the contract. </p>
+            <p>       .    Principal drawdown or increase on an asset            contract will be Signed Negative (the            contract is scheduled to be debited). </p>
+            <p>       .    Principal drawdown or increase on a            liability contract will be Signed Positive            (the contract is scheduled to be credited). </p>
+            <p>       .    Principal repayment on an asset contract            will be Signed Positive (the contract is            scheduled to be credited). </p>
+            <p>       .    Principal repayment on a liability            contract will be Signed Negative (the            contract is scheduled to be debited). </p>
+            <p>Please note that negative values are shown with a "-" sign preceding the figure whilst positive values are shown with no sign. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 AMT (standard amount format) type characters plus decimal point.</p>
+        </desc>
+</t>
+<t>
+<field></field>
+<desc>
+        <p>This field contains the value, and therefore Schedule, date of the financial movement to which the 'S' Schedule relates. When the End of Day processes a type 'S' Schedule it needs to know what components need to be paid. This field contains the julian date of the financial schedule to which this 'S' Schedule relates. It is the financial schedule that specifies the components that are to be paid. Example: A deposit maturing on 11th March 1997 will have a schedule as follows: Key =Contract Number/97070/00 (11th March) Schedule Types = P and I The trigger to check whether a payment needs to be sent for this Contract will appear on 10th March (given one day delivery) and will appear as follows: Key = Contract Number/97069/00 (10th March) Schedule Types = S S Date = 1997070 (the 11th March) </p>
+        <p>Validation Rules</p>
+        <p> Seven digit julian date where the first four digits are year (e.g. 1997) and the last three digits are day number (e.g. 001 is January 1st).</p>
+        <p>TYPE.C</p>
+        <p>Specifies whether there is a commission movement due on this Scheduled date or not. If a commission movement is due to occur on a contract on a particular date then this field will contain a 'Y' on the Contracts LMM.SCHEDULES record for the Scheduled date. </p>
+        <p>Validation Rules</p>
+        <p> Only values are 'Y' meaning yes there is a Scheduled commission movement; or blank meaning there is not.</p>
+        <p>ADVICE.DATE</p>
+        <p>The effective value date of the advice referred to in ADVICE TYPE (Field 25). As with payments the advice will be sent out at an End of Day, according to the number of days delivery of the currency. </p>
+        <p>Validation Rules</p>
+        <p> 7 digit number representing the julian date.</p>
+        <p>ADVICE.TYPE</p>
+        <p>The advice code describing each successive event which produces an advice during the life of the contract. Example: In Money Market the 'Advice to Receive' 210 is written to this field. </p>
+        <p>Validation Rules</p>
+        <p> 4 digit numeric code.</p>
+        <p>AMT.RATE.APPLD</p>
+        <p>This field is reserved for future use.</p>
+        <p>CHARGE.CODE</p>
+        <p>This field is reserved for future use.</p>
+        <p>CHRG.AMOUNT.DUE</p>
+        <p>This field is reserved for future use.</p>
+        <p>COMMISSION.AMT</p>
+        <p>This field contains an amount only where a contract has had the commission amount set by the user. If, on a LD contract only, the user has specified an amount of commission to be charged, rather than allowing the system to calculate it from an input rate, this field will contain that amount. </p>
+        <p>Validation Rules</p>
+        <p> Up to 14 AMT (Standard Amount format) type characters plus a decimal point. (For LD.LOANS.AND.DEPOSITS only..</p>
+        <p>CONTRACT.NO</p>
+        <p>The identification of the record. One record for each date that a contract has scheduled activities for. At authorisation of a Loans or Money Market deal, LMM.SCHEDULES records are written for each date that at least one schedule event is due to occur on the contract. This field is the key to those LMM.SCHEDULES records. The composition of the key is as follows: . Contract number of e.g. MM/97255/00123 . Event date (julian) e.g. 1997349 . Suffix always 00 Continuing with the above example, the record with the key of 'MM/97255/00123/1997349/00' contains the 'trigger' for Schedule events in Contract number MM/97255/00123 to be performed by the 15th December 1997 End of Day. </p>
+        <p>Validation Rules</p>
+        <p> Standard contract number plus seven digit julian date (event date) plus two digit Suffix which is always '00', resulting in a 21 character key.</p>
+        <p>DIARY.ACTION</p>
+        <p>The date of a specified diary event. The date that the diary schedule relates to. </p>
+        <p>Validation Rules</p>
+        <p> Standard Date format of 11 characters. (For LD.LOANS.AND.DEPOSITS only..</p>
+        <p>FEE.AMOUNT.DUE</p>
+        <p>This field specifies the amount of fee to be charged. The amount of fee to be applied on the schedule date. </p>
+        <p>Validation Rules</p>
+        <p> Up to 14 AMT (Standard Amount format) type characters plus a decimal point. (For LD.LOANS.AND.DEPOSITS only..</p>
+        <p>FEE.BASE.TYPE</p>
+        <p>Fields FEE.CALC.TYPE to FEE.CHARGE.CODE form a related multi value set. </p>
+        <p>Validation Rules</p>
+        <p> A maximum of 1 characters may be entered. This is a NOINPUT field. The following values are permitted: P.</p>
+        <p>FEE.CALC.TYPE</p>
+        <p>This field is reserved for future use.</p>
+        <p>FEE.CHARGE.CODE</p>
+        <p>The code that specifies whether the fee will be on a cash basis or amortised. The code from LMM.CHARGE.CONDITIONS which specifies which P/L account will be credited and whether to amortise the fee or apply on a cash basis. </p>
+        <p>Validation Rules</p>
+        <p> 3 numeric characters. (For LD.LOANS.AND.DEPOSITS only..</p>
+        <p>FEE.EFF.RATE</p>
+        <p>This field is reserved for future use.</p>
+        <p>FEE.INCL.CHG</p>
+        <p>Indicates whether the fee/charge is included in the annuity calculation or not. </p>
+        <p>Validation Rules</p>
+        <p> System maintaine.</p>
+        <p>INT.EFFECT.RATE</p>
+        <p>The new rate or interest spread that is to be effective. This field is always present when the previous field TYPE R is set to 'Y'. </p>
+        <p>Validation Rules</p>
+        <p> Standard rate format.</p>
+        <p>INTEREST.AMT</p>
+        <p>This field contains an amount only where a contract has had the interest amount set by the user. If, on an LD contract only, the user has specified an amount of interest to be charged/paid; rather than allowing the system to calculate it from an input rate, this field will contain that amount. </p>
+        <p>Validation Rules</p>
+        <p> Up to 14 AMT (Standard Amount format) type characters plus a decimal point. (For LD.LOANS.AND.DEPOSITS only..</p>
+        <p>MARGIN.EFF.RATE</p>
+        <p>Specifies the date that the new margin (if specified) takes effect. The effective date of the new margin to be applied. </p>
+        <p>Validation Rules</p>
+        <p> Standard Date format of 11 characters. (For LD.LOANS.AND.DEPOSITS only..</p>
+        <p>NOTE.DENOM</p>
+        <p>Specifies the denomination of Notes which will be repurchased as part of a new Bond Issue. Together with the field NOTE.QUANTITY, this field specifies the value of Bonds repurchased at this denomination. The total value of the notes purchesd,must equal the associated AMOUNT. A Bond issue may contain notes of different denominations so this field is sub-valued to allow such cases to be defined. When a scheduled repayment takes place the system will attempt to reduce the value of the notes according to the denominations specifeid here and in NOTE.QUANT. If it is not possible to allocate the amounts accross the denominations, an exception message will be raised.</p>
+        <p>NOTE.QUANTITY</p>
+        <p>Specifies the number of notes of the associated NOTE.DENOM which will repaid when these bonds are repurchased. Together with the field NOTE.DENOM, this field specifies the value of Bonds repurchased at this denomination. The total value of the notes issued, must equal the assocaited AMOUNT of the contract. A Bond issue may contain notes of different denominations so this field is multi-valued to allow such cases to be defined. When a scheduled repayment takes place the system will attempt to reduce the value of the notes issued by the number specified here. If it is not possible to allocate the amounts accross the denominations, an exception message will be raised.</p>
+        <p>OVERRIDES</p>
+        <p>Overrides given by the system relating to single schedules. Whilst authorising an LD contract that has interim schedules, overrides can be received which do not appear on the main LD.LOANS.AND.DEPOSITS file. They are recorded on the schedule record to which they refer. </p>
+        <p>Validation Rules</p>
+        <p> Standard override text, class of override, authoriser. (For LD.LOANS.AND.DEPOSITS only..</p>
+        <p>PAYMENT.CURR.NO</p>
+        <p>This field is reserved for future use.</p>
+        <p>PRIN.AMOUNT.DUE</p>
+        <p>Specifies the amount and sign of the Principal Movement that was indicated in the previous field. This field specifies the amount and sign of the principal movement in relation to the contract. . Principal drawdown or increase on an asset contract will be Signed Negative (the contract is scheduled to be debited). . Principal drawdown or increase on a liability contract will be Signed Positive (the contract is scheduled to be credited). . Principal repayment on an asset contract will be Signed Positive (the contract is scheduled to be credited). . Principal repayment on a liability contract will be Signed Negative (the contract is scheduled to be debited). Please note that negative values are shown with a "-" sign preceding the figure whilst positive values are shown with no sign. </p>
+        <p>Validation Rules</p>
+        <p> Up to 14 AMT (standard amount format) type characters plus decimal point.</p>
+        <p>SCH.FWD.BWD</p>
+        <p>Key to how the schedule was created in the event of non-working days being met. This indicates what criteria the Loans module was given in creating a schedule using the LD.SCHEDULE.DEFINE utility, when non-working days encountered. 1 = Use next working date. 2 = Use previous working date. 3 = Use next working date if in current month, if not, use previous working date. 4 = Not Automatic. </p>
+        <p>Validation Rules</p>
+        <p> 1 numeric character. (For LD.LOANS.AND.DEPOSITS only..</p>
+        <p>SCHED.AMT</p>
+        <p>Indicates the schedule amount related to the corresponding field SCHED.TYPE for the Annuity processing. Valid schedule types are: P - Principal repayment schedule B - Principal Increase schedule A - Annuity schedule </p>
+        <p>Validation Rules</p>
+        <p> System maintaine.</p>
+        <p>SCHED.PRIN.VAL</p>
+        <p>Shows the value of the asset on which the financial charge is calculated. The setting for FIN.CHRG.CALC.TYPE in LD.LOANS.AND.DEPOSITS has to be RB (Reducing Balance).</p>
+        <p>SCHED.RATE</p>
+        <p>Indicates the rate for the schedule type for Annuity processing. </p>
+        <p>Validation Rules</p>
+        <p> System maintaine.</p>
+        <p>SCHED.TYPE</p>
+        <p>Indicates the schedule type for Annuity processing. Valid types which will appear here are: P - Principal repayment schedule B - Principal Increase schedule A - Annuity schedule </p>
+        <p>Validation Rules</p>
+        <p> System maintaine.</p>
+        <p>TAX.CODE.COMM</p>
+        <p>This field is reserved for future use.</p>
+        <p>TAX.CODE.INT</p>
+        <p>This field is reserved for future use.</p>
+        <p>TYPE.D</p>
+        <p>This field specifies whether a diary schedule has been created. For the LD module only the user can create a 'diary' schedule containing brief text relating to a certain day. </p>
+        <p>Validation Rules</p>
+        <p> The only values are: Y - a diary schedule has been created. Blank - a diary schedule has not been created. (For LD.LOANS.AND.DEPOSITS only..</p>
+        <p>TYPE.F</p>
+        <p>This field specifies whether a forward fee has been requested. For the LD module it is possible to specify forward and 'cyclic' fees. If so requested the system will produce an 'F' schedule for that date. </p>
+        <p>Validation Rules</p>
+        <p> The only values are: Y - yes a fee is to be applied, Blank - there is no fee to be applied. (For LD.LOANS.AND.DEPOSITS only..</p>
+        <p>TYPE.H</p>
+        <p>This field is reserved for future use.</p>
+        <p>TYPE.I</p>
+        <p>Specifies whether there is an interest movement due on this scheduled date or not. If an interest movement is due to occur on a contract on a particular date then this field will contain a 'Y' on the Contracts LMM.SCHEDULES record for the scheduled date. Whenever the Contract details specify that interest is due on a particular date, irrespective of whether the interest is then to be liquidated, capitalized or deferred, then this field will contain a 'Y' on the appropriate schedule record. This is also true for non-interest bearing contracts such as account receivables and Sundry deposits because the system always assumes that every contract has an interest period. It is only when the schedule is processed by the 'End of Day' that the system finds that there is no committed interest and therefore nothing to process. </p>
+        <p>Validation Rules</p>
+        <p> Only values are 'Y' meaning yes there is a Scheduled interest movement; or blank meaning there is not.</p>
+        <p>TYPE.M</p>
+        <p>This field specifies whether there is a margin change due or not. For the LD module it is possible to specify a forward dated spread amendment. If this is so then the system will produce an 'M' schedule for that date. </p>
+        <p>Validation Rules</p>
+        <p> The only values are: Y - Yes there is a margin change due, Blank - There is not a margin change due. (For LD.LOANS.AND.DEPOSITS only..</p>
+        <p>TYPE.N</p>
+        <p>
+        </p>
+        <p>Validation Rules</p>
+        <p> A maximum of 1 characters may be entered. This is a NOINPUT field. The following values are permitted:.</p>
+        <p>TYPE.P</p>
+        <p>Specifies whether there is a Principal Movement (or not) due on this Schedule date. If a principal movement is due to occur on a Contract on a particular date then this field will contained a 'Y' on the Contracts LMM.SCHEDULES record for the scheduled date. The only types of Scheduled Principal Movements that can occur in the Money Market system are Principal drawdowns, Principal increases and Principal repayments. A 'Y' will appear in this field for any of these types of movements. Although the statement entries/LMM.ACCOUNT.BALANCES movements will take effect on the scheduled date it should be noted that the new Principal amount of a contract will only affect the interest accrual according to the method of accrual. </p>
+        <p>Validation Rules</p>
+        <p> Only values are 'Y' meaning yes there is a Schedule Principal Movement; or blank meaning there is not.</p>
+        <p>TYPE.R</p>
+        <p>Specifies whether there is a rate revision due on the scheduled date or not. If a new interest rate or spread is to be applied to the Contract on a particular date then this field will contain a 'Y' on the Contracts LMM.SCHEDULES record for the Scheduled date. The new rate or spread is shown in the following field called INT EFFECT RATE. </p>
+        <p>Validation Rules</p>
+        <p> Only values are 'Y' meaning yes there is a rate revision; or blank meaning there is not.</p>
+        <p>TYPE.S</p>
+        <p>Specifies whether there could be a payment instruction to send on this Schedule date or not. If during the future life of a Contract, funds have to be delivered to the Customer then this field will Contain a 'Y' 'n' days prior to the value date of the movement of funds. The number of days prior to the movement of funds value date is determined by the DAYS.DELIVERY in the payment CURRENCY record. This is best explained by means of an example: If a U.S. dollar deposit is due to mature on 11th March 1986 then a 'Financial Schedule' Will be written for the 11th March that includes type 'P' for Principal repayment, and type 'I' for interest payment. If the U.S. dollar currency record states that there should be '1' day delivery then any physical payment instruction that needs to be sent must be sent one day prior to the payment value date. In the example above this means that should a payment instruction need to be sent to repay the deposit, then it needs to be sent on the 10th March. In order to 'trigger' this physical sending of a payment message, the system writes a Schedule 'type S' 'n' days prior to any movement of funds out of the bank. The value for 'n' is derived from the days delivery field in the payment currency record and so continuing with the example above, a Schedule 'type S' will be written for 10th March. It should be noted that at the time of writing the Schedules, the system does not determine whether a physical payment instruction is required or not - it merely establishes the 'trigger'. When the 'End of Day' processes the 'S' schedule then it reviews the settlement instructions and either writes a payment entry (which usually results in the sending of a payment instruction) or it does nothing if the account to credit is an internal or current account. To determine which financial movement any 'S' Schedule relates to, the next field 'S DATE', is completed with the schedule date of the financial movements. </p>
+        <p>Validation Rules</p>
+        <p> Only values are 'Y' meaning yes there could be a payment to send; or blank meaning there is not.</p>
+        <p>AMT.INCR.DT</p>
+        <p>This field will get updated when a forward dated principal increase or decrease is done in LD.LOANS.AND.DEPOSITS template instead of LD.SCHEDULE.DEFINE. It holds the AMT.V.DATE of LD template.</p>
+        <p>NEW.INT.DT</p>
+        <p>This field will get updated when rate change is done through LD.LOANS.AND.DEPOSITS template. It holds the value of INT.RATE.V.DATE of LD templat.</p>
+        <p>NEW.SPREAD.DT</p>
+        <p>This field will get updated when spread change is done through LD.LOANS.AND.DEPOSITS template. It holds the value of SPREAD.V.DATE of LD templat.</p>
+        <p>NEW.COMM.DT</p>
+        <p>This field will get updated when commission rate change is done through LD.LOANS.AND.DEPOSITS template. It holds the value of COM.RATE.V.DATE of LD templat.</p>
+        <p>SCHED.DT</p>
+        <p>Holds the schedule date of processin.</p>
+        <p>MATURITY</p>
+        <p>Descriptor fiel.</p>
+        <p>PAST.MAT</p>
+        <p>Descriptor fiel.</p>
+        <p>FULL.SCH.DATE</p>
+        <p>HDescriptor fiel.</p>
+        <p>LD.ID</p>
+        <p>Holds the LD contract ID for which schedules is update.</p>
+        <p>PRIN.AMT.SPLIT</p>
+        <p>This field would be updated with the principal amount for the schedule date.The principal movement can from P schedule or B schedule.</p>
+        <p>CAP.INT</p>
+        <p>Please refer helptext section of LD.SCHEDULE.DEFIN.</p>
+        <p>FEE.BASE.SCHED</p>
+        <p>Holds the schedule type from which the Fees or charge is generated</p>
+    </desc>
+</t>
+<t>
+<field>ADVICE.DATE</field>
+<desc>
+            <p>The effective value date of the advice referred to in ADVICE TYPE (Field 25). </p>
+            <p>As with payments the advice will be sent out at an End of Day, according to the number of days delivery of the currency. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>7 digit number representing the julian date.</p>
+        </desc>
+</t>
+<t>
+<field>ADVICE.TYPE</field>
+<desc>
+            <p>The advice code describing each successive event which produces an advice during the life of the contract. </p>
+            <p>Example:    In Money Market the 'Advice to Receive'            210 is written to this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4 digit numeric code.</p>
+        </desc>
+</t>
+<t>
+<field>AMT.INCR.DT</field>
+<desc>
+            <p>This field will get updated when a forward dated principal increase or decrease is done in LD.LOANS.AND.DEPOSITS template instead of LD.SCHEDULE.DEFINE.  It holds the AMT.V.DATE of LD template. </p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

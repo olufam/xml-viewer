@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>AC</product>
+<table>ER.COVER.LIMIT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p />
+            <p>MT103 messages requesting payments be made by the receiver bank may be received from banks which do not hold accounts in the currency of the transaction with the receiver bank.</p>
+            <p />The receiver bank will expect a cover payment to be made by the sender via one of its correspondents, who will notify the receiver of the cover payment in some way.<p />The payment instruction will be held until the receiver is satisfied that the cover payment has been made. <p /><p>This application is used to define a preset allowance based on which payments requests are automatically authorised, without the receipt of cover payment confirmation, where a sending bank does not hold a Vostro account with the receiver bank.</p><p /><p>Id for this application is a valid BIC code (8 or 11 Characters).</p><p /><p>To enable Correspondent Bank limit processing FT.APPL.DEFAULT, Awaiting.Cover should be set to "LIM".</p><p /><p>Id can be created manually or by system during Limit processing.</p><p /><p>During Inward MT103 processing system creates a record in ER.COVER.LIMIT and in AC.EXPECTED.RECS with proper status based on the availability of Limit. This Limits can be affected using the AC.EXPECTED.RECS Application.</p><p /><p>While processing inward messages (MT103) system always look for exact matching record with sender Id (11 Characters), if not found then checks a record for exact first 8 characters match for Limit update. Still a match record is not available, system creates a record with sender BIC code with Available.Limit as '0'.</p><p /><p>To use same limit for all branches of a Bank, the id should be created with 8 characters (Bank without Branch code)</p><p /><p>For more information see Funds.Transfer User guide for details. </p><p /><p>Above functionality is applicable for MT103 messages processed through OFS.GLOBUS.MANAGER.</p></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>UTILISED.LIMIT</field>
+<desc>
+            <p>System updates the amount used by the Sender of MT103 as identified with the ID.</p>
+            <p>This is the difference between Original.Amount and Available.Amount.</p>
+            <p>When "EC" record is created in AC.EXPECTED.RECS while processing an Inward MT103 message, then the Utlised.Amount is reduced to that extent of Debit amount. When "RC" record is received for the corresponding payment message then Utilised.Amount is restored to that extent.</p>
+            <p>When utilised.amount equal to Original.Amount, then FT is created with Hold status and resepctive AC.EXPECTED.RECS is created with status as UAL-Unavailable Limit.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>\No input field   </p>
+            <p>Updated by System during MT103 Inward processing.</p>
+        </desc>
+</t>
+<t>
+<field>REMARKS</field>
+<desc>
+            <p>Specify any free format notes which the user wishes to input concerning this Limit.</p>
+            <p>ER.COVER.LIMIT record created by system will be having the notes indicating that is is created by System and the underlying FT record ID for which record is created.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 35 Type A (AlphaNumeric) Characters.</p>
+        </desc>
+</t>
+<t>
+<field>ORIGINAL.LIMIT</field>
+<desc>
+            <p>Specify the amount approved or agreed for the Cover limit amount for the Sender as specified as ID.</p>
+            <p>This amount can be increased or reduced (subject to amount should not be less than Utilised.Amount) and the available amount is changed accordingly.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory Input   </p>
+            <p>For record created by System -Updated as "0"</p>
+        </desc>
+</t>
+<t>
+<field>SWIFT.CODE</field>
+<desc>
+            <p>ID for this application is 8 or 11 character BIC code.</p>
+            <p>Id can be created with 8 Characters BIC code for a Bank so as to use the same limit for all its branches.</p>
+        </desc>
+</t>
+<t>
+<field>AVAILABLE.LIMIT</field>
+<desc>
+            <p>Specifies the Amount available for the Sender of MT103 as identified by the Id of this record.</p>
+            <p>The amount is arrived with the difference between Original.Amount and Utilised.Amount.</p>
+            <p>When Available.Limit is ZERO, then Incoming MT103 message is put to Hold.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input.   </p>
+            <p>Updated by System during MT103 Inward Processing.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>Defines the Currency in which all the amount fields specified as part of this Limit will be identified.</p>
+            <p>Original.Amount, Utilised.Amount, Available.amount are denoted in this Currency.</p>
+            <p>Incase the Incoming MT103 message has different currency from the currency specified here, then limit amount is converted into this currency by using the Exchange rate as applicable for the Currency.market as specified in ER.PARAMETER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory   </p>
+            <p>Should be a valid record in CURRENCY application</p>
+        </desc>
+</t>
+<t>
+<field>EXPIRY.DATE</field>
+<desc>
+            <p>Specify the Date on which this limit Expires. This is the date on which the Limit will no longer be available even when the Available.Limit is greater than Zero and any Payment message (MT103) received after this date, FT is moved into INAU status.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>6 to 11 Type D (date) Characters.   </p>
+            <p>Date entered should be greater or Equal to System date</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.ACTIVE.Y.N</field>
+<desc>
+            <p>Specify whether or not the Limit details as specified here is available for Use during Correspondent Cover Limit Processing..</p>
+            <p>The availability flag must be set by the User when a Limit is created. It can be changed thereafter to either "Y" or "N". </p>
+            <p>If Inward MT103 payment message is received after this flag is set to "NO" then Correspondent Limit checking will be skipped and message is processed normally.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory Input   </p>
+            <p>Valid values "Y" Or "N"</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FX</product>
+<table>FX.BULK.ORDER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Bulk orders enable an account officer to request the purchase and sale of currency on behalf of several clients in a single order.</p>
+            <p>The account officer defines the type of transaction (Spot or Forward), the value date and the currency bought and sold by the bulk order. Then the account officer lists the clients who are using the bulk order, with the amount of currency to buy or sell for each client.</p>
+            <p>When the bulk order is authorised, </p>
+            <p>T24 </p>creates an <p>FX.ORDER</p>. The treasury department and back office use this to add further information including points and settlement instructions. When the <p>FX.ORDER</p> is authorised, <p>T24 </p>creates the required Foreign Exchange deal on the bank side and the individual deals for each client.  <p>Note that the </p><p>EB.PHANTOM</p><p>FX.BULK.OFS</p> must be running. To start the phantom, use the application <p>EB.PHANTOM</p> with function "Verify" on the record named <p>FX.BULK.OFS</p>. </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>FX.ORDER.REFERENCE</field>
+<desc>
+            <p />
+            <p>If this FX.BULK.ORDER has been pooled under any FX.ORDER, the ID of that FX.ORDER is shown here</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>It     is a noinput field</p>
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>TOTAL.BOUGHT.AMT</field>
+<desc>
+            <p>This is the total of all the </p>
+            <p>AMOUNT.BOUGHT</p> amounts on the order.  <p><p>Validation Rules:</p></p><p /><p>NOINPUT</p></desc>
+</t>
+<t>
+<field>TOTAL.SOLD.AMT</field>
+<desc>
+            <p>This is the total of all the </p>
+            <p>AMOUNT.SOLD</p> amounts on the order.  <p><p>Validation Rules:</p></p><p /><p>NOINPUT</p></desc>
+</t>
+<t>
+<field>CURRENCY.SOLD</field>
+<desc>
+            <p>This field is mandatory and contains the currency code of the currency which is sold. The code can be entered in one of two formats: </p>
+            <p>1) Alpha format - three alpha characters as defined in the currency table.</p>
+            <p>2) Numeric format &amp;#150; currencies may therefore be given a numeric ranking between 1 and 999 on the Currency table.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>3 characters (uppercase alpha) - type SSS or 1-3 numeric characters</p>
+            <p>The currency code entered must appear on the </p>
+            <p>CURRENCY</p>     table   <p>Mandatory input</p><p>Currency bought and Currency sold may not have the same country identification (first     two letters of currency code)</p><p>Dealing between LU'X' and BE'X' currency codes is prohibited. </p></desc>
+</t>
+<t>
+<field>CPY.CORR.ADD</field>
+<desc>
+            <p />
+            <p>Identifies the bank to which the counterparty wishes the amount sold to be paid and forms part of a set of associated fields. </p>
+            <p />
+            <p />
+            <p>If the bank is known to us (i.e. a customer record exists), details should be entered in the CPARTY.CORR.NO field. If not, the address should be entered in this multi-valued field. </p>
+            <p />
+            <p />
+            <p>If</p>
+            <p />OUR.ACCOUNT.PAY is a Nostro Account, either CPARTY.CORR.NO or CPY.CORR.ADD has to be mandatorily inputted <p /><p><p>Validation Rules:</p></p><p /><p>Up     to 4 lines of 35 character narrative. Subvalue field associated with field     range CUTOMER.ID to CPY.CORR.ADD.</p><p>Input     is not allowed when a correspondent number has been entered. </p><p>Input     is allowed only when Our Account Pay is a Nostro account.</p><p /></desc>
+</t>
+<t>
+<field>COVER.BULK.ID</field>
+<desc>
+            <p>The </p>
+            <p>COVER.BULK.ID</p> contains the <p>FX.BULK.ORDER</p><p>ID</p> of the bulk order to be covered.  <p>To cover an </p><p>FX.BULK.ORDER</p> you should use <p>FX.BULK.ORDER COVER</p>. You can only cover bulk orders that have been fully executed (FX transactions created). The fields on the <p>FX.BULK.ORDER,COVER</p> record are automatically filled with the values from the bulk order that is being covered. The buy and sell currencies and amounts are swapped. The transaction type and value date default to Spot.  <p><p>Validation Rules:</p></p><p /><p /><p>10 numeric characters, prefixed by FXT: FXTyydddnnnnn</p><p /><p>NOINPUT</p></desc>
+</t>
+<t>
+<field>DEAL.TYPE</field>
+<desc>
+            <p>Identifies the type of the Foreign Exchange deals to be created. The application handles only two different types: SP = Spot, or FW = Forward.</p>
+            <p>Spot deals involve the immediate exchange of one currency for another. The validation process will verify that the value date of the contract does not exceed the number of working days defined in the field </p>
+            <p>SPOT.INTERNAL</p> on the <p>FX.PARAMETERS</p> table.   <p>Forward contracts refer to the buying and selling of foreign currency at future exchange rates for delivery in the future, i.e. at a date greater than the locally defined spot date. The period varies but usually would be for one, two, three, six, and twelve months hence. When the value date of the contract exceeds the number of working days defined on the </p><p>FX.PARAMETERS</p> table in the field <p>SPOT.INTERNAL</p>, the contract will be considered as forward.   <p><p>Validation Rules:</p></p><p /><p>1 or 2 alpha characters; SP or FW</p><p>The field cannot be changed after authorisation of the contract. </p></desc>
+</t>
+<t>
+<field>BUY.OR.SELL</field>
+<desc>
+            <p>Defines whether the transaction defined by this multi-value set is a BUY or a SELL transaction.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Buy or Sell</p>
+            <p>NOINPUT</p>
+        </desc>
+</t>
+<t>
+<field>DEALER.DESK</field>
+<desc>
+            <p>Identifies the dealer desk position which needs to be updated by the deals being created. The dealer desk code is held on the position record so that the exchange position can be displayed at dealer desk level. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>2 alphanumeric character dealer code in the range A-Z, a-z, plus 0-9</p>
+            <p>Optional input; default = dealer desk defined on the user profile</p>
+            <p>The code entered must appear on the </p>
+            <p>DEALER.DESK</p>     table   <p>When entering an internal deal, the dealer must be different from the one entered in the     counterparty field.</p></desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>Indicates the transaction value date. The liquidation of the Foreign Exchange contract will take place on the </p>
+            <p>VALUE.DATE</p>.   <p>This date will be compared with the deal date to identify if the deal is a spot or forward contract. The classification of the deal as 'Spot' or 'Forward' will depend on the number of days defined in the field </p><p>SPOT.INTERNAL</p> on the <p>FX.PARAMETERS</p> table.   <p>To ease user input, the following abbreviations will also be allowed: </p><p /><p>T = Today </p><p>TO = Tomorrow </p><p>S = Spot date as defined in the field Spot Market on the </p><p>FX.PARAMETERS</p>     table.    <p /><p>NNA = Where NN is the number of days or months and A is either 'D'     for calendar days, 'W' for working days or 'M' for months.</p><p /><p>Examples: 10D = 10 calendar days forward (from Spot) 10W = 10 working     days forward (from Spot) 6M = 6 months forward (from spot) </p><p><p>Validation Rules:</p></p><p /><p>The date may be entered in the standard date format or as one of the abbreviations     explained in the details</p><p>Input is mandatory for forward deals; otherwise input is optional</p><p>A date less than today is not allowed except for Spot deals. Where the date entered is     more than one day back value or more than one year forward value, an override is required</p><p>The date must be reasonable for the type of deal. In other words the validation process     will check the deal date with the contract value date and compare the number of days with     the value defined in the field </p><p>SPOT.INTERNAL</p> on     the <p>FX.PARAMETERS</p> table. The deal type (FW or     SP) must then be in agreement with the value defined in the table   <p>The date must be a working day in the country (region '00') of the currency being traded</p><p>The value date cannot be earlier than the deal date</p><p>The value date must not be earlier than the permitted maximum back-value period. </p></desc>
+</t>
+<t>
+<field>OUR.ACCOUNT.PAY</field>
+<desc>
+            <p />
+            <p>Identifies the account through which the currency sold by us is to be settled and forms part of a set of associated field range Customer.ID to Cpy Corr Add</p>
+            <p />
+            <p />
+            <p>After a deal has been struck, the two parties must decide where the currency bought is to be received and where the currency sold is to be paid. This field is used to identify which account in our books will be credited to remit the currency sold. </p>
+            <p />
+            <p />
+            <p>When no input has been entered in this field, the system will proceed as follows: </p>
+            <p />
+            <p />
+            <p>a) In the first stage, the FOREX application will check in the internal file CUSTOMER.CCY.ACCT. If the counterparty with whom the bank is making the deal has an account in that currency (i.e. currency sold). If yes, this customer account will then be credited. If the counterparty does not maintain an account in the sale currency with the bank, </p>
+            <p />
+            <p />
+            <p>b) The FOREX application will then, in the second stage, find in the table NOSTRO.ACCOUNT the relevant Nostro account for the currency being sold. If this account exists on the Nostro table, it will then be used to record the credit accounting entry. If at the Nostro table more than one Nostro exists per currency, the system will default to the first account listed. However, the user has the ability to select which Nostro account by entering 'A' to give the first, 'B' to give the second and so forth. If no account is defined on the Nostro table, </p>
+            <p />
+            <p />
+            <p>An input of a customer account which does not pertain to the counterparty will request an override except if the account is a Nostro account. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard     numeric account number or 3-10 character Account Mnemonic (uppercase     alphanumeric or .) - type MNE or 6-12 character Internal Account Number     (uppercase alpha or numeric) - type SS or 1 alphabetic character selecting a     default Account from the NOSTRO.ACCOUNT table or 1 numeric character     identifying a text number on the FX.TEXT table. (Optional input; see default     in details)</p>
+            <p>If     entered as an account number or mnemonic, the account must be present on the     accounts file and must be in the appropriate currency. </p>
+            <p>An     override is required where the account is not an account of the counterparty     unless a nostro is specified</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.ID</field>
+<desc>
+            <p>This field contains a counterparty with whom a transaction will be made. </p>
+            <p>It is a multi-value field. There is usually more than one customer on a </p>
+            <p>FX.BULK.ORDER</p>.  <p>Any counterparty existing on the Customer file will be accepted. The customer can be entered as a number or mnemonic. The liability number assigned to this counterparty in the customer file will be used for the limit checking. </p><p><p>Validation Rules:</p></p><p /><p>1-6 numeric characters (customer number) or 3-10 uppercase alphanumeric characters     (customer mnemonic)</p><p>Input in this field is mandatory</p><p>Must be the key to a valid entry on the </p><p>CUSTOMER</p>     fileMulti-value field.  </desc>
+</t>
+<t>
+<field>ACCOUNT.OFFICER</field>
+<desc>
+            <p>Identifies the account officer responsible for the relationship with the customer. This information will be used by the Management Information System (MIS) for the determination of the Customer Profitability Analysis.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-4 digit numeric field</p>
+            <p>The Account Officer Code must appear on the </p>
+            <p>DEPT.ACCT.OFFICER</p>     table.   </desc>
+</t>
+<t>
+<field>AMOUNT.BOUGHT</field>
+<desc>
+            <p>Contains the amount of the </p>
+            <p>CURRENCY.BOUGHT</p> being bought.  <p>Note that it is not related to the </p><p>AMOUNT.SOLD</p>.  <p>You must input either an </p><p>AMOUNT.SOLD</p> or an <p>AMOUNT.BOUGHT. </p>You cannot input both in the same multi-value set.  <p>You can input T for Thousand and M for Million. For example, 10T for 10,000.</p><p><p>Validation Rules:</p></p><p /><p>Standard </p><p>T24 </p>amount validation.    <p>The actual format will depend on the number of decimal places in the currency being     traded. The amount must be in an acceptable format for the currency (e.g. USD 1,000.123     would not be acceptable if </p><p>CURRENCY</p><p>USD</p> is defined with two decimal places.   </desc>
+</t>
+<t>
+<field>AMOUNT.SOLD</field>
+<desc>
+            <p>Contains the amount of the </p>
+            <p>CURRENCY.SOLD</p> being sold.  <p>Note that it is not related to the </p><p>AMOUNT.BOUGHT</p>.  <p>You must input either an </p><p>AMOUNT.SOLD</p> or an <p>AMOUNT.BOUGHT. </p>You cannot input both in the same multi-value set.  <p>You can input T for Thousand and M for Million. For example, 10T for 10,000.</p><p><p>Validation Rules:</p></p><p /><p>Standard </p><p>T24 </p>amount validation. The actual format will     depend on the number of decimal places in the currency being traded. The amount must be in     an acceptable format for the currency (e.g. USD 1,000.123 would not be acceptable if <p>CURRENCY</p><p>USD</p>     is defined with two decimal places.   </desc>
+</t>
+<t>
+<field>BULK.ORDER.ID</field>
+<desc>
+            <p>Identifies the bulk record.</p>
+            <p>The reference number has the following format FXTYYDDDNNNNN where: </p>
+            <p />
+            <p>FXT = Application indicator </p>
+            <p>YY = The last two digits of the year when the transaction is input </p>
+            <p>DDD = Julian day number within year when the transaction is input </p>
+            <p>NNNNN = Five digit sequential number</p>
+            <p>So: FXT0205300010 is the 10th FX Bulk Order of the 22nd of February 2002.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>10 numeric characters, prefixed by FXT: FXTyydddnnnnn (see details)</p>
+            <p>Mandatory input</p>
+            <p>If the Reference Number is entered manually during initial input, it will be validated     for uniqueness. When input, this field will only be allowed in the format specified above.     This field can never be changed.</p>
+        </desc>
+</t>
+<t>
+<field>DEAL.DATE</field>
+<desc>
+            <p>Contains the date on which the deal was made. </p>
+            <p>As this will normally be the same as the system date, entering will automatically insert this date. The date entered may not be in the future but a date of one day back valued will be allowed. Any date greater than one day in the past will require an override. </p>
+            <p>The system compares the date in this field against the value date fields or the option date (when input) to check if the deal is a spot or forward contract. The system holds the user defined spot and forward classification conditions on the </p>
+            <p>FX.PARAMETERS</p> table. The number of (working) days defined in the field '<p>SPOT.INTERNAL</p>' on this table will decide the classification of the foreign exchange contract into Spot or Forward.   <p><p>Validation Rules:</p></p><p /><p>Any accepted </p><p>T24</p> date format(Optional input; Default =     System date)   <p>The deal date must not be later than today's date</p><p>The deal date must not be later than the value date</p><p>If the deal date is earlier than one day back-valued an override is required</p><p>For a spot deal, the days difference between the deal date and the value date (or option     date when entered) must be within that specified on the </p><p>FX.PARAMETERS</p>     table in the field <p>SPOT.INTERNAL</p><p>For forward deals, the days difference between deal and value dates (or option date when     entered) must be greater than that specified on the </p><p>FX.PARAMETERS</p>     table in the field <p>SPOT.INTERNAL</p></desc>
+</t>
+<t>
+<field>SEC.ACC.NO</field>
+<desc>
+            <p>Identifies the key to the </p>
+            <p>SEC.ACC.MASTER</p> record (a customer's security account or portfolio). Made up of customer number + '-' + a unique number for each client portfolio. One Client may have several security accounts.   <p>Example: 123456-1, 123456-12 etc. </p><p>Usually the customer part would be the customer input in </p><p>CUSTOMER.ID</p> above.  <p><p>Validation Rules:</p></p><p /><p>1 - 10 numeric characters followed by '-' followed by 1-3 numeric characters</p><p>Must be the key to a valid entry on the </p><p>SEC.ACC.MASTER</p>     file   <p>The </p><p>SEC.ACC.MASTER</p> valuation.currency must be     the same as either the <p>FX.BULK.ORDER</p><p>CURRENCY.BOUGHT</p> or <p>CURRENCY.SOLD</p><p>You can only input each </p><p>SEC.ACC.NO</p>     once on a bulk order.  </desc>
+</t>
+<t>
+<field>CPARTY.CORR.NO</field>
+<desc>
+            <p />
+            <p>Identifies the bank to which the counterparty wishes the amount sold to be paid and forms part of a set of associated fields. This will either be the bank of the counterparty or the bank of their nominated beneficiary. </p>
+            <p />
+            <p />
+            <p>If the bank is known to us (i.e. a customer record exists), the customer number of the bank will be entered in this field. If not, the details should be entered in the CPY.CORR.ADD field. </p>
+            <p />
+            <p />
+            <p>If OUR.ACCOUNT.PAY is a Nostro Account, either CPARTY.CORR.NO or CPY.CORR.ADD has to be mandatorily inputted </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-6     Numeric character Customer Number or 3-10 character customer mnemonic     (uppercase alphanumeric or '.') - Type MNE Input in this field is optional.</p>
+            <p>Input     must represent a valid customer on the Customer file.</p>
+            <p>Input     in this field is not allowed when details have been entered in the     correspondent address field.</p>
+            <p>Input     is only allowed when OUR.ACCOUNT.PAY represents a Nostro account.</p>
+            <p>Input     in this field or the next one (CPY.CORR.ADD) is mandatory when     OUR.ACCOUNT.PAY represents a Nostro account.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY.BOUGHT</field>
+<desc>
+            <p>This field is mandatory and contains the currency code of the currency which is purchased. The code can be entered in one of two formats: </p>
+            <p>1) Alpha format - three alpha characters as defined in the currency table.</p>
+            <p>2) Numeric format &amp;#150; currencies may therefore be given a numeric ranking between 1 and 999 on the Currency table.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>3 characters (uppercase alpha) - type SSS or 1-3 numeric characters</p>
+            <p>The currency code entered must appear on the </p>
+            <p>CURRENCY</p>     table   <p>Mandatory input</p><p>Currency bought and Currency sold may not have the same country identification (first     two letters of currency code)</p><p>Dealing between LU'X' and BE'X' currency codes is prohibited. </p></desc>
+</t>
+</menu>
+</t24help>
+

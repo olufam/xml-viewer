@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>REPGEN.OUTPUT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>OVERVIEW FOR REPGEN OUTPUT </p>
+            <p>The module REPGEN.OUTPUT allows selection of a report for print or display on the screen.  It also contains the definition of the language (code) in which the report headers, titles and labels must be printed.  It provides for extra copies to be printed and the definition of a special page length for the printing of the report.  The work file between the Sort and Printed can be requested to be deleted. </p>
+            <p>The ID of the file is a user-defined name or the report name itself.  If both print and display is required and/or different languages need to be output, the use of an ID different to the report is mandatory and the report name becomes an attribute in field 3. </p>
+            <p>The language formats, i.e. the definition of the languages used and the corresponding descriptions and headers need to be defined in the file REPGEN.CREATE. </p>
+            <p>The output definitions can be entered on-line for an on-line print or display of the report.  The required minimum input is a key, (which is necessary for the execution of the print or the display of the report and can be used each time a request is entered), the execution type (print/display) and the report name. </p>
+            <p>The file type of REPGEN.OUTPUT is "W" (workfile) and therefore has a live version only. </p>
+            <p>The output definition can be done as maintenance task only, using function "I" (input) or the C(copy) function or as definition and execution task combined using the function "V".  If first defined under "I", later execution on-line must also be triggered using the "V" function. </p>
+            <p>If the report needs to be produced as part of the end of day, then a REPGEN.OUTPUT record, for the report, must still exist.  The name given to the REPGEN.OUTPUT record must then be entered as a data item in an appropriate BATCH record and there must be a REPGEN.SORT record with the same name. </p>
+            <p>An appropriate Batch record is one that: </p>
+            <p>(i)    has a batch job (Field 6) of Batch record that       will call upon the report generator and accept       'data' in the form of a REPGEN.OUTPUT record       (Field 11.1.1 of the BATCH.RECORD). </p>
+            <p>      e.g. EB.PRINT </p>
+            <p>(ii)   Is to be executed at the desired stage in the       end of the day run. </p>
+            <p>      e.g. before or after the date change. </p>
+            <p>If the REPGEN.CREATE record has been updated since the last run of REPGEN.SOURCE, an override message will be output. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>SPECIAL.PRINT.LEN</field>
+<desc>
+            <p>Indicator for the number of print lines in the report. </p>
+            <p>If no value is input a default of 66 lines is assumed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 numeric characters with values from 12 to 72 or blank. (Optional Input). No input is allowed if Field 2 is equal to DISPLAY.</p>
+        </desc>
+</t>
+<t>
+<field>KEY</field>
+<desc>
+            <p>Identity or key for the output definition of the report name in Field 3. </p>
+            <p>The key of this file can be the same as the REPORT NAME (field 3) if the request for display or print is made on-line, where the key is only valid for a single execution.  The same is true for an end-of-day report generation if only print or display </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 (S.W.I.F.T) characters. (Mandatory Input). is required and only one language is used.  If, however, combinations of output type and language are required for the same report name, then use of a key specific to the combination is required.</p>
+        </desc>
+</t>
+<t>
+<field>DISPLAY.OR.PRINT</field>
+<desc>
+            <p>Indication whether the report requested for production is to be printed or directed to a screen. </p>
+            <p>If both, print and display are required, the report output request for a given report name has to be defined twice, i.e. under two unique keys. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid input is: DISPLAY or D PRINT or P (Mandatory Input).</p>
+            <p>Display cannot be requested for a REPGEN.CREATE record which has field 3 USING.132.COLUMNS set to 'Y'.</p>
+        </desc>
+</t>
+<t>
+<field>REPORT.NAME</field>
+<desc>
+            <p>Name of the report for which the output request is made. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 15 type A (alphanumeric) characters. (Mandatory Input). The report name must be a valid key of the file REPGEN.CREATE.</p>
+        </desc>
+</t>
+<t>
+<field>NO.OF.EXTRA.COPIES</field>
+<desc>
+            <p>Indicates the number of extra print copies to be produced. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Numeric characters with value 1 to 9 inclusive or blank. Optional Input. Must be blank if DISPLAY OR PRINT is set to DISPLAY.</p>
+        </desc>
+</t>
+<t>
+<field>SPECIAL.LANGUAGE</field>
+<desc>
+            <p>The language (code) in which the report headings and descriptions must be printed or displayed. </p>
+            <p>If no language code is input, the language code of the user working in "V" function mode is taken. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 numeric characters. (Optional input). If input, the language code must be a valid ID of the file language.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.TIME.COMPILER</field>
+<desc>
+            <p>Indicates the date and time that REPGEN.SOURCE was last run for the REPGEN.CREATE record in field 2. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Displayed as Date followed by Time. Held as 6 characters Date and 4 characters time in the format YYMMDDHHMM. External maintained.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.TIME.SORT</field>
+<desc>
+            <p>Indicates the date and time that this sort was last run. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 15 type A (alphanumeric) characters. (Mandatory Input).</p>
+        </desc>
+</t>
+<t>
+<field>DELETE.SORT.FILE</field>
+<desc>
+            <p>Indicates whether the work file between the sort and print routines is to be deleted after producing the report. </p>
+            <p>If the contents of the report are sensitive it maybe necessary to Delete the sort file as soon as the report has been produced in which case this field is to be set to 'Y'. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid values are 'Y' - Yes delete file blank - Do not delete file. Optional Input.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Free format description of the output request definition. </p>
+            <p>The description field is internal to this file is  not part of any output. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-999 lines of 35 type A (alphanumeric) characters. Multivalue field. (Optional Input).</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

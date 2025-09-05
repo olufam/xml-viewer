@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DE</product>
+<table>DE.FORMAT.PRINT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>FORMAT PRINT (DE.FORMAT.PRINT) OVERVIEW</p>
+            <p>Each record on the Delivery Format Print table defines a format for a printed document.  It is possible to define different formats so that a document can be printed in different versions or languages as required by particular customers.  Their use is controlled by the Delivery Product file.</p>
+            <p>The individual items on a document layout may be defined so that when printed they pick up data from:</p>
+            <p>The Translation Table (Replaces codes by descriptive phrases, see    CONVERSION.)</p>
+            <p>The Delivery Address File (Names and addresses of Companies and    Customers, see CONVERSION.)</p>
+            <p>The Words Table (Converts numeric digits to words, see CONVERSION.)</p>
+            <p>Items may also be defined as:</p>
+            <p>The results of simple calculations using various components of a    message.</p>
+            <p>Totals of other items in a message.</p>
+            <p>Printer attributes from the printer attributes table to change fonts    or character sizes etc. Even simple graphics can be included in    messages as logos and letterheads depending on the printer being used.</p>
+            <p>Headings, footings, or other fixed text may be defined, for the entire document, first page only, or for all pages except the first.</p>
+            <p>Headings can be printed dependent on a field being present, therefore, if the field is absent the heading will not be printed.</p>
+            <p>A field can subsequently be printed in the same position as text.  If the field is not present text will be printed but if present it will overwrite the text.</p>
+            <p>All fields on Format Print (except Description and Form Type) form a multivalue set describing the formatting of an individual field for printing.</p>
+            <p />
+            <p>Language Translation</p>
+            <p>It is possible to define for each type of printed message a separate Format Print record for each language defined within the system.  This enables any explicit text defined in the format to be translated for each record.</p>
+            <p>Text passed by the Application generating a message must be passed as a multi-language set.  Then, if the 'Conversion' field is 'TRANS', text for the language of the message will be picked up.  This means that an unformatted message has to include all language translations of text every time.  Therefore, where possible, the following approach should be used.</p>
+            <p>A code can be passed in a message.  Then, if the 'Conversion' field is 'TABLE', text for the language of the message will be picked up by using the code as the key to the Translation table, which contains a multi-language Description field.</p>
+            <p>When a record is authorised, the user is given the option of whether he wishes to print a sample layout or not.  The sample layout will output fields to their maximum size, without doing page break processing and will print fields of x's if they are alphanumeric or 9's if they are numeric. Also if a corresponding report control record does not exist one will be created. If the FORM.TYPE changes then the REPORT CONTROL record will then be rebuilt.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>LINE(S)</field>
+<desc>
+            <p>Fields LINE(S) to PAGE OVERFLOW form a related multi value set. Standard T24 alphanumeric field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input.</p>
+            <p>A maximum of 7 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>ID</field>
+<desc>
+            <p>Identifies this print format.</p>
+            <p>The Application Format to be used when looking up the DE.FORMAT.PRINT file to format a message is placed in the Message Header by the Mapping routine, having previously been set up by the Banking Application. It distinguishes functionally different messages that share the same SWIFT message type.</p>
+            <p>Example:</p>
+            <p>All Money Market confirmations for fixed maturity deposits are Message Type 320, so for printing purposes Application Format is set to:</p>
+            <p>30 for a new deposit with us, 75 for a new placement by us with a customer, 230 for a change to a deposit, etc.</p>
+            <p>Example:</p>
+            <p>Special contract conditions might be added for a particular Customer and their use is controlled by the DE.PRODUCT file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Basic Message Type (on Message)</p>
+            <p>'.'</p>
+            <p>Application Format: Either Application Code or numeric or Application Code followed by a number. 1-6 characters of which the first two are alphabetic and the last four are numeric.</p>
+            <p>'.'</p>
+            <p>Format version number, 1-3 digits.</p>
+            <p>'.'</p>
+            <p>The language of this format.</p>
+            <p>(All parts are mandatory) Format version number is used to distinguish special layouts of what are fundamentally the same message. The message type must be on the DE.MESSAGE table. Language must be a valid language mnemonic on the LANGUAGE table.</p>
+        </desc>
+</t>
+<t>
+<field>MULTI</field>
+<desc>
+            <p>Specifies whether a field contains:</p>
+            <p>Multivalues ('M') or Subvalues ('S').</p>
+            <p>Not entered if the field contains a single value or "text", unless the field or text is required to be printed on every line alongside a multivalue set.</p>
+            <p>'M' specifies when a data item may contain multivalue elements which can     be used to fill a range of lines in LINES.</p>
+            <p>'S' indicates when a multivalue field may also contain sub-value elements     which can be used to fill a range of lines in LINES.</p>
+            <p>If a field contains multi- or subvalues and MULTI is not entered, then all values will be printed together, separated by spaces.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'M' or 'S'. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>DEPEND.OPERAND</field>
+<desc>
+            <p>Specifies how the DEPENDENT ON field is to be compared against the DEPEND.COND field in determining whether to print the FIELD/"TEXT" or not.</p>
+            <p>If DEPEND.COND is entered, this field must be present.  Valid options are as follows:</p>
+            <p>EQ   Equal            NE   Not Equal            LT   Less Than            LE   Less than or Equal            GT   Greater Than            GE   Greater than or Equal</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>EQ, NE, LT, LE, GT, GE (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Describes a printed message whose formatting is controlled by this record.</p>
+            <p>Descriptions may be entered in each of the languages defined in the LANGUAGE table.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-35 type A (alphanumeric) characters.  Multilanguage field. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>FIELDXXTEXTX</field>
+<desc>
+            <p>Fields LINE(S) to PAGE OVERFLOW form a related multi value set. Standard T24 alphanumeric field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input.</p>
+            <p>A maximum of  35 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>DEPENDENT.ON</field>
+<desc>
+            <p>Specifies that the FIELD/"TEXT" (Field 8.1) is not to be printed if the field named in DEPENDENT ON is blank or zero, or is only printed if the field named in DEPENDENT ON matches the condition specified.</p>
+            <p>This field is generally used to prevent a heading from being printed when the associated data is not present.</p>
+            <p>Example:   FIELD/"TEXT"       "PAYMENT DETAILS"            DEPENDENT ON       PAY DET            ...            FIELD/"TEXT"       PAY DET</p>
+            <p>The heading PAYMENT DETAILS is only needed if the field PAY DET contains something to be printed.</p>
+            <p>Example:</p>
+            <p>FIELD/"TEXT"    AMOUNT CALCULATION     +,TOTAL.1 DEPENDENT ON    AMOUNT FIELD/"TEXT"    "--------------" DEPENDENT ON    TOTAL.1 FIELD/"TEXT"    TOTAL DEBIT DEPENDENT ON</p>
+            <p>In the above example TOTAL.1 is not printed.  It is only used in the Dependent On field to avoid drawing a line across if there are no detail lines.</p>
+            <p>AMOUNT will not print if it contains zero because it is 'Dependent On' itself.  The 'Dependent On' parameter suppresses both blank and zero values.</p>
+            <p>TOTAL DEBIT will print if it is zero.</p>
+            <p>In addition, a field or text can be printed depending on the value of the 'DEPENDENT ON' field.</p>
+            <p>For example, print an amount in a credit or debit column according to the value of the amount.</p>
+            <p>LINE            10 COLUMN          35 FIELD/"TEXT"    AMOUNT DEPENDENT ON    AMOUNT DEPEND OPERAND  LT DEPEND COND     0 LINE            10 COLUMN          50 FIELD/"TEXT"    AMOUNT DEPENDENT ON    AMOUNT DEPEND OPERAND  GE DEPEND COND     0</p>
+            <p>In the above example, if the amount is less than 0, it will be printed in column 35. If, however, it is greater than or equal to 0, it will be printed in column 50.</p>
+            <p>Fields can only be compared to constants (and not to other fields).</p>
+            <p>The fields compared against (i.e. the DEPENDENT ON field) is the field as it was passed by the application.  If the field is dependent upon itself, the value of the field currently being processed is compared against.  The appropriate value of the field is used if the field is multivalued.  However, if a multivalue field can be printed on subsequent pages of the report, it is not possible to know the current value of the field.</p>
+            <p>Therefore, a field which is printed in the format can be prefixed with a '*' to compare the current value of the field.  If printing a field dependent on a field prefixed with an asterisk, it should be noted that DEPENDENT ON field is cleared down after it is printed.  Therefore, if the FIELD/"TEXT" to be printed is dependent on field which has already been printed, the DEPENDENT ON field will be null.</p>
+            <p>Example using '*' field</p>
+            <p>LINE            10-25 COLUMN          10 MULTIVALUE      M FIELD/"TEXT"    AMOUNT DEPENDENT ON    AMOUNT PAGE OVERFLOW   Y</p>
+            <p>LINE            10-25 COLUMN          20 MULTIVALUE      M FIELD/"TEXT"    AMOUNT PAGE OVERFLOW   Y</p>
+            <p>In the above example, the text 'amount' is printed if the current value of AMOUNT is present.  If the DEPENDENT ON field were specified without and asterisk the checking would not work on the second and subsequent pages.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The name of any field in the Message, (it need not be one that is being printed), or the name of any field in the Format record prefixed by '*' (i.e. it must be a field that is being printed) or TOTAL.n, where n = 1 to 9 (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>PAGE.OVERFLOW</field>
+<desc>
+            <p>Specifies if this field can be allowed to overflow onto the next page.</p>
+            <p>If a field overflows a page when PAGE OVERFLOW (Field 13.1) is set to NO, the message is sent to the Repair Queue.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'Y' or 'NO' (Optional input, default 'NO'.)</p>
+        </desc>
+</t>
+<t>
+<field>LINE.S.</field>
+<desc>
+            <p>Specifies how far down a page an item defined in FIELD/"TEXT" (Field 8.1) should be printed.  It gives either an explicit line number or the line number relative to the last item printed.  Additionally it is possible to specify the highest line number that this item may be printed on or (for multi- or subvalued fields) the maximum number of lines to print.</p>
+            <p>This field contains:</p>
+            <p>1)         Either:</p>
+            <p>a)   The line number (counting from 1 at the top of the                 page) on which to print. Example: 1 (Print at the                 top of the page.)            or</p>
+            <p>b)   The relative line position: the number of lines to                 move down the page from the last item printed.                 Example: +2 (Miss 1 line after the last item then                 print on next line.)</p>
+            <p>2)         '-'</p>
+            <p>3)         Either:</p>
+            <p>a)   The highest line number to be used. Example:                 +1-55 (Print on the next line, but not if line is 56                 or higher.)            or</p>
+            <p>b)   '+' and the maximum number of lines to be printed.                 Example: +0-+5 (Print on the same line as the last                 item, then print subsequent multi- or subvalues                 on the following lines, but do not print more than                 5 lines.)</p>
+            <p>Part 1 is always required but parts 2 and 3 which are specified together are optional. Note:  When part 1 b) in the above details is used it differs from part 3 b) as follows:</p>
+            <p>'+' before the first number means that it specifies a            displacement of the given number of lines from the            previous field printed.</p>
+            <p>When the second number is preceded by '+' it specifies            the maximum number of lines to be printed, not the            maximum displacement from the previous field position.</p>
+            <p>Examples: 02         Print on line 2. +2         Print 2 lines down from the last item printed. (Miss 1            line.) +0         Print on the same line as the last item. 1-10       Start printing on line 1, put the next multivalue on line            2, ... put the 10th value on line 10, if that many exist.            If more than 10, page overflow will occur. +2-55      Start printing 2 lines down from the last item printed and            do not print past line 55.  If the previous item was            printed on line 54 or more, this item will overflow            immediately onto the next page. +4-+2      Start printing 4 lines down from the last item printed and            do not print more than 2 lines.</p>
+            <p>+2-+4 then +0-+4 for the next item.  This can be used to print a single or multivalue item alongside a 4-line multivalue set but they must specify the same number of lines. +1    then +1 then +0.  If the second item has a Dependent On field this causes it not to print, and the third item will still print one line down from the first item.  Any zero displacements and the preceding non-zero Line are regarded as a set.</p>
+            <p>If the number of multivalues or subvalues in a field exceeds the number of lines specified then page overflow is required.  If the PAGE OVERFLOW (Field 13.1) is set to 'NO' the message will be placed on the Repair Queue.  Once an item has overflowed nothing else with a relative line position will be printed on that page unless it has 'Heading' set to 'B' or 'S'.</p>
+            <p>Example:   LINE(S)         3-55            FIELD/"TEXT"    AMOUNT            LINE(S)         +2            FIELD/"TEXT"    TOTAL</p>
+            <p>If AMOUNT needs to go beyond line 55 page overflow will occur. TOTAL, which has a 'relative' line specification will not print until all the values of AMOUNT have printed, even though TOTAL is allowed to print past line 55.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>a)   '+' (Optional) b)   1-2 numeric characters (Mandatory) c)   '-' (Optional) d)   '+' (Optional with part c, otherwise not allowed.) e)   1-2 numeric characters (Mandatory with part c, otherwise not allowed.)</p>
+            <p>Fields must be defined sequentially down a page.</p>
+            <p>Fields printed alongside each other must have the same number of lines specified, even if one is a single value and the other a multivalue set.  The single value will need to have a range of lines specified, but 'MULTI' will be left blank so that it only prints once.</p>
+            <p>Line number must not be greater than the form depth specified in DE.FORM.TYPE file.</p>
+        </desc>
+</t>
+<t>
+<field>FIELD-TEXT</field>
+<desc>
+            <p>Fields LINE(S) to PAGE OVERFLOW form a related multi value set. Standard T24 alphanumeric field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input.</p>
+            <p>A maximum of  35 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>INDENT</field>
+<desc>
+            <p>Specifies the positioning of a field across a page, expressed as character position across a print line (starting from 1).</p>
+            <p>Unless a Mask is specified printing will be left justified so that it begins printing at the point specified in INDENT.</p>
+            <p>Fields to be printed must all be defined in sequence down a page, but fields may be superimposed across a line so that when one is not present another will show.</p>
+            <p>When a field is positioned on a print line it starts from the character position defined by Indent then, regardless of the length of the field, the gap between the end of the field and the end of the print line is set to blanks.  This has the advantage that a short field may optionally be used to overwrite a long field, but it does mean that variables cannot be inserted into text.</p>
+            <p>Example:</p>
+            <p>Suppose the following text has been defined:</p>
+            <p>"Interest will be on a XXXXXXX day basis."</p>
+            <p>XXXXXXX cannot be successfully overwritten with the appropriate field name, such as INTEREST BASIS, because in the above example the words 'day basis' would be blanked out when the INTEREST BASIS field was put in. Therefore, in this example, three fields must be defined:</p>
+            <p>"Interest will be on a" followed by the field INTEREST BASIS   e.g. 365 followed by     "day basis."</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric characters. (Mandatory input)</p>
+            <p>INDENT must not exceed the width of the FORM.TYPE specified for this format.</p>
+        </desc>
+</t>
+<t>
+<field>FIELD..TEXT.</field>
+<desc>
+            <p>Specifies an item to be printed, which must be one of the following: a)   A field name. b)   Text, enclosed in quotes. c)   A total accumulated during Formatting. d)   Page number. e)   Today's date. f)   Current time of day. g)   The address the message is being sent to. h)   The delivery reference of the message being printed. i)   A printer attribute controlword</p>
+            <p>Generally the field name must be part of message details, but To Address can be printed from the Message Header.  As well as the banking application data, and constant text (such as headings), totals and calculated values can also be printed.  These have Field Names of TOTAL.n (where n is 1 to 9).</p>
+            <p>Text may be specified in the following ways:</p>
+            <p>i)         It can be defined in the same place as an optional field in            a message to act as a default and will only appear when            that field is not present. ii)        It can have its DEPENDENT ON (Field 12.1) set up if            another field is present, e.g. a title can be omitted if its            related data is blank or zero. iii)       It only prints if a message is a copy. (See the value            'COPY' described for the CONVERSION Field 9.1.) iv)        It only prints if a message is flagged as a possible            duplicate entry.  (See the value 'DUPLICATE' described            for the CONVERSION field.) v)         " " can be used to clear the end of a line, or put a space            between two fields, but if it clears the entire line a blank            line will not be printed.</p>
+            <p>Additionally text can be specified with no CONVERSION rules and with DEPENDENT ON blank so that the text will always be printed.</p>
+            <p>Fields can be single, multivalued or subvalued.  Multivalues or subvalues that are blank will be printed as blank lines, whereas blank lines of "Text" are suppressed.</p>
+            <p>If the message is destined for a printer which supports various graphics or character attributes such as bold or underlined text these facilities can be used within delivery messages. This field may contain a link to the PRINTER.ATTRIBUTES table such as...</p>
+            <p>&amp;ATTIBOLD&amp;</p>
+            <p>Where the &amp;ATT defines the item as a printer attribute controlword, the I specifies initiation of the attribute (the converse is R to reset the attribute), and the 'BOLD' is a description of the function of the attribute. This is converted at printing time to an escape sequence to invoke the attribute for the printer concerned. The name of the attribute (eg BOLD) is prefixed with the printer type from the PRINTER.ID table and looked up on the PRINTER.ATTRIBUTES table (eg LASERJET.BOLD). If the desired attribute is not defined the controlword is ignored.</p>
+            <p>Such attribute controlwords may be inserted anywhere within the text of a message and be used and reset as many times as required. They will not be displayed on the screen when the message is viewed and will be removed from the body of the message when it is written to history or routed to another carrier.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>i)   A field name defined in DE.MESSAGE ii)  'TOTAL.1' ... 'TOTAL.9', 'PAGE.NO', 'DATE', 'TIME', 'TO.ADDRESS' or 'DELIVERY.REF', '&amp;ATTI...', '&amp;ATTR...'. iii) "Text enclosed in quotes." (Mandatory input)</p>
+            <p>Either must be on the DE.MESSAGE table record for the MSG-TYPE in Field 0 of this record, or 'TOTAL.1', 'TOTAL.2' ....  'TOTAL.9', 'PAGE.NO', 'DATE', 'TIME', 'TO.ADDRESS' or 'DELIVERY.REF' or '&amp;ATTIxxxxxx', '&amp;ATTRxxxxxx'.</p>
+        </desc>
+</t>
+<t>
+<field>MASK</field>
+<desc>
+            <p>Can be used to control the formatting of a data item.</p>
+            <p>Bn         Right adjust into a length of n by inserting blanks on the            left.  (n must not be zero.)</p>
+            <p>*n         As for Bn but place asterisks before the first significant            digit.</p>
+            <p>Zn         As for *n but placing zeros before the first significant            digit.</p>
+            <p>,          Insert commas to separate thousands.</p>
+            <p>.           Change '.' to ','.</p>
+            <p>. , or  , . Insert points to separate thousands, and use a comma for            decimals.</p>
+            <p>-          Put the sign after the amount.  (The sign normally precedes the            amount.)  '-' can only be used in conjunction with other masks.</p>
+            <p>A          Print the absolute value without a sign, even if it is            negative.</p>
+            <p>D          Print DR after the amount if it is negative.</p>
+            <p>C          Print CR after the amount if it is positive and DR if            negative.</p>
+            <p>%          Print % after the data.</p>
+            <p>00x00x000x Digits will be substituted for the zeros. Any other characters            (x represents 1 or more characters) will be printed wherever            they were in the mask.</p>
+            <p>'L'00x00x000x ) 'R'00x00x000 As above except that user specifies that format is Left or              Right justified.  If not specified the default is Right              justified. 'L'00x00x000x 'R'00x00x000xX</p>
+            <p>More than one masking parameter may be specified, separated by a space. However, 00x00x000x may not be combined with other masking parameters.</p>
+            <p>Note : Zero amounts will always be printed unless the name of the field is        entered in DEPENDENT.ON.</p>
+            <p>Examples:</p>
+            <p />
+            <table>
+                <tr>
+                    <td> Mask Entered</td>
+                    <td> Field contains 1234.67 </td>
+                    <td>
+                        <p>Field contains -1234.67</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td> *10</td>
+                    <td>***1234.67</td>
+                    <td>**-1234.67 </td>
+                </tr>
+                <tr>
+                    <td> Z10 </td>
+                    <td>0001234.67</td>
+                    <td>-001234.67 </td>
+                </tr>
+                <tr>
+                    <td> B10 -</td>
+                    <td>   1234.67</td>
+                    <td>
+                        <p>   1234.67- </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td> , - </td>
+                    <td>1,234.67</td>
+                    <td>1,234.67- </td>
+                </tr>
+                <tr>
+                    <td> .</td>
+                    <td>1234,67 </td>
+                    <td>-1234,67 </td>
+                </tr>
+                <tr>
+                    <td> B10 . , C</td>
+                    <td>  1.234,67CR</td>
+                    <td>
+                        <p>  1.234,67DR </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td> B10 , D</td>
+                    <td>  1,234.67</td>
+                    <td>
+                        <p>  1,234.67DR</p>
+                    </td>
+                </tr>
+            </table>
+            <p>The above examples show that various Masking options may be combined.  The length of 10 specified includes the comma, point and a preceding sign, but not '%', 'CR' 'DR', or a sign that follows the field. </p>
+            <table>
+                <tr>
+                    <td>Mask Entered</td>
+                    <td>Field Contains:  123456 </td>
+                </tr>
+                <tr>
+                    <td> 00-(00-00)</td>
+                    <td> 12-(34-56) </td>
+                </tr>
+                <tr>
+                    <td>"L"000-</td>
+                    <td>000012-3456 </td>
+                </tr>
+                <tr>
+                    <td>"R"000-</td>
+                    <td>
+                        <p>0000123-456</p>
+                    </td>
+                </tr>
+            </table>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Where n is 1 or more digits and x is 1 or more characters:  'Bn'  '*n'  'Zn'  ','  '.'  '-'  'C'  'D'  'A'  '%' '00x00x000x..etc. '  (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>FORM.TYPE</field>
+<desc>
+            <p>Printed form type.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-7 type A (alphanumeric) characters. (Optional input.  The system has a 'Default' form type defined on the DE.FORM.TYPE table which is used when this field is left blank.)</p>
+            <p>Must be defined on DE.FORM.TYPE.</p>
+        </desc>
+</t>
+<t>
+<field>HEADING</field>
+<desc>
+            <p>Parameter to control which page this field or text is to be printed on.</p>
+            <p />
+            <p />
+            <p>B (Banner).             Print on all pages. S (Subsequent heading). Print on all pages except the first. blank                   Print once only.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'B' or 'S'. (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>K.HEADING</field>
+<desc>
+            <p>Internal field .</p>
+            <p>Noinput</p>
+        </desc>
+</t>
+<t>
+<field>CALCULATION</field>
+<desc>
+            <p>Can be used to set a TOTAL field to zero, or to add, subtract, multiply or divide the contents of the field into a TOTAL.</p>
+            <p>Only field names TOTAL.n can be set to ZERO.</p>
+            <p>The following calculations are available for normal field names and TOTAL.n:</p>
+            <p>+,TOTAL.n  Add the contents of the field into TOTAL.n where n is 1 to 9.</p>
+            <p>-,TOTAL.n  Subtract the contents of the field from TOTAL.n, where n is 1#            to 9. *,TOTAL.n  Multiply TOTAL.n by the contents of the field (Where n is 1 to            9). /,TOTAL.n  Divide TOTAL.n by the contents of the field (Where n is 1 to            9).</p>
+            <p>Calculation +,TOTAL.n may sometimes be used to detect the presence of detail lines.  See DEPENDENT.ON.</p>
+            <p>When multiplying or dividing, the first field determines the number of decimal places.  This is not suitable for such purposes as calculating a local currency equivalent.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>CALCULATION may contain 'ZERO' only if Field Name is TOTAL.1 TOTAL.2 ... etc.  otherwise CALCULATION may contain: +,TOTAL.n -,TOTAL.n  *,TOTAL.n /,TOTAL.n  (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>COMPLETE</field>
+<desc>
+            <p>Specifies whether a set of subvalues in a multivalue field should be printed only if there is room to print all the subvalues.</p>
+            <p>If Complete contains 'Y' a multivalue field will be printed on the next page if there is not enough space to print all its subvalues on the current page.  If there will never be enough room to print all the subvalues together on a page then printing will begin on the current page.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'Y' or 'NO'. (Optional input; default 'NO')</p>
+            <p>'Y' can only be entered if MULTI is 'S'.</p>
+        </desc>
+</t>
+<t>
+<field>CONVERSION</field>
+<desc>
+            <p>Specifies the type of field conversion (if any) required.</p>
+            <p>CUS*xxxx If Field Name contains a company code, the name and address will be retrieved from the DE.ADDRESS file using an ID of Company*code.PRINT.1. If Field Name contains neither a company code nor a customer number, it will be assumed that the field contains a name and address. If Field Name contains a customer number it will be prefixed with the Cus Company from the message header and the name and address will be retrieved from the Delivery Address file. The address used will have an ID of Cus Company.C-Customer.PRINT.1</p>
+            <p>If a Customer has PRINT.2 PRINT.3 etc. addresses on file they can only be used as a To Address (an address to send a message to) and then only if the relevant Delivery Product record points to PRINT.2 or PRINT.3 etc.</p>
+            <p>CUS must be followed by one of the following parameters to control whether the full address is to be printed, or only one line.</p>
+            <p>To print the full address:</p>
+            <p>*FULL</p>
+            <p>To print a single line the same name is used as is defined in the DE.ADDRESS file:</p>
+            <p>*SHORT.NAME *NAME.1 *NAME.2 *STREET.ADDRESS *TOWN.COUNTY *POST.CODE *COUNTRY</p>
+            <p>Since PRINT.1 addresses are passed from the Customer file where the address is 4 lines instead of 6, conversions CUS*POST.CODE and CUS*COUNTRY will be blank except when printing To Address for address PRINT.2, PRINT.3 etc.</p>
+            <p>TABLE xxxx When Conversion is set to TABLE the contents of a field are used to read the DE.TRANSLATION table and the correct translation is picked according to the Language chosen to deliver a message in.</p>
+            <p>xxxx after the word TABLE (as specified above) represents a prefix to the key of the DE.TRANSLATION table. If no prefix is specified then prefix defaults to SW.</p>
+            <p>Example:</p>
+            <p>Field contains GBP Conversion is specified as TABLE Text to be printed will be found by looking up SWGBP in the DE.TRANSLATION table.</p>
+            <p>Field contains GBP Conversion is specified as TABLE CCY/ Text to be printed will be found by looking up CCY/GBP in the DE.TRANSLATION table.</p>
+            <p>If the field is a multivalue set and Conversion 'TABLE' is specified, then only an item preceded by :: will be looked up on the DE.TRANSLATION table.</p>
+            <p>Example:</p>
+            <p>If we have a multivalue set containing:</p>
+            <p>Commission amounts Identifiers to describe the amounts</p>
+            <p>The identifiers are generally commission codes which will need translating, and so must be preceded by :: but there may also be fixed text such as 'Standard Commission' which needs no conversion.</p>
+            <p>TRANS A full multi-language set of text can be passed from an Application calling Delivery. The use of TRANS will cause the print formatting module to use the Language in the Message Header to select text in the appropriate language.</p>
+            <p>DATE Translates dates into a different format depending on the parameters following DATE. DATE DD MMM YYYY (Three letter month.) DATE/F DD MMMMMMMMM YYYY (Month up to 9 letters.) DATE/S DD MM YY (2 digit month.) DATE//US MMM DD YYYY (Three letter month.) DATE/F/US MMMMMMMMM DD YYYY (Month up to 9 letters.) DATE/S/US MM DD YY (2 digit month.)</p>
+            <p>WORDS Translates numbers into words in the appropriate language. Large amounts require 2 lines, so MULTI should be 'M'. At present, amounts can only be translated into English. NOTE: Multivalue and sub-value fields cannot be translated using a conversion of words.</p>
+            <p>WORDSCCY*ccy As WORDS but will additionally append the currency name to the amount in the same language. In some languages the currency spelling may differ according to the amount.</p>
+            <p>COPY Data or text specified will only be printed if the document is a copy, ie. the message has previously been successfully formatted for printing (possibly with a different To Address). The Disposition of the original printed message must be 'Formatted' or 'ACK'.</p>
+            <p>DUPLICATE Text or data specified will only be printed if the Message Header is flagged as a possible duplicate entry, either because it has had to be formatted twice, or because the header field APP.PDE was set by the banking application that generated the message.</p>
+            <p>LINK* This conversion will allow data from a LINKED file to be used in the printed message. The current field will be used as the key to the file specified. A field, value or sub-value can be extracted, or the current language value of the field. Links should be specified as follows:</p>
+            <p>LINK*file namefield namevaluesubvalue</p>
+            <p>where</p>
+            <p>FILE.NAME is the name of the file the data is to be extracted from. This file must exist on PGM.FILE and Standard Selection.</p>
+            <p>FIELD.NAME is the name of the field from which the data is to be extracted. The field name must be defined on the STANDARD.SELECTION record and can be a data field (type 'D') or an I-Descripter (type 'I')</p>
+            <p>VALUE is the particular value to be extracted from the field. The value 'L' can be entered to signify that the correct language for that message copy is to be extracted.</p>
+            <p>SUB VALUE is the particular sub value to be extracted from the Value of the field. The value 'L' can be entered to signify that the language of the message copy is required.</p>
+            <p>LINK*filefieldnamevaluesubvalue</p>
+            <p>value and subvalue are both optional value or subvalue can be specifed as "L" to pick up the languge value of the field</p>
+            <p>CCY*xxxx This conversion will allow a numeric field to be formatted to contain the currect number of decimal places. This option may be defined for TOTAL.n fields, as well as data fields. xxxx must be defined in the associated DE.MESSAGE record, and should contain a valid 3 character currency code when mapped.</p>
+            <p>FIXEQU*xxx This conversion returns the equivalent value of an amount (e.g the Euro amount) when the currency held in the field xxx has a FIXED.CCY linked to it. The conversion takes place at the FIXED.RATE defined in the CURRENCY record. A null value is returned if there is no FIXED.CCY.</p>
+            <p>FIXCCY*xxx This returns the currency which is equivalent to the currency code held in the field xxx. The currency code is extracted from the FIXED.CCY field in the CURRENCY record. A null value is returned if there is no FIXED.CCY.</p>
+            <p>FIXRTE*xxx This returns the fixed exchange rate between the currency held in the field xxx and the FIXED.CCY, if defined, in the currency record. A null value is returned if there is not FIXED.CCY defined.</p>
+            <p>@xxxxxxx</p>
+            <p>where</p>
+            <p>xxxxxxx is the name of a user-created subroutine to carry out customised conversions. The subroutine must exist in PGM.FILE as a type S record. The arguments used in calling the subroutine are xxxxxxx(IN.FIELD, HEADER.REC, MV.NO, OUT.FIELD, ERROR.MSG), where</p>
+            <p>IN.FIELD  unconverted data from calling routine</p>
+            <p>HEADER.REC  dynamic variable containing current Header record from calling routine</p>
+            <p>MV.NO  Current value number for carrier address (references Header record) from calling routine</p>
+            <p>OUT.FIELD  converted data from subroutine</p>
+            <p>ERROR.MSG -  text error message generated by subroutine. If this is not null on return from the subroutine, the calling program will abort the conversion and place the message in the Repair queue.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input 45 type "A" characters CUS*xxxx TABLE xxxx TRANS DATExxxx WORDS COPY DUPLICATE LINK*xxxx CCY*xxxx FIXEQU*xxx FIXCCY*xxxx FIXRTE*xxx xxxx represents a range of options, as explained in Details below. The only Conversions that can be applied to "Text" are COPY and DUPLICATE. Conversion is not allowed if FIELD/"TEXT" is "Total.n" LINK conversion is only allowed when files are Resident as defined in DE.PARM. The file name for LINK conversion must be defined on PGM.FILE as types H,U,L,T or W. The field name must be defined on STANDARD.SELECTION for the file as type I or D for LINK conversions. Conversion types CCY*xxx and FIXaaa*xxx require a valid field name in the associated DE.MESSAGE record as the second element. User-defined conversion routines must be entered with a leading @ character or they will not be recognised.</p>
+        </desc>
+</t>
+<t>
+<field>DEPEND.COND.</field>
+<desc>
+            <p>Specifies the constant value that the DEPENDENT ON field is to be compared against in determining whether to print the FIELD/"TEXT" or not.</p>
+            <p>If entered, DEPENDENT ON and DEPEND.OPERAND must be present.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-30 type A (alphanumeric) characters. (Optional input.)</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

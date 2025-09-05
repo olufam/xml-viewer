@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>AC</product>
+<table>ACCOUNT.CLASS</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This document describes the use and purpose of the ACCOUNT.CLASS table. </p>
+            <p>The standard T24 function codes (I for Input, A for Authorisation, D for Delete, etc...) are used within the ACCOUNT.CLASS Application.  However, the Reverse function (function code R) is not permitted. </p>
+            <p>This table file has two types of entries.  This first type (Account) provides the Category Code portion when building an Internal Account Number (such as Computer Suspense Account).  The second type (Class) provides the parameters required to identify a group of accounts (e.g. under a heading like NOSTRO) by matching the account details against those held in the account class record. </p>
+            <p>When the record type is ACCOUNT then the category code must be valid and in the range 10000 to 19999. </p>
+            <p>When the record type is CLASS the category and sector code fields are treated as multi value associated fields.  Either field may be null but not both at the same time.  Duplications of category and sector code combined are not allowed within one entry on the ACCOUNT.CLASS table. </p>
+            <p>List of key values used </p>
+            <p>The following are the allowed key values by Type: </p>
+            <p>TYPE - ACCOUNT </p>
+            <p>Key Value       Description </p>
+            <p>SUSPENSE        To be used when the DATA.CAPTURE system                 generates suspense entries at the end of day for                 those entries which have not been authorised. </p>
+            <p>DIFFERENCE      To be used when the DATA.CAPTURE system has                 to raise an entry to balance a batch as part of the                 end of day processing. </p>
+            <p>SUSPCREDIT/     To be used when the end of day accounting module SUSPDEBIT       raises a credit/debit suspense entry as original                 entry can not be posted due to account not                 being present or override condition has been met. </p>
+            <p>SUSPLMMCR/      To be used by the Loans and Money Market SUSPLMMDR       systems when the true account is not yet known                 for the payment entry. </p>
+            <p>SUSPFXCR/       To be used by the Foreign Exchange system when SUSPFXDR        the true account is not yet known for the                 payment entry. </p>
+            <p>EXCHADJ         To be used by the Forex system when posting the                 amount of unrealised profit and loss produced by                 the revaluation of Foreign Exchange contracts. </p>
+            <p>EXCHALFWD       Used to post the P &amp; L produced by the                 revaluation and contingent balances in a value                 dated accounting system. </p>
+            <p>RESFWDCR/       To be used by the Forex system when posting the RESFWDDR/       interest accruals on Foreign Exchange contracts RESSWAPCR/      using the straight line or Interest revaluation RESSWAPDR       method. </p>
+            <p>BROKER          Used to identify the provision account to be used                 to book the brokerage. </p>
+            <p>NETTING         To be used when the NETTING sub-system generates                 suspense entries for transations that will have                 net payments. </p>
+            <p>FXCCYPOS        Used when generating reserve account numbers                 for forward FX deals with position amortisation. </p>
+            <p>TYPE - CLASS </p>
+            <p>Key Value       Description </p>
+            <p>NOSTRO          Used to identify an account as being classified as                 a nostro account. </p>
+            <p>BRANCH          Used to identify an account as belong to a branch                 of Company processed. </p>
+            <p>BANK            Used to identify an account as belong to a Bank. </p>
+            <p>VOSTRO          Used to identify an account as being classified as                 a vostro account. </p>
+            <p>SAVINGS         Used to identify accounts which are classified as                 savings accounts. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>RECORD.TYPE</field>
+<desc>
+            <p>Identifies the Type of record being specified. </p>
+            <p>The value entered indicates the use of the record as follows: </p>
+            <p>ACCOUNT    The record provides the category code for the internal account            number. </p>
+            <p>CLASS      The record provides the details for identifying a group of            accounts. </p>
+            <p>P&amp;L        The record allows definition of Profit and Loss categories. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 type AAA (alpha A-Z, a-z) values only, ACCOUNT or CLASS. (Mandatory input)</p>
+            <p>When the value is ACCOUNT then the key value must be one of the following:  DIFFERENCE    SUSPENSE EXCHADJ       SUSPFXCR INTERCO       SUSPFXDR SUSPCREDIT    SUSPLMMCR SUSPDEBIT     SUSPLMMDR PLCLOSE       BROKER RESFWDCR      RESFWDDR RESSWAPCR     RESSWAPDR</p>
+            <p>When the value is P&amp;L then the key value must be one of following:  MKTEXCHCR MKTEXCHDR TTMKTEXCHCR TTMKTEXCHDR FTMKTEXCHCR FTMKTEXCHDR</p>
+        </desc>
+</t>
+<t>
+<field>AC.CLASSIFICATION</field>
+<desc>
+            <p>The account classification will uniquely identify each ACCOUNT.CLASS entry. </p>
+            <p>Specific records on the ACCOUNT.CLASS table are used by the other applications when either an account number is to be constructed or an account is to be checked for a particular group. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>11 type SSS (uppercase alpha) characters mnemonic.         (Mandatory Input) Rule: The values allowed are as         follows: </p>
+            <p>
+                <p>NOSTRO        VOSTRO             BRANCH          BANK     MORTGAGE    MGDEPOSIT     SAVINGS            SUSPENSE     DIFFERENCE   SUSPCREDIT    SUSPDEBIT         SUSPLMMCR     SUSPLMMDR   SUSPFXCR       SUSPFXDR          EXCHADJ     EXCHALFWD   RESFWDCR       RESFWDDR         RESSWAPCR     RESSWAPDR   BROKER                NETTING</p>
+                <p>     SUSPSCDR     SUSPSCCR             SCDIFF       SUSPFRACR    SUSPFRADR        SUSPFTBULK      SUSPFTINWD</p>
+                <p>     SUSPPD           SUSPSLCR            SUSPSLDR TFLC                   LCAMORT         LCDIFF     PLCLOSE          INTERCO</p>
+                <p>OFFLIMIT        UTILLIMIT</p>
+            </p>
+            <p>or any value prefixed by U- to identify a user defined class.</p>
+        </desc>
+</t>
+<t>
+<field>CATEGORY</field>
+<desc>
+            <p>Identifies the Category code part of the account number that is to be raised or the category code for the group of accounts classification. </p>
+            <p>If the RECORD TYPE (field 2) is Account then this field contains the Category code that is to be used in the account number that is to be created. If the record type is Class then this field contains the category code that is to be on an account record when the account belongs to the classification specified.  If this field is null then any category code valued is allowed on the account record. </p>
+            <p>If the RECORD TYPE is P&amp;L then this field contains the category code to which corresponding PL entries will be booked when Revaluation Credits or Debits PROFIT/LOSS. </p>
+            <p>Changes to this field for the Account Classifications RESFWDCR, RESFWDDR, RESSWAPCR and RESSWAPDR must be done by using the application FX.REVAL.PARAMETERS. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4-5 numeric character Category code. If the Account Classification is RESFWDCR, RESFWDDR, RESSWAPCR or RESSWAPDR, this field may not be changed after the record has been authorised. (Optional input)</p>
+            <p>Code entered must be on the CATEGORY table.</p>
+            <p>When the record type is ACCOUNT then the Category Code must be in the range 10000 to 19999.</p>
+            <p>When the record type is CLASS this field can be null or any valid category.</p>
+            <p>When the record type is P&amp;L then the value must be in range 50000 - 59000. Only one value is allowed.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Describes the purpose of the ACCOUNT.CLASS record. </p>
+            <p>This field can be expanded to allow the User to enter the description of the ACCOUNT.CLASS in various languages.  Each expansion of the field will correspond to a new Language as defined in the LANGUAGE Table and will indicate to the user the Language in which the Description must be entered. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-35 type A (alphanumeric) characters. Multilanguage field. Multivalue field. Mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>SECTOR</field>
+<desc>
+            <p>When RECORD.TYPE is CLASS this is the sector code for the group of accounts classification. </p>
+            <p>If the RECORD.TYPE type is CLASS then this field contains the sector code that is to be on the customer record when the account belongs to the classification specified. If this field is null then any sector code valued is allowed on the customer record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-4 numeric character Sector Code. (Optional input)</p>
+            <p>When the RECORD TYPE (field 2) is ACCOUNT or P&amp;L then this field must be null.</p>
+            <p>When the record type is CLASS then this field can be either null or a valid sector code on the SECTOR file (Ref: Customer).</p>
+            <p>When the record type is CLASS the category and sector code fields are treated as multi value associated fields.  Either field may be null but not both at the same time.  Duplications of category and sector code combined are not allowed.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

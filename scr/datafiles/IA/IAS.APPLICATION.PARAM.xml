@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>IA</product>
+<table>IAS.APPLICATION.PARAM</table>
+</header>
+<overview>
+<ovdesc>
+
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>BALANCE.FLD.LCL</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>REV.ROUTINE</field>
+<desc>
+            <p>This is the nameof the routine which will be called if the Status of the contract changes to 'REV'- i.e. it is reversed. This routine will have 8 parameters as follows in the same order :</p>
+            <p>APPLN,TRAN.ID,APPLN.REC,RECORD.ID,BASE.APPLN.REC,PASS.CONTRACT.BALANCES,</p>
+            <p>PRODUCT.GROUP,PRODUCT.GROUP.REC</p>
+            <p>where APPLN  -   The Application to which the contract being processed belongs - this will be the  BASE.APPLICATION , if there is one specified.</p>
+            <p>TRAN.ID - this is the Id of the contract being processed.</p>
+            <p>APPLN.REC - the contract record.</p>
+            <p>RECORD.ID - the Base Key Id , if any - else Blank</p>
+            <p>BASE.APPLN.REC - the Base Application Record, if any - else Blank..</p>
+            <p>PASS.CONTRACT.BALANCES - this is an Input / Output Parameter - which will contain the modifed contract balances record.</p>
+            <p>PRODUCT.GROUP - the ID of the IAS.PRODUCT.GROUP picked up.</p>
+            <p>PRODUCT.GROUP.REC  - the PRODUCT.GROUP record of the contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a valid Subroutine - i.e. should have a PGM.FILE entry of type S.</p>
+            <p>40 digit Alphanumeric Input.</p>
+        </desc>
+</t>
+<t>
+<field>CALC.ORDER</field>
+<desc>
+            <p>This field holds the order in which IAS.AMOUNT.TYPES are to be calculated.</p>
+            <p>This field is associated with IAS.AMOUNT.TYPE</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Can hold maximum 3 char</p>
+            <p>Optional field</p>
+        </desc>
+</t>
+<t>
+<field>BUILD.AMT.RTN</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>MAP.ACTION</field>
+<desc>
+            <p>This multivalue field along with the fields - BALANCES.FIELD and MAP.ACTION is used to specify the mapping of information from the underlying contract to the corresponding Contract Balances record.</p>
+            <p>This field will define when the mapping is to take place.Depending on the value in this field , mapping takes place either at the authorisation stage when a contract is first Input (MAP.ACTION = BUILD) or later anytime when the contract is modified (MAP.ACTION = MODIFY)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be either BUILD / MODIFY.</p>
+        </desc>
+</t>
+<t>
+<field>TRIGGER.UPD.AT.AUT</field>
+<desc>
+            <p>A Y / N field to indicate if the contract balances record is to be built when a contract is input or not. If this field is set as 'Y', then the contract balances record will be built at authorisation stage</p>
+            <p>            If this flag is set to 'N' then the contracts Input are written into the IAS.CONTRACTS.PENDING file and the contract balances record for those contracts will be built at EOD. The user can also choose to build the contract balances record for such contracts adhoc using the Verify Template IAS.BUILD.CONT.BALANCES.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A Y / N field.</p>
+            <p>Mandatory Input.</p>
+        </desc>
+</t>
+<t>
+<field>RATE.FIELD</field>
+<desc>
+            <p>This field contains the name of a field from the BASE application which forms the key for this rate type</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a valid field from the BASE application </p>
+            <p>Associated mulitvalue field with RATE.TYPE</p>
+            <p>Optional field.</p>
+            <p>Should of the format BASE*FIELD.NAME </p>
+            <p>If  field name is alone entered , then defaults to the above format.</p>
+        </desc>
+</t>
+<t>
+<field>BASE.APPLICATION</field>
+<desc>
+            <p>The name of the BASE.APPLICATION which holds the information for the corresponding Contract Balances record to be built. This along with the BASE.KEY field will be used to  pick up information for the contract balances record.</p>
+            <p>         For most Applications, this will be the same as the application. This would be different in such cases as for when IAS.APPLICATION.PARAM is setup for SECURITY.TRADE - where it may be required that a Contract Balances record is generated for each of the customer in the trade - in such cases the APPLICATION would be SEC.TRADE, the BASE.APPLICAITON would be SC.TRADING.POSITION and the BASE.KEY the field CUSTOMER.NO from SEC.TRADE.</p>
+            <p>In this case the ID of the contract balances record would be the CUSTOMER.NO .</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a valid Application installed in T24.</p>
+            <p>35 character Alphanumeric Input.</p>
+        </desc>
+</t>
+<t>
+<field>CHANGE.ACT.GROUP</field>
+<desc>
+            <p>A YES / NO field to indicate if the ACTUAL.GROUP field of the contract balances record needs to overwritten with the new group calculated if any. If this field is left Blank , then it is taken as 'NO'</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>YES / NO field.</p>
+        </desc>
+</t>
+<t>
+<field>BALANCES.FIELD</field>
+<desc>
+            <p>This multivalue field along with the next 2 fields - APPL.FIELD and MAP.ACTION is used to specify the mapping of information from the underlying contract to the corresponding Contract Balances record.</p>
+            <p>For e.g. if the field CURRENCY(field 2) in the Contract Balances record is to be mapped from the field CURRENCY of the LD record, at the authorisation stage then the setup would be as:</p>
+            <p />
+            <p>9. 1 BALANCES.FIELD. CURRENCY</p>
+            <p />
+            <p>10. 1 APPL.FIELD..... MAIN*CURRENCY</p>
+            <p />
+            <p>11. 1 MAP.ACTION..... BUILD</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a valid field in the IAS.CONTRACT.BALANCES file.</p>
+        </desc>
+</t>
+<t>
+<field>CALC.ALSO</field>
+<desc>
+            <p>This field holds a IAS.AMOUNT.TYPE  which should be calaculated simultaneously along with its</p>
+            <p>associated field CALC.ORDER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Associated sub value field</p>
+            <p>Should be valid IAS.AMOUNT.TYPE </p>
+            <p>Duplicate Values are not allowed with in sub value field.</p>
+        </desc>
+</t>
+<t>
+<field>BASE.KEY</field>
+<desc>
+            <p>This field along with the BASE.APPLICATION can be used to pick up the information needed to build the contract balances record. This field will then be the Id of the contract balances record generated. This field should be a field in the Main Application , which is a key to the BASE.APPLICATION.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A valid field in the ID Application.</p>
+            <p>35 character Alphanumeric Input</p>
+        </desc>
+</t>
+<t>
+<field>MODIFY.AMT.RTN</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>RATE.TYPE</field>
+<desc>
+            <p>This field holds a valid Rate.Type which will be used for calculation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a valid RATE.TYPE</p>
+            <p>Can hold maximum of 15 chars</p>
+            <p>Associated multivalue field</p>
+            <p>Optional field.</p>
+        </desc>
+</t>
+<t>
+<field>MODIFY.ROUTINE</field>
+<desc>
+            <p>This is the nameof the routine which performs the same function as the Build Routine i.e. it will modify the static details ( such as cureency, classification etc.) of  the contract balances record  -  the contract balances fields modified by the routine will take effect only if the field is one which can be modified by an API - such as a static information field. This will be called for existing Contract Balances records , if there is a change to the underlying contract and thus allows different actions to be applied at modification as opposed to Input.This routine will have 8 parameters as follows in the same order :</p>
+            <p>APPLN,TRAN.ID,APPLN.REC,RECORD.ID,BASE.APPLN.REC,PASS.CONTRACT.BALANCES,</p>
+            <p>PRODUCT.GROUP,PRODUCT.GROUP.REC</p>
+            <p>where APPLN  -   The Application to which the contract being processed belongs - this will be the  BASE.APPLICATION , if there is one specified.</p>
+            <p>TRAN.ID - this is the Id of the contract being processed.</p>
+            <p>APPLN.REC - the contract record.</p>
+            <p>RECORD.ID - the Base Key Id , if any - else Blank</p>
+            <p>BASE.APPLN.REC - the Base Application Record, if any - else Blank..</p>
+            <p>PASS.CONTRACT.BALANCES - this is an Input / Output Parameter - which will contain the modifed contract balances record.</p>
+            <p>PRODUCT.GROUP - the ID of the IAS.PRODUCT.GROUP picked up.</p>
+            <p>PRODUCT.GROUP.REC  - the PRODUCT.GROUP record of the contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a valid Subroutine - i.e. should have a PGM.FILE entry of type S.</p>
+            <p>40 digit Alphanumeric Input.</p>
+        </desc>
+</t>
+<t>
+<field>BUILD.ROUTINE</field>
+<desc>
+            <p>This is the nameof the routine which will build the base information(mostly static) needed for the contract balances record  -  the contract balances fields modified by the routine will take effect only if the field is one whihc can be modified by an API - such as a static information field. This routine will have 8 parameters as follows in the same order :</p>
+            <p>APPLN,TRAN.ID,APPLN.REC,RECORD.ID,BASE.APPLN.REC,PASS.CONTRACT.BALANCES,</p>
+            <p>PRODUCT.GROUP,PRODUCT.GROUP.REC</p>
+            <p>where APPLN  -   The Application to which the contract being processed belongs - this will be the  BASE.APPLICATION , if there is one specified.</p>
+            <p>TRAN.ID - this is the Id of the contract being processed.</p>
+            <p>APPLN.REC - the contract record.</p>
+            <p>RECORD.ID - the Base Key Id , if any - else Blank</p>
+            <p>BASE.APPLN.REC - the Base Application Record, if any - else Blank..</p>
+            <p>PASS.CONTRACT.BALANCES - this is an Input / Output Parameter - which will contain the modifed contract balances record.</p>
+            <p>PRODUCT.GROUP - the ID of the IAS.PRODUCT.GROUP picked up.</p>
+            <p>PRODUCT.GROUP.REC  - the PRODUCT.GROUP record of the contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a valid Subroutine - i.e. should have a PGM.FILE entry of type S.</p>
+            <p>40 digit Alphanumeric Input.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Description of the Parameter Record.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>35 digit alphanumeric Input.</p>
+            <p>Mandatory Input</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT.TYPE</field>
+<desc>
+            <p>This field defines the Amount Types to be calculated for the ID Application.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a valid IAS.AMOUNT.TYPE.</p>
+        </desc>
+</t>
+<t>
+<field>APPL.FIELD</field>
+<desc>
+            <p>This multivalue field along with the fields - BALANCES.FIELD and MAP.ACTION is used to specify the mapping of information from the underlying contract to the corresponding Contract Balances record.</p>
+            <p>The value of this field will be mapped to the corresponding Contract Balances field , depending upon the action specified.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a valid field in the ID Application or the BASE.APPLICATION ,if any.</p>
+            <p>Can also be a constant - if so to be specified within quotes(single or double).</p>
+        </desc>
+</t>
+<t>
+<field>APPLICATION</field>
+<desc>
+            <p>The ID of this Parameter file will be a valid APPLICATION installed in the company, for which IAS reporting has to be set-up.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a valid application installed in the Company.</p>
+        </desc>
+</t>
+<t>
+<field>BALANCE.FIELD</field>
+<desc>
+            <p>This is the name of the field in the main Application or the BASE.APPLICATION from which the value of the associated AMOUNT.TYPE needs to be mapped. This field may or may not be specified , as the value of the AMOUNT.TYPE may also be obtained from the BUILD / MODIFY Amount Routine (in the fields 14 and 15)</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DM</product>
+<table>DOCUMENT.REQUIRED</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p />
+            <p>This application  specifies for each Document Group (defined in the file DOC.GEN.CONDITION),  the  requirements  for documents tracking. </p>
+            <p />
+            <p>This is a Company specific application and records of this application could</p>
+            <p />be reversed.  </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>MANDATORY</field>
+<desc>
+            <p>Specifies  whether the Document Type is mandatory (Value of  YES) or optional (Value of NO) for the group. T24 would track only required documents,  which are defined as mandatory. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed values are YES/NO.</p>
+            <p>Default value is YES. </p>
+            <p>Input mandatory when DOCUMENT.TYPE is specified.</p>
+        </desc>
+</t>
+<t>
+<field>RELATED.APPLN</field>
+<desc>
+            <p>Specifies the related application(s) (other than CUSTOMER) whose required mandatory  documents also  need to be tracked.   </p>
+            <p>Whether Customer level documents (documents required for CUSTOMER application) need to be tracked or not  could be specified by setting the field CHECK.CUST.LEVEL to YES.  </p>
+            <p>For example, refer to help text  for the field  APPLN.CUS.FLD. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional input.</p>
+            <p>Should be a valid Application Mnemonic (Field APPLN.MNEMONIC) for an     application (other than CUSTOMER and current application) specified in the     file DM.APPLICATION.INFO. </p>
+            <p>Associated multi value field.</p>
+            <p>Duplicate values of RELATED.APPLN and APPLN.CUS.FLD combination not     allowed.</p>
+        </desc>
+</t>
+<t>
+<field>KEY</field>
+<desc>
+            <p />
+            <p>Key is in the format Application Name-Document Group.</p>
+            <p>Example;</p>
+            <p>CUSTOMER-101 where CUSTOMER is the Application Name and 101 is a Document Group defined for CUSTOMER in DOCUMENT.GENERAL.CONDITION.</p>
+            <p>LD-201 in which LD is the Application and 201 is a Document Group defined for LD in DOCUMENT.GENERAL.CONDITION.  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-35 Alphanumeric characters. </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DOCUMENT.TYPE</field>
+<desc>
+            <p>Specifies the Document types which need to be tracked for the group.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Input optional.</p>
+            <p>Multi value field.</p>
+            <p>Must be the ID of a valid record in the file DOCUMENT.TYPE.</p>
+            <p>For customer level documents (First part of the ID refers to  CUSTOMER application),      value of the field CONTRACT.SPECIFIC     in DOCUMENT.TYPE should  be NO.  (i.e. cannot specify a Contract     specific document as a required document for Customer input).</p>
+            <p>For application level documents (First part of ID refers to any     application other than CUSTOMER), value of the field NEW.ALL.CUST in DOCUMENT.TYPE     should be NO or null. </p>
+        </desc>
+</t>
+<t>
+<field>STOP.TXN.DAYS</field>
+<desc>
+            <p>Specifies the Number of days (calculated from a  document's Status Date in the file CUST.DOCUMENT or TRANS.DOCUMENT) after which a  required Mandatory document with an invalid status, would stop a transaction input. </p>
+            <p>Example</p>
+            <p>DOCUMENT.REQUIRED ID-SETR*101 (For document group 101 of SEC.TRADE)</p>
+            <p>DOCUMENT.TYPE- AGREEMENT</p>
+            <p>MANDATORY-YES</p>
+            <p>STOP.TXN-YES</p>
+            <p>STOP.TXN.DAYS-10</p>
+            <p>The Document AGREEMENT is recorded in the file CUST.DOCUMENT for Customer ID 1000 with an invalid status and a Status Date of  4.6.2002. Any SEC.TRADE input,  for which Document AGREEMENT  is required  from Customer ID 1000 would be allowed only upto 13.6.2002 (10 days from the Status Date). Any SEC.TRADE input,  for which Document AGREEMENT  is required  from Customer ID 1000 would  not be allowed after 13.6.2002.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Optional.</p>
+            <p />
+            <p>Multi     value field associated with field DOCUMENT.TYPE.</p>
+            <p />
+            <p>Input     allowed only if  the value of the field STOP.TXN is YES.</p>
+            <p />
+            <p>1-3     Numeric characters followed by D in the format  "xxxD".</p>
+            <p />
+            <p>If      the value of  the field STOP.TXN is YES and that of STOP.TXN.DAYS is     Null, then transactions which require the Document  would be     immeidately stopped. </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>STOP.TXN</field>
+<desc>
+            <p>Specifies whether a  transaction needs  to be stopped,  if  a  required Mandatory document exists with an  invalid status or confirmed by the User as "Not Received" for T24 confirmation messages whether a Document has been received. </p>
+            <p>Stopping the transaction would be  subject to the value of the field STOP.TXN.DAYS. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed values are YES/NO.</p>
+            <p>Input is mandatory if the value of the field MANDATORY is YES.</p>
+            <p>For non-mandatory documents (value of the field MANDATORY is NO), value of     YES is not allowed.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>APPLN.CUS.FLD</field>
+<desc>
+            <p>Specifies the name of  a customer field  in the Related Application. </p>
+            <p>Documents for the related application would be tracked  for the Customer whose ID is equal to the value of this field in the related application's appropriate  record.  </p>
+            <p />
+            <p>Example  </p>
+            <p>While inputting a Security Trade in the application SEC.TRADE, required mandatory documents for the Security Account Master of the Customers of the trade  need to be tracked.   </p>
+            <p>In DM.APPLICATION.INFO, a   record with ID=SEC.ACC.MASTER, and fields with the following values need to be set up: APPLN.MNEMONIC=SAM and CUST.FILED.NAME=CUSTOMER.NUMBER.  </p>
+            <p>In DM.APPLICATION.INFO, another  record with ID=SEC.TRADE, and fields with the following values need to be set up: APPLN.MNEMONIC=SETR  and CUST.FILED.NAME=CUSTOMER.NO.  </p>
+            <p>In DOC.GEN.CONDITION, a record with ID=SETR*CUSTOMER.NO or ID=SETR and fields with the following values need to be set up: DOC.GROUP=101, and appropriate conditions, if any for the group. </p>
+            <p>In DOCUMENT.REQUIRED a record with  ID: SETR*101 and fields with the following values need to be set up: RELATED.APPLN=SAM, APPLN.ID.LINK=CUST.SEC.ACC  and APPLN.CUS.FLD=CUSTOMER.NUMBER. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Multi value field associated with field RELATED.APPLN.</p>
+            <p>Must be a value of the field CUST.FIELD.NAME  in  the related     application's record, in DM.APPLICATION.INFO.</p>
+            <p>Mandatory if  a value for the field RELATED.APPLN is specified and     the field CUST.FIELD.NAME in DM.APPLICATION.INFO (in the related     application's record) is not null..</p>
+            <p>If the value of the field CUST.FILED.NAME in DM.APPLICATION.INFO in      the related application's record is not specified, then no value would be     allowed in this field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>APPLN.ID.LINK</field>
+<desc>
+            <p>Specifies the name of  a  field in the application specified in the first part of the ID (application in which a transaction is input), which links to the related application.  </p>
+            <p>Value of this field  would be used as an ID to access the related application's record for document tracking purposes.</p>
+            <p>If no record exists in the related application with ID equal to the value of this field, then no document tracking would be done for the related application.</p>
+            <p>For example, refer to help text  for the field  APPLN.CUS.FLD.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Should be  in the Standard Selection of the application specified in     the first part of the ID. </p>
+            <p>Input mandatory if the field RELATED.APPLN has a value.</p>
+            <p>Input not allowed if  the field RELATED.APPLN is not specified.</p>
+            <p>Multi value field associated with field RELATED.APPLN.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHECK.CUST.LEVEL</field>
+<desc>
+            <p>Specifies whether for this group, customer level documents (documents required for CUSTOMER input), should be also tracked in addition to other  application level documents.  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Input Mandatory.</p>
+            <p>Allowed values YES/NO. </p>
+            <p> Default value is YES.</p>
+            <p>For customer groups (First part of ID refers to CUSTOMER application), this will     a be no input field.</p>
+            <p>For other applications,  if the value of the field  CUST.FIELD.NAME      in     DM.APPLICATION.INFO is null (i.e. Documents are not tracked for a direct     input in the application), then only allowed value for this field is NO. </p>
+        </desc>
+</t>
+<t>
+<field>DOC.REQD.ID</field>
+<desc>
+            <p>This application  specifies for a Document Group (defined in the file DOC.GEN.CONDITION),  the  requirements  for documents tracking.  </p>
+            <p>Format of the ID will  be "Application Mnemonic*Document Group", where the f</p>
+            <p>irst     part should be </p>the Mnemonic defined for an application in DM.APPLICATION.INFO and second part should  be the value of a Document Group No. (field     DOC.GROUP in DOC.GEN.CONDITION) for the application defined in the first     part.  <p>If no record exists for a Document Group in this file, then documents would be determined as required for that group.</p><p> Example</p><p>For the application: FUNDS.TRANSFER,</p><p>Value of the field APPLN.MNEMONIC in DM.APPLICATION.INFO: FT</p><p>One of the values  of the field DOC.GROUP in DOC.GEN.CONDITION for the Debit Customer in FT (ID:  FT*DEBIT.CUSTOMER): 101</p><p>Then the record with the ID "FT*101"  in DOCUMENT.REQUIRED would define the requirements for documents tracking,  for the Document Group 101 in FT. </p><p /><p /><p><p>Validation Rules:</p></p><p /><p /><p>First     part should be </p>the Mnemonic defined for an application in     DM.APPLICATION.INFO.   <p>Second part should  be the value of a Document Group No. (field     DOC.GROUP in DOC.GEN.CONDITION) for the application defined in the first     part. </p><p>Both parts are mandatory. </p><p /><p>Records of this application  could be reversed.</p><p /><p /><p /></desc>
+</t>
+<t>
+<field>TXN.PROCESSING</field>
+<desc>
+            <p>Specifies whether the document type needs  to be tracked for transactions input from a related application (if value is YES) or not (if value is NO). </p>
+            <p>Example</p>
+            <p>DOCUMENT.REQUIRED ID: AC*101 (Document Group for the ACCOUNT application)</p>
+            <p>DOCUMENT.TYPE: ELECSTMT (Electronic Statement Agreement)</p>
+            <p>MANDATORY: YES</p>
+            <p>TXN.PROCESSING: NO</p>
+            <p>The document type ELECSTMT would be tracked whenever an Account input belongs to the Document Group 101. For a Loan input (in LD Application), ACCOUNT is defined as a related application and the appropriate Account belongs to Document Group 101. Since TXN.PROCESSING is set to NO, the document ELECSTMT would not be tracked when a loan is input in LD application.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory if  the value of the field MANDATORY is YES.</p>
+            <p>Allowed values YES/NO and defaults to YES.</p>
+            <p>Multi value field associated with field DOCUMENT.TYPE.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

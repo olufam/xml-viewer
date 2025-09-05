@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FT</product>
+<table>FT.GROUP.CONDITION</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This table defines special conditions applicable to specific Groups of Customers or individual customers and overrides the normal conditions otherwise used by the Funds Transfer Application.  A Customer which is to be subjected to these conditions, must first meet the selection criteria defined in FT.General.Condition and accessed via an identical key.  The special conditions which can be defined at the Group level can be divided into 4 categories: </p>
+            <p>       1) Exchange Spread </p>
+            <p>          The Currency Table contains the standard conditions applicable           to the Exchange spread to be taken on transactions involving           conversion of Currencies. </p>
+            <p>       2) Commissions </p>
+            <p>          The Commission Type table contains the standard conditions           applicable to all types of commissions which can be used in the           Funds Transfer Application. </p>
+            <p>       3) Charges </p>
+            <p>          The Charge Type table contains the standard conditions           applicable to all types of charges which can be used in the           Funds Transfer Application. </p>
+            <p>Note : By using the Group Condition table the User can define more        favourable conditions for the Group of Customers by indicating,        e.g., that only 50%, 25%  of the normal spread/commission/charge is        applicable. </p>
+            <p>       4) Value Date </p>
+            <p>          The Transaction Type Condition table contains the standard           Customer Value Date conditions according to each Transaction           Type existing in the Funds Transfer Application.  Again by means           of Group Condition table, the User can define different           conditions for the Group of Customers if for any reason, the           bank wants to apply specific Value Date conditions. </p>
+            <p>As an additional facility,  this file will also allow the User to indicate if the charges have to be booked as a separate entry. </p>
+            <p>If fields are left blank, the defaults will be taken from the Transaction Type and Currency files. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CUSTOMER.FLOAT</field>
+<desc>
+            <p>Indicates the Value Date condition, as a number of days, applicable to the Payment Type for the specified Group of Customers. </p>
+            <p>This field allows the User to define special Value Date conditions for a Group of Customers by specifying within payment type a number of days between the Value Date applied to Customer and the Value Date applicable to the bank.  If 'O' is input, the Group of Customers will receive SAME day value as the bank itself. </p>
+            <p>Example: </p>
+            <p>INCOMING TRANSFER </p>
+            <p>         DEBIT NOSTRO ACCOUNT (VALUE 15/1) </p>
+            <p>         CUSTOMER FLOAT = 3 (15 plus 3 = 18) </p>
+            <p>         CREDIT CUSTOMER ACCOUNT (VALUE 18/1) </p>
+            <p />
+            <p>OUTGOING TRANSFER </p>
+            <p>         CREDIT NOSTRO ACCOUNT (VALUE 15/1) </p>
+            <p>         CUSTOMER FLOAT = 2 (15 less 2 = 13) </p>
+            <p>         DEBIT CUSTOMER ACCOUNT (VALUE 13/1) </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>0-9 = Number of working days to be added to the Debit Value Date for incoming transfers to determine the actual Credit Value-date and deducted from the credit Value Date for all other transfers to determine the actual Debit Value Date.  or  'P' = Processing date irrespective of the other Value Date.  Associated multivalue field with PAYMENT.TYPE.  (Mandatory input if Payment Type has been input, otherwise not allowed).</p>
+        </desc>
+</t>
+<t>
+<field>COMM.DISCOUNT.AMT</field>
+<desc>
+            <p>The amount to be deducted from the commission amount calculated.The Discount Amount  will be applied (deducted) to the commission calculated to the FT.COMMISSION.TYPE record. </p>
+            <p>Either PREMIUM.AMT or COMM.PERCENT (or COMM.F.AMT) should be input. </p>
+            <p>Either PREMIUM AMOUNT or DISCOUNT AMOUNT should be input</p>
+        </desc>
+</t>
+<t>
+<field>COMM.PERCENT</field>
+<desc>
+            <p>Specifies the rate used to calculate the Commission amount as a percentage of the Standard Commission amount. </p>
+            <p>Where groups of customers are given preferential Commission rates this field is used to define what Percentage of the Standard Commission (as defined in Commission Type table) should be applied. </p>
+            <p>Where no Commission is to be charged rate must be input as 0%. </p>
+            <p>For any percentage rate greater than 0, the Application will compare the calculated amount with the Overall Minimum and Maximum amount defined in the Commission Type table.  If the Overall Minimum or Maximum amount are greater or less respectively than the calculated amount, then these overall values will be applied regardless.  This is to ensure the Bank always either cover their cost or do not charge excessive amounts. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 type R characters plus a decimal point, (standard rate format) but must not exceed 100%.  Associated multivalue field.  [Mandatory input if COMM.TYPE input and COMM.CCY is blank, otherwise not allowed.]</p>
+            <p>Rate input must be in the range 0-100%.</p>
+            <p>Not more than 3 integers may be entered.</p>
+            <p>Not more than 9 decimals may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>COMM.TYPE</field>
+<desc>
+            <p>Defines the Commission Types for which the Group of Customers will be given special conditions. </p>
+            <p>Where a Group of Customers is given special rates of Commission this field defines the Commission Types to which special rates apply. </p>
+            <p>The Commission Type code entered into this field must first be defined in the commission Type table. </p>
+            <p>The 'All' condition will indicate that the Commission percentage is applicable to all Commissions for this selection. </p>
+            <p>For any Commission Type not defined in this field, the Funds Transfer Application will automatically take the normal conditions as for the other Commission Types which are included in the Transaction Type Table. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 type A (alphanumeric) character Commission type      or ALL  Associated multivalue field. (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>COMM.PREMIUM.AMT</field>
+<desc>
+            <p>The amount to be added to the commission amount calculated. The Premium Amount will be applied (added) to the commission calculated to the FT.COMMISSION.TYPE record.</p>
+            <p>Either DISCOUNT.AMT or COMM.PERCENT (or COMM.F.AMT) should be input</p>
+            <p>Either PREMIUM AMOUNT or DISCOUNT AMOUNT should be input</p>
+        </desc>
+</t>
+<t>
+<field>COMM.MINIMUM.AMT</field>
+<desc>
+            <p>Defines the Minimum Amount to be charged on transfers which attract this Commission range. The minimum amount specified in this field will overrule the MINIMUM.AMT specified in the FT.COMMISSION.TYPE record.</p>
+            <p>MINIMUM.AMT is a NOINPUT field when corresponding COMM.F.AMT is input</p>
+        </desc>
+</t>
+<t>
+<field>CHG.PREMIUM.AMT</field>
+<desc>
+            <p>The amount to be added to the charge amount calculated. The Premium Amount will be applied (added) to the charge calculated to the FT.CHARGE.TYPE record.</p>
+            <p>Either DISCOUNT.AMT or CHARGE.PERCENT (or CHARGE.F.AMT) should be input</p>
+            <p>Either PREMIUM AMOUNT or DISCOUNT AMOUNT should be input</p>
+        </desc>
+</t>
+<t>
+<field>COMM.CCY</field>
+<desc>
+            <p>Defines the Currency of the Flat amount input in the associated field. </p>
+            <p>This field, together with Commission Flat Amount, will be used when the User wants to apply a Flat Commission amount to the Group instead of a percentage of the standard condition. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 type SSS (uppercase alpha) character            or 1-3 numeric character Currency code.  Associated subvalue field.  (Mandatory input if Commission Percentage is blank and Commission Type has an input not equal to 'ALL', otherwise not allowed.)</p>
+        </desc>
+</t>
+<t>
+<field>FT.GROUP.CONDITION</field>
+<desc>
+            <p>Identifies the Group of Customers, or the individual customer for which the conditions apply. </p>
+            <p>For a group of customers, the group number must be defined in the FT.GEN.CONDITION table which contains the selection criteria for proper allocation of Customers to specific groups. </p>
+            <p>For an individual customer the customer number must exist on the CUSTOMER file. If the ID   'C- CUSTOMER NUMBER'  is defined for an individual customer, it gets automatically defaulted to the field ACTUAL.GROUP  pertaining to FT application, in the customer's  CUSTOMER.CHARGE  record. </p>
+            <p>Records can only be amended in the master company. </p>
+            <p>In addition , a Date can be appended with a hyphen in condition that a corresponding CONDITION.PRIORITY record and XX.GEN.CONDITION record exists with this date . </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 4 numeric characters (Mandatory input). or C - 3 to 10 alphanumeric customer mnemonic or C - 1 to 6 digit CUSTOMER number </p>
+        </desc>
+</t>
+<t>
+<field>CHG.MAXIMUM.AMT</field>
+<desc>
+            <p>Defines the Maximum Amount to be charged on transfers to which this charge range applies.  </p>
+            <p>MAXIMUM.AMT is a NOINPUT field when corresponding CHARGE.F.AMT is input.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.DISCOUNT.AMT</field>
+<desc>
+            <p>The amount to be deducted from the charge amount calculated.The Discount Amount  will be applied (deducted) to the Charge calculated to the FT.CHARGE.TYPE record. </p>
+            <p>Either PREMIUM.AMT or COMM.PERCENT (or CHARGE.F.AMT) should be input. </p>
+            <p>Either PREMIUM AMOUNT or DISCOUNT AMOUNT should be input</p>
+        </desc>
+</t>
+<t>
+<field>PAYMENT.TYPE</field>
+<desc>
+            <p>Payment Type and Customer Float field defines special Value Date conditions applicable to a specified group of Customers. </p>
+            <p>This field provides the facility to define whether or not conversion is involved in the transaction in order to determine if different Value Date conditions should be applied. </p>
+            <p>          ALL means that the condition specified in Customer Float is               applicable to all transactions irrespective of the fact that               these transactions involve conversion of Currencies. </p>
+            <p>         CONV means that the condition specified in Customer Float is               only applicable to transactions involving conversion of               Currencies. </p>
+            <p>       NOCONV means that the condition specified in Customer Float is               only applicable to transactions not involving conversion of               Currencies. </p>
+            <p>Note : If 'ALL' is specified then no other payment types may be input,        otherwise 'CONV' and  'NOCONV' must both be specified, as one is        not valid without the other. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>         'ALL' = All transactions          'CONV' = Transaction involving conversion of currencies        'NOCONV' = Transaction not involving conversion of                  currencies.  Associated multivalue field. (Optional input).</p>
+        </desc>
+</t>
+<t>
+<field>CHG.MINIMUM.AMT</field>
+<desc>
+            <p>Defines the Minimum Amount to be charged on transfers which attract this Charge range. </p>
+            <p>MINIMUM.AMT is a NOINPUT field when corresponding CHARGE.F.AMT is input</p>
+        </desc>
+</t>
+<t>
+<field>RATE.SPREAD</field>
+<desc>
+            <p>Specifies the preferential Rate used to determine the Customer Spread for a Currency exchange as a percentage of the standard Customer Spread. </p>
+            <p>Where a group of Customers are given preferential exchange rates this field is used to define what percentage of the standard Customer Spread (as defined in the Currency table) should be applied. </p>
+            <p>Where the absolute rate (no Rate Spread) is to be applied the rate specified here must be input as 0%. </p>
+            <p>If the entire spread is to be applied the rate specified here must be input as 100%. </p>
+            <p>If left blank the Rate Spread will be the same as the standard Customer Spread for the Currency involved (as if 100% when entered). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 type R characters plus a decimal point, (standard rate format), but must not exceed 100%.  (Optional input.)</p>
+            <p>Rate input must be in range 0-100%.</p>
+            <p>Not more than 3 integers may be entered.</p>
+            <p>Not more than 9 decimals may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>COMM.MAXIMUM.AMT</field>
+<desc>
+            <p>Defines the Maximum Amount to be charged on transfers to which this Commission range applies. The maximum amount specified in this field will overrule the MAXIMUM.AMT specified in the FT.COMMISSION.TYPE record. </p>
+            <p>MAXIMUM.AMT is a NOINPUT field when corresponding COMM.F.AMT is input.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.COMM.SEPARATE</field>
+<desc>
+            <p>Defines whether Charges on Funds Transfer are to appear on the Customer statement as a separate amount. </p>
+            <p>If "Y" is input in this field, a separate Charge entry will then be generated for all the Customers included in the Group. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'Y' (yes) or Blank = (NO)  (Optional input.  Default is No)</p>
+        </desc>
+</t>
+<t>
+<field>COMM.F.AMT</field>
+<desc>
+            <p>Defines the amount to be charged for this Commission Type in the Currency defined in associated Currency field. </p>
+            <p>This field together with Commission Currency will be used when the User wants to apply a flat Commission amount to the Group instead of a percentage of the normal condition.  Any flat amount defined at this level will take precedence over the overall minimum amount and/or overall maximum amount defined in the FT.COMMISSION.TYPE table. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 AMT type characters (standard amount format).  Associated subvalue field.  (Mandatory input if Commission Currency is entered.)</p>
+            <p>Input in this field will not be allowed if the commission type has been defined with "ALL".</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.CCY</field>
+<desc>
+            <p>Defines the Currency of the amount input in associated Charge Flat Amount. </p>
+            <p>This field, together with Charge Flat Amount, will be used when the User wants to apply a different Flat Charge Amount to the group of Customers than the one defined in the Charge Type table. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 type SSS (uppercase alpha) character             or 1-3 numeric character Currency code.  Associated subvalue field.  (Mandatory input if Charge Percentage is blank and Charge Type has an input not equal to 'ALL' otherwise not allowed.)</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.F.AMT</field>
+<desc>
+            <p>Defines the amount to be charged for this Charge Type in the Currency defined in associated Charge Currency. </p>
+            <p>This field, together with Charge Currency, will be used when the User wants to apply a different Flat Charge Amount to the Group of Customers than the one defined in the Charge Type Table. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 AMT type characters (standard amount format).  Associated multivalue field.  [Mandatory input if Charge Percentage is blank and Charge Types has an input not equal to 'ALL' otherwise not allowed.]</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.PERCENT</field>
+<desc>
+            <p>Specifies the rate used to calculate the Charge amount as a percentage of the standard Charge amount. </p>
+            <p>Where groups of Customers are given preferential charge rates this field is used to define what percentage of standard charges (as defined in Charge Type table) should be applied. </p>
+            <p>Where no charge is to be applied rate must be input as 0%. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 type R characters plus a decimal point, (standard rate format) but must not exceed 100%.  Associated multivalue field.  (Mandatory input if any Charge Types are input and Charge Currency is blank, otherwise not allowed.)</p>
+            <p>Rate input must be in the range 0-100%.</p>
+            <p>Not more than 3 integers may be entered.</p>
+            <p>Not more than 9 decimals may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.TYPE</field>
+<desc>
+            <p>Defines the Charge Types for which the Group of Customers will be afforded special conditions. </p>
+            <p>Where a group of Customers are afforded special charge rates this field defines the Charge Types to which special rates apply. </p>
+            <p>The Charge Type code entered in this field must first be defined in the Charge Type table. </p>
+            <p>The 'ALL' condition will indicate that the percentage indicated in Charge Percentage is applicable to all charges for the selection. </p>
+            <p>For any Charge Type not defined in this field, the Funds Transfer Application will automatically take the normal conditions as for the other Charge Types which are included in the Transaction Type table. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 type A (alphanumeric) character Charge Type.          or ALL  Associated multivalue field.  (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>DETAIL.COMM.CHG</field>
+<desc>
+			<p>Field to control whether multiple commissions should be posted separately or combined in a single posting. 
+			<p/>
+			<p>Validation Rules: </p>
+			<p>YES : Multiple commissions will be posted separately. Can be set to YES only when CHG.COMM.SEPARATE is Y.</p>
+			<p>NO or None : Multiple commissions are combined in a single posting. Default is None.</p>
+			</desc>
+</t>
+<t>
+<field>DETAIL.TAX</field>
+<desc>
+			<p>Field to control whether each tax should be posted separately or combined in a single posting. 
+			<p/>
+			<p>Validation Rules: </p>
+			<p>YES : Multiple taxes will be posted separately. Can be set to YES only when CHG.COMM.SEPARATE is Y.</p>
+			<p>NO or None : Multiple taxes are combined in a single posting. Default is None.</p>
+			</desc>
+</t>
+</menu>
+</t24help>
+

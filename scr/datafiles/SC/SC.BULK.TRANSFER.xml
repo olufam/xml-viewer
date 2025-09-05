@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SC</product>
+<table>SC.BULK.TRANSFER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The application is used for bulk transfer of options. </p> 
+            <p>It allows multiple positions to be transferred out from a portfolio or into a portfolio based on a single instruction.</p>            
+            <p>On committing the record, T24 will create SECURITY.TRANSFER records in "IHLD " based on the selected positions.</p>
+            <p>To input a record in this application OFS.SOURCE and OFS.VERSION for SECURITY.TRANSFER should be defined in SC.STD.POS.TRANSF.</p>
+            
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>REFERENCE.NO</field>
+<desc>
+            <p>Unique reference which identifies the transaction. Only the sequence number (nnnnn) is required to be input.</p>
+            <p>The Application will automatically generate the prefix (SCBLK) and the first 5 digits (yyddd) and attach the sequence number.</p>
+            <p>The sequence number may be either User or System generated.</p>            
+        </desc>
+</t>
+<t>
+<field>TRANSACTION.TYPE</field>
+<desc>
+            <p>Indicates what kind of a transaction is being processed. This field is mandatory and will accept a valid ID from SC.TRANS.NAME.</p>
+            <p>This field will be mapped to TRANSACTION.TYPE in SECURITY.TRANSFER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid code on the SC.TRANS.NAME file. (Mandatory input)</p>            
+        </desc>
+</t>
+<t>
+<field>SECURITY.ACCT</field>
+<desc>
+            <p>Specifies the Security.Account over which the  movement of the Securities, in the transaction, will be recorded.</p>
+            <p>This field will be mapped to SECURITY.ACC in SECURITY.TRANSFER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>            
+            <p>Mandatory Input</p>
+            <p>Standard Sec.Acc.Master id ; 1-10 numeric character Customer id (Field 8) separated by - from 1-3 numeric character Sec.Acc id. (Mandatory 
+input) Default value = the Customers first Security.Acc. ie. nnnnnn-001.</p>
+            <p>Must be an existing Sec.Acc.Master record.</p>
+            <p>Must be a Sec.Acc. of the Customer </p>            
+        </desc>
+</t>
+<t>
+<field>COUNTERPARTY</field>
+<desc>
+            <p>Identifies the party to/from whom the transfer is to be made.</p>
+            <p>You may input any of the following CUSTOMER.SECURITY types :            1)  Broker            2)  Counterparty            3)  Client</p>
+            <p>Whereas the Broker and Counterparty are self explanatory the Client may be a Customer of the Bank who is not traditionally known as either a 
+            Broker or Counterparty but as a Client (Without a Portfolio) who transacts business with the Bank.  It is therefore permissible within the 
+            Sec.Trade application to enter a transaction on the Broker side of the transaction who will Purchase securities from a Client who is selling 
+            those securities.</p>
+            <p>The system is intelligent enough to know that the Client is effectively a Customer without a Portfolio and will ensure that the accounting 
+            procedures for this transaction are dealt with properly.</p>
+            <p>This field will be mapped to BROKER.NO in SECURITY.TRANSFER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-10 numeric character Customer Id. (Mandatory input)</p>
+            <p>Must be a valid Customer for whom the CUSTOMER.SECURITY field CUSTOMER.TYPE equals either :       a) B    -   Broker       b) CO   -   
+Counterparty       c) CL   -   Client</p>
+        </desc>
+</t>
+<t>
+<field>BROKER.ADDR.BIC</field>
+<desc>
+            <p>Indicate the BIC code of the counterparty BIC code is entered in this field if no records exists for the counterparty (CUSTOMER.SECURITY).</p>
+            <p>When a BIC code is given; the DEFAULT.COUNTERPARTY from SC.STP.POS.TRANSF will be defaulted to the COUNTERPARTY.</p>
+           <p>All the broker related SSI details in SECURITY.TRANSFER will be defaulted from SC.SETT.INSTRUCT record of BROKER.ADDR.BIC; if BROKER.ADDR.BIC 
+           is not available then the broker fields will be defaulted from SC.SETT.INSTRUCT record of COUNTERPARTY.</p>
+           <p>This field will be mapped to BROKER.ADDR.BIC in SECURITY.TRANSFER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>            
+        </desc>
+</t>
+<t>
+<field>SHOW.POSITION</field>
+<desc>
+            <p>If SHOW POSITION is set to "YES", all the underlying positions of the portfolio will be selected for generation of SECURITY TRANSFER.
+             The individual positions will not be updated in the bulk transfer record. The field can be set as "YES" only while transferring positions 
+             out of the portfolio.</p>            
+        </desc>
+</t>
+<t>
+<field>TRADE.DATE</field>
+<desc>
+            <p>Date on which the transaction is done is recorded in this field.</p> 
+            <p>This field will be mapped to TRADE.DATE in SECURITY.TRANSFER.</p>            
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 9 type D date characters, (Standard Date Format in range 1950-2049). Default value = Run Date.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>Effective date of the transaction is recorded in this field. VALUE.DATE can not be less that the TRADE.DATE.</p>
+            <p>This field will be mapped to VALUE.DATE in SECURITY.TRANSFER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>            
+            <p>Up to 9 type D date characters, (Standard Date Format in range 1950-2049). Default value = Run Date.</p>
+            <p>Can not be less than Trade Date.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGES</field>
+<desc>
+            <p>Total charges for the bulk transfer  can be specified in the CHARGES field. If the charges are not specified in bulk transfer, the standard charges, 
+            as applicable for security transfer, will be applied in the individual transfers.</p>
+            <p>If a charge is specified here, then OFS.SOURCE, OFS.VERSION and FT.CHARGE.TRANS.TYPE should be defined for FUNDS.TRANSFER in SC.STD.POS.TRANSF.</p>
+            <p> A funds transfer record will be created with transaction type as in FT.CHARGE.TRANS.TYPE, the debit account has CHARGE.CU.ACCOUNT, 
+            credit account as CHARGE.ACCOUNT, credit and debit currencies as CHARGE.CCY and CHARGES as amount.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters  . (number of decimal places dependant on the currency of the Security).(Optional input)</p>            
+        </desc>
+</t>
+<t>
+<field>CHARGE.CCY</field>
+<desc>
+            <p>This field is mandatory when CHARGES is input, it will accept a valid T24 currency. It denotes the charge currency</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid T24 currency should be given</p>            
+        </desc>
+</t>
+<t>
+<field>CHARGE.CU.ACCOUNT</field>
+<desc>
+            <p>The field will hold the customer account to be edited with the charge in CHARGE.CCY. This field is mandatory when CHARGES is given.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>            
+            <p>Should be a customer account</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.ACCOUNT</field>
+<desc>
+            <p>The field will hold the internal account in CHARGE.CCY or a PL category to which the charges will be posted. This field is mandatory when CHARGES is given.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Can be an internal account or a PL category. If a PL CATEGORY is input, it should be prefixed with PL (e.g. PL52603)</p>            
+        </desc>
+</t>
+<t>
+<field>DELIVERY.INSTR</field>
+<desc>
+            <p>This field will accept valid SC.DEL.INSTR ID. It is a mandatory field and the value in this field will be defaulted from broker SC.SETT.INSTRUCT record.</p>
+            <p>If a BROKER.ADDR.BIC is given then the value will be defaulted from SC.SET.INSTRUCT of BROKER.ADDR.BIC.</p>
+            <p>This field will be mapped to DELIVERY.INSTR in SECURITY.TRANSFER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-5 type S (uppercase alpha or numeric) character Sc.Del.Instr code. (Mandatory input)</p>
+            <p>Must be a valid code on the SC.DEL.INSTR file.</p>            
+        </desc>
+</t>
+<t>
+<field>DEPOT.ADVICE.REQD</field>
+<desc>
+            <p>This fields will accept the values "YES" and null. The value in this field will be defaulted from broker SC.SETT.INSTRUCT record.</p>
+            <p>If a BROKER.ADDR.BIC is given then the value will be defaulted from SC.SET.INSTRUCT of BROKER.ADDR.BIC.</p>
+            <p>This field will be mapped to DEPOT.ADVICE.REQD in SECURITY.TRANSFER.</p>            
+        </desc>
+</t>
+<t>
+<field>SEC.HOLD.SETTLE</field>
+<desc>
+            <p>SEC.HOLD.SETTLE will be used to control whether stock will update the SC.SETTLEMENT application.</p>
+            <p>SEC.HOLD.SETTLE will allow input of YES or NO only.</p>
+            <p>The value in this field will be defaulted from broker SC.SETT.INSTRUCT record.</p>
+            <p>If at all a BROKER.ADDR.BIC is given then the value will be defaulted from SC.SET.INSTRUCT of BROKER.ADDR.BIC.</p>
+            <p>This field will be mapped to SEC.HOLD.SETTLE in SECURITY.TRANSFER.</p>            
+        </desc>
+</t>
+<t>
+<field>SECURITY.NO</field>
+<desc>
+            <p>Identifies the security that is to be transferred. This field is mandatory when SHOW.POSITION is not set to "YES".</p>
+            <p>This field will be mapped to SECURITY.NO in SECURITY.TRANSFER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-10 numeric character Security number separated from a 3 numeric character suffix by - </p>
+            <p>Must be the ID of a valid Security.Master record.</p>
+        </desc>
+</t>
+<t>
+<field>PSET</field>
+<desc>
+            <p>Identifies the place of settlement used in settlement instructions.</p>
+            <p>The value will be populated from broker SC.SETT.INSTRUCT record.</p>
+            <p>If BROKER.ADDR.BIC is given then the value will be defaulted from SC.SET.INSTRUCT of BROKER.ADDR.BIC.</p>
+            <p>This field will be mapped to PSET in SECURITY.TRANSFER.</p>
+        </desc>
+</t>
+<t>
+<field>DEPOSITORY</field>
+<desc>
+            <p>This field indicate the depository in which the security has to be delivered. The value in this field will be defaulted from SECURITY.MASTER.</p>
+            <p>This field will be mapped to DEPOSITORY in SECURITY.TRANSFER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-10 numeric character Customer ID number. Default value = the Depository specified on the Security.Master file record (Field Default.Depository).</p>
+            <p>Must be a valid Customer in Customer.Security file with Customer.Type) as Depository.</p>
+        </desc>
+</t>
+<t>
+<field>SUB.ACCOUNT</field>
+<desc>
+            <p>This field specifies the sub account at depository. This field will be mapped to SUB.ACCOUNT in SECURITY.TRANSFER.</p>            
+        </desc>
+</t>
+<t>
+<field>NO.NOMINAL</field>
+<desc>
+            <p>Specifies the Nominal Amount (i.e. the face value) of the Security to be transferred. This field will be mapped to NO.NOMINAL in SECURITY.TRANSFER.</p>
+        </desc>
+</t>
+<t>
+<field>PRICE</field>
+<desc>
+            <p>Records the Price at which the NOMINAL.AMOUNT of the Security is to be valued for the transaction.</p>
+            <p>Defaults to the LAST.PRICE, as recorded on the SECURITY.MASTER record of the Security.</p>
+            <p>This field will be mapped to PRICE in SECURITY.TRANSFER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-15 numeric characters including if required, a decimal point.</p>            
+            <p>Defaults to LAST.PRICE on the underlying SECURITY.MASTER</p>
+        </desc>
+</t>
+<t>
+<field>COST</field>
+<desc>
+            <p>This field may be used instead of the PRICE field to record the gross cost in the portfolios specified REFERENCE.CURRENCY of the security to be 
+            transferred into or out of the portfolio.</p>
+            <p>This field will be mapped to COST in SECURITY.TRANSFER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard amount field.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.CHARGES</field>
+<desc>
+            <p>Records the charges levied against the Customer for the transaction.</p>
+            <p>This field will be mapped to CHARGES in SECURITY.TRANSFER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input not allowed when the field CHARGES has value.</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.TAX</field>
+<desc>
+            <p>Local tax, if any applicable, on the transfer.</p>
+            <p>This field will be mapped to LOCAL.TAX in SECURITY.TRANSFER.</p>            
+        </desc>
+</t>
+<t>
+<field>INTEREST.AMT</field>
+<desc>
+            <p>Records the Accrued Interest due on the Security as on the VALUE.DATE of the transaction.</p>
+            <p>This field will be mapped to INTEREST.AMT in SECURITY.TRANSFER.</p>            
+        </desc>
+</t>
+<t>
+<field>FUNDS.TRANFER.ID</field>
+<desc>
+            <p>Holds the ID of the FUNDS.TRANSFER transaction generated to collect a bulk charge on the transfer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>            
+            <p>No input field, automatically generated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>BROKER.ADVICE.REQD</field>
+<desc>
+            <p>This field specifies whether a broker advice is to be sent. This field will be mapped to BROKER.ADVICE.REQD in SECURITY.TRANSFER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>            
+            <p>It accepts the values YES/NO.</p>
+        </desc>
+</t>
+<t>
+<field>PAYMENT.REQD</field>
+<desc>
+            <p>This field specifies whether a customer payment is to be made. This field will be mapped to PAYMENT.REQD in SECURITY.TRANSFER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>            
+            <p>It accepts the values YES/NO.</p>
+        </desc>
+</t>
+<t>
+<field>CUST.REMARKS</field>
+<desc>
+            <p>Used to record any narrative to appear on any advices to the customer. This field will be mapped to CUST.REMARKS in SECURITY.TRANSFER</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-35 type A (alphanumeric) characters. (Multivalue field.) (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>NOMINEE.CODE</field>
+<desc>
+            <p>Identifies which Nominee Code, the Security in the transaction is to be moved into/out of.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-5 type S (uppercase alpha or numeric) character Nominee.code. (Optional input)</p>
+            <p>Must be a valid Nominee Code.</p>
+        </desc>
+</t>
+<t>
+<field>FUND.TRANS.STATUS</field>
+<desc>
+            <p>The value in this field will be defaulted from FUND.TRANS.STATUS of SC.STD.POS.TRANSF.</p>
+            <p>The field specifies the record status to which the FUNDS.TRANSFER record will be moved on authorising the SC.BULK.TRANSFER record.</p>
+            <p>If left blank then the FUNDS.TRANSFER record will be left in hold status.</p>
+            <p>However reversal of SC.BULK.TRANSFER is independent of this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> This field will accept the values "NAU" and "AUTH".</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEC.TRANS.STATUS</field>
+<desc>
+            <p>The value in this field will be defaulted from SEC.TRANS.STATUS of SC.STD.POS.TRANSF.</p>
+            <p>The field specifies the record status to which the SECURITY.TRANSFER record will be moved on authorising the SC.BULK.TRANSFER record.</p>
+            <p>If left blank then the SECURITY.TRANSFER record will be authorised.</p>
+            <p>However reversal of SC.BULK.TRANSFER is independent of this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> This field will accept the values "NAU" and "HOLD".</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SSI.CODE</field>
+<desc>
+            <p>This field will be defaulted with a valid SC.SETT.INSTRUCT ID. The default will happen in the following priority (Broker_no.Portfolio_No) else with (BROKER.ADDR.BIC) else with (COUNTERPARTY).</p>
+            <p>This field will be mapped to SSI.CODE of SECURITY.TRANSFER.</p>
+            <p />
+        </desc>
+</t>
+<t><field>FUNDS.TRANSFER.ID</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

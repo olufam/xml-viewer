@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>EB</product>
+        <title>DFE Frame Work - Mapping</title>
+        <table>DFE.MAPPING</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>Mapping Table defines where data for Inward / outward messages is located within the raw message data passed to APPLICATION OR Extract from T24 APPLICATION by the DFE framework.  The banking applications do not format and send messages themselves.  The data will receives or extracted by DFE which then uses the Mapping Table to locate each field from within that raw data.</p>
+			<p>The DFE mapping will support both delimited file and position based file mapping. Where the raw data converted to upload in T24 table or data to be extracted from T24 TABLE.</p>
+        </ovdesc>
+    </overview>
+    <menu>
+        <t>
+            <field>	FILE.NAME </field>
+            <desc>
+               <p>DFE will do the file OFS process for INWARD and Data extraction for OUTWARD select against this application configured in this field.</p> 
+			   <p>Validation Rules</p>
+			   <p>The data entered in this field will cross check against the PGM.FILE to verify it's a valid T24 table.</p>
+			   <p>This field also allow all the valid file type like $NAU, $HIS and Live</p>
+			   <p>This is the main file to be accessed/displayed by the enquiry system. </p>
+			   <p>This specifies the main file to be processed. </p>
+			   <p>The file must be a valid entry on F.FILE.CONTROL and should not contain the 'F.' or 'FXXX.' prefix. </p>
+			   <p>Validation Rules</p>
+			    <p>35 type A (alphanumeric) characters. (Mandatory input)</p>
+			</desc>
+		 </t>
+		 <t>
+            <field>	DESCRIPTION </field>
+            <desc>
+               <p>Free text field to give the record description.</p> 
+			   <p>Validation Rules</p>
+			   <p>35 type A (alphanumeric) characters. (Mandatory input)</p>
+			</desc>
+        </t>
+		<t>
+            <field>	FILE.SELECTION </field>
+            <desc>
+               <p>DFE will do the select to the above file based on the selection defined in this field.</p> 
+			   <p>If this field set as BLANK, DFE will do the raw select.</p>
+			   <p>Also user can attach a routine to do a customized select.</p>
+			   <p>Validation Rules</p>
+			   <p>The routine should prefixed with @ and should have EB.API entry for that routine.</p>
+			   <p>Example @T24ROUTINE.NAME</p>
+		    </desc>
+        </t>
+		<t>
+            <field>	FIELD.DELIM </field>
+            <desc>
+                <p>This field should entered with a symbol or a group of character that needs to be replaced against FM - Which Field Marker.</p>
+				<p>That particular character will sent as field delimiter in outward file extract.</p>
+				<p>Also in Inward file upload that particular character will be changed as FM.</p>
+		    </desc>
+        </t>
+        <t>
+            <field>	VM.DELIM </field>
+            <desc>
+                <p>This field should entered with a symbol or a group of character that needs to be replaced against VM.</p>
+				<p>That particular character will sent as VM delimiter in outward file extract.</p>
+				<p>Also in Inward file upload that particular character will be changed as VM.</p>
+            </desc>
+        </t>
+        <t>
+            <field>	SM.DELIM </field>
+            <desc>
+                <p>This field should entered with a symbol or a group of character that needs to be replaced against SM.</p>
+				<p>That particular character will sent as SM delimiter in outward file extract.</p>
+				<p>Also in Inward file upload that particular character will be changed as SM.</p>
+            </desc>
+        </t>
+        <t>
+            <field>	ID.GEN.TYPE </field>
+            <desc>
+                <p>This field should defined with ID Generation type OR Extraction type in the DFE INWARD / OUTWARD process.</p>
+				<p>Validation Rules</p>
+				<p>This field should hold the values AUTO / DATA / RTN.</p>
+				<p>If the value defined with AUTO the OFS PROCESSING will upload with AUTO NEW CONTENT this is specifically defined for OFS PROCESS not for extract.</p>
+				<p>If the value defined with DATA this will used for both inward and outward extract.</p>
+            </desc>
+        </t>
+        <t>
+            <field>	ID.ROUTINE </field>
+            <desc>
+                <p>This is conditional mandatory field when the above field defined as RTN.</p>
+				<p>A valid T24 Routine needs to be attached in this field to derive the ID for upload a data or to extract the data.</p>
+				<p>Validation Routine</p>
+				<p>The routine has a validation against EB.API</p>
+				<p>Example the routine should be prefixed with @ID @T24.ROUTINE.NAME </p>
+            </desc>
+        </t>
+		<t>
+            <field>	ID.POSITION </field>
+            <desc>
+                <p>This field defines with the position where the ID needs to be placed in a file or to get the ID from the file.</p>
+				<p>This field used for both Delimiter and Position.</p>
+				<p>Only Numeric Values Allowed.</p>
+            </desc>
+        </t>
+		<t>
+            <field>	ID.LENGTH </field>
+            <desc>
+                <p>This field defines the total length of the ID to pick from a position based file and for data extraction.</p>
+				<p>This field is specifically used only for position based INWARD / OUTWARD FILE processing and extraction.</p>
+				<p>Validation Rules</p>
+				<p>Only Numeric Values Allowed.</p>
+            </desc>
+        </t>
+		<t>
+            <field>	RECORD.FORMAT </field>
+            <desc>
+                <p>This is a mandatory field to define the file processing and extraction type</p>
+				<p>The field should hold the values OFS / DELIMITER / POSITION / USR.RTN</p>
+				<p>If the field configured as OFS DFE will post the message straightly.</p>
+				<p>If the field configured as DELIMITER OR POSITION the data will get from the position values mentioned.</p>
+				<p>If the field key in with USR.RTN the raw message will process through hook routine attached in USER.DEF.RTN.</p>
+            </desc>
+        </t>
+		<t>
+            <field>	USER.DEF.RTN </field>
+            <desc>
+                <p>This is conditional mandatory field if the above field MARKED as USR.RTN</p>
+				<p>The routine attached here should have a valid EB.API entry</p>
+				<p>The below fields will not considered once the RECORD.FORMAT updated as USR.RTN</p>
+				<p>The rest of the process should handled under the attached routine. DFE will stop its process after callin this routine.</p>
+				<p>Validation Routine</p>
+				<p>The routine has a validation against EB.API</p>
+				<p>Example the routine should be prefixed with @ID @T24.ROUTINE.NAME </p>
+            </desc>
+        </t>
+		<t>
+            <field>	APPL.FIELD.NAME </field>
+            <desc>
+                <p>This field should defined with valid T24 Application fields or it can be left blank for doing conversions.</p>
+				<p>This is a mandatory field for both delimiter and position based file upload and extraction.</p>
+            </desc>
+        </t>
+		<t>
+            <field>	APPL.FIELD.TYPE </field>
+            <desc>
+                <p>This is a no input field default by DFE cross validation routine.</p>
+				<p>This defaulted with field type 'S' SIngle or 'M' Multi Value</p>
+            </desc>
+        </t>
+		<t>
+            <field>	APPL.MUL.FLD.POS </field>
+            <desc>
+                <p>This field should key in with the multi-value position if the configured field is not single value.</p>
+				<p>In-case its a file upload the data against from raw message will uploaded to specific position in the OFS message.</p>
+				<p>In-case its a file extract particular set value will get extracted in the out file.</p>
+            </desc>
+        </t>
+		<t>
+            <field>	APPL.SUB.FLD.POS </field>
+            <desc>
+                <p>This field should key in with the multi-value position if the configured field is not single value.</p>
+				<p>In-case its a file upload the data against from raw message will uploaded to specific position in the OFS message.</p>
+				<p>In-case its a file extract particular SM value will get extracted in the out file.</p>
+            </desc>
+        </t>
+		<t>
+            <field>	APPL.FIELD.DEF </field>
+            <desc>
+                <p>This is NO-INPUT field which will updated by DFE cross validations.</p>
+				<p>DFE will default the multi value attributes like 'XX-XX, 'XX-' ,XX.</p>
+				<p>This field will defaulted when the specific in the set is a multi value.</p>
+            </desc>
+        </t>
+		<t>
+            <field>	APPL.FIELD.DEF </field>
+            <desc>
+                <p>This is NO-INPUT field which will updated by DFE cross validations.</p>
+				<p>DFE will default the multi value attributes like 'XX-XX, 'XX-' ,XX.</p>
+				<p>This field will defaulted when the specific in the set is a multi value.</p>
+            </desc>
+        </t>
+		<t>
+            <field>	FIELD.POSITION </field>
+            <desc>
+                <p>The field defined with the numeric value.</p>
+				<p>The field should specify with at what position the field value should present in the delimiter and position extract</p>
+				<p>This field is common for delimiter and position based file.</p>
+				<p>In-case if it's a file upload DFE will pick the position defined in raw message to post it to OFS</p>
+            </desc>
+        </t>
+		<t>
+            <field>	FIELD.LENGTH </field>
+            <desc>
+                <p>The field defined with the numeric value.</p>
+				<p>The field should specify with the length of the specific field.</p>
+				<p>This field is only for position based file.</p>
+            </desc>
+        </t>
+		<t>
+            <field>	FIELD.OPERATION </field>
+            <desc>
+                <p>This field is used to obtain a dynamic logic value update in respective field set.</p>
+				<p>This logic is common for both extract and upload.</p>
+				<p>Valid Values</p>
+				<p>Static Value - If the respective field should update or extract with a static value define in the quotes</p>
+				<p>Example - 'File Upload'</p>
+				<p>Common Variables can used as listed below,
+								
+					example:-	if the field configured as,
+							!MNE - DFE will REPLACE as BNK
+				
+				</p>
+				<table>
+					<tr>
+						<td>
+							<p>Conversion</p>
+						</td>
+						<td>
+							<p>Action</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>!MNEMONIC</p>
+						</td>
+						<td>
+							<p>Replaces Company Mnemonic</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>!YYMMDD</p>
+						</td>
+						<td>
+							<p>Replaces Today's date in YYMMDD format</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>!LAST.WORKING.DAY</p>
+						</td>
+						<td>
+							<p>Replaces last working day from Dates record</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>!NEXT.WORKING.DAY</p>
+						</td>
+						<td>
+							<p>Replaces last working day from Dates record</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>!JULIAN</p>
+						</td>
+						<td>
+							<p>Replaces Today's date in JULIAN format.</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>!SYSTEM.TIME</p>
+						</td>
+						<td>
+							<p>Replaces System time in HH:MM format.</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>!SYSTEM.TIMES</p>
+						</td>
+						<td>
+							<p>Replaces System time in HH:MM:SS format.</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>!ID</p>
+						</td>
+						<td>
+							<p>Replaces by DFE Parameter ID.</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>!TODAY</p>
+						</td>
+						<td>
+							<p>Replaces by today's date.</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>!LCCY</p>
+						</td>
+						<td>
+							<p>Replaces by local currency from Company record.</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>!USER</p>
+						</td>
+						<td>
+							<p>Replaces by Operator.</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>!COMPANY</p>
+						</td>
+						<td>
+							<p>Replaces by Operator User.</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>!NOL</p>
+						</td>
+						<td>
+							<p>Replaces by number of lines for Extract (only for trailer records).</p>
+						</td>
+					</tr>
+				</table>
+				
+            </desc>
+        </t>
+		<t>
+            <field>	FIELD.CONV </field>
+            <desc>
+				<p>Allows data to be converted prior to display in the extract or upload. </p>
+				<p>The conversion operation allows the manipulation of the result for extract / upload operation. The result of the conversion is then stored in the extracted field. The following conversions are supported: </p>
+				<table>
+					<tr>
+						<td>
+							<p>Conversion</p>
+						</td>
+						<td>
+							<p>Action</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>FIELD X,POSITION</p>
+						</td>
+						<td>
+							<p>Extract from the data, delimited by X, of POSITION</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>C X*Y</p>
+						</td>
+						<td>
+							<p>Do the multiplication X AND Y</p>
+							<p>Also Supports / , - , + and ':' concatenation of two strings</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>L APPLICATION,FIELD.NAME</p>
+						</td>
+						<td>
+							<p>Link the field name with defined application field</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>EXTRACT N1,N2</p>
+						</td>
+						<td>
+							<p>Extract from the data starting at position N1 for N2 bytes</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<p>@ROUTINE.NAME</p>
+						</td>
+						<td>
+							<p>Call the hook routine passed with single argument to send the current value and to get the translated value.</p>
+							<p>Validation Rules</p>
+							<p>Routine should prefixed with @.</p>
+							<p>Routine should have EB.API entry for that routine.</p>
+						</td>
+					</tr>
+				</table>
+			</desc>	
+        </t>
+		<t>
+            <field>	FIELD.FORMAT </field>
+            <desc>
+			   <p>This field used to define the field formatting for a file extraction.</p>
+			   <p>Valid Values are.</p>
+			   <p>L# for adding space in left</p>
+			   <p>L% for adding zeros in left</p>
+			   <p>R# for adding space in right</p>
+			   <p>R% for adding Zeros in right</p>
+			 </desc>
+        </t>
+		<t>
+            <field>	FIELD.NORMALIZE </field>
+            <desc>
+			   <p>This is YES_NO type to enable the normalization process for DFE extraction.</p>
+			   <p>This particular process only enabled for delimiter file extract.</p>
+			 </desc>
+        </t>
+		<t>
+            <field>	XML.MV.FLD.TYPE </field>
+            <desc>
+			   <p>This field is used to define the mutlivalue set type for forming XML message.</p>
+			   <p>Valid Values.</p>
+			   <p>SINGLE - This is for denoting single multi-value field</p>
+			   <p>START.SET - This is for denoting starting multi-value for an associate set.</p>
+			   <p>ASSOC.SET - This is for denoting multi-value for an associate set.</p>
+			   <p>END.SET - This is for denoting end multi-value for an associate set.</p>
+			 </desc>
+        </t>
+		<t>
+            <field>	PRE.PROCESS.RTN </field>
+            <desc>
+			   <p>This is hook routine will get triggered on both file extraction and file upload process.</p>
+			   <p>In case if a routine attached here for file extract this will act as filter routine.</p>
+			   <p>For extract this routine will passed with selected each transaction id , user can restrict by do his own validation to block this from extract.</p>
+			   <p>In-case a routine attached in file upload this will get triggered with OFS message before posting it. user can do validation before posting it. </p>
+			   <p>Validation Routine</p>
+			   <p>The routine has a validation against EB.API</p>
+			   <p>Example the routine should be prefixed with @ID @T24.ROUTINE.NAME </p>
+			 </desc>
+        </t>
+		<t>
+            <field>	POST.UPDATE.RTN </field>
+            <desc>
+			   <p>This routine will get triggered  after the process completed fopr each record in file processing and file extraction</p>
+			   <p>Validation Routine</p>
+			   <p>The routine has a validation against EB.API</p>
+			   <p>Example the routine should be prefixed with @ID @T24.ROUTINE.NAME </p>
+			 </desc>
+        </t>		
+		<t>
+            <field>	INDIV.RECORD.RTN </field>
+            <desc>
+			   <p>The routine will get triggered on DFE post routine while concatenate each extracted data.</p>
+			   <p>The routine holds one argument where the data sent with formed position or delimiter string.</p>
+			   <p>Validation Routine</p>
+			   <p>The routine has a validation against EB.API</p>
+			   <p>Example the routine should be prefixed with @ID @T24.ROUTINE.NAME </p>
+			 </desc>
+        </t>
+		<t>
+            <field>	ONLINE.RESP.RTN </field>
+            <desc>
+			   <p>The routine will get triggered on DFE batch DFE.OUTWARD.REALTIME and DFE.OUTWARD.REALTIME.POST routine after receiving the response for the request posted.</p>
+			   <p>Validation Routine</p>
+			   <p>The routine has a validation against EB.API</p>
+			   <p>Example the routine should be prefixed with @ID @T24.ROUTINE.NAME </p>
+			 </desc>
+        </t>
+    <t><field>FILE.NAME</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FILE.SELECTION</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>DESCRIPTION</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FIELD.DELIM</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>VM.DELIM</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>SM.DELIM</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>ID.GEN.TYPE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>ID.ROUTINE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>ID.POSITION</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>ID.LENGTH</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>RECORD.FORMAT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>USER.DEF.RTN</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>APPL.FIELD.NAME</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>APPL.FIELD.POSN</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>APPL.FIELD.TYPE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>APPL.MUL.FLD.POS</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>APPL.SUB.FLD.POS</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>APPL.FIELD.DEF</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FIELD.POSITION</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FIELD.LENGTH</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FIELD.OPERATION</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FIELD.CONV</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FIELD.FORMAT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FIELD.NORMALIZE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>PRE.PROCESS.RTN</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>POST.UPDATE.RTN</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>INDIV.RECORD.RTN</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>ONLINE.RESP.RTN</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>XML.TAG.NAME</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>APPL.FIELD.TEXT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FIELD.ASSOC.TYPE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>IC</product>
+<table>IC.CHARGE.PRODUCT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p />
+            <p>This table defines the basic charging information of generic charges set for accounts.</p>
+            <p>The FT.COMMISSION.TYPE key which defines the charging mechanism, is specified here to calculate the charge . A info basic routine to get the base amount or principal on which charge is calculated can be specified in the field BASE.AMT.RTN . The currency of the amount is usually the account currency on which the charge is applied .</p>
+            <p>This table can be linked to various charging structure - IC.CHARGE for various accounts and groups of accounts.</p>
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field> AMORT.ADJUST</field>
+<desc>
+        <p>can be set to YES or NO or null</p>
+        <p>Field to decide, if during change in charge amount, should core accrual processing need to recalculate the already amortized amounts</p>
+        <p>When set to “YES” would adjust the previously amortized charge, recalculate based on new charge amount</p>
+        <p>When set to “” or “NO” - no recalculation of previously booked amortized amounts. i.e. the daily accrual figure from the date of adjustment will be a straight line on the new amount</p>
+        <p>Input is allowed only when AMORT.TYPE is set to SPECIAL</p>
+    </desc>
+</t>
+<t>
+<field> AMORT.DIFF.CATEG.ACCT</field>
+<desc>
+        <p>Either valid internal account number or suspense category or “”</p>
+        <p>When specified, would be used by eb accrual processing to credit difference in old and new charge amounts to this account as statement entry and opposite would be a spec entry, with PL category or AA balance type appended as CRF type of the consol key based on charge account</p>
+        <p>When both AMORT.DIFF.PL and AMORT.DIFF.CATEG.ACCNT are left blank, new amount is amortized from the change date to end date and any residual unamortized amount on the end date, could either be posted to internal account or P&amp;L based on the setting in AMORT.REMAIN.CATEG.ACCT</p>
+        <p>This field is mutually exclusive with AMORT.DIFF.PL</p>
+        <p>Optional field,   can be set only for AMORT.TYPE equal to END or SPEICAL</p>
+    </desc>
+</t>
+<t>
+<field> AMORT.DIFF.PL</field>
+<desc>
+        <p>Can be set to YES or “”</p>
+        <p>When set to YES, EB accrual processing would book the difference between old and new charge amount to PL category as defined in FT.COMMISSION.TYPE record attached to updated in eb.accrual record and opposite would be a spec entry, with this PL category or AA balance type appended as CRF type of the CONSOL key based on charge account</p>
+        <p>When both AMORT.DIFF.PL and AMORT.DIFF.CATEG.ACCNT are left blank, new amount is amortised from the change date to end date and any residual unamortized amount on the end date, could either be posted to internal account or P&amp;L based on the setting in AMORT.REMAIN.CATEG.ACCT</p>
+        <p>This field is mutually exclusive with AMORT.DIFF.CATEG.ACCT</p>
+        <p>Optional field, can be set only for AMORT.TYPE equal to END or SPEICAL</p>
+    </desc>
+</t>
+<t>
+<field> AMORT.REMAIN.CATEG.ACCT</field>
+<desc>
+        <p>Either valid internal account number or suspense category or “”</p>
+        <p>When specified, if period end date reached or end date changed to current date and if there are unamortized charge amount (new.charge.amount - sum(amortised charge)), then it is credited to this suspense account and opposite is posted as spec entry,  with PL category or AA balance type appended as CRF type of the consol key based on charge account</p>
+        <p>This is mainly used when a loan is preclosed and hence the amortisation end date is changed to current date</p>
+        <p>When left blank, any unamortized charge amount would be booked against P&amp;L as it happens today</p>
+    </desc>
+</t>
+<t>
+<field>AMORT.TYPE</field>
+<desc>
+        <p>Indicate the Amortization method. Can be set to “” or END or SPECIAL.</p>
+        <p>Based on the value set in this field, either daily straight line amortization would happen</p>
+        <p>or the entire charge amount would be posted to P&amp;L on the end date.</p>
+        <p>“”      - no change to existing straight line amortization processing</p>
+        <p>END     - no daily amortization and no booking would happen to P&amp;L.  On the end date, the charge amount would be booked to P&amp;L. In between, when amount / end date changes, either P&amp;L is booked (when AMORT.DIFF.PL = YES) for the difference or booked to AMORT.DIFF.ACCOUNT.</p>
+        <p>SPECIAL – Straight line amortization would happen and booked to P&amp;L daily. Additional processing done during charge amount/ end date change and possible to adjust the amortized amount. Any change in charge amount or end date would result in</p>
+    </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Describes the IC.CHARGE.PRODUCT.</p>
+            <p>This field provides a description of the IC.CHARGE.PRODUCT . It is used for the enrichment, in IC.CHARGE</p>
+            <p>It can be expanded to allow the User to enter the Description of the Commission Type in various languages. Each expansion will correspond to a new Language as defined in the Language table, and will indicate to the User the Language in which the Description must be entered. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>3 to 35 type A (alphanumeric) characters. Multilanguage         field. (Mandatory input.)</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BASE.AMT.RTN</field>
+<desc>
+            <p />
+            <p>A valid info basic routine is specified to calculate the base amount (principal) on which the charge is calculated. </p>
+            <p>This routine has five parameters . Three input parameters - the account number , period from and period to which the charge is calculated. Two output parameters - BASE.AMT - the base amount on which the charge is calculated , BASE.CURRENCY - currency of the amount - should be the account currency .</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Should be a valid info basic routine</p>
+            <p>Should be prefixed with '@'.</p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHARGE.MOD.RTN</field>
+<desc>
+            <p>Defines a routine that can be used to modify the calculated charge and tax amounts. This can be used for example when closing an account before a manitenance charge is due.</p>
+            <p>The routine will accept 4 arguemnts</p>
+            <p>ACCOUNT number</p>
+            <p>Lowered ACCOUNT record</p>
+            <p>FT.COMMISION.TYPE key</p>
+            <p>Lowered INFO.GEN.CHG record</p>
+            <p>The routine can modify the CHARGE.AMOUNT and TAX.AMOUNT fields on the INFO.GEN.CHG record only.</p>
+            <p />
+            <p>Validation rules</p>
+            <p>Must be prefixed by @</p>
+            <p>Must be defined on PMG.FILE with TYPE set to S</p>
+        </desc>
+</t>
+<t>
+<field>GEN.CHARGE.KEY</field>
+<desc>
+            <p />
+            <p>Defines the FT.COMMISSION.TYPE key . The FT.COMMISSION.TYPE key defines the charging mechanism for generic charges .</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Should be a valid record in FT.COMMISSION.TYPE</p>
+            <p>Mandatory field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>IC.CHARGE.PRODUCT</field>
+<desc>
+            <p />
+            <p>Identifies the IC.CHARGE.PRODUCT.</p>
+            <p>When defining the charge product ID by means of an alpha key, the User must try to use meaningful codes to facilitate easy identification of the IC.CHARGE.PRODUCT. Examples - ACCT.KEEP FEE , MIN.BALANCE.FEE etc,</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Alpha numeric characters . Mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>IC.CHARGE.PRODUCT.ID</field>
+<desc>
+            <p>Insert text here</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Rule 1</p>
+            <p>Rule 2</p>
+        </desc>
+</t>
+<t><field>AMORT.DIF.ACCT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>AMORT.RMN.ACCT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

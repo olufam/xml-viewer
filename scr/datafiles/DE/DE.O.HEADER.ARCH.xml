@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DE</product>
+<table>DE.O.HEADER.ARCH</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>OVERVIEW OF OUTGOING MESSAGE HEADERS ARCHIVE ============================================ </p>
+            <p>If history maintenance is required by the 'MAINTAIN HISTORY' flag on the parameter file DE.PARM then a copy of outward message header details is written to this file by the outward carrier control module when the message is sent. </p>
+            <p>When end of period processing is run all messages processed and completed since the previous end of period are moved to the history file.  This will overwrite the previous copy with the latest set of header details if a temporary record existed in history. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>TELEX.BATCH.NO.</field>
+<desc>
+            <p>Contains the number of the batch an outward telex message is contained in if it has been batched. </p>
+            <p>Outward telex messages can be batched into batched telexes containing up to ten messages. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>5 numeric characters. (Not input).</p>
+        </desc>
+</t>
+<t>
+<field>PRIORITY</field>
+<desc>
+            <p>The original Priority allocated to the message in Mapping, or from the Delivery Product file. </p>
+            <p>Priority is generally set from the Product record that is used during the Formatting of the Message.  It can alternatively be specifically set up by the Banking Application and then put into the Header during Mapping.  A Priority set by the Banking Application may be increased by the Delivery System during formatting but cannot be reduced, i.e. it may only be changed from Normal to Priority or Urgent, or from Priority to Urgent. </p>
+            <p>However, the priority of a message may be increased or decreased by the user by entering 'U', 'P' or 'N' in this field. </p>
+            <p>During formatting, the Header record is expanded to include a multivalue set of data for each copy of the message.  Priority can only be amended if the multivalue set (fields CARRIER ADDRESS NO to FORM TYPE) is not present; if the multivalue set is present, MSG PRIORITY must be used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'U' (Urgent)   or 'P' (Priority) or 'N' (Normal)</p>
+        </desc>
+</t>
+<t>
+<field>FROM.ADDRESS</field>
+<desc>
+            <p>For an incoming message the sender's address is stored in this field. </p>
+            <p>For outgoing messages, the Company's SWIFT, Telex or postal address, as appropriate. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Not input.</p>
+        </desc>
+</t>
+<t>
+<field>MESSAGE.SEL</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>MSG.ERROR.CODE</field>
+<desc>
+            <p>When Msg Disposition is 'Repair' a description of the error will be placed in this field and cleared out if the message is 'Resubmitted'.  MSG ERROR CODE will not be cleared out if the message is deleted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Not input.</p>
+        </desc>
+</t>
+<t>
+<field>BANK.DATE</field>
+<desc>
+            <p>Identifies the message switch through which this message passed to or from its carrier. </p>
+            <p>This field is only used when a switch other than the default is used.  At present the only such case is the use of DMNL in place of the default SWIFT switch ST200. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>8 type A(alpha.) (Not Input - updated in appropriate carrier control module.)</p>
+        </desc>
+</t>
+<t>
+<field>DELIVERY.DATE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>STATUS</field>
+<desc>
+            <p>Specifies whether a message is to be 'Held', or to wait for a period of time. </p>
+            <p>Status can only be entered before the record is expanded, when the disposition will be 'Unformatted' or 'Repair'. When the record is expanded the Msg Status will be set to the value in Status. </p>
+            <p>'HOLD' will cause the message, once formatted, to stay on the Hold Queue        until Msg Status is changed to 'Release'. </p>
+            <p>'HOLD hh:mm' and 'WAIT hh:mm' will cause message, once formatted, to stay              in the Hold Queue until that time.  (For WAIT hh:mm, the time              to wait (hh:mm) will be added to the current time to produce              a status of HOLD hh:mm.) </p>
+            <p>'RELEASE' will remove a Status of 'HOLD' or 'HOLD hh:mm'. </p>
+            <p>If batching is required and a message is to be held, the message will wait in the hold queue before being released to the batching file. Messages which require testkeys will be placed on the hold queue until realeased and will then be passed on to the testkey queue. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1    'HOLD'                   (Hold indefinitely) 2    'HOLD' Hours ':' Minutes (Hold until a time of day.) 3    'WAIT' Hours ':' Minutes (Wait for a period of time.) 4    'RELEASE'  Can only be entered if the Outward Header has not been expanded.</p>
+        </desc>
+</t>
+<t>
+<field>APPLICATION.QUEUE</field>
+<desc>
+            <p>Specifies to which Banking Application's Inward Message Queue a message will be sent.  Only for inward Messages. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A 2-character Application mnemonic (Not input)</p>
+        </desc>
+</t>
+<t>
+<field>DISPOSITION</field>
+<desc>
+            <p>Describes the type of processing to be done on this Header.  (Each Message copy also has its own Msg Disposition field.) </p>
+            <p>When the raw data received by APPLICATION.HANDOFF is mapped, the Outward Header is generated with a Disposition of 'Unformatted'.  Message fields are also extracted from the raw data and put into the basic Message Type format as defined in the DE.MESSAGE table.  If mapping fails then 'Disposition' is set to 'Repair'.  The Disposition must then be set to 'Delete' because Mapping cannot be tried again. ('Resubmit' puts a message onto the Unformatted Queue for a second attempt at Formatting, not Mapping, but such is not the case with Mapping.) After being successfully Mapped, Messages on the Unformatted Queue are selected in Priority order to be formatted. </p>
+            <p>During formatting the Disposition is temporarily set to 'Selected' before being reset to 'formatted'.  This Disposition field refers to the message as a whole and is set to 'formatted', even though individual copies of a message may be in repair. </p>
+            <p>Formatting causes the Header record to be expanded to include a multivalue set of data for each copy of a message, each with its own 'Msg Disposition' field. </p>
+            <p>If a problem prevents the expansion of a message, such as a missing DE.PRODUCT record, then the Disposition will be set to 'Repair'. However, problems that relate to the detailed formatting of Message fields result in this Disposition field being set to 'formatted' and a Msg Disposition of 'Repair' being set in the appropriate place in the multivalue fields at the end of the record. </p>
+            <p>A Disposition of 'Repair' can be changed to Either     'Resubmit' (which is put on file as 'Unformatted') Or         'Delete'   (which is put on file as 'Deleted') </p>
+            <p>If the required Delivery Product record is missing, add the record and change Disposition to RESUBMIT. </p>
+            <p>In an exceptional case where the Disposition of a particular message is 'Selected', but some special circumstance such as a program error is preventing it from being processed by the Formatting routine, then it may be set to 'Repair' in order to be able to continue with the processing of other messages. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Values that are stored on the file:  'UNFORMATTED'     'ATK' 'FORMATTED' 'SELECTED' 'REPAIR' 'DELETED'   Values that may be input:  'DELETE' 'RESUBMIT' 'REPAIR'</p>
+        </desc>
+</t>
+<t>
+<field>MSG.LANGUAGE</field>
+<desc>
+            <p>Specifies the Language to be used for formatting this message. </p>
+            <p>If the customer requires either multiple copies of all messages or certain specific messages sent to special addresses, then special DE.PRODUCT records will be required.  These records will explicitly state the Language required for each copy of the Messages involved. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 type AAA (Alpha) characters. (Not input - picked up in Mapping, or defaulted to the first Language code, or derived from a Customer level DE.PRODUCT record.)</p>
+        </desc>
+</t>
+<t>
+<field>MSG.PDE</field>
+<desc>
+            <p>If Message Possible Duplicate Entry is present it constitutes a warning that this copy of the message may already have been sent. </p>
+            <p>A value of 'PDE' in this field can originate from three sources: </p>
+            <p>It may be picked up as an Application Determined Possible Duplicate Entry by Mapping APP.PDE (this is put in the POSS DUP ENTRY [Field 9] then propagated to each MSG PDE field), </p>
+            <p>It may be generated by the Delivery System during the recovery from a system failure. </p>
+            <p>When a message that has been sent (Msg Disposition 'ACK' or 'WACK') is Resubmitted (its Disposition changed to Resubmit so that it is put on the Unformatted Message Queue), this field is set to 'PDE'. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'PDE' (No input.)</p>
+        </desc>
+</t>
+<t>
+<field>MSG.STATUS</field>
+<desc>
+            <p>Specifies whether the Message is being held, or is waiting for a period of time before being transmitted. </p>
+            <p>When the Msg Status is 'HOLD' with no time specified, the Message will stay on the Hold Queue indefinitely until the Msg Status is changed to 'RELEASE', then it will be moved to the appropriate Formatted Queue. </p>
+            <p>When 'HOLD' is specified with a time it can still be changed to 'RELEASE' (as above), or left until the stated time of day, when it will be taken from the Hold Queue by the Phantom job MM Timecheck, and placed in the appropriate Formatted Queue. </p>
+            <p>When 'WAIT' is specified the Msg Status is placed on file as 'HOLD hh:mm'.  The waiting period entered is added to the current time and the message will be held until this time of day. If batching is required and a message is to be held the message will wait in the hold queue before being released to the batching file.  Messages which require testkeys will be placed on the hold queue and will then be passed on to the testkey queue. </p>
+            <p>This field can only be amended once the Header record has been expanded to include a multivalue set of data for each copy of the message (fields CARRIER ADDRESS NO. to FORM TYPE).  If the Header record has not been expanded, status must be changed using Status. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1    'HOLD' (Hold indefinitely) 2    'HOLD' Hours ':' Minutes (Hold until a time of day.) 3    'WAIT' Hours ':' Minutes (Wait for a period of time.) 4    'RELEASE'</p>
+        </desc>
+</t>
+<t>
+<field>FORM.TYPE</field>
+<desc>
+            <p>When a message has been Formatted the Form Type specified for this copy of the Message is recorded in this field. </p>
+            <p>Formatted Messages which are for Carrier 'Print' are put onto separate Queues for each Form Type. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Not input.  Picked up from the Format Print record during Formatting.</p>
+        </desc>
+</t>
+<t>
+<field>COUNTRY.CODE</field>
+<desc>
+            <p>This field is taken from the DE.ADDRESS file.  It has no specific use within the Delivery System, but is useful for enquiries. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A 2-character Country code. (Not input.)</p>
+        </desc>
+</t>
+<t>
+<field>CUS..COMPANY</field>
+<desc>
+            <p>Specifies the Company Code of the Banking Application transaction that originated the Message. </p>
+            <p>Used when accessing the DE.PRODUCT file at Company level and (in conjunction with Account Number) at account level.  It is also used for reading the DE.ADDRESS file to pick up the 'from' address when formatting a SWIFT or Telex message. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Not input.</p>
+        </desc>
+</t>
+<t>
+<field>STP.STATUS</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>COPY.NUMBER</field>
+<desc>
+            <p>Specifies the ID of a message referred to by this set of data.  It is usually the occurrence number within a multivalue set, but this is not the case if the copy has been subdivided (see FRAME NO). </p>
+            <p />
+            <p />
+            <p>Example: </p>
+            <p>A statement of more than 2000 characters is to be sent via SWIFT, but has gone into the repair queue because the customer's SWIFT address is not on file.  Once the address has been added (to the DE.ADDRESS file), the message can be resubmitted.  The new message will be split into two messages, each less than 2000 characters. </p>
+            <p>The Msg Disposition of the first will start as 'Repair' and then change to  'Resubmitted' and the Copy Number will be 1. </p>
+            <p>The Msg Disposition of the second and third sets will change from 'Formatted' to 'WACK' (awaiting acknowledgement) and after that to 'ACK'.  Both will have Copy Numbers of 2 and Frame Numbers of 1 and 2. </p>
+            <p>After the 1st attempt at Formatting: 26.1 COPY NUMBER      1 32.1 MSG DISPOSITION  REPAIR 33.1 MSG ERROR CODE   Customer 1234 address missing. </p>
+            <p>After being successfully formatted and sent: 26.1 COPY NUMBER      1 32.1 MSG DISPOSITION  RESUBMITTED 26.2 COPY NUMBER      2 27.2 FRAME NUMBER     1 32.2 MSG DISPOSITION  ACK 26.3 COPY NUMBER      2 27.3 FRAME NUMBER     2 32.3 MSG DISPOSITION  ACK </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 numeric digits. (Not input)</p>
+        </desc>
+</t>
+<t>
+<field>TO.ADDRESS</field>
+<desc>
+            <p>The Delivery Address for this copy of the Message: If carrier is 'Print' this is a multivalue set containing the postal address. For Telex it is a Telex number, and optionally an Answerback. For SWIFT it is the SWIFT address. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Not input: normally derived from the DE.ADDRESS file, but occasionally derived from the Override Delivery Address.</p>
+        </desc>
+</t>
+<t>
+<field>SHORT.NAME</field>
+<desc>
+            <p>Defines the name of the Customer or Company abbreviated to 35 characters.  This field is taken from the DE.ADDRESS file.  It has no specific use within the Delivery System, but is useful for enquiries. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-35 type S (SWIFT) characters. (Not input.)</p>
+        </desc>
+</t>
+<t>
+<field>LANGUAGE</field>
+<desc>
+            <p>Specifies the Language that should be used for a printed message. </p>
+            <p>This Language field will usually be picked up during Mapping from a field set up by the Banking Application and will therefore contain the Language of the Customer who is to receive the message. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 type AAA (Alpha) characters.</p>
+            <p>This is a NOINPUT field - picked up in Mapping, or defaults to the first Language code.</p>
+        </desc>
+</t>
+<t>
+<field>K.PRIORITY</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>COMPANY.CODE</field>
+<desc>
+            <p>Specifies the Code of a Company where the Customer file is held. </p>
+            <p>The Customer's Company Code is used when accessing the DE.PRODUCT file at the Customer level and for reading Customer names and addresses from the DE.ADDRESS file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Not input.</p>
+        </desc>
+</t>
+<t>
+<field>FRAME.NUMBER</field>
+<desc>
+            <p>Specifies the sequence number of a segment from a SWIFT Message that has been divided up because it contains more than 2000 characters. </p>
+            <p>The maximum number of characters allowed in a SWIFT message is 2000.  If a Message exceeds 2000 characters but needs to be sent via SWIFT (this only occurs with statements, Message Type 950), then the SWIFT Formatting module automatically divides it up into 'Frames' of less than 2000 characters.  To each 'Frame' it allocates a sequential Frame Number and writes a set of fields at the end of the Header record for each one, all with the same Copy Number. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Numeric, valued 1-99 (Not input.)</p>
+        </desc>
+</t>
+<t>
+<field>INW.HEAD.TRAIL</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>POS.DUP.ENTRY</field>
+<desc>
+            <p>Specifies that a warning should be added to a message to indicate that it may be a duplicate. </p>
+            <p>This can be set by using APP.PDE in Mapping. APP.PDE (Application Determined Possible Duplicate Entry) allows the banking application to determine when a warning should be added to a message, indicating that it may be a duplicate.  In DE.FORMAT.PRINT and DE.FORMAT.TELEXP a field can be defined with 'Conversion' set to 'Duplicate', in which case it will only print if APP.PDE in the header is set to 'PDE'.  If this field is set for a SWIFT message then it will be sent marked as 'PDE'. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Not input.  When this field is present it will contain 'PDE'.</p>
+        </desc>
+</t>
+<t>
+<field>TRANSACTION.REF</field>
+<desc>
+            <p>Specifies the transaction identifier, which is the key to the transaction details in the Banking Application where the message originated. </p>
+            <p>In the Mapping of outgoing Messages this is a mandatory field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(Not input)</p>
+        </desc>
+</t>
+<t>
+<field>TEST.KEY.AUTH.</field>
+<desc>
+            <p>Contains the name of the person who authorised the test key on outgoing messages. </p>
+            <p>This field is only used on outgoing telex messages which require a test key to be authorised.  It is updated when the test key is authorised. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>16 alphanumeric characters. (Not input).</p>
+        </desc>
+</t>
+<t>
+<field>DISPOSITION.NO</field>
+<desc>
+            <p>If this copy of the Message has been changed due to the presence of a Disposition Control record, then the ID of that record is recorded in this field to ensure that it is not subsequently changed by a Disposition Control record with a higher ID.  This is because the Disposition Control record with the lowest ID applying to this copy of the Message must be allowed to take precedence. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-5 numeric characters (Not input.)</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>Specifies a Currency corresponding to the AMOUNT. </p>
+            <p>Used for Statistics and Disposition Control. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A SWIFT currency code.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>DESTINATION.CODE</field>
+<desc>
+            <p>Specifies where the message will be printed should the selected carrier be 'PRINT'. </p>
+            <p>This field may be passed by the application or may be entered by the user.  If present, and the message is to be printed, it will be directed to the printer ID specified on the department printer file (DE.DEPT.PRINT).  This will override the printer ID from the department printer file accessed using department code and form type. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-4 numeric. (Optional input) If present, must be defined on DEPT.ACCT.OFFICER (ref: General Tables) table if the INSTALL PARAMETER field on DE.PARM is 'R' (resident).</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE.CARRIER</field>
+<desc>
+            <p>Specifies 'PRINT', 'TELEX', 'TELEXP' 'TELEXF', 'EUCLID', 'TANDEM', or 'SWIFT' as the Carrier to be used for a message. </p>
+            <p>OVERRIDE CARRIER can only originate in the Application generating the message.  However, if it is already present, it can be amended but cannot be removed. </p>
+            <p>It should only be used in exceptional circumstances because when it is employed the Message Formatting routines do not read the DE.PRODUCT file, so: </p>
+            <p>a)         Only one copy of the message will be generated. </p>
+            <p>b)         The Language will be taken from the CUSTOMER file. </p>
+            <p>c)         The Priority will be as passed from the Banking            Application. </p>
+            <p>d)         The Customer address to which the message will be            delivered is the first one for the appropriate Customer            number on the DE.ADDRESS file unless either an            Override Delivery Address (OVR DEL ADD) has been            specified or the Customer field does not contain a number            and instead contains a multivalue set explicitly giving            the Customer's address. </p>
+            <p>e)         The format version used will be 1. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'PRINT', 'SWIFT', 'TELEX', 'TELEXP', 'TELEXF', 'EUCLID' or 'TANDEM'. This may optionally be changed if: i)   It is already present, and ii)  The Disposition or Msg Disposition is 'Resubmit'.</p>
+        </desc>
+</t>
+<t>
+<field>DEPARTMENT</field>
+<desc>
+            <p>Specifies the Department where the message originated. </p>
+            <p>Department is used if only messages for a particular department are to be printed.  It is also used for management information, accounting and statistics. </p>
+            <p>In the Mapping of outgoing Messages this is a mandatory field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>INWARD.PAY.TYPE</field>
+<desc>
+            <p>Contains the INWARD PAY TYPE from the FUNDS TRANSFER transaction record. </p>
+            <p>Used for Disposition Control and statistical reporting. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(Not input.)</p>
+        </desc>
+</t>
+<t>
+<field>SENT.STAMP</field>
+<desc>
+            <p>The time that the Msg Disposition was changed to 'WACK'. </p>
+            <p>For an outward SWIFT or Telex message this field will contain the time that the message was sent.  For a printed message, it will be the same as the received time. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Numeric. Hours, minutes and seconds (HH:MM:SS).</p>
+        </desc>
+</t>
+<t>
+<field>OVR.DEL.ADD</field>
+<desc>
+            <p>Specifies a special Override Delivery Address which is supplied for the message by using OVR DEL ADD in Mapping. </p>
+            <p>OVR DEL ADD can only originate in the Application generating the message.  However, if it is already present, it can be amended but cannot be removed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 type A (alphanumeric) characters. This may optionally be changed if: i)  It is already present and ii) The Disposition or Msg Disposition is 'RESUBMIT' Multivalue set.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>Specifies a Value Date that corresponds to the AMOUNT (Field 19). </p>
+            <p>Used for Disposition Control and Statistical reporting. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 date format (Not input - picked up during Mapping.)</p>
+        </desc>
+</t>
+<t>
+<field>MSG.DISPOSITION</field>
+<desc>
+            <p>Describes the type of processing to be done on this copy of the message. </p>
+            <p>Msg Disposition is not present until after formatting when the Header record is expanded to include a multivalue set of data for each copy of the message. </p>
+            <p>If a problem prevents the formatting of a copy of a message then Msg Disposition in the appropriate multivalue set is set to 'Repair', otherwise it is set to 'Formatted'. Once a Message has been Formatted each copy of the Message is put on the Formatted Queue appropriate to the Carrier.  However, if the carrier is 'TELEX',  'TELEXP' or 'TELEXF' and the message is of normal </p>
+            <p>priority, the message will be placed in the batching queue if batching is required (Batching Req on DE.PARM is 'Y') and the message type is to be batched (exists on DE.BATCH.GROUP).  Messages to be batched will be placed on the batching file with a Msg Disposition of 'BATCHING' until the Batch is complete.  Batches will be automatically completed when they contain 10 messages or they can be completed manually from within DE.MM.DISPLAY.  Completed batches are put on the awaiting testkey queue if a testkey is required, with the Msg Disposition of all the messages contained in the batch being set to 'ATK'.  Once a testkey has been entered successfully, the batched message is placed on the formatted queue, with the Msg Disposition of all the messages set to 'FORMATTED'. </p>
+            <p>If the carrier is 'TELEX' TELEXP' or 'TELEXF' and batching is not required but a testkey is, the message is placed on the testkey file, with a Msg Disposition of 'ATK'. </p>
+            <p>A Msg Disposition of 'REPAIR' can be changed to </p>
+            <p>Either:    'RESUBMIT' (put on file as 'RESUBMITTED' and another            multivalue set created with Msg Disposition of            'RESUBMIT').     Or            'DELETE' (put on file as 'DELETED' because this copy of            the message is immediately deleted). Or         'REROUTE' (put on file as 'REROUTED' and another            multivalue set created with Msg Disposition of            'REROUTE') </p>
+            <p>'RESUBMIT' causes a new multivalue set to be created with the same as the message being resubmitted.  The Msg Disposition on the new multivalue set is set to 'RESUBMIT' and the original Msg Disposition is set to 'RESUBMITTED'.  If the Msg Status or Msg Priority are changed, the new multivalue set will contain the changed values whilst the original Msg Status and Msg Priority will revert to their previous values.  The message will then be put on the Unformatted Queue for a second attempt at formatting.  This also applies if the Msg Disposition is REROUTE. </p>
+            <p>Messages may be resubmitted not only from the Repair Queue but also when they have been successfully formatted.  However, if copies are not allowed (copies on the DE.MESSAGE file is 'NO') for the message type being processed and the Msg Disposition is 'ACK' (acknowledged) or 'WACK' (awaiting acknowledgement), 'REROUTE' and 'RESUBMIT' are not allowed. </p>
+            <p>If a message with a Msg Disposition of 'ACK' or 'WACK' is resubmitted its Msg Disposition becomes 'ACK' - RESUBMITTED' or 'WACK - RESUBMITTED' instead of 'RESUBMITTED'. </p>
+            <p>This subsequent attempt at formatting will not read the Delivery Product file because the Header has already been expanded for the copies required.  Disposition 'REROUTE' causes the message to be put on the Unformatted Queue for a second attempt at formatting and also specifies that the Alternate Carrier List should be looked up to override the DE.PRODUCT File information for that copy of the message.  If a message with a Msg Disposition of 'ACK' or 'WACK' is rerouted its Msg Disposition becomes 'ACK - REROUTED' or 'WACK - REROUTED' instead of just 'REROUTED'. </p>
+            <p>Messages in the testkey queue and the Batching queue may also have their disposition changed to 'DELETE', 'RESUBMIT' or 'REROUTE'. The message disposition is changed appropriately and the message placed back on the unformatted queue for 'REROUTE' and 'RESUBMIT'. Completed batches of telex messages which have a message removed from them will be re-completed and placed back on the testkey queue. </p>
+            <p>Completed telex batches elsewhere in the delivery system which have messages removed from them are re-completed.  The changed batch will then be placed back in the carrier queue it was originally located in or returned to the testkey queue if a testkey is required for it.  The individual message removed is then treated in the same way as a resubmitted, rerouted or deleted message. </p>
+            <p>Carrier Control Modules for both SWIFT and Telex pass the message to the Carrier device and set the Msg Disposition to 'WACK' (Awaiting acknowledgement).  If the message is successfully received by the recipient (the carrier device receives an acknowledgment), the Msg Disposition is set to 'ACK' (Acknowledged).  Otherwise the carrier may 'time out' the message and Carrier Control will receive a NAK (negative acknowledgement).  These two possibilities will cause the following changes to the Msg Disposition: Original            AcknowledgedNot Ack </p>
+            <p>WACK                ACK       REPAIR WACK-RESUBMITTED    ACK - RESUBMITTEDRESUBMITTED WACK - REROUTED     ACK - REROUTEDREROUTED </p>
+            <p>The Carrier Control Module for printing moves each Message to the printer Spool Queue and immediately sets Msg Disposition to 'ACK'. </p>
+            <p>'DELETE' prevents any further processing or resubmission of the message.  When all copies of a message are acknowledged or deleted the message is no longer visible through DE.MM DISPLAY. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Values that are stored on the file: 'FORMATTED'     'ATK' 'RESUBMITTED'   'BATCHING' 'REROUTED' 'REPAIR' 'DELETED' 'WACK' or 'WACK - RESUBMITTED' or 'WACK - REROUTED' 'ACK'  or 'ACK - RESUBMITTED' or 'ACK - REROUTED' Values that may be input: 'DELETE', 'RESUBMIT' or 'REROUTE'</p>
+        </desc>
+</t>
+<t>
+<field>MSG.CLASSIFICATION</field>
+<desc>
+            <p>This field is used to Identify a Cover message.  Example, to identify a MT202 COV message and MT205 COV message.</p>
+            <p>Holds the value 'COVER' when processing cover messages. Null otherwise. </p>
+            <p>No input field.</p>
+        </desc>
+</t>
+<t>
+<field>FORMAT</field>
+<desc>
+            <p>The version number that will be used if this copy of the message is formatted for PRINT or TELEXP.  (This is the 3rd part of the ID of a Format Print record or a Format TELEXP record.) </p>
+            <p>The Format version used can be controlled by using the DE.PRODUCT file but this field is generally set to 1. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Numeric (Not input - picked up from the DE.PRODUCT file.)</p>
+        </desc>
+</t>
+<t>
+<field>SENT.DATE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>T24.INW.TRANS.REF</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>RECEIVED.STAMP</field>
+<desc>
+            <p>The time that the Msg Disposition was changed to 'ACK'. </p>
+            <p>For a SWIFT or Telex message this field will contain the time an acknowledgement was received, but for a printed message it will be the time that it was handed out of the Delivery system to be printed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Numeric. Hours, minutes and seconds (HH:MM:SS).</p>
+        </desc>
+</t>
+<t>
+<field>K.FORMAT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>MSG.PRIORITY</field>
+<desc>
+            <p>Defines the Priority of this copy of the Message details. </p>
+            <p>Priority is normally set from the Product record used during the Formatting of the Message.  Alternatively, it can be set up by the Banking Application and placed in the Header during Mapping. A Priority, set by the Banking Application, may be increased by the Delivery System during formatting but cannot be reduced. For example,  it may only be changed from Normal to Priority or Urgent, or from Priority to Urgent. </p>
+            <p>This field can only be amended once the Header record has been expanded to include a multivalue set of data for each copy of the message (fields CARRIER ADDRESS NO. to FORM TYPE).  If the header record has not been expanded, priority must be changed using Priority. </p>
+            <p>However, the priority of a message may be increased or decreased by the User, by entering 'U', 'P' or 'N' in this field. </p>
+            <p>Changes to message priority have additional consequences for batches of telex messages.  An increase in priority for normal causes the message to be removed from the batch and treated as an individual message of the new priority.  If a testkey was required for all the messages in the batch this will mean both the changed batch and the removed message returning to the testkey file for re-entry of testkeys. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'U' (Urgent) or 'P' (Priority) or 'N' (Normal)</p>
+        </desc>
+</t>
+<t>
+<field>TEST.KEY.REQ.</field>
+<desc>
+            <p>Defines whether a testkey is required for this message. </p>
+            <p>Testkeys will be required (if set to 'Y') for all copies of the message sent by telex. </p>
+            <p>If a copy is suitable for batching however, a single testkey will be required for a completed batch which contains the message. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'Y' or 'NO'. (Not Input.)</p>
+        </desc>
+</t>
+<t>
+<field>APPLICATION</field>
+<desc>
+            <p>Specifies the Banking Application that originated the message. </p>
+            <p>This field may contain an application code or may be in the format xxyy, where xx is the application code and yy is the Funds Transfer product code. If this field contains a product code, it will not have been used as part of the application code when reading the Mapping file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.  It is picked up from the Mapping key when an outward message is created.</p>
+        </desc>
+</t>
+<t>
+<field>ERROR.CODE</field>
+<desc>
+            <p>If Disposition is 'Repair' this field will contain a description of the error that caused the message to be put onto the Repair Queue.  If a message that was in repair is subsequently deleted, the error code will still be stored in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Not input.</p>
+        </desc>
+</t>
+<t>
+<field>CARRIER.ADDR.NO</field>
+<desc>
+            <p>Specifies which Carrier is to be used for this copy of a message and provides the sequence number to be used when looking up the DE.ADDRESS file. </p>
+            <p>The Carrier Address Number 'Print.1' is the Customer Address that was placed in the CUSTOMER file and automatically copied to the DE.ADDRESS file. 'Print.2' 'Print.3' etc. are special addresses separately input to the DE.ADDRESS file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'SWIFT.n or 'TELEX.n or 'TELEXP.n or 'PRINT.n or 'EUCLID or 'TANDEM.n Where 'n' is usually 1 but may be up to 99. (Not input)</p>
+        </desc>
+</t>
+<t>
+<field>CARRIER.SEQ.NO</field>
+<desc>
+            <p>SWIFT and Telex use a sequence number to identify each message.  The last sequence number used is held on the System Status record as SWIFT MF SEQUENCE and TELEX MF SEQUENCE for outgoing messages and SWIFT SF SEQUENCE and TELEX MF SEQUENCE for incoming messages.  When a SWIFT or Telex message is sent, 1 is added to SWIFT MF SEQUENCE or TELEX MF SEQUENCE respectively and its value is stored in the Carrier Seq No for the appropriate copy of the message.  Similarly the appropriate fields are updated when an inward message is received. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-5 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.NUMBER</field>
+<desc>
+            <p>Holds either a multivalue set containing the address to send a message to, or the number of a customer who is to receive the message. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Not input.</p>
+        </desc>
+</t>
+<t>
+<field>TESTKEY.INP.VER</field>
+<desc>
+            <p>Contains the name of the person who input the testkey in outgoing messages. </p>
+            <p>This field is only used on telex messages which required a test key to be input on outgoing messages or a test key verified on incoming messages.  It is updated when the test key is input or verified. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>16 alphanumeric characters. (Not input).</p>
+        </desc>
+</t>
+<t>
+<field>MESSAGE.TYPE</field>
+<desc>
+            <p>Specifies the basic Message Type as defined in the DE.MESSAGE table. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Not input</p>
+        </desc>
+</t>
+<t>
+<field>OFS.REQ.DET.KEY</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>REPLY.TO.ADR</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.TIME.STAMP</field>
+<desc>
+            <p>Specifies the ID of the Message Header. It is generated automatically. </p>
+            <p>When a message is created by APPLICATION.HANDOFF the Date Time Stamp is sent back as an acknowledgement to the Banking Application that originated the message and is recorded in the appropriate transaction record.  This provides an audit trail from the Banking Applications to the Delivery System.  In the event of a system failure the Banking Application is able to re-use the same Message ID. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'D'     (Delivered) Year    (4 numeric characters) Month   (2 numeric characters) Day     (2 numeric characters) Time    (a 7-digit number taken from the computer's internal clock.)  New records cannot be added to this file by the user.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.NUMBER</field>
+<desc>
+            <p>Specifies an account number which may be used for controlling the Status and Priority of the message and Statistical reporting. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Not input.</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT</field>
+<desc>
+            <p>Specifies a value that characterises the message. </p>
+            <p>Used for Disposition Control and statistical reporting. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Numeric, with a decimal point if that is appropriate to the currency.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT.SEL</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>APPLICATION.FORMAT</field>
+<desc>
+            <p>Contains a number that subdivides the Message Type. It is not used for incoming Messages. </p>
+            <p />
+            <p />
+            <p>Example: </p>
+            <p>A SWIFT message type 320 is used to confirm new loans, changed loans, new deposits and changed deposits; these all use the same SWIFT format. However, when they are printed they need different layouts, so different Application Formats are used to enable different Format Print records to be employed within the same basic Message Type. (Application Format is part of the ID of the Format Print records.) </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This field is not input - it is picked up from the Banking Application by using APP FORMAT in Mapping.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

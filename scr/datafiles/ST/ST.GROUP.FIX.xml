@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>ST.GROUP.FIX</table>
+</header>
+<overview>
+<ovdesc>
+<p>This application provides an interface for the user to select that SWAP or FRA trades are to be fixed and then executes the fixing operation on authorisation. A request for a group fix operation must be authorised for it to be executed. Users may select trades by instrument (SWAP or FRA), instrument type, currency, rate fixing code and effective date. They can also specify various operational parameters to instruct the system when, how and what to execute.  Users may select trades by instrument (SWAP or FRA), instrument type, currency, rate fixing code and effective date. They can also specify various operational parameters to instruct the system when, how and what to execute. See section 3.1 for more technical details.  The instrument type works separately for SWAPs and FRAs. For SWAPs, it is any type defined in SWAP.TYPE. For FRAs, it can be HEDGE or TRADE as defined in FRA.TYPE.  The rate fixing code determines which PERIODIC.INTEREST rate set to use. In SWAPs, the link to the PERIODIC.INTEREST table is handled via MARKET.RATE.TEXT (in fields AS.RATE.KEY and LB.RATE.KEY) so the rate fixing code represents the MARKET.RATE.TEXT key. For FRAs, the rate fixing code is directly linked to the PERIODIC.INTEREST table via REFERENCE.RATE. Basically, users must input the same code into ST.GROUP.FIX that they used to flag the floating rate within the trades.  The effective date is the date on which the new rate takes effect and is not necessarily the date on which the fixing operation itself happens. Typically, fixing occurs two days before or on the day the new rate takes effect, depending on the currency. The fixing application will create an individual RR schedule record for each effective date containing the fixing rate (which may include a spread component if defined for that trade). If users have input a frequency code into the RR schedule date field, the fixing program will also recreate the RR schedule after advancing the date to be that of the next reset date as determined by the frequency. For example, for an existing schedule of:</p><p>Schedule: RR Date: 20000228M0328 Rate: -  and for a fix for that day, we would get something like this after the fixing operation:  Schedule: RR Date: 20000228 Rate: 5.4%  Schedule: RR Date: 20000228M0328 Rate: -  If users wish to run several overnight jobs e.g. on an IMM fixing date, they will need to input one record per combination of instrument/currency/rate fixing code/effective date, mark them to be run at EOD and finally, authorise them.  The fixing operation involves detecting whether a trade has matching criteria to those input into ST.GROUP.FIX. In the case of a swap, this could be the asset, the liability code or both. In the event of a swap having both sides on a floating rate basis eg. basis swap, the fixing operation must be requested twice using two different rate fixing codes. In the event, that the swap has both sides on the same rate fixing code the fixing operation only has to be requested once. </p></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>GRP.FIX.ID</field>
+<desc><p>Key: ST.GFIX-yyyymmdd-nnnn</p><p><p>Validation Rules:</p></p><p /><p>Alphanumeric field</p><p>Input date (yyyymmdd) or number (nnnn) then system will generate ID</p></desc>
+</t>
+<t>
+<field>RATE.CODE</field>
+<desc><p>The descriptor for the rate set supplying the fixing rates.     SWAP:  value in MARKET.RATE.TEXT     FRA: value in PERIODIC.INTEREST </p><p><p>Validation Rules:</p></p><p /><p>Alphanumeric field</p><p>Multi-value field set</p></desc>
+</t>
+<t>
+<field>TRADE.STATUS</field>
+<desc><p>Whether a fixed trade goes directly to authorized status or whether it goes to unauthorized status.          AUTH: trade authorized          WAIT: trade not authorized </p><p><p>Validation Rules:</p></p><p /><p>Alphanumeric field</p></desc>
+</t>
+<t>
+<field>RATE.SELECTION</field>
+<desc><p>Use mid or bid-offer rate from the rate table  Allowed values are:      - MIDDLE: use (BID+OFFER)/2      - BIDOFFER: use either BID or OFFER as appropriate;  </p><p>MIDDLE: for both FRAs and Swaps          Fixing.Rate = (BID+OFFER)/2  BIDOFFER: for SWAPs:          if asset (loan) side, use OFFER rate          if liability (depo) side, use BID RATE  BIDOFFER: for FRAs          if buy, use OFFER rate          if sell, use BID rate  </p><p><p>Validation Rules:</p></p><p /><p>Alphanumeric field</p><p>Multi-value field set</p></desc>
+</t>
+<t>
+<field>INSTRUMENT</field>
+<desc><p>May be extended to other instruments in the future. Currently the only allowed values are:         SWAP         FRA</p><p><p>Validation Rules:</p></p><p /><p>Alphanumeric field</p></desc>
+</t>
+<t>
+<field>TIMING</field>
+<desc><p>Specifies when the operation is executed.  Allowed values are:         WID  Within day operation         SERVICE,         (blank)  Suspend </p><p>WID- Upon Authorization of the ST.GROUP.FIX record the Rate fixing takes place online.</p><p>SERVICE - Rate fixing for the groups defined will take place only on running the Service &lt;Company Mnemonic&gt; ST.GROUP.EOD.FIX (Blank) - The fixing operation will be suspended.</p><p><p>Validation Rules:</p></p><p /><p>Alphanumeric field</p></desc>
+</t>
+<t>
+<field>REFIX</field>
+<desc><p>The fixing operation will overwrite rates for trades which may already have been fixed (manually or automatically) previously          YES: refix          NO: do not refix </p><p><p>Validation Rules:</p></p><p /><p>Alphanumeric field</p></desc>
+</t>
+<t>
+<field>LAST.RUN</field>
+<desc><p>Controlled by system; contains date as well as status (started/completed) and number of errors if completed </p><p><p>Validation Rules:</p></p><p /><p>No input field</p></desc>
+</t>
+<t>
+<field>TYPE</field>
+<desc><p>Sub-type within SWAP and FRA groups. Allowed values are:         SWAP: any type defined in SWAP.TYPE         FRA: any type defined in FRA.DEAL.FRA.TYPE ie. TRADE or HEDGE </p><p><p>Validation Rules:</p></p><p /><p>Alphanumeric field</p><p>Multi-value field SET</p></desc>
+</t>
+<t>
+<field>K.TYPE</field>
+<desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc><p>Currency to be fixed; only one currency may be specified</p><p><p>Validation Rules:</p></p><p /><p>Alphanumeric field</p><p>Multi-value field set</p></desc>
+</t>
+<t>
+<field>EFFECTIVE.DATE</field>
+<desc><p>The date on which the new rate will take effect.          SWAP: the date in the RR schedule date/frequency field         FRA: the settlement date (not the fixing date) </p><p><p>Validation Rules:</p></p><p /><p>Date format </p></desc>
+</t>
+<t>
+<field>ERROR.LOG</field>
+<desc><p>Whether the process should write to the log:          YES: write to log          NO: do not write to log</p><p><p>Validation Rules:</p></p><p /><p>Alphanumeric field</p></desc>
+</t>
+<t>
+<field>FIXING.LIST</field>
+<desc><p>Whether the list of trades fixed is required:          YES: create list          NO: do not create list</p><p><p>Validation Rules:</p></p><p /><p>Alphanumeric field</p></desc>
+</t>
+</menu>
+</t24help>
+

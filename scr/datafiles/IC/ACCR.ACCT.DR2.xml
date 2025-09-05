@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>IC</product>
+<table>ACCR.ACCT.DR2</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This is an internal file containing details of the calculation of Debit 2 Interest for accrual (updating Profit and Loss). </p>
+            <p>  Interest is accrued at every monthend (on the day specified in the MTH.END.UPTO.DAY field in the ACCOUNT.ACCRUAL table) and whenever it is capitalised. </p>
+            <p>  ACCR.ACCT.DR2 records contain details of debit 2 interest which has been accrued but not yet capitalised (booked to the Customer's Account). At each monthend the interest accrued since the last capitalisation is recalculated, the appropriate Profit and Loss entries are generated and a new ACCR.ACCT.DR2 record is written, replacing the one generated the previous month. When the interest is capitalised, a STMT.ACCT.DR2 record is written and the ACCR.ACCT.DR2 record is deleted. </p>
+            <p>  Debit 2 Interest is calculated according to rules specified in the fields with prefix DR2 in the appropriate ACCOUNT.DEBIT.INT record or GROUP.DEBIT.INT record. It may be Capitalised, i.e. booked to the Customer's Account, on the same dates as normal Debit Interest, or on different dates.) </p>
+            <p>  Interest is calculated on the value dated balances stored in the ACCT.ACTIVITY file, taking into account all entries over the Account up to and including the day of processing. </p>
+            <p>  The first balance included in the calculation is the day after the last Debit 2 Interest Capitalisation, as stored in the ACCOUNT record (in the CAP.DATE.D2.INT field). </p>
+            <p>  The last balance included is the one with Value Date equal to the month end date specified in the MTH.END.UPTO.DAY in the ACCOUNT.ACCRUAL record. The month end accrual calculations are always inclusive of the balance on the month end day. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>D2.INT.TAXTRSCR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.DR2 records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.WAIVE.ALL</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>CORRECTION.DATE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>INT.POST.DATE</field>
+<desc>
+            <p>The date interest was posted for this capitalisation perio. Not relevant to accruals.</p>
+        </desc>
+</t>
+<t>
+<field>DB.NETTING.AMT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>ICA.DIST.TYPE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.DR2 records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>ICA.MAIN.ACCT</field>
+<desc>
+            <p>Not used in ACCR.ACCT.DR2 records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>D2.INT.TAX.RATE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.DR2 records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>LIQUIDITY.ACCOUNT</field>
+<desc>
+            <p>Where interest and charges are to be passed to an alternative Account, the number of the alternative ACCOUNT is shown by this field. </p>
+            <p>  Where interest and charges are to be passed to an alternative Account, the alternative account number should be entered in the INTEREST.LIQU.ACCT field on the original customer ACCOUNT record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Standard account format.</p>
+        </desc>
+</t>
+<t>
+<field>LIQUIDITY.CCY</field>
+<desc>
+            <p>Identifies the currency of the liquidity account which may be present on this file. </p>
+            <p>  The currency may not necessarally be the currency of the main account. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  3 type SSS (uppercase alpha) characters  or 1-3 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>WITHHELD.INT.AMT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>D2.INT.TAX.CODE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.DR2 records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>D2.INT.TAXCATEG</field>
+<desc>
+            <p>Not used in ACCR.ACCT.DR2 records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>INT.NO.BOOKING</field>
+<desc>
+            <p>If interest and charges are to be calculated for information purposes only and not passed to the account, or if accrued interest is to be suspended and not posted to Profit and Loss, this is shown by this field. </p>
+            <p>  The information in this field comes from the equivalent field in the ACCOUNT record. </p>
+            <p>  If this field contains 'SUSPENSE', interest will be booked to the Customer's Account but no Profit or Loss entries will be generated, instead, the amount which would have been accrued will be stored in a Suspense Amount field in the Account record. </p>
+            <p>  If this field contains 'Y', interest is calculated for information only, no entries will be posted either to Profit and Loss or to the Customer's Account.  e.g. for Nostro Accounts. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  'SUSPENSE', 'Y' or nothing.</p>
+        </desc>
+</t>
+<t>
+<field>DEFERRED.DATE</field>
+<desc>
+            <p>This field will hold the deferred application date of the debit interest in case pending debit interest processing was being performed on this account. </p>
+        </desc>
+</t>
+<t>
+<field>DR2.MIN.WAIVE</field>
+<desc>
+            <p>If set to "YES" and the amount of interest calculated is less than the DR2.MIN.VALUE then no interest will be booked.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.TOTAL.TAX</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>DR2.INT.DATE</field>
+<desc>
+            <p>The start date of a period during which the Account has been in debit and debit 2 interest has been calculated.  Associated fields show the number of days of the calculation, the applicable rate and the balance.  If either the rate or the balance change, a further set of associated fields will be generated. </p>
+            <p>  Any change to the interest calculation will cause the generation of a new set of multivalue field range DR2.INT.DATE to DR2.INT.AMT.  These changes include: </p>
+            <p>                  Change to Balance                 Interest Rate                 Interest Day Basis                 Highest/Daily/Average Balance </p>
+            <p>  Where different interest rates are applicable to 'Bands' of the balance, separate sets of field range DR2.INT.DATE to DR2.INT.AMT are generated for each Band of the Balance on which interest is calculated. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  9 date characters DD MMM YYYY. Multivalue field associated with field range DR2.INT.DATE to DR2.INT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>ICA.DIST.RATIO</field>
+<desc>
+            <p>Not used in ACCR.ACCT.DR2 records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>DR2.VAL.BALANCE</field>
+<desc>
+            <p>The debit balance on which the Interest Amount, shown in corresponding field DR2.INT.AMT, has been calculated. </p>
+            <p>  The value dates balances on which interest is calculated are held in the ACCT.ACTIVITY file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range DR2.INT.DATE to DR2.INT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>D2.INT.TAXTRSDR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.DR2 records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.TAX</field>
+<desc>
+            <p>Not used in ACCR.ACCT.DR2 records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>CORRECTION.ID</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>DR2.INT.CATEG</field>
+<desc>
+            <p>Identifies the Category code to be assigned to Profit and Loss entries generated when debit 2 interest is accrued. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  4 or 5 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>DR2.INT.AMT</field>
+<desc>
+            <p>The amount of Debit 2 Interest calculated at the rate shown in corresponding field DR2.INT.RATE, on the amount shown in corresponding field DR2.VAL.BALANCE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range DR2.INT.DATE to DR2.INT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>CORRECTION.NUMBER</field>
+<desc>
+            <p>Not used in ACCR.ACCT.DR2 records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>ICA.SUB.INT</field>
+<desc>
+            <p>Not used in ACCR.ACCT.DR2 records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>DR2.MIN.VALUE</field>
+<desc>
+            <p>If relevant the minimum amount of debit 2 interest to apply if the calculated amount of interest is less than the minimum value and DR2.MIN.WAIVE is not set to "YES".</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DR2.INT.TR.PL</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Profit and Loss entries generated when debit 2 interest is accrued. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  1-10(Max Value) numeric characters Transaction Code. </p>
+            <p>  The Maximum value is specified in EB.OBJECT for TRANSACTION. </p>
+        </desc>
+</t>
+<t>
+<field>ICA.TR.PL</field>
+<desc>
+            <p>Not used in ACCR.ACCT.DR2 records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>GRAND.TOTAL</field>
+<desc>
+            <p>Total amount booked to Profit and Loss since the last capitalisation. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 14 numeric characters plus a  decimal point. Standard amount format.</p>
+        </desc>
+</t>
+<t>
+<field>ICA.POST.INTEREST</field>
+<desc>
+            <p>Not used in ACCR.ACCT.DR2 records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>MANUAL.ADJ.AMT</field>
+<desc>
+            <p>The manual accrual adjustment amount for the period.</p>
+        </desc>
+</t>
+<t>
+<field>D2.INT.TAX.AMT</field>
+<desc>
+            <p>Not used in ACCR.ACCT.DR2 records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>DR2.INT.TR.AC</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Account entries generated when debit 2 interest is capitalised. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  1-10(Max Value) numeric characters Transaction Code. </p>
+            <p>  The Maximum value is specified in EB.OBJECT for TRANSACTION. </p>
+        </desc>
+</t>
+<t>
+<field>DEF.TOTAL.INT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>ICA.INT.CATEG</field>
+<desc>
+            <p>Not used in ACCR.ACCT.DR2 records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.NUMBER</field>
+<desc>
+            <p>Specifies the account on which interest has been calculated (or the main account of a combined group, see details). </p>
+            <p>  When the balances of several accounts are to be consolidated for Interest purposes the main acccount number has to be entered in the INTEREST.COMP.ACCT field in the ACCOUNT records of each of the 'sub' accounts. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Standard account format.</p>
+        </desc>
+</t>
+<t>
+<field>ADJ.INT.AMT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>ADJ.TAX.AMT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>COMPENS.ACCOUNT</field>
+<desc>
+            <p>Where the balances on two or more Accounts are to be netted for the purpose of calculating interest and charges, the various sub-account numbers are shown by this multivalue field. The Account Number shown in the Record id of this file is the major Account number of the group. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Standard account format. Multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.INTEREST</field>
+<desc>
+            <p>Amount of interest. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 14 numeric characters plus a decimal point. Standard amount format.</p>
+        </desc>
+</t>
+<t>
+<field>DR2.NO.OF.DAYS</field>
+<desc>
+            <p>The number of days for which the Interest Amount shown in corresponding field DR2.INT.AMT has been calculated. </p>
+            <p>  The number of days is calculated according to the Basis (360/360,366/360, 366/365 or 360/365) on which the interest calculation is to be made. Where the Basis is 360/360 or 360/365, the number of days is calculated as if there are 30 days in each month.  This is achieved by ignoring the 30th if there are 31 days in a month and assuming 3 days on the 28th of February or 2 days on the 29th of February.  If the Basis is 366/360 or 366/365, the number of days is the actual number of days. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  1-3 numeric characters. Multivalue field associated with field range DR2.INT.DATE to DR2.INT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>UNADJ.TOTAL.INT</field>
+<desc>
+            <p>The total calculated amount of interest which can differ from the amount booked in the case of manual adjustments to debit 2 interest.</p>
+        </desc>
+</t>
+<t>
+<field>ICA.MAIN.INT</field>
+<desc>
+            <p>Not used in ACCR.ACCT.DR2 records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>ICA.TR.AC</field>
+<desc>
+            <p>Not used in ACCR.ACCT.DR2 records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.FIRST.DATE</field>
+<desc>
+            <p>Specifies the value date of the first balance on which the interest has been calculated. </p>
+            <p>  This is the day after the last debit  2 interest application (Capitalisation) as stored in the CAP.DATE.D2.INT field in the ACCOUNT record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  9 date characters DD MMM YYYY.</p>
+        </desc>
+</t>
+<t>
+<field>DR2.INT.RATE</field>
+<desc>
+            <p>The Debit Interest Rate used to calculate the Interest Amount shown in corresponding field DR2.INT.AMT. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 10 numeric characters plus a decimal point. Up to 6 integers. Up to 9 decimals. Standard rate format. Multivalue field associated with field range DR2.INT.DATE to DR2.INT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.LAST.DATE</field>
+<desc>
+            <p>Specifies the value date of the last balance on which the interest has been calculated. </p>
+            <p>  Interest is calculated on the value dated balances stored in the ACCT.ACTIVITY file, taking into account all entries over the Account up to and including the last end of day processing. </p>
+            <p>  The calculation includes all balances from the day after the last debit 2 interest capitalisation, as stored in the ACCOUNT record (in the CAP.DATE.D2.INT field) up to and including the month end accrual date specified in the MTH.END.UPTO.DAY field in the ACCOUNT.ACCRUAL record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  9 date characters DD MMM YYYY.</p>
+        </desc>
+</t>
+<t>
+<field>WAIVE.AMT</field>
+<desc>
+            <p>The minimum waive amount in the currency of the account if the waive currency is different to the currency of the account</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Standard amount format.</p>
+        </desc>
+</t>
+<t>
+<field>WIAVE.RATE</field>
+<desc>
+            <p>The exchange rate used for the conversion of minimum waive amount in account currency</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Standard rate format.</p>
+        </desc>
+</t>
+<t><field>WAIVE.RATE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

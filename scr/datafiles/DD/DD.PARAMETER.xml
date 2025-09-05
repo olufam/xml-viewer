@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DD</product>
+<table>DD.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The main parameter record which contains details relating to the Direct Debit system the record is configured for. It contains details such as the Clearing Account category, Suspense Account category &amp; Standalone mandate category. It is also used to specify the number of days before the value date that the claim file is to be submitted/resubmitted; the number of days after which a file is moved to history; whether standalone mandates are allowed and the currencies and holiday regions to be checked.</p>
+            <p />
+            <p> One parameter record is used for each Direct Debit system or sub-system. Each can have their own set of records which configure the formats of the inward &amp; outward claim files, reason codes and claim cycles. This may be where several sort codes are used in the same clearing system and which are submitted individually; or where claims are made in different currency systems.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>INWARD.FILE.LOC</field>
+<desc>
+            <p>Defines the directory where the inward claim file received from clearing agency is available.</p>
+            <p> Currently the inward file location &amp; file is given for information purpose and the local interface has to be written to create the DD.ITEM and Inward claim processing Accounting entries using the details given here.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional field.</p>
+            <p> Must be a type 1 or 19 file.</p>
+        </desc>
+</t>
+<t>
+<field>DDI.AVAIL.PRD</field>
+<desc>
+            <p>The status of the mandate which is sent to the Customer's Bank can be updated to  AVILABLE (ie. "Ready for use") manually after receiving the confirmation or after the elapse of number of days as specified here.</p>
+            <p> Incase the status is not changed manually, after the lapse of the period specified here, during end of day process, the DD.DDI status is automatically changes to " AVAILABLE " from its old Status "ADVISED".</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional field</p>
+            <p> Valid values - nnC/W ( ie. 02W or 02C where W/C means Working or Calendar days) or NULL</p>
+        </desc>
+</t>
+<t>
+<field>UPDATE.INT.MANDATE</field>
+<desc>
+            <p>This field can have the value as YES or NO. </p>
+            <p>When processing an INTERNAL DD.ITEM on CLAIM date, if this is set to YES, INWARD DD.DDI and DD.ITEM will be created by the system automatically when processing an INTERNAL DD.ITEM on CLAIM date and if set to NO it will not be created. </p>
+            <p>System defaults it to NO.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>UPDATE.MANDATE</field>
+<desc>
+            <p>If “YES” then the mandate (DD.DDI) should be created automatically from the inbound message and if set to “NO” then, the DD.DDI mandate should be created manually before inbound message received.</p>
+            <p />
+            <p> Validation rules:</p>
+            <p> Optional Input. </p>
+            <p> If it is not inputted then it will be defaulted to “NO”.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>HIST.FILE.LOC</field>
+<desc>
+            <p>Specify the directory where in a copy of the generated Claim file will be stored. During Claim file generation process, system creates a backup of the generated file in this directory with the name given in OUTWARD.RECORD suffixed with System.Date.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional field</p>
+            <p> 1-11 Alpha Numeric Character's</p>
+        </desc>
+</t>
+<t>
+<field>DD.IN.FORMAT</field>
+<desc>
+            <p>Specify the file format for inward claim file. This format can be used to decode the incoming claim file details &amp; Accounting entries can be raised using local accounting interface.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional field.</p>
+            <p> Must be a valid record in DD.IN.FORMAT</p>
+        </desc>
+</t>
+<t>
+<field>SUSP.ACCT.CLASS</field>
+<desc>
+            <p>The Account class which should be used while generating STMT.ENTRY when an incoming Claim account is not a valid account in T24.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Mandatory</p>
+            <p> Must be the key to a valid record on the ACCOUNT.CLASS with record type as ACCOUNT.</p>
+            <p> An error is given when the ACCOUNT record not available for the combination of Currency, ACCOUNT.CLASS &amp; ACCOUNT.OFFICER as input in this parameter.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>CLAIM.DATE.PRD</field>
+<desc>
+            <p>Here you can specify the Number of days before a value date of a claim, the outward claim file is to be generated.</p>
+            <p> This is the date on which file will be generated and as on this value date claim accounting entries are raised.  Hence while giving the  frequency date in MORTGAGE contract or DD.DDI application, claim date period has to be taken into account.</p>
+            <p> For example When this field is given as 02C (2 Calendar days) &amp; System date is 01 Jan then all claim which have the value date between 01 Jan to 03 Jan are picked for file generation process on 01Jan with the Value date &amp; file date as 03 Jan. The Claim Accounting entries are raised on the value date i.e. 03 Jan.</p>
+            <p> If this field is blank then it means that the outward file will be generated only on the respective value date.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional field</p>
+            <p> Valid values nnW/C (ie 02W or 02 C -where W-Working days &amp; C-Calender days) or Null.</p>
+        </desc>
+</t>
+<t>
+<field>OUTWARD.RECORD</field>
+<desc>
+            <p>The format of the record id of the claim file. To generate the record name along with the processing date-specify the  name suffixed with "&lt;DATE&gt;". For example:  DDOUT&lt;DATE&gt; which will generate file DDOUT20030101; the record will be in the location specified in the OUTWARD.FILE.LOC field.</p>
+            <p />
+            <p> The claim file is generated using the format given in DD.OUT.FORMAT field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional field.</p>
+            <p>Optional field. Becomes mandatory for EXTERNAL DD processing.</p>
+            <p> 1-11 Alpha Numeric Character's</p>
+        </desc>
+</t>
+<t>
+<field>CLAIM.HOL.IND</field>
+<desc>
+            <p>Specify when the Forward entries to be generated in case the scheduled date is a holiday.</p>
+            <p> When this field is set to "Yes"  &amp; Claim is scheduled on a holiday, in such case the file generation, claim accounting and cycling of frequency (For Standalone DDI's) is done on the previous working day before the scheduled date.</p>
+            <p> When this field is set to NULL, then the Claim entry, Claim accounting and cycling of frequency for Standalone DDI's is raised only on next working day incase the scheduled date is a holiday.</p>
+            <p> Hence based on the Clearing practice (to claim before or after the scheduled date)  this field can be set.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional field</p>
+            <p> Valid values "Y" or Null.</p>
+        </desc>
+</t>
+<t>
+<field>DDI.ACCT.CLASS</field>
+<desc>
+            <p>Specify the Account class which should be used while generating STMT.ENTRY related to DD.DDI item. This account is debited during claim accounting, Resubmission process &amp; credited when an Item is returned.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Mandatory</p>
+            <p> Must be the key to a valid record on the ACCOUNT.CLASS with record type as ACCOUNT.</p>
+            <p> Override is given when ACCOUNT record not available for the combination of Local currency, ACCOUNT.CLASS &amp; ACCOUNT.OFFICER as given in this parameter.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Give the description related to the ID. The details given here appears as an enrichment when this id is used in other DD applications.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-35 type A (alphanumeric) characters. Multilanguage field. (Mandatory</p>
+            <p> input).</p>
+        </desc>
+</t>
+<t>
+<field>UPDATE.MANDATE.RTN</field>
+<desc>
+            <p>Description:</p>
+            <p> Specifies the API that  will be used to construct the DD.DDI record.  </p>
+            <p />
+            <p> Validation rules:</p>
+            <p>  It is mandatory when UPDATE.MANDATE is set to YES and No input when UPDATE.MANDATE is set to NO.</p>
+            <p>  If inputted it should be a valid routine defined in PGM of “S” type.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DD.OUT.FORMAT</field>
+<desc>
+            <p>Specify the format based on which the outward claim file to be generated. This is the link to the clearing system and based on the clearing system, the reason codes as applicable for various events like first claim after DDI lodgment, Direct Debit claim, return , reject etc are populated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional field.</p>
+            <p>Becomes mandatory for EXTERNAL DD processing. </p>
+            <p> Must be a valid record in DD.OUT.FORMAT.</p>
+        </desc>
+</t>
+<t>
+<field>HIST.FILE.DAYS</field>
+<desc>
+            <p>Specify the number of days after the date of creation of history files to be deleted from HIST.FILE.LOC. This is handled during SOD batch process.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional field</p>
+            <p> Valid value -3 Numeric character's denotes the calendar days.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>The currency of the Direct Debit system this parameter relates to. It can be set to any valid currency. This field enables the processing of mandates and accounts in the specified currencies.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 3 characters (uppercase alpha) - type SSS, or 1-3 numeric character Currency Code.</p>
+            <p> Mandatory field</p>
+            <p> Must be the key to a valid entry on the CURRENCY file.</p>
+            <p> Multi-value field associated with BUS.CENTRE</p>
+        </desc>
+</t>
+<t>
+<field>RESUB.DATE.PRD</field>
+<desc>
+            <p>The number of days after which the DD.ITEM which is returned can be resubmitted &amp; funds can be received automatically. In other words it is the value date on which the resubmitted DD item will be claimed through Clearing Agency.</p>
+            <p> In case this field is left null then during DD return processing the resubmit value date can be given manually in DD.RETURN Application.</p>
+            <p> Otherwise when the resubmit value date is not given, then based on the number of days specified here &amp; days given in CLAIM.DATE.PRD, the resubmit value date is defaulted in DD.RETURN application automatically.</p>
+            <p> For example In this field 02C specified with system date-01 Jan and CLAIM.DATE.PRD is given as 02C. In such case when an item is returned on 01 Jan, the resubmit Value date is defaulted as 05 Jan.(ie 01 Jan + 02 C + 02C).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional field</p>
+            <p> Valid values nnW/c (ie. 02W or 02C where C-Calender days or W-Working days) or NULL</p>
+        </desc>
+</t>
+<t>
+<field>OUTWARD.FILE.LOC</field>
+<desc>
+            <p>Defines the directory wherein the generated outward claim file to be stored.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional field.</p>
+            <p>Becomes mandatory for EXTERNAL DD processing.</p>
+            <p> Must be a type 1 or 19 file.</p>
+        </desc>
+</t>
+<t>
+<field>INWARD.RECORD</field>
+<desc>
+            <p>Specify name of the inward file which is available in the directory specified in the previous field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional field.</p>
+            <p> 1-11 Alpha numeric Character</p>
+        </desc>
+</t>
+<t>
+<field>DD.PARAM.ID</field>
+<desc>
+            <p>The id can accept up to 4 numeric character. This id is linked to DD.DDI and the details given here is used during processing of DD.Items.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Mandatory field</p>
+            <p> 1-4 Numeric Character's.</p>
+        </desc>
+</t>
+<t>
+<field>SEND.ADVICE</field>
+<desc>
+            <p>States whether to send (or not) advices related to this parameter. This field is not currently used and is reserved for future amendments.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional field-Default to "Yes"</p>
+            <p> Value values "Yes" or "No" or Null</p>
+        </desc>
+</t>
+<t>
+<field>STD.ACCT.CLASS</field>
+<desc>
+            <p>The Account class which should be used while generating STMT.ENTRY related to standalone mandates This account is debited during claim accounting, Resubmission process &amp; credited when an Item is returned.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Mandatory</p>
+            <p> Must be the key to a valid record on the ACCOUNT.CLASS with record type as ACCOUNT.</p>
+            <p> An error is given when the ACCOUNT record not available for the combination of Currency, ACCOUNT.CLASS &amp; ACCOUNT.OFFICER as input in this parameter.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.OFFICER</field>
+<desc>
+            <p>The DEPT.ACCT.OFFICER which is to be used to build the Account(s) related to the DD Module &amp; also the Dept Code to be used in STMT.ENTRY.</p>
+            <p> The Account that is used for Claim Accounting is is based on the Currency, Account.Class and the Account.Officer given in this parameter. If a valid ACCOUNT is not available a system error message will be given as the Account is mandatory for correct operation of the Direct Debit system.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Mandatory</p>
+            <p> Must be the key to a valid record on the DEPT.ACCT.OFFICER file.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNTING.MODE</field>
+<desc>
+            <p>This field can have any one of the values SAO, SNP or SSS. </p>
+            <p>This MODE will be used in ACCOUNTING process, when CLAIM processing happens for an INTERNAL DD on CLAIM date. </p>
+            <p>System defaults it to SAO.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ALLOW.DD.STD</field>
+<desc>
+            <p>The usage of DD.DDI can be contract driven or standalone. The extra processing and fields used for standalone processing in DD.DDI are allowed according to this setting.</p>
+            <p />
+            <p> A value of Yes means that standalone processing can be used and key fields on the DD.DDI will be permitted and validated.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional field.</p>
+            <p> Valid values "Yes" or Null</p>
+        </desc>
+</t>
+<t>
+<field>BUS.CENTRE</field>
+<desc>
+            <p>The countries/regions whose calendars will be checked for holidays for the currencies associated.  Where the direct debit system is based in another country/region then this field allows the holidays to be checked against their calendar in addition to the system holidays so claims can be sent in a timely manner.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 2-4 type A (alphanumeric) characters</p>
+            <p> The code must have a valid entry on the REGION and HOLIDAY tables.</p>
+            <p> Mandatory field associated with CURRENCY</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

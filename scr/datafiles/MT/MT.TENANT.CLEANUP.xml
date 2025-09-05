@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t24help>
+	<header>
+		<product>MT</product>
+		<table>MT.TENANT.CLEANUP</table>
+	</header>
+<overview>
+		<ovdesc>
+			<p> This table is used to automate the removal of a deactivated tenant's data from all the associated MT tables.</p>
+			<p> A valid tenant id must be used as key for this table, so that the tenant related data can be discovered in the MT tables and populated to the fields of MT.TENANT.CLEANUP table. </p>
+			<P> The OPERATION.MODE field is used to define what action is to be performed. </P>
+			<p> Options are 1. REPORT - Allowed for both activated and deactivated tenant. 2.REMOVE - Possible only for a deactivated tenant. </p>
+			<p> The record id of MT tables which are associated with subject tenant will get populated to the relevant fields of MT.TENANT.CLEANUP table including unauthorised tenant data. </p>
+			<p> In case any unauthorised tenant data exists, then this application will invoke a warning message during REPORT mode to alert the MT operator to a potential risk situation. </p>
+			<P> Further proceeding to commit / authorising of such a record with REMOVE mode will stop the current process by showing error message. </P>	
+			<p> Before the successful initiation of removal process (tenant is deactivated and there is no unauthorised data for this tenant), the warning message displayed to the MT operator to indicate that this tenant related data will be removed or updated. </p>
+			<P> Any new arrival of MT table records relevant to subject tenant also will get populated to the fields of existing MT.TENANT.CLEANUP record when it is applicable and taken for further processing. </P>	
+			<p> After successful removal process, changing of respective MT.TENANT.CLEANUP record is not advisable and system will prompt error message. </p>
+			<p> </p>
+    	</ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+		<t>
+			<field>TENANT.CLEANUP.ID</field>
+			<desc>
+				<p> Unique reference to identify each tenants entry in MT.TENANT.CLEANUP table. The id is not validated directly against the MT.TENANT table as this would prevent the record being accessed later.</p>
+				<p> However, when entered the id is used to populate the actual MT.TENANT id and name in the TENANT.ID and TENANT.NAME fields which validates it and also allows display of the information once MT.TENANT has been reversed.</p>
+				<p> Validation Rules: </p>
+				<p> Acceptable values are: </p>
+				<p> Maximum of 35 characters allowed.</p>
+				<p> Id should prefix with 'MT' and should be a valid format of tenant id. </p>
+				<p> Required manual input of valid tenant id to proceed report or removal process. </p>
+				<p> Should allow to access existing MT.TENANT.CLEANUP record of the tenant even after the successful removal operation (MT.TENANT record reversed). </p>
+			</desc>
+		</t>
+		<t>
+			<field>OPERATION.MODE</field>
+			<desc>
+				<p> Mode of operation based on which the MT operator can either; just view report of tenant data before removal or can effect the removal operation. </p>
+				<p>Validation Rules: </p>
+				<p>Acceptable values are: </p>
+				<p> 1. REPORT - used to view report of tenant data before removal process by populating it into the MT.TENANT.CLEANUP table fields. Mode possible for both activated and deactivated tenants</p>
+				<p> 2. REMOVE - used to remove or update MT tables records which are associated with subject tenant (off-boarded). Mode Possible only for deactivated tenants. </p>
+				<p> Mode change not allowed after successful remove operation (MT.TENANT.CLEANUP record authorized with REMOVE mode). </p>
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.ID</field>
+			<desc>
+				<p> This represents the tenant id being processed, for the report or removal process being performed. </p>
+				<p>Validation Rules: </p>
+				<p>
+					<p> Noinput field. Value gets populated from TENANT.CLEANUP.ID (Key field of MT.TENANT.CLEANUP table). </p>
+
+					<p> Must be a valid entry in MT.TENANT table - unless the tenant has been removed previously. </p>
+				</p>
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.NAME</field>
+			<desc>
+				<p>Gives a visual confirmation of the name of the tenant.</p>
+				<p>Validation Rules: </p>
+				<p> Value gets populated from MT.TENANT table record of subject tenant. </p>
+				<p>Noinput field </p>
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.TYPE</field>
+			<desc>
+				<p>Gives a visual confirmation of the type of tenant system e.g. LIVE, DEMO, TRAINING, UAT etc. </p>
+				<p>Validation Rules:</p>
+				<p> Value gets populated from MT.TENANT table record of subject tenant. </p>
+				<p> Noinput field </p>
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.STATUS</field>
+			<desc>
+				<p>Gives a visual confirmation of the status of the tenant being off-boarded. A report run can be made on an active tenant but only a deactivated tenant can be removed by this process. </p>
+				<p>Validation Rules:</p>
+				<p>
+					<p> Noinput field. Value gets populated from MT.TENANT table record of subject tenant. </p>
+					<p> Values are: </p> 
+					<p> 1. ACTIVATED - for activated tenant only OPERATION.MODE allowed is REPORT. </p>
+					<p> 2. DEACTIVATED - for deactivated tenant both REMOVE and REPORT mode is allowed. </p>
+				</p>
+			</desc>
+		</t>
+		<t>
+			<field>DATA.PRESENT</field>
+			<desc>
+			  <p>Indicates the presence of data, related to the tenant id, which is eligible for removal. </p>
+			  <p>Validation Rules:</p>
+			  <p> 
+			      <p>Noinput Field. System generated values are: </p>
+			          <p>YES  - Set when data associated to the tenant is found. Or if the MT.TENANT is the only data and this is set as de-activated.</p>
+			          <p>NO - Set when no data associated to the tenant is found. Or if the MT.TENANT is the only data and this is set as activated (Records for tenants who have an activated status cannot be removed by this process).</p>
+			          </p>
+			     <p>Note - data can be removed only if MT.TENANT is deactivated. Data presence check is made for any status or mode.</p>  
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.GROUPS</field>
+			<desc>
+				<p> The id(s) of MT.TENANT.GROUP record(s) which are associated with subject tenant being off-boarded and marked for removal.</p>
+				<p> At validation or authorisation the associated records are always checked in case new data has been added since the last report or remove was attempted.</p>
+				<p> The tenant group record(s) will get reversed, if used only by subject tenant, when authorising MT.TENANT.CLEANUP with OPERATION.MODE as REMOVE </p>
+				<p> If other tenants share a tenant group then the record is amended, the subject tenant will be removed from tenant group. </p>
+				<p> Validation Rules:</p>
+				<p> 
+					<p> System populates data to this field for any mode or status. </p>
+					<p> Noinput field. </p>
+				</p>
+			</desc>
+		</t>
+		<t>
+			<field>SERVICE.CONSOLE.RECS</field>
+			<desc>
+				<p> The id(s) of MT.T24.SERVICE.CONSOLE record(s) which are associated with subject tenant being off-boarded and marked for removal.</p>
+				<p> At validation or authorisation the associated records are always checked in case new data has been added since the last report or remove was attempted.</p>
+				<p> During MT.TENANT.CLEANUP record authorisation (using REMOVE mode), any service console record(s) used solely by the tenant will get reversed. Any records shared by other tenants will be amended.</p>
+				<p> If the service console record uses a tenant group and the tenant being off boarded is the only member of that group, both the tenant group and service console records will be reversed.</p>
+				<p> Validation Rules:</p>
+				<p> 
+					<p> System populates data to this field for any mode or status. </p>
+					<p> Noinput field. </p>
+				</p>
+			</desc>
+		</t>
+		<t>
+			<field>REPLICATE.CONSOLE.RECS</field>
+			<desc>
+				<p> The id(s) of MT.REPLICATE.CONSOLE record(s) which are associated with subject tenant being off-boarded and marked for removal.</p>
+				<p> At validation or authorisation the associated records are always checked in case new data has been added since the last report or remove was attempted.</p>
+				<p> During MT.TENANT.CLEANUP record authorisation (using REMOVE mode), any replicate console record(s) used solely by the tenant will get reversed. Any records shared by other tenants will be amended.</p>
+				<p> If the replicate console record uses a tenant group and the tenant being off boarded is the only member of that group, both the tenant group and replicate console records will be reversed.</p>
+				<p> Validation Rules:</p>
+				<p> 
+					<p> System populates data to this field for any mode or status. </p>
+					<p> Noinput field. </p>
+				</p>
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.CONTACTS</field>
+			<desc>
+				<p> The id(s) of MT.TENANT.CONTACT record(s) from subject tenant's MT.TENANT record not used by other tenants.  </p>
+				<p> MT.TENANT.CLEANUP record authorisation (using REMOVE mode), will effect the reversal of these tenant contact record(s). </p>
+				<p> At validation and authorisation the associated records are always checked in case new data has been added since the last report or remove was attempted.</p>
+				<p> Validation Rules:</p>
+				<p> 
+					<p> System populates data to this field for any mode or status. </p>
+					<p> Noinput field. </p>
+				</p>
+			</desc>
+		</t>
+		<t>
+			<field>UNAUTH.RECS</field>
+			<desc>
+				<p> If there are any unauthorized records, in any of the tables associated with subject tenant (being off boarded), in system they will be listed here.</p>
+				<p> As any unauthorised changes could impact the removal or change of records the user must delete or authorise any records shown before an automated removal can take place.</p>
+				<p> MT tables are : MT.TENANT.CONTACT, MT.TSA.SERVICE.CONSOLE, MT.REPLICATE.CONSOLE, MT.TENANT.GROUP and MT.TENANT. </p>
+				<p> Validation Rules:</p>
+				<p> 
+					<p> Noinput field. System populates data to this field for any mode or status. </p>
+					<p> With the value in this field, system cannot allow this application to proceed with removal process by considering potential risk on both live and unauthorised data. </p>
+				</p>
+			</desc>
+		</t>
+		<t>
+			<field>LAST.RUN.DATE</field>
+			<desc>
+				<p> The date when the report or removal process was last run. </p>
+				<p> Validation Rules:</p>
+				<p> 
+					<p> Noinput field. System populates the processing date. </p>
+					<p> Display format: DD MMM YYYY, for e.g: 11 MAY 2015 </p>
+				</p>
+			</desc>
+		</t>
+	</menu>
+</t24help>

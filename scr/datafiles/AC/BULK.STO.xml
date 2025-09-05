@@ -1,0 +1,672 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>AC</product>
+<table>BULK.STO</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Encompassed within the Funds Transfer Module is a fully operational Bulk Standing Orders application. In many respects it is similar to the Standing Order application, except of course it allows outgoing payments to be bulked together for different creditors from one account, i.e. one debit, lots of credits. </p>
+            <p>  This will allow the user to load standing orders as Fixed Payments with a known amount. It is possible either to execute one-off payments or with an associated frequency (e.g. the monthly payment of staff salaries). </p>
+            <p>  The application may be run on-line or as an end-of-day process.  In order to run the Bulk Standing Orders on-line, there is a separate application called SINGLE.BULK.STO. For more details refer to the relevant help text. </p>
+            <p>  The BULK.STO file has the standard 3 versions: </p>
+            <p>             .'Live' file            .'Unauthorised' file            .'History' file. </p>
+            <p>             FIELD NO           FIELD NAME </p>
+            <p>             26.1               BEN.REFERENCE            27.1.1             PYMNT.DTAILS            28.1.1             BK.TO.BK.INF            29.1               CHARGE.CODE            30.1.1             CHARGE.TYPE            31.1.1             CHARGE.AMT            32.1               COMMISSION.CODE            33.1.1             COMMSN.TYPE            34.1.1             COMMSN.AMT            37.1               NARRATIVE            38                 DEBIT.ACCOUNT            39.1               DELIVERY.OUTREF            40.1               PROCESS.ERROR            41                 SALARY.PAYMENT            42                 APPLY.BULK.CHARGE            43                 BULK.CHARGE.AMOUNT            44                 RELATED.REF            48.1               OVERRIDE </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CR.EXP.GAP</field>
+<desc>
+            <p>This field determines the credit exposure date calculation rules. It accepts relative or absolute dates.</p>
+            <p>  You can combine 1 or 2 date operations, always based on the frequency date, each operation being "+" or "-", followed by a number of days and followed by "C" or "W", meaning calendar or working days.</p>
+            <p>  "+" and "C" are taken by default.</p>
+            <p>  If number alone entered then it will be converted into valid date. </p>
+            <p>  If nothing is entered here, default calculation will be done through the Funds Transfer calculation rules, depending on the payment method.</p>
+            <p>  Examples :</p>
+            <p>  "+01C-01W" which means "Last working day before the processing date"</p>
+            <p>  "-02C" means processing date less 2 calendar days,</p>
+            <p>  "01"  entered when the system month/ year is Jan/2001, then it will convert to 01012001</p>
+            <p>  and so on ...</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Up to 8 type ANY (alphanumeric) characters. "+" and     "C" are optional, and zeros will be added if needed. Example :     "1-1W" will be taken as "+01C-01W". Optional input,     blank means default FT calculation.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENT.FREQUENCY</field>
+<desc>
+            <p>Identifies the current frequency of the Bulk Standing Order for the total amount specified in TOTAL.DEBIT.AMOUNT. </p>
+            <p>  The Bulk Standing Order application will execute the standing order instruction according to the frequency specified in this field up to and including the CURRENT.END.DATE specified in the next field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  This field is sub-divided into two elements:  1. Date      1-9 type D (date format in range 1950-2049)              characters. 2. Frequency 1-5 type SS (uppercase alpha or numeric, first              character alpha) characters.  Mandatory input or not allowed as defined in <p>Validation Rules:</p>. No default.</p>
+            <p>  Input mandatory if SINGLE.PAYMENT is set to 'NO'.</p>
+            <p>  If SINGLE.PAYMENT is set to 'YES' then no input is allowed.</p>
+            <p>  The date input will correspond to the first execution of the Bulk Standing Order.</p>
+            <p>  The starting frequency must be greater than today.</p>
+            <p>  An override will be required if the date input is a non-working day.</p>
+        </desc>
+</t>
+<t>
+<field>BENEFIC.ACCTNO</field>
+<desc>
+            <p>Identifies the Account Number of the Beneficiary Account. </p>
+            <p>  The contents of this field will be placed in the BEN.ACCT.NO field in Funds Transfer.</p>
+            <p />
+            <p>  Standard numeric Account number or 3-10 character Account Mnemonic (uppercase alphanumeric or '.') type MNE.</p>
+            <p>  Associated multivalue field. Mandatory or optional input as defined in <p>Validation Rules:</p>.</p>
+            <p>  Input mandatory for Pay Method 'AC'.</p>
+            <p>  Input optional for Pay Method 'BC'.</p>
+            <p>  For the Pay Method 'AC', the Account must exist on the Account file in the same company and the field will be enriched with the first line of the Account title. The account must also be in local currency.</p>
+            <p>  The account input may not be the same as the Bulk Standing Order account.</p>
+            <p>  If the Bulk Standing Order account is a 'PL' account, then the account input must not be a 'PL' account. For local clearing payment method (BC), see the section 'Local clearing rules' for validation details.</p>
+        </desc>
+</t>
+<t>
+<field>PYMNT.DTAILS</field>
+<desc>
+            <p />
+            <p>  Identifies the Payment Details to enable the beneficiary to apply the payment. </p>
+            <p>  The contents of this field will be placed in the PAYMENT.DETAILS field in Funds Transfer.</p>
+            <p />
+            <p>  Up to 35 type S (uppercase alpha or numeric) characters. A maximum of 4 lines of 35 characters each will be allowed. For 'BC' Pay Method, see the section 'Local clearing rules' for the relevant clearing system for validation details.</p>
+            <p>  Associated subvalue field. Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>BULK.CHARGE.AMOUNT</field>
+<desc>
+            <p>Specifies the default charge amount applied to the main payment if the previous field is set to 'YES'. </p>
+            <p />
+            <p>  Internal field.</p>
+        </desc>
+</t>
+<t>
+<field>RELATED.REF</field>
+<desc>
+            <p>Contains the id of the frequency based bulk standing order from which this single one-off bulk standing order originates.</p>
+            <p>  If for some reason the payment fails on a frequency based bulk standing order, a single payment bulk standing order is set up with the same details and written to the unauthorised file. The frequency based bulk standing order has it's frequency cycled forward as per normal but the single payment bulk standing order is set up so the operator may run it once the initial problem is solved, such as insufficient funds. This field which is only present on the single payment bulk standing order contains the id of the parent bulk standing order, i.e. the frequency based one.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Internal field- Updated by System</p>
+        </desc>
+</t>
+<t>
+<field>ORDERING.CUST</field>
+<desc>
+            <p>Identifies the Customer who has instructed the Bulk Standing Order. </p>
+            <p>  If the input in this field is less than 11 characters, the system will interpret the input as a Customer Mnemonic and try to find a Customer accordingly. For this reason, any free form text used to input manually the name and address of the Ordering Customer must exceed 10 characters. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  3-10 characters Customer Mnemonic (uppercase alpha or '.')      type MNE                                                 or 1-6  numeric character Customer code                          or Up to 35 type S (uppercase alpha or numeric) characters.  A maximum of 4 lines of 35 characters each will be allowed.</p>
+            <p>  Multivalue field.  Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Describes the Bulk Standing Order. </p>
+            <p>  This field can be expanded to allow the User to enter the Description of the Bulk Standing Order in various languages.  Each expansion of the field will correspond to a new Language as defined in the LANGUAGE table (Ref: GENERAL TABLES) and will indicate to the User the Language in which the Description must be entered. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 35 type A (alphanumeric) characters.  Multilanguage field.  Multivalue field. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>CURRENT.END.DATE</field>
+<desc>
+            <p>Identifies the current end date of the Bulk Standing Order for the amount and frequency specified in fields TOTAL.DEBIT.AMOUNT and CURRENT.FREQUENCY. </p>
+            <p>  A current end date should be input by the User when the bank has received from the Customer clear instructions which stipulate that the Bulk Standing Order must only be executed during a determined period of time. In this case, the User will enter in this field the date of the last execution of the Bulk Standing Order. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 11 type D date characters (date format in range 1950-2049.)  Optional input or not allowed as defined in <p>Validation Rules:</p>.</p>
+            <p>  Input is only allowed if SINGLE.PAYMENT is set to 'NO'.</p>
+            <p>  If SINGLE.PAYMENT is set to 'YES' then no input is allowed.</p>
+            <p>  This field should only be input by the User when the Customer has provided the bank with a specific end date for the Bulk Standing Order itself.</p>
+            <p>  The date input must be greater than or equal to the first date input or calculated by the current frequency.</p>
+            <p>  An override will be required if the date input is a non-working day.</p>
+        </desc>
+</t>
+<t>
+<field>SINGLE.PYMNT.DATE</field>
+<desc>
+            <p>Identifies the payment date of the Bulk Standing Order for the amount specified in TOTAL.DEBIT.AMOUNT. </p>
+            <p>  This specifies the date on which the Bulk Standing Order is to be executed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  1-11 type D (date format in range 1950-2049) characters.  Mandatory input or not allowed as defined in <p>Validation Rules:</p>. If allowed, default is today's date.</p>
+            <p>  Input mandatory if SINGLE.PAYMENT is set to 'YES'.</p>
+            <p>  If SINGLE.PAYMENT is set to 'NO' then no input is allowed.</p>
+            <p>  The date input must be greater than or equal to today's date.</p>
+            <p>  An override will be required if the date input is a non-working day.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.AMT</field>
+<desc>
+            <p>Identifies the Commission Types which are applicable to the transaction being processed. </p>
+            <p>  The contents of this field will be placed in the COMMISSION.TYPE field in Funds Transfer. </p>
+            <p>  For more details refer to the Funds Transfer helptext for COMMISSION.TYPE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  2 character Commission Type code (alphanumeric) - type A.  Associated subvalue field. (Optional input. See Details for default.)</p>
+            <p>  The Commission Type input in this field must exist in the Commission Type table.</p>
+            <p>  When this field is input, the input of an amount will be allowed. If the type is entered with no amount then the values of the code in the Commission file are used in the associated Commission Amount field.</p>
+        </desc>
+</t>
+<t>
+<field>SINGLE.PAYMENT</field>
+<desc>
+            <p>Defines whether the Bulk Standing Order is a one-off single payment or frequency associated. Valid instructions are: </p>
+            <p>  If the input is 'YES' then this means that it is a one-off transaction. This leads to fields CURRENT.FREQUENCY and CURRENT.END.DATE becoming non-input. </p>
+            <p>  Conversely, if the input is 'NO' then SINGLE.PYMNT.DATE becomes non-input. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Y(ES)  The Bulk Standing Order is a single payment N(O)   The Bulk Standing Order is frequency associated. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>BULK.STO.NO</field>
+<desc>
+            <p>Represents the ID by which each Bulk Standing Order is uniquely identified.</p>
+            <p>  The ID can be Account No followed by automatically generated sequence or Account no with date separated by "-" and a automatically generated sequence.  </p>
+            <p>  If the Id is given with a a date, then it will be consider as a Single Payment Type of Bulk STO and the id date will be defaulted to single payment date. ID date has to be greater than today.</p>
+            <p>  For a frequency based Bulk Standing order, the id has to be created with account no followed by automatically generated sequence number.</p>
+            <p>  Hence for a same date using the sequence no, more than one Bulk Standing Orders can be created.</p>
+            <p>  When the User wants to change an existing Bulk Standing Order, it will be necessary to enter the complete reference number i.e. the Account Number and the sequential Bulk Standing Order number separated by a . (dot) or Account number with date separted by "-" and "." sequential no.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  2-24 type A (alphanumeric) characters as follows: - The first part of the     ID will identify the Account Number for which the User wants to define Bulk     Standing Order instructions. The format is the standard numeric Account     Number or 3-10 character Account Mnemonic (uppercase alpha or numeric) -     type MNE - The second part of the ID will be separated from the Account     Number by a '.' and will be a three numeric characters sequential number.     (Mandatory input)   </p>
+            <p>  During the creation of a new Bulk Standing Order the Account must be input     as the System will always generate the next sequential Bulk Standing number.   </p>
+            <p>  If Date is entered as a part of ID, Id date defaulted as the Single     payment date and ID date has to be greater than today.</p>
+            <p>  For the Change function the User will need to enter the complete key     including the sequential Bulk Standing Order itself.</p>
+        </desc>
+</t>
+<t>
+<field>TYPE</field>
+<desc>
+            <p>Identifies the type of Bulk Standing Order. The only valid type is: </p>
+            <p>  The type FI should already have been defined by the User in the Standing Order Type table which is used to provide the enrichment of the Standing Order type. </p>
+            <p>  The only type allowed at present is FI, which means that the Customer has given instruction to the bank to pay a FIxed amount and debit one of his accounts. The payment is to be made only once or on a regular basis dependant on the contents of field 4 SINGLE.PAYMENT. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  FI   Fixed Amount (Mandatory input)</p>
+            <p>  The Bulk Standing Order type must first have been defined on the Standing Order type table.</p>
+        </desc>
+</t>
+<t>
+<field>DR.CHARGE.TYPE</field>
+<desc>
+            <p>Identifies the Charge Type which is applicable to the main transaction being processed. </p>
+            <p>  For more details refer to the FUNDS.TRANSFER helptext for CHARGE.TYPE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  2 character Charge Type (alphanumeric) - type A.  Associated multivalue field.  Optional input. See Details for default.</p>
+            <p>  The DR.CHARGE.TYPE input in this field must exist in the Charge Type table.</p>
+            <p>  When this field is input, the input of an amount will be allowed.</p>
+        </desc>
+</t>
+<t>
+<field>COMMISSION.CODE</field>
+<desc>
+            <p />
+            <p>  Identifies how the Commission is to be applied, i.e. which party is to pay for the Commission. </p>
+            <p>  The contents of this field will be placed in the COMMISSION.CODE field in Funds Transfer. </p>
+            <p>  For more details refer to the Funds Transfer help text for COMMISSION.CODE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  C - Credit Less Commission D - Debit Plus Commission W -         Waive Commission Associated multivalue field. (Optional         input. Default value is 'W', Waive commission.) </p>
+            <p>  If a Commission Code of Credit is specified in this         field, the value of the Charge Code can only be Credit or         Waive. </p>
+            <p>  If a Commission Code of Debit is specified in this field,         the value of the Charge Code can only be Debit or Waive. </p>
+            <p>  Entry of a Waive Commission Code will not be allowed if         any Commission Types have been entered. </p>
+        </desc>
+</t>
+<t>
+<field>COMMON.REFERENCE</field>
+<desc>
+            <p>Reference number for Bulk Standing Order. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 16 type A (alphanumeric) characters. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>DELIVERY.OUTREF</field>
+<desc>
+            <p />
+            <p>  Identifies the reference numbers allocated by Delivery for all payments, advices, messages sent by the Funds Transfer to the Delivery Application. </p>
+            <p>  This will enable enquiries to be made to see the output despatched and, if possible, to cancel output prior to Delivery. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Internal multivalue field. </p>
+        </desc>
+</t>
+<t>
+<field>WAIVE.COMMISSION</field>
+<desc>
+            <p>Specifies whether any commission is to be applied to the main transaction. </p>
+            <p>  If set to 'YES' the corresponding fields DR.COMMSN.TYPE and DR.COMMSN.AMT do not allow any input. </p>
+            <p>  For the purposes of building the Funds Transfer record, if WAIVE.COMMISSION is set to 'YES' the commission code is 'WAIVE' and if set to 'NO' the commission code is 'DEBIT PLUS CHARGES'. </p>
+            <p>  The 'WAIVE' commission value will indicate that no commission is to be applied on the main transaction. </p>
+            <p>  The 'DEBIT PLUS CHARGES' value will indicate that the complete transfer amount will be remitted to the receiver and the commission amount will be collected from our ordering Customer. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Y(ES)  No commission is to be applied. N(O)   Commission is to be applied.  Optional input. Default value is 'YES', i.e. no commission is to be applied.</p>
+        </desc>
+</t>
+<t>
+<field>SIGNATORY</field>
+<desc>
+            <p>Indicates the customers who are signing this particular transaction .In case of bank user this field is entered manually whereas for external users this field is automatically updated with external user key.</p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p> 1. Accepts only valid customers.</p>
+            <p> 2. Duplicate customer not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>DEBIT.ACCOUNT</field>
+<desc>
+            <p />
+            <p>  Identifies the 'wash' account used to process the Bulk Standing Orders. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Internal field. </p>
+        </desc>
+</t>
+<t>
+<field>CR.VALUE.GAP</field>
+<desc>
+            <p>This field determines the credit value date calculation rules. </p>
+            <p>  You can combine 1 or 2 date operations, always based on the frequency date, each operation being "+" or "-", followed by a number of days and followed by "C" or "W", meaning calendar or working days. </p>
+            <p>  "+" and "C" are taken by default. </p>
+            <p>  If nothing is entered here, default calculation will be done through the Funds Transfer calculation rules, depending on the payment method. </p>
+            <p>  Examples : </p>
+            <p>  "+01C-01W" which means "Last working day before the processing date" </p>
+            <p>  "-02C" means processing date less 2 calendar days, </p>
+            <p>  and so on ... </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 8 type ANY (alphanumeric) characters.  "+" and "C" are optional, and zeros will be added if needed.  Example : "1-1W" will be taken as "+01C-01W".  Optional input, blank means default FT calculation.</p>
+        </desc>
+</t>
+<t>
+<field>DR.COMMSN.AMT</field>
+<desc>
+            <p>Identifies the amount of commission to be applied in respect of the DR.COMMSN.TYPE specified in the previous field. </p>
+            <p>  If no input is made in this field the Application will default the appropriate commission amount. Input in this field will only be allowed when the associated DR.COMMSN.TYPE has been input. Any input will override the applicable default value. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 18 characters plus a decimal point (standard amount format) - type AMT.</p>
+        </desc>
+</t>
+<t>
+<field>BENEFICIARY</field>
+<desc>
+            <p />
+            <p>  Identifies the Beneficiary name and address of the Standing Order. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Up to 35 type S (uppercase alpha or numeric) characters.         A maximum of 4 lines of 35 characters each will be         allowed. (Mandatory input or not allowed as defined in         <p>Validation Rules:</p>) </p>
+            <p>  Input not allowed when the Standing Order type is equal         to DIARY or BI. </p>
+            <p>  Input mandatory for the Standing Order types DD and for         all Pay Methods except for AC where it is not allowed. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PAY.METHOD</field>
+<desc>
+            <p>Identifies the payment method to be used to execute the individual instructions when the order is passed to the Funds Transfer application.</p>
+            <p>  The Pay Method input in this field will be enriched with the Transaction Type 35 character description defined in the FT.TXN.TYPE.CONDITION table. The following Pay Method codes will be allowed:</p>
+            <p />
+            <p>  An In house transfer of funds, i.e. where no external payment is involved in the execution of the Bulk Standing Order instruction.</p>
+            <p />
+            <p>  This Pay Method is used for external payments.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Mandatory input   </p>
+            <p>  Must be either AC, BC or records starting with AC or BC.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Identifies any overrides that may have occured on the main payment. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Internal multivalue field. </p>
+        </desc>
+</t>
+<t>
+<field>PROCESS.ERROR</field>
+<desc>
+            <p />
+            <p>  Identifies any process errors or overrides that may have occurred on the individual payments. </p>
+            <p>  If any errors or overrides are found on the main payment then, if the application is being run on-line, the User may input YES or NO to the override condition. </p>
+            <p>  An input of NO will result in the Bulk Standing Order going to the Exception file, in which case it will need to be authorised in order to execute it again. </p>
+            <p>  An input of YES will override the condition and execution will carry on and build the Funds Transfer records. </p>
+            <p>  However if any of the individual payments encounter any overrides the Funds Transfer records will be built as normal, except they will have a Record Status of 'IHLD'. The actual override condition will be held in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Internal multivalue field. </p>
+        </desc>
+</t>
+<t>
+<field>K.TYPE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>SALARY.PAYMENT</field>
+<desc>
+            <p>Specifies whether the advice to be produced is for salary payments or not. In effect it allows a choice of advices to be printed.</p>
+            <p />
+            <p>  Y(ES) Salary advice to be printed. N(O) Normal advice to be printed. Optional input. Default value is NO, i.e. a normal advice is to be produced.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>COMMSN.AMT</field>
+<desc>
+            <p>Identifies the Amount of Commission to be applied in respect of the Commission Type specified in the previous field. </p>
+            <p>  The contents of this field will be placed in the COMMISSION.AMT field in Funds Transfer. </p>
+            <p>  If no input is made in this field, the Application will default to the appropriate Commission Amount (as explained within Commission Type). Input to this field will only be allowed when the associated Commission Type has been input and will override the applicable default value.</p>
+            <p />
+            <p>  1-18 characters plus a decimal point (standard amount format) - type AMT. Associated subvalue field. (Optional input.)</p>
+            <p />
+            <p />
+            <p>  Identifies the 'wash' account used to process the Bulk Standing Orders. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Internal field.</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.DEBIT.AMOUNT</field>
+<desc>
+            <p>Specifies the total amount of the Bulk Standing Order. </p>
+            <p>  The value held in TOTAL.DEBIT.AMOUNT must be equal to the total of the values held in CURRENT.AMT.BAL. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  1-18 type AMT (standard amount format) characters plus a decimal point.  (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>Specifies the currency of the Bulk Standing Order payment. </p>
+            <p>  Must be local currency. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  3 type SSS (uppercase alpha) characters     or 1-3 numeric character currency code.</p>
+            <p>  Mandatory input. Default: Local currency.</p>
+        </desc>
+</t>
+<t>
+<field>LOC.REF.NO</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>NARRATIVE</field>
+<desc>
+            <p>Describes any additional details about the Bulk Standing Order. </p>
+            <p />
+            <p>  Up to 35 type A (alphanumeric) characters. A maximum of 2 lines of 35 characters each will be allowed.</p>
+            <p>  Multivalue field. Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.CODE</field>
+<desc>
+            <p>Identifies how the charges are to be applied, i.e. which party is to pay for the charges. </p>
+            <p>  The contents of this field will be placed in the CHARGE.CODE field in Funds Transfer. </p>
+            <p>  For more details refer to the Funds Transfer helptext for CHARGE.CODE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  C - Credit Less Charges D - Debit Plus Charges W - Waive Charges Associated multivalue field. Optional input. Default value is 'W', Waive charges.</p>
+            <p>  If a Charge Code of Credit is specified in this field, the value of the Commission Code can only be Credit or Waive.</p>
+            <p>  If a Charge Code of Debit is specified in this field, the value of the Commission Code can only be Debit or Waive.</p>
+            <p>  Entry of a Waive Charge Code will not be allowed if any Charge Types have been entered.</p>
+        </desc>
+</t>
+<t>
+<field>PAY.CCY</field>
+<desc>
+            <p>Fields PAY.METHOD to LOC.REF.DATA form a related multi value set. Standard T24 currency field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  A maximum of 3 characters may be entered.</p>
+            <p>  Must be the key to a valid entry on the CURRENCY file.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.TYPE</field>
+<desc>
+            <p>Identifies the Charge Types which are applicable to the transaction being processed. </p>
+            <p>  The contents of this field will be placed in the CHARGE.TYPE field in Funds Transfer.</p>
+            <p>  For more details refer to the Funds Transfer helptext for CHARGE.TYPE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  2 character Charge Type (alphanumeric) - type A. Associated subvalue field. (Optional input. See Details for default.)</p>
+            <p>  The Charge Type input in this field must exist in the Charge Type table.</p>
+            <p>  When this field is input, the input of an amount will be allowed. If the type is entered with no amount then the values of the code in the Charge file are used in the associated Charge Amount field.</p>
+            <p />
+            <p>  Identifies how the Commission is to be applied, i.e. which party is to pay for the Commission. </p>
+            <p>  The contents of this field will be placed in the COMMISSION.CODE field in Funds Transfer. </p>
+            <p>  For more details refer to the Funds Transfer help text for COMMISSION.CODE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  C - Credit Less Commission D - Debit Plus Commission W -         Waive Commission Associated multivalue field. (Optional         input. Default value is 'W', Waive commission.)</p>
+            <p>  If a Commission Code of Credit is specified in this         field, the value of the Charge Code can only be Credit or         Waive.</p>
+            <p>  If a Commission Code of Debit is specified in this field,         the value of the Charge Code can only be Debit or Waive.</p>
+            <p>  Entry of a Waive Commission Code will not be allowed if         any Commission Types have been entered.</p>
+        </desc>
+</t>
+<t>
+<field>DR.COMMSN.TYPE</field>
+<desc>
+            <p>Identifies the Commission Type which is applicable to the main transaction being processed. </p>
+            <p>  For more details refer to the FUNDS.TRANSFER helptext for COMMISSION.TYPE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  2 character Commission Type (alphanumeric) - type A.  Associated multivalue field.  Optional input. See Details for default.</p>
+            <p>  The code must exist in the Commission Type table.</p>
+            <p>  When this field is input, the input of an amount will be allowed.</p>
+        </desc>
+</t>
+<t>
+<field>COMMSN.TYPE</field>
+<desc>
+            <p>Identifies the Commission Types which are applicable to the transaction being processed. </p>
+            <p>  The contents of this field will be placed in the COMMISSION.TYPE field in Funds Transfer.</p>
+            <p>  For more details refer to the Funds Transfer helptext for COMMISSION.TYPE. </p>
+            <p />
+            <p>  2 character Commission Type code (alphanumeric) - type A. Associated subvalue field. (Optional input. See Details for default.)</p>
+            <p>  The Commission Type input in this field must exist in the Commission Type table.</p>
+            <p>  When this field is input, the input of an amount will be allowed. If the type is entered with no amount then the values of the code in the Commission file are used in the associated Commission Amount field.</p>
+        </desc>
+</t>
+<t>
+<field>WAIVE.CHARGES</field>
+<desc>
+            <p>Specifies whether any charges are to be applied to the main transaction. </p>
+            <p>  If set to 'YES' then the corresponding fields DR.CHARGE.TYPE and DR.CHARGE.AMT do not allow any input. </p>
+            <p>  For the purposes of building the Funds Transfer record, if WAIVE.CHARGES is set to 'YES' the charge code is 'WAIVE' and if set to 'NO' the charge code is 'DEBIT PLUS CHARGES'. </p>
+            <p>  The 'WAIVE' charge value will indicate that no charge is to be applied on the main transaction. </p>
+            <p>  The 'DEBIT PLUS CHARGES' value will indicate that the complete transfer amount will be remitted to the receiver and the charges amount will be collected from our ordering Customer. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Y(ES)  No charges are to be applied. N(O)   Charges are to be applied.  Optional input. Default value is YES, i.e no charges are to be applied.</p>
+        </desc>
+</t>
+<t>
+<field>DEBIT.VALUE.GAP</field>
+<desc>
+            <p>This field determines the debit value date calculation rules. </p>
+            <p>  You can combine 1 or 2 date operations, always based on the frequency date, each operation being "+" or "-", followed by a number of days, and followed by "C" or "W", meaning calendar or working days. </p>
+            <p>  "+" and "C" are taken by default. </p>
+            <p>  If nothing is entered here, default calculation will be done through the Funds Transfer calculation rules, depending on the payment method. </p>
+            <p />
+            <p>  Examples: </p>
+            <p>  "+01C-01W" which means "Last working day before the processing date" </p>
+            <p>  "-02C" means processing date less 2 calendar days </p>
+            <p>  and so on ... </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 8 type ANY (alphanumeric) characters.  "+" and "C" are optional, and zeros will be added if needed.  Example: "1-1W" will be taken as "+01C-01W".  Optional input, blank means default FT calculation.</p>
+        </desc>
+</t>
+<t>
+<field>BK.TO.BK.INF</field>
+<desc>
+            <p />
+            <p>  Provides information or instruction from the Sending Bank to the Receiver Bank. </p>
+            <p>  The contents of this field will be placed in the BK.TO.BK.INFO field in Funds Transfer. Any details input by the User will be relayed to the Receiver Bank. </p>
+            <p>  For local clearing validation rules, see the section 'Local Clearing Rules' under the relevant clearing system.</p>
+            <p />
+            <p>  Up to 35 type S (uppercase alpha or numeric) characters. A maximum of 6 lines of 35 characters each will be allowed.</p>
+            <p>  Associated subvalue field. Optional input for 'BC' Pay Method, not allowed for 'AC' Pay Method.</p>
+        </desc>
+</t>
+<t>
+<field>DR.CHARGE.AMT</field>
+<desc>
+            <p>Identifies the amount of charge to be applied in respect of the DR.CHARGE.TYPE specified in the previous field. </p>
+            <p>  If no input is made in this field the Application will default to the appropriate charge amount. Input to this field will only be allowed when the associated DR.CHARGE.TYPE has been input and will override the applicable default value. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 18 characters plus a decimal point (standard amount format) - type AMT.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENT.AMT.BAL</field>
+<desc>
+            <p>Specifies the amount of each individual payment. </p>
+            <p />
+            <p>  Up to 18 type AMT (standard amount format) characters plus a decimal point. Associated multivalue field. (Mandatory input.)</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>LOC.REF.DATA</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>MOVE.TO.HISTORY</field>
+<desc>
+            <p>Used to specify whether to move the Bulk.STO to history file (YES) or Not (NO) after the Status moves to "MAT".</p>
+            <p>  If move to History is  "No", such cases the Bulk STO record still will be available in live file even after "MAT" Status.</p>
+            <p>  If we specify "Yes" or NULL , then as and when the Status moves to MAT, the Bulk STO record will be moved to History file. </p>
+            <p>  For Bulk.STO which are frequency based only value "YES" or Null is allowed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Valid value "Yes" or "No"</p>
+        </desc>
+</t>
+<t>
+<field>ACT.WITH.BNK</field>
+<desc>
+            <p>Identifies the bank where the beneficiary maintains his account. </p>
+            <p>  The contents of this field will be placed in the ACCT.WITH.BANK field in Funds Transfer.</p>
+            <p />
+            <p>  Up to 35 type S (uppercase alpha or numeric) characters. A maximum of 4 lines of 35 characters each will be allowed.</p>
+            <p>  Associated subvalue field. Input not allowed for Pay Method 'AC'. Optional input or not allowed as defined in <p>Validation Rules:</p>.</p>
+            <p>  If an input of less than 11 characters has been made, the System will check against the Agency file to see if the input corresponds to a valid Agent. If this is the case, the short name of the Agent will be displayed and any expansion of the multivalue field will be refused. If the input does not correspond to a valid Agent, the System will allow the User to expand the Field to enter further information. For local clearing payment method (BC), see the section 'Local clearing rules' for the relevant clearing system.</p>
+        </desc>
+</t>
+<t>
+<field>APPLY.BULK.CHARGE</field>
+<desc>
+            <p>To apply bulk charges for BULK.STO, this field should be specified as "YES"</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Optional field</p>
+            <p>  Valid values are "YES" or "NO"</p>
+        </desc>
+</t>
+<t>
+<field>BANK.SORT.CODE</field>
+<desc>
+            <p />
+            <p>  Defines the Bank Sorting Code of the bank and branch to whom the payment is to be sent. This field is only applicable to the Local clearing pay method (BC Pay Method). </p>
+            <p>  The code entered must exist on the BC.SORT.CODE file.</p>
+            <p>  The contents of this field will be placed in the BC.BANK.SORT.CODE field in Funds Transfer.</p>
+            <p />
+            <p>  6 numeric characters. Associated multivalue field.</p>
+            <p>  Mandatory input for the Pay Method 'BC'; not allowed for Pay Method 'AC'.</p>
+        </desc>
+</t>
+<t>
+<field>BEN.REFERENCE</field>
+<desc>
+            <p>Identifies the reference which is given to the beneficiary of the Bulk Standing Order. </p>
+            <p>  The contents of this field will be placed in the CREDIT.THEIR.REF field in Funds Transfer.</p>
+            <p>  For local clearing payment method (BC), see the section 'Local clearing rules' for the relevant clearing system. </p>
+            <p />
+            <p>  Up to 27 type S (uppercase alpha or numeric) characters. Input may only be 27 characters for 'BC' Pay Method, for 'AC' Pay Method the maximum length is 16 characters.</p>
+            <p>  Associated multivalue field. (Optional input.)</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

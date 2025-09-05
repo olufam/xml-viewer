@@ -1,0 +1,1612 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>PD</product>
+        <table>PD.PARAMETER</table>
+    </header>
+    <menu>
+        <t>
+            <field>ACTIVITY.CODE</field>
+            <desc>
+                <p>This field together with STATUS.CHANGE are used to define which advice type is sent on a change of status. When the contract is set to the status defined in STATUS.CHANGE this ACTIVITY.CODE will be used.</p>
+                <p>  The actual format of the advice depends on the contract type and application. This is controlled by the key to PD.ADVICES.</p>
+                <p>  It is possible to specify custom formats for each ACTIVITY.CODE, the ACTIVITY.CODE+PRODUCT or the ACTIVITY.CODE+PRODUCT+CATEGORY.</p>
+                <p>  For example: 101             Would be used for all contracts 102-MM          Would be used for all MM contracts 103-MM-21050    Would be used for MM contracts with Category of 21050.</p>
+                <p/>
+                <p>  Must be a valid record in PD.ACTIVITY.</p>
+                <p>  Must have a value in STATUS.CHANGE</p>
+            </desc>
+        </t>
+        <t>
+            <field>ADV.PD.START</field>
+            <desc>
+                <p>If the value of this field is set to 'YES', then the generation of advices will be scheduled from the start date of the PD contract.</p>
+                <p>  If set to 'NO' then the advice generation will relate to the date specified in ADVICE.FREQ field in the PD.PARAMETER.</p>
+                <p>  According to the settings done here, the relevant frequency will be automatically populated by the system, in the field ADVICE.FREQUENCY of PD.PAYMENT.DUE record</p>
+                <p/>
+                <p/>
+                <p>  As per PD.PARAMETER, the frequency is monthly and the day is set to 31st, and a PD contract starts on 24th. Then, if 'YES' is defined in ADV.PD.START, the advices will be scheduled for every month from 24th. If 'NO' is defined in ADV.PD.START, then the advices will be scheduled on 31st,or last day of every month.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  1-3 alphabetical characters 'YES', 'NO' or ' ' (Null)</p>
+                <p>  ' ' (Null ) will default to 'YES'</p>
+            </desc>
+        </t>
+        <t>
+            <field>ADVICE.FREQ</field>
+            <desc>
+                <p>Defines the start date and frequency for sending the overdue advices for all the PD contracts within a group, on a regular basis, as an alternative to sending the overdue advices based on the change of status or the chaser advices set by the user for every PD contract through the schedule option. The type of advice like RA (Regular Advice) can be defined in PD.SCHEDULE.TYPE.</p>
+                <p>  This advice frequency will be populated in PD.PAYMENT.DUE record as a system default, for producing advices on the scheduled dates. The start date of the frequency can be the Parameter date defined under this field or the start of the PD record, as defined in ADV.PD.START.</p>
+                <p>  This field is a part of the associated multi value set defined under contract group.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  16 character standard date/frequency code format (associated         Multi Value field)- type FREQ</p>
+            </desc>
+        </t>
+        <t>
+            <field>AUTO.ADJUST.SPREAD</field>
+            <desc>
+                <p>This field is to be used when the penalty spread on a PD is to be calculated automatically by the system without any input in the PENALTY.SPREAD field. If this field is flagged to YES, penalty spread is calculated as the difference between the value in PENALTY.RATE field (either in the PD.PARAMETER record or the underlying LD/MG record) and the interest rate of the underlying contract. This spread will come into effect after the period/no.of instalments specified in the PE.SWITCH.PERIOD have been crossed. The value in POST.GR.PS.CALC is used as the calculation base for penalty spread. If at any time the spread becomes negative due to changes in the interest rate in the contract or a rate change operation in the PD contract, then the penalty spread is truncated to zero.</p>
+                <p>  Validations</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Value in this field can be YES, NO or null</p>
+                <p>  Input is allowed only if there is a value in     PENALTY.RATE field (ie CONTRACT.METHOD is null). If there is also an input     in the PENALTY.RATE field in the underlying contract, then the penalty rate     in the underlying contract is used to calculate penalty spread in PD</p>
+                <p>  If value in this field is YES, there can be no input     in PENALTY.SPREAD field</p>
+                <p>  If value in this field is YES, input is mandatory in     the fields PE.SWITCH.PERIOD, POST.GR.PE.CALC and POST.GR.PS.CALC.</p>
+            </desc>
+        </t>
+        <t>
+            <field>AUTO.GRACE.END.ADV</field>
+            <desc>
+                <p>Defines whether or not to automatically send a chaser advice at the end of the grace period, in other words when the status of the contract changes from GRA to PDO.</p>
+                <p/>
+                <p>  1-3 alphabetic characters - "NO" or "YES". (Mandatory input).</p>
+            </desc>
+        </t>
+        <t>
+            <field>AUTO.NAB.START.ADV</field>
+            <desc>
+                <p>Defines whether or not to automatically send a chaser advice at the start of the non-accrual period, in other words when the status of the contract changes from PDO to NAB.</p>
+                <p/>
+                <p>  1-3 alphabetic characters - "NO" or "YES". (Mandatory input).</p>
+            </desc>
+        </t>
+        <t>
+            <field>BACK.VAL.SUSP</field>
+            <desc>
+                <p>Allows the user to decide whether to back value the suspension or not.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  One time decision during an upgrade in respect of existing contracts.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Achieved by way of a batch routine during the first end of day after the upgrade.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Accepted values are</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  YES can be input only if SUSPEND.INCOME</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  With the input of value YES,</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  REVERSE.PL.AT.NAB</p>
+                <p>  field</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  If</p>
+                <p>  REVERSE.PL.AT.NAB</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  If</p>
+                <p>  REVERSE.PL.AT.NAB</p>
+                <p/>
+                <p/>
+                <p>  If the field BACK.VAL.SUSP</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  REVERSE.PL.AT.NAB</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Only valid input is YES provided the SUSPEND.INCOME field is flagged YES.</p>
+                <p/>
+                <p>  Default is NULL.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CAT.OD.INT.CUR</field>
+            <desc>
+                <p>Defines the Profit &amp; Loss category code to which penalty interest accrued is to be posted.</p>
+                <p>  Penalty Interest accrued on Payment Due contracts made in the current month will be credited to the Profit &amp; Loss category code specified in this field.</p>
+                <p>  Once authorised this field cannot be changed. However, if it is necessary to change the category code used for current month accruals this may be done via the field CAT.OD.INT.NEW.</p>
+                <p/>
+                <p>  1-5 numeric characters. (Mandatory input).</p>
+                <p>  Must be in the range 50000-59999.</p>
+                <p>  Must be a valid P&amp;L category code on the CATEGORY table.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CAT.OD.INT.NEW</field>
+            <desc>
+                <p>This field is used to change the P&amp;L category code used for current month penalty interest accruals.</p>
+                <p>  The category code used for accruals in the current month is defined in field CAT.OD.INT.CUR. The contents of this field may not be changed after authorisation. However, if it becomes necessary to change this category code then it is achieved via this field.</p>
+                <p>  The new category code to be used for current month accruals is entered in this field. During the End Of Day batch processing the new category code will be transferred to field CAT.OD.INT.CUR and the contents of this field cleared. At the same time all outstanding amortizations will be transferred from the old category to the new category within the P&amp;L base.</p>
+                <p/>
+                <p>  1-5 numeric characters. (Optional input).</p>
+                <p>  Must be in the range 50000-59999.</p>
+                <p>  Must differ from the category code in field CAT.OD.INT.CUR.</p>
+                <p>  Must be a valid P&amp;L category code on the CATEGORY table.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CAT.OD.INT.PRV.MTH</field>
+            <desc>
+                <p>Defines the Profit &amp; Loss category code to which penalty interest accruals for previous months, due to back valued Payment Due contracts, in the current year are to be posted.</p>
+                <p>  Prior month accruals within the current year are posted to this category code.</p>
+                <p/>
+                <p>  1-5 numeric characters. (Mandatory input).</p>
+                <p>  Must be in the range 50000-59999.</p>
+                <p>  Must be a valid P&amp;L category code on the CATEGORY table.</p>
+            </desc>
+        </t>
+        <t>
+            <field>AC.CB.CATEG.FR</field>
+            <desc>
+                <p>The start category of accounts that will be taken into PD when they become overdrawn, is defined in this field.</p>
+                <p>  The range of categories allowed is inclusive of this field value.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Valid category in the range 1000-9999</p>
+                <p>  Mandatory input for AC parameter record. No input for         other parameter records.</p>
+                <p>  Multi-valued field to enable different category ranges.</p>
+                <p>  An account category defined in the overdrawn account         ranges cannot also be defined in the revolving credit         ranges</p>
+            </desc>
+        </t>
+        <t>
+            <field>CAT.OD.INT.PRV.YR</field>
+            <desc>
+                <p>Defines the Profit &amp; Loss category code to which penalty interest accruals for previous years, due to back valued Payment Due contracts, are to be posted.</p>
+                <p>  Prior year accruals are posted to this category code.</p>
+                <p/>
+                <p>  1-5 numeric characters. (Mandatory input).</p>
+                <p>  Must be in the range 50000-59999.</p>
+                <p>  Must be a valid P&amp;L category code on the CATEGORY table.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CAT.OD.SPR.CUR</field>
+            <desc>
+                <p>Defines the Profit &amp; Loss category code to which penalty spread accrued is to be posted.</p>
+                <p>  Penalty Spread accrued on Payment Due contracts made in the current month will be credited to the Profit &amp; Loss category code specified in this field.</p>
+                <p>  Once authorised this field cannot be changed. However, if it is necessary to change the category code used for current month accruals this may be done via the field CAT.OD.SPR.NEW.</p>
+                <p/>
+                <p>  1-5 numeric characters. (Mandatory input).</p>
+                <p>  Must be in the range 50000-59999.</p>
+                <p>  Must be a valid P&amp;L category code on the CATEGORY table.</p>
+                <p>  Input mandatory if PENALTY.SPREAD present or value in CONTRACT.METHOD is "3".</p>
+            </desc>
+        </t>
+        <t>
+            <field>CAT.OD.SPR.NEW</field>
+            <desc>
+                <p>This field is used to change the P&amp;L category code used for current month penalty spread accruals.</p>
+                <p>  The category code used for accruals in the current month is defined in field CAT.OD.SPR.CUR. The contents of this field may not be changed after authorisation. However, if it becomes necessary to change this category code then it is achieved via this field.</p>
+                <p>  The new category code to be used for current month accruals is entered in this field. During the End Of Day batch processing the new category code will be transferred to field CAT.OD.SPR.CUR and the contents of this field cleared. At the same time all outstanding amortizations will be transferred from the old category to the new category within the P&amp;L base.</p>
+                <p/>
+                <p>  1-5 numeric characters. (Optional input).</p>
+                <p>  Must be in the range 50000-59999.</p>
+                <p>  Must differ from the category code in field CAT.OD.SPR.CUR.</p>
+                <p>  Must be a valid P&amp;L category code on the CATEGORY table.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CAT.OD.SPR.PRV.MTH</field>
+            <desc>
+                <p>Defines the Profit &amp; Loss category code to which penalty spread accruals for previous months, due to back valued Payment Due contracts, in the current year are to be posted.</p>
+                <p>  Prior month accruals within the current year are posted to this category code.</p>
+                <p/>
+                <p>  1-5 numeric characters. (Mandatory input).</p>
+                <p>  Must be in the range 50000-59999.</p>
+                <p>  Must be a valid P&amp;L category code on the CATEGORY table.</p>
+                <p>  Input mandatory if PENALTY.SPREAD present or value in CONTRACT.METHOD is "3".</p>
+            </desc>
+        </t>
+        <t>
+            <field>CAT.OD.SPR.PRV.YR</field>
+            <desc>
+                <p>Defines the Profit &amp; Loss category code to which penalty spread accruals for previous years, due to back valued Payment Due contracts, are to be posted.</p>
+                <p>  Prior year accruals are posted to this category code.</p>
+                <p/>
+                <p>  1-5 numeric characters. (Optional or mandatory input).</p>
+                <p>  Must be in the range 50000-59999.</p>
+                <p>  Must be a valid P&amp;L category code on the CATEGORY table.</p>
+                <p>  Input mandatory if PENALTY.SPREAD present or value in CONTRACT.METHOD is "3".</p>
+            </desc>
+        </t>
+        <t>
+            <field>CAT.PEN.FEE</field>
+            <desc>
+                <p>Standard T24 numeric field.</p>
+                <p/>
+                <p>  Mandatory input.</p>
+                <p>  A maximum of 5 characters may be entered.</p>
+                <p>  This is a NOCHANGE field.</p>
+                <p>  Must be the key to a valid entry on the CATEGORY file.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CAT.PEN.FEE.NEW</field>
+            <desc>
+                <p>Standard T24 numeric field.</p>
+                <p/>
+                <p>  A maximum of 5 characters may be entered.</p>
+                <p>  Must be the key to a valid entry on the CATEGORY file.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CH.DAYS</field>
+            <desc>
+                <p>Number of days after which the chaser advice for the status defined under PD.STATUS will be sent.</p>
+                <p>  Example:</p>
+                <p>  Suppose the number of days are defined as 12 under the Status GRA, then the advice will be sent after 12 days from the date on which the PD moved to GRA status.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Input should be numeric and between 0-999</p>
+                <p>  It is part of multi value set of fields. It should be         unique and defined in ascending order within the set.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHANGE.STATUS</field>
+            <desc>
+                <p>Enables the PD record to change status from NAB to PDO on account of partial payment that clears all the 'NAB' dues.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  The PD record changes status from PDO to NAB based on settings in NAB.PERIOD.INT &amp; NAB.PERIOD.SPREAD fields, which may be expressed in number of days. Once the record has become NAB, penalty interest and spread are suspended (not posted to P&amp;L but credited to Asset Type SP). CHANGE.STATUS field provides facility to switch the PD back to PDO status (in which case income may be recognised) on account of a partial payment that settles the NAB portion of the dues.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  If CHANGE.STATUS were set to YES, after every repayment, the balance dues are compared with NAB.PERIOD.INT &amp; SPREAD settings in order to determine the record's status. The balance after such payment, if due within the number of days in NAB.PERIOD.INT &amp; SPREAD, would result in the record changing status to PDO. If dues were repaid in full the record status would be changed to CUR.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  On change of status from NAB to PDO, any income suspended on the deal would be credited back to P&amp;L. Movement entries would be raised for the balance in the suspended income Asset Types (SP) to respective P&amp;L category. OVERDUE.STATUS field in the associated LD record would be updated with the new status.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  A NULL value in this field would not enable such switch back and once the PD record becomes NAB, it would retain the same status until fully paid, when the status would become CUR.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  For both settings OVERDUE.STATUS field in LD would hold the overall status of the underlying PDLD.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  4     character alpha with options of YES and NULL.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Otional     input. Default value is NULL.</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>CONTRACT.GRP</field>
+            <desc>
+                <p>Defines the PD contract group with which the customer is associated.</p>
+                <p>  Customers can be classified into different contract groups like Corporate, Private, and Large etc. Based on the contract group, various options like frequency of sending PD advices within a particular status, blocking the advices produced by the system on change of status, collecting charges for sending PD advices etc. can be defined.</p>
+                <p>  For defining a CONTRACT.GRP code, a record for PD.PAYMENT.DUE should be created in APPL.GEN.CONDITION. A series of Customer group codes can be defined in this record, using CONTRACT.GRP field, and can be classified according to the decisions set by various criteria (user defined field specified in Standard Selection of PD as J descriptor, which may be used to link a decision field in CUSTOMER application, like SECTOR can also be used as decision criteria)</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  The value should have been already defined in PD.PAYMENT.DUE         record of APPL.GEN.CONDITION, as a code.</p>
+                <p>  A default contract group (DFLT) should be defined in PD.PAYMENT.DUE         record of APPL.GEN.CONDITION and this group should be         specified in PD.PARAMETER, to take care of producing         normal chaser advices, in addition to status based         advices.</p>
+            </desc>
+        </t>
+        <t>
+            <field>AC.CB.CATEG.TO</field>
+            <desc>
+                <p>The end category of accounts that will be taken into PD when they are overdrawn, is defined in this field.The range of categories allowed is inclusive of this field.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Valid category in the range 1000-9999</p>
+                <p>  Mandatory input allowed for AC parameter record. No input         for other parameter records.</p>
+                <p>  Associated (multi-valued) with ACCB.CATEG.FR field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CONTRACT.METHOD</field>
+            <desc>
+                <p>Specifies that the interest rate for calculating penalty interest is to be defaulted from the underlying contract.</p>
+                <p>  There are six values which may be entered in this field:</p>
+                <p/>
+                <p>  If the input is "1",then this means that only penalty interest will be calculated using the rate of the underlying contract.</p>
+                <p>  If the input is "2",then this means that the penalty interest will be calculated using the rate of the underlying contract and the penalty spread will be calculated using the value defined in the PENALTY.SPREAD field. In this case input to the PENALTY.SPREAD field becomes mandatory. The penalty interest and penalty spread will be accrued separately. The default amount used to calculate penalty spread is the outstanding principal, however it is possible to define the amount used by using the PS.CALC.BASIS field in the same manner that PEN.CALC.BASIS is used to calculate the penalty interest.</p>
+                <p>  If the input is "3",then this means that the penalty interest will be calculated using the rate of the underlying contract and the penalty spread will be calculated using the value extracted from the calculation MAXIMUM.LEGAL.RATE minus the rate of the underlying contract. In this case input to the MAXIMUM.LEGAL.RATE field becomes mandatory.</p>
+                <p>  If the input is "4",then this means that penalty interest and penalty spread will be accrued together. The rate used will be the underlying contract plus PENALTY.SPREAD and the amount is defined using the PEN.CALC.BASIS field.</p>
+                <p>  If the input is "5",then no penalty will be calculated or applied on the contract.The fields PEN.CALC.BASIS,PS.CALC.BASIS,PENALTY.RATE,PENALTY.KEY,PENALTY.SPREAD become no input fields when the input is 5 in this field.For AC parameter record, only allowed option is 5, meaning no penaltyis calculated on the contract.</p>
+                <p>  If the input is " " (NULL), then penalty will be calculated at the PENALTY.RATE (field 26)  or PENALTY.KEY (field 27) + PENALTY.SPREAD(field 29).</p>
+                <p>  For parameter record with ID as  MD or MD-.....(category), the only allowed option is " " (null). While creating a parameter with ID as MD or MD-... (category) itself, this field will come as a NO INPUT field with null value.  The field PENALTY.RATE or PENALTY.KEY should have a value for these records.</p>
+                <p>  If the underlying contract has ZERO interest rate, then the PD record will use ZERO interest rate for the PENALTY interest calculations. The Exception log file will be updated reflecting this.</p>
+                <p>  Input to this field is only allowed if there is no input made to the PENALTY.RATE field or to the PENALTY.KEY field.</p>
+                <p>  Effective T24 Release G12.2, underlying contract rate would include SPREAD of the loan.  For example, a loan is input with a BASIC.INTEREST key of 1 (10%) plus SPREAD 2%. PD.PARAMETER has penalty spread of 3%. In this case PE would be reckoned at 12% and PS at 3 %.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  1 numeric character - "1", "2", "3"     ,"4", "5" or " ". (Optional or mandatory input).</p>
+                <p>  Input not allowed if PENALTY.RATE defined.</p>
+                <p>  Input not allowed if PENALTY.KEY defined.</p>
+                <p>  Input mandatory if neither PENALTY.RATE nor PENALTY.KEY defined.</p>
+                <p>  Input 5 is mandatory for AC parameter record.</p>
+                <p>  Only " " allowed for MD and MD-...(category) parameter record,     in which case PENALTY.RATE or PENALTY.KEY is mandatory.</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>CRF.BY.TYPE</field>
+            <desc>
+                <p>Flag to indicate whether the components of Past Due records should be reported by type or all combined.</p>
+                <p>  If this field is flagged 'Y' then the user may set up RE.STAT.REP.LINE records to catch the individual components of the Past Due record, for example the Principal, Interest, Charges, Commission etc. If this filed is left blank or flagged No then all components of the past due record will be stored on one line.</p>
+                <p/>
+                <p>  Y, N or Blank allowed.</p>
+                <p>  Defaults to N</p>
+                <p>  Only the SYSTEM record may be input. All other records noinput and point to system record.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CRF.BY.TYPE.PREV</field>
+            <desc>
+                <p>Updated via PD.EOD.STATIC.CHANGES whenver CRF.BY.TYPE is input.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  No Input</p>
+            </desc>
+        </t>
+        <t>
+            <field>DEFAULT.CHARGES</field>
+            <desc>
+                <p>Specifies any default charges which are to be taken upon repayment of any overdue amounts by the customer.</p>
+                <p>  Any charge input must be an existing entry on the FT.CHARGE.TYPE table or on the FT.COMMISSION.TYPE TABLE.</p>
+                <p/>
+                <p>  1-11 alphanumeric type CHG characters. (Optional input - multivalue field).</p>
+                <p>  Duplicates not allowed.</p>
+                <p>  Must be a valid entry on either the FT.CHARGE.TYPE table or on the FT.COMMISSION.TYPE TABLE.</p>
+            </desc>
+        </t>
+        <t>
+            <field>FWOF.RPY.ORDER</field>
+            <desc>
+                <p>Defines the hierarchy of types to be used when the customer makes a repayment on FWOF contracts.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  When a repayment is made by the customer, the system will look at this hierarchy of amount types and use them to allocate the funds across the</p>
+                <p>  different types in case of FWOF contracts. If not defined system will continue to flow by REPAYMENT.ORDER field.</p>
+                <p>  If this field is defined, all the PD.AMOUNT.TYPE values should be entered into this multi-value field in descending order, i.e. the first multi-value will be the first type to be used for allocating the funds and so on until the repayment amount is exhausted.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  For example the order is:</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  and the total outstanding for the above types is 100 for PE, 200 for PS</p>
+                <p/>
+                <p/>
+                <p>  and 1000 for PR, a repayment of 150 will allocate 100 to PE, 50 to PS and</p>
+                <p/>
+                <p/>
+                <p>  nothing for PR. This would bring down the outstanding to 0 for PE, 150 for PS and PR would remain at 1000.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Must be valid record in       PD.AMOUNT.TYPE</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Duplicates not allowed</p>
+                <p/>
+                <p/>
+                <p>  Maximum       of 12 Alphanumeric characters.</p>
+            </desc>
+        </t>
+        <t>
+            <field>GRACE.PERIOD.INT</field>
+            <desc>
+                <p>Specifies the number of days or instalments for which the grace period lasts before penalty interest is applied.</p>
+                <p>  Once this period is over and the customer has not made any repayment, penalty interest will be applied to the overdue amount backvalued to the end of the pre grace period. Where no pre grace period exists, penalty interest will be applied to the overdue amount backvalued to the original date it was overdue.</p>
+                <p>  The input may be either in a fixed number of calendar days or by number of instalments.</p>
+                <p/>
+                <p>  1-3 numeric characters, or "P" followed by 1-2 numeric characters. (Mandatory input).</p>
+                <p>  If specifying number of days, then input must be between 0 and 999 days.</p>
+                <p>  If specifying instalments, then input must be between 0 and 99 with a prefix of "P".</p>
+                <p>  If the contents of field PRE.GRACE.PERIOD is a number of days then the number of days defined in this field must be greater than those defined in PRE.GRACE.PERIOD field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>GRACE.PERIOD.SPRD</field>
+            <desc>
+                <p>Specifies the number of days or instalments for which the grace period lasts before penalty spread is applied.</p>
+                <p>  Once this period is over and the customer has not made any repayment, penalty spread will be applied to the overdue amount backvalued to the end of the pre grace period. Where no pre grace period exists, penalty spread will be applied to the overdue amount backvalued to the original date it was overdue.</p>
+                <p>  The input may be either in a fixed number of calendar days or by number of instalments.</p>
+                <p>  Input to this field is optional unless there is a value in field PENALTY.SPREAD or the value in the field CONTRACT.METHOD is "3".</p>
+                <p>  If input is made to this field then the type of grace period must be the same as that defined in the field GRACED.PERIOD.INT, i.e. if the GRACE.PERIOD.INT is defined as a number of instalments then so should this field and vice-versa.</p>
+                <p>  Also any input made must be equal to the value held in field GRACE.PERIOD.INT.</p>
+                <p/>
+                <p>  1-3 numeric characters, or "P" followed by 1-2 numeric characters. (Optional or mandatory input).</p>
+                <p>  If specifying number of days, then input must be between 0 and 999 days.</p>
+                <p>  If specifying instalments, then input must be between 0 and 99 with a prefix of "P".</p>
+                <p>  Input must be of same type as that of GRACE.PERIOD.INT.</p>
+                <p>  Input must be equal to that of GRACE.PERIOD.INT, i.e if the GRACE.PERIOD.INT is defined as P3, then input could not be P2.</p>
+                <p>  Input is mandatory if there is a value in field PENALTY.SPREAD or the value in field CONTRACT.METHOD is "3".</p>
+            </desc>
+        </t>
+        <t>
+            <field>ID</field>
+            <desc>
+                <p>Identifies the parameter set used by the Payment Due module.</p>
+                <p>  The key to this file is a valid COMPANY.CODE but it is also possible to set up other records with the key as a valid Category code.</p>
+                <p>  Alternatively, it is also possibly to set up a record with the key of  "AC", to control the parameter settings for overdrawn accounts.</p>
+                <p>  The COMPANY.CODE record has to be set up first before any other Category records can be setup. The "AC" record has to be set up before any account Category records are.</p>
+                <p>  It is not possible to REVERSE the COMPANY.CODE record but it is possible to reverse Category records as long as there are no PD contracts active with that particular Category code.</p>
+                <p/>
+                <p>  In order to write charges and commissions on the MD.DEAL that have not been paid to PAYMENT.DUE, a record for MD is mandatory. Separate parameter definitions may be input for each category of MD, in which case the @ID will be input as MD-Category code.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  (1) Allowable input is a valid company code as seen in the Company record.</p>
+                <p>  (2) Input of just the category code without prefixing the appropriate module id is not permissible for the following modules: "AC","AZ","BL" &amp;"MD"</p>
+                <p>  (3) Category range between 10000 to 19999 is not allowed.</p>
+                <p>  (4) Following Category ranges are allowed:</p>
+                <p>  MG                       Mortgage                 25000 - 25099</p>
+                <p>  DEPOSIT              Deposit                    21001 - 21039</p>
+                <p>  SUNDRY              Sundry Deposit         21045 - 21049</p>
+                <p>  LOAN                   Loan                        21050 - 21074</p>
+                <p>  ACC.REC              Account Receivable  21090 - 21094</p>
+                <p>  COMMITMENT      Commitment             21095 - 21099</p>
+                <p>  LIAB COMMT        Liability Commitment 21101 - 21105</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>IMPACT.LIMIT</field>
+            <desc>
+                <p>IMPACT.LIMIT</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  If this field has no value (null), only principal overdues will be considered for limit impact.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Value can either be NULL or YES</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Once set to YES, this field becomes non-inputtable</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>INS.AMT.TYPES</field>
+            <desc>
+                <p>This  multi value field  is used to define the priority on which installments has to be collected on    repayment. </p>
+                <p/>
+                <p/>
+                <p> This field will accept value only if PAYMENT.ROLLOVER is set. Can accept any payment type like PR , IN,  CH etc.</p>
+                <p> "</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>AC.CP.CATEG.FR</field>
+            <desc>
+                <p>The start category of the revolving credit accounts which will be taken into PD is defined in this field. The range of categories allowed is inclusive of this field value.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Valid category code in the range 1000-9999</p>
+                <p>  Mandatory input for AC parameter record. No input for         other parameter records.</p>
+                <p>  Multi-valued field to enable different ranges of         categories.</p>
+                <p>  An account category defined in the revolving credit         ranges cannot also be defined in the unauthorised         overdraft ranges.</p>
+            </desc>
+        </t>
+        <t>
+            <field>INTEREST.BASIS</field>
+            <desc>
+                <p>The interest basis that is used to calculate penal interest, spread etc when a contract becomes past due, is specified here. If left blank, the interest basis of the underlying contract is applied.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Should be a valid entry in INTEREST.BASIS     application</p>
+            </desc>
+        </t>
+        <t>
+            <field>LOCAL.REF</field>
+            <desc>
+                <p>Identifies any local reference field(s) defined by the user.</p>
+                <p>  Identifies any additional element which has been defined locally to meet a particular requirement.</p>
+                <p>  This is a multivalue field.</p>
+                <p/>
+                <p>  Up to 35 characters as defined in the local table definition for this local reference field. (Multivalue field).</p>
+                <p>  Optional or mandatory input according to the LOCAL.TABLE definition for this field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>MAXIMUM.LEGAL.RATE</field>
+            <desc>
+                <p>Defines the maximum legal interest rate allowed by the Bank.</p>
+                <p>  If this field contains a value and a Payment Due contract is created whose penalty interest is greater than this value then the system will change the rate to be the value in this field.</p>
+                <p/>
+                <p>  1-11 numeric characters plus a decimal point. (Optional input).</p>
+                <p>  Input must be greater than 0.</p>
+                <p>  Input cannot be greater than 100.</p>
+                <p>  If MINIMUM.RATE defined then input to this field must be greater than MINIMUM.RATE.</p>
+            </desc>
+        </t>
+        <t>
+            <field>MIN.AUTO.PERCENT</field>
+            <desc>
+                <p>This field is used in conjunction with RETRY.FREQ. It defines the amount that needs to be available in the liquidation account, calculated as a percentage of the amount due, to enable automatic settlement to take place. This can be either on the due date or on dates as specified in RETRY.FREQ.</p>
+                <p>  This field will only be used on contracts that have liquidation mode of Semi-Automatic.</p>
+                <p/>
+                <p/>
+                <p>  Effective T24 release G12.1, this field would also accept a value 0 (zero). A value of zero would mean that any balance is the account is to be considered for EOD retry. Setting this field to zero and flagging USE.AVBL.FUNDS to YES, would provide functionality of appropriating balance in the settlement account to pay of the past dues without ever overdrawing the account beyond the LIMIT.</p>
+                <p>  At the time of processing LD schedules this field will be looked only for a NULL value in USE.AVBL.FUNDS. IF USE.AVBL.FUNDS is flagged to YES, MIN.AUTO.PERCENT will be ignored and whatever funds available in the account would be used to settle the LD scheduled amount partially and the balance would get written to PD.</p>
+                <p>  While processing PD EOD RETRY only subject to MIN.AUTO.PERCENT being available retry on the account would happen. For a NULL value in USE.AVBL.FUNDS, the entire RETRY amount would get liquidated by overdrawing the account with the insufficient portion. If USE.AVBL.FUNDS were flagged to YES, such forced overdrawal of the account would not happen and available funds would be used to settle the PD based on REPAYMENT.ORDER and REPAYMENT.METHOD.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  No decimals, and in the 0-999 percent range.</p>
+            </desc>
+        </t>
+        <t>
+            <field>MINIMUM.RATE</field>
+            <desc>
+                <p>Defines the minimum interest rate allowed by the Bank.</p>
+                <p>  If this field contains a value and a Payment Due contract is created whose penalty interest is less than this value then the system will change the rate to be the value in this field.</p>
+                <p/>
+                <p>  1-11 numeric characters plus a decimal point. (Optional input).</p>
+                <p>  Input must be greater than 0.</p>
+                <p>  Input cannot be greater than 100.</p>
+                <p>  If MAXIMUM.RATE defined then input to this field must be less than MAXIMUM.RATE.</p>
+            </desc>
+        </t>
+        <t>
+            <field>NAB.PERIOD.INT</field>
+            <desc>
+                <p>Specifies the number of days after a payment becomes overdue, the PD contract will switch to non-accrual basis (NAB) and stop accruing and posting penalty interest.</p>
+                <p>  Once the contract has switched status to NAB, the system will stop accruing and posting the penalty interest due, but calculation of the penalty interest will continue.</p>
+                <p/>
+                <p/>
+                <p>  Effective T24 release G 12.1 this field would also accept a value NO apart from a 3-digit numeric.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  If this field were set to NO, change of status from PDO to NAB would not be governed by the system but is only manually controlled. The PD record would go through stages PRE, GRA, PDO as per parameter definition. Once the status becomes PDO, there would be no system updation, and change of status to NAB is only by way of user intervention in the form of a Maintenance operation.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  The value in this field, if numeric, would express the number of days after which the record status would be system-changed from PDO to NAB.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  For value NO in this field, NAB.PERIOD.SPREAD should also be NO.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  1-3 numeric character or 2     alpha character. Only alpa character option allowed is NO.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Input, if numeric must be within the range 1-999.</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>NAB.PERIOD.SPRD</field>
+            <desc>
+                <p>Specifies the number of days after a payment becomes overdue, the PD contract will switch to non-accrual basis (NAB) and stop accruing and posting penalty spread.</p>
+                <p>  Once the contract has switched status to NAB, the system will stop accruing and posting the penalty spread due, but calculation of the penalty spread will continue.</p>
+                <p>  Input to this field is optional unless there is a value in field PENALTY.SPREAD or the value in the field CONTRACT.METHOD is "3".</p>
+                <p/>
+                <p/>
+                <p>  Effective T24 release G 12.1 this field would also accept a value NO apart from a 3-digit numeric.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  If this field were set to NO, change of status from PDO to NAB would not be governed by the system but is only manually controlled. The PD record would go through stages PRE, GRA, PDO as per parameter definition. Once the status becomes PDO, there would be no system updation, and change of status to NAB is only by way of user intervention in the form of a Maintenance operation.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  The value in this field, if numeric, would express the number of days after which the record status would be system-changed from PDO to NAB.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  For value NO in this field, NAB.PERIOD.INT should also be NO.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  1-3 numeric character or 2   alpha character. Only alpa character option allowed is NO.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Input, if numeric must be within the range 1-999.</p>
+                <p>  Input is mandatory if there is a value in field PENALTY.SPREAD or the value in field CONTRACT.METHOD is "3".</p>
+            </desc>
+        </t>
+        <t>
+            <field>PAYMENT.ROLLOVER</field>
+            <desc>
+                <p>Parameter level decision field to determine  the payment rollover . </p>
+                <p/>
+                <p> Validation rules:</p>
+                <p> Values accepted -  “YES” and null </p>
+                <p> It is a NOCHANGE field.</p>
+                <p> This field will accept  value based on the below conditions. </p>
+                <p> 1. Sub pay setting should be set as Yes. </p>
+                <p> 2. Repayment method should be 1. </p>
+                <p> 3. Penalty capitalization not allowed. </p>
+                <p> 4. PE &amp; PS should be the first two components in the Repayment order. </p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PD.STATUS</field>
+            <desc>
+                <p>Part of a set of fields to determine when chaser advices should be sent. This can be stated as so many days after the contract reaches a particular status. In this field the contract status is specified.</p>
+                <p>  The field is associated with the fields CH.DAYS and ACTIVITY</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Rule 1 1-3 alphabetical characters with value 'PRE',         'GRA',' PDO', 'NAB' or 'WOF'</p>
+            </desc>
+        </t>
+        <t>
+            <field>PE.CAP.DATE</field>
+            <desc>
+                <p>Jdescriptor field</p>
+            </desc>
+        </t>
+        <t>
+            <field>AC.CP.CATEG.TO</field>
+            <desc>
+                <p>The end category of revolving credit accounts which will be taken into PD is defined in this field. The range of categories allowed is inclusive of the value of this field.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  valid category in the range 1000-9999</p>
+                <p>  Mandatory input for AC parameter. No input for other         parameter records.</p>
+                <p>  Associated with the AC.CP.CATEG.FR field.</p>
+                <p>  If left null, then that range contains a single category         alone.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PE.CAP.FREQ</field>
+            <desc>
+                <p>This field would enable the user to define the capitalisation cycle for Penalty Interest (PE). The amount that has been accrued in PE would get posted to Capitalised Interest (PD.AMOUNT.TYPE = CE) on the dates and frequencies mentioned in this field. Should the User desire to capitalise interest (charge penal interest on a base that is inclusive of prior period interest that is due), the PE.CALC.BASIS should include CE, Capitalised Penal Interest, also.</p>
+                <p>  Capitalisation would be for amounts that have been accrued till yesterday and todays accruals would get posted to PE and PS as per standard T24 functionality.</p>
+                <p>  Based on the repaid status on the PD record, movement entries would be raised for CE and CS also, in line with other ASSET.TYPES. While the PD is in OVERDUE status, the CE and CS would be kept in OVERDUECE &amp; OVERDUECS respectively. On change of PD status to NAB, movement entries would be raised by the system and the balances would be moved to NABCE &amp; NABCS. Effectively, since individual balances are maintained separately, it is possible to report capitalised interest and accrued interest in different lines in the General Ledger of the bank. In the RE.CONTRACT.BALANCES file also, CE &amp; CS values are captured separately.</p>
+                <p>  When the PD changes status from OVERDUE to NAB, the reversal of interest (if so set up in the Parameter) from P&amp;L will be for the balance in PE and CE (PS &amp; CS). The balance in CE will be moved to NABCE and the accrual (PE) will be moved to respective SP Asset Type in line with existing T24 functionality.</p>
+                <p>  If the CRF.BY.TYPE is set to NO in the SYSTEM record of the PD.PARAMETER, CE and CS would be clubbed together with other dues and stored under OVERDUEDB or NABDB depending on the repaid status of the PD. On the capitalisation date, balances in PE and PS would get moved to OVERDUEDB or NABDB.</p>
+                <p>  The dates and frequencies in PE.CAP.FREQ &amp; PS.CAP.FREQ should match. Two separate fields are provided so as to facilitate having capitalisation on either component and not on the other, if so desired.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  The field validations are similar to other T24 frequencies like</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  8 numeric standard date characters followed by a 5 alphanumeric frequency</p>
+                <p/>
+                <p/>
+                <p>  Date input must be equal to or greater than today</p>
+                <p>  The frequency should be specified in number of months</p>
+            </desc>
+        </t>
+        <t>
+            <field>PE.SWITCH.PERIOD</field>
+            <desc>
+                <p>This field is made use of to indicate when the system should start calculating the spread automatically, if AUTO.ADJ.SPREAD is set to YES. The input can be either in terms of no of days (n), or no. of instalments (nI). For example, if input is given as 2, the system will interpret this as 2 days and penalty spread will be calculated by the system from the third day that payment is overdue. If input is given as 2I, then after the first two instalments become PD, the penalty spread calculation will commence. For purposes of definition, each PD.BALANCE is interpreted as an instalment.</p>
+                <p/>
+                <p/>
+                <p>  Validations</p>
+                <p/>
+                <p/>
+                <p>  Input in this field is allowed and mandatory if</p>
+                <p/>
+                <p/>
+                <p>  If specified as no of days, should be more than the     no.of days in PRE.GRACE.PERIOD.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PEN.CALC.BASIS</field>
+            <desc>
+                <p>Defines the basis on which penalty interest is to be calculated.</p>
+                <p>  This multi-value field specifies on which amount(s) the penalties will be calculated.</p>
+                <p>  A single value can be entered such as PR which would calculate penalty interest on the Principal amounts overdue. Whereas a combined setting of PR, IN, CO and CH in the expanded multi-values would calculate penalties on the total sum of the Principal, Interest, Commission and Charges.</p>
+                <p>  Values of:</p>
+                <p/>
+                <p/>
+                <p>  PR Principal overdue amount</p>
+                <p>  IN Interest overdue amount</p>
+                <p>  CO Commission overdue amount</p>
+                <p>  CH Charges overdue</p>
+                <p>  TX Taxes overdue</p>
+                <p>  OD Overdue Principal only (same as PR)</p>
+                <p>  OS Outstanding Principal (overdue in PD and outstanding         on underlying contract)</p>
+                <p>  Values of OD and OS are for backward compatability.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  2 alpha characters (Mandatory input).</p>
+            </desc>
+        </t>
+        <t>
+            <field>PENALTY.CALC.BASIS</field>
+            <desc>
+                <p>Defines the principal basis on which penalty interest is to be calculated.</p>
+                <p>  Currently only two values are allowed:</p>
+                <p>  OD - Overdue Principal</p>
+                <p>  OS - Outstanding Principal</p>
+                <p>  Note: Presently T24 always uses Outstanding Principal for calculating penalty spread.</p>
+                <p/>
+                <p>  2 alpha characters - "OD" or "OS". (Mandatory input).</p>
+            </desc>
+        </t>
+        <t>
+            <field>PENALTY.KEY</field>
+            <desc>
+                <p>Contains the key to the BASIC.RATE.TEXT table,and subsequently BASIC.INTEREST table, which indicates the default interest rate to be applied for the calculation of penalty interest.</p>
+                <p>  Input to this field is only allowed if there is no input made to the PENALTY.RATE field or to the CONTRACT.METHOD field.</p>
+                <p/>
+                <p>  1-4 numeric characters. (Optional or mandatory input).</p>
+                <p>  Must be a valid entry on the BASIC.RATE.TEXT table.</p>
+                <p>  Input not allowed if PENALTY.RATE defined.</p>
+                <p>  Input not allowed if CONTRACT.METHOD defined.</p>
+                <p>  Input mandatory if neither PENALTY.RATE nor CONTRACT.METHOD defined.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PENALTY.RATE</field>
+            <desc>
+                <p>Defines the default interest rate to be used for calculating penalty interest.</p>
+                <p>  Input to this field is only allowed if there is no input made to the PENALTY.KEY field or to the CONTRACT.METHOD field.</p>
+                <p>  If input is made to the MAXIMUM.LEGAL.RATE field then any input to this field may not be greater than the MAXIMUM.LEGAL.RATE.</p>
+                <p>  If input is made to the MINIMUM.RATE field then any input to this field may not be less than the MINIMUM.RATE.</p>
+                <p/>
+                <p>  1-11 numeric characters plus a decimal point. (Optional or mandatory input).</p>
+                <p>  Input must be greater than 0.</p>
+                <p>  Input cannot be greater than 100.</p>
+                <p>  If MINIMUM.RATE defined then input to this field cannot be less than MINIMUM.RATE.</p>
+                <p>  If MAXIMUM.LEGAL.RATE defined then input to this field cannot be greater than MAXIMUM.LEGAL.RATE.</p>
+                <p>  Input not allowed if PENALTY.KEY defined.</p>
+                <p>  Input not allowed if CONTRACT.METHOD defined.</p>
+                <p>  Input mandatory if neither PENALTY.KEY nor CONTRACT.METHOD defined.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PENALTY.SPREAD</field>
+            <desc>
+                <p>Defines the default rate to be used for calculating penalty spread.</p>
+                <p>  Input not allowed if CONTRACT.METHOD contains a value of "1" or "3".</p>
+                <p>Input mandatory if CONTRACT.METHOD contains a value of "2".</p>
+                <p>Input mandatory if CONTRACT.METHOD contains a value of "4" and PS.CALC.BASIS is stated.</p>
+                <p>Becomes No Input if CONTRACT.METHOD contains a value of "5".</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  1-11 numeric characters plus a decimal point. (Optional         or mandatory input).</p>
+                <p>  Input cannot be greater than 100.</p>
+            </desc>
+        </t>
+        <t>
+            <field>POST.GR.PE.CALC</field>
+            <desc>
+                <p>This field is multivalued and used to specify the base for calculation of penalty interest (PE), after the PE.SWITCH.PERIOD has been crossed. The base may be the same as, or different from, the base used before the PE.SWITCH.PERIOD, as specified in the field PE.CALC.BASIS</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Input in this field should be an entry in     PD.AMOUNT.TYPE. However OP is disallowed.</p>
+                <p/>
+                <p/>
+                <p>  Input in this field is mandatory if AUTO.ADJ.SPREAD is     set to YES</p>
+            </desc>
+        </t>
+        <t>
+            <field>POST.GR.PS.CALC</field>
+            <desc>
+                <p>Input in this field gives the base on which the penalty spread will be calculated, once the period/no.of instalments in PE.SWITCH.PERIOD have been crossed. At present only OP basis is allowed (OP refers to the outstanding principal in the parent contract). When penalty spread calculation starts, a PD.BALANCE record with field OP.BASIS.SET = YES, is created by the system. This PD.BALANCE is meant to exclusively record the penalty spread calculations.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Input mandatory if AUTO.ADJ.SPREAD is set to YES</p>
+                <p>  Accepts only value of OP.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PRE.GRACE.PERIOD</field>
+            <desc>
+                <p>Specifies the number of days or installments for which the pre-grace (PRE) period lasts. During this period, penalties are neither calculated nor posted.</p>
+                <p>  Once this period is over and the customer has not made any repayment, penalty interest will be calclutaed on the overdue amount, from the end of this period. If set the subsequent grace (GRA) period will calculate, but not post, accruals for information purposes. The next status if no payment is made, or written off, is past due (PDO). A ontract may go directly from PRE to PDO according to settings in the PD.PARAMETER record for the contract type.</p>
+                <p>  The input may be either in a fixed number of calendar days or by number of instalments.</p>
+                <p/>
+                <p>  1-3 numeric characters, or "P" followed by 1-2 numeric characters.</p>
+                <p>  If specifying number of days, then input must be between 0 and 999 days.</p>
+                <p>  If specifying instalments, then input must be between 0 and 99 with a prefix of "P".</p>
+            </desc>
+        </t>
+        <t>
+            <field>AC.OD.DAYS</field>
+            <desc>
+                <p>The number of days given as a grace period for which no PD is created when the account goes overdrawn.Default is null meaning PD is created on the same day when the account has gone into overdraft.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Input allowed only for AC parameter record.No input for         other parameter records.</p>
+                <p>  Only numeric input is allowed.</p>
+                <p>  can be left null.</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PS.CALC.BASIS</field>
+            <desc>
+                <p>Allows the definition one or more of the following amount types used to calculate penalty spread for CONTRACT.METHOD type '2'.</p>
+                <p>  The amount used will be the sum of the amount types  defined.</p>
+                <p>  RP  Repayment amount PR  Principal amount IN  Interest Amount CH  Charges Amount CO  Commission Amount A1_A2_A3_A4_A5_A6 Additional amounts which can be defined for mortgages.</p>
+                <p/>
+                <p>  Multi valued field. A maximum of 2 characters may be entered.</p>
+                <p>  CONTRACT.METHOD must be set to '2'.  Must be one of the following AMOUNT.TYPES:      RP      PR      IN      CH      CO      A1      A2      A3      A4      A5      A6</p>
+            </desc>
+        </t>
+        <t>
+            <field>PS.CAP.DATE</field>
+            <desc>
+                <p>Jdescriptor field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PS.CAP.FREQ</field>
+            <desc>
+                <p>This field would enable the user to define the capitalisation cycle for Penalty Spread (PS). The amount that has been accrued in PS would get posted to Capitalised Spread (PD.AMOUNT.TYPE = CS) on the dates and frequencies mentioned in this field. Should the User desire to capitalise spread (charge penal spread on a base that is inclusive of prior period spread that is due), the PS.CALC.BASIS should include CS, Capitalised Spread, also.</p>
+                <p>  Capitalisation would be for amounts that have been accrued till yesterday and todays accruals would get posted to PE and PS as per standard T24 functionality.</p>
+                <p>  Based on the repaid status on the PD record, movement entries would be raised for CE and CS also, in line with other ASSET.TYPES. While the PD is in OVERDUE status, the CE and CS would be kept in OVERDUECE &amp; OVERDUECS respectively. On change of PD status to NAB, movement entries would be raised by the system and the balances would be moved to NABCE &amp; NABCS. Effectively, since individual balances are maintained separately, it is possible to report capitalised interest and accrued interest in different lines in the General Ledger of the bank. In the RE.CONTRACT.BALANCES file also, CE &amp; CS values are captured separately.</p>
+                <p>  When the PD changes status from OVERDUE to NAB, the reversal of interest (if so set up in the Parameter) from P&amp;L will be for the balance in PE and CE (PS &amp; CS). The balance in CS will be moved to NABCS and the accrual (PS) will be moved to respective SP Asset Type in line with existing T24 functionality.</p>
+                <p>  If the CRF.BY.TYPE is set to NO in the SYSTEM record of the PD.PARAMETER, CE and CS would be clubbed together with other dues and stored under OVERDUEDB or NABDB depending on the repaid status of the PD. On the capitalisation date, balances in PE and PS would get moved to OVERDUEDB or NABDB.</p>
+                <p>  The dates and frequencies in PE.CAP.FREQ &amp; PS.CAP.FREQ should match. Two separate fields are provided so as to facilitate having capitalisation on either component and not on the other, if so desired.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  The field validations are similar to other T24 frequencies like</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  8 numeric standard date characters followed by a 5 alphanumeric frequency</p>
+                <p/>
+                <p/>
+                <p>  Date input must be equal to or greater than today</p>
+                <p/>
+                <p/>
+                <p>  The frequency should be specified in number of months</p>
+            </desc>
+        </t>
+        <t>
+            <field>RECORD.STATUS</field>
+            <desc>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>REPAYMENT.METHOD</field>
+            <desc>
+                <p>Defines the order in which attempts will be made to repay overdue amounts.</p>
+                <p>  When attempts are made during the batch retry repayment processing for contracts defined as SEMI AUTOMATIC, then the repayments will be made in the order defined here.</p>
+                <p>  ''  or 1      repayment by type irrespective of date 2             by date for all repayment types 3             by date and then by repayment order within date</p>
+                <p>  If type 1 is defined then the amount available in the customer's account must be greater than the MIN.AUTO.PERCENT value for the total repayment due for each type for all dates in the order specified in REPAYMENT.ORDER.</p>
+                <p>  If type 2 is defined then the amount available in the customer's account must be greater than the MIN.AUTO.PERCENT value for the total repayment due for all types on that date.</p>
+                <p>  If type 3 is defined then the  amount available in the customer's account must be greater than the MIN.AUTO.PERCENT value for each individual type in the order specified in REPAYMENT.ORDER by date.</p>
+                <p/>
+                <p/>
+                <p>  If USE.AVBL.FUNDS is flagged to YES, the hierarchy defined in REPAYMENT.ORDER is used for appropriation of proceeds when a LD schedule is processed. For more details see Help Text on USE.AVBL.FUNDS</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Can be '' , 1 , 2 or 3. Default is '1'.</p>
+            </desc>
+        </t>
+        <t>
+            <field>REPAYMENT.ORDER</field>
+            <desc>
+                <p>Defines the hierarchy of types to be used when a repayment is made by the customer.</p>
+                <p>  When a repayment is made by the customer, the system will look at this hierarchy of amount types and use them to allocate the funds across the different types.</p>
+                <p>  If for example the order is:</p>
+                <p>  33.1 PE 33.2 PS 33.3 PR etc.,</p>
+                <p>  and the total outstanding for the above types is 100 for PE, 200 for PS and 1000 for PR, a repayment of 150 will allocate 100 to PE, 50 to PS and nothing for PR. This would bring down the outstanding to 0 for PE, 150 for PS and PR would remain at 1000. Remember that this is the default by the system and it is possible by user input to allocate the funds across different types.</p>
+                <p/>
+                <p/>
+                <p>  If USE.AVBL.FUNDS is flagged to YES, the same hierarchy would be used for appropriation of proceeds when a LD schedule is processed. For more details see Help text on USE.AVBL.FUNDS</p>
+                <p/>
+                <p/>
+                <p>  Note: It is very important that all the types which are present on the PD.AMOUNT.TYPE file are entered into this multivalue field in descending order, i.e. the first multivalue will be the first type to be used for allocating the funds and so on until the repayment amount is exhausted.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  2-12 alphanumeric characters. (Mandatory input - multivalue field).</p>
+                <p>  Must be a valid entry on the PD.AMOUNT.TYPE table.</p>
+                <p>  Duplicates not allowed.</p>
+            </desc>
+        </t>
+        <t>
+            <field>RESERVED.1</field>
+            <desc>
+                <p>Reserved for future use.</p>
+                <p/>
+                <p>  Noinput field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>RESERVED.3</field>
+            <desc>
+                <p>Reserved for future use.</p>
+                <p/>
+                <p>  Noinput field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>RESERVED.4</field>
+            <desc>
+                <p>Reserved for future use.</p>
+                <p/>
+                <p>  Noinput field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>RESERVED.5</field>
+            <desc>
+                <p>Reserved for future use.</p>
+                <p/>
+                <p>  Noinput field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACCR.CYCLE.FOREIGN</field>
+            <desc>
+                <p>Specifies the date and frequency of the next accrual of penalty interest for all PD contracts held in a foreign currency.</p>
+                <p/>
+                <p>  8 numeric standard date characters, followed by a standard 5 alphanumeric frequency. (Mandatory input).</p>
+                <p>  Date input must be greater than or equal to today.</p>
+                <p>  The frequency must be either DAILY or MONTHLY.</p>
+            </desc>
+        </t>
+        <t>
+            <field>RESERVED.6</field>
+            <desc>
+                <p>Reserved for future use.</p>
+                <p/>
+                <p>  Noinput field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>RESERVED.7</field>
+            <desc>
+                <p>Indicates that CRF asset types are determined by type, otherwise set to OVERDUEDB. Input only allowed in the SYSTEM record.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  YES or NO, Default No.</p>
+            </desc>
+        </t>
+        <t>
+            <field>RESERVED.8</field>
+            <desc>
+                <p>Updated via PD.EOD.STATIC.CHANGES whenever CRF.BY.TYPE is input.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Noinput field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>RESERVED.9</field>
+            <desc>
+                <p>Reserved for future use.</p>
+                <p/>
+                <p>  Noinput field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>RESTORE.CALC</field>
+            <desc>
+                <p>Even after overdue amounts have been fully paid, penalty spread may be required to be calculated as the difference between penalty rate and the interest rate on the underlying contract. In such cases, RESTORE.CALC has to be set to NULL. If this is set to YES, calculation of penalty spread will stop being calculated once all overdue amounts are cleared.</p>
+                <p>  For example, consider a LD contract for USD 1m, input on January 1, 2003, maturing on November 1, 2003. The contract has monthly repayment schedules of principal (USD 100,000) and interest beginning 1</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Allowed values are YES or NULL</p>
+                <p/>
+                <p/>
+                <p>  Input mandatory if AUTO.ADJ.SPREAD is set to YES.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>RETRY.DATE</field>
+            <desc>
+                <p>Jdescriptor field</p>
+            </desc>
+        </t>
+        <t>
+            <field>RETRY.FREQ</field>
+            <desc>
+                <p>This field is a standard T24 frequency type field used for checking whether a PD contract can be liquidated automatically, if there are sufficient funds in the account, or posted as overdue in a PD contract if there are insufficient funds.</p>
+                <p>  The underlying contract must be set to Semi-Automatic. If unsuccessful on the first end of day batch it will try again on the next date generated by this field, provided the PD contract has not been modified manually and is still set as PRE (Pre-Grace).</p>
+                <p>  It should be noted that the amount available depends both on the funds on the Account (WORKING.BALANCE on ACCOUNT), any available overdraft Limit and the percentage repayment required (as set in MIN.AUTO.PERCENT).</p>
+                <p>  Valid Accounts are Client Accounts, not Vostro, Nostro or Internal T24 accounts, such as USD-10001-0001.</p>
+                <p/>
+                <p>  Must be valid frequency.</p>
+                <p>  Date cannot be less than today.</p>
+            </desc>
+        </t>
+        <t>
+            <field>RETRY.REPAY.STATUS</field>
+            <desc>
+                <p>Allows the definition of the highest level of overdue status, for which semi.automatic batch processing will attempt to make repayments.</p>
+                <p>  If the current status of the underlying PD contract is higher than the level set here then no attempt will be made to automatically repay.</p>
+                <p>  The default level will be PRE.</p>
+                <p>  One of the following values can be defined. PRE       Pre Grace GRA       Grace PDO       Payment Overdue NAB       Non Accrual Basis</p>
+                <p>  For example if the RETRY.REPAY.STATUS is set to NAB then attempts will be made to repay contracts with a status of PRE, GRA, PDO and NAB, if it is set to PDO then attempts will be made to repay contracts with a status of PRE, GRA, and PDO with no attempt made to pay NAB contracts.</p>
+                <p/>
+                <p>  Must be one of the following values PRE GRA PDO NAB The default status is PRE.</p>
+            </desc>
+        </t>
+        <t>
+            <field>REVERSE.PL.AT.NAB</field>
+            <desc>
+                <p>Specifies whether or not to move the accrued penalty interest or spread from Profit and Loss once the contract status changes to non-accrual basis (NAB).</p>
+                <p/>
+                <p>  1-3 alphabetic characters - "NO" or "YES". (Optional input).</p>
+                <p>  If no input is made, this field will default to "NO".</p>
+            </desc>
+        </t>
+        <t>
+            <field>ROUNDING.RULE</field>
+            <desc>
+                <p>This field will hold Product level rounding rule penalty interest calculations. For detailed options on different rounding options help text on EB.ROUNDING.RULE file can be referred. </p>
+                <p/>
+                <p>  Should be a valid EB.ROUNDING.RULE id. </p>
+                <p>  No change permitted after first authorization. </p>
+                <p>  Noinput field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACCR.CYCLE.LOCAL</field>
+            <desc>
+                <p>Specifies the date and frequency of the next accrual of penalty interest for all PD contracts held in the local currency.</p>
+                <p>  Interest can be "accrued" either on a daily or monthly basis.</p>
+                <p/>
+                <p>  8 numeric standard date characters, followed by a standard 5 alphanumeric frequency. (Mandatory input).</p>
+                <p>  Date input must be greater than or equal to today.</p>
+                <p>  The frequency must be either DAILY or MONTHLY.</p>
+            </desc>
+        </t>
+        <t>
+            <field>SMALL.AMOUNT</field>
+            <desc>
+                <p>Defines the minimum overdue amount of the PD contract, beyond which only the PD advices will be sent. If the total overdue of the PD contract is less than the amount defined in this field, then no advice will be sent.</p>
+                <p>  Example:</p>
+                <p>  If the SMALL.AMOUNT is 5000 and the SMALL.AMT.CCY is USD, then for all PD contracts having overdue value less then USD5000, the advices will not be generated.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Associated with the field SMALL.AMT.CCY.</p>
+                <p>  Input is  mandatory, if small amount currency is         defined.</p>
+            </desc>
+        </t>
+        <t>
+            <field>SMALL.AMT.CCY</field>
+            <desc>
+                <p>Defines the Currency for specifying the 'Small Amount' in PD.PARAMETER, which is required for PD advice related validations.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  The first currency entered will be the default currency         for conversion and comparison purposes. For currencies         not specifically entered, the amounts will be converted         to this currency, and compared for small amount.</p>
+                <p>  3 Character SWIFT Currency Code</p>
+            </desc>
+        </t>
+        <t>
+            <field>STATUS.ADV.STOP</field>
+            <desc>
+                <p>This field determines whether generation of normal status change advices is to be stopped or not.</p>
+                <p>  If set to 'YES', the normal status change advices will not be produced.</p>
+                <p>  If set to 'NO' the normal status change advices will be generated by the system, as usual.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  1-3 alphabetical characters with valid codes 'YES', NO'         or ' ' (null)</p>
+                <p>  Null will default to 'YES'</p>
+            </desc>
+        </t>
+        <t>
+            <field>STATUS.CHANGE</field>
+            <desc>
+                <p>This field together with ACTIVITY.CODE are used to define which advice type is sent on a change of status. When the contract is set to the status defined in this field the associated ACTIVITY.CODE will be used.</p>
+                <p>  The actual format of the advice depends on the contract type and application. This is controlled by the key to PD.ADVICES.</p>
+                <p>  It is possible to specify custom formats for each ACTIVITY.CODE, the ACTIVITY.CODE+PRODUCT or the ACTIVITY.CODE+PRODUCT+CATEGORY.</p>
+                <p>  For example: 101             Would be used for all contracts 102-MM          Would be used for all MM contracts 103-MM-21050    Would be used for MM contracts with Category of 21050.</p>
+                <p/>
+                <p>  Must be a valid status from:  PRE, GRA, PDO, NAB, WOF or CUR.</p>
+            </desc>
+        </t>
+        <t>
+            <field>SUB.PAY.SETTING</field>
+            <desc>
+                <p>Identifies whether or not to automatically set the status of any new subsequent overdue payments once the first overdue payment changes status to NAB (non-accrual basis).</p>
+                <p>  What this means is that if the first overdue payment has a status of NAB and a subsequent payment becomes overdue, then an input of "YES" to this field will automatically set the status of all subsequent payments to NAB. An input of "NO" will mean that the second and subsequent payments will be processed like the first, i.e GRA to PDO and then PDO to NAB.</p>
+                <p/>
+                <p>  1-3 alphabetic characters - "NO" or "YES". (Mandatory input).</p>
+            </desc>
+        </t>
+        <t>
+            <field>SUSPEND.INCOME</field>
+            <desc>
+                <p>Flag to determine whether the associated LD/MG should also suspend income if the underlying PDLD / PDMG changes status to NAB.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  This field may be set to YES or NULL in the parameter record with category (LD &amp; MG  range) as ID. In the parameter record with SYSTEM as the ID, accepted values are LD, MG in the multi value.</p>
+                <p/>
+                <p/>
+                <p>  NULL - On change of status of PDLD / PDMG  to NAB, income would be suspended on the past due portion (the balance held in PD) and the current dues (that are held in LD) would continue to accrue income to P&amp;L.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  YES - If the PDLD / PDMG changes status to NAB, income on the associated LD / MG  record would also be suspended. As in the case of PD, income would cease to accrue to P&amp;L and would be credited to suspended Asset Type (SP).</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  If REVERSE.PL.AT.NAB were set to YES, the reversal would be restricted to income credited to P&amp;L from PD (PE &amp; PS) for a NULL setting. If SUSPEND.INCOME were flagged to YES, reversal of income credited to P&amp;L would also include the income credited from LD /MG that is yet to be realised (IN &amp; CO) also.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Flagging SUSPEND.INCOME field to YES would enable a bank to suspend income on all dues on a loan (current and past) should the past due portion become NAB.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  In the SYSTEM record value 'LD' &amp; 'MG' would be accepted in order to flag suspension of income in a single place.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Multi value field in the SYSTEM record only.</p>
+                <p>  Accepted values in the SYSTEM record are LD &amp; MG.</p>
+                <p>  In the record with ID as LD or MG category, the accepted values       are  YES or NULL.</p>
+                <p>  Input permitted only for SUB.PAY.SETTING  set to 'YES'.</p>
+            </desc>
+        </t>
+        <t>
+            <field>SUSPEND.INTEREST</field>
+            <desc>
+                <p>Flag to determine whether the associated LD should also suspend income if the underlying PDLD changes status to NAB.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  This field may be set to YES or NULL.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  NULL - On change of status of PDLD to NAB, income would be suspended on the past due portion (the balance held in PD) and the current dues (that are held in LD) would continue to accrue income to P&amp;L.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  YES - If the PDLD changes status to NAB, income on the associated LD record would also be suspended. As in the case of PD, income would cease to accrue to P&amp;L and would be credited to suspended Asset Type (SP).</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  If REVERSE.PL.AT.NAB were set to YES, the reversal would be restricted to income credited to P&amp;L from PD (PE &amp; PS) for a NULL setting. If SUSPEND.INCOME were flagged to YES, reversal of income credited to P&amp;L would also include the income credited from LD that is yet to be realised (IN &amp; CO) also.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Flagging SUSPEND.INCOME field to YES would enable a bank to suspend income on all dues on a loan (current and past) should the past due portion become NAB.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  In the SYSTEM record value 'LD' would be accepted in order to flag suspension of income in a single place.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Multi value field to accommodate future enhancements.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  4 character alpha with     options of YES and NULL.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Optional input. Default value     is NULL.</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>TXN.CDE.ADJ.CR</field>
+            <desc>
+                <p>Specifies the transaction code to be used for the credit entries generated by any adjustments made to the overdue payments.</p>
+                <p/>
+                <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+                <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+                <p>  Must be a valid transaction code on the TRANSACTION table.</p>
+                <p>  Cannot be the same code as defined in field TXN.CDE.ADJ.DR.</p>
+                <p>  Code must not be defined as a DEBIT type on the TRANSACTION table.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TXN.CDE.ADJ.DR</field>
+            <desc>
+                <p>Specifies the transaction code to be used for the debit entries generated by any adjustments made to the overdue payments.</p>
+                <p/>
+                <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+                <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+                <p>  Must be a valid transaction code on the TRANSACTION table.</p>
+                <p>  Cannot be the same code as defined in field TXN.CDE.ADJ.CR.</p>
+                <p>  Code must not be defined as a CREDIT type on the TRANSACTION table.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TXN.CDE.REPAY.NET</field>
+            <desc>
+                <p>Specifies the transaction code to be used for netting any entries across the customer's account together.</p>
+                <p>  This transaction code will be used if the NET.CUST.ENTRIES field on the PD contract is set to "YES".</p>
+                <p/>
+                <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+                <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+                <p>  Must be a valid transaction code on the TRANSACTION table.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACCRUAL.TODAY</field>
+            <desc>
+                <p>This field will determine whether the PD module will accrual the penalty calculations inclusive of TODAY.</p>
+                <p>  If set to NO then all accrual information will be as of end of last working day.</p>
+                <p>  If set to YES then all accrual information will be as of TODAY however no accounting entries will be raised for today.</p>
+                <p/>
+                <p>  1-3 alphabetic characters - "NO" or "YES".</p>
+                <p>  Mandatory input for PD.PARAMETER id "SYSTEM" Other PD.PARAMETER id's will be defaulted from "SYSTEM".</p>
+                <p>  Default entry (BLANK) will be NO.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TXN.CDE.TAKEOVR.CR</field>
+            <desc>
+                <p>Specifies the transaction code to be used for the credit entries generated by the take-over performed by the PD.CAPTURE application.</p>
+                <p/>
+                <p>  1-10(Max Value) numeric characters Transaction Code. </p>
+                <p>  The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+                <p>  Must be a valid transaction code on the TRANSACTION table.</p>
+                <p>  Cannot be the same code as defined in field TXN.CDE.TAKEOVR.DR.</p>
+                <p>  Code must not be defined as a DEBIT type on the TRANSACTION table.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TXN.CDE.TAKEOVR.DR</field>
+            <desc>
+                <p>Specifies the transaction code to be used for the debit entries generated by the take-over performed by the PD.CAPTURE application.</p>
+                <p/>
+                <p>  1-10(Max Value) numeric characters Transaction Code. </p>
+                <p>  The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+                <p>  Must be a valid transaction code on the TRANSACTION table.</p>
+                <p>  Cannot be the same code as defined in field TXN.CDE.TAKEOVR.CR.</p>
+                <p>  Code must not be defined as a CREDIT type on the TRANSACTION table.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TXN.CDE.WOF.CR</field>
+            <desc>
+                <p>Specifies the transaction code to be used for the credit entries generated by writing off any overdue payments.</p>
+                <p/>
+                <p>  1-10(Max Value) numeric characters Transaction Code. </p>
+                <p>  The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+                <p>  Must be a valid transaction code on the TRANSACTION table.</p>
+                <p>  Cannot be the same code as defined in field TXN.CDE.WOF.DR.</p>
+                <p>  Code must not be defined as a DEBIT type on the TRANSACTION table.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TXN.CDE.WOF.DR</field>
+            <desc>
+                <p>Specifies the transaction code to be used for the debit entries generated by writing off any overdue payments.</p>
+                <p/>
+                <p>  1-10(Max Value) numeric characters Transaction Code. </p>
+                <p>  The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+                <p>  Must be a valid transaction code on the TRANSACTION table.</p>
+                <p>  Cannot be the same code as defined in field TXN.CDE.WOF.CR.</p>
+                <p>  Code must not be defined as a CREDIT type on the TRANSACTION table.</p>
+            </desc>
+        </t>
+        <t>
+            <field>USE.AVBL.FUNDS</field>
+            <desc>
+                <p>Field to indicate whether the balance available in the account alone is to be used to settle the past due record.</p>
+                <p/>
+                <p/>
+                <p>  If this field is marked to NULL - Subject to balance in the account being higher than the MIN.AUTO.PERCENT defined, the entire component of due that is re-tried (either by date, or by type, or by date and type) is settled and for any insufficient portion the account is overdrawn. Eg. MIN.AUTO.PERCENT is set as 50% and PD has a due of PR 10,000. Balance in the settlement account is 6,000. In this case the account would be debited by 10,000 (resulting in an overdraft of 4,000) and the PD would be settled.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  If this field is marked to YES - Only the balance in the account would be considered for the purpose of settlement of past dues and the account would not be overdrawn forcibly during EOD on account of PD settlement. For the same example, if the setting was YES, the account would be debited for 6,000 (actual balance) and PD settled for that amount. After EOD, PD would have a balance of 4,000 that would be re-tried on subsequent days.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  By setting MIN.AUTO.PERCENT to 0% and flagging this field to YES, any funds available in the account could be used during EOD to settle the PD.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  For both settings YES and NULL, two rules are common and important;</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  1.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  2.</p>
+                <p/>
+                <p>  for the appropriate period of LOCKING.</p>
+                <p/>
+                <p>  When there is a schedule for LD and if USE.AVBL.FUNDS were flagged to YES in the relevant PD.PARAMETER, appropriation of proceeds for the scheduled amount would happen in the REPAYMENT.ORDER defined in PD.PARAMETER. Note that there will be no check on MIN.AUTO.PERCENT while processing LD schedules and any balance in the account would be used.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Assume there is a schedule for a 21055 category loan for PR = 10,000 &amp; IN = 2,000 and the balance in the liquidation account is 11,000. In such case, the proceeds of 11,000 would be used to settle PR first for 10,000 and 1,000 would be apportioned for IN. The balance 1,000 in IN would be written to PD.</p>
+                <p/>
+                <p/>
+                <p>  For the same example, if REPAYMENT.ORDER is</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  proceeds of 11,000 would be used to settle IN component first and the balance appropriated towards PR. In this case PR of 1,000 would be carried to PD.</p>
+                <p/>
+                <p/>
+                <p>  USE.AVBL.FUNDS is of significance only if LIQUIDATION.MODE is SEMIAUTOMATIC.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>  4     character alpha with options of YES and NULL.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Optional     input. Default value is NULL.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>WAIVE.GRA.PE</field>
+            <desc>
+                <p>This field indicates whether the Penalty interest calculated (PE) needs to be waived when Repayment is made during GRA status. </p>
+                <p/>
+                <p>  Validation rules:</p>
+                <p>  Accepts YES/Null.</p>
+                <p>  Prohibited for contract method 4 and 5.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>WAIVE.GRA.PS</field>
+            <desc>
+                <p>This field indicates whether the Penalty Spread calculated (PS) needs to be waived when Repayment is made during GRA status. </p>
+                <p/>
+                <p>  Validation rules:</p>
+                <p>  Accepts YES/Null.</p>
+                <p>  Prohibited for contract method 4 and 5.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>WOF.CATEGORY</field>
+            <desc>
+                <p>Defines the Profit and Loss category code to which any write-offs are to be posted.</p>
+                <p>  This category code is also used for any adjustment decreases.</p>
+                <p/>
+                <p>  1-5 numeric characters. (Mandatory input).</p>
+                <p>  Must be in the range 50000-59999.</p>
+                <p>  Must be a valid P&amp;L category code on the CATEGORY table.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACTIVITY</field>
+            <desc>
+                <p>This field specifies the activity code for relating it to the associated advices and charges.</p>
+                <p>  New activity codes can be created by using PD.ACTIVITY and can be linked to Charge types and Message types through PD.ADVICES.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>  Numeric value from 1-999</p>
+                <p>  Should have been already created using PD.ACTIVITY</p>
+            </desc>
+        </t>
+    </menu>
+</t24help>

@@ -1,0 +1,934 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>AA</product>
+        <table>AA.ARR.CHARGE</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>The CHARGE property class is used to define charges. This CHARGE property class can be added to PAYMENT SCHEDULE property class for defining scheduled charges. To define charges related to an activity this class can be used in ACTIVITY CHARGE property class.</p>
+        </ovdesc>
+    </overview>
+    <menu>
+        <t>
+            <field>CHARGE.OVERRIDE.ROUTINE</field>
+            <desc>
+                <p>This field provides a user exit to apply adjustment logics on a calculated or fixed charge amount as required by the user.</p>
+                <p/>
+                <p>The routine attached in this field would be triggered at the end of charge calculation.</p>
+                <p/>
+                <p>This field is optional and should be a valid record in EB.API.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHARGE.PERIOD</field>
+            <desc>
+                <p>This is no input field and is reserved for future purposes</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHARGE.RATE</field>
+            <desc>
+                <p>This field if defined will multiply the rate that has been defined here with the amount that falls in this tier set to get the charge amount.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>        1. This field is mandatory when CALC.TYPE is PERCENTAGE.</p>
+                <p/>
+                <p>        2. Both CHARGE.RATE and CHG.AMOUNT cannot be input.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHARGE.ROUTINE</field>
+            <desc>
+                <p>This field provides an user exit to apply complex conditions to calculate the charge amount as required by the user.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>        This field is optional and should be a valid record in EB.API.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHARGE.TYPE</field>
+            <desc>
+                <p>This field defines if the charge amount is fixed amount or to be calculated based on the input in rest of the fields.</p>
+                <p/>
+                <p/>
+                <p>        It can accept two values either FIXED or CALCULATED.</p>
+                <p/>
+                <p/>
+                <p>        If FIXED then FIXED.AMOUNT field is mandatory and this would be returned as the charge amount.</p>
+                <p/>
+                <p/>
+                <p>        If CALCULATED then charge amount will be calculated based on the definitions in rest of fields.</p>
+                <p/>
+                <p/>
+                <p>        This field is mandatory input.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHG.AMOUNT</field>
+            <desc>
+                <p>Behaviour of this field is based on CALC.TYPE. </p>
+                <p/>
+                <p/>
+                <p>        If CALC.TYPE is FLAT then amount defined in this field will be taken as charge amount for the associated tier.</p>
+                <p/>
+                <p/>
+                <p>        If CALC.TYPE is UNIT then value defined in this field will be multiplied with the amount that falls in this tier set to get the charge amount.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>        This field is mandatory when CALC.TYPE is FLAT or UNIT.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CURRENCY</field>
+            <desc>
+                <p>Defines the currency of the charge property. Charges will be calculated for the Currency defined in this field. Amounts input in amount type fields are rounded based on the currency defined in this field.</p>
+                <p/>
+                <p/>
+                <p>        This field is mandatory input and will not be defaulted to local currency. Currency defined in this field can be different from the currency defined in the ID. If both the currency is different then an override will be raised.</p>
+                <p/>
+                <p/>
+                <p>        If requesting currency is different from currency defined in this field, then base amount will be converted to charge currency equivalent and charge amount will be calculated. The final charge amount will again be converted to the requesting currency equivalent. Conversion will be done using mid-rate.</p>
+                <p/>
+                <p/>
+                <p>        EX:</p>
+                <p/>
+                <p/>
+                <p>        Currency: USD</p>
+                <p/>
+                <p/>
+                <p>        Tier set:</p>
+                <p/>
+                <p/>
+                <p>        Calc tier type: Band</p>
+                <p/>
+                <p>        Calc type        : FLAT</p>
+                <p/>
+                <p>        Chg Amount   : 10</p>
+                <p/>
+                <p>        Tier Amount: 10000</p>
+                <p/>
+                <p/>
+                <p>        Calc tier type: Band</p>
+                <p/>
+                <p>        Calc type        : FLAT</p>
+                <p/>
+                <p>        Chg Amount   : 10</p>
+                <p/>
+                <p>        Tier Amount: 20000</p>
+                <p/>
+                <p/>
+                <p>        Calc tier type: Band</p>
+                <p/>
+                <p>        Calc type        : FLAT</p>
+                <p/>
+                <p>        Chg Amount   : 10</p>
+                <p/>
+                <p>        Tier Amount: </p>
+                <p/>
+                <p/>
+                <p>        Assume base amount to be 15000 and the requesting currency is GBP. Then </p>
+                <p/>
+                <p>        calculation will be </p>
+                <p/>
+                <p/>
+                <p>        15000 * 1.55 = 23250 which is located in 3rd tier set.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>        Charge amount = 10 USD</p>
+                <p/>
+                <p>        Final charge amount in GBP = 10 * 1.55 = 15.5 GBP.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>        1. Must be a valid currency record in T24.</p>
+                <p/>
+                <p>        2. 3 type SSS (uppercase alpha) character or 1-3 numeric character currency code</p>
+                <p/>
+                <p>        Mandatory input</p>
+            </desc>
+        </t>
+        <t>
+            <field>DEFAULT.ATTR.OPTION</field>
+            <desc>
+                <p>Optional field - Allowed Values are RESETTING and NON-RESETTING.</p>
+                <p/>
+                <p> RESETTING - During any Renewal Activities (for eg : change.product, rollover or reset) the property conditions will be reset from the product.</p>
+                <p/>
+                <p> NON-RESETTING - During any Renewal Activities property conditions will be maintained from the Arrangement level.</p>
+                <p/>
+                <p> Leaving the field blank sets NON-RESETTING as the default option.</p>
+                <p/>
+                <p> Not used in Arrangement/Sim level.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>DEFAULT.NEGOTIABLE</field>
+            <desc>
+                <p>Not used for arrangement level conditions</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>FIXED.AMOUNT</field>
+            <desc>
+                <p>This defines fixed charge amount to be returned. If CHARGE.TYPE is FIXED then input to this field is mandatory.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>        Mandatory if charge type is fixed.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACCRUAL.RULE</field>
+            <desc>
+                <p>This field accepts only a valid record from EB.ACCRUAL.PARAM.</p>
+                <p>Determines the amortization start and end dates while creating EB.ACCRUAL record.</p>
+                <p>Input allowed only when the charge is set to amortize.</p>
+            </desc>
+        </t>
+        <t>
+            <field>FREE.AMOUNT</field>
+            <desc>
+                <p>If defined the final charge amount will be the calculated charge amount less the amount specified in this field. If final charge amount is less than free amount then free amount will be the final charge amount.</p>
+                <p/>
+                <p>     Ex:</p>
+                <p/>
+                <p>     Charge amount = 100</p>
+                <p>     Free amount = 25</p>
+                <p>     Final charge amount = 100 – 25 = 75</p>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.1</field>
+            <desc>
+                <p>Contains the arrangement number, extracted from the first component of the id</p>
+                <p>System updated field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.2</field>
+            <desc>
+                <p>Contains the name of the property that this arrangement level condition relates to</p>
+                <p>Name is defined in AA.PRORERTY table</p>
+                <p>System maintained field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.3</field>
+            <desc>
+                <p>Contains the Effective Date of this property condition</p>
+                <p>System updated field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.4</field>
+            <desc>
+                <p>Reserved for future use</p>
+                <p>System field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.5</field>
+            <desc>
+                <p>Reserved for future use</p>
+                <p>System field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.6</field>
+            <desc>
+                <p>Reserved for future use</p>
+                <p>System field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>INTERNAL.BOOKING</field>
+            <desc>
+                <p>Income / expense will be posted to internal account category specified in Accounting condition instead of PL categories.</p>
+                <p>This will accept YES or NULL</p>
+            </desc>
+        </t>
+        <t>
+            <field>MIN.CHG.AMOUNT</field>
+            <desc>
+                <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+            </desc>
+        </t>
+        <t>
+            <field>MIN.CHG.WAIVE</field>
+            <desc>
+                <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACTION</field>
+            <desc>
+                <p>The activity that caused this arrangement property to be updated.</p>
+                <p>The activity is taken from the underlying AA.ARRANGEMENT.ACTIVITY request that caused the record to be modified</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>NEGOTIATED.FLDS</field>
+            <desc>
+                <p>No input and multi value field that lists the attributes on the arrangement property record that have been fixed and/or negotiated. These are stored when the arrangement level record is committed. When the arrangement level record is next used all items in the NEGOTIATED.FIELDS list will be maintained</p>
+                <p>Once an attribute has been fixed or negotiated it will remain in negotiated field list on all subsequent dated versions of the property.</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.ATTRIBUTE</field>
+            <desc>
+                <p>System field - not used for arrangement conditions</p>
+                <p/>
+                <p/>
+                <p>System Field NoINPUT allowed -</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.MESSAGE</field>
+            <desc>
+                <p>System field - not used for arrangement conditions</p>
+                <p/>
+                <p/>
+                <p>System Field NoINPUT allowed -</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.OPTIONS</field>
+            <desc>
+                <p>System field - not used for arrangement conditions</p>
+                <p/>
+                <p/>
+                <p>System Field NoINPUT allowed -</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.RESERVED1</field>
+            <desc>
+                <p>System Field - Reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>NR.RESERVED2</field>
+            <desc>
+                <p>System Field - Reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>NR.STD.COMP</field>
+            <desc>
+                <p>Not used for Arrangement Conditions</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>Input not allowed</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.TYPE</field>
+            <desc>
+                <p>System field - not used for arrangement conditions</p>
+                <p/>
+                <p/>
+                <p>System Field NoINPUT allowed -</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.VALUE</field>
+            <desc>
+                <p>System field - not used for arrangement conditions</p>
+                <p/>
+                <p/>
+                <p>System Field NoINPUT allowed -</p>
+            </desc>
+        </t>
+        <t>
+            <field>OVERRIDE</field>
+            <desc>
+                <p>Standard Override field containing override messages generated by amendments to this property</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ACTIVITY</field>
+            <desc>
+                <p>The activity that caused this arrangement property to be updated.</p>
+                <p>The activity is taken from the underlying AA.ARRANGEMENT.ACTIVITY request that caused the record to be modified</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PR.APP.METHOD</field>
+            <desc>
+                <p>This field denotes the application method that needs to be applied to the periodic rule charges.</p>
+                <p>Allowed values are</p>
+                <p>Due - The periodic rule charges are made due</p>
+                <p>Capitalise - The periodic rule charges are capitalised</p>
+                <p>Not inputtable at arrangement level</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PR.APP.PERIOD</field>
+            <desc>
+                <p>This field denotes the application period for the given periodic rule charges.</p>
+                <p>The periodic rule charges will be applied at the end of the period. If the value defined is zero, then the charges are applied immediately.</p>
+                <p>Standard T24 period field.</p>
+                <p>Not inputtable at arrangement level</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PR.ATTRIBUTE</field>
+            <desc>
+                <p>These are set of Attributes which define the names of the rule, which will be applied on certain attributes of property classes over a period of time</p>
+                <p/>
+                <p/>
+                <p>Input must be a valid record from AA.PERIODIC.ATTRIBUTE</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.BRK.CHARGE</field>
+            <desc>
+                <p>Not used for arrangement level conditions</p>
+                <p/>
+                <p/>
+                <p>Input not allowed.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.BRK.MSG</field>
+            <desc>
+                <p>Based on the PR.BRK.RES option selected, this will hold either an OVERRIDE or EB.ERROR id. By default the ids will be picked from the associated EB.COMPARISON.TYPE record. If CAP or FLOOR values are given, then the underlying AA.PERIODIC.ATTRIBUTE.CLASS should have this type defined in it</p>
+                <p/>
+                <p/>
+                <p>Input must be a valid OVERRIDE ID or EB.ERROR ID</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.BRK.RES</field>
+            <desc>
+                <p>When a rule is broken what action needs to be taken is defined here. Currently, the various options available are </p>
+                <p/>
+                <p>Error block further processing</p>
+                <p>Override Give an override</p>
+                <p>Information  Record details only</p>
+                <p>CAP the rule value is to be used as a CAP if the rule is broken</p>
+                <p>FLOOR the rule value is to be used as a FLOOR if the rule is broken</p>
+                <p/>
+                <p/>
+                <p>Should be one of the above valid options</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.RESERVED.1</field>
+        </t>
+        <t>
+            <field>PR.RESERVED.2</field>
+        </t>
+        <t>
+            <field>PR.RESERVED.3</field>
+        </t>
+        <t>
+            <field>PR.VALUE</field>
+            <desc>
+                <p>This is the actual rule value, which will be applied on certain attributes of the property classes over a period of time.</p>
+                <p/>
+                <p/>
+                <p>Input must be a valid data type defined in the corresponding</p>
+                <p>AA.PERIODIC.ATTRIBUTE.CLASS record.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ARRANGEMENT.KEY</field>
+            <desc>
+                <p>The key to the arrangement property condition. The key is comprised of the following components (delimited by a -): Arrangement Id, Property Name, Effective date.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>REFER.LIMIT</field>
+            <desc>
+                <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+            </desc>
+        </t>
+        <t>
+            <field>RELATIONSHIP.AMOUNT</field>
+        </t>
+        <t>
+            <field>RELATIONSHIP.PERCENTAGE</field>
+        </t>
+        <t>
+            <field>RELATIONSHIP.PRODUCT</field>
+        </t>
+        <t>
+            <field>RELATIONSHIP.VARIATION</field>
+        </t>
+        <t>
+            <field>ROUNDING.RULE</field>
+            <desc>
+                <p>Defines the rounding rule for the calculated charge amount. The rule can be, round the charge amount either upwards or downwards or natural.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>        Should be a valid record in EB.ROUNDING.RULE.</p>
+                <p/>
+                <p/>
+                <p>        Optional field, if null takes the rounding rule specified in CURRENCY record.</p>
+                <p/>
+                <p>        For more information please refer EB.ROUNDING.RULE helptext.</p>
+            </desc>
+        </t>
+        <t>
+            <field>STMT.NOS</field>
+            <desc>
+                <p>Contains the key to the accounting entries raised by the activity being applied to this arrangement property</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE1</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE2</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE3</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>CALC.THRESHOLD</field>
+            <desc>
+                <p>Defines the threshold amount (base amount) below which charge amount will not be calculated.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>        This field cannot be negative and is optional field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE4</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE5</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE6</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE7</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>TARGET.PRODUCT</field>
+            <desc>
+                <p>This field denotes the target classic product of the given property class</p>
+                <p/>
+                <p>The already existing T24 products are mapped using AA infrastructure</p>
+                <p>These are called classic products</p>
+                <p>These products are mapped to different property clases</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>TIER.AMOUNT</field>
+            <desc>
+                <p>Defines the threshold amount for each tier.</p>
+                <p/>
+                <p>        If more than one tier is defined then values in this field should be in ascending order. This field is mandatory except for the last tier.</p>
+                <p/>
+                <p/>
+                <p>        EX:</p>
+                <p/>
+                <p/>
+                <p>        This example illustrates how the charge amount is being calculated based on definitions in the charge property</p>
+                <p/>
+                <p>        Currency: USD</p>
+                <p>        Charge type: Calculated</p>
+                <p>        Charge Period: 12M</p>
+                <p>        Calc Threshold: 10000</p>
+                <p>        Free Amount: 500</p>
+                <p>        Tier Groups: BANDS</p>
+                <p>        Balance Calc Type: DR.CURRENT -&gt; AA.BALANCE.CALC.TYPE record which says current balance</p>
+                <p/>
+                <p>        Calc tier type : Band</p>
+                <p>        Calc type        : Flat</p>
+                <p>        Chg Amount   : 10</p>
+                <p>        Tier Amount  : 10000</p>
+                <p/>
+                <p>        Calc tier type : Band</p>
+                <p>        Calc type        : Percentage</p>
+                <p>        Chg Amount   : 1%</p>
+                <p>        Tier Min Charge : 150</p>
+                <p>        Tier Amount  : 20000</p>
+                <p/>
+                <p>        Calc tier type  : Level</p>
+                <p>        Calc type         : Percentage</p>
+                <p>        Charge Rate    : 2%</p>
+                <p>        Tier Amount    : 30000</p>
+                <p/>
+                <p>        Calc tier type   : Level</p>
+                <p>        Calc type          : Percentage</p>
+                <p>        Charge Rate     : 3%</p>
+                <p>        Tier Max Charge : 100</p>
+                <p>        Tier Amount    : 40000</p>
+                <p/>
+                <p>        Calc tier type   : Band</p>
+                <p>        Calc type          : Unit</p>
+                <p>        Chg Amount     : 0.01</p>
+                <p>        Tier Amount     :     </p>
+                <p/>
+                <p>        Assume base amount to be 100000 GBP. Charge amount is calculated as below.</p>
+                <p/>
+                <p>        Convert Base amount from GBP to USD</p>
+                <p/>
+                <p>        100000 * 1.55 = 155000 USD</p>
+                <p/>
+                <p/>
+                <p>        Tier 1:</p>
+                <p/>
+                <p>        For the first 10000 Charge amount = 10</p>
+                <p/>
+                <p/>
+                <p>        Tier 2:</p>
+                <p/>
+                <p>        For the next 10000 Charge amount = 10000 * 1% = 100</p>
+                <p/>
+                <p>        Tier Min charge = 150 so charge amount = 150</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>        Tier 4:</p>
+                <p/>
+                <p>        For the next 20000 Charge amount = 20000 * 3% = 600</p>
+                <p/>
+                <p>        Tier max charge = 100 so charge amount = 100</p>
+                <p/>
+                <p/>
+                <p>        Tier 5:</p>
+                <p/>
+                <p>        For the remaining amount 155000 - 40000 = 115000 * 0.01 = 1150 (Final Tier)</p>
+                <p/>
+                <p>        Charge amount in USD = 1150 + 100 + 150 + 10 = 1410 USD</p>
+                <p/>
+                <p/>
+                <p>        Final Charge amount equivalent to GBP = 2185.5 GBP.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TIER.COUNT</field>
+            <desc>
+                <p>When charges are to be calculated based on activity count, this attribute acts as threshold for the number of times an activity is performed. Calculation based on TIER.COUNT is linked to definition in AA.SOURCE.CALC.TYPE file. If the source balance for a charge is linked to a record in AA.SOURCE.CALC.TYPE which has the definition SOURCE.TYPE set to ACTIVITY and CALC.TYPE set to COUNT, then those charges are eligible to be calculated based on activity count.</p>
+                <p>Validation Rules:</p>
+                <p>It is possible to specify either TIER.AMOUNT or TIER.COUNT. Both cannot be specified simultaneously.</p>
+                <p>TIER.COUNT should be defined in ascending order</p>
+                <p>Last multi value of TIER.COUNT should be blank</p>
+                <p>Ex:</p>
+                <p>Currency : USD</p>
+                <p>Charge Type : CALCULATED</p>
+                <p>Tier Groups: BANDS</p>
+                <p>Calc Tier Type: BAND</p>
+                <p>Calc Type: FLAT</p>
+                <p>Chg Amount: 10</p>
+                <p>Tier Count: 3</p>
+                <p>Calc tier Type: BAND</p>
+                <p>Calc Type: FLAT</p>
+                <p>Chg Amount: 7</p>
+                <p>Tier Count: 5</p>
+                <p>Calc tier Type: BAND</p>
+                <p>Calc Type: FLAT</p>
+                <p>Chg Amount: 3</p>
+                <p>Tier Count:</p>
+                <p>Assume the activity count of the activity linked to this charge property definition is 7 during a period. Since, it is BAND definition charge has to be calculated for each TIER.</p>
+                <p>For the first 3 count of activity, charge amount = 10</p>
+                <p>For the remaining 4 count of activity, charge amount = 7</p>
+                <p>Final Charge Amount: 17</p>
+            </desc>
+        </t>
+        <t>
+            <field>TIER.GROUPS</field>
+            <desc>
+                <p>This field defines the method of calculation of charge amount for the currency.</p>
+                <p/>
+                <p/>
+                <p>        This field will accept two values, BANDS or LEVELS. </p>
+                <p/>
+                <p/>
+                <p>        The tier set CALC.TIER.TYPE till TIER.AMOUNT will define the values needed for Calculation and this field will specify the method to calculate charge using the tier set.</p>
+                <p/>
+                <p/>
+                <p>        Tier set can be multivalued to as many times as required and can have BAND or LEVEL specified for individual tier set, but the overall method to calculate charge is based on this field.</p>
+                <p/>
+                <p/>
+                <p>        If BANDS then separate calculations are to be made for each band till the base amount is reached.</p>
+                <p/>
+                <p/>
+                <p>        If LEVELS then only one is calculated and this is dependent on the level of the base Amount.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>        Not allowed if CHARGE.TYPE is FIXED</p>
+                <p/>
+                <p/>
+                <p>        Ex :</p>
+                <p/>
+                <p/>
+                <p>        Tier Groups: BANDS</p>
+                <p/>
+                <p/>
+                <p>        The tier set is defined as below</p>
+                <p/>
+                <p/>
+                <p>        Calc tier type: Band</p>
+                <p/>
+                <p>        Calc type: FLAT</p>
+                <p/>
+                <p>        Chg Amount: 10</p>
+                <p/>
+                <p>        Tier Amount: 10000</p>
+                <p/>
+                <p/>
+                <p>        Calc tier type: Band</p>
+                <p/>
+                <p>        Calc type        : FLAT</p>
+                <p/>
+                <p>        Chg Amount   : 15</p>
+                <p/>
+                <p>        Tier Amount: 20000</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>        Calc tier type  : Level</p>
+                <p/>
+                <p>        Calc type         : Percentage</p>
+                <p/>
+                <p>        Charge Rate    : 2%</p>
+                <p/>
+                <p>        Tier Amount    : 30000</p>
+                <p/>
+                <p/>
+                <p>        Calc tier type   : Level</p>
+                <p/>
+                <p>        Calc type          : Percentage</p>
+                <p/>
+                <p>        Charge Rate     : 3%</p>
+                <p/>
+                <p>        Tier Amount    : 40000</p>
+                <p/>
+                <p/>
+                <p>        Calc tier type   : Band</p>
+                <p/>
+                <p>        Calc type          : Unit</p>
+                <p/>
+                <p>        Chg Amount     : 0.01</p>
+                <p/>
+                <p>        Tier Amount     :     </p>
+                <p/>
+                <p/>
+                <p>        Assume Base amount to be 35000 and is located in 4th tier set. Calculation of </p>
+                <p/>
+                <p>        charge will be as below</p>
+                <p/>
+                <p/>
+                <p>        1. For first 10000 Charge amount = 10</p>
+                <p/>
+                <p>        2. For the next 10000 (20000 - 10000) Charge amount = 20</p>
+                <p/>
+                <p>        3. For the next 15000 (35000 - 20000) Charge amount = 15000 * 3% = 450</p>
+                <p/>
+                <p/>
+                <p>        Overall Charge Amount = 450 + 20 + 10 = 480/-</p>
+                <p/>
+                <p/>
+                <p>        Tier Groups: LEVELS</p>
+                <p/>
+                <p/>
+                <p>        Assume Base amount to be 60000 which is located in the final tier set. </p>
+                <p/>
+                <p>        Calculation of charge will be as below</p>
+                <p/>
+                <p/>
+                <p>        1. For first 10000 charge amount = 10</p>
+                <p/>
+                <p>        2. For the next 10000 (20000 - 10000) charge amount = 20</p>
+                <p/>
+                <p>        3. For the next 40000 (60000 - 20000) charge amount = 40000 * 0.01 = 400</p>
+                <p/>
+                <p/>
+                <p>        Final Charge amount = 400 + 20 + 10 = 430/-</p>
+            </desc>
+        </t>
+        <t>
+            <field>TIER.MAX.CHARGE</field>
+            <desc>
+                <p>Defines the maximum charge amount to be applied for the tier to calculate charges.</p>
+                <p/>
+                <p>        If the charge calculated for this tier is less than the amount defined in this field then maximum amount will be the charge amount for this tier.</p>
+                <p/>
+                <p/>
+                <p>        Optional field.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>        This field cannot be input if CALC.TYPE is FLAT.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TIER.MIN.CHARGE</field>
+            <desc>
+                <p>Defines the minimum charge amount to be applied for the tier to calculate charges.</p>
+                <p/>
+                <p>        If the charge calculated for this tier is less than the amount defined in this field then minimum amount will be the charge amount for this tier.</p>
+                <p/>
+                <p/>
+                <p>        Optinal field.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>        This field cannot be input if CALC.TYPE is FLAT.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CALC.TIER.TYPE</field>
+            <desc>
+                <p>This field is first field for the tier multivalue set. It defines the method for calculating charge only for the set on which its been defined. </p>
+                <p/>
+                <p/>
+                <p>        It will accept two values BAND or LEVEL. </p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>        This field is mandatory when CHARGE.TYPE is CALCULATED.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CALC.TYPE</field>
+            <desc>
+                <p>Defines charge calculation type to be applied for charge calculations.</p>
+                <p/>
+                <p>        It will accept FLAT, PERCENTAGE, UNIT.</p>
+                <p/>
+                <p/>
+                <p>        FLAT - Amount defined in CHG.AMOUNT to used for the associated tier set.  PERCENTAGE - Rate defined in CHARGE.RATE to be applied for the associated tier set.</p>
+                <p/>
+                <p>        UNIT - Multiplication factor defined in CHG.AMOUNT to be applied for calculating charge.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p>        This field is mandatory when CHARGE.TYPE is CALCULATED.</p>
+                <p/>
+                <p/>
+                <p>     Ex1: Calc Type = Flat</p>
+                <p/>
+                <p>     Charge rate = NULL</p>
+                <p>     Chg Amount = 10</p>
+                <p>     Tier Max Charge = 15</p>
+                <p>     Tier Min Charge = 12</p>
+                <p>     Tier Amount = 1000</p>
+                <p>     Charge amount for this tier = 10</p>
+                <p/>
+                <p/>
+                <p>     EX2: Calc type = Percentage</p>
+                <p/>
+                <p>     Charge rate = 1</p>
+                <p>     Chg Amount = NULL</p>
+                <p>     Tier Max Charge = 15</p>
+                <p>     Tier Min Charge = 12</p>
+                <p>     Tier Amount = 1000</p>
+                <p>     Charge amount for this tier = 1000 * 1% = 10 </p>
+                <p>     This is less than Tier Min charge and therefore Charge amount = 12</p>
+                <p/>
+                <p/>
+                <p>     Ex3: Calc Type = UNIT</p>
+                <p/>
+                <p>     Charge rate = NULL</p>
+                <p>     Chg Amount = 0.1</p>
+                <p>     Tier Max Charge = 15</p>
+                <p>     Tier Min Charge = 12</p>
+                <p>     Tier Amount = 1000</p>
+                <p>     Charge amount for this tier = 1000 * 0.1 = 100</p>
+                <p>     This is greater than Tier Max Charge and therefore Charge amount = 15</p>
+            </desc>
+        </t>
+        <t>
+            <field>CANCEL.PERIOD</field>
+            <desc>
+                <p>This field accepts only a valid Period.</p>
+                <p>Value in this field will be considered as calendar days. </p>
+                <p>Input allowed only when the charge is set to amortize.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHANGED.FIELDS</field>
+            <desc>
+                <p>No input and multi value field lists all fields that have been negotiated for each dated version of the property. For a subsequently dated property, the attributes listed in this field will appear in "Negotiated.Fields" and only newly negotiated fields will appear on "Changed.Fields"</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+    </menu>
+</t24help>

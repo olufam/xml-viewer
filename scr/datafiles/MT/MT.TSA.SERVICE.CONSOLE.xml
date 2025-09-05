@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t24help>
+	<header>
+		<product>MT</product>
+		<table>MT.TSA.SERVICE.CONSOLE</table>
+	</header>
+	<overview>
+		<ovdesc>
+			<p>This is the table in which the COB or Service in tenant system can be controled from the Master - in a Multi-Tenant architecture.</p>
+			<p>On authorisation of a record in this table (with OPERATION.MODE set to EXECUTE) one or more events are generated. These are xml based and are sent using the Integration Framework infrastructure. From the IF.EVENTS.INTERFACE.TABLE these event based messages can be taken by (or sent to) external tools (such as an ESB) which can then transform and route them to the respective tenant(s).</p>
+		</ovdesc>
+		<ovimage/>
+	</overview>
+	<menu>
+		<t>
+			<field>TSA.CONSOLE.ID</field>
+			<desc>
+				<p>Unique reference to identify the MT.TSA.SERVICE.CONSOLE record. The naming convention is flexible and allows for meaningful names to be used which match the purpose of the records. </p>
+				<p>Validation Rules:</p>
+				<p>Allowed maximum of 50 alphanumerics.</p>
+			</desc>
+		</t>
+		<t>
+			<field>TSA.SERVICE.ID</field>
+			<desc>
+				<p>Specifies the TSA.SERVICE id, which can be used to control whether the current console record is to handle COB or Service. </p>
+				<p>This can be used to form final TSA.SERVICE.ID based on COB or service related fields in same console or from tenant group record.</p>
+				<p>COB styles generated can be:</p>
+				<p>1. COB-companyGroupId :- If COB.STYLE = COMPANY.GROUP and COMPANY.GROUP.ID has value.</p>
+				<p>2. COB-companyId   :- If COB.STYLE = COMPANY and COMPANY.ID has value.</p>
+				<p>3. COB  :- Standard COB If COB.STYLE = STANDARD or if no value given in COB related fields in this console.</p>
+				<p>Other TSA.SERVICE styles generated can be:</p>
+				<p>1. Any TSA.SERVICE (ServiceName without company mnemonic) e.g. GROUP.SERVICE.NAME</p>
+				<p>2. Any TSA.SERVICE (ServiceName with company mnemonic prefix) e.g. BNK/SERVICE.NAME </p>
+				<p>Validation Rules:</p>
+				<p>Allowed values are:</p>
+				<p>1. The literal value of COB.</p>
+				<p>2. A valid TSA.SERVICE name in tenant with no company mnemonic prefix.</p>
+				<p>Maximum of 50 characters allowed.</p>
+				<p>Mandatory field </p>
+			</desc>
+		</t>
+		<t>
+			<field>SERVICE.CONTROL</field>
+			<desc>
+				<p>Specifies the service control value to pass to the COB or Service in the tenant(s) system.</p>
+				<p>Validation Rules:</p>
+				<p>Acceptable values are :</p>
+				<p>START - The COB or Service is ready to start and can be initiated.</p>
+				<p>STOP - The COB or Service has to be stopped. If running it will be terminated.</p>
+				<p>AUTO - If  AUTO is specified, then the service is ready for initiation and does not require manual input of START. The service will be available for starting and can be stopped at the end of the process.</p>
+				<p>Mandatory field</p>
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.ID</field>
+			<desc>
+				<p>This represents the tenant id(s) for the service or COB being processed.</p>
+				<p>The field is multi-valued to allow a list of tenants that will run the same service, with the exception of the 'COB' (that special service can be controlled by using a pre-configured MT.TENANT.GROUP). The COB details needed to be entered for each tenant on this record would be impractical and is best controlled at a group level.</p>
+				<p>For a service (other than COB) the associated SERVICE.COMP.MNE will be used to provide the correct runtime value for the service, For example if the same service needs to be run as BNK/SERVICENAME for the first tenant and CO3/SERVICENAME for another tenant then the concatenation of the SERVICE.COMP.MNE/TSA.SERVICE.ID will achieve that.</p>
+				<p>Validation Rules:</p>
+				<p>Must be a valid entry in MT.TENANT table.</p>
+				<p>Tenant must have the same group type set in TENANT.TYPE.CHECK field</p>
+				<p>Mandatory if no TENANT.GROUP is used.</p>
+				<p>Multi-values only allowed if TSA.SERVICE.ID is not COB.</p>
+				<p>Maximum of 35 characters allowed.</p>
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.GROUP</field>
+			<desc>
+				<p>This field used to select the tenant group which provides expanded tenant details for the service or COB to be processed. Since all the tenants is a group to have a common type LIVE or NON-LIVE, the TENANT.TYPE.CHECK field is checked against the group type so administrator can know that they initating a service or COB for that type of group.</p>
+				<p>Validation Rules:</p>
+				<p>Maximum of 35 characters allowed. </p>
+				<p>If TENANT.GROUP.LEVEL field from TENANT.GROUP is COB, the COB related fields in MT.TSA.SERVICE.CONSOLE cannot be used</p>
+				<p>If TENANT.GROUP.LEVEL field from TENANT.GROUP is SERVICE, the service related fields in MT.TSA.SERVICE.CONSOLE cannot be used.</p>
+				<p>If TENANT.GROUP.LEVEL field from TENANT.GROUP is GENERIC, then that TENANT.GROUP id itself (only for MT.REPLICATE.CONSOLE) cannot be used in MT.TSA.SERVICE.CONSOLE. </p>
+				<p>Must be a valid entry in MT.TENANT.GROUP table.</p>
+				<p>Mandatory if no TENANT.ID is used.</p>
+			</desc>
+		</t>
+		<t>
+			<field>SERVICE.COMP.MNE</field>
+			<desc>
+				<p>Specifies the company mnemonic of the service to be run.</p>
+				<p>For a service (other than COB) the associated SERVICE.COMP.MNE will be used to provide the correct runtime value for the service. For example if the same service needs to be run as BNK/SERVICENAME for the first tenant and GB1/SERVICENAME for another tenant then the concatenation of the SERVICE.COMP.MNE/TSA.SERVICE.ID will achieve that.</p>
+				<p>Validation Rules:</p>
+				<p>Input not allowed when , </p>
+                <p> 1. TENANT.GROUP field is set.</p>
+				<p> 2. TSA.SERVICE.ID is COB.</p>
+				<p>Minimum and Maximum of 3 characters allowed.</p>
+				<p>Must be a valid company mnemonic from MT.TENANT table (LEAD.COMP.MNE or LINK.COMP.MNE).</p>
+			</desc>
+		</t>
+		<t>
+			<field>COB.STYLE</field>
+			<desc>
+				<p>This is the field to define the permissible COB styles, this setting is used to decide the TSA.SERVICE id format to handle a COB for single tenant during event generation via MT.TSA.SERVICE.CONSOLE authorisation.</p>
+				<p>Validation Rules:</p>
+				<p>Acceptable values are: </p>
+				<p>1. STANDARD :-  denotes standard COB </p>
+				<p>2. COMPANY.GROUP :-  denotes company group level COB, requires input in COMPANY.GROUP.ID field.</p>
+				<p>3. COMPANY  :-  denotes company specific COB, requires input in COMPANY.ID field.</p>
+				<p>Input allowed only for single TENANT.ID setup and not for TENANT.GROUP setup.</p>
+				<p>Mandatory if either COMPANY.GROUP.ID or COMPANY.ID has value (and TSA.SERVICE.ID = COB).</p>
+			</desc>
+		</t>
+		<t>
+			<field>COMPANY.GROUP.ID</field>
+			<desc>
+				<p>This is the field to define company group id for a tenant (in current console) which requires company group level COB.</p>
+				<p>Validation Rules:</p>
+				<p>Maximum of 3 characters allowed.</p>
+				<p>Input allowed for COB.STYLE = COMPANY.GROUP when TSA.SERVICE.ID = COB and TENANT.ID given.</p>
+				<p>Must be a valid company group in the field LEAD.COMP.GROUP of MT.TENANT table.</p>
+				<p>Input allowed only for TENANT.ID setup and not for TENANT.GROUP setup.</p>
+			</desc>
+		</t>
+		<t>
+			<field>COMPANY.ID</field>
+			<desc>
+				<p>This is the field to define company id for each tenant (in current console) which requires company level COB </p>
+				<p>Validation Rules:</p>
+				<p>Maximum of 11 characters allowed.</p>
+				<p>Input allowed for COB.STYLE = COMPANY when TSA.SERVICE.ID = COB and TENANT.ID given </p>
+				<p>Must be a valid company id from MT.TENANT table fields such as LEAD.COMPANY or LINK.COMPANY </p>
+				<p>Input allowed only for TENANT.ID setup and not for TENANT.GROUP setup </p>
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.TYPE.CHECK</field>
+			<desc>
+				<p>This field is used as a safety check to help eliminate human error in executing the message build process. The user must enter the destination system type (LIVE or NON-LIVE) this will be checked against TENANT.TYPE.GROUP (from MT.TENANT.TYPE of MT.TENANT) or TENANT.GROUP.TYPE(from MT.TENANT.GROUP) values of respective tenants to make sure that the event generation is targeted for the correct type of tenants. </p>
+				<p>Validation Rules:</p>
+				<p>Acceptable values are: </p>
+				<p>1. LIVE - Indicates the t24 instance(tenant system) used as LIVE or PRODUCTION.</p>
+				<p>2. NON-LIVE - Indicates the t24 instance(tenant system) used for other purpose like DEMO, UAT, TRAINING etc.</p>
+			</desc>
+		</t>
+		<t>
+			<field>PARAM.ID</field>
+			<desc>
+				<p>Used to specify a customised MT system parameter record to override the message format values from DEFAULT parameter record or being defaulted by system. </p>
+				<p>Validation Rules:</p>
+				<p>Maximum of 35 characters allowed.</p>
+				<p>Must be a valid entry in MT.SYSTEM.PARAMETER table </p>
+			</desc>
+		</t>
+		<t>
+			<field>OPERATION.MODE</field>
+			<desc>
+				<p>Specifies the mode of operation for which the MT.TSA.SERVICE.CONSOLE is being used. Only a positive value of EXECUTE will allow the generation of messages, and as a safety mechanism an override will also be given to ensure the correct mode has been used.</p>
+				<p>Validation Rules:</p>
+				<p>Acceptable values are:</p>
+				<p>1. MAINTAIN :-  Indicates the MT.TSA.SERVICE.CONSOLE record is being created or maintained and no event generation will happen.</p>
+				<p>2. EXECUTE :- Indicates the MT.TSA.SERVICE.CONSOLE record authorisation can proceed with event generation.</p>
+				<p>3. Blank - which is treated similar as MAINTAIN option.</p>				
+			</desc>
+		</t>
+		<t>
+			<field>MESSAGE.COUNT</field>
+			<desc>
+				<p>Specifies the number of events generated (or to be generated) during MT.TSA.SERVICE.CONSOLE authorisation. </p>
+				<p>This field gets updated during validation stage of MT.TSA.SERVICE.CONSOLE in advance if there is no error identified.</p>
+				<p>Value gets cleared when this console record opened for amendment or further processing.</p>
+				<p>Validation Rules:</p>
+				<p>Allowed maximum of 35 characters </p>
+				<p>System updated field </p>
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.COUNT</field>
+			<desc>
+				<p>Specifies the number of active tenants involved in current console process for which the event generation will or has already occur(red).</p>
+				<p>This field gets updated during validation stage of MT.TSA.SERVICE.CONSOLE in advance if there is no error identified. </p>
+				<p>Value gets cleared when this console record opened for amendment or further processing. </p>
+				<p>Validation Rules:</p>
+				<p>Allowed maximum of 35 characters</p>
+				<p>System generated field </p>
+			</desc>
+		</t>
+		<t>
+			<field>TENANT.LIST</field>
+			<desc>
+				<p>Specifies the list of active tenants involved in current console process for which the event generation will or has already occur(red). The tenant name will be shown as enrichment.</p>
+				<p>This gets updated during the validation stage of MT.TSA.SERVICE.CONSOLE if there is no error identified.</p>
+				<p>Values are cleared when this console record is opened for amendment or further processing. </p>
+				<p>Validation Rules:</p>
+				<p>Allowed maximum of 35 characters</p>
+				<p>System generated field </p>
+			</desc>
+		</t>
+		<t>
+			<field>PROCESS.STATUS</field>
+			<desc>
+				<p>Specifies the status of current console process.</p>
+				<p>This field gets updated during validation stage of MT.TSA.SERVICE.CONSOLE in advance if there is no error identified.</p>
+				<p>Value gets cleared when this console record opened up for amendment or further process. </p>
+				<p>Validation Rules:</p>
+				<p>System updated values are: </p>
+				<p>1. VAL   - indicates that the console has been created and event not planned for event generation.</p>
+				<p>2. SENT  - indicates that the console process has been completed and event also generated via integration framework.</p>
+				<p>Allowed maximum of 35 characters</p>
+				<p>System generated field.</p>
+			</desc>
+		</t>
+	</menu>
+</t24help>

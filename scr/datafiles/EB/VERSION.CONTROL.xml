@@ -1,0 +1,2083 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>VERSION.CONTROL</table>
+</header>
+<overview>
+<ovdesc></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>FIELD.NAME</field>
+<desc>
+            <p>If the value in this field is not present in the corresponding field VALIDATION.FLD, in VERSION record, the value in this field and the associated fields are appended to the VERSION record. This field contains a field name of the file for which you are creating a version of the input screen. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 40 type A (alphanumeric) characters. Multivalue         field associated with field VALIDATION.RTN.</p>
+            <p>Must be a valid field for the file. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>COMPANY.ACCESS</field>
+<desc>
+            <p>This field is used to define whether a VERSION can be restricted to being run only in a users initial sign on company, and can only be input when the multi branch product is installed.</p>
+            <p>Multi branch indicates that the MB product is installed, the term Multi Book can also be used.</p>
+            <p>This product basically allows financial level data to be stored in the same database table for all companies, as opposed to Multi Company where the data is stored in a separate table for each company.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input only when the MB product is installed</p>
+            <p>Can be set to OWN to indicate that the version can only be run in the users initial sign on company, i.e. the users own branch</p>
+        </desc>
+</t>
+<t>
+<field>D.SLIP.FUNC</field>
+<desc>
+            <p />
+            <p>This field is used in conjunction with D.SLIP.FMT.</p>
+            <p />
+            <p />
+            <p>The Deal Slips can be produced at various times according to the function (or codeword FINISH) and whether they are produced automatically or in conjunction with a 'hot key'</p>
+            <p />
+            <p />
+            <p>FUNCTIONS</p>
+            <p />
+            <p />
+            <p />
+            <p>Valid functions are:</p>
+            <p />
+            <table>
+                <tr>
+                    <td>
+                        <p>Data</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p>Description</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>I</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p>Input</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>A</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p>Authorise</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>C</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p>Copy</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>R</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p>Reverse</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>D</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p>Delete</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>H</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p>History |Restore</p>
+                        <p />
+                    </td>
+                </tr>
+            </table>
+            <p />
+            <p>FINISH</p>
+            <p />
+            <p>Where FINISH is specified, this processing is dependent on the application and may not be triggered for all applications. Refer to the User Guide for the application for further details. </p>
+            <p />
+            <p>Currently, only the TELLER application makes use of this facility.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Valid input is I, A, C, R, D, H or FINISH. </p>
+            <p />
+            <p>Must have input in fields D.SLIP.FMT.</p>
+            <p />
+            <p>Subvalue field associated with fields 39 to 43.( D.SLIP.VALUE to D.SLIP.IN.EX).</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>VALIDATION.RTN</field>
+<desc>
+            <p>If the value in the associated field FIELD.NAME is not present in the corresponding field VALIDATION.FLD in VERSION record, the value in this field and the associated fields are appended to the VERSION record. This field accepts a user-defined subroutine. The name of routine will be used to validate the input into the associated field FIELD.NAME. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Routine name must start with @, the text after the @ must be a valid record on the PGM.FILE.</p>
+            <p>The PGM.FILE&gt;TYPE must be 'S'. </p>
+            <p>Field APPL.FOR.SUBR on the PGM record must equal the application defined in the key to the Version.Control record. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MAND.TYPE</field>
+<desc>
+            <p />
+            <p>Allows the user to specify the environment variables. The system will use these variables to check against the value specified in MAND.VALUE. If it matches then the field will be included in the version,</p>
+            <p>provided MAND.INC.EXC is set to INCLUDE. It can be Application&gt;fieldname (e.g USER&gt;COMPANY.CODE) where the application can be USER or COMPANY only. It can also be a routine. If it is routine the following conditions apply,</p>
+            <p />
+            <p>a) When a subroutine needs to be executed then the subroutine name should preceed with an @ symbol </p>
+            <p />
+            <p />
+            <p />
+            <p>b) The subroutine entered should exist in PGM.FILE with PGM.TYPE = 'S' </p>
+            <p />
+            <p>c) The APPLICATION should exist in field APPR.FOR.SUBR in the PGM.FILE record for the subroutine.</p>
+            <p />
+            <p>d) This subroutine gets executed only once when the Version is first launched and the attributes set will thereafter remain unaltered.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>Up to 50 type A (alphanumeric) characters. </p>
+            <p />
+            <p />
+            <p />
+            <p>Multivalue field associated with Fields 35 to 38.( MAND.VALUE     to MAND.INC.EXC) </p>
+            <p />
+            <p />
+            <p />
+            <p>Optional input. No default value. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>D.SLIP.TYPE</field>
+<desc>
+            <p />
+            <p>Allows the user to specify the environment variables. The system will use these variables to check against the value specified in D.SLIP.VALUE. If it matches then the field will be included in the version,</p>
+            <p>provided D.SLIP.IN.EX is set to INCLUDE.<p />It can be Application&gt;fieldname (e.g USER&gt;COMPANY.CODE) where the application can be USER or COMPANY only. It can also be a routine. If it is routine the following conditions apply,</p>
+            <p />
+            <p />
+            <p>a) When a subroutine needs to be executed then the subroutine name should preceed with an @ symbol </p>
+            <p />
+            <p />
+            <p>b) The subroutine entered should exist in PGM.FILE with PGM.TYPE = 'S' </p>
+            <p />
+            <p />
+            <p>c) The APPLICATION should exist in field APPR.FOR.SUBR in the PGM.FILE record for the subroutine. </p>
+            <p />
+            <p />
+            <p>d) This subroutine gets executed only once when the Version is first launched and the attributes set will thereafter remain unaltered.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>Up to 50 type A (alphanumeric) characters.</p>
+            <p />
+            <p />
+            <p />
+            <p>Multivalue field associated with Fields 39 to 43.(     D.SLIP.VALUE to D.SLIP.IN.EX)</p>
+            <p />
+            <p />
+            <p />
+            <p>Optional input. No default value. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>REKEY.FLD</field>
+<desc>
+            <p />
+            <p>If the value in this field is not present in the corresponding field in VERSION record, the value in this field is appended to the VERSION record.</p>
+            <p>Enables the User to specify any fields which must be rekeyed during authorisation. All the fields which require re-key in a multi-tabbed GUI VERSION must be specified on the main VERSION. The re-key fields do not have to be displayed on the main VERSION. This field will be ignored if the VERSION is used as an associated VERSION in GUI. It is important to note that the input of a field name will automatically include all possible value and sub-value fields of that field name . (Local Reference fields can also be input.)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>Up to 35 type A (alphanumeric) characters corresponding to the field name or field number identification. Subvalue field. Optional     input. No default value. </p>
+            <p />
+            <p />
+            <p />
+            <p>Only field names defined in the corresponding Application are allowed. </p>
+            <p />
+            <p />
+            <p />
+            <p>Input of field names relating to Internal or External fields (automatically generated by the System) is not allowed because, by     definition, these fields are non-input fields. </p>
+            <p />
+            <p />
+            <p />
+            <p>Input of a field name which has already been declared as a no-input field is not allowed. </p>
+            <p />
+            <p />
+            <p />
+            <p>Duplication of field names is not allowed.</p>
+            <p />
+            <p />
+            <p>Subvalue field associated with fields 25 to 28.( REKEY.VALUE to REKEY.INC.EX).</p>
+        </desc>
+</t>
+<t>
+<field>GTS.INC.EXC</field>
+<desc>
+            <p />
+            <p>Given that the condition in GTS.VALUE and GTS.TYPE is satisfied.  If this field is set to INCLUDE then the field specified in GTS.CONTROL will be set as GTS control in the Version. If this field is set to EXCLUDE then the field specified in GTS.CONTROL will not be set as GTS control in the Version.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>INCLUDE or EXCLUDE </p>
+            <p />
+            <p />
+            <p>Subvalue field associated with fields 44 to 47.(     GTS.VALUE to GTS.INC.EXC).</p>
+        </desc>
+</t>
+<t>
+<field>WEB.VAL.RTN</field>
+<desc>
+            <p>Contains the name of a Java EB.API record routine that will be called on the T24 Web Server to validate the fields marked as Web Validate.</p>
+            <p>This field is only used for the T24 Browser product.</p>
+        </desc>
+</t>
+<t>
+<field>FLD.NAME</field>
+<desc>
+            <p />
+            <p />
+            <p>Contains the name of a field to be processed in a VERSION (at run-time). The field is either hidden or displayed depending </p>
+            <p />
+            <p />
+            <p />
+            <p>on the value of the associated fields (from field FLD.CHECK.VALUE to FLD.INC.EXC).</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>The field name must be specified in the same format present in the version record for the feature to take effect.</p>
+            <p />
+            <p />
+            <p>For example, if the field name in the version record has a value field with it (OTHER.OFFICER-1) then the FIELD.NAME in the version. control record should also be OTHER.OFFICER-1. </p>
+            <p />
+            <p />
+            <p>If the field name in the version record is OTHER.OFFICER, then the FIELD.NAME in the version.control record should also be OTHER.OFFICER.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>If the Fields per line in the version record is set to 1, the blank space that appears due to hidden fields are removed. If fields per line is &amp;#8216;MULTI&amp;#8217; the blanks are not removed.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>Up to 35 type A (Alphanumeric) characters corresponding to the field name or field number identification. If a field number is entered, it is translated to the field name. </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>Local Reference fields can also be input. </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>Optional input. No default value. </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>Only field names or field numbers defined in the Application (as in the record key) are allowed. </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>Duplication of field names is not allowed. </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>Sub-value field associated with fields FLD.CHECK.VALUE to FLD.INC.EXC.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>NO.CHG.IN.EX</field>
+<desc>
+            <p />
+            <p>Given that the condition in NO.CHG.VALUE and NO.CHG.TYPE is satisfied.  If this field is set to INCLUDE then the field specified in NO.CHG.FLD will set as no change field in the Version. If this field is set to EXCLUDE then the field specified in NO.CHG.FLD will not be set as no change field in the Version.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>INCLUDE or EXCLUDE</p>
+            <p />
+            <p />
+            <p>Subvalue field associated with fields 21 to 24 (NO.CHG.VALUE to NO.CHG.IN.EX).</p>
+        </desc>
+</t>
+<t>
+<field>NO.CHG.FLD</field>
+<desc>
+            <p />
+            <p />
+            <p>If the field named here is not present in the in the VERSION record, this field is appended to the VERSION record.</p>
+            <p>Provides the User with the facility to define some fields as fully protected once the transaction has been authorized, so that when using this Version, it will be impossible to access and/or amend the content of these fields in a transaction already authorised. Some applications allow the amendment of certain fields following authorisation: this facility restricts this action from within the version. It is important to note that the field name input automatically includes all possible value and sub-value fields of that field. (Local Reference fields can also be input.)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 35 type A (alphanumeric) characters corresponding to the field name or field number identification. If a field number is entered, it is translated to the field name. </p>
+            <p />
+            <p />
+            <p>Optional input. No default value. </p>
+            <p />
+            <p />
+            <p />
+            <p>Only field names defined in the corresponding application are allowed. </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>Input of field names relating to Internal or External fields (automatically generated by the System) is not allowed because, by definition, these fields cannot be changed by the User. </p>
+            <p />
+            <p />
+            <p>Duplication of field names is not allowed. </p>
+            <p />
+            <p />
+            <p />
+            <p>Subvalue field field associated with fields 21 to 24(NO.CHG.VALUE to NO.CHG.IN.EX). </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>GTS.CONTROL</field>
+<desc>
+            <p />
+            <p>If the value in this field is not present in the corresponding field in VERSION record, the value in this field is appended to the VERSION record.</p>
+            <p />
+            <p />
+            <p>Controls how GTS and OFS will handle error conditions for activities using this version record. The following values are allowed :</p>
+            <p />
+            <p />
+            <p>Null (Reject errors / Approve overrides)</p>
+            <p />
+            <p />
+            <p>GTS</p>
+            <p />
+            <p />
+            <p>Validation errors will result in the record being rejected, the GTS data record in the output directory will be appended with an error code (90) Overrides will be accepted by default, the GTS data record in the output directory will be appended with the acceptance code (00). </p>
+            <p />
+            <p />
+            <p>OFS</p>
+            <p />
+            <p />
+            <p>Validation errors will result in the record being rejected, the OFS data record will be returned with details of the error message. Overrides will be accepted by default, the overrides will be returned in the populated OFS data record.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>1 (Errors on HLD / Approve Overrides)</p>
+            <p />
+            <p />
+            <p>GTS</p>
+            <p />
+            <p />
+            <p>Validation errors will place the record on hold, the GTS data record in the output directory will be appended with an error code (80). Overrides will be accepted by default the GTS data record in the output directory will be appended with the acceptance code (00). </p>
+            <p />
+            <p />
+            <p>OFS</p>
+            <p />
+            <p />
+            <p>Validation errors will place the record on hold, the OFS data record will be returned with the error messages. Overrides will be accepted by default, the values approved will be returned in the populated OFS record.</p>
+            <p />
+            <p />
+            <p>2 (Errors Rejected / Overrides in HLD) </p>
+            <p />
+            <p />
+            <p>GTS</p>
+            <p />
+            <p />
+            <p>Validation errors will result in the record being rejected, the GTS data record in the output directory will be appended with an error code (90). Overrides will result in the record being placed on hold, the GTS data record in the output directory will be appended with an error code (81).</p>
+            <p />
+            <p />
+            <p>OFS</p>
+            <p />
+            <p />
+            <p>Validation errors will result in the record being rejected, the OFS data record will be returned with the error messages. Overrides will result in the record being placed on hold.</p>
+            <p />
+            <p />
+            <p>3 (Errors in HLD / Overrides HLD)</p>
+            <p />
+            <p />
+            <p>GTS</p>
+            <p />
+            <p />
+            <p>Validation errors will place the record on hold, the GTS data record in the output directory will be appended with an error code (80). Overrides will result in the record being placed on hold, the GTS data record in the output directory will be appended with an error code (81). </p>
+            <p />
+            <p />
+            <p>OFS</p>
+            <p />
+            <p />
+            <p>Validation errors will place the record on hold, the OFS data record will be returned with the error messages. Overrides will result in the record being placed on hold, the OFS data record returned will store the override message.</p>
+            <p />
+            <p />
+            <p>4 (Hold Only)</p>
+            <p />
+            <p />
+            <p>GTS</p>
+            <p />
+            <p />
+            <p>This option is not available using GTS. Messages can be written straight to HLD using the GTS.MODE field in GT.SYSTEM.PARAMETER.</p>
+            <p />
+            <p />
+            <p>OFS</p>
+            <p />
+            <p />
+            <p>This setting will place all records in HLD status immediately, no further validation or processing will take place.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>1 character numeric must be either null (no value), 1 ,2, 3     or 4. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MAND.VALUE</field>
+<desc>
+            <p />
+            <p>This field should be used to check against the environment variable specified in MAND.TYPE.</p>
+            <p>If MAND.TYPE contains a field in the application (USER&gt;DEPARTMENT.CODE), then MAND.VALUE can contain the value which will make the condition true. If MAND.TYPE is a routine, the user should provide value returned by the routine. If ALL is specified in MAND.VALUE then the conditions are considered as satisified, i.e. the condition is always true.. The system will check the value in MAND.VALUE against the environment variable specified in MAND.TYPE. If it matches, then the MAND.FLD will be defaulted into the VERSION, provided the MAND.INC.EXC is set to INCLUDE </p>
+            <p />
+            <p>E.g.</p>
+            <p />
+            <p>If MAND.TYPE has USER&gt;COMPANY.CODE then the value in MAND.VALUE should contain a valid COMPANY code (US0010001).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>Up to 50 type A (alphanumeric) characters. </p>
+            <p />
+            <p />
+            <p />
+            <p>Multivalue field associated with fields 35 to 38 (MAND.VALUE     to MAND.INC.EXC)</p>
+            <p />
+            <p />
+            <p />
+            <p>Optional input. No default value. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AUTOM.TYPE</field>
+<desc>
+            <p />
+            <p>Allows the user to specify the environment variables. The system will use these variables to check against the value specified in AUTOM.VALUE. If it matches then the field will be included in the version,</p>
+            <p>provided AUTOM.INC.EX is set to INCLUDE. It can be Application&gt;fieldname (e.g USER&gt;COMPANY.CODE) where the application can be USER or COMPANY only. It can also be a routine. If it is routine the following conditions apply, </p>
+            <p />
+            <p>a) When a subroutine needs to be executed then the subroutine name should preceed with an @ symbol </p>
+            <p />
+            <p />
+            <p>b) The subroutine entered should exist in PGM.FILE with PGM.TYPE = 'S' </p>
+            <p />
+            <p />
+            <p>c) The APPLICATION should exist in field APPR.FOR.SUBR in the PGM.FILE record for the subroutine. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>Up to 50 type A (alphanumeric) characters.</p>
+            <p />
+            <p />
+            <p />
+            <p>Multivalue field associated with Fields 29 to 34. (AUTOM.VALUE     to AUTOM.INC.EX)</p>
+            <p />
+            <p />
+            <p />
+            <p>Optional input. No default value. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>FLD.CHECK.TYPE</field>
+<desc>
+            <p />
+            <p />
+            <p>Allows you to specify the environment variable to be tested. The system will use this variable to check against the value specified in FLD.CHECK.VALUE. If it matches then the field or fields in FLD.NAME will be included in the version, provided FLD.INC.EXC is set to &amp;#8220;INCLUDE&amp;#8221;.</p>
+            <p />
+            <p />
+            <p>The format can be Application&gt;fieldname (e.g USER&gt;COMPANY.CODE) where the application can be USER, COMPANY or COMPANY.CONSOLID only. </p>
+            <p />
+            <p />
+            <p />
+            <p>It can also be a routine. If it is routine the following conditions apply, </p>
+            <p />
+            <p>a) When a subroutine needs to be executed then the subroutine name should be preceded by an @ symbol </p>
+            <p />
+            <p>b) The subroutine entered should exist in PGM.FILE with PGM.TYPE = 'S' </p>
+            <p />
+            <p>c) The APPLICATION in the record key should exist in field APPL.FOR.SUBR in the PGM.FILE record for the subroutine. </p>
+            <p />
+            <p>d) This subroutine gets executed only once when the Version is first launched and the attributes set will thereafter remain unaltered. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 50 type A (alphanumeric) characters. </p>
+            <p />
+            <p />
+            <p />
+            <p>Multi-value field associated with fields FLD.CHECK.VALUE to FLD.INC.EXC.</p>
+            <p />
+            <p />
+            <p />
+            <p>Optional input. No default value. </p>
+        </desc>
+</t>
+<t>
+<field>AUTO.COMP.CHANGE</field>
+<desc>
+            <p>This field is used to define in a multi branch system whether the user can directly access a record in another company, without having to manually exit the application, sign in to the other company and invoke the application.</p>
+            <p>Multi branch indicates that the MB product is installed, the term Multi Book can also be used.</p>
+            <p>This product basically allows financial level data to be stored in the same database table for all companies, as opposed to Multi Company where the data is stored in a separate table for each company.</p>
+            <p>If this field is set to YES then the user can enter access a record in another company to perform a transaction. The user must have access to the other company via the OTH.BOOK.ACCESS or OTH.BOOK.BLOCK fields of their USER record.</p>
+            <p>The user does not need to have the ability to sing in to the other company.</p>
+            <p>An SMS check will be applied for the current application and function before the new company is loaded automatically.</p>
+            <p>An example would be when a customer wishes to close an account in a branch other than their own, in this case the teller would enter the account number, the system would then switch companies and the account can be closed.</p>
+            <p>If this field is left blank then in a multi branch environment the user will not be allowed to directly access records in other branches, but must be signed in to that company.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input of YES only when the MB product is installed.</p>
+        </desc>
+</t>
+<t>
+<field>REKEY.INC.EX</field>
+<desc>
+            <p />
+            <p />
+            <p>Given that the condition in REKEY.VALUE and REKEY.TYPE is satisfied. </p>
+            <p />
+            <p />
+            <p>If this field is set to INCLUDE then the field specified in REKEY.FLD will be set as rekey field in the Version.</p>
+            <p />
+            <p />
+            <p>If this field is set to EXCLUDE then the field specified in REKEY.FLD will not be set as rekey field in the Version.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>INCLUDE or EXCLUDE </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>Subvalue field associated with fields REKEY.VALUE to REKEY.INC.EX. </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>GTS.TYPE</field>
+<desc>
+            <p />
+            <p>Allows the user to specify the environment variables. The system will use these variables to check against the value specified in GTS.VALUE. If it matches then the field will be included in the version,</p>
+            <p>provided GTS.INC.EXC is set to INCLUDE.</p>
+            <p />
+            <p>It can be Application&gt;fieldname (e.g USER&gt;COMPANY.CODE) where the application can be USER or COMPANY only.</p>
+            <p />
+            <p />
+            <p>It can also be a routine. If it is routine the following conditions apply,</p>
+            <p />
+            <p />
+            <p>a) When a subroutine needs to be executed then the subroutine name should preceed with an @ symbol </p>
+            <p />
+            <p />
+            <p>b) The subroutine entered should exist in PGM.FILE with PGM.TYPE = 'S' </p>
+            <p />
+            <p />
+            <p>c) The APPLICATION should exist in field APPR.FOR.SUBR in the PGM.FILE record for the subroutine. </p>
+            <p />
+            <p />
+            <p>d) This subroutine gets executed only once when the Version is first launched and the attributes set will thereafter remain unaltered.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>Up to 50 type A (alphanumeric) characters.</p>
+            <p />
+            <p />
+            <p />
+            <p>Multivalue field associated with Fields 44 to 47.( GTS.VALUE to GTS.INC.EXC)</p>
+            <p />
+            <p />
+            <p />
+            <p>Optional input. No default value.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AUT.OLD.CONT</field>
+<desc>
+            <p />
+            <p>If the value in the associated field AUT.FLD.NO is not present in the corresponding field in VERSION record, the value in this field and the associated fields are appended to the VERSION record. </p>
+            <p>Enables the User to define the previous field content, which is to be changed automatically with the new default value as held in the next field. Must be used in conjunction with AUT.NEW.CONT and AUT. FLD.NO This field is only used when records containing a certain existing value should automatically be changed to contain the new value specified in the AUT. NEW. CONT field</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 35 type A (alphanumeric) characters.</p>
+            <p />
+            <p>Optional input. No default value. </p>
+            <p />
+            <p>Subvalue field associated with fields 31 to 34 (AUTOM.VALUE     to AUTOM.INC.EX)</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AUTOM.INC.EX</field>
+<desc>
+            <p />
+            <p>Given that the condition in AUTOM.VALUE and AUTOM.TYPE is satisfied.  If this field is set to INCLUDE then the field specified in AUT.FLD.NO will be set as auto field in the Version. If this field is set to EXCLUDE then the field specified in AUT.FLD.NO will not be set as auto field in the Version.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>INCLUDE or EXCLUDE </p>
+            <p />
+            <p />
+            <p />
+            <p>Subvalue field associated with     fields 29 to 34.( AUTOM.VALUE to AUTOM.INC.EX).</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>NON.VERSION.RUN</field>
+<desc>
+            <p>
+                <p>To make the routines execute for bare application or not.  YES  to execute the routines for bare application NO  to execute the routines only for versions and not for bare application.</p>
+            </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>A maximum of 1 characters may be entered.</p>
+            <p>The following values are permitted:     Y     N</p>
+        </desc>
+</t>
+<t>
+<field>LANGUAGE.CODE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>MAND.INC.EXC</field>
+<desc>
+            <p />
+            <p>Given that the condition in MAND.VALUE and MAND.TYPE is satisfied.  If this field is set to INCLUDE then the field specified in MAND.FLD will be set as mandatory field in the Version. If this field is set to EXCLUDE then the field specified in MAND.FLD will not be set as mandatory field in the Version.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>INCLUDE or EXCLUDE </p>
+            <p />
+            <p />
+            <p />
+            <p>Subvalue field associated with fields 35 to 38.( MAND.VALUE to MAND.INC.EXC).</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>FLD.INC.EXC</field>
+<desc>
+            <p />
+            <p />
+            <p>Given that the condition in FLD.CHECK.VALUE and FLD.CHECK.TYPE is satisfied. </p>
+            <p />
+            <p />
+            <p>If this field is set to INCLUDE then the field specified in FLD.NAME will appear in the Version.</p>
+            <p />
+            <p />
+            <p>If this field is set to EXCLUDE then the field specified in FLD.NAME will be hidden in the Version.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>INCLUDE or EXCLUDE </p>
+            <p>Subvalue field associated with fields FLD.CHECK.VALUE to FLD.INC.EXC. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>FLD.CHECK.VALUE</field>
+<desc>
+            <p />
+            <p />
+            <p>This field contains a value to check against the environment variable specified in FLD.CHECK.TYPE. </p>
+            <p>The outcome of this check determines whether the field <p />or fields named in FLD.NAME are included in the VERSION being used. </p>
+            <p>E.g. </p>
+            <p>If FLD.CHECK.TYPE has USER&gt;COMPANY.CODE then the value in FLD.CHECK.VALUE should be the COMPANY code in which the field is to be processed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 50 type A (alphanumeric) characters. </p>
+            <p />
+            <p />
+            <p />
+            <p>Multivalue field associated with fields FLD.CHECK.VALUE to FLD.INC.EXC. </p>
+            <p />
+            <p />
+            <p />
+            <p>Optional input. No default value. </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>NO.CHG.TYPE</field>
+<desc>
+            <p />
+            <p />
+            <p>Allows you to specify the environment variables. The system will use the variable to check against the value specified in NO.CHG.VALUE. If it matches then the field will be included in the version,</p>
+            <p>provided NO.CHG.IN.EX is set to &amp;#8220;INCLUDE&amp;#8221;</p>
+            <p>It can be of the form Application&gt;fieldname (e.g USER&gt;COMPANY.CODE) where the application can be USER or COMPANY only. </p>
+            <p />
+            <p />
+            <p>It can also be a routine. If it is routine the following conditions apply,   </p>
+            <p />
+            <p>a) When a subroutine needs to be executed then the subroutine name should preceed with an @ symbol </p>
+            <p />
+            <p>b) The subroutine entered should exist in PGM.FILE with PGM.TYPE = 'S' </p>
+            <p />
+            <p>c) The APPLICATION should exist in field APPR.FOR.SUBR in the PGM.FILE record for the subroutine. </p>
+            <p />
+            <p>d) This subroutine gets executed only once when the Version is first launched and the attributes set will thereafter remain unaltered.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Up to 50 type A (alphanumeric) characters. </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>Multivalue field associated with fields NO.CHG.VALUE to NO.CHG.IN.EX</p>
+            <p />
+            <p />
+            <p>Optional input. No default value.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>NOINPUT.FLD</field>
+<desc>
+            <p />
+            <p>If the value in this field is not present in the corresponding field in the VERSION record, the value in this field is appended to the VERSION record.</p>
+            <p>Provides the User with the facility to define some fields as fully protected so that, when using this Version, it will be impossible to input or amend the content of these fields. It is important to note that the field name input automatically includes all possible value and sub-value fields of that field. (Local Reference fields can also be input.) </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>Up to 35 type A(Alphanumeric) characters corresponding to the field name or field number identification. If a field number is entered, it is translated to the field name. </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>Optional input. No default value.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>Only field names or field numbers defined in the corresponding application are allowed.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>Input of field names relating to Internal or External fields (i.e. fields generated automatically by the System) is not allowed because, by definition, these fields are already non-input fields.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>Duplication of field names is not allowed.</p>
+            <p />
+            <p>Subvalue field associated with fields 17 to 20.( NOINPUT.VALUE to NOINP.INC.EX)</p>
+        </desc>
+</t>
+<t>
+<field>AUTO.FIELD.RTN</field>
+<desc>
+            <p>If the value in the associated field AUTO.FIELD.NAME is not present in the corresponding field in VERSION record, the value in this field and the associated fields are appended to the VERSION record. </p>
+            <p>Must be used in conjunction with AUTO.OLD.CONT and AUTO.FIELD.NAME. When the user wants to run a subroutine, to default a value in a particular field, he should make the following input in these three fields: </p>
+            <p>AUTO.FIELD.NAME - Indicates the field number for which you want to create a automatic default </p>
+            <p>AUTO.OLD.CONT - Must remain blank </p>
+            <p>AUTO.FIELD.RTN - Enter the subroutine name which needs to be executed for the field in AUTO.FIELD.NAME. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 35 type A (alphanumeric) characters. Multivalue         field associated with Fields 1 to 2. (Optional input. No         default value). </p>
+            <p>The subroutine name should proceed with an @ symbol </p>
+            <p>The subroutine entered should exist in PGM.FILE with PGM.TYPE         = 'S'</p>
+            <p>The VERSION ID should exist in field APPL.FOR.SUBR in the         PGM.FILE record for the subroutine. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>D.SLIP.FMT</field>
+<desc>
+            <p />
+            <p>If the value in this field is not present in the corresponding field in VERSION record, the value in this field and in D.SLIP.FUNC are appended to the VERSION record.If there is no value</p>
+            <p>D.SLIP.TRIGGER of the VERSION record, it is defaulted to RQ. The value(s) defined here are used to produce Deal Slips according to the function and whether the user wants to have them produced automatically or when a 'hot key' is used. Deal Slips can be printed to a connected local printer or directed to a Network device. Refer to the REPORT CONTROL section of the Systems Administration User Guide for details of setting up printers.</p>
+            <p>Deal slips can be linked to a function such as Input, Reversal or Authorisation and specific Deal Slips can be made to relate to those functions. Either an ENQUIRY record or a D.SLIP.FMT record can be entered. If a valid D.SLIP.FMT then the system will provide an enrichment from the record so the user will know thay have the correct record. Alternatively, an ENQUIRY record can be used to provide a Deal Slip, in this case the enrrichment will inform the user that an ENQUIRY record has been selected. The user can drilldown to the related table D.SLIP.FMT to view or select the record to use. The combination of the associated fields is used to define when the Deal Slip can be produced.</p>
+            <p>To trigger them automatically you need to define:</p>
+            <p />
+            <table>
+                <tr>
+                    <td>
+                        <p>Field </p>
+                        <p />
+                    </td>
+                    <td>
+                        <p>Content Required</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>D.SLIP.FMT</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p>TELLER.SLIP.INPUT</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>D.SLIP.FUNC</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p>I</p>
+                        <p />
+                    </td>
+                </tr>
+            </table>
+            <p>This will only print the Deal Slip 'TELLER.SLIP.INPUT' when the deal is validated at I(nput) time.</p>
+            <p />
+            <p>To trigger them via a 'hot key' or the Desktop Deal Slip icon you need </p>
+            <p />
+            <table>
+                <tr>
+                    <td>
+                        <p>Field </p>
+                        <p />
+                    </td>
+                    <td>
+                        <p>Content Required</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>D.SLIP.FMT</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p>TELLER.SLIP.INPUT</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>D.SLIP.FUNC</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p>I</p>
+                        <p />
+                    </td>
+                </tr>
+            </table>
+            <p />
+            <p>This will only print the Deal Slip 'TELLER.SLIPPUT' at I(nput) time when the 'hot key' is used </p>
+            <p>Note: ENQUIRY linked Deal Slips are valid for Desktop (GUI) use only. Since the ENQUIRY will be based on either the live or unauthorised file then only data that is available on those files can be accessed, whereas D.SLIP.FMT can utilise the new data being entered on a deal. ENQUIRY deal slips therefore need to be based on the live or unauthorised record depending on when the deal slip is being produced. For example a new deal would probably be based on the unauthorised record whereas a reversal would be based on the live record.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Input to this field must be a valid record in either ENQUIRY or D.SLIP.FMT files. </p>
+            <p />
+            <p>Must have values in fields D.SLIP.FUNC.</p>
+            <p />
+            <p>If the version record has no value for DEAL.SLIP.TRIGGER, then it is defaulted to RQ. </p>
+            <p />
+            <p>Subvalue field associated with fields 39 to 43.( D.SLIP.VALUE to D.SLIP.IN.EX).</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>REKEY.VALUE</field>
+<desc>
+            <p />
+            <p />
+            <p>This field contains a value to check against the environment variable specified in REKEY.TYPE. </p>
+            <p>The outcome of this check determines whether the field or fields named in FLD.NAME have the &amp;#8220;rekey&amp;#8221; property in the VERSION being used.  </p>
+            <p>E.g. </p>
+            <p>If REKEY.TYPE has USER&gt;COMPANY.CODE then the value in REKEY.VALUE should contain a valid COMPANY code ( like US0010001).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 50 type A (alphanumeric) characters. </p>
+            <p />
+            <p>Multivalue field associated with fields REKEY.VALUE to REKEY.INC.EX</p>
+            <p />
+            <p>Optional input. No default value. </p>
+        </desc>
+</t>
+<t>
+<field>BUSINESS.DAY</field>
+<desc>
+            <p>This field indicates on what type of business day the VERSION can be run.</p>
+            <p>This is based on the value of the CURRENT.DAY field on the DATES record.</p>
+            <p>NORMAL the branch is open on an official working day</p>
+            <p>RESTRICTED the branch is open on an official holiday, e.g. a weekend or public holiday</p>
+            <p>CLOSED the branch is closed i.e. the holiday table for the branch indicates a non working day, or the day corresponds to a value on the BRNACH.CLOSED field for the company</p>
+            <p>For example some business activities can only take place on an official working day such as certain clearing transactions, whereas others e.g. closing a customer account can take place if the branch is open.</p>
+            <p>If this field is left blank then there will be no check as to whether the version can be run.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input</p>
+            <p>NORMAL indicates the version can only be run on a normal business day, e.g. only on an official working day for the local country</p>
+            <p>RESTRICTED indicates that the version can be run on a normal or restricted working day e.g. the branch is open</p>
+            <p>CLOSED indicates that the version can be run at any time</p>
+        </desc>
+</t>
+<t>
+<field>AUTO.FIELD.NAME</field>
+<desc>
+            <p>If the value in this field is not present in the corresponding field in VERSION record, the value in this field and the associated fields are appended to the VERSION record. Enables you to define the field name, which is to be subject to an automatic default value. It must be used in conjunction with the fields AUTO.OLD.CONT and AUTO.FIELD.RTN. The definition of the value or sub-value numbers must always be included in this field. </p>
+            <p>Field names can be entered in the format:</p>
+            <p>a) Field name (e.g. MNEMONIC for field 1 in the customer file followed by, </p>
+            <p>b) '-' When you want to define a multivalue field, followed by, </p>
+            <p>c) Value Number (e.g. RELATION-1 for RELATION in the customer file) when you want to define multivalue fields, followed by, </p>
+            <p>d) '.' When the User wants to define a subvalue field, followed by, </p>
+            <p>e) Sub-Number when you want to define a subvalue field. </p>
+            <p>Alternatively, field names can be entered as field numbers, as follows:</p>
+            <p>a) Field number (e.g. 1 for MNEMONIC in the CUSTOMER file), followed by, </p>
+            <p>b) '.' When you want to define a multivalue field, followed by, </p>
+            <p>c) 'Value number' (e.g. 7.1 for RELATION in the CUSTOMER file) when you want to define multivalue fields, followed by, </p>
+            <p>d) '.' When you want to define a subvalue field, followed by, </p>
+            <p>e) 'Sub number' when you want to define a subvalue field. </p>
+            <p>Field numbers will be translated to field names when entered. </p>
+            <p>For local reference fields, use the format LOCAL.REF-<em>n</em>.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 40 type A (alphanumeric) characters in the format         XXXXXXXXXX.NNN.NN or NNN.NNN.NN Multivalue field         associated with Fields 1 to 3. (Optional input. No         default value).</p>
+            <p>Only field names defined in the corresponding Application         are allowed. </p>
+            <p>Duplication of field names is not allowed. </p>
+        </desc>
+</t>
+<t>
+<field>ID.RTN</field>
+<desc>
+            <p>This field accepts a user-defined subroutine. It acts as a user exit to validate ids. The routine name specified in this field is appended to the field ID.RTN in Version record if it is blank. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 35 type A (alphanumeric) characters. </p>
+            <p>The subroutine name should proceed with an @ symbol </p>
+            <p>The subroutine entered should exist in PGM.FILE with PGM.TYPE = 'S' </p>
+            <p>The VERSION ID should exist in field APPL.FOR.SUBR in the PGM.FILE record for the subroutine. </p>
+        </desc>
+</t>
+<t>
+<field>BEFORE.AUTH.RTN</field>
+<desc>
+            <p>This field accepts a user-defined subroutine. It acts as a user exit and is called before authorised-record-write. The routine name specified in this field is appended to the field BEFORE.AUTH.RTN in Version record if it is blank.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 35 type A (alphanumeric) characters.</p>
+            <p>The subroutine name should proceed with an @ symbol </p>
+            <p>The subroutine entered should exist in PGM.FILE with PGM.TYPE         = 'S' </p>
+            <p>The VERSION ID should exist in field APPL.FOR.SUBR in the         PGM.FILE record for the subroutine</p>
+        </desc>
+</t>
+<t>
+<field>PGM.NAME.VER.TYPE</field>
+<desc>
+            <p>This is the Id for this application. This should be a valid application name</p>
+        </desc>
+</t>
+<t>
+<field>GTS.VALUE</field>
+<desc>
+            <p />
+            <p />
+            <p>The field contents will be used to check against the environment variable specified in GTS.TYPE to determine if the GTS.CONTROL value will be included in the VERSION.</p>
+            <p />
+            <p>E.g. If GTS.TYPE has USER&gt;COMPANY.CODE then the value in GTS.VALUE should contain a valid COMPANY code such as US0010001. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>Up to 50 type A (alphanumeric) characters.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>Multivalue field associated with fields GTS.VALUE to GTS.INC.EXC</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>Optional input. No default value. </p>
+        </desc>
+</t>
+<t>
+<field>D.SLIP.STYLE.SHEET</field>
+<desc>
+            <p>Contains the name of an XSLT stylesheet to be used when displaying a Deal Slip in T24 Browser.</p>
+            <p>This field is only used for the T24 Browser product.</p>
+        </desc>
+</t>
+<t>
+<field>MAND.FLD</field>
+<desc>
+            <p />
+            <p>If the value in this field is not present in the corresponding field in VERSION record, the value in this field is appended to the VERSION record. Identifies any field, within the Application for which the version is created, where the user wants to impose a positive input from the operator.</p>
+            <p>This facility will allow the user to force an input from the operator in a field declared as optional by the Application to which this field pertains. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Up to 35     type A (alphanumeric) characters. Subvalue field. Optional Input; No Default     Value.</p>
+            <p />
+            <p />
+            <p>Only field names defined in the     corresponding Application are allowed. </p>
+            <p />
+            <p />
+            <p />
+            <p>Duplication of field names is not     allowed. </p>
+            <p />
+            <p />
+            <p />
+            <p>Subvalue field associated with     fields 35 to 38.( MAND.VALUE to MAND.INC.EXC).</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHECK.REC.RTN</field>
+<desc>
+            <p>This field accepts a user-defined subroutine. This routine acts as a user exit to control field attributes. The routine name specified in this field is appended to the field CHECK.REC.RTN in Version record if it is blank. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 35 type A (alphanumeric) characters.</p>
+            <p>The subroutine name should proceed with an @ symbol </p>
+            <p>The subroutine entered should exist in PGM.FILE with PGM.TYPE         = 'S' </p>
+            <p>The VERSION ID should exist in field APPL.FOR.SUBR in the         PGM.FILE record for the subroutine </p>
+        </desc>
+</t>
+<t>
+<field>NOINPUT.VALUE</field>
+<desc>
+            <p />
+            <p />
+            <p>This field contains a value to check against the environment variable specified in NOINPUT.TYPE. </p>
+            <p>The outcome of this check determines whether the field or fields named in NOINPUT.NAME have the &amp;#8220;no-input&amp;#8221; property in the VERSION being used.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>Up to 50 type A (alphanumeric) characters. </p>
+            <p />
+            <p />
+            <p />
+            <p>Multivalue field associated with fields 17 to 20.( NOINPUT.VALUE to NOINP.INC.EX) </p>
+            <p />
+            <p>Optional input. No default value.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>INPUT.RTN</field>
+<desc>
+            <p>The value in this field is appended to the corresponding field INPUT.RTN, in VERSION record, if this value is not present in that field. The name of the UniVerse subroutine to be invoked just prior to the final update of files at the unauthorised stage of a transaction.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>The name of the routine should be an existing UniVerse program executable. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>NOINP.INC.EX</field>
+<desc>
+            <p>Given that the condition in NOINPUT.VALUE and NOINPUT.TYPE is satisfied.  If this field is set to INCLUDE then the field specified in NOINPUT.FLD will be set as no input field in the Version. If this field is set to EXCLUDE then the field specified in NOINPUT.FLD will not be set as no input field in the Version.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>INCLUDE or EXCLUDE </p>
+            <p />
+            <p />
+            <p>Subvalue field associated with fields 17 to 20(NOINPUT.VALUE to NOINP.INC.EX).</p>
+        </desc>
+</t>
+<t>
+<field>AUTO.OLD.CONT</field>
+<desc>
+            <p>If the value in the associated field AUTO.FIELD.NAME is not present in the corresponding field in VERSION record, the value in this field and the associated fields are appended to the VERSION record. </p>
+            <p>Enables the User to define the previous field content, which is to be changed automatically with the new default value as held in the next field. Must be used in conjunction with AUTO.FIELD.RTN and AUTO. FIELD.NAME. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 35 type A (alphanumeric) characters. Multivalue         field associated with Fields 1 to 3. (Optional input. No         default value). </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>NO.CHG.VALUE</field>
+<desc>
+            <p />
+            <p />
+            <p>This field contains a value to check against the environment variable specified in NO.CHG.TYPE. </p>
+            <p>The outcome of this check determines whether the field<p />or fields named in NO.CHG.NAME have the &amp;#8220;no-change&amp;#8221; property in the VERSION being used.  </p>
+            <p />
+            <p>E.g. </p>
+            <p />
+            <p>If NO.CHG.TYPE has USER&gt;COMPANY.CODE then the value in NO.CHG.VALUE should contain a valid COMPANY code (US0010001).</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Up to 50 type A (alphanumeric) characters. </p>
+            <p />
+            <p />
+            <p />
+            <p>Multivalue field associated with fields NO.CHG.VALUE through NO.CHG.IN.EX.</p>
+            <p />
+            <p />
+            <p />
+            <p>Optional input. No default value</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>REKEY.TYPE</field>
+<desc>
+            <p />
+            <p />
+            <p>Allows you to specify an environment variable. The system will use this variable to check against the value specified in REKEY.VALUE. If it matches then the field will be set for &amp;#8220;rekey&amp;#8221; in the version provided REKEY.INC.EX is set to &amp;#8220;INCLUDE&amp;#8221;. </p>
+            <p />
+            <p />
+            <p>The format can be Application&gt;fieldname (e.g USER&gt;COMPANY.CODE) where the application can be USER or COMPANY only.</p>
+            <p />
+            <p />
+            <p />
+            <p>It can also be a routine. If it is routine the following conditions apply, </p>
+            <p />
+            <p />
+            <p>a) When a subroutine needs to be executed then the subroutine name should be preceded with an @ symbol </p>
+            <p />
+            <p>b) The subroutine entered should exist in PGM.FILE with PGM.TYPE = 'S' </p>
+            <p />
+            <p>c) The APPLICATION should exist in field APPR.FOR.SUBR in the PGM.FILE record for the subroutine. </p>
+            <p />
+            <p>d) This subroutine gets executed only once when the Version is first launched and the attributes set will thereafter remain unaltered.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Up to 50 type A (alphanumeric) characters.</p>
+            <p />
+            <p />
+            <p />
+            <p>Multivalue field associated with fields REKEY.VALUE to REKEY.INC.EX</p>
+            <p />
+            <p />
+            <p />
+            <p>Optional input. No default value. </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>SYS.MSG.SUPPRESS</field>
+<desc>
+            <p>This field in VERSION.CONTROL record or VERSION.CONTROL  SYSTEM record along with a similar field in SYSTEM.OVERRIDE table set to YES will suppress the system override message.</p>
+            <p>Any messages that have not been flagged in the System Override Message Table will not be suppressed, even when a VERSION or VERSION.CONTROL (including 'SYSTEM') record is set for suppression.</p>
+            <p>The default for SYS.MSG.SUPPRESS field in both the System Override Message Table and the VERSION/VERSION.CONTROL will be no suppression. A record 'SYSTEM' in VERSION.CONTROL can be used to define criteria (including message suppression) at global system level as opposed to just application level, so will define version defaults for all versions of all applications.</p>
+            <p>The following routines can be defaulted for all versions of all applications (apart from message suppression) using the VERSION.CONTROL  SYSTEM record.</p>
+            <p />
+            <p> 1. INPUT.RTN</p>
+            <p>2. AUTH.RTN </p>
+            <p>3. ID.RTN </p>
+            <p>4. CHECK.REC.RTN </p>
+            <p>5. AFTER.UNAU.RTN</p>
+            <p>6. BEFORE.AUTH.RTN</p>
+            <p />
+            <p> Display or suppression of a system override message will depend on the following flag settings</p>
+            <p />
+            <p />
+            <table>
+                <tr>
+                    <td>
+                        <p />
+                        <p>VERSION</p>
+                        <p />
+                        <p />
+                        <p>Msg Suppress</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>VERSION.CONTROL&gt;application</p>
+                        <p />
+                        <p />
+                        <p>Msg Suppress</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>VERSION.CONTROL&gt;SYSTEM</p>
+                        <p />
+                        <p />
+                        <p>Msg Suppress</p>
+                    </td>
+                    <td>
+                        <p />
+                        <p>System Override Msg Table</p>
+                        <p />
+                        <p />
+                        <p>Msg Suppress</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Suppress Message</p>
+                        <p />
+                        <p>Yes/No</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Yes</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>Null</p>
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                    <td>
+                        <p />
+                        <p>No</p>
+                        <p />
+                    </td>
+                </tr>
+            </table>
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>YES or NO or NULL (Blank)</p>
+        </desc>
+</t>
+<t>
+<field>D.SLIP.IN.EX</field>
+<desc>
+            <p />
+            <p>Given that the condition in D.SLIP.VALUE and D.SLIP.TYPE is satisfied.  If this field is set to INCLUDE then the field specified in D.SLIP.FMT will be set as deal slip format in the Version. If this field is set to EXCLUDE then the field specified in D.SLIP.FMT will not be set as deal slip format in the Version.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>INCLUDE or EXCLUDE </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>Subvalue field associated with fields 39 to 43.( D.SLIP.VALUE to D.SLIP.IN.EX).</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AUTH.RTN</field>
+<desc>
+            <p>The value in this field is appended to the corresponding field AUTH.RTN, in VERSION record, if this value is not present in that field. </p>
+            <p>The name of the UniVerse subroutine to be invoked just prior to the final update of files at the authorised stage of a transaction. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>The name of the routine should be an existing UniVerse program executable.</p>
+        </desc>
+</t>
+<t>
+<field>DISPLAY.TYPE</field>
+<desc>
+            <p>Drop down list options of TOGGLE, COMBOBOX, VERTICAL.OPTIONS, NODISPLAY or NULL</p>
+            <p>Populating DISPLAY.TYPE with NULL will have no change on the version field.</p>
+            <p>TOGGLE will change the field in a button labelled with the field name; the TOGGLE button can display two states only by appearing in white or grey.</p>
+            <p>The COMBOBOX option displays checkbox fields (only) as comboboxes</p>
+            <p>The VERTICAL.OPTIONS option displays radio button vertically as opposed to the normal way which is horisontaly.</p>
+            <p>The NODISPLAY option allow us to decide whether the field should be displayed or not</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only fields with only two states are advised to use this functionality e.g. YES/NO, TRUE FALSE.</p>
+        </desc>
+</t>
+<t>
+<field>AUT.NEW.CONT</field>
+<desc>
+            <p />
+            <p>Enables the User to define the new automatic default value. Must be used in conjunction with AUT.OLD.CONT (Field 32) and AUT.FLD.NO (Field 31). </p>
+            <p>A routine (preceded by "@") may be specified instead of actual values. Input in this field must be in accordance with the field definition of the selected Application. Quotes should only be used where the new data actually requires quotes e.g if a new value is required to be YES it should not be input as "YES". It is important to clearly understand the relation between this field and AUT.OLD. CONT. The following examples will clarify their use. </p>
+            <p />
+            <p>1. When the User wants to create an automatic default at the creation of new record ID's, he should then make the following input in these three fields : </p>
+            <p />
+            <p />
+            <p>AUT.FLD.NO - Indicates the field number for which you want to create an automatic default. AUT.OLD.CONT - Must remain blank. AUT.NEW.CONT - Enter the value which you want to default automatically. </p>
+            <p />
+            <p />
+            <p>2. When you want to replace automatically an old content by a new content, you should then make the following input in these three fields : </p>
+            <p />
+            <p />
+            <p>AUT.FLD. NO - Indicate the field number for which you want to change automatically the old content. </p>
+            <p />
+            <p />
+            <p>AUT.OLD .CONT - Enter the old content AUT.NEW.CONT - Enter the new content which you want to replace automatically. </p>
+            <p />
+            <p />
+            <p>3. When you want to run a subroutine which will default a value in a particular field, you should make the following input in these three fields : </p>
+            <p />
+            <p />
+            <p>AUT.FLD.NO - Indicates the field number for which you want to create a automatic default AUT.OLD.CONT - Must remain blank. AUT.NEW.CONT - Enter the subroutine name which needs to be executed for the the field in AUT.FLD.NO. </p>
+            <p />
+            <p />
+            <p>Note: If the field AUT.OLD.CONT is specified, only records containing the specified value will be changed when using this Version. </p>
+            <p />
+            <p />
+            <p>If the field AUT.OLD.CONT is not specified, the content specified in the field AUT.NEW.CONT will be generated when creating a new record with this Version.</p>
+            <p />
+            <p />
+            <p>a) When a subroutine needs to be executed then the subroutine name should preceed with an @ symbol </p>
+            <p />
+            <p />
+            <p>b) The subroutine entered should exist in PGM.FILE with PGM.TYPE = 'S' </p>
+            <p />
+            <p />
+            <p>c) The VERSION ID should exist in field APPR.FOR.SUBR in the PGM.FILE record for the subroutine. </p>
+            <p />
+            <p>d) The PGM.TYPE for the VERSION record should be one of the following :- 'U', 'H', 'W', 'M', 'S', 'B'</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>Up to 35 type A (alphanumeric) characters. (Optional input. No default value).</p>
+            <p />
+            <p />
+            <p />
+            <p>Subvalue field associated with fields 31 to 34 (AUTOM.VALUE to AUTOM.INC.EX)</p>
+            <p />
+            <p />
+            <p />
+            <p>Input of the old and the new content must be different. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AUTOM.VALUE</field>
+<desc>
+            <p />
+            <p />
+            <p>The field contains a value for testing the contents of the environment variable specified in AUTOM.TYPE. The outcome of this test will determine whether the field specified in AUT.FLD.NO will be processed or excluded from processing.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Up to      50 type A (alphanumeric) characters. </p>
+            <p />
+            <p />
+            <p>Multivalue      field associated with fields AUTOM.VALUE to AUTOM.INC.EX.</p>
+            <p />
+            <p />
+            <p>Optional      input. No default value. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>NOINPUT.TYPE</field>
+<desc>
+            <p />
+            <p>Allows the user to specify the environment variables. The system will use these variables to check against the value specified in NOINPUT.VALUE. If it matches then the field will be included in the version, provided NOINP.INC.EX is set to INCLUDE.</p>
+            <p>It can be Application&gt;fieldname (e.g USER&gt;COMPANY.CODE) where the application can be USER or COMPANY only. It can also be a routine. If it is routine the following conditions apply,  </p>
+            <p>a) When a subroutine needs to be executed then the subroutine name should preceed with an @ symbol </p>
+            <p />
+            <p />
+            <p>b) The subroutine entered should exist in PGM.FILE with PGM.TYPE = 'S' </p>
+            <p />
+            <p />
+            <p>c) The APPLICATION should exist in field APPR.FOR.SUBR in the PGM.FILE record for the subroutine.</p>
+            <p />
+            <p />
+            <p>d) This subroutine gets executed only once when the Version is first launched and the attributes set will thereafter remain unaltered.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>Up to 50 type A (alphanumeric) characters.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>Multivalue field associated with fields 17 to 20.( NOINPUT.VALUE to NOINP.INC.EX)</p>
+            <p />
+            <p>Optional input. No default value.</p>
+        </desc>
+</t>
+<t>
+<field>D.SLIP.VALUE</field>
+<desc>
+            <p />
+            <p>This field should be used to check against the environment variable specified in D.SLIP.TYPE.</p>
+            <p>If D.SLIP.TYPE contains a field in the application (USER&gt;DEPARTMENT.CODE), then D.SLIP.VALUE can contain the value which will make the condition true. If D.SLIP.TYPE is a routine, the user should provide value returned by the routine. If ALL is specified in D.SLIP.VALUE then the conditions are considered as satisified, i.e. the condition is always true. The system will check the value in D.SLIP.VALUE against the environment variable specified in D.SLIP.TYPE. If it matches, then the D.SLIP.FMT and D.SLIP.FUNC will be defaulted into the VERSION, provided the D.SLIP.IN.EX is set to INCLUDE</p>
+            <p />
+            <p>E.g.</p>
+            <p />
+            <p />
+            <p>If D.SLIP.TYPE has USER&gt;COMPANY.CODE then the value in D.SLIP.VALUE should contain a valid COMPANY code (US0010001). </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>Up to 50 type A (alphanumeric) characters. </p>
+            <p />
+            <p />
+            <p />
+            <p>Multivalue field associated with Fields 39 to 43 (D.SLIP.VALUE     to D.SLIP.IN.EX)</p>
+            <p />
+            <p />
+            <p />
+            <p>Optional input. No default value. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AFTER.UNAU.RTN</field>
+<desc>
+            <p>This field accepts a user-defined subroutine. It acts as a user exit and is called after unauthorised-record-write. The routine name specified in this field is appended to the field AFTER.UNAU.RTN in Version record if it is blank. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 35 type A (alphanumeric) characters. </p>
+            <p>The subroutine name should proceed with an @ symbol </p>
+            <p>The subroutine entered should exist in PGM.FILE with PGM.TYPE = 'S' </p>
+            <p>The VERSION ID should exist in field APPL.FOR.SUBR in the PGM.FILE record for the subroutine. </p>
+        </desc>
+</t>
+<t>
+<field>ATT.FLD.NAME</field>
+<desc>
+            <p>Name of the field in the application, to which attributes (Example: HOTFIELD) are to be attached to</p>
+        </desc>
+</t>
+<t>
+<field>ATTRIBS</field>
+<desc>
+            <p>This field defines a number of Attributes for each version of this application</p>
+            <p>This includes whether the field is a Hot Field or not. This causes the contract to be validated when the user exits the field thus displaying all errors for the current contract. Marking a field as a Hot Field will also ensure that the application is called when the field is exited. Therefore, this mechanism can be used to default other field values once the current field value has been entered.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>HOT.FIELD - This indicates that the field is a Hot Field in the Browser.</p>
+            <p>ENRICHMENT.ONLY - If a field is NOINPUT then display the enrichment in place of the field. If inputtable then display Enrichment only via a control.</p>
+            <p>POPUP.DROPDOWN - If this field has a dropdown then set behaviour to popup in new window with paging tools. </p>
+        </desc>
+</t>
+<t>
+<field>AUT.FLD.NO</field>
+<desc>
+            <p />
+            <p>If the value in this field is not present in the corresponding field in VERSION record, the value in this field and the associated fields are appended to the VERSION record. Enables the user to define the field name, which is to be subject to an automatic default value. It must be used in conjunction with the fields AUT.OLD.CONT and AUTO.NEW.CONT. </p>
+            <p>It is important to note that the field name input automatically includes all possible value and sub-value fields of that field. (Local Reference fields can also be input.) </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 35 type A (alphanumeric) characters </p>
+            <p />
+            <p>Subvalue field associated with fields 31 to 34(AUTOM.VALUE to     AUTOM.INC.EX)</p>
+            <p />
+            <p>Optional input. No default value. </p>
+            <p />
+            <p>Duplication of field names are not allowed.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AUTO.OVERRIDES</field>
+<desc>
+            <p>If this field is set to "YES", during OFS transaction each Override encountered will be checked to see if it can be considered for automatic validation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>"YES" or "NO"</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

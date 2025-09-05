@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+	<header>
+		<product>MT</product>
+		<table>MT.SYSTEM.PARAMETER</table>
+	</header>
+<overview>
+		<ovdesc>
+			<p>The parameter table for Multi Tenant Administration processing.</p>
+			<p> This parameter table specifies the message emit type, by which the message(xml) formation can be configured as INDIVIDUAL messages(multiple emit).</p>
+			<p> The table can also control the style of the message(s) that are generated and which OFS source is used to process the emitted message(s).</p>
+			<p> During MT Console table authorisation:</p>
+			<p>	1. OPERATION.MODE = EXECUTE will emit messages (xml) according to the setup in this parameter table.</p>
+			<p>	2. OPERATION.MODE = MAINTAIN will not emit any.</p>			
+			<p> 3. When there is no PARAM.ID defined in console table, system will take DEFAULT parameter record released as part of MT module. </p>
+			<p> 4. When there is no PARAM.ID and also no entry in parameter table (no live record, may be in unauthorized stage), the default message settings used are: message emit type = INDIVIDUAL, message type = QUEUE and OFS.SOURCE=TENANT.PROCESS.</p>
+			<p> 5. Each message will contain the tenant id which can be used by an ESB (or other messaging systems) to route messages to the respective tenants.</p>
+			<p> 6. With the QUEUE based message production an OFS payload (for use with the external system) will have a prefix of the tenant id and be embedded in the emitted XML message.</p>		
+			<p> 7. With the TOPIC based message production an OFS payload (for use with the external system) will have a prefix of the topic and the tenant id and be embedded in the emitted XML message.</p>
+    </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+		<t>
+			<field>MT.PARAM.ID</field>
+			<desc>
+				<p>Unique reference to identify the parameter table for MT Admin console process. </p>
+				<p>Validation Rules: </p>
+				<p>Maximum of 35 alphanumeric characters allowed</p>
+			</desc>
+		</t>
+		<t>
+			<field>DESCRIPTION</field>
+			<desc>
+				<p>Specifies the description/nature of usage of the parameter record for the MT Admin Console process. </p>
+				<p>Validation Rules: </p>
+				<p>
+					<p>Maximum of 50 alphanumeric characters allowed.</p>
+					<p> Mandatory field</p>
+				</p>
+			</desc>
+		</t>
+		<t>
+			<field>MSG.EMIT.TYPE</field>
+			<desc>
+				<p>This field is to define the message emission type, by which the message(xml) formation can be defined as INDIVIDUAL messages(multi emit) during MT console table authorisation. </p>
+				<p>Validation Rules: </p>
+				<p>
+					<p> Accepted value: </p>
+					<p> INDIVIDUAL :- One event emit will happen for each tenant.</p>
+					<p>	If the SERVICE.COMP.MNE field in MT.TSA.SERVICE.CONSOLE has more than one value, then several event messages will be created in the single xml emitted.</p>
+					<p> Mandatory field. </p>    
+				</p>
+			</desc>
+		</t>
+		<t>
+			<field>MSG.TYPE</field>
+			<desc>
+				<p>This field contains the style of the message(s) to be generated. </p>
+				<p>Validation Rules:</p>
+				<p>
+					<p> Accepted values are: </p>
+					<p> 1. QUEUE :- Signifies that the message should contain an embedded OFS payload, that can be passed through with minimal intervention from the external tools. A QUEUE based message will have tenant id as the prefix to the OFS payload. The emitted message is still XML format. </p>
+					<p> 2. TOPIC :- Signifies that the message should contain an embedded OFS payload, that can be passed through with minimal intervention from the external tools. A TOPIC based message will have both the topic and the tenant id as the prefix to the OFS payload. The emitted message is still XML format.</p>
+					<p> This TOPIC prefix value will be considered as a target directory/queue in an external system where the messages can be placed for further processing. </p>
+				</p>
+			</desc>
+		</t>
+		<t>
+			<field>TOPIC.PREFIX</field>
+			<desc>
+				<p> This field can have the topic prefix value for the topic message type defined in MSG.TYPE field. </p>
+				<p> This value will be prefixed to the ofs payload (along with tenant id) which will be part of the output xml.</p>
+				<p>Validation Rules:</p>
+					<p> Maximum of 35 characters allowed</p>
+					<p> Value permitted only when MSG.TYPE = TOPIC. </p>
+					<p> This field is mandatory if MSG.TYPE = TOPIC. </p>
+			</desc>
+		</t>
+		<t>
+			<field>OFS.SOURCE</field>
+			<desc>
+				<p>This field can be used to define the OFS.SOURCE id required to process emitted message(s). </p>
+				<p>Validation Rules:</p>
+					<p> Maximum of 35 characters allowed.</p>
+					<p> Must be a valid entry in OFS.SOURCE table.</p>
+					<p> Mandatory field </p>
+			</desc>
+		</t>
+	</menu>
+</t24help>

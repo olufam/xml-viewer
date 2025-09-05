@@ -1,0 +1,1260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>MG</product>
+<table>MG.BALANCES</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The MG.BALANCES file records all the financial movement and balance details of a loan within the MORTGAGE module. Both current and historical data are maintained providing a means by which the system can control and record all financial transactions. This file also provides a valuable source of information for enquiry and reporting purposes for both bank and customer requirements. </p>
+            <p>An MG.BALANCES record is created whenever a contract is entered into the system and remains there as long as the contract remains on the "Live" MG.MORTGAGE file. It is updated automatically by any routines which modify contract financial data or produce financial transactions. There is no facility for direct input to this file. </p>
+            <p>The information retained on this file can be grouped into sections as follows: </p>
+            <p>1. Type, balance and interest rate. (fields CONTRACT.TYPE to INT.RATE) </p>
+            <p>This group of multivalued fields records changes in the product type, the principal balance and the interest rate applicable throughout the life of a contract. Whenever one of these changes, the new value along with its effective date, will be recorded in the relevant fields. This information is stored in reverse chronological order, i.e. the most recent or current value will always be found in the first multivalue of the relevant field. </p>
+            <p>2. Record start date. (RECORD.START.DATE) </p>
+            <p>This field records the earliest date from which information is retained on the current record, This is explained in greater detail later in the archiving and MG.BALANCES.HIST section of this overview. </p>
+            <p>3. Current interest period details. (fields START.INT.PERIOD to                                             OTS.INT.ADJUST) </p>
+            <p>Fields START.INT.PERIOD and END.INT.PERIOD define the start and end of the current interest period. Field OTS.INTEREST records the amount of outstanding interest accrued in the current interest period. </p>
+            <p>4. Interest accrual details. (fields ACCR.FROM.DATE to ACCR.ACT.AMT) </p>
+            <p>This set of multivalued fields record all interest accrual details, i.e. principal rate no. of days and amount, for both the current and previous interest periods. These details are stored in reverse chronological order, ie. details pertaining to the most recent accrual will always be found in the first multivalue of each field. </p>
+            <p>5. Repayment totals. (fields TOT.INTEREST.RCVD to REPAYMENTS.MADE) </p>
+            <p>This group of fields records the total amounts of repayments of principal, interest and any additional payment elements received on the contract to date. This includes both automatic scheduled repayments and manual principal redemptions made via the MG.PAYMENT application. The total number of scheduled repayments made is also recorded here. </p>
+            <p>6. Repayment details. (fields PAYMENT.DATE to ADD.PAY.5.RCVD) </p>
+            <p>This group of multivalue fields records the details of each individual repayment made on a contract. This includes both automatic scheduled repayments and manual principal redemptions made via the MG.PAYMENT application. Details of payment date, total repayment amount, as well as the breakdown of the individual repayment elements, are stored. In the case of manual redemptions the payment number of the originating MG.PAYMENT record is recorded. All payment details are recorded in reverse chronological order, i.e. details of the most recent payment will always be in the first multivalue of each field. </p>
+            <p>7. Accrual accounting entries. (field ENTRY.IDS) </p>
+            <p>This field records the category entry IDs of all entries relating to interest accruals. </p>
+            <p>Archiving and the MG.BALANCES.HIST file. </p>
+            <p>Because of the amount of data retained on this file and the possible longevity of the contract, data from this file may be periodically archived to the MG.BALANCES.HIST file. </p>
+            <p>Archiving is performed on a yearly basis and generates records on the MG.BALANCES.HIST file with an ID comprising of the contract number and the year to which data on that record relates. It is therefore possible to have several MG.BALANCES.HIST records for one contract. </p>
+            <p>The number of years' data retained on the "Live" balances file is controlled by a user definable parameter on the MG.PARAMETER table. When setting this parameter consideration should be given to reporting requirements such as the customer's obligations to the local tax authorities. It is also important to note that back-valued adjustments and corrections cannot be made prior to the record start date of the "Live" balances record. </p>
+            <p>The date from which data is recorded on the "Live" record and on each of the "History" records is recorded in the RECORD.START.DATE field on each record. Therefore, data prior to the date in this field will not be available on the record being viewed and the relevant "History" record should be enquired upon. </p>
+            <p>The layout of the MG.BALANCES.HIST file is identical to that of the MG.BALANCES file and this file may be enquired on via the MG.BALANCES.HIST application. </p>
+            <p>Once a contract matures, the MG.BALANCES record will automatically be moved to the MG.BALANCES.HIST file after a period of time. This live file retention period is user definable via the MG.PARAMETER table. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>TOT.3.RCVD</field>
+<desc>
+            <p>Sum of all additional payment amounts  that are store in 3.RCVD </p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.TAX.AMT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.NO</field>
+<desc>
+            <p>This field uniquely identifies each record on this file. </p>
+            <p>This is the same ID that is used on the main file MG.MORTGAGE and is the identifier assigned to each contract at first input. </p>
+            <p>The format of the key is as follows: </p>
+            <p>           MG YYDDD NNNNN A where:     MG        -        Mortgage module identifier.            YYDDD     -        Year and date of contract input, in julian                             date format.            NNNNN     -        Sequence number which is unique for the date                               of input.            A         -        Contract suffix which must be defined on the                               MG.PARAMETER table. </p>
+            <p>It is not necessary to enter the full contract number when accessing this file. If the contract has been input the same day, or is a new contract, then only the sequence number portion need be entered. In all cases it is not necessary to type any leading zeroes in the sequence number. </p>
+            <p>Example : </p>
+            <p>To access the MG.BALANCES record for a contract number 99, on the same day as it was input, the only input required to this field is "99". This will be expanded by the system to give the contract no "MG9002300099". In this case the date of input and was 23/01/90. </p>
+            <p>To access this same record the following day and any day thereafter both the date and sequence number (without leading zeroes) should be entered, i.e. "90002399". </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>10 numeric characters prefixed by MG with an optional suffix of 1 alpha character. MGYYDDDNNNNNA (see details) (mandatory input)</p>
+            <p>Must reference an existing contract on the MG.MORTGAGE file.</p>
+        </desc>
+</t>
+<t>
+<field>ADD.PAY.1.RCVD</field>
+<desc>
+            <p>ADD.PAY.1.RCVD </p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.DATE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>NAB.START.DATE</field>
+<desc>
+            <p>Holds the date on which the linked PD of the MG contract moves to NAB. Maintained in Sync with OVERDUE.STATUS field of MG.MORTGAGE application. This field is also updated when the NAB.PERIOD.INT in the PD.PARAMETER changes. </p>
+        </desc>
+</t>
+<t>
+<field>ADD.PAY.4.RCVD</field>
+<desc>
+            <p>Records the amount of the fourth additional payment element, defined in the ADD.PAY.TYPE field on the MG.PARAMETER, paid on each individual repayment received. </p>
+            <p>This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fields record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. </p>
+            <p>However, it is only possible to repay additional payment elements via an automatic repayment as there is no facility for this via the MG.PAYMENT application. Therefore, this field will only record an amount if the payment details in the group in question relate to an automatic repayment. In the case of a manual redemption this field will contain a null value. If nothing is received for this additional payment type on an automatic repayment then this field will contain a zero value. </p>
+            <p>Additional payment elements are defined on the MG.PARAMETER table. Up to five different types may be created. This field records the amount of the fourth additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table received on each repayment. </p>
+            <p>It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the fourth additional payment element defined on the MG.PARAMETER table has a description of "PREMIUM A" on the MG.TYPE.TEXT file then this field will have the name TOT.PREMIUM.A.RCVD. </p>
+            <p>Information is stored in this group of fields in reverse chronological order, i.e. the most recent payment details will always be found in the first multivalue of each field. </p>
+            <p>This field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.INCREASE</field>
+<desc>
+            <p>PRIN.INCREASE and PRIN.EFF.DTE are associated multi value set . This field holds the principal increase amount that is specified in the MG template that is effective On the date updated in PRIN.EFF.DATE</p>
+        </desc>
+</t>
+<t>
+<field>TOT.APAY.1.RCVD</field>
+<desc>
+            <p>'DATA' type of field</p>
+        </desc>
+</t>
+<t>
+<field>TOT.SUSP.INT</field>
+<desc>
+            <p>This field is to determine the total amount of interest, which has been suspended.  This amount is the total of the whole interest, which has been suspended  from the start of the NAB</p>
+        </desc>
+</t>
+<t>
+<field>APAY.3.RCVD</field>
+<desc>
+            <p>'DATA' type of field.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.AMOUNT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.RATE</field>
+<desc>
+            <p>Identifies the interest rate applied for  the multivalue accrual group in question. </p>
+            <p>The set of fields ACCR.FROM.DATE to ACCR.ACT.AMT form the multivalue set of interest accrual fields. These fields record all details of interest accrued on the contract. A new group is created each time one of the accrual parameters, i.e. outstanding principal or interest rate, changes, or a month end has been reached. </p>
+            <p>This field records the interest rates which have been applied for each of the accrual groups. </p>
+            <p>Information is stored in these fields in reverse chronological order, i.e. the most recent accrual details will always be found in the first multivalue of each field. </p>
+            <p>It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field.  Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>Example : </p>
+            <p>The following example shows the accrual details on a contract with repayments on the 28th of each month with an interest rate change from 10.9% to 11.3% on 15/10/90 </p>
+            <p>ACCR.PRINCIPAL  :   19000    19000.00   19000.00 ACCR.RATE       :   11.3      10.9        10.5% ACCR.FROM.DATE  :   16/10/90  01/10/90    28/09/90 ACCR.TO.DATE    :   27/10/90  15/10/90    30/09/90 ACCR.DAYS       :   12        15          3 ACCR.AMT        :   71.57     86.29       17.26 ACCR.ACT.AMT    :   77.5666   86.2917     17.2583 </p>
+            <p>In this case the first accrual split is due to the September month end. The second split arises when the rate changes 15/09/90. The final group ends on 27/10/90 as the principal balance will change the following day due to the repayment on 28/10/90.  It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>Example : </p>
+            <p>The following example shows the accrual details on a contract with repayments on the 28th of each month with an interest rate change from 10.9% to 11.3% on 15/10/90 </p>
+            <p>ACCR.PRINCIPAL  :   19000    19000.00   19000.00 ACCR.RATE       :   11.3      10.9        10.5% ACCR.FROM.DATE  :   16/10/90  01/10/90    28/09/90 ACCR.TO.DATE    :   27/10/90  15/10/90    30/09/90 ACCR.DAYS       :   12        15          3 ACCR.AMT        :   71.57     86.29       17.26 ACCR.ACT.AMT    :   71.5666   86.2917     17.2583 </p>
+            <p>In this case the first accrual split is due to the September month end. The second split arises when the rate changes 15/09/90. The final group ends on 27/10/90 as the principal balance will change the following day due to the repayment on 28/10/90. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 11 numeric characters Multivalue field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>TYPE.EFF.DATE</field>
+<desc>
+            <p>Stores the dates on which the loan types in the CONTRACT.TYPE field became effective. </p>
+            <p>The contract type of a loan may vary throughout the life of the contract. The types that have applied to the current loan are held in the associated field CONTRACT.TYPE. This field identifies the dates on which these types became effective. </p>
+            <p>Information is stored in these fields in reverse chronological order, i.e. the most recent effective date will always be found in the first multivalue. </p>
+            <p>It should be noted that this field will only contain  data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format Multivalued field associated with CONTRACT.TYPE.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.APAY.3.RCVD</field>
+<desc>
+            <p>'DATA' type of field</p>
+        </desc>
+</t>
+<t>
+<field>PRINCIPAL.RCVD</field>
+<desc>
+            <p>Records the amount of principal paid on each individual repayment received. </p>
+            <p>This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fields record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. </p>
+            <p>The PRINCIPAL.RCVD field records that amount of principal received on each payment made irrespective of whether these are automatic or manual payments. </p>
+            <p>Information is stored in this group of fields in reverse chronological order, i.e. the most recent payment details will always be found in the first multivalue of each field. </p>
+            <p>It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.</p>
+        </desc>
+</t>
+<t>
+<field>PAYMENT.DATE</field>
+<desc>
+            <p>Identifies the dates on which both automatic repayments and manual redemptions were received. </p>
+            <p>This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fields record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. </p>
+            <p>The value dates of all payments made are recorded in this field irrespective of whether these are automatic or manual payments. </p>
+            <p>Information is stored in this group of fields in reverse chronological order, ie. the most recent payment details will always be found in the first multivalue of each field. </p>
+            <p>It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.</p>
+        </desc>
+</t>
+<t>
+<field>APAY.1.RCVD</field>
+<desc>
+            <p>'DATA' type of field</p>
+        </desc>
+</t>
+<t>
+<field>A1.RCVD</field>
+<desc>
+            <p>Stores  the additional amount given in ADD.AMOUNT field  of MG.MORTGAGE. This amount is sorted in the order specified
+ in MG.PARAMETER record.</p>
+        </desc>
+</t>
+<t>
+<field>HUPTWO.RCVD</field>
+<desc>
+            <p>Records the amount of the first additional payment element, defined in the ADD.PAY.TYPE field on the MG.PARAMETER, paid on each individual repayment received. </p>
+            <p>This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fields record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. </p>
+            <p>However, it is only possible to repay additional payment elements via an automatic repayment as there is no facility for this via the MG.PAYMENT application. Therefore, this field will only record an amount if the payment details in the group in question relate to an automatic repayment. In the case of a manual redemption this field will contain a null value. If nothing is received for this additional payment type on an automatic repayment then this field will contain a zero value. </p>
+            <p>Additional payment elements are defined on the MG.PARAMETER table. Up to five different types may be created. This field records the amount of the first additional element defined in ADD.PAY.TYPE field of the MG.PARAMETER table, received on each repayment. </p>
+            <p>It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the first additional payment element defined on the MG.PARAMETER table has a description of "INSURANCE" on the MG.TYPE.TEXT file then this field will have the name TOT.INSURANCE.RCVD. </p>
+            <p>Information is stored in this group of fields in reverse chronological order, ie. the most recent payment details will always be found in the first multivalue of each field. </p>
+            <p>This field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters. Multivalue field associated with fields 29.1 (PAYMENT DATE) to 38.1 (ADD PAY 5 RCVD).</p>
+        </desc>
+</t>
+<t>
+<field>TOT.INTEREST.RCVD</field>
+<desc>
+            <p>Records the total amount of interest paid on the contract. </p>
+            <p>Whenever a repayment of interest is made, the amount of interest received will be added to the value in this field. This field therefore records the total amount of all interest repayments received on the contract to date. </p>
+            <p>A breakdown of the payments of interest received on each individual repayment can be found in the multivalued INTEREST.RCVD field. It should be noted, however, that because it is possible to archive data from this record the total of all multivalues in the INTEREST.RCVD field may not equal the total amount recorded in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.HUPTWO.RCVD</field>
+<desc>
+            <p>Records the total amount of the first additional payment element, defined in the the ADD.PAY.TYPE field on the MG.PARAMETER table, paid on the contract to date. </p>
+            <p>It is possible to define additional payment elements to be repaid on a periodic basis along with the normal repayments of principal and interest. These types are defined on the MG.PARAMETER table. Up to five different types may be created. This field records the total amount of the first additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table, received on the contract to date. Whenever a repayment of this additional payment element is made the amount received will be added into this field. </p>
+            <p>It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the first additional payment element defined on the MG.PARAMETER table has a description of "INSURANCE" on the MG.TYPE.TEXT file then this field will have the name TOT.INSURANCE.RCVD. </p>
+            <p>A breakdown of the payments of this additional element received on each individual repayment can be found in the multivalued ADD.PAY.1.RCVD field. However, because it is possible to archive data from this record the total of all multivalues in the ADD.PAY.1.RCVD field may not equal the total amount recorded in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>DEAL.PRIN</field>
+<desc>
+            <p>This field will hold the difference in amount betwwen the calculated interest and the user defined amount.</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.AMT</field>
+<desc>
+            <p>This field contains the amount of interest accrued for the multivalue accrual group in question, rounded to the number of decimal places of the currency of the contract. </p>
+            <p>The set of fields ACCR.FROM.DATE to ACCR.ACT.AMT form the multivalue set of interest accrual fields. These fields record all details of interest accrued on the contract. A new group is created each time one of the accrual parameters, i.e. outstanding principal or interest rate, changes, or a month end has been reached. </p>
+            <p>This field records the amount of accrued interest, rounded to the correct number of decimal places for the currency of the loan, for each of the accrual groups. This amount is accumulated for each interest period and recorded in the OTS.INTEREST field which then determines the amount of interest to be paid at the end of the interest period. </p>
+            <p>Interest is accrued to four decimal places and then rounded in such a way that the error in rounding is kept to a minimum. The four decimal place un-rounded amounts are held in the associated ACTUAL.ACCR.AMT field. Any rounding error from a given accrual group is carried forward via the un-rounded accrual amount of the following group. However, this is only true if the following group forms part of the same interest period. As with all other multivalue fields on this file the accrual groups are stored in reverse chronological order. </p>
+            <p>The method of rounding is best illustrated by the following example. </p>
+            <p>Example : </p>
+            <p>The following shows the accrual details on a contract with repayments on the 28th of each month with an interest rate change from 10.9% to 11.3% on 13/10/90. Accruals are shown from 28/09/90 to 27/10/90 which represents one complete interest period. The currency of the contract is pounds sterling which has two decimal places. </p>
+            <p>ACCR.PRINCIPAL  :   19000    19000.00   19000.00 ACCR.RATE       :   11.3%     10.9%       10.9% ACCR.FROM.DATE  :   14/10/90  01/10/90    28/09/90 ACCR.TO.DATE    :   27/10/90  13/10/90    30/09/90 ACCR.DAYS       :   14        13          3 ACCR.AMT        :   83.50     74.78       17.26 ACCR.ACT.AMT    :   83.4944   74.7861     17.2583 </p>
+            <p>After the ACTUAL.ACCR.AMT has been calculated for the period 01/10 to 13/10 the following calculation is made to obtain the ACCR.AMT for the group: </p>
+            <p>Total un-rounded accrual this period:                 17.2583               + 74.7861               ---------                 92.0444 </p>
+            <p>Less the rounded amount this period:                 92.0444               - 17.26               ---------                 74.7844 </p>
+            <p>This amount is then rounded to give the ACCR.AMT for the group of 74.78. </p>
+            <p>This procedure is repeated for the next group: </p>
+            <p>Total un-rounded accrual this period:                 17.2583               + 74.7861               + 83.4944          --------------                175.5388 </p>
+            <p>Less the rounded amount this period:                 92.0444               - 17.26               - 74.78           -------------                 83.4988 </p>
+            <p>This amount is then rounded to give the ACCR.AMT for the group of 83.45 </p>
+            <p>The total rounded amount for the period is then: </p>
+            <p>                17.26               + 74.78               + 83.45           -----------                175.49 </p>
+            <p>This compares with the un-rounded total of 175.5388. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters Multivalue field associated with fields ACC. FROM.DATE to ACCR.ACT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>END.INT.PERIOD</field>
+<desc>
+            <p>Identifies the date of the start of the current interest period. </p>
+            <p>This field defines the date on which the interest accrued in the current period is to be settled. Accruals for the current interest period commence on the date held in the START.INT.PERIOD field. </p>
+            <p>Within the mortgage module interest is accrued on a "first day" basis. Therefore interest accrued on this date will not be booked in the "current" period whose end this date defines. </p>
+            <p>The date in this field will be cycled automatically by the end of day batch process whenever an interest payment is made. It is updated with the next interest repayment date from the MG.MORTGAGE record. The old date from this field then becomes the START.INT.PERIOD date for the coming period. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.IN.AMT</field>
+<desc>
+            <p />
+            <p>Records the capitalised interest amount.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>OTS.INT.ADJUST</field>
+<desc>
+            <p>OTS.INT.ADJUST </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Currently not in use.</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.RCVD</field>
+<desc>
+            <p>Records the amount of interest paid on each individual repayment received. </p>
+            <p>This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fieldS record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. </p>
+            <p>However, it is only possible to repay interest via an automatic repayment as there is no facility that allows interest to be paid via the MG.PAYMENT application. Therefore, this field will only record an amount if the payment details in the group in question relate to an automatic repayment. In the case of a manual redemption this field will contain a null value. If no interest is received on an automatic repayment then this field will contain a zero value. </p>
+            <p>Information is stored in this group of fields in reverse chronological order, i.e. the most recent payment details will always be found in the first multivalue of each field. </p>
+            <p>It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.STATUS</field>
+<desc>
+            <p>Jdescriptor field</p>
+        </desc>
+</t>
+<t>
+<field>DEF.TAX.AMT</field>
+<desc>
+            <p />
+            <p>Records the capitalised tax on interest.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>ACCR.FROM.DATE</field>
+<desc>
+            <p>Identifies the date from which interest is accrued for the multivalue accrual group in question. </p>
+            <p>The set of fields ACCR.FROM.DATE to ACCR.ACT.AMT form the multivalue set of interest accrual fields. These fields record all details of interest accrued on the contract. A new group is created each time one of the accrual parameters, ie, outstanding principal or interest rate, changes, or, a month end has been reached. </p>
+            <p>This field records the dates from which interest accruals commence for each of the accrual groups. </p>
+            <p>Information is stored in these fields in reverse chronological order, i.e. the most recent accrual details will always be found in the first multivalue of each field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format Multivalue field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.ADD.PAY.2.RCVD</field>
+<desc>
+            <p>Records the total amount of the second additional payment element, defined in the the ADD.PAY.TYPE field on the MG.PARAMETER table, paid on the contract to date. </p>
+            <p>It is possible to define additional payment elements to be repaid on a periodic basis along with the normal repayments of principal and interest. These types are defined on the MG.PARAMETER table. Up to five different types may be created.  This field records the total amount of the second additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table, received on the contract to date. Whenever a repayment of this additional payment element is made the amount received will be added into this field. </p>
+            <p>It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the second additional payment element defined on the MG.PARAMETER table has a description of "SAVING" on the MG.TYPE.TEXT file then this field will have the name TOT.SAVING.RCVD. </p>
+            <p>A breakdown of the payments of this additional element received on each individual repayment can be found in the multivalued ADD.PAY.2.RCVD field. However, because it is possible to archive data from this record the total of all multivalues in the ADD.PAY.2.RCVD field may not equal the total amount recorded in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>MG.PAYMENT.NO</field>
+<desc>
+            <p>Identifies the contract payment number from the MG.PAYMENT application if the multivalue group in question details a manual redemption. </p>
+            <p>This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. Although these fields record both automatic repayments and manual redemptions entered via the MG.PAYMENT application, the REPAYMENT.NO field will only contain a value when the multivalue group relates to a manual redemption entered via the MG.PAYMENT application. In the case of automatic repayments this field will contain a null value. </p>
+            <p>If the payment detailed in the multivalue group in question relates to a manual redemption, then the contract payment number of that redemption is recorded in this field. This enables a link to be maintained back to the original payment record on the MG.PAYMENT file.  In order to access this record the MG.PAYMENT application should be used with a record ID of the contract number and this payment number separated by a full stop. For example, if the MG.BALANCES record for the contract MG9012300012 records the details of a manual redemption with a payment number of 1 then ID to the relevant MG.PAYMENT record is MG901230012.1. </p>
+            <p>Information is stored in this group of fields in reverse chronological order, ie. the most recent payment details will always be found in the first multivalue of each field. </p>
+            <p>It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 3 numeric characters. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.</p>
+        </desc>
+</t>
+<t>
+<field>ADD.PAY.5.RCVD</field>
+<desc>
+            <p>Records the amount of the fifth additional payment element, defined in the ADD.PAY.TYPE field on the MG.PARAMETER, paid on each individual repayment received. </p>
+            <p>This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fields record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. </p>
+            <p>However, it is only possible to repay additional payment elements via an automatic repayment as there is no facility for this via the MG.PAYMENT application. Therefore, this field will only record an amount if the payment details in the group in question relate to an automatic repayment. In the case of a manual redemption this field will contain a null value. If nothing is received for this additional payment type on an automatic repayment then this field will contain a zero value. </p>
+            <p>Additional payment elements are defined on the MG.PARAMETER table. Up to five different types may be created. This field records the amount of the fifth additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table received on each repayment. </p>
+            <p>It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the fifth additional payment element defined on the MG.PARAMETER table has a description of "PREMIUM B" on the MG.TYPE.TEXT file then this field will have the name TOT.PREMIUM.B.RCVD. </p>
+            <p>Information is stored in this group of fields in reverse chronological order, i.e. the most recent payment details will always be found in the first multivalue of each field. </p>
+            <p>This field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.TAX.CODE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.BALANCE</field>
+<desc>
+            <p>Records the principal balance on the contract at each stage throughout the contract life. </p>
+            <p>Each time the principal balance changes on the contract it will be recorded in a new multivalue in this field. </p>
+            <p>This field therefore consists of a number of multivalues each recording the principal balance on the contract at various times throughout its life. The date on which each amount became effective is stored in the associated multivalue of the PRIN.EFF.DATE field. </p>
+            <p>Information is stored in this field in reverse chronological order, i.e. the current principal balance will always be found in the first multivalue. </p>
+            <p>It should be noted that this field will only contain  data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters Multivalue field associated with fields PRIN.CCY to PRIN.EFF.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.2.RCVD</field>
+<desc>
+            <p>Sum of all additional payment amounts  that are store in 2.RCVD </p>
+        </desc>
+</t>
+<t>
+<field>ACCR.ACT.AMT</field>
+<desc>
+            <p>This field contains the amount of interest, unrounded, accrued for the multivalue accrual group in question. </p>
+            <p>The set of fields ACCR.FROM.DATE to ACCR.ACT.AMT form the multivalue set of interest accrual fields. These fields record all details of interest accrued on the contract. A new group is created each time one of the accrual parameters, i.e. outstanding principal or interest rate, changes, or a month end has been reached. </p>
+            <p>This field records the amount of interest accrued for each of the multivalue accrual groups. This amount is un-rounded and is held to four decimal places. The rounded accrued amount is stored in the ACCR.AMT field. </p>
+            <p>Information is stored in these fields in reverse chronological order, i.e. the most recent accrual details will always be found in the first multivalue of each field. </p>
+            <p>It should be noted that this field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>Example : </p>
+            <p>The following shows the accrual details on a contract with repayments on the 28th of each month with an interest rate change from 10.9% to 11.3% on 13/10/90. Accruals are shown from 28/09/90 to 27/10/90 which represents one complete interest period. The currency of the contract is pounds sterling which has two decimal places. </p>
+            <table border="1">
+                <tr>
+                    <td>ACCR.PRINCIPAL </td>
+                    <td>19000.00</td>
+                    <td>19000.00</td>
+                    <td>19000.00</td>
+                </tr>
+                <tr>
+                    <td>ACCR.RATE</td>
+                    <td>11.3%</td>
+                    <td>10.9%</td>
+                    <td>10.9%</td>
+                </tr>
+                <tr>
+                    <td>ACCR.FROM.DATE </td>
+                    <td>14/10/90</td>
+                    <td>01/10/90</td>
+                    <td>28/09/90</td>
+                </tr>
+                <tr>
+                    <td>ACCR.TO.DATE</td>
+                    <td>27/10/90</td>
+                    <td>13/10/90</td>
+                    <td>30/09/90</td>
+                </tr>
+                <tr>
+                    <td>ACCR.DAYS</td>
+                    <td>14</td>
+                    <td>13</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>ACCR.AMT</td>
+                    <td>83.50</td>
+                    <td>74.78</td>
+                    <td>17.26</td>
+                </tr>
+                <tr>
+                    <td>ACCR.ACT.AMT</td>
+                    <td>83.4944</td>
+                    <td>74.7861</td>
+                    <td>17.2583</td>
+                </tr>
+                <tr>
+                    <td />
+                    <td />
+                    <td>&lt;&lt;&lt;&lt;&lt;&lt;</td>
+                    <td>&lt;&lt;&lt;&lt;&lt;&lt;</td>
+                </tr>
+            </table>
+            <p>Rounding error carried forward.</p>
+            <p>The way in which these amounts are rounded can be found in the helptext for the ACCR.AMT field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1 - 19 numeric characters Multivalue field associated         with fields ACCR.FROM.DATE to ACCR.ACT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.ADD.PAY.3.RCVD</field>
+<desc>
+            <p>Records the total amount of the third additional payment element, defined in the the ADD.PAY.TYPE field on the MG.PARAMETER table, paid on the contract to date. </p>
+            <p>It is possible to define additional payment elements to be repaid on a periodic basis along with the normal repayments of principal and interest. These types are defined on the MG.PARAMETER table. Up to five different types may be created.  This field records the total amount of the third additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table, received on the contract to date. Whenever a repayment of this additional payment element is made the amount received will be added into this field. </p>
+            <p>It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the third additional payment element defined on the MG.PARAMETER table has a description of "ENDOWMENT" on the MG.TYPE.TEXT file then this field will have the name TOT.ENDOWMENT.RCVD. </p>
+            <p>A breakdown of the payments of this additional element received on each individual repayment can be found in the multivalued ADD.PAY.3.RCVD field. However, because it is possible to archive data from this record the total of all multivalues in the ADD.PAY.3.RCVD field may not equal the total amount recorded in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.CODE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.DAYS</field>
+<desc>
+            <p>Identifies the number of days that interest has been accrued for the multivalue accrual group in question. </p>
+            <p>The set of fields ACCR.FROM.DATE to ACCR.ACT.AMT form the multivalue set of interest accrual fields. These fields record all details of interest accrued on the contract. A new group is created each time one of the accrual parameters, i.e. outstanding principal or interest rate, changes, or a month end has been reached. </p>
+            <p>This field records the number of days that interest has been accrued for each of the accrual groups. </p>
+            <p>Information is stored in these fields in reverse chronological order, i.e. the most recent accrual details will always be found in the first multivalue of each field. </p>
+            <p>It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field.  Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>Example : </p>
+            <p>The following example shows the accrual details on a contract with repayments on the 28th of each month with an interest rate change from 10.9% to 11.3% on 15/10/90. </p>
+            <p>ACCR.PRINCIPAL  :   19000    19000.00   19000.00 ACCR.RATE       :   11.3%     10.9%       10.5% ACCR.FROM.DATE  :   16/10/90  01/10/90    28/09/90 ACCR.TO.DATE    :   27/10/90  15/10/90    30/09/90 ACCR.DAYS       :   12        15          3 ACCR.AMT        :   71.57     86.29       17.26 ACCR.ACT.AMT    :   71.5666   86.2917     17.2583 </p>
+            <p>The three groups shown have each accrued interest for 3, 15 and 12 days respectively. In each case the number of days is inclusive of both the ACCR.FROM.DATE and ACCR.TO.DATE </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 3 numeric characters Multivalue field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>APAY.4.RCVD</field>
+<desc>
+            <p>'DATA' type of field.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.IN.EFF.DATE</field>
+<desc>
+            <p />
+            <p>Records the date on which the interest and tax on interest is capitalised.</p>
+            <p />
+            <p />
+            <p>For each capitalisation event, this field along with the associated fields</p>
+            <p />DEF.INT.AMT and DEF.TAX.AMT is multivalued.<p /><p /><p /></desc>
+</t>
+<t>
+<field>RECORD.START.DATE</field>
+<desc>
+            <p>This field identifies the date from which details on this record apply. </p>
+            <p>Because the volume of data retained for each contract, the MG.BALANCES file becomes very large after a number of years.  To overcome this problem, data from individual records on this file is periodically archived to the MG.BALANCES.HIST file. </p>
+            <p>Therefore, not all the information relating to a contract is retained on the "Live" MG.BALANCES file. This field contains the date from which financial balance information is available on the record in question. </p>
+            <p>As no financial data is available on this record prior to this date, the field also defines the limit for making backdated changes to the contract. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format</p>
+        </desc>
+</t>
+<t>
+<field>OTS.SUSP.INT</field>
+<desc>
+            <p>Holds the total outstanding interest amount that has been  suspended . The system would update this field when the
+ MG contract starts suspending the interest accruals</p>
+        </desc>
+</t>
+<t>
+<field>OTS.TAX.ADJUST</field>
+<desc>
+            <p>Holds the same outstanding tax amount as OTS.TAX.AMOUNT</p>
+        </desc>
+</t>
+<t>
+<field>TOT.1.RCVD</field>
+<desc>
+            <p>Sum of all additional payment amounts  that are store in 1.RCVD </p>
+        </desc>
+</t>
+<t>
+<field>INT.BAND</field>
+<desc>
+            <p>Specifies the amount that the int rate field below applies to.  Used for banded interest calculations. </p>
+            <p>When a mortgage has interest rates applied on a banded basis, then this field is used to display the portion of the total principal amount that the interest rate specified below applies to. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 Numeric characters. Multivalued field associated with fields INT.EFF.DATE to INT.RATE.</p>
+        </desc>
+</t>
+<t>
+<field>INT.RATE</field>
+<desc>
+            <p>Records the interest rates applied to the portion of the principal specified above throughout its life. </p>
+            <p>Each time the interest rate changes on the contract it will be recorded in a new multivalue in this field. </p>
+            <p>This field therefore consists of a number of multivalues each recording the interest rate applicable to the contract at various times throughout its life. The date on which each rate was effective is stored in the associated multivalue of the INT.EFF.DATE field. </p>
+            <p>Information is stored in this field in reverse chronological order, i.e. the current interest rate will always be found in the first multivalue. </p>
+            <p>It should be noted that this field will only contain  data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 11 numeric characters Multivalued field associated with fields INT.EFF.DATE to INT.RATE.</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.TO.DATE</field>
+<desc>
+            <p>ACCR.TO.DATE </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Multivalue field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>REPAYMENTS.MADE</field>
+<desc>
+            <p>Records the total number of automatic periodic repayments made on the contract to date. </p>
+            <p>This field records the total number of scheduled automatic repayments that have been made to date. This total does not include manual partial redemptions entered via the MG.PAYMENT application. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 10 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.PRIN</field>
+<desc>
+            <p>Identifies the principal amount on which interest was accrued for the multivalue accrual group in question. </p>
+            <p>The set of fields ACCR.FROM.DATE to ACCR.ACT.AMT form the multivalue set of interest accrual fields. These fields record all details of interest accrued on the contract. A new group is created each time one of the accrual parameters, i.e. outstanding principal or interest rate, changes, or a month end has been reached. </p>
+            <p>This field records the outstanding contract principal on which interest was accrued for each of the accrual groups. </p>
+            <p>Information is stored in these fields in reverse chronological order, i.e. the most recent accrual details will always be found in the first multivalue of each field. </p>
+            <p>It should be noted that this field will only contain  data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>Example : </p>
+            <p>The following example shows the accrual details on a contract with repayments of 2000.00 per month to be paid on the 28th of each month: </p>
+            <p>ACCR.PRINCIPAL  :   17000.00  17000.00  19000.00 ACCR.RATE       :   11.3       11.3%      11.3% ACCR.FROM.DATE  :   01/11/90   28/10/90   01/10/90 ACCR.TO.DATE    :   27/11/90   31/10/90   27/10/90 ACCR.DAYS       :   27         3          27 ACCR.AMT        :   144.07     16.01      161.03 ACCR.ACT.AMT    :   144.0750   16.0083    161.0250 </p>
+            <p>In this case the first accrual group (the right most column) ends on 27/10/90 due to the change in the principal balance on 28/10/90 caused by the repayment. The second group splits at the October month end and the final group ends with the next repayment on 28/11/90. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters Multivalue field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>OTS.INTEREST</field>
+<desc>
+            <p>This field records the amount of unpaid interest accrued in the current interest period. </p>
+            <p>As interest is accrued, the details of each accrual are stored in the multivalue accrual fields (ACCR.PRINCIPAL - ACTUAL.ACCR.AMT). This field contains the total of accrued interest in the current period. This is equal to the sum of the multivalues in the ACCR.AMT field whose corresponding ACCR.FROM.DATE is greater than or equal to the START.INT.PERIOD date. </p>
+            <p>When a repayment date is reached and the accruals have been completed, this field defines the amount of the interest portion of any repayment. The value of this field is reduced to zero when the repayment is made in preparation for the new period. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.INT.AMT</field>
+<desc>
+            <p>Holds the deferred interest amount that is being capitalized on the contract. This is a system-updated field.</p>
+        </desc>
+</t>
+<t>
+<field>DLY.ACCR.DATE</field>
+<desc>
+            <p>hold the ACCR.TO.DATE when the contract status is not NAB and ACCR.TO.DATE is greater than or equal to NAB.SRART.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>DLY.INT.ACCR</field>
+<desc>
+            <p>This field holds rounded ACCR.AMT when the contract status is not NAB and ACCR.TO.DATE is greater than or equal to NAB.SRART.DATE.
+</p>
+        </desc>
+</t>
+<t>
+<field>EFF.DATE</field>
+<desc>
+            <p>This field will hold the interest schedule date on which the DEAL.PRIN gets updated.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.RCVD</field>
+<desc>
+            <p />
+            <p>Records the amount of tax paid on each individual repayment received. </p>
+            <p>This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fields record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. </p>
+            <p>Information is stored in this group of fields in reverse chronological order, i.e. the most recent payment details will always be found in the first multivalue of each field. </p>
+            <p>It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Multivalued amount field.</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.EFF.DATE</field>
+<desc>
+            <p>Stores the dates on which the principal balance amounts in the PRIN.BALANCE field became effective. </p>
+            <p>Whenever the principal balance on a contract changes the new balance is recorded in the associated PRIN.BALANCE field.  The PRIN.EFF.DATE field records the date on which each of these balances became effective. </p>
+            <p>Information is stored in these fields in reverse chronological order, i.e. the most recent effective date will always be found in the first multivalue. </p>
+            <p>It should be noted that this field will only contain  data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format. Multivalue field associated with fields PRIN.CCY to PRIN.EFF.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>REPAY.DATE</field>
+<desc>
+            <p>This field would hold the actual cycled date when processing the repayment schedule. This is required as base date for the subsequent cycling of dates.
+</p>
+        </desc>
+</t>
+<t>
+<field>ADD.PAY.3.RCVD</field>
+<desc>
+            <p>Records the amount of the third additional payment element, defined in the ADD.PAY.TYPE field on the MG.PARAMETER, paid on each individual repayment received. </p>
+            <p>This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fields record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. </p>
+            <p>However, it is only possible to repay additional payment elements via an automatic repayment as there is no facility for this via the MG.PAYMENT application. Therefore, this field will only record an amount if the payment details in the group in question relate to an automatic repayment. In the case of a manual redemption this field will contain a null value. If nothing is received for this additional payment type on an automatic repayment then this field will contain a zero value. </p>
+            <p>Additional payment elements are defined on the MG.PARAMETER table. Up to five different types may be created. This field records the amount of the third additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table, received on each repayment. </p>
+            <p>It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the third additional payment element defined on the MG.PARAMETER table has a description of "ENDOWMENT" on the MG.TYPE.TEXT file then this field will have the name TOT.ENDOWMENT.RCVD. </p>
+            <p>Information is stored in this group of fields in reverse chronological order, ie. the most recent payment details will always be found in the first multivalue of each field. </p>
+            <p>This field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.</p>
+        </desc>
+</t>
+<t>
+<field>START.INT.PERIOD</field>
+<desc>
+            <p>Identifies the date of the start of the current interest period. </p>
+            <p>This field records the date from which interest will be accrued for the current interest period. The end of this period is defined in the END.INT.PERIOD field. </p>
+            <p>Within the mortgage module interest is accrued on a "first day" basis. Therefore interest accrued on the date in this field will be recorded in the "current" period. </p>
+            <p>This field is cycled automatically by the end of day batch processing whenever a repayment of interest is made. The START.INT.PERIOD date will then become equal to the END.INT.PERIOD date of the period processed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.ADD.PAY.5.RCVD</field>
+<desc>
+            <p>Records the total amount of the fifth additional payment element, defined in the the ADD.PAY.TYPE field on the MG.PARAMETER table, paid on the contract to date. </p>
+            <p>It is possible to define additional payment elements to be repaid on a periodic basis along with the normal repayments of principal and interest. These types are defined on the MG.PARAMETER table. Up to five different types may be created.  This field records the total amount of the fifth additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table, received on the contract to date. Whenever a repayment of this additional payment element is made the amount received will be added into this field. </p>
+            <p>It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the fifth additional payment element defined on the MG.PARAMETER table has a description of "PREMIUM B" on the MG.TYPE.TEXT file then this field will have the name TOT.PREMIUM.B.RCVD. </p>
+            <p>A breakdown of the payments of this additional element received on each individual repayment can be found in the multivalued ADD.PAY.5.RCVD field. However, because it is possible to archive data from this record the total of all multivalues in the ADD.PAY.5.RCVD field may not equal the total amount recorded in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>ENTRY.IDS</field>
+<desc>
+            <p>This field records the entry IDs of all category entries raised by the interest accrual processing. </p>
+            <p>Whenever interest is accrued by the end of day accrual processing routines the IDs of any category entries raised will be recorded in this field. </p>
+            <p>These IDs consist of two parts, a date-time stamp and a sequence number. All entries raised by a given transaction, ie a specific interest accrual, will have the same date-time stamp but different sequence numbers. Whenever an interest accrual takes place the IDs of the category entries generated are recorded in a new multivalue of this field. This multivalue also has subvalues. The first subvalue records the date-time stamp of the entries and the sequence numbers are recorded in the third. In all cases the second subvalue is left blank. </p>
+            <p>The entry IDs are stored in this field in reverse chronological order. This means that the IDs for the most recently generated category entries are always in the first multivalue. </p>
+            <p>The use of this field is illustrated in the following example: </p>
+            <p>Example: </p>
+            <p>At month end interest will be accrued on all contracts up to the month end date. The IDs of the category entries raised will be recorded as follows: </p>
+            <p>           39.1.1   ENTRY.ID ............. 673732684.48            39.1.2   ENTRY.ID .............            39.1.3   ENTRY.ID ............. 1 </p>
+            <p>The number automatically generated in Field 39.1.1 is unique to the contract and accrual in question and is built in the following way: </p>
+            <p>1.         The first four digits '6737' indicate the number of days            since the 1st of January 1968.  In our example it            corresponds to the 11th of  June 1986. </p>
+            <p>2.         The next five digits '32684' indicate the number of            seconds since midnight.  In our example it corresponds            to an entry generated on line at 09:04:44 AM. </p>
+            <p>3.         The last two digits '48' indicate the number of hundreds            of seconds. </p>
+            <p>The sequence number in field 39.1.3 identifies the entry as a category entry and indicates that only one entry was raised. This entry may be viewed via the CATEG.ENTRY application using the following ID: </p>
+            <p>           673732684.480001 </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.RATE</field>
+<desc>
+            <p>This field determines the rate at which the Tax has been paid on the contract.Each time the rate changes, the different rates are stored in this file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>This is a multivalued field.</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.EFF.DTE</field>
+<desc>
+            <p>PRIN.EFF.DTE and PRIN.INCREASE are associated multi value set . This field holds a date from which the principal increase amount is in effect</p>
+        </desc>
+</t>
+<t>
+<field>SUSP.AMT</field>
+<desc>
+            <p>Holds the suspended Interest amount for the associted  accrual period.</p>
+        </desc>
+</t>
+<t>
+<field></field>
+<desc>
+        <p>This field contains the amount of interest accrued for the multivalue accrual group in question, rounded to the number of decimal places of the currency of the contract. 				The set of fields ACCR.FROM.DATE to ACCR.ACT.AMT form the multivalue set of interest accrual fields. These fields record all details of interest accrued on the contract. A new group is created each time one of the accrual parameters, i.e. outstanding principal or interest rate, changes, or a month end has been reached. 				This field records the amount of accrued interest, rounded to the correct number of decimal places for the currency of the loan, for each of the accrual groups. This amount is accumulated for each interest period and recorded in the OTS.INTEREST field which then determines the amount of interest to be paid at the end of the interest period. 				Interest is accrued to four decimal places and then rounded in such a way that the error in rounding is kept to a minimum. The four decimal place un-rounded amounts are held in the associated ACTUAL.ACCR.AMT field. Any rounding error from a given accrual group is carried forward via the un-rounded accrual amount of the following group. However, this is only true if the following group forms part of the same interest period. As with all other multivalue fields on this file the accrual groups are stored in reverse chronological order. 				The method of rounding is best illustrated by the following example. 				Example : 				The following shows the accrual details on a contract with repayments on the 28th of each month with an interest rate change from 10.9% to 11.3% on 13/10/90. Accruals are shown from 28/09/90 to 27/10/90 which represents one complete interest period. The currency of the contract is pounds sterling which has two decimal places. 				ACCR.PRINCIPAL : 19000 19000.00 19000.00 ACCR.RATE : 11.3% 10.9% 10.9% ACCR.FROM.DATE : 14/10/90 01/10/90 28/09/90 ACCR.TO.DATE : 27/10/90 13/10/90 30/09/90 ACCR.DAYS : 14 13 3 ACCR.AMT : 83.50 74.78 17.26 ACCR.ACT.AMT : 83.4944 74.7861 17.2583 				After the ACTUAL.ACCR.AMT has been calculated for the period 01/10 to 13/10 the following calculation is made to obtain the ACCR.AMT for the group: 				Total un-rounded accrual this period: 17.2583 + 74.7861 --------- 92.0444 				Less the rounded amount this period: 92.0444 - 17.26 --------- 74.7844 				This amount is then rounded to give the ACCR.AMT for the group of 74.78. 				This procedure is repeated for the next group: 				Total un-rounded accrual this period: 17.2583 + 74.7861 + 83.4944 -------------- 175.5388 				Less the rounded amount this period: 92.0444 - 17.26 - 74.78 ------------- 83.4988 				This amount is then rounded to give the ACCR.AMT for the group of 83.45 				The total rounded amount for the period is then: 				 17.26 + 74.78 + 83.45 ----------- 175.49 				This compares with the un-rounded total of 175.5388. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters Multivalue field associated with fields ACC. FROM.DATE to ACCR.ACT.AMT.    		.</p>
+        <p>ACCR.ACT.AMT</p>
+        <p>This field contains the amount of interest, unrounded, accrued for the multivalue accrual group in question. 				The set of fields ACCR.FROM.DATE to ACCR.ACT.AMT form the multivalue set of interest accrual fields. These fields record all details of interest accrued on the contract. A new group is created each time one of the accrual parameters, i.e. outstanding principal or interest rate, changes, or a month end has been reached. 				This field records the amount of interest accrued for each of the multivalue accrual groups. This amount is un-rounded and is held to four decimal places. The rounded accrued amount is stored in the ACCR.AMT field. 				Information is stored in these fields in reverse chronological order, i.e. the most recent accrual details will always be found in the first multivalue of each field. 				It should be noted that this field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				Example : 				The following shows the accrual details on a contract with repayments on the 28th of each month with an interest rate change from 10.9% to 11.3% on 13/10/90. Accruals are shown from 28/09/90 to 27/10/90 which represents one complete interest period. The currency of the contract is pounds sterling which has two decimal places. 															ACCR.PRINCIPAL 						19000.00						19000.00						19000.00																ACCR.RATE						11.3%						10.9%						10.9%																ACCR.FROM.DATE 						14/10/90						01/10/90						28/09/90																ACCR.TO.DATE						27/10/90						13/10/90						30/09/90																ACCR.DAYS						14						13						3																ACCR.AMT						83.50						74.78						17.26																ACCR.ACT.AMT						83.4944						74.7861						17.2583																																								Rounding error carried forward.				The way in which these amounts are rounded can be found in the helptext for the ACCR.AMT field. 				</p>
+        <p>Validation Rules</p>
+        <p>								1 - 19 numeric characters Multivalue field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT.		.</p>
+        <p>ACCR.DAYS</p>
+        <p>Identifies the number of days that interest has been accrued for the multivalue accrual group in question. 				The set of fields ACCR.FROM.DATE to ACCR.ACT.AMT form the multivalue set of interest accrual fields. These fields record all details of interest accrued on the contract. A new group is created each time one of the accrual parameters, i.e. outstanding principal or interest rate, changes, or a month end has been reached. 				This field records the number of days that interest has been accrued for each of the accrual groups. 				Information is stored in these fields in reverse chronological order, i.e. the most recent accrual details will always be found in the first multivalue of each field. 				It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				Example : 				The following example shows the accrual details on a contract with repayments on the 28th of each month with an interest rate change from 10.9% to 11.3% on 15/10/90. 				ACCR.PRINCIPAL : 19000 19000.00 19000.00 ACCR.RATE : 11.3% 10.9% 10.5% ACCR.FROM.DATE : 16/10/90 01/10/90 28/09/90 ACCR.TO.DATE : 27/10/90 15/10/90 30/09/90 ACCR.DAYS : 12 15 3 ACCR.AMT : 71.57 86.29 17.26 ACCR.ACT.AMT : 71.5666 86.2917 17.2583 				The three groups shown have each accrued interest for 3, 15 and 12 days respectively. In each case the number of days is inclusive of both the ACCR.FROM.DATE and ACCR.TO.DATE 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 3 numeric characters Multivalue field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT.		.</p>
+        <p>ACCR.FROM.DATE</p>
+        <p>Identifies the date from which interest is accrued for the multivalue accrual group in question. 				The set of fields ACCR.FROM.DATE to ACCR.ACT.AMT form the multivalue set of interest accrual fields. These fields record all details of interest accrued on the contract. A new group is created each time one of the accrual parameters, ie, outstanding principal or interest rate, changes, or, a month end has been reached. 				This field records the dates from which interest accruals commence for each of the accrual groups. 				Information is stored in these fields in reverse chronological order, i.e. the most recent accrual details will always be found in the first multivalue of each field. 				</p>
+        <p>Validation Rules</p>
+        <p>				Standard date format Multivalue field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT.		.</p>
+        <p>ACCR.PRIN</p>
+        <p>Identifies the principal amount on which interest was accrued for the multivalue accrual group in question. 				The set of fields ACCR.FROM.DATE to ACCR.ACT.AMT form the multivalue set of interest accrual fields. These fields record all details of interest accrued on the contract. A new group is created each time one of the accrual parameters, i.e. outstanding principal or interest rate, changes, or a month end has been reached. 				This field records the outstanding contract principal on which interest was accrued for each of the accrual groups. 				Information is stored in these fields in reverse chronological order, i.e. the most recent accrual details will always be found in the first multivalue of each field. 				It should be noted that this field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				Example : 				The following example shows the accrual details on a contract with repayments of 2000.00 per month to be paid on the 28th of each month: 				ACCR.PRINCIPAL : 17000.00 17000.00 19000.00 ACCR.RATE : 11.3 11.3% 11.3% ACCR.FROM.DATE : 01/11/90 28/10/90 01/10/90 ACCR.TO.DATE : 27/11/90 31/10/90 27/10/90 ACCR.DAYS : 27 3 27 ACCR.AMT : 144.07 16.01 161.03 ACCR.ACT.AMT : 144.0750 16.0083 161.0250 				In this case the first accrual group (the right most column) ends on 27/10/90 due to the change in the principal balance on 28/10/90 caused by the repayment. The second group splits at the October month end and the final group ends with the next repayment on 28/11/90. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters Multivalue field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT.		.</p>
+        <p>ACCR.RATE</p>
+        <p>Identifies the interest rate applied for the multivalue accrual group in question. 				The set of fields ACCR.FROM.DATE to ACCR.ACT.AMT form the multivalue set of interest accrual fields. These fields record all details of interest accrued on the contract. A new group is created each time one of the accrual parameters, i.e. outstanding principal or interest rate, changes, or a month end has been reached. 				This field records the interest rates which have been applied for each of the accrual groups. 				Information is stored in these fields in reverse chronological order, i.e. the most recent accrual details will always be found in the first multivalue of each field. 				It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				Example : 				The following example shows the accrual details on a contract with repayments on the 28th of each month with an interest rate change from 10.9% to 11.3% on 15/10/90 				ACCR.PRINCIPAL : 19000 19000.00 19000.00 ACCR.RATE : 11.3 10.9 10.5% ACCR.FROM.DATE : 16/10/90 01/10/90 28/09/90 ACCR.TO.DATE : 27/10/90 15/10/90 30/09/90 ACCR.DAYS : 12 15 3 ACCR.AMT : 71.57 86.29 17.26 ACCR.ACT.AMT : 77.5666 86.2917 17.2583 				In this case the first accrual split is due to the September month end. The second split arises when the rate changes 15/09/90. The final group ends on 27/10/90 as the principal balance will change the following day due to the repayment on 28/10/90. It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				Example : 				The following example shows the accrual details on a contract with repayments on the 28th of each month with an interest rate change from 10.9% to 11.3% on 15/10/90 				ACCR.PRINCIPAL : 19000 19000.00 19000.00 ACCR.RATE : 11.3 10.9 10.5% ACCR.FROM.DATE : 16/10/90 01/10/90 28/09/90 ACCR.TO.DATE : 27/10/90 15/10/90 30/09/90 ACCR.DAYS : 12 15 3 ACCR.AMT : 71.57 86.29 17.26 ACCR.ACT.AMT : 71.5666 86.2917 17.2583 				In this case the first accrual split is due to the September month end. The second split arises when the rate changes 15/09/90. The final group ends on 27/10/90 as the principal balance will change the following day due to the repayment on 28/10/90. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 11 numeric characters Multivalue field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT.		.</p>
+        <p>ACCR.TO.DATE</p>
+        <p>ACCR.TO.DATE 				</p>
+        <p>Validation Rules</p>
+        <p>				Multivalue field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT.		.</p>
+        <p>ADD.PAY.1.RCVD</p>
+        <p>ADD.PAY.1.RCVD 		.</p>
+        <p>ADD.PAY.2.RCVD</p>
+        <p>Records the amount of the second additional payment element, defined in the ADD.PAY.TYPE field on the MG.PARAMETER, paid on each individual repayment received. 				This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fields record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. 				However, it is only possible to repay additional payment elements via an automatic repayment as there is no facility for this via the MG.PAYMENT application. Therefore, this field will only record an amount if the payment details in the group in question relate to an automatic repayment. In the case of a manual redemption this field will contain a null value. If nothing is received for this additional payment type on an automatic repayment then this field will contain a zero value. 				Additional payment elements are defined on the MG.PARAMETER table. Up to five different types may be created. This field records the amount of the second additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table, received on each repayment. It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the second additional payment element defined on the MG.PARAMETER table has a description of "SAVING" on the MG.TYPE.TEXT file then this field will have the name TOT.SAVING.RCVD. 				Information is stored in this group of fields in reverse chronological order, i.e. the most recent payment details will always be found in the first multivalue of each field. 				This field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.		.</p>
+        <p>ADD.PAY.3.RCVD</p>
+        <p>Records the amount of the third additional payment element, defined in the ADD.PAY.TYPE field on the MG.PARAMETER, paid on each individual repayment received. 				This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fields record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. 				However, it is only possible to repay additional payment elements via an automatic repayment as there is no facility for this via the MG.PAYMENT application. Therefore, this field will only record an amount if the payment details in the group in question relate to an automatic repayment. In the case of a manual redemption this field will contain a null value. If nothing is received for this additional payment type on an automatic repayment then this field will contain a zero value. 				Additional payment elements are defined on the MG.PARAMETER table. Up to five different types may be created. This field records the amount of the third additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table, received on each repayment. 				It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the third additional payment element defined on the MG.PARAMETER table has a description of "ENDOWMENT" on the MG.TYPE.TEXT file then this field will have the name TOT.ENDOWMENT.RCVD. 				Information is stored in this group of fields in reverse chronological order, ie. the most recent payment details will always be found in the first multivalue of each field. 				This field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.		.</p>
+        <p>ADD.PAY.4.RCVD</p>
+        <p>Records the amount of the fourth additional payment element, defined in the ADD.PAY.TYPE field on the MG.PARAMETER, paid on each individual repayment received. 				This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fields record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. 				However, it is only possible to repay additional payment elements via an automatic repayment as there is no facility for this via the MG.PAYMENT application. Therefore, this field will only record an amount if the payment details in the group in question relate to an automatic repayment. In the case of a manual redemption this field will contain a null value. If nothing is received for this additional payment type on an automatic repayment then this field will contain a zero value. 				Additional payment elements are defined on the MG.PARAMETER table. Up to five different types may be created. This field records the amount of the fourth additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table received on each repayment. 				It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the fourth additional payment element defined on the MG.PARAMETER table has a description of "PREMIUM A" on the MG.TYPE.TEXT file then this field will have the name TOT.PREMIUM.A.RCVD. 				Information is stored in this group of fields in reverse chronological order, i.e. the most recent payment details will always be found in the first multivalue of each field. 				This field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.		.</p>
+        <p>ADD.PAY.5.RCVD</p>
+        <p>Records the amount of the fifth additional payment element, defined in the ADD.PAY.TYPE field on the MG.PARAMETER, paid on each individual repayment received. 				This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fields record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. 				However, it is only possible to repay additional payment elements via an automatic repayment as there is no facility for this via the MG.PAYMENT application. Therefore, this field will only record an amount if the payment details in the group in question relate to an automatic repayment. In the case of a manual redemption this field will contain a null value. If nothing is received for this additional payment type on an automatic repayment then this field will contain a zero value. 				Additional payment elements are defined on the MG.PARAMETER table. Up to five different types may be created. This field records the amount of the fifth additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table received on each repayment. 				It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the fifth additional payment element defined on the MG.PARAMETER table has a description of "PREMIUM B" on the MG.TYPE.TEXT file then this field will have the name TOT.PREMIUM.B.RCVD. 				Information is stored in this group of fields in reverse chronological order, i.e. the most recent payment details will always be found in the first multivalue of each field. 				This field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.		.</p>
+        <p>CONTRACT.NO</p>
+        <p>This field uniquely identifies each record on this file. 				This is the same ID that is used on the main file MG.MORTGAGE and is the identifier assigned to each contract at first input. 				The format of the key is as follows: 				 MG YYDDD NNNNN A where: MG - Mortgage module identifier. YYDDD - Year and date of contract input, in julian date format. NNNNN - Sequence number which is unique for the date of input. A - Contract suffix which must be defined on the MG.PARAMETER table. 				It is not necessary to enter the full contract number when accessing this file. If the contract has been input the same day, or is a new contract, then only the sequence number portion need be entered. In all cases it is not necessary to type any leading zeroes in the sequence number. 				Example : 				To access the MG.BALANCES record for a contract number 99, on the same day as it was input, the only input required to this field is "99". This will be expanded by the system to give the contract no "MG9002300099". In this case the date of input and was 23/01/90. 				To access this same record the following day and any day thereafter both the date and sequence number (without leading zeroes) should be entered, i.e. "90002399". 				</p>
+        <p>Validation Rules</p>
+        <p>				10 numeric characters prefixed by MG with an optional suffix of 1 alpha character. MGYYDDDNNNNNA (see details) (mandatory input)				Must reference an existing contract on the MG.MORTGAGE file.		.</p>
+        <p>CONTRACT.TYPE</p>
+        <p>Identifies the type of the loan throughout the contract. 				This field records the contract type of the loan. If this type is changed, i.e. from LINEAR to NONREDEM, then this will be recorded here. The date from which the contract type applies to the loan is specified in the associated multivalue of the TYPE.EFF.DATE field. 				Information is stored in these fields in reverse chronological order, i.e. the current contract type will always be found in the first multivalue. 				It should be noted that this field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 12 alphanumeric characters Multivalue field associated with TYPE.EFF.DATE		.</p>
+        <p>DEF.IN.AMT</p>
+        <p>Records the capitalised interest amount.						.</p>
+        <p>DEF.IN.EFF.DATE</p>
+        <p>Records the date on which the interest and tax on interest is capitalised.												For each capitalisation event, this field along with the associated fields				DEF.INT.AMT and DEF.TAX.AMT is multivalued.										.</p>
+        <p>DEF.TAX.AMT</p>
+        <p>Records the capitalised tax on interest.										.</p>
+        <p>END.INT.PERIOD</p>
+        <p>Identifies the date of the start of the current interest period. 				This field defines the date on which the interest accrued in the current period is to be settled. Accruals for the current interest period commence on the date held in the START.INT.PERIOD field. 				Within the mortgage module interest is accrued on a "first day" basis. Therefore interest accrued on this date will not be booked in the "current" period whose end this date defines. 				The date in this field will be cycled automatically by the end of day batch process whenever an interest payment is made. It is updated with the next interest repayment date from the MG.MORTGAGE record. The old date from this field then becomes the START.INT.PERIOD date for the coming period. 				</p>
+        <p>Validation Rules</p>
+        <p>				Standard date format.		.</p>
+        <p>ENTRY.IDS</p>
+        <p>This field records the entry IDs of all category entries raised by the interest accrual processing. 				Whenever interest is accrued by the end of day accrual processing routines the IDs of any category entries raised will be recorded in this field. 				These IDs consist of two parts, a date-time stamp and a sequence number. All entries raised by a given transaction, ie a specific interest accrual, will have the same date-time stamp but different sequence numbers. Whenever an interest accrual takes place the IDs of the category entries generated are recorded in a new multivalue of this field. This multivalue also has subvalues. The first subvalue records the date-time stamp of the entries and the sequence numbers are recorded in the third. In all cases the second subvalue is left blank. 				The entry IDs are stored in this field in reverse chronological order. This means that the IDs for the most recently generated category entries are always in the first multivalue. 				The use of this field is illustrated in the following example: 				Example: 				At month end interest will be accrued on all contracts up to the month end date. The IDs of the category entries raised will be recorded as follows: 				 39.1.1 ENTRY.ID ............. 673732684.48 39.1.2 ENTRY.ID ............. 39.1.3 ENTRY.ID ............. 1 				The number automatically generated in Field 39.1.1 is unique to the contract and accrual in question and is built in the following way: 				1. The first four digits '6737' indicate the number of days since the 1st of January 1968. In our example it corresponds to the 11th of June 1986. 				2. The next five digits '32684' indicate the number of seconds since midnight. In our example it corresponds to an entry generated on line at 09:04:44 AM. 				3. The last two digits '48' indicate the number of hundreds of seconds. 				The sequence number in field 39.1.3 identifies the entry as a category entry and indicates that only one entry was raised. This entry may be viewed via the CATEG.ENTRY application using the following ID: 				 673732684.480001 				</p>
+        <p>Validation Rules</p>
+        <p>				Internal multivalue field.		.</p>
+        <p>HUPTWO.RCVD</p>
+        <p>Records the amount of the first additional payment element, defined in the ADD.PAY.TYPE field on the MG.PARAMETER, paid on each individual repayment received. 				This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fields record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. 				However, it is only possible to repay additional payment elements via an automatic repayment as there is no facility for this via the MG.PAYMENT application. Therefore, this field will only record an amount if the payment details in the group in question relate to an automatic repayment. In the case of a manual redemption this field will contain a null value. If nothing is received for this additional payment type on an automatic repayment then this field will contain a zero value. 				Additional payment elements are defined on the MG.PARAMETER table. Up to five different types may be created. This field records the amount of the first additional element defined in ADD.PAY.TYPE field of the MG.PARAMETER table, received on each repayment. 				It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the first additional payment element defined on the MG.PARAMETER table has a description of "INSURANCE" on the MG.TYPE.TEXT file then this field will have the name TOT.INSURANCE.RCVD. 				Information is stored in this group of fields in reverse chronological order, ie. the most recent payment details will always be found in the first multivalue of each field. 				This field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters. Multivalue field associated with fields 29.1 (PAYMENT DATE) to 38.1 (ADD PAY 5 RCVD).		.</p>
+        <p>INT.BAND</p>
+        <p>Specifies the amount that the int rate field below applies to. Used for banded interest calculations. 				When a mortgage has interest rates applied on a banded basis, then this field is used to display the portion of the total principal amount that the interest rate specified below applies to. 				</p>
+        <p>Validation Rules</p>
+        <p>				1-19 Numeric characters. Multivalued field associated with fields INT.EFF.DATE to INT.RATE.		.</p>
+        <p>INT.EFF.DATE</p>
+        <p>Stores the dates on which the interest rates in the INTEREST.RATE field became effective. 				Whenever the interest rate on a contract changes the new rate is recorded in the associated INTEREST.RATE field. The INT.EFF.DATE field records the date on which each of these rates became effective. 				Information is stored in these fields in reverse chronological order, i.e. the most recent effective date will always be found in the first multivalue. 				It should be noted that this field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				</p>
+        <p>Validation Rules</p>
+        <p>				Standard date format. Multivalued field associated with fields INT.EFF.DATE to INT.RATE.		.</p>
+        <p>INT.RATE</p>
+        <p>Records the interest rates applied to the portion of the principal specified above throughout its life. 				Each time the interest rate changes on the contract it will be recorded in a new multivalue in this field. 				This field therefore consists of a number of multivalues each recording the interest rate applicable to the contract at various times throughout its life. The date on which each rate was effective is stored in the associated multivalue of the INT.EFF.DATE field. 				Information is stored in this field in reverse chronological order, i.e. the current interest rate will always be found in the first multivalue. 				It should be noted that this field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 11 numeric characters Multivalued field associated with fields INT.EFF.DATE to INT.RATE.		.</p>
+        <p>INTEREST.RCVD</p>
+        <p>Records the amount of interest paid on each individual repayment received. 				This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fieldS record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. 				However, it is only possible to repay interest via an automatic repayment as there is no facility that allows interest to be paid via the MG.PAYMENT application. Therefore, this field will only record an amount if the payment details in the group in question relate to an automatic repayment. In the case of a manual redemption this field will contain a null value. If no interest is received on an automatic repayment then this field will contain a zero value. 				Information is stored in this group of fields in reverse chronological order, i.e. the most recent payment details will always be found in the first multivalue of each field. 				It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.		.</p>
+        <p>MG.PAYMENT.NO</p>
+        <p>Identifies the contract payment number from the MG.PAYMENT application if the multivalue group in question details a manual redemption. 				This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. Although these fields record both automatic repayments and manual redemptions entered via the MG.PAYMENT application, the REPAYMENT.NO field will only contain a value when the multivalue group relates to a manual redemption entered via the MG.PAYMENT application. In the case of automatic repayments this field will contain a null value. 				If the payment detailed in the multivalue group in question relates to a manual redemption, then the contract payment number of that redemption is recorded in this field. This enables a link to be maintained back to the original payment record on the MG.PAYMENT file. In order to access this record the MG.PAYMENT application should be used with a record ID of the contract number and this payment number separated by a full stop. For example, if the MG.BALANCES record for the contract MG9012300012 records the details of a manual redemption with a payment number of 1 then ID to the relevant MG.PAYMENT record is MG901230012.1. 				Information is stored in this group of fields in reverse chronological order, ie. the most recent payment details will always be found in the first multivalue of each field. 				It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 3 numeric characters. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.		.</p>
+        <p>OTS.INT.ADJUST</p>
+        <p>OTS.INT.ADJUST 				</p>
+        <p>Validation Rules</p>
+        <p>				Currently not in use.		.</p>
+        <p>OTS.INTEREST</p>
+        <p>This field records the amount of unpaid interest accrued in the current interest period. 				As interest is accrued, the details of each accrual are stored in the multivalue accrual fields (ACCR.PRINCIPAL - ACTUAL.ACCR.AMT). This field contains the total of accrued interest in the current period. This is equal to the sum of the multivalues in the ACCR.AMT field whose corresponding ACCR.FROM.DATE is greater than or equal to the START.INT.PERIOD date. 				When a repayment date is reached and the accruals have been completed, this field defines the amount of the interest portion of any repayment. The value of this field is reduced to zero when the repayment is made in preparation for the new period. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters.		.</p>
+        <p>PAYMENT.DATE</p>
+        <p>Identifies the dates on which both automatic repayments and manual redemptions were received. 				This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fields record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. 				The value dates of all payments made are recorded in this field irrespective of whether these are automatic or manual payments. 				Information is stored in this group of fields in reverse chronological order, ie. the most recent payment details will always be found in the first multivalue of each field. 				It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				</p>
+        <p>Validation Rules</p>
+        <p>				Standard date format. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.		.</p>
+        <p>PRIN.CCY</p>
+        <p>Identifies the currency of the mortgage. 				</p>
+        <p>Validation Rules</p>
+        <p>				CCY (Currency Code) Multivalue field associated with fields PRIN.CCY to PRIN.EFF.DATE.		.</p>
+        <p>PRIN.BALANCE</p>
+        <p>Records the principal balance on the contract at each stage throughout the contract life. 				Each time the principal balance changes on the contract it will be recorded in a new multivalue in this field. 				This field therefore consists of a number of multivalues each recording the principal balance on the contract at various times throughout its life. The date on which each amount became effective is stored in the associated multivalue of the PRIN.EFF.DATE field. 				Information is stored in this field in reverse chronological order, i.e. the current principal balance will always be found in the first multivalue. 				It should be noted that this field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters Multivalue field associated with fields PRIN.CCY to PRIN.EFF.DATE.		.</p>
+        <p>PRIN.EFF.DATE</p>
+        <p>Stores the dates on which the principal balance amounts in the PRIN.BALANCE field became effective. 				Whenever the principal balance on a contract changes the new balance is recorded in the associated PRIN.BALANCE field. The PRIN.EFF.DATE field records the date on which each of these balances became effective. 				Information is stored in these fields in reverse chronological order, i.e. the most recent effective date will always be found in the first multivalue. 				It should be noted that this field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				</p>
+        <p>Validation Rules</p>
+        <p>				Standard date format. Multivalue field associated with fields PRIN.CCY to PRIN.EFF.DATE.		.</p>
+        <p>PRINCIPAL.RCVD</p>
+        <p>Records the amount of principal paid on each individual repayment received. 				This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fields record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. 				The PRINCIPAL.RCVD field records that amount of principal received on each payment made irrespective of whether these are automatic or manual payments. 				Information is stored in this group of fields in reverse chronological order, i.e. the most recent payment details will always be found in the first multivalue of each field. 				It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.		.</p>
+        <p>RECORD.START.DATE</p>
+        <p>This field identifies the date from which details on this record apply. 				Because the volume of data retained for each contract, the MG.BALANCES file becomes very large after a number of years. To overcome this problem, data from individual records on this file is periodically archived to the MG.BALANCES.HIST file. 				Therefore, not all the information relating to a contract is retained on the "Live" MG.BALANCES file. This field contains the date from which financial balance information is available on the record in question. 				As no financial data is available on this record prior to this date, the field also defines the limit for making backdated changes to the contract. 				</p>
+        <p>Validation Rules</p>
+        <p>				Standard date format		.</p>
+        <p>REPAY.TYPE</p>
+        <p>Multi-valued repayment type field. 				Mortgage account repayments may be of three types, and the values held here indicate the type of payment for the associated multi-values as follows: 				i) REDEMPTION, the repayment is for an amount of principal only. 				ii) AUTO.REPAY, the repayment is for an amount of interest only. 				iii) AUTO.REDEM, the repayment is for both principal and interest. 				</p>
+        <p>Validation Rules</p>
+        <p>				10 alphanumeric characters		.</p>
+        <p>REPAYMENT.AMT</p>
+        <p>Identifies the total repayment amount received on scheduled automatic repayments. 				This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. Although this group of fields records both automatic repayments and manual redemptions entered via the MG.PAYMENT application, the REPAYMENT.AMT field will only record an amount when the multivalue group relates to an automatic repayment. In the case of manual payments this field will contain a null value. 				The amount recorded in this field represents the total of the principal, interest and any additional payments elements received on the payment in question. 				Information is stored in this group of fields in reverse chronological order, i.e. the most recent payment details will always be found in the first multivalue of each field. 				It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.		.</p>
+        <p>REPAYMENTS.MADE</p>
+        <p>Records the total number of automatic periodic repayments made on the contract to date. 				This field records the total number of scheduled automatic repayments that have been made to date. This total does not include manual partial redemptions entered via the MG.PAYMENT application. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 10 numeric characters.		.</p>
+        <p>START.INT.PERIOD</p>
+        <p>Identifies the date of the start of the current interest period. 				This field records the date from which interest will be accrued for the current interest period. The end of this period is defined in the END.INT.PERIOD field. 				Within the mortgage module interest is accrued on a "first day" basis. Therefore interest accrued on the date in this field will be recorded in the "current" period. 				This field is cycled automatically by the end of day batch processing whenever a repayment of interest is made. The START.INT.PERIOD date will then become equal to the END.INT.PERIOD date of the period processed. 				</p>
+        <p>Validation Rules</p>
+        <p>				Standard date format.		.</p>
+        <p>TAX.RATE</p>
+        <p>This field determines the rate at which the Tax has been paid on the contract.Each time the rate changes, the different rates are stored in this file.				</p>
+        <p>Validation Rules</p>
+        <p>								This is a multivalued field.		.</p>
+        <p>TAX.RCVD</p>
+        <p>Records the amount of tax paid on each individual repayment received. 				This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fields record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. 				Information is stored in this group of fields in reverse chronological order, i.e. the most recent payment details will always be found in the first multivalue of each field. 				It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				</p>
+        <p>Validation Rules</p>
+        <p>								Multivalued amount field.		.</p>
+        <p>TOT.ADD.PAY.1.RCVD</p>
+        <p>TOT.ADD.PAY.1.RCVD 		.</p>
+        <p>TOT.ADD.PAY.2.RCVD</p>
+        <p>Records the total amount of the second additional payment element, defined in the the ADD.PAY.TYPE field on the MG.PARAMETER table, paid on the contract to date. 				It is possible to define additional payment elements to be repaid on a periodic basis along with the normal repayments of principal and interest. These types are defined on the MG.PARAMETER table. Up to five different types may be created. This field records the total amount of the second additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table, received on the contract to date. Whenever a repayment of this additional payment element is made the amount received will be added into this field. 				It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the second additional payment element defined on the MG.PARAMETER table has a description of "SAVING" on the MG.TYPE.TEXT file then this field will have the name TOT.SAVING.RCVD. 				A breakdown of the payments of this additional element received on each individual repayment can be found in the multivalued ADD.PAY.2.RCVD field. However, because it is possible to archive data from this record the total of all multivalues in the ADD.PAY.2.RCVD field may not equal the total amount recorded in this field. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters.		.</p>
+        <p>TOT.ADD.PAY.3.RCVD</p>
+        <p>Records the total amount of the third additional payment element, defined in the the ADD.PAY.TYPE field on the MG.PARAMETER table, paid on the contract to date. 				It is possible to define additional payment elements to be repaid on a periodic basis along with the normal repayments of principal and interest. These types are defined on the MG.PARAMETER table. Up to five different types may be created. This field records the total amount of the third additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table, received on the contract to date. Whenever a repayment of this additional payment element is made the amount received will be added into this field. 				It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the third additional payment element defined on the MG.PARAMETER table has a description of "ENDOWMENT" on the MG.TYPE.TEXT file then this field will have the name TOT.ENDOWMENT.RCVD. 				A breakdown of the payments of this additional element received on each individual repayment can be found in the multivalued ADD.PAY.3.RCVD field. However, because it is possible to archive data from this record the total of all multivalues in the ADD.PAY.3.RCVD field may not equal the total amount recorded in this field. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters.		.</p>
+        <p>TOT.ADD.PAY.4.RCVD</p>
+        <p>Records the total amount of the fourth additional payment element, defined in the the ADD.PAY.TYPE field on the MG.PARAMETER table, paid on the contract to date. 				It is possible to define additional payment elements to be repaid on a periodic basis along with the normal repayments of principal and interest. These types are defined on the MG.PARAMETER table. Up to five different types may be created. This field records the total amount of the fourth additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table, received on the contract to date. Whenever a repayment of this additional payment element is made the amount received will be added into this field. 				It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the fourth additional payment element defined on the MG.PARAMETER table has a description of "PREMIUM A" on the MG.TYPE.TEXT file then this field will have the name TOT.PREMIUM.A.RCVD. 				A breakdown of the payments of this additional element received on each individual repayment can be found in the multivalued ADD.PAY.4.RCVD field. However, because it is possible to archive data from this record the total of all multivalues in the ADD.PAY.4.RCVD field may not equal the total amount recorded in this field. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters.		.</p>
+        <p>TOT.ADD.PAY.5.RCVD</p>
+        <p>Records the total amount of the fifth additional payment element, defined in the the ADD.PAY.TYPE field on the MG.PARAMETER table, paid on the contract to date. 				It is possible to define additional payment elements to be repaid on a periodic basis along with the normal repayments of principal and interest. These types are defined on the MG.PARAMETER table. Up to five different types may be created. This field records the total amount of the fifth additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table, received on the contract to date. Whenever a repayment of this additional payment element is made the amount received will be added into this field. 				It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the fifth additional payment element defined on the MG.PARAMETER table has a description of "PREMIUM B" on the MG.TYPE.TEXT file then this field will have the name TOT.PREMIUM.B.RCVD. 				A breakdown of the payments of this additional element received on each individual repayment can be found in the multivalued ADD.PAY.5.RCVD field. However, because it is possible to archive data from this record the total of all multivalues in the ADD.PAY.5.RCVD field may not equal the total amount recorded in this field. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters.		.</p>
+        <p>TOT.HUPTWO.RCVD</p>
+        <p>Records the total amount of the first additional payment element, defined in the the ADD.PAY.TYPE field on the MG.PARAMETER table, paid on the contract to date. 				It is possible to define additional payment elements to be repaid on a periodic basis along with the normal repayments of principal and interest. These types are defined on the MG.PARAMETER table. Up to five different types may be created. This field records the total amount of the first additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table, received on the contract to date. Whenever a repayment of this additional payment element is made the amount received will be added into this field. 				It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the first additional payment element defined on the MG.PARAMETER table has a description of "INSURANCE" on the MG.TYPE.TEXT file then this field will have the name TOT.INSURANCE.RCVD. 				A breakdown of the payments of this additional element received on each individual repayment can be found in the multivalued ADD.PAY.1.RCVD field. However, because it is possible to archive data from this record the total of all multivalues in the ADD.PAY.1.RCVD field may not equal the total amount recorded in this field. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters.		.</p>
+        <p>TOT.INTEREST.RCVD</p>
+        <p>Records the total amount of interest paid on the contract. 				Whenever a repayment of interest is made, the amount of interest received will be added to the value in this field. This field therefore records the total amount of all interest repayments received on the contract to date. 				A breakdown of the payments of interest received on each individual repayment can be found in the multivalued INTEREST.RCVD field. It should be noted, however, that because it is possible to archive data from this record the total of all multivalues in the INTEREST.RCVD field may not equal the total amount recorded in this field. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters.		.</p>
+        <p>TOT.PRINCIPAL.RCVD</p>
+        <p>Records the total amount of principal paid on the contract. 				Whenever a repayment of principal is made, either via the automatic periodic repayment scheme or via the MG.PAYMENT application, the amount of principal received will be added the value in this field. This field therefore records the total amount of all principal repayments received on the contract to date. 				A breakdown of the payments of principal received on each individual repayment can be found in the multivalued PRINCIPAL.RCVD field. It should be noted however that because of the possibility to archive data from this record the total of all multivalues in the PRINCIPAL.RCVD field may not equal the total amount recorded in this field. 				</p>
+        <p>Validation Rules</p>
+        <p>				1 - 19 numeric characters.		.</p>
+        <p>TOT.TAX.RCVD</p>
+        <p>Records the total amount of Tax paid on the contract.Whenever a payment of Tax made, the amount of Tax received will be added to the value on this field.This field therefore holds the Total amount of Tax received till date.A breakdown of the payments of Tax received on each individual tax payment can be found in the multivalued TAX.RCVD field.				</p>
+        <p>Validation Rules</p>
+        <p>								An Amount field.		.</p>
+        <p>TYPE.EFF.DATE</p>
+        <p>Stores the dates on which the loan types in the CONTRACT.TYPE field became effective. 				The contract type of a loan may vary throughout the life of the contract. The types that have applied to the current loan are held in the associated field CONTRACT.TYPE. This field identifies the dates on which these types became effective. 				Information is stored in these fields in reverse chronological order, i.e. the most recent effective date will always be found in the first multivalue. 				It should be noted that this field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. 				</p>
+        <p>Validation Rules</p>
+        <p>				Standard date format Multivalued field associated with CONTRACT.TYPE.		.</p>
+        <p>OTS.TAX.AMOUNT</p>
+        <p>Holds the outstanding tax amount. The TAX amount is calculated based on TAX.ON field in the Contract 		.</p>
+        <p>OTS.TAX.ADJUST</p>
+        <p>Holds the same outstanding tax amount as OTS.TAX.AMOUNT		.</p>
+        <p>PRIN.INCREASE</p>
+        <p>PRIN.INCREASE and PRIN.EFF.DTE are associated multi value set . This field holds the principal increase amount that is specified in the MG template that is effective On the date updated in PRIN.EFF.DATE		.</p>
+        <p>PRIN.EFF.DTE</p>
+        <p>PRIN.EFF.DTE and PRIN.INCREASE are associated multi value set . This field holds a date from which the principal increase amount is in effect		.</p>
+        <p>DEF.INT.AMT</p>
+        <p>Holds the deferred interest amount that is being capitalized on the contract. This is a system-updated field.		.</p>
+        <p>OTS.SUSP.INT</p>
+        <p>Holds the total outstanding interest amount that has been suspended . The system would update this field when the MG contract starts suspending the interest accruals		.</p>
+        <p>SUSP.AMT</p>
+        <p>Holds the suspended Interest amount for the associted accrual period.		.</p>
+        <p>DLY.ACCR.DATE</p>
+        <p>Hold the ACCR.TO.DATE when the contract status is not NAB and ACCR.TO.DATE is greater than or equal to NAB.SRART.DATE.			.</p>
+        <p>DLY.INT.ACCR</p>
+        <p>This field holds rounded ACCR.AMT when the contract status is not NAB and ACCR.TO.DATE is greater than or equal to NAB.SRART.DATE.		.</p>
+        <p>NAB.START.DATE</p>
+        <p>Holds the date on which the linked PD of the MG contract moves to NAB. Maintained in Sync with OVERDUE.STATUS field of MG.MORTGAGE application. This field is also updated when the NAB.PERIOD.INT in the PD.PARAMETER changes. 		.</p>
+        <p>TOT.SUSP.INT</p>
+        <p>This field is to determine the total amount of interest, which has been suspended. This amount is the total of the whole interest, which has been suspended from the start of the NAB		.</p>
+        <p>TOT.APAY.1.RCVD</p>
+        <p>
+'DATA' type of field		.</p>
+        <p>TOT.APAY.2.RCVD</p>
+        <p>
+'DATA' type of field		.</p>
+        <p>TOT.APAY.3.RCVD</p>
+        <p>
+'DATA' type of field		.</p>
+        <p>TOT.APAY.4.RCVD</p>
+        <p>
+'DATA' type of field.		.</p>
+        <p>APAY.1.RCVD</p>
+        <p>
+'DATA' type of field		.</p>
+        <p>APAY.2.RCVD</p>
+        <p>
+'DATA' type of field		.</p>
+        <p>APAY.3.RCVD</p>
+        <p>
+'DATA' type of field.		.</p>
+        <p>APAY.4.RCVD</p>
+        <p>
+'DATA' type of field.		.</p>
+        <p>CONTRACT.STATUS</p>
+        <p>Jdescriptor field		.</p>
+        <p>ADD.PAY.DATE</p>
+        <p>Holds the actual cycled date when processing the add pay schedule. This is required as base date for the subsequent cycling of dates. This field is used to maintain the same maturity date.		.</p>
+        <p>REPAY.DATE</p>
+        <p>This field would hold the actual cycled date when processing the repayment schedule. This is required as base date for the subsequent cycling of dates.		.</p>
+        <p>REDEM.DATE</p>
+        <p>This field would hold the actual cycled date when processing the redemption schedule. This is required as base date for the subsequent cycling of dates		.</p>
+        <p>TOT.1.RCVD</p>
+        <p>Sum of all additional payment amounts that are store in 1.RCVD 		.</p>
+        <p>TOT.2.RCVD</p>
+        <p>Sum of all additional payment amounts that are store in 2.RCVD 		.</p>
+        <p>TOT.3.RCVD</p>
+        <p>Sum of all additional payment amounts that are store in 3.RCVD 		.</p>
+        <p>TOT.A1.RCVD</p>
+        <p>Sum of all additional payment amounts that are store in 4.RCVD 		.</p>
+        <p>1.RCVD</p>
+        <p>Stores the additional amount given in ADD.AMOUNT field of MG.MORTGAGE. This amount is sorted in the order specified in MG.PARAMETER record.		.</p>
+        <p>2.RCVD</p>
+        <p>Stores the additional amount given in ADD.AMOUNT field of MG.MORTGAGE. This amount is sorted in the order specified in MG.PARAMETER record.		.</p>
+        <p>3.RCVD</p>
+        <p>Stores the additional amount given in ADD.AMOUNT field of MG.MORTGAGE. This amount is sorted in the order specified in MG.PARAMETER record.		.</p>
+        <p>A1.RCVD</p>
+        <p>Stores the additional amount given in ADD.AMOUNT field of MG.MORTGAGE. This amount is sorted in the order specified in MG.PARAMETER record.		.</p>
+        <p>DEAL.PRIN</p>
+        <p>This field will hold the difference in amount betwwen the calculated interest and the user defined amount.		.</p>
+        <p>EFF.DATE</p>
+        <p>This field will hold the interest schedule date on which the DEAL.PRIN gets updated.		)</p>
+    </desc>
+</t>
+<t>
+<field>1.RCVD</field>
+<desc>
+            <p>Stores  the additional amount given in ADD.AMOUNT field  of MG.MORTGAGE. This amount is sorted in the order specified
+ in MG.PARAMETER record.</p>
+        </desc>
+</t>
+<t>
+<field>2.RCVD</field>
+<desc>
+            <p>Stores  the additional amount given in ADD.AMOUNT field  of MG.MORTGAGE. This amount is sorted in the order specified
+ in MG.PARAMETER record.</p>
+        </desc>
+</t>
+<t>
+<field>3.RCVD</field>
+<desc>
+            <p>Stores  the additional amount given in ADD.AMOUNT field  of MG.MORTGAGE. This amount is sorted in the order specified
+ in MG.PARAMETER record.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.A1.RCVD</field>
+<desc>
+            <p>Sum of all additional payment amounts  that are store in 4.RCVD </p>
+        </desc>
+</t>
+<t>
+<field>APAY.2.RCVD</field>
+<desc>
+            <p>'DATA' type of field</p>
+        </desc>
+</t>
+<t>
+<field>TOT.ADD.PAY.1.RCVD</field>
+<desc>
+            <p>TOT.ADD.PAY.1.RCVD </p>
+        </desc>
+</t>
+<t>
+<field>TOT.APAY.2.RCVD</field>
+<desc>
+            <p>'DATA' type of field</p>
+        </desc>
+</t>
+<t>
+<field>REDEM.DATE</field>
+<desc>
+            <p>This field would hold the actual cycled date when processing the redemption schedule. This is required as base date for the subsequent cycling of dates</p>
+        </desc>
+</t>
+<t>
+<field>ADD.PAY.DATE</field>
+<desc>
+            <p>holds  the actual cycled date when processing the add pay schedule. This is required as base date for the subsequent  cycling of dates. This field is  used to maintain the same maturity date.
+</p>
+        </desc>
+</t>
+<t>
+<field>REPAYMENT.AMT</field>
+<desc>
+            <p>Identifies the total repayment amount received on scheduled automatic repayments. </p>
+            <p>This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. Although this group of fields records both automatic repayments and manual redemptions entered via the MG.PAYMENT application, the REPAYMENT.AMT field will only record an amount when the multivalue group relates to an automatic repayment. In the case of manual payments this field will contain a null value. </p>
+            <p>The amount recorded in this field represents the total of the principal, interest and any additional payments elements received on the payment in question. </p>
+            <p>Information is stored in this group of fields in reverse chronological order, i.e. the most recent payment details will always be found in the first multivalue of each field. </p>
+            <p>It should be noted that these fields will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.</p>
+        </desc>
+</t>
+<t>
+<field>ADD.PAY.2.RCVD</field>
+<desc>
+            <p>Records the amount of the second additional payment element, defined in the ADD.PAY.TYPE field on the MG.PARAMETER, paid on each individual repayment received. </p>
+            <p>This field is part of an associated multivalue set of fields, PAYMENT.DATE to ADD.PAY.5.RCVD, that record all details relating to individual payments. These fields record both automatic scheduled repayments and manual redemptions entered via the MG.PAYMENT application. </p>
+            <p>However, it is only possible to repay additional payment elements via an automatic repayment as there is no facility for this via the MG.PAYMENT application. Therefore, this field will only record an amount if the payment details in the group in question relate to an automatic repayment. In the case of a manual redemption this field will contain a null value. If nothing is received for this additional payment type on an automatic repayment then this field will contain a zero value. </p>
+            <p>Additional payment elements are defined on the MG.PARAMETER table. Up to five different types may be created. This field records the amount of the second additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table, received on each repayment. It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the second additional payment element defined on the MG.PARAMETER table has a description of "SAVING" on the MG.TYPE.TEXT file then this field will have the name TOT.SAVING.RCVD. </p>
+            <p>Information is stored in this group of fields in reverse chronological order, i.e. the most recent payment details will always be found in the first multivalue of each field. </p>
+            <p>This field will only contain data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters. Multivalue field associated with fields PAYMENT.DATE to ADD.PAY.5.RCVD.</p>
+        </desc>
+</t>
+<t>
+<field>INT.EFF.DATE</field>
+<desc>
+            <p>Stores the dates on which the interest rates in the INTEREST.RATE field became effective. </p>
+            <p>Whenever the interest rate on a contract changes the new rate is recorded in the associated INTEREST.RATE field. The INT.EFF.DATE field records the date on which each of these rates became effective. </p>
+            <p>Information is stored in these fields in reverse chronological order, i.e. the most recent effective date will always be found in the first multivalue. </p>
+            <p>It should be noted that this field will only contain  data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format. Multivalued field associated with fields INT.EFF.DATE to INT.RATE.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.TYPE</field>
+<desc>
+            <p>Identifies the type of the loan throughout the contract. </p>
+            <p>This field records the contract type of the loan. If this type is changed, i.e.  from LINEAR to NONREDEM, then this will be recorded here. The date from which the contract type applies to the loan is specified in the associated multivalue of the TYPE.EFF.DATE field. </p>
+            <p>Information is stored in these fields in reverse chronological order, i.e.  the current contract type will always be found in the first multivalue. </p>
+            <p>It should be noted that this field will only contain  data relating to the contract after the date held in the RECORD.START.DATE field. Any data prior to this may be found on the MG.BALANCES.HIST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 12 alphanumeric characters Multivalue field associated with TYPE.EFF.DATE</p>
+        </desc>
+</t>
+<t>
+<field>TOT.ADD.PAY.4.RCVD</field>
+<desc>
+            <p>Records the total amount of the fourth additional payment element, defined in the the ADD.PAY.TYPE field on the MG.PARAMETER table, paid on the contract to date. </p>
+            <p>It is possible to define additional payment elements to be repaid on a periodic basis along with the normal repayments of principal and interest. These types are defined on the MG.PARAMETER table. Up to five different types may be created.  This field records the total amount of the fourth additional element defined in the ADD.PAY.TYPE field of the MG.PARAMETER table, received on the contract to date. Whenever a repayment of this additional payment element is made the amount received will be added into this field. </p>
+            <p>It should be noted that the name of this field will be modified to incorporate the name of the additional payment as defined on the MG.TYPE.TEXT file. For example, if the fourth additional payment element defined on the MG.PARAMETER table has a description of "PREMIUM A" on the MG.TYPE.TEXT file then this field will have the name TOT.PREMIUM.A.RCVD. </p>
+            <p>A breakdown of the payments of this additional element received on each individual repayment can be found in the multivalued ADD.PAY.4.RCVD field. However, because it is possible to archive data from this record the total of all multivalues in the ADD.PAY.4.RCVD field may not equal the total amount recorded in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>OTS.TAX.AMOUNT</field>
+<desc>
+            <p>Holds the outstanding tax amount. The TAX amount is calculated based on TAX.ON field in the Contract </p>
+        </desc>
+</t>
+<t>
+<field>PRIN.CCY</field>
+<desc>
+            <p>Identifies the currency of the mortgage. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>CCY (Currency Code) Multivalue field associated with fields PRIN.CCY to PRIN.EFF.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.PRINCIPAL.RCVD</field>
+<desc>
+            <p>Records the total amount of principal paid on the contract. </p>
+            <p>Whenever a repayment of principal is made, either via the automatic periodic repayment scheme or via the MG.PAYMENT application, the amount of principal received will be added the value in this field. This field therefore records the total amount of all principal repayments received on the contract to date. </p>
+            <p>A breakdown of the payments of principal received on each individual repayment can be found in the multivalued PRINCIPAL.RCVD field. It should be noted however that because of the possibility to archive data from this record the total of all multivalues in the PRINCIPAL.RCVD field may not equal the total amount recorded in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.TAX.RCVD</field>
+<desc>
+            <p>Records the total amount of Tax paid on the contract.Whenever a payment of Tax made, the amount of Tax received will be added to the value on this field.This field therefore holds the Total amount of Tax received till date.A breakdown of the payments of Tax received on each individual tax payment can be found in the multivalued TAX.RCVD field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>An Amount field.</p>
+        </desc>
+</t>
+<t>
+<field>REPAY.TYPE</field>
+<desc>
+            <p>Multi-valued repayment type field. </p>
+            <p>Mortgage account repayments may be of three types, and the values held here indicate the type of payment for the associated multi-values as follows: </p>
+            <p>i)      REDEMPTION, the repayment is for an amount of principal only. </p>
+            <p>ii)     AUTO.REPAY, the repayment is for an amount of interest only. </p>
+            <p>iii)    AUTO.REDEM, the repayment is for both principal and interest. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>10 alphanumeric characters</p>
+        </desc>
+</t>
+<t>
+<field>TOT.APAY.4.RCVD</field>
+<desc>
+            <p>'DATA' type of field.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

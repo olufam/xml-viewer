@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>PRINT.STATEMENT</table>
+</header>
+<overview>
+<ovdesc>
+<p>This application, when run in Verify mode, requests the printing or reprinting of account statements. It can be invoked during online processing and during the end of day. It provides the following functionality: </p><p>-          Standard request mechanism which maintains data for            charging. </p><p>-          Allows ANY selection and sort criteria when requesting            statements. </p><p>-          Allows charges to be waived. </p><p>-          Statement formats are user definable via the Enquiry            system. </p><p>-          Enables different statement formats to be used for            different requests. </p><p>-          Prints statement via report control enabling microfiching            and view/respool facilities. </p><p>To define the layout of the statement the enquiry system is used. An existing enquiry, ACCOUNT.STATEMENT, is provided as an example this should be copied and modified to suit your requirements. </p><p>To invoke PRINT.STATEMENT during the end of day put the job name PRINT.STATEMENT$RUN into the batch process AC.REPORTS after the job name PRINT.STATEMENTS. The id of the request(s) should be put into the DATA field. </p></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>PRINT.ROUTINE</field>
+<desc><p>This field contains name of an external subroutine written by the user that needs to be invoked as an alternative method of printing statements. If entered then T24's own printing process will be ignored.</p><p><p>Validation Rules:</p></p><p /><p /><p>The routine must exist on the system and have a valid VOC entry</p><p>There must be a valid entry for it on the PGM.FILE and it must be set up as a subroutine - TYPE = "S"</p></desc>
+</t>
+<t>
+<field>RESERVED.2</field>
+<desc><p>Reserved for future use. </p></desc>
+</t>
+<t>
+<field>REPORT.CONTROL.ID</field>
+<desc><p>The report control record which the controls the spooling of the statements. </p><p>The report control record is used to determine the destination printer, the spooling format (number of lines per page etc) and whether the output should be stored for microfiching. </p><p><p>Validation Rules:</p></p><p>4-35 Alphanumeric characters (Mandatory input)</p><p>Must be a valid record on REPORT.CONTROL.</p></desc>
+</t>
+<t>
+<field>SORT.FIELD</field>
+<desc><p>Specifies the field, if any, to be used to sort the AC.STMT.HANDOFF records prior to processing. </p><p>Can be used, for example, to sort statements in customer number order prior to printing. Note: The default is to sort in ascending sequence. If a descending sequence is required then specify the field name followed by DSND eg: </p><p>           ACCT.CATEGORY DSND </p><p><p>Validation Rules:</p></p><p>24 Any characters (Optional input)</p><p>Must be a valid field or i-descriptor on the standard selection record for AC.STMT.HANDOFF.</p></desc>
+</t>
+<t>
+<field>K.FORMAT</field>
+<desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc>
+</t>
+<t>
+<field>RESERVED.1</field>
+<desc><p>Reserved for future use. </p></desc>
+</t>
+<t>
+<field>REQUEST.ID</field>
+<desc><p>The ID of the statement print request. Can be any meaningful identifier. </p><p>Used to identify individual requests. E.g You could have different request records for printing statements for current accounts, savings accounts, nostros, etc. These could then be printed at different times during the online period or as part of the end of day run. </p><p><p>Validation Rules:</p></p><p>1-15 Alphanumeric (Mandatory input)</p></desc>
+</t>
+<t>
+<field>RESERVED.4</field>
+<desc><p>Reserved for future use. </p></desc>
+</t>
+<t>
+<field>NUMBER.TO.BULK</field>
+<desc><p>Determines the number of statements which will be bulked into a single spool job. </p><p>Used to control the efficiency of the spooler when printing statements, the larger the number to bulk the fewer spool jobs (which can be useful in sites where there is a limitation). If ACCOUNT is specified then the statements will be batched by account. </p><p>Also controls the number of statements which constitute a transaction for system recovery purposes. If the application aborts or the machine crashes then the number processed is the last complete bulk, i.e if the number to bulk is set to 100 and the machine crashes during the processing of number 145, when the request is re-issued processing will start from number 101. When executing the request online there is a limit of 500 writes which can be performed in one transaction. To determine the maximum number to bulk use the following table: </p><p>           Reprint Charge      Maximum            NO   Y              160            Y    Y              500            Y    NO            9999 </p><p><p>Validation Rules:</p></p><p>8 Numeric or ACCOUNT. Optional - default 100</p><p>Numeric in the range 1-9999 or equal ACCOUNT. Default 100</p></desc>
+</t>
+<t>
+<field>SELECTION</field>
+<desc><p>The data to be used in the selection process. </p><p>Note: This field is subvalued to enable 'lengthy' selection data to entered. Examples:  Operand  Selection            EQ       1000            NE       2000            GT       1000            LT       1000            GE       2000            LE       2000            RG       1000 4000            NR       5000 5999            LK       10...            UL       ...99... </p><p>Data can be entered, depending on the selection field used, as account mnemonics, dates etc. They will be converted to their correct format when processing the selection ie when using the Verify function. Two 'special' selection items can be specified: </p><p>           NULL     To test for an empty field            !TODAY   To compare a date to the current bank date. </p><p><p>Validation Rules:</p></p><p>40 Any characters (Optional input)</p></desc>
+</t>
+<t>
+<field>SELECTION.FIELD</field>
+<desc><p>Any field or i-descriptor on the standard selection record for the file AC.STMT.HANDOFF. Used to extract individual or groups of account statements for printing. </p><p>Use SELECTION.FIELD, OPERAND and SELECTION to specify which statements should be printed by this request. E.g: </p><p>           2.1  SELECTION.FIELD.....: ACCT.CATEGORY            3.1  OPERAND.............: RG            4.1.1SELECTION...........: 1000 5999 </p><p>This will request all statements for accounts with a category in the range 1000 to 5999. </p><p>The SELECTION.FIELD can be any field, or i-descriptor, on the AC.STMT.HANDOFF file. Avoid using i-descriptors to link back to the ACCOUNT file. If the account has been closed then the account record will have been moved to the history file. </p><p><p>Validation Rules:</p></p><p>18 Any characters. (Optional input)</p><p>Must be a defined field on the standard selection record for AC.STMT.HANDOFF.</p></desc>
+</t>
+<t>
+<field>RESERVED.5</field>
+<desc><p>Reserved for future use. </p></desc>
+</t>
+<t>
+<field>REPRINT</field>
+<desc><p>Determines which file should be used in the selection process, AC.STMT.HANDOFF or AC.STMT.HANDOFF$HIS. </p><p>When an account is due for a statement, defined by the statement frequency in ACCOUNT.STATEMENT, the necessary details to produce the statement are recorded in the file AC.STMT.HANDOFF. The key is the account number, statement date, frequency (1 or 2) and carrier (1 or 2). When the statement is actually printed, controlled by this application, PRINT.STATEMENT, the record is moved from AC.STMT.HANDOFF to the file  AC.STMT.HANDOFF$HIS. </p><p>Consequently, if the request is re-issued it will not select statements which have already been printed (see NUMBER.TO.BULK). If, however, you wish statements to be reprinted then this field should be set to "Y" and the statements will be selected from the AC.STMT.HANDOFF$HIS file. </p><p>When reprinting your selection criteria should involve a statement date otherwise all statements will be reprinted. </p><p><p>Validation Rules:</p></p><p>Y or NO. OPTIONAL - default NO</p><p>Y or NO. Default NO</p></desc>
+</t>
+<t>
+<field>RESERVED.3</field>
+<desc><p>Reserved for future use. </p></desc>
+</t>
+<t>
+<field>OPERAND</field>
+<desc><p>The operand to be used in conjunction with SELECTION.FIELD and SELECTION.. </p><p>OPERAND            EQ   Equal            NE   Not equal            GT   Greater than            LT   Less than            GE   Greater than or equal to            LE   Less than or equal to            RG   In range            NR   Not in range            LK   Like            UL   Unlike </p><p><p>Validation Rules:</p></p><p>2 Characters EQ NE GT LT GE LE RG NR LK UL (Optional input)</p><p>Must be one of the following: EQ NE GT LT GE LE RG NR LK UL</p></desc>
+</t>
+<t>
+<field>CHARGE</field>
+<desc><p>If statement charge details are NOT to be stored for this request then this field should be set to NO. </p><p>Statement charge details, number of copies, sheets etc are stored in the file DE.SENT.PRINT which is used as the basis for statement charges (see STATEMENT.CHARGE). If you do not wish to record these details for this request, you may be reprinting the statement due to a printer wreck, then set this field to NO. </p><p><p>Validation Rules:</p></p><p>Y or NO Optional - default Y </p></desc>
+</t>
+<t>
+<field>CHARGE.ROUTINE</field>
+<desc><p>This field will contain the name of an external subroutine written by the user to apply an immediate charge to the account for which the statement is being reprinted.</p><p><p>Validation Rules:</p></p><p /><p /><p>The routine must exist on the system and have a valid VOC entry</p><p>The routine must exist in the PGM.FILE as a subroutine i.e. TYPE = 'S'</p></desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc><p>Stores a multivalued description to identify the request. </p><p>Used to identify individual statement requests. Note the field is multivalued and multi-language. </p><p><p>Validation Rules:</p></p><p>3-35 Any characters. (Mandatory input)</p></desc>
+</t>
+<t>
+<field>FORMAT</field>
+<desc><p>The name of the record on the ENQUIRY file which will format the statement ready for printing. </p><p>The id of the enquiry record which controls the format of the statement. You can specify special formats for different requests - for example the nostro statements might be contain less transaction information than customer statements. </p><p><p>Validation Rules:</p></p><p>1-32 Alphanumeric characters (Mandatory input)</p><p>Must be a valid id on the ENQUIRY file.</p></desc>
+</t>
+</menu>
+</t24help>
+

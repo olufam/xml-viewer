@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>ARCHIVE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>T24 Archiving has been designed to reclaim space by moving historic data that is no longer required. Archiving examines files for records to be archived, writes the selected records (and any associated records) to an archive file (which can reside on a separate disk, or even a separate machine if accessible via a network), then deletes the records. It is also possible, if so required, to simply delete the data without archiving it.</p>
+            <p>FILE LAYOUT</p>
+            <p>For each of the sets of files for which archiving is to be run, there is a record present on the ARCHIVE file. The fields on the file are:</p>
+            <p>ID Name identifying the group of files to be archived.</p>
+            <p>DESCRIPTN Multi-language, multi-value field containing a description of the records/files to be archived.</p>
+            <p>PURGE.DATE Standard T24 date field. Records older than this date will be archived and/or deleted.</p>
+            <p>RETENTION.PERIOD Alternative method of specifying the purge date. In the format nnM or nnY where nn is a number of either Months or Years. Records older than the retention period will then be archived. This field is only used if field two (PURGE.DATE) is null.</p>
+            <p>ARCHIVE.DATA Set to either Y or NO and details whether or not the records being purged will be copied to the $ARC file.</p>
+            <p>$ARC.PATHNAME Pathname of the directory where the $ARC file will reside. If the directory does not exist, it will be created. If this field is left blank and ARCHIVE.DATA is set to 'Y', the $ARC file will be created in bnk.arc which will be created under bnk if it does not already exist. Field range ARC.FILENAME to MODULUS are related multi-value fields, which describe the archive files which will be created.</p>
+            <p>ARC.FILENAME Contains the names of all the $ARC files which will be created when archiving is run. This field is populated when the record is delivered.</p>
+            <p>FILE.TYPE When the $ARC file is created, the file type will default to the file type of the live file. Earlier to Jbase, archive file creation in Universe is happened based on the value specified here. But now, archive files will get created based on file type of SPF record. This field currently is not being used.</p>
+            <p>MODULUS When the $ARC file is created, the modulus of the file will default to the modulus of the live file. However, if a modulus is entered here, this will be used in preference.</p>
+            <p>STOP.INDICATOR Flag to halt the archiving process. It is checked after the number of records specified in field seven CHECK.NO.RECORDS has been processed. If this field is set to Y whilst the archiving process is being run the archiving will come to a controlled halt.</p>
+            <p>CHECK.NO.RECS Number of records processed each time before STOP.INDICATOR is checked. If this field is set too low, it will slow down the archiving process as this record will continually be read from the archive file to see if a stop has been requested; if it set too high, the archiving process will take a long time to stop as there will be long intervals between the checking of this flag. This field may be changed whilst archiving is running and will take effect the next time the record is checked.</p>
+            <p>ROUTINE Name of the routine that will run archiving for the files. This field is populated when the record is released and should not be changed unless a site specific program has been written. The routine name specified here is prefixed with 'ARC.' when it is run. Field range COMPANY.RUN.IN to TIME.ENDED are related multi-value fields, which are system populated when archiving is run. They maintain a history of each time archiving was run.</p>
+            <p>COMPANY.RUN.IN Maintains a history of the company archiving was run in each time it was run.</p>
+            <p>TIME.STARTED Maintains a history of the date and time archiving was started.</p>
+            <p>USER.ID Maintains a history of the each user id who started archiving for each time archiving was run.</p>
+            <p>DATE.SELECTED Maintains a history of the purge date selected for each time archiving was run.</p>
+            <p>STOP.REQUESTED Maintains a history of whether archiving was requested to be stopped, or stopped after processing every record, for each time that archiving was run.</p>
+            <p>RECS.DELETED Maintains a history of the number of records deleted from the main file(s), each time that archiving was run.</p>
+            <p>RECS.PROCESSED Maintains a history of the number of records processed from the main file(s), each time that archiving was run.</p>
+            <p>ERROR.MSG Maintains a history of any error which caused archiving to terminate.</p>
+            <p>TIME.ENDED Maintains a history of the date and time archiving stopped.</p>
+            <p>MAIN.FILE Contains main file to be archived </p>
+            <p>FILTER.RTN Name of the routine to determine the contract date for archiving</p>
+            <p>RELATED.FILES.RTN  - Name of the routine to determine the related files of main file to be archived</p>
+            <p />
+            <p>Timing of the Archiving process</p>
+            <p>It is recommended that the archiving process be run after the end of day has been completed, but before users are allowed to sign on. However, since archiving removes data which is no longer used, it can be run whilst the system is being used.</p>
+            <p>The system on which archiving is to be run should be fully backed up to tape. It is important to note that archiving is a one way process: data cannot be restored afterwards, except by fully restoring the database back to the point pre-archiving.</p>
+            <p>Backups</p>
+            <p>Back up the area as follows:</p>
+            <p>From Unix, change to the directory above that which is being backed up. For example, if the area being backed up is bnk and the directory structure is /usr/globus/bnk/bnk.run then type</p>
+            <p>$cd /usr/globus $find bnk -print -depth | cpio -ovcB &gt; /dev/zzz</p>
+            <p>where zzz is the name of your tape device.</p>
+            <p>From Unix verify the tape as follows:</p>
+            <p>$cpio -iBct &lt; /dev/zzz</p>
+            <p>where zzz is the name of your tape device.</p>
+            <p>Running Archiving</p>
+            <p>Archiving is run on one set of files at a time. There is a separate record for each set of files to be archived, the ids of which can be found in section 11.4 FILES.</p>
+            <p>Before running archiving, it should be decided whether data should be archived and, if so, where the archived files should reside. Enter this information onto the ARCHIVE record. If data is to be archived, files will be created with a $ARC suffix in the archive directory. For example, if special entry files are to be archived, files will be created as RE.CONSOL.SPEC.ENTRY$ARC and RE.CONSOL.SPEC.ENT.KEY$ARC. The layout of the $ARC files will be the same as the live files, with concat files being recreated as necessary. By default, the $ARC files will be created with the same type and modulus as the corresponding live files. However, if, for example, only half the data is expected to be archived, it may be desirable to create the $ARC file with a smaller modulus than the live file. This information should be entered on the ARCHIVE record.</p>
+            <p>NOTE: Although the file will exist in the area specified in $ARC.PATHNAME, the file is temporarily created in the run account, before being moved to the ARC directory. Therefore, there must be enough space in the run account to create the largest of the files (each file is created, moved and deleted before the next file is created).</p>
+            <p>The retention period should then be determined. This can be done either by entering a specific purge date (which must be the first of a month) or by using the retention period. If today&amp;#146;s date is 13/06/95 and a retention period of 3 months is specified, three months is calculated from the beginning of the month. Therefore, any records from before 1/03/95 will be archirocessing for each record on ACCT.STMT.PRINT is very complex and therefore slow, since all entries for all statements for an account will be checked, the CHECK.NO.RECS should be set relatively low. A figure of 100 is suggested which can be changed on-line if necessary. NOTE: The archiving process for statements starts with a select of the ACCT.STMT.PRINT file. This file contains the same number of records as the ACCOUNT file and therefore this selection should not take too long. After all frequency 1 statements have been processed, the ACCT.STMT2.PRINT file will be selected.</p>
+            <p>The ARCHIVE record for statements is STATEMENT.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>USER.ID</field>
+<desc>
+            <p>Maintains a history of each user id who started archiving for each time archiving was run.</p>
+            <p>Field range COMPANY.RUN.IN to TIME.ENDED are related multi-value fields, which are system populated when archiving is run.  They maintain a history of each time archiving was run.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field.</p>
+        </desc>
+</t>
+<t>
+<field>STOP.INDICATOR</field>
+<desc>
+            <p>Flag to halt the archiving process.  This field is checked after the number of records specified in CHECK.NO.OF.RECORDS has been processed.  If this field is set to "Y" whilst the archiving process is being run, the archiving will come to a controlled halt.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Y or NO.  Default NO.  Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.SELECTED</field>
+<desc>
+            <p>Maintains a history of the purge date selected for each time archiving was run.</p>
+            <p>Field range COMPANY.RUN.IN to TIME.ENDED are related multi-value fields, which are system populated when archiving is run.  They maintain a history of each time archiving was run.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field.</p>
+        </desc>
+</t>
+<t>
+<field>RELATED.FILES.RTN</field>
+<desc>
+            <p>Hook routine to determine the related files of Main files.</p>
+            <p>Arguments:Record Key,Record Content,Related files</p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p>1)Must have valid entry in EB.API</p>
+            <p>2)Valid only when ARC.GENERIC is specified in ROUTINE</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TIME.ENDED</field>
+<desc>
+            <p>Maintains a history of the date and time archiving stopped.</p>
+            <p>Field range COMPANY.RUN.IN to TIME.ENDED are related multi-value fields, which are system populated when archiving is run.  They maintain a history of each time archiving was run.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field.</p>
+        </desc>
+</t>
+<t>
+<field>RECS.PROCESSED</field>
+<desc>
+            <p>Maintains a history of the number of records processed from the main file(s), for each time archiving was run.</p>
+            <p>CATEG.ENTRY The records processed field refers to the CATEG.MONTH and RE.CONSOL.PROFIT files.</p>
+            <p>DELIVERY The records processed field refers to the DE.O.HEADER.ARCH and DE.I.HEADER.ARCH files.</p>
+            <p>SPECIAL.ENTRY The records procesed field refers to the RE.CONSOL.SPEC.ENTRY file.</p>
+            <p>STATEMENT The records processed field refers to the ACCT.STMT.PRINT and ACCT.STMT2.PRINT files.</p>
+            <p>SEC.TRADE The records processed field refers to th SEC.TRADE and SEC.TRADE$HIS files.</p>
+            <p>Field range COMPANY.RUN.IN to TIME.ENDED are related multi-value fields, which are system populated when archiving is run.  They maintain a history of each time archiving was run.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field.</p>
+        </desc>
+</t>
+<t>
+<field>MAIN.FILE</field>
+<desc>
+            <p>When Generic archive method is set,this field specifies the files to be archived.Local templates can also be specified.When History files of File need to be archived,then MAIN.FILE should be suffixed with $HIS.Otherwise Live files will be taken in consideration.</p>
+            <p>Multiple files can be given for archival when required</p>
+            <p />
+            <p>Validation rules:</p>
+            <p>1)1-35 characters.Mandatory when GENERIC.METHOD is set  </p>
+            <p>2)Must be valid Application</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MODULUS</field>
+<desc>
+            <p>When the $ARC file is created, the modulus will default to the modulus of the live file.  However, if, for example, only half the data is expected to be archived, it may be desirable to create the $ARC file with a smaller modulus than the live file.  Therefore, if a modulus is entered here, this will be used in preference.</p>
+            <p>NOTE: Although the file will exist in the area specified in $ARC.PATHNAME,       the file is temporarily created in the run account, before being       moved to the ARC directory.  Therefore, there must be enough space       in the run account to create the largest of the files (each file is       created, moved and deleted before the next file is created).</p>
+            <p>Field range ARC.FILENAME to MODULUS are related multi-value fields, which describe the archive files which will be created.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-6 numeric characters.  Optional input.  Multivalue field, associated with field range ARC.FILENAME to MODULUS.</p>
+        </desc>
+</t>
+<t>
+<field>ERROR.MSG</field>
+<desc>
+            <p>Maintains a history of any error which caused archiving to terminate.</p>
+            <p>Field range COMPANY.RUN.IN to TIME.ENDED are related multi-value fields, which are system populated when archiving is run.  They maintain a history of each time archiving was run.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field.</p>
+        </desc>
+</t>
+<t>
+<field>SEL.REC.TO.PROCESS</field>
+<desc>
+            <p>This field will store the number of records to be processed for archiving.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p> :</p>
+            <p />
+            <p>1.  Valid Absolute Numerical Value.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>ARCHIVE.ID</field>
+<desc>
+            <p>Name identifying the group of files to be archived.  Currently the following records are supported:</p>
+            <p>CATEG.ENTRY          Category entries           DELIVERY             Delivery files           FOREX                Forex files           FUNDS.TRANSFER       Funds Transfer files           MM.MONEY.MARKET      Money Market files           SPECIAL.ENTRY        Special entries           STATEMENT            Statements           TELLER               Teller</p>
+            <p />
+            <p>CATEG.ENTRY Category entries are processed first, followed by the consol profit file. For category entries, CATEG.MONTH is the driving force; for consol profit, RE.CONSOL.PROFIT is the driving force.</p>
+            <p>The categ month file is selected in id order, i.e. by category, by date. If the date in the key is older than the purge date, all the category entries listed on the record will be removed from the category entry file, CATEG.ENTRY and the record removed from CATEG.MONTH.  If there are more than 198 category entries for one category in a month, subsequent categ month records will have been created.  Archiving will process all categ month records for one category for one month before checking the stop flag.  Therefore, if there are three categ month records for one category for one month, all three records will be archived before the stop flag is checked.</p>
+            <p>Once the categ month file has been processed, the RE.CONSOL.PROFIT file is processed, providing a stop of archiving has not been requested.  For each record on the consol profit file, the date in the id is checked against the purge date.  If the date is before the purge date, the record is archived.</p>
+            <p>The CHECK.NO.RECS and records processed refer to both the CATEG.MONTH file and the RE.CONSOL.PROFIT file.  The records deleted refer to both the CATEG.ENTRY file and the RE.CONSOL.PROFIT file.  Therefore the records processed will be a total of CATEG.MONTH records and RE.CONSOL.PROFIT records and the records deleted will be a total of CATEG.ENTRY records and RE.CONSOL.PROFIT records.  As for each record on CATEG.MONTH there could be up to 200 records to archive from CATEG.ENTRY, the CHECK.NO.RECS should be set fairly low.  A figure 100 is suggested which can be changed on-line if necessary.</p>
+            <p>The ARCHIVE record for category entries is CATEG.ENTRY.</p>
+            <p />
+            <p>DELIVERY Outward delivery messages are processed first, followed by inward messages.  For outward messages, the outward delivery archive file, DE.O.HEADER.ARCH is the driving force; for inward messages, the inward delivery archive file, DE.I.HEADER.ARCH is the driving force.</p>
+            <p>For each header record on the header arch file, provided the date in the key of the record is before the purge date and the record is not still in the live file (DE.O.HEADER), the message records for each copy of the message are removed from the history file, DE.O.HISTORY; the key is removed from the concat file, DE.O.HISTORY.QUEUE and the record removed from the header arch file, DE.O.HEADER.ARCH.</p>
+            <p>Processing is then repeated for the inward delivery archive file.</p>
+            <p>The CHECK.NO.RECS, records processed and records deleted all refer to the DE.O.HEADER.ARCH and DE.I.HEADER.ARCH files.  Processing for each record is fairly simple so the CHECK.NO.RECS should be set fairly high.  A figure of 1,000 is suggested which can be changed on-line if necessary. NOTE: The archiving process for delivery starts with a select of the       DE.O.HEADER.ARCH file.  This file is large and therefore this       selection could take some time.  After all outward messages have       been processed, the inward delivery arch file, DE.I.HEADER.ARCH file       will be selected.</p>
+            <p>NOTE: The archiving of delivery only works on completed messages on the       delivery archive files, ie records which have been copied to       delivery archive files and removed from the live delivery files.       This is done in the delivery end of period programs,       DE.MM.O.END.OF.PERIOD and DE.MM.I.END.OF.PERIOD.  Therefore, the       archiving of delivery will only remove records provided the delivery       end of period has been run.</p>
+            <p>Records archived from the delivery header archive files will be written to DE.O.HEADER$ARC and DE.I.HEADER$ARC.</p>
+            <p>The ARCHIVE record for delivery is DELIVERY.</p>
+            <p />
+            <p>FOREX The FOREX history file is processed to produce a list of contract ids.  For each contract, if there is no corresponding record on the live FOREX file and the date from the DATE.TIME of the last history record is before the PURGE.DATE/RETENTION.PERIOD from the ARCHIVE record, all history records for the contract are archived.</p>
+            <p>The ARCHIVE record for the foreign exchange history file is FOREX.</p>
+            <p />
+            <p>FUNDS.TRANSFER The FUNDS.TRANSFER history file is processed to produce a list of contract ids. For each contract, if there is no corresponding record on the live FUNDS.TRANSFER file and the date from the DATE.TIME of the last history record is before the PURGE.DATE/ RETENTION.PERIOD from the ARCHIVE record, all history records for the contract are archived.</p>
+            <p>The ARCHIVE record for the funds transfer history file is FUNDS.TRANSFER</p>
+            <p />
+            <p>MM.MONEY.MARKET The MM.MONEY.MARKET history file is processed to produce a list of contract ids.  For each contract, if there is no corresponding record on the live MM.MONEY.MARKET file and the date from the MATURITY.DATE of the last history record is before the PURGE.DATE/RETENTION.PERIOD from the ARCHIVE record, all history records for the contract are archived.</p>
+            <p>The following files are either purged or written to the archive files and purged: MM.MONEY.MARKET$HIS, MM.PAYMENT.ENTRY$HIS, MM.RECEIPT.ENTRY$HIS, LMM.ACCOUNT.BALANCES.HIST, LMM.HISTORY.LIST and LMM.SCHEDULES.PAST.HIST.</p>
+            <p>The ARCHIVE record for the money market history file is MM.MONEY.MARKET</p>
+            <p />
+            <p>SPECIAL.ENTRY RE.CONSOL.SPEC.ENTRY is the driving file. When archiving is run on special entry files, records older than the specified date will be removed from RE.CONSOL.SPEC.ENTRY and the reference to the record will be removed from the concat file, RE.CONSOL.SPEC.ENT.KEY.</p>
+            <p>The CHECK.NO.RECS, records processed and records deleted all refer to the special entry file, RE.CONSOL.SPEC.ENTRY.  As the processing for each record is fairly quick and simple, the CHECK.NO.RECS can be set higher for this ARCHIVE record than for others.  A figure of 10,000 is suggested which can be changed on-line if necessary. NOTE: The archiving process for special entries starts with a select of       the special entry file.  As this file can be very large, this select       could take some considerable length of time.</p>
+            <p>The ARCHIVE record for special entries is SPECIAL.ENTRY.</p>
+            <p />
+            <p>STATEMENT Frequency 1 statements are processed first, followed by frequency 2 statements.  For frequency 1 statements, the ACCT.STMT.PRINT file is the driving force; for frequency 2 statements, the ACCT.STMT2.PRINT file is the driving force.</p>
+            <p>For each account record on the ACCT.STMT.PRINT file, all statement ids are processed except the last one, so that one statement is always left. However, as soon as there is an outstanding entry on a statement, no more statements are processed for that account.</p>
+            <p>For each statement id, the corresponding record is read from the STMT.PRINTED file.  Each entry on the statement is checked to ensure that it is not on the ACCT.STMT.ENTRY or ACCT.STMT2.ENTRY record (all entries for this account which still have to be printed). Providing the entry has been printed, the record is then read from the STMT.ENTRY file, to ensure that the booking date is before the purge date and that the value and exposure dates are not in the future.  Finally, AC.STMT.HANDOFF file is checked to ensure the record is not still present on it.  Providing all entries on a statement match these criteria, the entries are deleted from the STMT.ENTRY file; the statement printed record is deleted from STMT.PRINTED file; the statement details are removed from the STMT.PRINTED file; the statement record is removed from the AC.STMT.HANDOFF$HIS file and the statement details are removed from the ACCT.STMT.PRINT file.</p>
+            <p>The processing is then repeated for frequency 2 statements.</p>
+            <p>The CHECK.NO.RECS and records processed refer to the ACCT.STMT.PRINT and ACCT.STMT2.PRINT files.  The records deleted refer to the statement entry file, STMT.ENTRY.  As the processing for each record on ACCT.STMT.PRINT is very complex and therefore slow, since all entries for all statements for an account will be checked, the CHECK.NO.RECS should be set relatively low.  A figure of 100 is suggested which can be changed on-line if necessary. NOTE: The archiving process for statements starts with a select of the       ACCT.STMT.PRINT file.  This file contains the same number of       records as the ACCOUNT file and therefore this selection should not       take too long.  After all frequency 1 statements have been       processed, the ACCT.STMT2.PRINT file will be selected.</p>
+            <p>The ARCHIVE record for statements is STATEMENT.</p>
+            <p />
+            <p>TELLER The TELLER history file is processed to produce a list of contract ids.  For each contract, if there is no corresponding record on the live TELLER file and the date from the MATURITY.DATE of the last history record is before the PURGE.DATE/RETENTION.PERIOD from the ARCHIVE record, all history records for the contract are archived.</p>
+            <p>The ARCHIVE record for the teller history file is TELLER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-20 Type "A" (alphanumeric) characters.</p>
+        </desc>
+</t>
+<t>
+<field>PURGE.DATE</field>
+<desc>
+            <p>Standard T24 date field. Records older than this date will be archived and/or deleted.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 8 characters.  If entered, must be the first of a month (e.g. 010695). If entered and the record is "CATEG.ENTRY", must be before the last financial year end.  Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>COMPANY.RUN.IN</field>
+<desc>
+            <p>Maintains a history of the company archiving was run in each time it was run.</p>
+            <p>Field range COMPANY.RUN.IN to TIME.ENDED are related multi-value fields, which are system populated when archiving is run.  They maintain a history of each time archiving was run.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field.</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.TO.CHECK</field>
+<desc>
+            <p>When the Generic archiving routine (ARC.GENERIC) is used this field specifies the date field contained in the contract which should be checked when the decision to archive a record is made.</p>
+            <p>If no field is specified here the standard date and time field is used for comparison.</p>
+            <p>For example if archiving Funds Transfer history records you may wish to compare the CREDIT.VALUE.DATE field rather than using the date and time. This would ensure that back valued deals would be archived if the date was outside the RETENTION.PERIOD.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Optional field</p>
+            <p>Only allowed if ROUTINE is ARC.GENERIC</p>
+            <p>Must be a valid date field in the STANDARD.SELECTION record of the MAIN.FILE to be archived.</p>
+        </desc>
+</t>
+<t>
+<field>ROUTINE</field>
+<desc>
+            <p>The name of the routine that will run archiving for this set of files. This field is populated when the record is released and should not be changed unless a site specific program has been written.  The routine name specified here is prefixed with "ARC." when it is run.</p>
+            <p>There is a generic routine for archiving call ARC.GENERIC, this routine is only allowed for FOREX, FUNDS.TRANSFER and TELLER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 type "A" (alphanumeric) characters.  A VOC entry must exist for ARC.routine name.</p>
+        </desc>
+</t>
+<t>
+<field>STOP.REQUESTED</field>
+<desc>
+            <p>Maintains a history of whether archiving was requested to be stopped, or stopped after processing every record, for each time archiving was run.</p>
+            <p>Field range COMPANY.RUN.IN to TIME.ENDED are related multi-value fields, which are system populated when archiving is run.  They maintain a history of each time archiving was run.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field.</p>
+        </desc>
+</t>
+<t>
+<field>CHECK.NO.OF.RECS</field>
+<desc>
+            <p>Number of records processed each time before the STOP.INDICATOR is checked.  If this field is set too low, it will slow down the archiving process as this record will continually be read from the archive file to see if a stop has been requested; if it set too high, the archiving process will take a long time to stop as there will be long intervals between the checking of this flag.  This field may be changed whilst archiving is running and will take effect the next time the record is checked (i.e. after the current block of records has been processed).</p>
+            <p>CATEG.ENTRY The check number of records field refers to the CATEG.MONTH and RE.CONSOL.PROFIT files.  As for each record on CATEG.MONTH, there could be up to 200 records to archive from CATEG.ENTRY, the check number of records field should be set fairly low.  A figure of 100 is suggested which can be changed on-line if necessary.</p>
+            <p>DELIVERY The check number of records field refers to the DE.O.HEADER.ARCH and DE.I.HEADER.ARCH files.  Processing for each record is fairly simple, so the check number of records field should be set fairly high.  A figure of 1,000 is suggested which can be changed on-line if necessary.</p>
+            <p>SPECIAL.ENTRY The check number of records field refers to the RE.CONSOL.SPEC.ENTRY file.  As the processing for each record is fairly quick and simple, the check number of records field should be set fairly high  A figure of 10,000 is suggested which can be changed on-line if necessary.</p>
+            <p>STATEMENT The check number of records field refers to the ACCT.STMT.PRINT and ACCT.STMT2.PRINT files.  As the processing for each record on ACCT.STMT.PRINT is very complex, the check number of records field should be set fairly low.  A figure of 100 is suggested which can be changed on-line if necessary.</p>
+            <p>SEC.TRADE The check number of records field refers to the SEC.TRADE live file and the SEC.TRADE$HIS file. Disregarding the $HIS file, which is likely to have a minimal record count, the Sec Trade processing is fairly straightforward. The figure to be entered here is probably site dependent, but the default of 1,000 may be appropriate.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-6 numeric characters.  Optional input.  Default 1000.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTN</field>
+<desc>
+            <p>Description of what the archiving process controlled by this record will do.  This field is populated when the record is released.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 type "A" (any) characters.</p>
+        </desc>
+</t>
+<t>
+<field>FILTER.RTN</field>
+<desc>
+            <p>Hook routine to retrieve the Contract date of the file.</p>
+            <p>Applications can place own business logic to determine CONTRACT.DATE of the field and also determine whether record can be skipped or not. </p>
+            <p />
+            <p>Arguments:Record Key,Record Content,Contract date,Skip information</p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p />
+            <p> 1)Must have valid entry in EB.API</p>
+            <p> 2)Input allowed only when generic method is set</p>
+        </desc>
+</t>
+<t>
+<field>FILE.TYPE</field>
+<desc>
+            <p>When the $ARC file is created, the file type will default to the file type of the live file.</p>
+            <p>Earlier to Jbase, archive file creation in Universe is happened based on the value specified here. But now, archive files will get created based on file type of SPF record. This field currently is not being used.</p>
+            <p>Field range ARC.FILENAME to MODULUS are related multi-value fields, which describe the archive files which will be created.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 numeric characters.  Optional input.  Multivalue field, associated with field range ARC.FILENAME to MODULUS.</p>
+        </desc>
+</t>
+<t>
+<field>TIME.STARTED</field>
+<desc>
+            <p>Maintains a history of the date and time archiving was started.</p>
+            <p>Field range COMPANY.RUN.IN to TIME.ENDED are related multi-value fields, which are system populated when archiving is run.  They maintain a history of each time archiving was run.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field.</p>
+        </desc>
+</t>
+<t>
+<field>RECS.DELETED</field>
+<desc>
+            <p>Maintains a history of the number of records deleted from the main file(s), for each time archiving was run.</p>
+            <p>CATEG.ENTRY The records deleted field refers to the CATEG.ENTRY and RE.CONSOL.PROFIT files.</p>
+            <p>DELIVERY The records deleted field refers to the DE.O.HEADER.ARCH and DE.I.HEADER.ARCH files.</p>
+            <p>SPECIAL.ENTRY The records deleted field refers to the RE.CONSOL.SPEC.ENTRY file.</p>
+            <p>STATEMENT The records deleted field refers to the STMT.ENTRY file.</p>
+            <p>SEC.TRADE The records deleted field refers to the SEC.TRADE and SEC.TRADE$HIS files.</p>
+            <p>Field range COMPANY.RUN.IN to TIME.ENDED are related multi-value fields, which are system populated when archiving is run.  They maintain a history of each time archiving was run.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field.</p>
+        </desc>
+</t>
+<t>
+<field>RETENTION.PERIOD</field>
+<desc>
+            <p>Alternative method of specifying the purge date.  In the format nnM or nnY where nn is a number of either Months or Years.  Records older than the retention period will then be archived.  If today's date is 13/06/95 and a retention period of 3 months is specified (3M), three months is calculated from the beginning of the month.  Therefore, any records from before 1/3/95 will be archived.</p>
+            <p>This field will only be used if PURGE.DATE is null.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-6 type "A" (alphanumeric) characters.  If entered and the record is "CATEG.ENTRY", must be before the last financial year end.  Optional input.  Should be in the format nnM (months) or nnY (years)</p>
+        </desc>
+</t>
+<t>
+<field>$ARC.PATHNAME</field>
+<desc>
+            <p>Pathname of the directory where the $ARC files will reside.  If the directory does not exist, it will be created.  If this field is left blank and ARCHIVE.DATA is set to "Y", the $ARC files will be created in the "arc" directory (typically bnk.arc)  which will be created under the top level directory (typically bnk), if it does not already exist. The archive directory can reside on a separate disk.</p>
+            <p>NOTE: Although the file will exist in the area specified in $ARC.PATHNAME,       the file is temporarily created in the run account, before being       moved to the ARC directory.  Therefore, there must be enough space       in the run account to create the largest of the files (each file is       created, moved and deleted before the next file is created).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-50 characters (any) Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>.ARC.PATHNAME</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>ARC.FILENAME</field>
+<desc>
+            <p>Contains the names of all the $ARC files which will be created when archiving is run.  This field is populated when the record is delivered and should not be changed.</p>
+            <p>Field range ARC.FILENAME to MODULUS are related multi-value fields, which describe the archive files which will be created.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 characters (any) Optional input. Multivalue field, associated with field range ARC.FILENAME to MODULUS.</p>
+        </desc>
+</t>
+<t>
+<field>ARCHIVE.DATA</field>
+<desc>
+            <p>Set to either "Y" or "NO" to detail whether or not the records being purged will be copied to the $ARC files.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>"Y", "NO" or blank.</p>
+        </desc>
+</t>
+<t>
+<field>GENERIC.METHOD</field>
+<desc>
+            <p>Specified whether Generic archiving method need to triggered or not.</p>
+            <p>ARC.GENERIC service will be triggerd when it is set to "Y" and when set to "N" ,corresponing application archival services will be triggered. eg. ARC.CATEG.ENTRY </p>
+            <p> Validation rules:</p>
+            <p> 1) Non mandatory field,default to "Y" when ARC.GENERIC is specified in ROUTINE </p>
+            <p> 2) Can be Y/N</p>
+            <p />
+        </desc>
+</t>
+</menu>
+</t24help>
+

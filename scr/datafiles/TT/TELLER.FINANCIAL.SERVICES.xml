@@ -1,0 +1,1737 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>TT</product>
+<table>TELLER.FINANCIAL.SERVICES</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>It is not uncommon for a Customer to come to a Branch and ask the teller to do a set of transactions. For example, a customer might come in with</p>
+            <p>1.	An ‘On-Us’ (certified) cheque in Local Currency</p>
+            <p>2.	A wad of cash to deposit</p>
+            <p>3.	A bill payment to make or make a loan repayment</p>
+            <p>4.	Transfer part of the deposit to a Savings account</p>
+            <p>5.	A couple of foreign cheques to be sent for collection</p>
+            <p>Normally these will be captured on 5 different screens of TELLER or FUNDS.TRANSFER and committed as separate transactions in T24. The customer will end up being charged for each of these transactions and receive a transaction advice for each of them (5 in total).</p>
+            <p>TELLER.FINANCIAL.SERVICES (TFS) is a T24 application, which facilitates capture of information for all these transactions in one screen and with one click, creates a Consolidated Entry (parameterised) on the Customer account, a Consolidated Charge and a Consolidated Transaction Advice.</p>
+            <p>It is also possible to capture all information in one screen of TFS and create separate entries on the Customer account for each of them.</p>
+            <p>It essentially acts as a front end to TELLER, FUNDS TRANSFER or DATA.CAPTURE applications using T24 Open Financial Services to create the child transactions in TT, FT or DC.</p>
+            <p>The TFS Suite consists of a ‘Company’ wide parameter table (TFS.PARAMETER), a Transaction type definition table (TFS.TRANSACTION) and this is the main transaction application (TELLER.FINANCIAL.SERVICES).</p>
+            <p>TELLER.FINANCIAL.SERVICES supports</p>
+            <p />
+            <p>•	Capture of multiple transactions (any different combination of transactions) on the same screen</p>
+            <p>a)	Even if they belong to different accounts of the customer.</p>
+            <p>b)	Optional “Primary account” to avoid having to re-enter the same Account number in each Leg</p>
+            <p>c)	Optional “Surrogate Account” to override the default “Primary Account” for a specific Leg</p>
+            <p>•	Local and Foreign Currency Transactions</p>
+            <p>a)	It is even possible to capture the information in a 3rd currency for the system to automatically calculate the exchange rates of Debit and Credit Accounts.</p>
+            <p>i.	Ex, “Transfer USD 100 from my GBP Account into my EUR Account”</p>
+            <p>•	Charges for each TFS Leg or a Consolidated Charge</p>
+            <p>•	A Consolidated Transaction Advice</p>
+            <p>•	A Consolidated entry on the Customer account per configuration</p>
+            <p>a)	Consolidation could happen as either “All Debits and Credits Separately” or “All Debits and Credits together” resulting in 2 or 1 entries on the Customer account respectively</p>
+            <p>•	All transactions supported by the underlying modules (FT, TT or DC) with the exception of Wire transfers through FT</p>
+            <p>a)	Ex, SWIFT</p>
+            <p>•	Reversal of FT or TT transactions in history by creating offsetting DC  Transaction.</p>
+            <p>•	A typical sub-set of transactions supported by TFS on a single screen would be (all of these allow both local &amp; foreign currencies)</p>
+            <p>a)	Cash deposit</p>
+            <p>b)	Cash Withdrawal</p>
+            <p>c)	Cash back </p>
+            <p>d)	Bill Payment</p>
+            <p>e)	Loan Repayment</p>
+            <p>f)	Account to Account transfer</p>
+            <p>g)	Cheque Encashment</p>
+            <p>h)	ON-US Cheque Deposit</p>
+            <p>i)	Cheque Deposit for Local Clearing</p>
+            <p>j)	Cheque Deposit for Collection</p>
+            <p>k)	Currency Exchange</p>
+            <p>l)	Units Exchange</p>
+            <p>•	Transactions on Customer, Internal &amp; PL Account.</p>
+            <p>•	Easy keyboard navigation thereby improving user efficiency.</p>
+            <p>•	Massive defaulting features facilitating minimal user input</p>
+            <p>•	Easy trace back from Accounting Entry.</p>
+            <p>•	Supports inter-branch transactions and Multi-book</p>
+            <p>•	Complete control on the status of the child transactions – supports all T24 functions. </p>
+            <p>a)	If TFS is in unauthorised status, all its child transactions will also be unauthorised. Authorising TFS will automatically authorise the child transactions.</p>
+            <p>•	One click to ‘Reverse authorised Legs’ or ‘Delete unauthorised Legs’</p>
+            <p />
+            <p>For a typical TFS leg, the only fields that require input are the Transaction type field and the Amount field and in cases of foreign currency transactions, the Currency field too. The rest are defaulted based on configurations.</p>
+            <p />
+            <p>In the Context of Consolidation, the TFS Legs can be classified broadly into User input legs and Consolidated legs. User Input TFS Legs are those keyed in by the user. Consolidated legs are those automatically inserted by TFS when the user indicates that all information has been captured by setting the field CONSOLIDATE.NOW to YES.</p>
+            <p />
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>SURROGATE.AC</field>
+<desc>
+            <p>Where one side of each of the TFS legs being input happens to be the same account, the user could specify that account in the PRIMARY.ACCOUNT field. On simple transaction types like a Cash deposit or a collection cheque the other side of each of these legs could be defaulted with the Cash Till Account or Cheque Collection suspense respectively and configuration features exist for these transaction types (ex, the fields CAT.DEPT.CODE.1, CAT.DEPT.CODE.2 in TELLER.TRANSACTION).</p>
+            <p>There are two exceptions to this.</p>
+            <p>1. If the TFS Leg being input is that of a transfer of funds from/to the primary account to/from another one of the customer's accounts.</p>
+            <p>2. If the Customer wants just one of the 5 TFS Legs to be done on a different account from the Primary account</p>
+            <p />
+            <p>The Surrogate Account (as the name stands for, it is a surrogate to either the debit/credit or the Primary account but for that specific TFS Leg) is a feature designed to cater to these exceptions.</p>
+            <p />
+            <p>For account to account transfers, we could specify a value in the field SURROGATE.AC in TFS.TRANSACTION as either ACCOUNT.DR or ACCOUNT.CR. Whenever that TFS Transaction type is used in a TFS leg, any value is keyed in this field will be defaulted as either the Debit Account or the Credit Account respectively, while the Primary account stays as the other side of the leg.</p>
+            <p />
+            <p>Where no specification is given in TFS.TRANSACTION, any value keyed in SURROGATE.AC is treated to take precedence on the PRIMARY Account for that TFS Leg alone.</p>
+            <p />
+            <p>The idea behind this is to avoid having to display both Debit and Credit Accounts on the screen to the user.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p>Optional Input. </p>
+            <p>Mandatory when SURROGATE.AC in the TFS.TRANSACTION (of the value specified in TRANSACTION field) is set to either ACCOUNT.CR or ACCOUNT.DR.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AMOUNT.CR</field>
+<desc>
+            <p>Credit side amount of the TFS leg, in the currency defaulted/defined in CURRENCY.CR. </p>
+            <p>This value is converted from the currency defined in CURRENCY field. The rate to be used for this conversion is driven by the setting in the field TXN.CCY.TO.CR.CCY in TFS.PARAMETER/TFS.TRANSACTION</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Input must be a valid amount ype.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>LEGAL.ISS.DATE</field>
+<desc>
+            <p>This field is part of the AML details captured as part of a TFS Transaction. </p>
+            <p>Free text field to record the issue date of the legal document presented by the walk-in customer.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input. T24 Standard Date type field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHG.CCY</field>
+<desc>
+            <p>Currency of the Charge amount specified in CHG.AMT. This is as returned by the child transaction and defaulted by TFS during contract validation.</p>
+            <p />
+            <p>Please see helptext for CHG.ACCOUNT for more details.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Must be a valid record in CURRENCY table.</p>
+            <p>Any input to this field is overriden to "" if the associated WAIVE.CHARGES is set to YES.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PAYMENT.DETS</field>
+<desc>
+            <p>If the underlying child transaction is FT and if the user is trying to effect a bill payment transaction, then this field can be used to pass along the payment details.</p>
+            <p />
+            <p>Any input in this field will be passed on to the PAYMENT.DETAILS field in FT.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input. No further validation is done on this field by TFS.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CCY.DR.INT</field>
+<desc>
+            <p>If user changes the CURRENCY.CR field Value, the old value is retained in this field to compare with user changed value of CURRENCY.CR field </p>
+            <p> to clear the account related fields </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Noinput field. Automatically defaulted by the system.</p>
+        </desc>
+</t>
+<t>
+<field>BENEFICIARY.ID</field>
+<desc>
+            <p>The table BENEFICIARY is used to maintain a record of payees - this could either be maintained by the financial institution or by the customer.</p>
+            <p>TFS allows simple bill payments using BENEFICIARY. This field is associated with each TFS leg. If a value is entered in this field, then TFS will fetch the beneficiary account number defined in BENEFICIARY table (if Bene account is not available, TFS will try to find the nostro account for the Currency specified in the associated CURRENCY field) and default it in the associated Surrogate Account field. </p>
+            <p>This will subsequently be defaulted into the credit side of the TFS leg. (This can be accomplished by setting the field SURROGATE.AC in TFS.TRANSACTION for Bill Payment transactions will be set to ACCOUNT.CR)</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Optional Input. Input must be key to a valid record in BENEFICIARY table.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONSOL.LEVEL.ADDON</field>
+<desc>
+            <p>This is the same field as in TFS.PARAMETER. Any settings in this field in TFS.PARAMETER can be overridden here at a TFS transaction level.</p>
+            <p />
+            <p>If Consolidation is enabled, then TFS will combine all the user input transactions on a single TFS screen and create that as a single transaction hitting the account specified in PRIMARY.ACCOUNT field.</p>
+            <p />
+            <p />
+            <p />
+            <p>The default Consolidation level is the VALUE.DATE of the individual user input TFS transactions.</p>
+            <p />
+            <p />
+            <p />
+            <p>On top of that, if there is a need to combine transactions using additional attributes, that can be set in this field. </p>
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>=================</p>
+            <p />
+            <p />
+            <p />
+            <p>Optional Input.</p>
+            <p />
+            <p>Allowed Values: NO, CCY, CCY.TXN, TXN.</p>
+            <p />
+            <p>Default Value: NO</p>
+            <p />
+            <p>Input not allowed if CONSOLIDATION is set to DISABLE.</p>
+            <p />
+            <p />
+            <p />
+            <p>If set to CCY, then all user input legs of a TFS transaction will be combined based on VALUE.DATE &amp; CURRENCY of the Leg.</p>
+            <p />
+            <p>If set to CCY.TXN, then all user input legs of a TFS transaction will be combined based on VALUE.DATE, CURRENCY &amp; TRANSACTION type of the Leg.</p>
+            <p />
+            <p>If set to TXN, then all user input legs of a TFS transaction will be combined based on VALUE.DATE &amp; TRANSACTION type of the Leg.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRIMARY.ACCOUNT</field>
+<desc>
+            <p>When a number of TFS legs are input by the user, it is more likely that all of them have one thing in common - the main "transaction account" of the customer (a.k.a Current Accounts or Checking Accounts or DDAs). Instead of requiring the user to key in the same account number again and again in each of the TFS legs, this field can be used. </p>
+            <p />
+            <p>Once keyed in, it also defaults the Customer of this account in the PRIMARY.CUSTOMER field.</p>
+            <p>Subsequently in user input legs, this is used as one side of the leg while the other side could be a Till/Suspense account (based on CAT.DEP.CODE.1, CAT.DEPT.CODE.2 specifications in TELLER.TRANSACTION) or input in the associated SURROGATE.AC field  for that TFS leg.</p>
+            <p />
+            <p>When consolidation is enabled, the user input legs are defaulted with the washthru account of the same currency as this account. A final consolidated leg is automatically calculated by the system between that Washthru account and this account at the end when the user instructs the system by setting the field CONSOLIDATE.NOW to YES.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input. Input mandatory if Consolidation is enabled.</p>
+            <p>Input can be of any currency and can be either a Customer or an Internal account or even a PL Category (although the latter two are not really applicable for Teller Operations).</p>
+            <p>If left blank and if PRIMARY.CUSTOMER is keyed in, then the first available account of that customer is defaulted in this field.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>VAL.ERROR</field>
+<desc>
+            <p>Noinput field.</p>
+        </desc>
+</t>
+<t>
+<field>CHQ.TYPE</field>
+<desc>
+            <p>When a cheque issued on-us (issued in our bank either as a certified cheque or on another customer account) is presented for deposit, both the cheque number and cheque type need to be keyed inorder for the system to do the standard cheque validations (against the stock register, payment stop, duplicate presentation etc).</p>
+            <p />
+            <p>This field is used to specify the Cheque Type.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional Input. Input must be key to a valid record in CHEQUE.TYPE.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DR.CURR.MKT</field>
+<desc>
+            <p>Internal reference field. Holds the currency market as applicable for the Debit side of the TFS leg. This is inherited from the underlying child transaction type definition table (like TELLER.TRANSACTION) and where not available, is defaulted to 1. </p>
+            <p />
+            <p>Used for currency conversion processing.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Noinput field. Automatically defaulted by the system.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>AMOUNT</field>
+<desc>
+            <p>This is the transaction amount of the associated TFS leg, in the currency specified in the associated CURRENCY field. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p>Mandatory input. Input must be a valid amount type data.</p>
+            <p />
+            <p>Defaulting:</p>
+            <p>==============</p>
+            <p />
+            <p>Majority of defaulting and validations happen as part of this field's validation.</p>
+            <p />
+            <p>Currency:</p>
+            <p>----------</p>
+            <p>When the currency of the TFS leg is not input, then as much as allowed by the child transaction type definition (ex, TELLER.TRANSACTION), it defaults local currency as the Currency of the TFS leg.</p>
+            <p />
+            <p>Credit and Debit Accounts:</p>
+            <p>---------------------------</p>
+            <p>ACCOUNT.DR, CURRENCY.DR, ACCOUNT.CR, CURRENCY.CR are defaulted. Please refer to the help text for the fields ACCOUNT.DR and ACCOUNT.CR for the defaulting logic.</p>
+            <p />
+            <p>Denominations:</p>
+            <p>----------------</p>
+            <p>For those TFS legs where denomination capture is applicable, the Denominations (either debit or credit side depending on whether its a deposit or withdrawal or both sides if its a till to till transfer/exchange type of transaction) are populated for the user to key in the units.</p>
+            <p>In case of withdrawals, it also updates a field associated with the denomination sub-set, called CR.AVAIL with the available inventory for the associated denomination to guide the user.</p>
+            <p />
+            <p>Currency Conversion:</p>
+            <p>---------------------</p>
+            <p />
+            <p>All currency conversions are done at this stage. The fields AMOUNT.DR, AMOUNT.DR.LCY, EXCH.TXN.DR, AMOUNT.CR, AMOUNT.CR.LCY, EXCH.TXN.CR, AMOUNT.LCY, DEAL.RATE are defaulted based on values in CURRENCY, AMOUNT, CURRENCY.DR, CURRENCY.CR in the associated TFS leg.</p>
+            <p />
+            <p>Once these credit and debit side equivalents are calculated and defaulted, this field itself loses its significance. This is not passed along to the underlying child transaction.</p>
+            <p />
+            <p>Value Dates &amp; Exposure Dates:</p>
+            <p>------------------------------</p>
+            <p />
+            <p>Debit, Credit side value dates and credit exposure dates are defaulted. The specifications given in TRANSACTION table are respected. Where applicable, the specifications given in BC.SORT.CODE (keyed in the field SORT.CODE in TFS) overrides the definition in TRANSACTION table. </p>
+            <p />
+            <p>Running Total:</p>
+            <p>---------------</p>
+            <p />
+            <p>A running total summary of each of the accounts involved in each of the TFS legs, in local currency equivalent is maintained in the fields RT.ACCOUNT.NO and RUNNING.TOTAL. Those two fields are defaulted from the field validation of AMOUNT field.</p>
+            <p />
+            <p>Waive Charges:</p>
+            <p>--------------</p>
+            <p>It is determined here if the charges defined in the underlying child transaction type definition (ex, TELLER.TRANSACTION or FT.TXN.TYPE.CONDITION) should be waived or not by setting the associated WAIVE.CHARGES field to YES.</p>
+            <p>If Consolidation is enabled, then each of the user input TFS legs will be defaulted with the consolidated washthru account. Hence the charges will need to be waived in those legs.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DEAL.RATE</field>
+<desc>
+            <p>The exchange rate between the Debit Currency and the Credit Currency of the associated TFS leg. </p>
+            <p />
+            <p>The rate used to calculate this is driven by the parameter settings in TFS.PARAMETER and/or TFS.TRANSACTION (overrides TFS.PARAMETER settings for that TFS Leg alone).</p>
+            <p />
+            <p>If Debit is Foreign Currency and Credit is Local Currency, then the settings in the field BUY.FCY.SELL.LCY is used to determine the rate to be used.</p>
+            <p>If Debit is Local Currency and Credit is Foreign Currency, then the settings in the field BUY.LCY.SELL.FCY is used to determine the rate to be used.</p>
+            <p>If Debit is Foreign Currency and Credit is also Foreign Currency, then the settings in the field BUY.FCY.SELL.FCY is used to determine the rate to be used.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional Input. Defaulted by the system. Default can be overridden by user.</p>
+            <p>When keyed in by the user, all the currency conversion processing for the associated TFS leg is carried out with the new rate.</p>
+        </desc>
+</t>
+<t>
+<field>CONSOL.METHOD</field>
+<desc>
+            <p>This is the same field as in TFS.PARAMETER. Any settings in this field in TFS.PARAMETER can be overridden here at a TFS Transaction level.</p>
+            <p />
+            <p>If Consolidation is enabled, then TFS will combine all the user input transactions on a single TFS screen and create that as a single transaction hitting the account specified in PRIMARY.ACCOUNT field.</p>
+            <p />
+            <p />
+            <p />
+            <p>This field allows to define if the combined transaction should be "NET" - Consolidation of all debits and credits or "GROSS" - Consolidate all debits together and Consolidate all credits together.</p>
+            <p />
+            <p>Even if this field is set to NET, there is an exception - if the Consolidated amount happens to be 0, then if the field CONSOL.AMT.ZERO in TFS.PARAMETER is set to FORCE.GROSS, then the consolidation is forced to be at GROSS level.</p>
+            <p />
+            <p>Similarly, if there are Credit and Debit TFS legs and if even one of the Credit leg carries a forward exposure, then the system will automatically force the Consolidation to be at GROSS level becasue it is not possible to combine credits with forward exposure &amp; debits.</p>
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>=================</p>
+            <p />
+            <p />
+            <p />
+            <p>Optional Input.</p>
+            <p />
+            <p>Allowed Values: GROSS, NET</p>
+            <p />
+            <p>Input not allowed if CONSOLIDATION is disabled.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>WAIVE.CHARGE</field>
+<desc>
+            <p>Associated with each TFS Leg that allows the user to indicate if the leg level Charging should be waived.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>==</p>
+            <p />
+            <p>Optional Input field. </p>
+            <p />
+            <p>When consolidation is enabled, this field is defaulted to YES for the user input legs (because they are on the Washthru account rather than the customer's account). Otherwise, defaulted to NO. Default can be overridden by user.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CURRENCY.CR</field>
+<desc>
+            <p>Currency of the Credit side of the TFS leg. Defaulted by the system as appropriate.</p>
+            <p>Please refer to helptext of ACCOUNT.CR on defaulting logic.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input. Defaulted by the system as applicable. Value validated against the Currencies allowed by the underlying child transaction type definition table (ex, TELLER.TRANSACTION&gt;VALID.CURRENCIES)</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>BOOKING.DATE</field>
+<desc>
+            <p>The date on which this TFS Transaction was booked. This has no systemic/accounting significance but rather used for reporting purposes. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Defaulted to current bank date. But can be overriden. Input must be less than or equal to current bank date.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>WASHTHRU.SIDE</field>
+<desc>
+            <p>When Consolidation is enabled, TFS uses a washthru account as a temporary place holder for each TFS leg input by the user, so that the net of all these transactions can be used to create the Consolidated Leg between this washthru account and the Primary Account.</p>
+            <p>This field is updated by TFS as either CREDIT or DEBIT on the user input legs to indicate whether the washthru account was defaulted as Credit Account or the Debit Account on that TFS leg, depending on the Transaction type.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Noinput field. Updated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>LEGAL.ISS.AUTH</field>
+<desc>
+            <p>This field is part of the AML details captured as part of a TFS Transaction to capture the name issuing authority of the legal document that the walk-in customer presents for identification/verification.</p>
+            <p>This field has a lookup table running on a virtual table. </p>
+            <p />
+            <p>If the field AML.LOOKUP in TFS.PARAMETER is set to CUSTOMER, then this field will point to a virtual look up table called CUS.LEGAL.ISS.AUTH. If that is set to NATIVE, then this field will point to a virtual table look up called TFS.LEGAL.ISS.AUTH. </p>
+            <p>Valid records need to be defined in EB.LOOKUP for either of these, depending on the parameter setting.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>REVERSAL.MARK</field>
+<desc>
+            <p>If a TFS leg needs to be reversed, then this field, which is associated with each TFS leg can be set to R. When TFS is committed with this field set to R, the it will automatically reverse the associated child transaction.</p>
+            <p>If the underlying child transaction is still in unauthorised status (refer to the field UL.STATUS), TFS will recognise this and DELETE the child transaction from unauthorised status.</p>
+            <p>If the underlying child transaction is in authorised status, then TFS will try to REVERSE it.</p>
+            <p>When this reversal is committed using a version that requires additional authoriser, then the reversal will be in Unauthorised status too. Authorising TFS will authorise the reversal.</p>
+            <p>If the reversal was initiated by mistake and needed to be undone, then all the user has to do is set the field REVERSAL.MARK (which by now would have been reset by TFS to ""), to R again and commit. This will result in the unauthorised reversal being deleted. However this is not possible if the reversal was authorised.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONSOL.LEG</field>
+<desc>
+            <p>Indicates whether this is a Consolidated leg defaulted by the system or a User input leg.</p>
+            <p />
+            <p>When left blank, it indicates it is a user input TFS leg. If set to YES, it indicates it is a Consolidated leg.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Noinput field. Automatically defaulted by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>LEGAL.HOLDER.NAME</field>
+<desc>
+            <p>This field is part of the AML details captured as part of a TFS Transaction. </p>
+            <p>Free text field to record the name as in the legal document presented by the walk-in customer.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input. Upto 100 alphanumeric characters.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DR.VALUE.DATE</field>
+<desc>
+            <p>Value date for the debit side of the TFS leg. Defaulted by the system based on the specifications in TRANSACTION. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional Input. Defaulted by the system. Default can be overridden by the user.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHEQUE.ACCT.NO</field>
+<desc>
+            <p>This is the account number as it is on the cheque being presented for deposit. This is especially applicable for Collection or Clearing cheques and not for On-us cheques.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional Input. Free text alphanumeric field. No validation is done on this field by TFS.</p>
+            <p>Any value supplied here will be passed on to the field CHEQUE.ACCT.NO in TELLER.</p>
+        </desc>
+</t>
+<t>
+<field>R.UL.STMT.NO</field>
+<desc>
+            <p>Statement entry/PL Entry numbers generated by the reversal of the child transaction.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Noinput field. Updated by the system.</p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHEQUE.DATE</field>
+<desc>
+            <p>The date on the cheque being presented for deposit.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional Input. Value must be a valid date. No further validation is done on this field by TFS.</p>
+        </desc>
+</t>
+<t>
+<field>CR.AVAIL</field>
+<desc>
+            <p>Holds the available inventory for the associated denomination. This is populated by the system when the denominations for withdrawal transactions are expanded.</p>
+            <p />
+            <p>Associated with the fields CR.DENOM, CR.DEN.UNIT and CR.SERIAL.NO</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Noinput field. Automatically defaulted by the system as appropriate.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHG.CODE</field>
+<desc>
+            <p>Legwise charges is not supported in TFS. All charges are to be collected via the CONSOL charge leg or by creating an AR activity for AR account.</p>
+            <p />
+            <p>Please see helptext for CHG.ACCOUNT for more details.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Any input to this field is overriden to "" if the associated WAIVE.CHARGES is set to YES.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RT.ACCOUNT.NO</field>
+<desc>
+            <p>Account number for which a running summary of amount is held in the field RUNNING.TOTAL.</p>
+            <p />
+            <p>This account is involved in one or more of the TFS legs in the current TFS Transaction.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Noinput field. Updated by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AMOUNT.LCY</field>
+<desc>
+            <p>Local Currency equivalent of the value entered in the field AMOUNT. Automatically defaulted by the system based on mid-reval rate. </p>
+            <p>This has absolutely no significance in any processing of TFS except to give a picture of what is the Local currency equivalent of the value entered in the field AMOUNT.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p>Noinput field. Defaulted by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RUNNING.TOTAL</field>
+<desc>
+            <p>Running total summary in Local currency equivalent for each account involved in one or more TFS legs in the current TFS transaction. </p>
+            <p />
+            <p>The LCY equivalent is arrived at using mid-reval rate.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Noinput field. Updated by the system.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>R.UL.STATUS</field>
+<desc>
+            <p>Status of the reversal of a child transaction. Defaulted by system.</p>
+            <p />
+            <p>TFS uses the value in this field to determine what to do when committed/authorised.</p>
+            <p />
+            <p>If this field has a value of unauthorised (ex, RNAU), and if the field REVERSAL.MARK is again set to R when committed, TFS will take that to be an instruction to Undo this reversal and will delete this reversal record that exists in RNAU.</p>
+            <p>If REVERSAL.MARK is not set, and when TFS is authorised, it will authorise the Reversal of the child transaction too.</p>
+            <p />
+            <p>Once the reversal is authorised, it cannot be un-done anymore.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Noinput field. Updated by system.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>UL.STATUS</field>
+<desc>
+            <p>Associated with each TFS Leg. Holds the status of the underlying child transaction whose reference is held in the associated UNDERLYING field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Noinput field. Updated by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>OUR.REFERENCE</field>
+<desc>
+            <p>If underlying child transaction is on DC or TT module, then the field OUR.REFERENCE can be used to pass along the value to the respective fields in DATA.CAPTURE or TELLER and eventually to the Accounting Entry.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional Input. No further validation is done on this field by TFS.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>UL.COMPANY</field>
+<desc>
+            <p>Associated with each TFS Leg. Holds the ID to T24 Company in which the underlying child transaction was created.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Noinput field. Updated by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DC.REVERSE.MARK</field>
+<desc>
+            <p>If the underlying child transaction is DATA.CAPTURE, this field can be keyed in with the literal 'R' to be supplied to the REVERSAL.MARKER field in DATA.CAPTURE</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Optional input if underlying child transaction is on DC module. </p>
+            <p>No further validation is done by TFS on this field.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DC.ACCT.OFFICER</field>
+<desc>
+            <p>If the underlying child transaction is DATA.CAPTURE, this field can be keyed in with the DEPT.ACCT.OFFICER id to be passed on to the Accounting Entry. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Mandatory input if underlying child transaction is on DC module. </p>
+            <p>Input must be key to a valid record in DEPT.ACCT.OFFICER. No further validation is done by TFS on this field.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHG.AMT.LCY</field>
+<desc>
+            <p>LCY equivalent of the Charge amount. It is calculated by TFS using mid-reval rate and defaulted during contract validation.</p>
+            <p />
+            <p>Please see helptext for CHG.ACCOUNT for more details.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Automatically defaulted by the system.</p>
+            <p>Any input to this field is overriden to "" if the associated WAIVE.CHARGES is set to YES.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHG.ACCOUNT</field>
+<desc>
+            <p>This field is part of an associated sub-value set till CHG.CODE.</p>
+            <p />
+            <p>Legwise charges is not supported in TFS. All charges are to be collected via the CONSOL charge leg or by creating an AR activity for AR account.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Automatically defaulted by system.</p>
+            <p></p>
+            <p>Any input to this field is overriden to "" if the associated WAIVE.CHARGES is set to YES.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>UL.OFS.MSGS</field>
+<desc>
+            <p>The OFS Message used to create the Underlying Transaction is Updated here.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Noinput field. Automatically defaulted by the system.</p>
+        </desc>
+</t>
+<t>
+<field>CR.VALUE.DATE</field>
+<desc>
+            <p>Value date for the credit side of the TFS leg. Defaulted by the system based on the specifications in TRANSACTION. </p>
+            <p />
+            <p>Where a Sort code has been supplied in the associated SORT.CODE field, this will be defaulted from the BC.SORT.CODE table.</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT.INT</field>
+<desc>
+            <p>Noinput field that holds the system defaulted AMOUNT</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Noinput field. Automatically defaulted by the system.No further validation is done by TFS on this field.</p>
+        </desc>
+</t>
+<t>
+<field>UL.STMT.NO</field>
+<desc>
+            <p>Associated with each TFS Leg. Holds the reference to the accounting/PL entries raised by the underlying child transaction whose reference is held in the associated UNDERLYING field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Noinput field. Updated by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AML.NATIONALITY</field>
+<desc>
+            <p>This field is part of the AML details captured as part of a TFS Transaction. It holds the nationality of the walk-in customer.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional Input. Input not allowed when AML.CUSTOMER.NO has been keyed in with a valid T24 Customer Number.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DR.DEN.UNIT</field>
+<desc>
+            <p>Unit field for the Debit denominations (Deposit side). Associated with the fields DR.DENOM, DR.AVAIL and DR.SERIAL.NO.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Mandatory input when required by the transaction type and the account settings (STOCK.CONTROL.TYPE field in ACCOUNT record of the Debit Account of this TFS Leg)</p>
+        </desc>
+</t>
+<t>
+<field>DC.PROD.CATEG</field>
+<desc>
+            <p>If the underlying child transaction is DATA.CAPTURE, this field can be keyed in with the CATEGORY id to be passed on to the Accounting Entry. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Mandatory input if underlying child transaction is on DC module. </p>
+            <p>Input must be key to a valid record in CATEGORY. No further validation is done by TFS on this field.</p>
+            <p>Input not allowed if neither side of the TFS leg is a PL Category.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AMOUNT.DR.LCY</field>
+<desc>
+            <p>Local currency equivalent of the amount held in AMOUNT.DR. The local currency equivalent is arrived at based on Mid-reval rate.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Noinput field. Automatically defaulted by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DC.CUSTOMER.NO</field>
+<desc>
+            <p>If the underlying child transaction is DATA.CAPTURE, this field can be keyed in with the CUSTOMER id to be passed on to the Accounting Entry. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Mandatory input if underlying child transaction is on DC module. </p>
+            <p>Input must be key to a valid record in CUSTOMER. No further validation is done by TFS on this field.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CR.CURR.MKT</field>
+<desc>
+            <p>Internal reference field. Holds the currency market as applicable for the Credit side of the TFS leg. This is inherited from the underlying child transaction type definition table (like TELLER.TRANSACTION) and where not available, is defaulted to 1. </p>
+            <p />
+            <p>Used for currency conversion processing.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Noinput field. Automatically defaulted by the system.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXCH.TXN.DR</field>
+<desc>
+            <p>This is the exchange rate between the currency of debit side of the TFS leg and the Currency of the TFS Leg.</p>
+            <p />
+            <p>Please refer to helptext on ACCOUNT.CR  and AMOUNT for more information on defaulting logic.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Noinput field. Defaulted by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SPLIT.AMT</field>
+<desc>
+            <p>This holds the amount which should be made available for withdrawal on the date specified in the associated SPLIT.DATE field.</p>
+            <p>It can be input by a user on any transaction type although, defaulting can be made possible by keying in an appropriate BC.SORT.CODE key in the SORT.CODE field.</p>
+            <p />
+            <p>TFS uses this field to capture the forward exposures for the individual cheques being deposited and during Consolidation, it collates the split dates and split amounts from all the user input legs and populates them on the Consolidated leg. While doing so, if there is any "same day avaialability" deposit that is part of the total deposit amount, it uses the Default Sort code defined in the field CONSOL.SORT.CODE in TFS.PARAMETER for that portion of the deposit amount.</p>
+            <p />
+            <p>What happens to the data in these fields is controlled by the field EXPOSURE.METHOD in TFS.PARAMETER.</p>
+            <p>When committed, it either passes the values on these fields into EXP.SPT.DAT and EXP.SPT.AMT fields in TELLER (if EXPOSURE.METHOD is FLOAT) or creates AC.LOCKED.EVENTS for each of the split dates which are in the future (if EXPOSURE.METHOD is LOCK).</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Amount type field. Optional Input. Defaulted by system based on SORT.CODE.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHEQUE.NUMBER</field>
+<desc>
+            <p>The number of the cheque being presented for deposit. This is especially useful for cheques drawn on us (either certified cheques or customer cheques belonging to the same bank).</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input. Mandatory if flagged at TRANSACTION level.</p>
+            <p />
+            <p>TFS does not do any validation on this field. Rather, any value keyed in here will be passed on to Teller and will ultimately be validated against cheque register. An override will be raised if </p>
+            <p>a) its not a valid cheque</p>
+            <p>b) it has already been presented</p>
+            <p>c) it has been stopped</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONSOLIDATE.NOW</field>
+<desc>
+            <p>This field is used only when Consolidation is enabled. </p>
+            <p>From a transaction processing perspective, this field marks the end of the user capturing all the information provided by the customer for a TFS transaction.</p>
+            <p>By setting this field to YES, the user indicates that all information has been captured and essentially instructs the system to consolidate the legs.</p>
+            <p>By setting this field to NO, the user instructs the system to Undo the consolidation.</p>
+            <p>By setting this field to REVERSE, the user instructs the system to mark all the legs of that TFS Transaction, for reversal.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Mandatory Input of YES required when Consolidation is enabled.</p>
+            <p>Input not allowed if Consolidation is disabled (field CONSOL.INSTRUCTION set to NO)</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>LOCK.REF</field>
+<desc>
+            <p>Key to AC.LOCKED.EVENTS record automatically stored by the system upon creation of records in AC.LOCKED.EVENTS.</p>
+            <p />
+            <p>This is applicable only when the associated TFS leg carries a forward exposure and if the field EXPOSURE.METHOD in TFS.PARAMETER is set to LOCK.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Noinput field. Populated by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CR.SERIAL.NO</field>
+<desc>
+            <p>Serial number for the associated denomination &amp; units for the credit side (withdrawal side). Associated with the fields CR.DENOM, CR.AVAIL and CR.DEN.UNIT</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p>Mandatory Input when required by the transaction type and the account settings (STOCK.CONTROL.TYPE field in ACCOUNT record of the Credit Account of this TFS leg)</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CARD.DETAILS</field>
+<desc>
+            <p>If this TFS leg is a Card transaction, then any information related to it can be recorded in this field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional input. Free text alphanumeric field. </p>
+            <p>If supplied with any value, this will be passed on to the corresponding field in TELLER. No validation is done on this field by TFS.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>LEGAL.EXP.DATE</field>
+<desc>
+            <p>This field is part of the AML details captured as part of a TFS Transaction. </p>
+            <p>Free text field to record the expiry date of the legal document presented by the walk-in customer.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input. T24 standard date type field.</p>
+            <p />
+            <p>When the field AML.DETAILS in TFS.PARAMETER is set to VALIDATION, TFS validates against the AML details as recorded in CUSTOMER table or as captured in TFS itself.</p>
+            <p />
+            <p>In case AML.CUSTOMER.NO has been input, then it will validate the legal ID information as captured in CUSTOMER table of that customer. TFS will validate to see if the Legal ID information is available in CUSTOMER table for this customer. If available and if the Legal ID has expired, an override will be raised to that effect. If Legal ID information is not available, an override will be raised to that effect. </p>
+            <p>In case of Walk-in customers, the same validations are done albeit based on the value entered in this field. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>LEGAL.DOC.NAME</field>
+<desc>
+            <p>This field is part of the AML details captured as part of a TFS Transaction to capture the name of the legal document that the walk-in customer presents for identification/verification.</p>
+            <p>This field has a lookup table running on a virtual table. </p>
+            <p />
+            <p>If the field AML.LOOKUP in TFS.PARAMETER is set to CUSTOMER, then this field will point to a virtual look up table called CUS.LEGAL.DOC.NAME. If that is set to NATIVE, then this field will point to a virtual table look up called TFS.LEGAL.DOC.NAME. </p>
+            <p>Valid records need to be defined in EB.LOOKUP for either of these, depending on the parameter setting.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>COMM.REFERENCE</field>
+<desc>
+            <p>This field is part of the AML details captured as part of a TFS Transaction. </p>
+            <p>Free text field to specify the information relevant (like a phone number or an email address) to the comnunication type chosen in COMM.TYPE field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional Input.</p>
+        </desc>
+</t>
+<t>
+<field>PRIMARY.ACCOUNT.INT</field>
+<desc>
+            <p>This field gets populated with the value of PRIMARY.ACCOUNT field.In browser if user changes the PRIMARY.ACCOUNT, the old value of PRIMARY.ACCOUNT is not known to</p>
+            <p> the user hence we make use of this field for checking with user changed value to clear out the defaults done on the individual TFS Legs.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Noinput field. Automatically defaulted by the system.</p>
+        </desc>
+</t>
+<t>
+<field>DEAL.RATE.INT</field>
+<desc>
+            <p>Noinput field that holds the system defaulted DEAL.RATE.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Noinput field. Holds the system defaulted DEAL.RATE. Cannot be changed. No further validation is done by TFS on this field.</p>
+            <p />
+            <p>The value in this field can be used for any reporting purposes as to what the system arrived at and what was input by the user as the Deal Rate.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AMOUNT.CR.LCY</field>
+<desc>
+            <p>Local currency equivalent of the amount held in AMOUNT.CR. The local currency equivalent is arrived at based on Mid-reval rate.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Noinput field. Automatically defaulted by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SORT.CODE</field>
+<desc>
+            <p>This field is used in conjunction with the fields CHEQUE.NUMBER, CHEQUE.ACCT.NO for recording information about Collection/Clearing cheques.</p>
+            <p>Where T24 Cheque Collection functionality is not used, this field can still be used to apply a hold on the funds availability due to the cheque being presented for deposit.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input. Input must be key to a valid record in BC.SORT.CODE.</p>
+            <p />
+            <p>TFS will check if the BC.SORT.CODE definition carries any specification on the Value Date and Exposure Date to be defaulted and will apply the specifications. </p>
+            <p />
+            <p>If a default exposure period has been specified in BC.SORT.CODE, TFS uses the fields SPLIT.AMT and SPLIT.DATE to default the amount and the date on which it should be made available for withdrawal.</p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>SPLIT.DATE</field>
+<desc>
+            <p>This holds the date when the amount specified in the associated SPLIT.AMT field should be made available for withdrawal.</p>
+            <p />
+            <p>It can be input by a user on any transaction type although, defaulting can be made possible by keying in an appropriate BC.SORT.CODE key in the SORT.CODE field.</p>
+            <p />
+            <p>TFS uses this field to capture the forward exposures for the individual cheques being deposited and during Consolidation, it collates the split dates and split amounts from all the user input legs and populates them on the Consolidated leg. While doing so, if there is any "same day avaialability" deposit that is part of the total deposit amount, it uses the Default Sort code defined in the field CONSOL.SORT.CODE in TFS.PARAMETER for that portion of the deposit amount.</p>
+            <p />
+            <p>What happens to the data in these fields is controlled by the field EXPOSURE.METHOD in TFS.PARAMETER.</p>
+            <p>When committed, it either passes the values on these fields into EXP.SPT.DAT and EXP.SPT.AMT fields in TELLER (if EXPOSURE.METHOD is FLOAT) or creates AC.LOCKED.EVENTS for each of the split dates which are in the future (if EXPOSURE.METHOD is LOCK).</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Date type field. Optional Input. Defaulted by system based on SORT.CODE.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHEQUE.DRAWN</field>
+<desc>
+            <p>In case the TFS leg is for a cheque/draft issue, then the number of the cheque/draft can be keyed in here. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input. Value must be numeric. No further validation is done on this field by TFS. </p>
+            <p />
+            <p>Value in this field can be used when printing the cheque/draft upon completion of the transaction.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>UNDERLYING</field>
+<desc>
+            <p>Associated with each TFS Leg. Holds the reference to the underlying child transaction.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Noinput field. Updated by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CR.DEN.UNIT</field>
+<desc>
+            <p>Unit field for the credit denominations (withdrawal side). Associated with the fields CR.DENOM, CR.AVAIL and CR.SERIAL.NO.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Mandatory input when required by the transaction type and the account settings (STOCK.CONTROL.TYPE field in ACCOUNT record of the Credit Account of this TFS Leg)</p>
+        </desc>
+</t>
+<t>
+<field>CHG.AMT</field>
+<desc>
+            <p>Charge amount as calculated by the child transaction and defaulted by TFS during contract validation.</p>
+            <p />
+            <p>Please see helptext for CHG.ACCOUNT for more details.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Automatically defaulted by the system.</p>
+            <p>Where the underlying child transaction is not TELLER, this field can be changed by the user.</p>
+            <p>Any input to this field is overriden to "" if the associated WAIVE.CHARGES is set to YES.</p>
+        </desc>
+</t>
+<t>
+<field>CONSOL.INSTRUCTION</field>
+<desc>
+            <p>If Consolidation is enabled at TFS.PARAMETER level, it is possible to override it at an individual TFS Transaction level by setting this field to NO. Although, it is not possible to enable at TFS transaction level if Consolidation is disabled at TFS.PARAMETER level.</p>
+            <p />
+            <p>When set to YES, all the user input TFS legs will be consolidated for the Primary Account.</p>
+            <p>These consolidated legs could be just 1 in number or more depending on the settings in CONSOL.METHOD and CONSOL.LEVEL.ADDON.</p>
+            <p />
+            <p>TFS achieves this by using a temporary washthru account (a placeholder)on the user input legs and eventually when the user indicates that he/she is done with entering the transactions, it creates one or more consolidated leg(s) between this Washthru account and the account specified in PRIMARY.ACCOUNT field. The consolidated Leg is really just another TFS Leg corresponding to a TELLER Transaction.</p>
+            <p />
+            <p>Even if Consolidation is enabled, if for a given TFS Leg, the field CONSOL.EXCLUDE in the respective TFS.TRANSACTION is set to YES, then that TFS leg will not be included in the Consolidation Process.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Defaulted to YES if CONSOLIDATION in TFS.PARAMETER is set to ENABLE. Can be overridden by user.</p>
+            <p>Defaulted to NO if CONSOLIDATION in TFS.PARAMETER is set to DISABLE. Cannot be overridden by user.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRIMARY.CUSTOMER</field>
+<desc>
+            <p>The Customer of the account specified in PRIMARY.ACCOUNT. Defaulted from the field validation of PRIMARY.ACCOUNT.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p>If left blank and if PRIMARY.ACCOUNT is keyed in, then this is defaulted with the Customer number in the account record of the PRIMARY.ACCOUNT.</p>
+            <p>If keyed in, and if PRIMARY.ACCOUNT is left blank, then will default the first account as held in CUSTOMER.ACCOUNT table.</p>
+            <p>The value in this field must be the same as the Customer of the PRIMARY.ACCOUNT, as held in the Account record.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Standard T24 Override field.</p>
+        </desc>
+</t>
+<t>
+<field>MKT.EXCH.PROFIT</field>
+<desc>
+            <p>Total Market exchange calculated on all TFS legs. This has no significance other than to present the value to the user on the screen.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Noinput field. Defaulted by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TRANSACTION.INT</field>
+<desc>
+            <p>This field gets populated with the value of TRANSACTION field. This field is used for Validation of TRANSACTION field</p>
+            <p>if user tries to change the TRANSACTION field after authorisation of TELLER.FINANCIAL.SERVICES transaction.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Noinput field. Automatically defaulted by the system.</p>
+        </desc>
+</t>
+<t>
+<field>LEGAL.ID</field>
+<desc>
+            <p>This field is part of the AML details captured as part of a TFS Transaction. </p>
+            <p>Free text field to record the identification of the legal document presented by the walk-in customer.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input. Upto 20 alphanumeric characters.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DR.AVAIL</field>
+<desc>
+            <p>Not in use. Noinput field.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>Currency of the TFS leg. This need not either be the Debit currency or the Credit Currency. This need not be the same as the currency of the Primary Account either.</p>
+            <p />
+            <p>TFS will automatically calculate the exchange rates between this Transaction currency and the debit &amp; Credit currencies.</p>
+            <p />
+            <p>The exchange rates used to arrive at debit &amp; credit equivalents are driven by the fields TXN.CCY.TO.DR.CCY and TXN.CCY.TO.CR.CCY (at TFS.PARAMETER and at TFS.TRANSACTION level)</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Mandatory if the underlying child transaction type definition requires this to be a foreign currency. If not, and if left blank, defaulted to local currency.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CR.EXP.DATE</field>
+<desc>
+            <p>Exposure date for the credit side of the TFS leg. Where Split exposure is not involved, this field will be defaulted by the system based on the specifications in TRANSACTION table.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional input. Automatically defaulted by the system. Can be overridden by the user.</p>
+        </desc>
+</t>
+<t>
+<field>DR.SERIAL.NO</field>
+<desc>
+            <p>Serial number for the associated denomination &amp; units for the debit side (deposit side). Associated with the fields DR.DENOM, DR.AVAIL and DR.DEN.UNIT</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p>Mandatory Input when required by the transaction type and the account settings (STOCK.CONTROL.TYPE field in ACCOUNT record of the Debit Account of this TFS leg)</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXCH.TXN.CR</field>
+<desc>
+            <p>This is the exchange rate between the currency of credit side of the TFS leg and the Currency of the TFS Leg.</p>
+            <p />
+            <p>Please refer to helptext on ACCOUNT.CR  and AMOUNT for more information on defaulting logic.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Noinput field. Defaulted by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TRANSACTION</field>
+<desc>
+            <p>This determines the transaction type for that TFS Leg. All the validations on the allowed account types and currency of the TFS leg are based on the specification in TFS.TRANSACTION table as to what the underlying transaction type definition table is and its rules to be applied.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Input must be key to a valid record in TFS.TRANSACTION.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>NARRATIVE</field>
+<desc>
+            <p>Narrative for the TFS leg. For Consolidated legs, TFS uses a native logic to build the narrative text based on the user input legs which are being consolidated. </p>
+            <p>There is also a way of populating narrative based on custom requirements by attaching an API in the field CONSOL.NARR.API in TFS.PARAMETER.</p>
+            <p>For user input legs, the user can input values here. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional Input. Sub-valued field associated with each TFS leg.  Value supplied in this field will be passed onto the child transaction and eventually to the NARRATIVE field in the Accounting Entry.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DR.DENOM</field>
+<desc>
+            <p>Denomination for the Debit side (Deposit side). Associated with the fields DR.AVAIL, DR.DEN.UNIT and DR.SERIAL.NO.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p>Noinput field. Automatically defaulted by the system.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CCY.CR.INT</field>
+<desc>
+            <p>If user changes the CURRENCY.DR field Value, the old value is retained in this field to compare with user changed value of CURRENCY.DR field</p>
+            <p> to clear the account related fields </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Noinput field. Automatically defaulted by the system.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY.DR</field>
+<desc>
+            <p>Currency of the Debit side of the TFS leg. Defaulted by the system as appropriate.</p>
+            <p>Please refer to helptext of ACCOUNT.DR on defaulting logic.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input. Defaulted by the system as applicable. Value validated against the Currencies allowed by the underlying child transaction type definition table (ex, TELLER.TRANSACTION&gt;VALID.CURRENCIES)</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CURRENCY.INT</field>
+<desc>
+            <p>If user changes the CURRENCY field Value, the old value is retained in this field to compare with user changed value of CURRENCY field </p>
+            <p> to clear the account related fields to redo the calculations and default of debit,credit side accounts of TFS legs</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Noinput field. Automatically defaulted by the system.</p>
+        </desc>
+</t>
+<t>
+<field>AML.NAME</field>
+<desc>
+            <p>This field is part of the AML details captured as part of a TFS Transaction. </p>
+            <p>This is a language associated multi-valued field allowing free text input to capture the name of a walk-in customer.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional Input. Input not allowed when AML.CUSTOMER.NO has been keyed in with a valid T24 Customer Number.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DR.EXP.DATE</field>
+<desc>
+            <p>Exposure date for the debit side of the TFS leg. Normally this will be the current bank date as there cannot be forward exposure for debits, except when the underlying child transaction is on DC and if the DC Reversal Mark is set to R.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional input. Automatically defaulted by the system. Can be overridden by the user.</p>
+        </desc>
+</t>
+<t>
+<field>CR.DENOM</field>
+<desc>
+            <p>Denomination for the credit side (withdrawal side). Associated with the fields CR.AVAIL, CR.DEN.UNIT and CR.SERIAL.NO.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p>Noinput field. Automatically defaulted by the system.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>AMOUNT.DR</field>
+<desc>
+            <p>Debit side amount of the TFS leg, in the currency defaulted/defined in CURRENCY.DR. </p>
+            <p>This value is converted from the currency defined in CURRENCY field. The rate to be used for this conversion is driven by the setting in the field TXN.CCY.TO.DR.CCY in TFS.PARAMETER/TFS.TRANSACTION</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Input must be a valid amount ype.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>NO.OF.CHEQUES</field>
+<desc>
+            <p>When a bulk of cheques are being presented for deposit and if the financial institution wants to be able to record just the number of cheques and not the individual cheque details, then this field can be used for that purpose.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional Input. No further validation is done on this field by TFS.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>R.UNDERLYING</field>
+<desc>
+            <p>If the original child transaction could not be reversed for any reason (for ex, TELLER does not allow reversal of a transaction in history), TFS uses DATA.CAPTURE to generate offsetting entries.</p>
+            <p>In such cases, the transaction reference of the underlying child transaction and the reversal transaction will be different. This field is updated with the reversal child transaction reference.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Noinput field. Updated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>COMM.TYPE</field>
+<desc>
+            <p>This field is part of the AML details captured as part of a TFS Transaction to record the walk-in customer's preferred communication.</p>
+            <p>This field has a lookup table running on a virtual table. </p>
+            <p />
+            <p>If the field AML.LOOKUP in TFS.PARAMETER is set to CUSTOMER, then this field will point to a virtual look up table called CUS.COMM.TYPE. If that is set to NATIVE, then this field will point to a virtual table look up called TFS.COMM.TYPE. </p>
+            <p>Valid records need to be defined in EB.LOOKUP for either of these, depending on the parameter setting.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TXN.REF</field>
+<desc>
+            <p>Key to TELLER.FINANCIAL.SERVICES. Automatically generated.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=</p>
+            <p />
+            <p>Mandatory Input. Automatically generated.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CARD.NUMBER</field>
+<desc>
+            <p>If this TFS leg is a Card transaction, then card number can be recorded in this field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional input. Free text alphanumeric field. </p>
+            <p>If supplied with any value, this will be passed on to the corresponding field in TELLER. No validation is done on this field by TFS.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.CR</field>
+<desc>
+            <p>This is the Credit side of the TFS Leg. </p>
+            <p>The account can belong to any company in T24 (not necessarily the one the user is currently logged onto) as long as the CUSTOMER table of the Account company is shared with the curent company.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Input can be either Internal account, PL Category code or a Customer account as long as it is allowed by the underlying child transaction type definition (ex, TELLER.TRANSACTION). In cases where the Child transaction is an FT or DC, no such restrictions apply.</p>
+            <p />
+            <p>Defaulting:</p>
+            <p>============</p>
+            <p>The defaulting explained below applies to all TFS legs keyed in by the user (User Input Legs). </p>
+            <p />
+            <p>In case the child transaction is TELLER and if allowed category (CAT.DEPT.CODE.1, CAT.DEPT.CODE.2 as appropriate) is defined in TELLER.TRANSACTION, then this field will automatically be defaulted based on the Currency of this side (CURRENCY.DR), the category code defined (CAT.DEPT.CODE.1, CAT.DEPT.CODE.2 as appropriate) and the Teller ID.</p>
+            <p>Where that is not specified, as a second level defaulting, it looks for the SURROGATE.AC definition in TFS.TRANSACTION. If that is set to ACCOUNT.CR then, any input in SURROGATE.AC of the associated leg will be defaulted into this field.</p>
+            <p>Where SURROGATE.AC is not applicable, TFS assumes that this side will be the account keyed in PRIMARY.ACCOUNT field and will default the primary account in this field. In such a situation, if Consolidation has been enabled, then instead of defaulting the Primary Account, TFS will default the Consolidation Washthru Account (built based on the the Currency of the Primary account, category defined in TFS.PARAMETER and the Teller ID).</p>
+            <p>Consequently, if CURRENCY.CR is not input, that is also defaulted based on the currency of the account defaulted in this field.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.DR</field>
+<desc>
+            <p>This is the Credit side of the TFS Leg. </p>
+            <p>The account can belong to any company in T24 (not necessarily the one the user is currently logged onto) as long as the CUSTOMER table of the Account company is shared with the curent company.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Input can be either Internal account, PL Category code or a Customer account as long as it is allowed by the underlying child transaction type definition (ex, TELLER.TRANSACTION). In cases where the Child transaction is an FT or DC, no such restrictions apply.</p>
+            <p />
+            <p>Defaulting:</p>
+            <p>============</p>
+            <p>The defaulting explained below applies to all TFS legs keyed in by the user (User Input Legs). </p>
+            <p />
+            <p>In case the child transaction is TELLER and if allowed category (CAT.DEPT.CODE.1, CAT.DEPT.CODE.2 as appropriate) is defined in TELLER.TRANSACTION, then this field will automatically be defaulted based on the Currency of this side (CURRENCY.DR), the category code specified (CAT.DEPT.CODE.1, CAT.DEPT.CODE.2 as appropriate) and the Teller ID.</p>
+            <p>Where that is not specified, as a second level defaulting, it looks for the SURROGATE.AC definition in TFS.TRANSACTION. If that is set to ACCOUNT.DR then, any input in SURROGATE.AC of the associated leg will be defaulted into this field.</p>
+            <p>Where SURROGATE.AC is not applicable, TFS assumes that this side will be the account keyed in PRIMARY.ACCOUNT field and will default the primary account in this field. In such a situation, if Consolidation has been enabled, then instead of defaulting the Primary Account, TFS will default the Consolidation Washthru Account (built based on the the Currency of the Primary account, category defined in TFS.PARAMETER and the Teller ID).</p>
+            <p>Consequently, if CURRENCY.DR is not input, that is also defaulted based on the currency of the account defaulted in this field.</p>
+        </desc>
+</t>
+<t>
+<field>AML.ADDRESS</field>
+<desc>
+            <p>This field is part of the AML details captured as part of a TFS Transaction. </p>
+            <p>This is a multi-valued field allowing free text input to capture the address details of a walk-in customer.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional Input. Input not allowed when AML.CUSTOMER.NO has been keyed in with a valid T24 Customer Number.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AML.CUSTOMER.NO</field>
+<desc>
+            <p>This field is part of the AML details captured as part of a TFS Transaction. </p>
+            <p>If the TFS transaction is being done for an existing T24 customer, then the customer number can be keyed in here. This can also be different from the Primary Customer (where this customer is doing transactions on behalf of the Primary Customer)</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional Input. Input must be key to a valid record in CUSTOMER table.</p>
+            <p />
+            <p>If the field AML.DETAILS in TFS.PARAMETER is set to VALIDATION, </p>
+            <p>When this field is left blank and if Primary Customer has been input, then this field will automatically be defaulted with that value and an Override will be raised to that effect.</p>
+            <p />
+        </desc>
+</t>
+</menu>
+</t24help>
+

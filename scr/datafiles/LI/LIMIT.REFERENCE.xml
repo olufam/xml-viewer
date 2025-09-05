@@ -1,0 +1,1392 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>LI</product>
+<table>LIMIT.REFERENCE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This table is used to define the types of Limit to be processed by</p>
+            <p>the Limit System. Each Limit type (known as a Limit Reference within</p>
+            <p>the System) can be defined as being part of a hierarchy, made up of</p>
+            <p>a GLOBAL Limit, PRODUCT Limit and SUB PRODUCT Limit.</p>
+            <p>This table is also used for define whether the Limit Reference is one</p>
+            <p>that requires checking each time, or whether it is updated only for information.</p>
+            <p>See the helptext on the record id for more details</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>SHORT.NAME</field>
+<desc>
+            <p>Provides a short description of the Limit Reference. This is</p>
+            <p>used for reporting and display purposes whenever there is</p>
+            <p>insufficient space for the Description (Field 1).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-15 type A (alphanumeric) characters. Multilanguage field.</p>
+            <p>(Mandatory input.)</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.KEY.TYPE</field>
+<desc>
+            <p>Defines whether the system default record is to be created</p>
+            <p>within the global line for the customer or at the product</p>
+            <p>level only.</p>
+            <p>Used to indicate at which level the system default records</p>
+            <p>are to be created when there is a global line present and</p>
+            <p>the product line is not one of the product lines allowed. If</p>
+            <p>this field contains the value GLOBAL then the records are</p>
+            <p>created within the 'GLOBAL structure' but with a</p>
+            <p>limit amount of zero. If the value in this field is PRODUCT,</p>
+            <p>then system default records are created at the product level</p>
+            <p>with limit amounts set to null.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Values allowed are: PRODUCT or GLOBAL</p>
+            <p>This field is Mandatory input for sub-product and for</p>
+            <p>product records without sub-products, otherwise no input</p>
+            <p>is allowed. (No default value)</p>
+            <p>Input in this field is mandatory for sub-product limit references.</p>
+            <p>Input in this field is mandatory for product limit</p>
+            <p>references without any reference children.</p>
+            <p>Input is not allowed in this field for 'GLOBAL'</p>
+            <p>level limit reference records.</p>
+            <p>Input is not allowed in this field for the Fiduciary and</p>
+            <p>Deposit limit reference fields. That is Limit Reference</p>
+            <p>Numbers 9700, 9800 and 9900.</p>
+            <p>Input is not allowed in this field for product limit</p>
+            <p>references with reference children.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>This is a multi valued field. </p>
+	        <p>Contains details of any override applicable to this record.</p>        
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 35 characters may be entered. This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>PARENT.REFERENCE</field>
+<desc>
+            <p>Identifies the parent limit reference record when a</p>
+            <p>SUB.PRODUCT.LEVEL is defined. The parent reference is</p>
+            <p>automatically updated when the REFERENCE.CHILD field is</p>
+            <p>updated on the parent record.</p>
+            <p>This field is updated automatically when the parent</p>
+            <p>LIMIT.REFERENCE has a child product added or removed. In a</p>
+            <p>nested structure the top level record 6010 would reference</p>
+            <p>sub-products 6011 and 6012 (these would have the parent</p>
+            <p>reference 6010). 6012 could then be the parent of 6013 and</p>
+            <p>6014 and ths field would display 6012 on those children.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input field. Automatically updated by the system.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>LIMIT.SUBROUTINE</field>
+<desc>
+            <p>Identifies the subroutine which will be called to return the</p>
+            <p>limit amount.</p>
+            <p>For FOREX, limit amount as well as other currency limit amount will be returned</p>
+            <p>A subroutine maybe used to determine the amount to update the</p>
+            <p>limit outstandings. The routine will be invoked every time</p>
+            <p>an update is made to a LIMIT product the same as the limit reference.</p>
+            <p>Once authorised this field may not be changed directly. If a</p>
+            <p>change is required the application LIMIT.CHANGE should be</p>
+            <p>used to add the new value. This will then become effective</p>
+            <p>during the next end of day.</p>
+            <p>Note: Percentage definitions defined in fields</p>
+            <p>LIMIT.BAND.LEVEL through to PERC.CALC.BASIS are ignored for</p>
+            <p>updates from COMMITMENT contracts.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 27 Alphanumeric characters. (No change)</p>
+            <p>Subroutine must be identified as a record in the application</p>
+            <p>PGM.FILE with the type equal to 'S' for subroutine.</p>
+            <p>The routine must be compiled and cataloged with an entry in</p>
+            <p>the T24 account VOC file.</p>
+        </desc>
+</t>
+<t>
+<field>MATURITY.PERIOD</field>
+<desc>
+            <p>Indicates the remaining time to maturity for a transaction to</p>
+            <p>which a percentage applies.</p>
+            <p>The period defined here represents the remaining time to</p>
+            <p>maturity for a contract. Together with MAT.PERIOD.PERC, this</p>
+            <p>field allows the amount of a transaction used to monitor</p>
+            <p>limimts to vary with the length of time left to maturity.</p>
+            <p>The periods can be specified on a BAND or LEVEL basis,</p>
+            <p>defined in LIMIT.BAND.LEVEL. Periods specified here are</p>
+            <p>inclusive of this date.</p>
+            <p>The amount of a transaction used to update the limit system</p>
+            <p>will be recalculated each night in accordance with the</p>
+            <p>specified period.</p>
+            <p>Associated with MAT.PERIOD.PERC.</p>
+            <p>Note: Percentage definitions defined in fields</p>
+            <p>LIMIT.BAND.LEVEL through to PERC.CALC.BASIS are ignored for</p>
+            <p>updates from COMMITMENT contracts.</p>
+            <p>When using a BANDED or a PRORATA structure it is possible</p>
+            <p>that the total transaction amount calculated ma exceed 100%</p>
+            <p>of the transaction value. This can be avoided by using a</p>
+            <p>PERCENTAGE.CAP of 100%.</p>
+            <p>Example:</p>
+            <p>The following percentage structure may be defined:</p>
+            <p>Transactions maturing in up to 6 months are recorded at 5%</p>
+            <p>Transactions maturing in up to 12 months are recorded at 6%</p>
+            <p>Transactions maturing in up to 24 months are recorded at 7%</p>
+            <p>Transactions maturing more than 24 months are recorded at 10%</p>
+            <p>This is entered as:</p>
+            <p />
+            <table>
+                <tr>
+                    <td>MATURITY.PERIOD</td>
+                    <td>6M</td>
+                    <td>12M</td>
+                    <td>24M</td>
+                    <td>R</td>
+                </tr>
+                <tr>
+                    <td>MAT.PERIOD.PERC</td>
+                    <td>5%</td>
+                    <td>6%</td>
+                    <td>7%</td>
+                    <td>10%</td>
+                </tr>
+            </table>
+            <p />
+            <p>The risk on a loan with a 36 month initial period would be</p>
+            <p>calculcaled as:</p>
+            <p>At input:</p>
+            <p>LIMIT.BAND.LEVEL = LEVEL</p>
+            <p>10% of the value (36 months remaining falls in the rest period)</p>
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = BAND</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>With 18 months remaining:</p>
+            <p>LIMIT.BAND.LEVEL = LEVEL</p>
+            <p>7% of the value (18 months remaining falls in the 12 - 24</p>
+            <p>month band)</p>
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = BAND</p>
+            <p>5% of the value (the loan falls in the 0 - 6 month band)</p>
+            <p>6% of the value (the loan falls in the 6 - 12 month band)</p>
+            <p>7% of the value (the loan falls in the 12 - 24 month band)</p>
+            <p />
+            <p />
+            <p>The percentage(s) extracted can be calculated on a PRORATA or</p>
+            <p>FIXED basis (see PERC.CALC.BASIS for an example).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>'R' for Remaining or nnA where nnn - Number of A</p>
+            <p>where: A = Y for years M for months W for weeks or D</p>
+            <p>for days e.g. a 12 month period could ne input as</p>
+            <p>12M or 1Y. (No change)</p>
+            <p>The numbers of days, weeks, months or years must be</p>
+            <p>entered in a logical order i.e. in ascending sequence.</p>
+            <p>When more than one period is defined a consistent unit</p>
+            <p>must be used.</p>
+            <p>R must be used as the final item.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED4</field>
+<desc>
+            <p>Reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field, no input.</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.REFERENCE</field>
+<desc>
+            <p>This is the identification code, known as the Limit Reference</p>
+            <p>used in the LIMIT key and in LIMIT.PARAMETER to define how a</p>
+            <p>LIMIT is defaulted.</p>
+            <p>The format of the id is very specific. T24 can tell from</p>
+            <p>the id whether the LIMIT.REFERENCE is Global, a Product or a</p>
+            <p>Sub-Product. See table below for details:</p>
+            <p />
+            <table>
+                <tr>
+                    <td>
+                        <p>Type</p>
+                    </td>
+                    <td>
+                        <p>Length</p>
+                    </td>
+                    <td>
+                        <p>Example</p>
+                    </td>
+                    <td>
+                        <p>Notes</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>GLOBAL</td>
+                    <td>5-7 digits</td>
+                    <td>100000, 200000 or 3000000</td>
+                    <td>Allows different purpose Global Limits</td>
+                </tr>
+                <tr>
+                    <td>PRODUCT</td>
+                    <td>3-4 digits</td>
+                    <td>1000, 2100 or 400</td>
+                    <td>Last 2 digits must both be zero for products</td>
+                </tr>
+                <tr>
+                    <td>SUB-PRODUCT</td>
+                    <td>3-4 digits</td>
+                    <td>1010, 1011, 410 or 411</td>
+                    <td>Last 2 digits cannot both be zero</td>
+                </tr>
+            </table>
+            <p />
+            <p>With this structure, the user can define up to 999 different</p>
+            <p>types of Global Line, 99 different types of Product Limit</p>
+            <p>and 99 different types of Sub-product Limit.</p>
+            <p>The relation between records is hierarchical, the Global is</p>
+            <p>the higest level and a sub-product of level 9 is the lowest.</p>
+            <p />
+            <table>
+                <tr>
+                    <td>
+                        <p>ID</p>
+                    </td>
+                    <td>
+                        <p>Use</p>
+                    </td>
+                    <td>
+                        <p>Level</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>10000</td>
+                    <td>Global</td>
+                    <td />
+                </tr>
+                <tr>
+                    <td>1000</td>
+                    <td>Product</td>
+                    <td />
+                </tr>
+                <tr>
+                    <td>1011</td>
+                    <td>Sub-Product</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>1012</td>
+                    <td>Sub-Product</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td>1013</td>
+                    <td>Sub-Product</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>1014</td>
+                    <td>Sub-Product</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>1015</td>
+                    <td>Sub-Product</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>1016</td>
+                    <td>Sub-Product</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>1017</td>
+                    <td>Sub-Product</td>
+                    <td>7</td>
+                </tr>
+                <tr>
+                    <td>1018</td>
+                    <td>Sub-Product</td>
+                    <td>8</td>
+                </tr>
+                <tr>
+                    <td>1019</td>
+                    <td>Sub-Product</td>
+                    <td>9</td>
+                </tr>
+            </table>
+            <p />
+            <p>LIMIT records use both the original LIMIT.REFERENCES as well</p>
+            <p>as combining them. For example where a Global Limit of</p>
+            <p>100000 is defined witha product of say 10000. Then a LIMIT</p>
+            <p>can refer to 110000 (i.e 100000 plus 10000). Additionally</p>
+            <p>where sub-products exist under 10000 (say 1000 and 2000)</p>
+            <p>this could result in LIMIT records with references such as:</p>
+            <p>100000 Global Limit</p>
+            <p>110000 Global Limit + Product</p>
+            <p>111000 Global Limit + Product + Sub-Product</p>
+            <p>112000 Global Limit + Product + Sub-Product</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>3 to 7 numeric characters.</p>
+            <p>in the following format: 'GGG PPSS' where: GGG</p>
+            <p>=identification of a Global line (range = 10000, 20000</p>
+            <p>... 9990000) PP =identification of the Product number</p>
+            <p>(range = 100, 200 ... to 9900) SS =identification of</p>
+            <p>Sub-Product number (e.g. 101, 102 ... 9999)</p>
+            <p>Mandatory Input.</p>
+            <p>Reversal not allowed if used in LIMIT.PARAMETER</p>
+            <p>Reversal not allowed if used in LIMIT</p>
+            <p>No Default</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+            <p>Local reference field(s) defined by the user.</p>
+            <p>Identifies any additional element which has been defined</p>
+            <p>locally to meet a particular requirement.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 characters as defined in the local table definition</p>
+            <p>for this local reference field. (Multi-valued field).</p>
+            <p>Optional or mandatory input according to the LOCAL.TABLE</p>
+            <p>definition for this field.</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.MNEMONIC</field>
+<desc>
+            <p>Defines the mnemonic to be printed in override messages in</p>
+            <p>place of the last four digits of the limit reference number.</p>
+            <p>The value entered in this field will replace the last four</p>
+            <p>digits of the local reference number in an override message.</p>
+            <p>Example: If the value in the field is FXSP then the override</p>
+            <p>message for an excess of GBP1000 on a forex spot level for</p>
+            <p>customer liability number 100 would appear as:</p>
+            <p>"EXCESS GBP - 1000 ID = 100.000FXSP.01"</p>
+            <p>If preferable you could enter the LIMIT.REFERENCE id here so</p>
+            <p>the message would enable you to find the record more easily.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>4 alphanumeric characters. Mandatory Input (No default value)</p>
+        </desc>
+</t>
+<t>
+<field>REFERENCE.CHILD</field>
+<desc>
+            <p>Used in LIMIT.REFERENCE records that have a link with lower</p>
+            <p>level records. This can be to create a Global Limit</p>
+            <p>structure where products are linked into the Global</p>
+            <p>LIMIT.REFERENCE. It can also be used to provide sub-products</p>
+            <p>and associated sub-product levels. Input here is the</p>
+            <p>LIMIT.REFERENCE lower down in the chain.</p>
+            <p>Where sub-product levels are used the value entered here must</p>
+            <p>be at a lower level. If this record is set to level 2 then</p>
+            <p>the record entered in this field must be 3.</p>
+            <p>Note: The suppression or change of any REFERENCE CHILD will</p>
+            <p>only be possible when the respective LIMIT REFERENCE is not</p>
+            <p>in use anywhere in the system. (The validation of a deletion</p>
+            <p>or reversal of a REFERENCE CHILD includes a verification</p>
+            <p>(scan) of the LIMIT file for use of the reference number.)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 4 numeric characters. Multivalue field (Optional</p>
+            <p>Input except for Global Line where at least one REFERENCE</p>
+            <p>CHILD is mandatory; No Default Value).</p>
+            <p>Duplicate values of the REFERENCE CHILD not permitted</p>
+            <p>The REFERENCE CHILD input in this field must belong to</p>
+            <p>the ID i.e. if the ID is, for example, the Global LIMIT</p>
+            <p>REFERENCE 10000, a valid REFERENCE CHILD will be 10100,</p>
+            <p>10200 etc... If the ID is 100, a valid REFERENCE CHILD</p>
+            <p>will be 101, 102 etc...</p>
+            <p>The child records must be defined first on the LIMIT</p>
+            <p>REFERENCE file. The description existing on the file will</p>
+            <p>be used for the enrichment.</p>
+            <p>The REFERENCE CHILD records must have the same REDUCING</p>
+            <p>LIMIT value as the one being defined for the Global LIMIT</p>
+            <p>REFERENCE number.</p>
+            <p>The REFERENCE CHILD records of a PRODUCT No must have the</p>
+            <p>same FX.OR.TIME.BAND value (e.g. when the LIMIT REFERENCE</p>
+            <p>100 = 'FX', then the LIMIT REFERENCE 101 must also</p>
+            <p>be 'FX'). However the REFERENCE.CHILD</p>
+            <p>record may have a         FX.OR.TIME.BAND value of</p>
+            <p>'TB' if the parent record has no</p>
+            <p>FX.OR.TIME.BAND value.</p>
+            <p>When the user is creating a Global Limit reference (5 to</p>
+            <p>7 numeric characters in the ID), the definition of at</p>
+            <p>least one REFERENCE CHILD will be mandatory.</p>
+            <p>The REFERENCE CHILD input in this field which contains</p>
+            <p>'FX' as a 'FX.OR.TIME.BAND' value will</p>
+            <p>only be allowed when the Limit netting indicator has</p>
+            <p>been set to 'NO' on the LIMIT.PARAMETER file.</p>
+            <p>The REFERENCE CHILD input in this field which contains</p>
+            <p>'FX' as a 'FX.OR.TIME.BAND' value will</p>
+            <p>only be allowed when the Limit netting indicator has</p>
+            <p>been set to 'NO' on the LIMIT.PARAMETER file.</p>
+            <p>The SUB.PRODUCT.LEVEL of the value entered must be lower</p>
+            <p>than the record being entered.</p>
+            <p>In a Cross Limit Structure the following validations would apply.</p>
+            <p />
+            <p>Mandatory for PRODUCT Limits i.e. when the field CROSS.LIMIT</p>
+            <p>is set to TOP.</p>
+            <p>Not Allowed for CROSS or SUB-PRODUCT Limits i.e. when the</p>
+            <p>field CROSS.LIMIT is set to either CROSS or PROD.</p>
+            <p>A PRODUCT or CROSS or SUB-PRODUCT Limit Reference of a Cross</p>
+            <p>Limit structure could not be specified as a</p>
+            <p>REFERENCE.CHILD of a Global Limit Reference.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>RESERVED2</field>
+<desc>
+            <p>Reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field, no input.</p>
+        </desc>
+</t>
+<t>
+<field>SUB.PRODUCT.LEVEL</field>
+<image>LI_LIMIT.REFERENCE_SUB.PRODUCT.gif</image>
+<desc>
+            <p>The level of the sub-product being defined.</p>
+            <p>Up to 9 sub product levels can be defined below the standard</p>
+            <p>sub product level. A standard sub-product can be identified</p>
+            <p>by the last two characters of the limit reference being</p>
+            <p>anything other than zeros.</p>
+            <p>Sub-product levels 1 to 9 are allowed. With 1 representing</p>
+            <p>the highest and 9 the lowest sub product levels.</p>
+            <p />
+            <p>Example Product &amp; Sub-Product:</p>
+            <p />
+            <p>We need a Limit structure to cover generic Loans that is</p>
+            <p>sub-divided into those to Banks and those to Non-Banks. This</p>
+            <p>requires a Product and two sub-products.</p>
+            <p />
+            <p>We define:</p>
+            <p>5000 - product for Loans</p>
+            <p>5010 - sub-product for Loans to Banks</p>
+            <p>5020 - sub-product for Loans to Non-Banks</p>
+            <p />
+            <p>Example Product, Sub-Product &amp; Sub-product levels:</p>
+            <p />
+            <p>We need a Limit structure to cover generic Loans that is</p>
+            <p>sub-divided into those to Banks and those to Non-Banks. Each</p>
+            <p>of these needs to be split into secured &amp; non-secured.</p>
+            <p>The secured level also needs to be split between secured by</p>
+            <p>property; secured by cash &amp; secured other. This requires</p>
+            <p>a Product; two sub-products, two sub-products at level 1 and</p>
+            <p>six sub-products at level 2.</p>
+            <p />
+            <p>We define:</p>
+            <p>6000 - product for Loans</p>
+            <p>6010 - sub-product for Loans to Banks</p>
+            <p>6011 - secured (level 1)</p>
+            <p>6012 - secured by property (level 2)</p>
+            <p>6013 - secured by cash (level 2)</p>
+            <p>6014 - secured other (level 2)</p>
+            <p>6020 - sub-product for Loans to Non-Banks</p>
+            <p>6011 - secured (level 1)</p>
+            <p>6012 - secured by property (level 2)</p>
+            <p>6013 - secured by cash (level 2)</p>
+            <p>6014 - secured other (level 2)</p>
+            <p />
+            <p>Visually the structure would be like: (SEE FIGURE BELOW)</p>
+            <p />
+            <p>As the levels can go down to level 9, a very complex</p>
+            <p>structure could be defined.</p>
+            <p />
+            <p>Note:</p>
+            <p>It is possible that the existing limit reference structure is</p>
+            <p>such that it is not possible to define the required levels</p>
+            <p>of sub division e.g.: - 400 defines loans at product level;</p>
+            <p>410 defines customer loans at sub-product level; 415 defines</p>
+            <p>mortgages at sub-product level.</p>
+            <p />
+            <p>There are not enough numbers available between 410 and 415 to</p>
+            <p>define the new sub product levels.</p>
+            <p />
+            <p>In this case a new structure should be defined to replace the</p>
+            <p>existing customer loans structure and LIMIT and</p>
+            <p>LIMIT.PARAMETER updated accordingly. New loans will then use</p>
+            <p>the new limit structure, and changing the limit reference on</p>
+            <p>existing loans will have the same effect.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Can only be defined for sub product level (last two</p>
+            <p>characters of reference must be non zero)</p>
+            <p>Must be defined in ascending order for new sub product levels.</p>
+            <p>The sub product level can only be changed if it is not part</p>
+            <p>of an existing limit structure i.e. the PARENT.REFERENCE and</p>
+            <p>REFERENCE.CHILD fields are blank.</p>
+            <p>Not allowed for Limit References in a Cross Limit structure</p>
+            <p>i.e. when       the field CROSS.LIMIT is set to one of TOP,</p>
+            <p>CROSS or PROD.</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.BAND.LEVEL</field>
+<desc>
+            <p>Determines how the percentage amount will be derived.</p>
+            <p>This field can contain one of two values.</p>
+            <p>The word BAND in this field indicates that the percentages</p>
+            <p>from more than one band (See MATURITY.PERIOD and PERCENTAGE)</p>
+            <p>will be selected and summed to determine the working percentage.</p>
+            <p>The word LEVEL in this field indicates that a single band</p>
+            <p>will be selected as the working percentage.</p>
+            <p>In both cases the bands used will be resolved on the time</p>
+            <p>left before contract maturity.</p>
+            <p>NB Percentage definitions defined in fields LIMIT.BAND.LEVEL</p>
+            <p>through to PERC.CALC.BASIS are ignored for updates from</p>
+            <p>COMMITMENT contracts.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>The following values will be accepted: BAND or LEVEL.</p>
+            <p>Default: LEVEL.</p>
+            <p>Input in this field will only be retained when the fields</p>
+            <p>MATURITY.PERIOD and PERCENTAGE have been given.</p>
+            <p>Once authorised this field cannot be changed.</p>
+        </desc>
+</t>
+<t>
+<field>PERCENTAGE.CAP</field>
+<desc>
+            <p>Identifies the agreed maximum percentage when deriving the</p>
+            <p>amount of a transaction to be used in updating the limit system.</p>
+            <p>The percentage specified here is a FIXED percentage of the</p>
+            <p>value of the transaction, and is compared with total amount</p>
+            <p>calculated from LIMIT.PERCENTAGE, MAT.PERIOD.PERC and</p>
+            <p>LIMIT.SUBROUTINE. If the amount determined using the</p>
+            <p>PERCENTAGE.CAP is less than the amount calculated using</p>
+            <p>LIMIT.PERCENTAGE, MAT.PERIOD.PERC and LIMIT.SUBROUTINE, the</p>
+            <p>PERCENTAGE.CAP figure will be used.</p>
+            <p>Note: Percentage definitions defined in fields</p>
+            <p>LIMIT.BAND.LEVEL through to PERC.CALC.BASIS are ignored for</p>
+            <p>updates from COMMITMENT contracts.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>This is entered as:</p>
+            <p />
+            <table>
+                <tr>
+                    <td>
+                        <p>Field</p>
+                    </td>
+                    <td />
+                    <td />
+                    <td />
+                    <td />
+                </tr>
+                <tr>
+                    <td>LIMIT.PERCENTAGE</td>
+                    <td>2%</td>
+                    <td />
+                    <td />
+                    <td />
+                </tr>
+                <tr>
+                    <td>MATURITY.PERIOD</td>
+                    <td>6M</td>
+                    <td>12M</td>
+                    <td>24M</td>
+                    <td>R </td>
+                </tr>
+                <tr>
+                    <td>MAT.PERIOD.PERC </td>
+                    <td>5%</td>
+                    <td>6% </td>
+                    <td>7%</td>
+                    <td>10%</td>
+                </tr>
+                <tr>
+                    <td>PERCENTAGE.FLR </td>
+                    <td>3%</td>
+                    <td />
+                    <td />
+                    <td />
+                </tr>
+                <tr>
+                    <td>PERCENTAGE.CAP</td>
+                    <td>25% </td>
+                    <td />
+                    <td />
+                    <td />
+                </tr>
+            </table>
+            <p />
+            <p>The risk on a 1 million USD loan with a 36 month initial</p>
+            <p>period would be calculated as:</p>
+            <p>Capped Value = 25% * 1,000,000 = 250,000 USD Floor Value = 3%</p>
+            <p>* 1,000,000 = 30,000 USD</p>
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = LEVEL</p>
+            <p>PERC.CALC.BASIS = FIXED</p>
+            <p>10% of the value (36 months remaining falls in the rest period)</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = LEVEL</p>
+            <p>PERC.CALC.BASIS = PRORATA</p>
+            <p>10% of the value (36 months remaining falls in the rest period)</p>
+            <p />
+            <p />
+            <p>Total = 320,000 USD Since this exceeds the CAP value the</p>
+            <p>limit amount taken will be 250,000 USD.</p>
+            <p />
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = BAND</p>
+            <p>PERC.CALC.BASIS = FIXED</p>
+            <p>2% of the value (LIMIT.PERCENTAGE)</p>
+            <p />
+            <p />
+            <p>5% of the value (the loan falls in the 0 - 6 month band).</p>
+            <p />
+            <p />
+            <p>6% of the value (the loan falls in the 6 - 12 month band).</p>
+            <p />
+            <p />
+            <p>7% of the value (the loan falls in the 12 -24 month band).</p>
+            <p />
+            <p />
+            <p>10% of the value (the loan falls in the Rest band)</p>
+            <p />
+            <p />
+            <p>Total = 300,000 USD Since this exceeds the CAP value the</p>
+            <p>limit amount taken will be 250,000 USD</p>
+            <p />
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = BAND</p>
+            <p>PERC.CALC.BASIS = PRORATA</p>
+            <p>Note the number of days in the bands may vary according to</p>
+            <p>the exact dates involved.</p>
+            <p>2% of the value (LIMIT.PERCENTAGE).</p>
+            <p />
+            <p />
+            <p>5% of the value for 6 months (the loan falls in the 0 - 6</p>
+            <p>month band).</p>
+            <p />
+            <p />
+            <p>6% of the value for 6 months (the loan falls in the 6 - 12</p>
+            <p>month band).</p>
+            <p />
+            <p />
+            <p>7% of the value for 12 months (the loan falls in the 12 -24</p>
+            <p>month band).</p>
+            <p />
+            <p />
+            <p>10% of the value for 12 months (the loan falls in the Rest band).</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = LEVEL</p>
+            <p>PERC.CALC.BASIS = FIXED</p>
+            <p>5% of the value (18 months remaining falls in the 0 - 6 month period).</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = LEVEL</p>
+            <p>PERC.CALC.BASIS = PRORATA</p>
+            <p>5% of the value (30 days remaining falls in the 0 - 6 month period)</p>
+            <p />
+            <p />
+            <p>Total = 24,109.59. Since this is less than the floor amount,</p>
+            <p>30,000 USD will be used to update LIMITS.</p>
+            <p />
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = BAND</p>
+            <p>PERC.CALC.BASIS = FIXED</p>
+            <p>2% of the value (LIMIT.PERCENTAGE)</p>
+            <p />
+            <p />
+            <p>5% of the value (the loan falls in the 0 - 6 month band)</p>
+            <p />
+            <p />
+            <p>Total = 70,000 USD</p>
+            <p />
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = BAND</p>
+            <p>PERC.CALC.BASIS = PRORATA Note the number of days in the</p>
+            <p>bands may vary according to the exact dates invloved.</p>
+            <p>2% of the Value (LIMIT.PERCENTAGE)</p>
+            <p />
+            <p />
+            <p>5% of the value for 6 months (the loan falls in the 0 - 6</p>
+            <p>month band)</p>
+            <p />
+            <p />
+            <p>Total = 24,109.59. Since this is less than the floor amount,</p>
+            <p>30,000 USD will be used to update LIMITS.</p>
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-11 Numeric characters (1-6 decimals) percentage must be</p>
+            <p>less than 100%. (No change)</p>
+            <p>Capped percentage must be greater than the floor percentage.</p>
+        </desc>
+</t>
+<t>
+<field>PERC.CALC.BASIS</field>
+<desc>
+            <p>Determines how the percentage amount will be derived from the</p>
+            <p>MATURITY.PERIOD and MAT.PERIOD.PERC fields.</p>
+            <p>This field can contain one of three values.</p>
+            <p>The keyword PRORATA in this field indicates that the</p>
+            <p>calculation will be pro rata according to the time remaining</p>
+            <p>to maturity or the length of a MATURITY.PERIOD.BAND.</p>
+            <p>For pro rata the calculation will be;</p>
+            <p>% x days to maturity / 365</p>
+            <p>with the annual period always in days.</p>
+            <p>The keyword PERIOD indicates that the calculation will be</p>
+            <p>prorata according to the time remaining to maturity or the</p>
+            <p>length of a MATURITY.PERIOD.BAND.</p>
+            <p>The pro rata calculation for the PERIOD setting will be:</p>
+            <p>% x period to maturity / period</p>
+            <p>where period is set according to the MATURITY.BAND.DEFINITION</p>
+            <p>i.e in Days (D) Weeks (W) Months(M) Years (Y) Where a period</p>
+            <p>is a fraction of a band this will be rounded up.</p>
+            <p>When the word FIXED is indicated the calculation will not be</p>
+            <p>pro rata and is calculated as a simple percentage.</p>
+            <p>When PRORATA or PERIOD is used with LEVEL structure, the</p>
+            <p>relevant percentage derived for the remaining contract</p>
+            <p>period will be applied.</p>
+            <p>When PRORATA or PERIOD is used with a BANDED structure, each</p>
+            <p>percentage band falling within the remaining contract period</p>
+            <p>will be applied for the period of the that band.</p>
+            <p>A PRORATA/PERIOD method can result in a total percentage</p>
+            <p>taken which is in excess of 100% of the transaction value.</p>
+            <p>This can be limited by use of the PERCENTAGE.CAP field.</p>
+            <p />
+            <p />
+            <p>The following percentage structure may be defined:</p>
+            <p>Transactions maturing in up to 6 months are recorded at 5%</p>
+            <p>Transactions maturing in up to 12 months are recorded at 6%</p>
+            <p>Transactions maturing in up to 24 months are recorded at 7%</p>
+            <p>Transactions maturing more than 24 months are recorded at 10%</p>
+            <p>This is entered as:</p>
+            <p>MATURITY.PERIOD 6M 12M 24M R MAT.PERIOD.PERC 5% 6% 7% 10%</p>
+            <p>The risk on a 1 million USD loan with a 36 month initial</p>
+            <p>period would be calculcaled as:</p>
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = LEVEL</p>
+            <p>PERC.CALC.BASIS = FIXED</p>
+            <p>10% of the value (36 months remaining falls in the rest period)</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = LEVEL</p>
+            <p>PERC.CALC.BASIS = PRORATA</p>
+            <p>10% of the value (36 months remaining falls in the rest period)</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = BAND</p>
+            <p>PERC.CALC.BASIS = FIXED</p>
+            <p>5% of the value (the loan falls in the 0 - 6 month band)</p>
+            <p />
+            <p />
+            <p>6% of the value (the loan falls in the 6 - 12 month band)</p>
+            <p />
+            <p />
+            <p>7% of the value (the loan falls in the 12 -24 month band)</p>
+            <p />
+            <p />
+            <p>10% of the value (the loan falls in the Rest band)</p>
+            <p />
+            <p />
+            <p>Total 28% = 280,000 USD</p>
+            <p />
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = BAND</p>
+            <p>PERC.CALC.BASIS = PRORATA Note the number of days in the</p>
+            <p>bands may vary according to the exact dates invloved.</p>
+            <p>5% of the value for 6 months (the loan falls in the 0 - 6</p>
+            <p>month band)</p>
+            <p />
+            <p />
+            <p>6% of the value for 6 months (the loan falls in the 6 - 12</p>
+            <p>month band)</p>
+            <p />
+            <p />
+            <p>7% of the value for 12 months (the loan falls in the 12 -24</p>
+            <p>month band)</p>
+            <p />
+            <p />
+            <p>10% of the value for 12 months (the loan falls in the Rest band)</p>
+            <p />
+            <p />
+            <p>Total = 225,013.70 USD</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = LEVEL</p>
+            <p>PERC.CALC.BASIS = FIXED</p>
+            <p>7% of the value (18 months remaining falls in the 12 - 24</p>
+            <p>month period)</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = LEVEL</p>
+            <p>PERC.CALC.BASIS = PRORATA</p>
+            <p>7% of the value (18 months remaining falls in the 12 - 24</p>
+            <p>month period)</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = BAND</p>
+            <p>PERC.CALC.BASIS = FIXED</p>
+            <p>5% of the value (the loan falls in the 0 - 6 month band)</p>
+            <p />
+            <p />
+            <p>6% of the value (the loan falls in the 6 - 12 month band)</p>
+            <p />
+            <p />
+            <p>7% of the value (the loan falls in the 12 -24 month band)</p>
+            <p />
+            <p />
+            <p>Total 18% = 180,000 USD</p>
+            <p />
+            <p />
+            <p />
+            <p>LIMIT.BAND.LEVEL = BAND</p>
+            <p>PERC.CALC.BASIS = PRORATA Note the number of days in the</p>
+            <p>bands may vary according to the exact dates invloved.</p>
+            <p>5% of the value for 6 months (the loan falls in the 0 - 6</p>
+            <p>month band)</p>
+            <p />
+            <p />
+            <p>6% of the value for 6 months (the loan falls in the 6 - 12</p>
+            <p>month band)</p>
+            <p />
+            <p />
+            <p>7% of the value for 6 months (the loan falls in the 12 -24</p>
+            <p>month band)</p>
+            <p />
+            <p />
+            <p>Total = 89,917.81 USD</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>The following values will be accepted: FIXED, PRORATA,</p>
+            <p>PERIOD. (No change)</p>
+            <p>Default: FIXED.</p>
+            <p>Input in this field will only be retained when the fields</p>
+            <p>MATURITY.PERIOD and PERCENTAGE have been given.</p>
+        </desc>
+</t>
+<t>
+<field>REDUCING.LIMIT</field>
+<desc>
+            <p>Indicates whether, or not, a type of Limit regains its</p>
+            <p>original value on liquidation or repayment of a utilisation</p>
+            <p>(drawdown etc...) The alternative terminology, revolving</p>
+            <p>(non-reducing) and non-revolving (reducing), is sometimes used.</p>
+            <p>A reducing LIMIT can start as USD1million and have USD500T</p>
+            <p>drawn. When the drawing matures the LIMIT will be USD500T.</p>
+            <p>However, if it was a non-reducing LIMIT the amount available</p>
+            <p>would be re-instated to USD1million.</p>
+            <p>NB When the user is creating a 'GLOBAL' Limit</p>
+            <p>Reference type, the system will make sure that the value of</p>
+            <p>this field is the same for the Global Limit and the</p>
+            <p>REFERENCE CHILD defined under the Global Line. In other</p>
+            <p>words, if the Global line is defined as a Non Reducing Limit</p>
+            <p>type, all the Children (REFERENCE CHILD) defined under this</p>
+            <p>Global Line must also have been defined as 'Non</p>
+            <p>Reducing'. The same is true for product and sub-product relationships.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional input. Defaults to N</p>
+            <p>Values allowed: Y for reducing or N for non-reducing</p>
+            <p>Input in this must be 'N' (Non reducing) when the</p>
+            <p>user creates a LIMIT REFERENCE which he intends to</p>
+            <p>use for the Applications 'ACCOUNT',</p>
+            <p>'FOREX' or 'MM.MONEY MARKET'.</p>
+            <p>Once the LIMIT REFERENCE has been authorised, this field</p>
+            <p>cannot be changed.</p>
+        </desc>
+</t>
+<t>
+<field>MAT.PERIOD.PERC</field>
+<desc>
+            <p>This percentage will be used in deriving a final limit</p>
+            <p>percentage. The resulting percentage amount of each</p>
+            <p>transaction movement will be monitored against the limit amount.</p>
+            <p>The percentages may be specified in a BAND or LEVEL basis</p>
+            <p>(see LIMIT.BAND.LEVEL), and may be taken as a FIXED or</p>
+            <p>PRORATA percentage (see PERC.CALC.BASIS).</p>
+            <p>Associated with MATURITY.PERIOD.</p>
+            <p>Note: Percentage definitions defined in fields</p>
+            <p>LIMIT.BAND.LEVEL through to PERC.CALC.BASIS are ignored for</p>
+            <p>updates from COMMITMENT contracts.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 Numeric characters (1-6 decimals) percentage must be</p>
+            <p>less than 100%. (No change)</p>
+            <p>Input is not allowed in this field for Fiduciary and Deposit</p>
+            <p>Limit Reference records.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED3</field>
+<desc>
+            <p>Reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field, no input.</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.PERCENTAGE</field>
+<desc>
+            <p>Defines the percentage amount of each transaction movement</p>
+            <p>that is to be monitored against the limit amount.</p>
+            <p>It is also possible to define a percentage that varies</p>
+            <p>dependent on the time left before maturity. See associated</p>
+            <p>fields MATURITY.PERIOD, MAT.PERIOD.PERC and LIMIT.BAND.LEVEL.</p>
+            <p>A subroutine may be called to perform a calculation to</p>
+            <p>determine the percentage amount of a transaction movement to</p>
+            <p>be monitored against the limit amount.</p>
+            <p>A percentage defined in this field, or using MATURITY.PERIOD</p>
+            <p>and MAT.PERIOD.PERC, or using the LIMIT.SUBROUTINE can be</p>
+            <p>defined in any combination, and the result of each</p>
+            <p>calculation will be added together to give the amount of</p>
+            <p>transaction movement to be monitored. Once calculated this</p>
+            <p>amount will be compared against the PERCENTAGE.CAP, which</p>
+            <p>allows a maximum percentage to be specified, and</p>
+            <p>PERCENTAGE.FLR which allows aminimum percentage to be defined.</p>
+            <p>If the percentage value is to be changed then use the</p>
+            <p>application LIMIT.CHANGE as this field can not be changed</p>
+            <p>once the record has been set up.</p>
+            <p>Note: For the overdraft line, if this field contains a</p>
+            <p>value other than 100 it is ignored and 100 is</p>
+            <p>always used.</p>
+            <p>Example: If for the forex spot limit reference record this</p>
+            <p>field contains 10 meaning 10%, then for a forex</p>
+            <p>spot deal of USD 1m buy against a Dem 2m sell,</p>
+            <p>the amounts used within the limits system will be</p>
+            <p>100,000 USD and 200,000 Dem.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Numeric value in range 1 to 100. This field, or</p>
+            <p>LIMIT.SUBROUTINE, or MAT.PERIOD.PERC and MATURITY.PERIOD are</p>
+            <p>Mandatory input for sub-product and for product records</p>
+            <p>without sub-products, otherwise no input is allowed. No</p>
+            <p>change field.</p>
+            <p>Input in this field, or LIMIT.SUBROUTINE,or MAT.PERID.PERC is</p>
+            <p>mandatory for sub-product limit references.</p>
+            <p>Input in this field, or MAT.PERIOD.PERC, or LIMIT.SUBROUTINE</p>
+            <p>is mandatory for product limit references without any</p>
+            <p>reference children.</p>
+            <p>Input is not allowed in this field for 'GLOBAL'</p>
+            <p>level limit reference records.</p>
+            <p>Input is not allowed in this field for DEPOSIT limit</p>
+            <p>references. These may be identified by the value DP in the</p>
+            <p>FX.OR.TIME.BAND field.</p>
+            <p>Input is not allowed in this field for product limit</p>
+            <p>references with reference children.</p>
+            <p>In a Cross Limit Structure the following validations would apply:</p>
+            <p />
+            <p>Not allowed for PRODUCT and CROSS Limits i.e. when the field</p>
+            <p>CROSS.LIMIT is set to TOP or CROSS.</p>
+            <p>For SUB-PRODUCT Limits i.e. when the field CROSS.LIMIT is set</p>
+            <p>to PROD, then one of the fields LIMIT.PERCENTAGE,</p>
+            <p>MATURITY.PERIOD, LIMIT.SUBROUTINE is Mandatory.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>PERCENTAGE.FLR</field>
+<desc>
+            <p>Identifies the agreed minimum percentage when deriving the</p>
+            <p>amount of a transaction to be used in updating the limit system.</p>
+            <p>This percentage specified here is a FIXED percentage of the</p>
+            <p>value of the transaction, and is compared with total amount</p>
+            <p>calculated from LIMIT.PERCENTAGE, MAT.PERIOD.PERC and</p>
+            <p>LIMIT.SUBROUTINE. If the amount determined using the</p>
+            <p>PERCENTAGE.FLR is more than the amount calculated using</p>
+            <p>LIMIT.PERCENTAGE, MAT.PERIOD.PERC and LIMIT.SUBROUTINE, the</p>
+            <p>PERCENTAGE.FLR figure will be used.</p>
+            <p>Note: Percentage definitions defined in fields</p>
+            <p>LIMIT.BAND.LEVEL through to PERC.CALC.BASIS are ignored for</p>
+            <p>updates from COMMITMENT contracts.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 Numeric characters (1-6 decimals) percentage must be</p>
+            <p>less than 100%. (No change)</p>
+            <p>Percentage floor must be less than the capped percentage.</p>
+        </desc>
+</t>
+<t>
+<field>GET.SUB.ALLOC</field>
+<desc>
+            <p>Specifies which Limit References may donate Suballocations to</p>
+            <p>the Limit Reference being input.</p>
+            <p>This field allows control over the Risk involved with</p>
+            <p>Suballocating from a Limit Reference of one type to a Limit</p>
+            <p>Reference of another type.</p>
+            <p>Suppose that there are three Limit References:-</p>
+            <p>300 Overdraft</p>
+            <p>400 L/C s</p>
+            <p>500 Loans</p>
+            <p>A given installation may decide that the Risk involved in</p>
+            <p>these Limit References runs from Loans (highest) to</p>
+            <p>L/C's (lowest). So the system can allow the allocation</p>
+            <p>of some high-risk to a lower risk but not the other way</p>
+            <p>around. The table below shows an example scenario.</p>
+            <p />
+            <table>
+                <tr>
+                    <td>
+                        <p>LIMIT.REFERENCE</p>
+                    </td>
+                    <td>
+                        <p>GET.SUB.ALLOC</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>300 Overdrafts</td>
+                    <td>500</td>
+                </tr>
+                <tr>
+                    <td>400 L/C's</td>
+                    <td>300 and 500</td>
+                </tr>
+                <tr>
+                    <td>500 Loans</td>
+                    <td>none</td>
+                </tr>
+            </table>
+            <p />
+            <p>Here you can allocate some of the Loans LIMIT to either</p>
+            <p>LC's or overdrafts; some overdraft LIMIT to LC's;</p>
+            <p>but you cannot allocate the lowest LIMIT of LC's to</p>
+            <p>Loans or overdrafts. An override is generated in</p>
+            <p>LIMIT.SUB.ALLOC when a sub-allocation is made from one</p>
+            <p>reference to another that is not listed here.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>3 to 7 numeric character Limit Reference Code.</p>
+            <p>Multivalue field. (Optional input; Default Value: None)</p>
+            <p>Duplicate values of the Limit Reference code are not allowed.</p>
+            <p>Input in this field must be a valid LIMIT.REFERENCE.</p>
+        </desc>
+</t>
+<t>
+<field>FX.OR.TIME.BAND</field>
+<desc>
+            <p>Defines the type of LIMIT being created.</p>
+            <p>The supported values are:</p>
+            <p />
+            <table>
+                <tr>
+                    <td>
+                        <p>Type</p>
+                    </td>
+                    <td>
+                        <p>Description</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>FX</td>
+                    <td>Foreign Exchange limit types, usually include a clean-risk Limit</td>
+                </tr>
+                <tr>
+                    <td>TB</td>
+                    <td>Time Band. For LD, MM, SC and other application types. Limits can be set for time periods to control the exposure by period. </td>
+                </tr>
+                <tr>
+                    <td>DP</td>
+                    <td>Deposit type. Mainly used for information on LD and MM deposits</td>
+                </tr>
+                <tr>
+                    <td>IN</td>
+                    <td>Information only *</td>
+                </tr>
+                <tr>
+                    <td>null</td>
+                    <td>Left blank for ACCOUNT</td>
+                </tr>
+            </table>
+            <p />
+            <p>* For type 'IN' updates are recorded but no</p>
+            <p>overrides are generated unless the CHECK.LIMIT flag is set</p>
+            <p>to 'Y' on the Limit Record.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>ACCOUNT limits should be null</p>
+            <p>FOREX limits should be FX</p>
+            <p>Deposit contracts should be set to DP</p>
+            <p>Input in this field will only be allowed when the LIMIT</p>
+            <p>REFERENCE refers to a PRODUCT or SUB PRODUCT Limit</p>
+            <p>reference type. When the LIMIT.REFERENCE refers to a</p>
+            <p>'Global' type, input in this field will not be allowed.</p>
+            <p>Once the LIMIT REFERENCE has been authorised, this field</p>
+            <p>cannot be changed.</p>
+            <p>Must match value entered in associated child/parent records</p>
+        </desc>
+</t>
+<t>
+<field>CONVERT.RATE</field>
+<desc>
+            <p>Specifies the rate to be used in the revaluation of the limit</p>
+            <p>outstanding when the limit and the transaction are in</p>
+            <p>different currencies. The rate specified in this field will</p>
+            <p>be used for the revaluation of the limit outstanding using</p>
+            <p>this reference provided the field UPDATE. RATE in LIMIT.</p>
+            <p>PARAMETER has a value of Yes. Any rate specified in this</p>
+            <p>field will be ignored and only the mid rate will be used in</p>
+            <p>the revaluation of limit outstanding if the field UPDATE.</p>
+            <p>RATE in LIMIT. PARAMETER has a value of No.</p>
+            <p>If the field is Null, only the mid rate will be used in the</p>
+            <p>revaluation of the limit outstanding.</p>
+            <p>Values allowed are;</p>
+            <p>BUY-BUY, BUY-MID, BUY-SEL, MID-BUY, MID-MID, MID-SEL,</p>
+            <p>SEL-BUY, SEL-MID and SEL-SEL</p>
+            <p>Any of the above rates will not be applicable if the LIMIT</p>
+            <p>and the transaction are both in LCY or in the same currency.</p>
+            <p>Example</p>
+            <p>In LIMIT. PARAMETER field UPDATE. RATE is Yes. The limit</p>
+            <p>reference used is 400 in which CONVERT. RATE is BUY-SEL.</p>
+            <p>CASE1</p>
+            <p>Limit XXXXXX.400.01 is in LCY (Say USD). A contract for</p>
+            <p>USD100000 is put through to hit the limit. In this case</p>
+            <p>since both limit and the transactions are in LCY there is no</p>
+            <p>conversion involved and therefore the limit outstanding will</p>
+            <p>be updated with -100000.</p>
+            <p>CASE2</p>
+            <p>A contract for GBP100000 is put through to hit the limit</p>
+            <p>given in case1. Here the transaction in GBP will be</p>
+            <p>converted to LCY which is also the limit currency, using the</p>
+            <p>first component of the CONVERT. RATE specified in the limit</p>
+            <p>reference 400 which in this case is the BUY rate of the</p>
+            <p>transaction currency. If the Buy rate for GBP is 1.50 then</p>
+            <p>the limit outstanding will be up dated by</p>
+            <p>-150000(100000*1.50) and the total outstanding  in the limit</p>
+            <p>after this transaction will be -100000-150000= -250000.</p>
+            <p>CASE3</p>
+            <p>Limit YYYYYY.400.01 is in EUR. A contract for GBP100000 is</p>
+            <p>put through to hit this limit. BUY rate of GBP=1.50 Sell</p>
+            <p>rate of EUR=1.20.In this case the transaction in GBP will be</p>
+            <p>converted to USD by using the first component of the</p>
+            <p>CONVERT. RATE which is BUY. This amount will be converted to</p>
+            <p>EUR which is the limit currency, using the second component</p>
+            <p>of the CONVERT. RATE which is SEL. So the limit outstanding</p>
+            <p>will be calculated using the formula 100000*1.50/1.20=125000(EUR)</p>
+            <p>However in a Limit structure the rate specified in the lowest</p>
+            <p>limit reference used will be taken for updating the</p>
+            <p>outstanding in the higher limits in the hierarchy.</p>
+            <p>For example Limit reference 400 has 410, 420 and 430 as a</p>
+            <p>child references.</p>
+            <p>400-CONVERT. RATE-BUY-BUY</p>
+            <p>410- CONVERT. RATE-BUY-SEL</p>
+            <p>420-CONVERT. RATE-BUY-MID</p>
+            <p>430-CONVERT. RATE-SEL-BUY</p>
+            <p>When 410 is used to hit the limit structure, only BUY-SEL</p>
+            <p>specified in 410 will be used for updating the out standings</p>
+            <p>in both 400 &amp; 410.</p>
+            <p>When 420 is used to hit the limit structure, only BUY-MID</p>
+            <p>specified in 420 will be used for updating the out standings</p>
+            <p>in both 400 &amp; 420.</p>
+            <p>When 430 is used to hit the limit structure, only SEL-BUY</p>
+            <p>specified in 430 will be used for updating the out standings</p>
+            <p>in both 400 &amp; 430.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional</p>
+            <p>Values allowed are BUY-BUY, BUY-MID, BUY-SEL, MID-BUY,</p>
+            <p>MID-MID, MID-SEL, SEL-BUY, SEL-MID and SEL-SEL</p>
+            <p>Input not allowed in GLOBAL references.</p>
+        </desc>
+</t>
+<t>
+<field>CROSS.LIMIT</field>
+<desc>
+            <p>Specifies the type of a Limit Reference in a Cross Limit</p>
+            <p>structure i.e. whether a PRODUCT or a CROSS or a SUB-PRODUCT</p>
+            <p>Limit Reference.</p>
+            <p>In a Cross Limit structure, a  Limit Reference specified as a</p>
+            <p>valid record key in the application LIMIT.CROSS.PARAM would</p>
+            <p>be a PRODUCT Limit Reference; Limit References with values</p>
+            <p>less than or equal to the value of the field TOP.CROSS.REF</p>
+            <p>in the LIMIT.CROSS.PARAM record for the Product, would be a</p>
+            <p>CROSS Limit Reference. Limit Reference with a value greater</p>
+            <p>than the value of the field TOP.CROSS.REF  would be a</p>
+            <p>SUB-PRODUCT Limit Reference.</p>
+            <p>For example, in the LIMIT.CROSS.PARAM record with key: 8200,</p>
+            <p>the value of TOP.CROSS.REF is 8219.</p>
+            <p>Then the value of CROSS.LIMIT in the PRODUCT Limit Reference</p>
+            <p>8200 would be TOP.</p>
+            <p>The value of CROSS.LIMIT in CROSS Limit References i.e. with</p>
+            <p>Key value  between 8201 and 8219 would be CROSS.</p>
+            <p>The value of CROSS.LIMIT in SUB-PRDOCUT  Limit References</p>
+            <p>i.e. with Key value between 8220 and 8299 would be PROD.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Updated by the System.</p>
+            <p>For PRODUCT, CROSS and SUB-PRODUCT  Limit References, the</p>
+            <p>value would be updated respectively as TOP, CROSS and PROD.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DEFAULT.CHECK</field>
+<desc>
+            <p>Specifies whether the Limit Reference is one which requires</p>
+            <p>checking, and whether limit overrides are required, when</p>
+            <p>Limit records are created by default.</p>
+            <p>When a new LIMIT is created by default, the value used in the</p>
+            <p>field CHECK.LIMIT is derived from this field. For Limits</p>
+            <p>which record data for information only, such as deposits and</p>
+            <p>Fiduciary Placements, this field should be set to</p>
+            <p>'NO' to prevent overrides being generated.</p>
+            <p> If SUPPRESS is selected, then limit processing will not be done. </p>
+            <p> This can be selected when credit risk is checked by external system.</p>
+            <p> In this case limit will be used only for information purpose.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Y or NO or SUPPRESS(Optional Input)</p>
+            <p>Must be 'NO' if FX.OR.TIMEBAND = 'DP'</p>
+            <p>The value of the REFERENCE.CHILD must be the same as the Parent.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Describes the LIMIT REFERENCE, and will be used as the</p>
+            <p>enrichment whenever it is used in T24.</p>
+            <p>The Description is displayed or printed whenever the System</p>
+            <p>needs to provide a description of a Limit Reference. If</p>
+            <p>space restrictions dictate, the Short Name can be displayed</p>
+            <p>instead. Examples of the description are as follows:-</p>
+            <p />
+            <table>
+                <tr>
+                    <td>
+                        <p>Limit Reference</p>
+                    </td>
+                    <td>
+                        <p>Description </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1000</td>
+                    <td>OVERALL Foreign Exchange Limit</td>
+                </tr>
+                <tr>
+                    <td>1001</td>
+                    <td>SPOT Foreign Exchange Limit</td>
+                </tr>
+                <tr>
+                    <td>1002</td>
+                    <td>FORWARD Foreign Exchange Limit </td>
+                </tr>
+            </table>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>3-35 type A (alphanumeric) characters. Multilanguage</p>
+            <p>field. (Mandatory input.)</p>
+        </desc>
+</t>
+<t><field>MARGIN.LEVEL</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>MARGIN.EVENT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>MF</product>
+<table>MF.ORDER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>MF.ORDER application handles order processing.The records in this application could be created directly by manual input or from the pre-order application MF.ORDER.BY.CUST. The nature of information that would be recorded in this application would be similar to MF.ORDER.BY.CUST.The difference being that MF.ORDER can only handle subscriptions / redemptions to a single fund.The bulk orders, switches and plans could be recorded only in the application MF.ORDER.BY.CUST.</p>
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CARD.ISSUE.BNK</field>
+<desc>
+            <p>Bank that has issued the card.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Alpha-numeric characters</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRICING.METHOD</field>
+<desc>
+            <p>Determines whether NAV would be based on historical value or value to be obtained in future. If Historical, already available NAV would be used for allotting units else the units would be allotted only after subsequent NAV is available.</p>
+            <p>   This would default from MF.FUND.MASTER but would be allowed to be changed in the order.</p>
+            <p>   The trade would be automatically created from the order if historical is specified.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Allowed values are 'FORWARD' or 'HISTORICAL'</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CASH.PYMT.DATE</field>
+<desc>
+            <p>Date of which payment was made.Would default to the Order Date.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 Date format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>FEE.INCLUSIVE</field>
+<desc>
+            <p>Field to specify whether the order amount is inclusive or exclusive of all charges. This is valid only for cases where the order is in terms of amount (all subscriptions and few redemptions). If the FEE.INCLUSIVE is set to YES, the amount that the customer is willing to expend including all charges is the amount specified in ORDER.AMOUNT field. The order amount in that case would be adjusted for the charges and the unit calculation would be adjusted in such a way that the total settlement amount for the customer does not exceed the order amount. It must be noted that this calculation (fee calculation) would be based on current NAV prevailing in the system at this price. If the unit allocation has to be based on future NAV, then there could be some variation and the amount of settlement could be less than or more than the order amount specified.</p>
+            <p>   This should be set to 'YES' if PAYMENT.MODE is not Account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    'YES' is the only accepted value. Blank would be equivalent to 'No'.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXT.ACCT.CCY</field>
+<desc>
+            <p>Currency of the external account</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be a valid CURRENCY code.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>FUND.CCY</field>
+<desc>
+            <p>Defines the currency of the fund. Defaulted by the system from SECURITY.MASTER</p>
+            <p>   No input field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CUST.ORDER.ID</field>
+<desc>
+            <p>The ID of the MF.ORDER.BY.CUST record that created this order.</p>
+            <p>   No input field.System populated. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SETTLEMENT.ACC</field>
+<desc>
+            <p>Specifies the account from where the customer would be making payment (if PAYMENT.MODE is ACCOUNT). The field is required only if customer maintains account with the bank. If the payment is by cheque/credit card/cash or by transfer from outside bank account, no input is required in this field.This would default from SEC.ACC.MASTER based on the order currency specified</p>
+            <p>   If order is being created from MF.ORDER.BY.CUST, this would be mapped from MF.ORDER.BY.CUST (either from SETTLEMENT.ACC field or BULK.SETT.ACC)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be a valid ACCOUNT record.Mandatory if PAYMENT.MODE is 'ACCOUNT'</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHEQUE.NO</field>
+<desc>
+            <p>Identifies the cheque no. If the Mode of payment is 'CHEQUE', then this field would be mandatory.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Alpha-numeric character</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DEAL.STATUS</field>
+<desc>
+            <p>This is the trigger for execution from MF.ORDER.</p>
+            <p>   The order would be transmitted to the fund company only if this field is set to execute. For example, if the customer is making a payment by cheque, this field could be set to EXECUTE only after the cheque is realised.</p>
+            <p>   EXECUTE' is the only value allowed.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TRAN.PRICE</field>
+<desc>
+            <p>Specifies the price at which units are executed.</p>
+            <p>   No input field.System populated. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SETTLEMENT.CCY</field>
+<desc>
+            <p>Currency of the account defined in SETTLEMENT.ACC field. Would be system populated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Valid CURRENCY code</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXT.ACCT.BANK</field>
+<desc>
+            <p>Bank with which external account is maintained</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Free Format</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>FUND.ID</field>
+<desc>
+            <p>The ID of the fund where the customer proposes to invest. </p>
+            <p>   If order is being created from MF.ORDER.BY.CUST, this would be mapped from MF.ORDER.BY.CUST</p>
+            <p>   This could be either from FUND.ID field or BULK.FUND.ID field, SWITCH.FROM or SWITCH.TO fields depending on ORDER.TYPE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be a valid MF.FUND.MASTER ID. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>WAIVE.FEES</field>
+<desc>
+            <p>Field to determine whether fees are to be waived on this transaction. If in the normal course, this type of transaction would be subject to fees and for some specific reason, the fees has to be waived on this particular transaction, this field should be set to 'YES'</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    'YES' is the only accepted value. Blank would be equivalent to 'No'.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>UNIT.AMOUNT</field>
+<desc>
+            <p>Specifies whether the order amount is in terms of Unit or Amount. For subscriptions, this would always be 'AMOUNT'  and for redemptions, this could be either 'UNIT' or 'AMOUNT'.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Mandatory Input. Allowed values are 'UNIT' or 'AMOUNT'</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SWITCH.FUND.ID</field>
+<desc>
+            <p>Funds to which the holdings in SWITCH.FROM would be switched. Multi-value field.</p>
+            <p>   This would be mapped from MF.ORDER.BY.CUST</p>
+            <p>   No input field.System populated. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SWITCH.ORDER.ID</field>
+<desc>
+            <p>ID of second leg switch orders created for order type 'SWITCH'. This would be automatically populated in the first leg order with ID of SWITCH .TO orders and in second leg orders with ID of SWITCH.FROM orders.</p>
+            <p>   Once the redemption proceeds of first leg redemption is known, the system would automatically populate the ORDER.AMOUNT in the corresponding switch orders and those orders could be completed.</p>
+            <p>   No input field.System populated. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ORDER.PRICE</field>
+<desc>
+            <p>Specifies the price cap for the order. Input mandatory if LIMIT.TYPE is 'PRICE' else no input is allowed</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 PRICE format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TRAN.UNITS</field>
+<desc>
+            <p>Specifies the number of units executed as part of the trade above.</p>
+            <p>   No input field.System populated. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ORDER.AMOUNT</field>
+<desc>
+            <p>The amount for which the order is being placed. For subscriptions, this represents the amount and for redemptions, this could be either units or amount.</p>
+            <p>   In case of Redemptions in terms of units, this cannot exceed the actual holding of the customer.</p>
+            <p />
+            <p>   If order is being created from MF.ORDER.BY.CUST, this would be mapped from MF.ORDER.BY.CUST. This could be from ORDER.AMOUNT field (for single fund orders and first leg of switch), from BULK.ORDER AMT (for bulk orders), or from PLAN.AMT (if the order is being generated by batch process based on the plan set).</p>
+            <p />
+            <p>   For second leg of switch transaction, this amount would be known only after the redemption proceeds of the first leg is known. The system would populate the ORDER.AMOUNT in the second leg transactions automatically.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 nominal / amount ( NOMAMT ) format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEND.CONFIRMATION</field>
+<desc>
+            <p>This would determine whether an advice has to be sent to customer.</p>
+            <p>   Would be 'Y' or BLANK</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TRANS.TYPE</field>
+<desc>
+            <p>Defines the transaction type.</p>
+            <p>   Different transaction types could be used for different subscriptions and redemptions. For e.g., one TRANS.TYPE could be used for initial subscriptions and one for subsequent subscriptions so that different fee structure could be applicable. Similarly, different TRANS.TYPE could be used for Switches so that fee structure for switches could be different (even within this category, further trans types could be used so as to levy different charges for different switches).</p>
+            <p>   If order is being created from MF .ORDER. BY.CUST, this would be mapped from MF.ORDER.BY.CUST (from fields TRANS.TYPE or TRANS.TYPE.CR or TRANS.TYPE.DR depending on ORDER.TYPE)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Valid SC.TRANS.NAME ID to be provided in this field. A credit SC.TRANS.NAME (as provided in SC.TRANS.TYPE) would represent subscription and a debit would represent redemption.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>CASH.RECPT.NO</field>
+<desc>
+            <p>Unique identifier if any for the cash receipt.</p>
+            <p>   Free format text. Optional input</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TRADE.ID</field>
+<desc>
+            <p>Specifies the reference of the trade created from this order.</p>
+            <p>   No input field.System populated. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DRAWN.ON</field>
+<desc>
+            <p>Bank on which the cheque is drawn on. Free format text.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Alpha-numeric characters</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHEQUE.DATE</field>
+<desc>
+            <p>The date of the cheque.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 Date format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CARD.NO</field>
+<desc>
+            <p>Identifies the card no. If the mode of payment is 'CARD', this field would be mandatory.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Free format numeric characters.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TRADE.STATUS</field>
+<desc>
+            <p>Specifies whether the trade to be created should be in ‘IHLD’ status or ‘INAU’ status.All the applicable charges would be populated in the trades created in INAU status.</p>
+            <p>   Input allowed only if PRICING.METHOD is Historical.</p>
+            <p>   Allowed values are 'HLD' or 'NAU'</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SWITCH.SHARE</field>
+<desc>
+            <p>Allocations to various funds to which the holdings are being switched. The sum would add to 100.</p>
+            <p>   This would be mapped from MF.ORDER.BY.CUST</p>
+            <p>   No input field.System populated. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TRAN.DATE</field>
+<desc>
+            <p>Specifies the trade date of execution.</p>
+            <p>   No input field.System populated. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.ID</field>
+<desc>
+            <p>Specifies the Customer placing the order.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Mandatory field. Must be defined on the CUSTOMER.SECURITY record with CUSTOMER.TYPE set as 'CUSTOMER'.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ORDER.CCY</field>
+<desc>
+            <p>This field represents the currency of the ORDER.AMOUNT. If the order currency is different to Fund currency, the fund currency equivalent would be determined using the mid rate.  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be a valid CURRENCY code.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PARTICIPATION.ACC</field>
+<desc>
+            <p>The participation account of the customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Mandatory field. Must be a valid SEC.ACC.MASTER record ID.</p>
+            <p>   The system would default the first SEC ACC MASTER created for the customer but this could be changed by the user.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CREDIT.TXN.ID</field>
+<desc>
+            <p>Multi-value field to determine the purchase transaction towards which the redemption would be allocated. Input allowed only for Debit TRANS.TYPE (redemptions). </p>
+            <p>   In case of redemptions, the same would be allocated towards the credit transaction specified. If the number of units in the Credit Transaction is more than the redemption amount, then units would be redeemed only to the extent of  the redemption amount and balance units would remain. If the credit transaction units are not sufficient to cover the redemption amount, then the redemptions would be allocated towards the remaining Credit transactions on FIFO basis. If there are no other credit transactions, the redemption would only be executed to the extent of units available.</p>
+            <p>   If the order in which units are to be redeemed is not provided here, the redemptions would be allocated on a FIFO basis</p>
+            <p>   If order is being created from MF.ORDER.BY.CUST, this would be mapped from MF.ORDER.BY.CUST (CREDIT.TXN.ID or BULK.CR.TXN depending on order type)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Valid MF.TRADE ID that pertains to a purchase for the fund and by the customer in the order</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CASH.PYMT.RECD</field>
+<desc>
+            <p>Amount of payment made by cash. This is mandatory if the payment mode is 'CASH'.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 Amount format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ORDER.NO</field>
+<desc>
+            <p>ID of the MF.ORDER application.</p>
+            <p>   Sixteen Digit ID – e.g. MFORDR0500100001 (where MFORDR would be constant, 05 stands for year, 001 stands for Julian date and 00001 stands for the sequence number. The ID would be automatically generated by the system on entry of F3.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ORDER.EXP.DATE</field>
+<desc>
+            <p>Specifies the date on which the order would expire. If not input, this would be defaulted based on the order expiry days ( field ORD.EXP.DAYS) provided in MF.PARAMETER. The default days would be added to the ORDER.DATE (working days) and this field would be populated. </p>
+            <p>   If the order is not executed prior to that date, the order would be moved to history as part of COB on the date subsequent to order expiry date.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 Date format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>LIMIT.TYPE</field>
+<desc>
+            <p>Specifies whether the order is a Price or Market order. In case of Market orders, the order would be executed at prevailing NAV. In case of Price orders, the price cap would be specified and if the NAV at which the order is being executed is greater than (for subscriptions) or less than (for redemptions) this price, the order would not be executed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Allowed values are 'PRICE' or 'MARKET'. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHEQUE.AMOUNT</field>
+<desc>
+            <p>Amount of the cheque.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 Amount format.</p>
+            <p>   Fields from CHEQUE.NO to CHEQUE.AMOUNT would be multi-valued and associated.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXT.ACCT.NO</field>
+<desc>
+            <p>Specifies the external account number if the payment mode is 'TRANSFER', i.e. the payment is being made by direct transfer from an outside account maintained by the customer or through standing instruction. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Free format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CU.NARRATIVE</field>
+<desc>
+            <p>Free format narrative field.</p>
+            <p>   1-35 alpha numeric characters.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ORDER.TYPE</field>
+<desc>
+            <p>Specifies whether this is an order for subscription / redemption to a single fund or whether this is a bulk order or whether this is a switch order</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   No input field. Would be SINGLE, BULK or SWITCH. Sytem populated from MF.ORDER.BY.CUST or would be 'SINGLE' if created directly.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PAYMENT.MODE</field>
+<desc>
+            <p>Specifies the mode of payment.</p>
+            <p>   Allowed values are CHEQUE / CASH / CARD / ACCOUNT / TRANSFER / OTHER. </p>
+            <p>   OTHER would be used for fund switch.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ORDER.DATE</field>
+<desc>
+            <p>The date on which the order is being placed.</p>
+            <p>   If order is being created from MF.ORDER.BY.CUST, this would be mapped from MF.ORDER.BY.CUST</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Would be defaulted to the current system date, if not specified. Standard T24 Date format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXT.ACCT.BRANCH</field>
+<desc>
+            <p>Branch of the bank in EXT.ACCT.BANK field where the account is maintained.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Free Format</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.OFFICER</field>
+<desc>
+            <p>Represents the Account officer of the customer. Would be defaulted from SEC.ACC.MASTER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be a valid DEPT.ACCT.OFFICER ID</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AGENT</field>
+<desc>
+            <p>Specifies the customer ID of the Agent through whom the order is being placed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be a valid CUSTOMER.SECURITY record with AGENT flag set to 'Y'. Would be defaulted from the </p>
+            <p>   CUSTOMER.SECURITY record ( field AGENT.CODE ) defined for the customer placing the order.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CARD.AMOUNT</field>
+<desc>
+            <p>Amount of payment made by card.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 Amount format.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CARD.EXP.DATE</field>
+<desc>
+            <p>Expiry date of the card.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Standard T24 Date format.</p>
+            <p />
+        </desc>
+</t>
+<t><field>ORDER.NOMINAL</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

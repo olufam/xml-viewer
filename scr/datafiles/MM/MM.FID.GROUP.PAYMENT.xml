@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>MM</product>
+<table>MM.FID.GROUP.PAYMENT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The Money Market Fiduciary Group Payment record contains the information to be used by the system when calculating interest on call/notice fiduciary contracts. In addition to this the date on  which interest is to be settled is entered in this table. </p>
+            <p>This information is held for combinations of fiduciary bank, currency and notice period. Whenever a fiduciary contract is entered this table is checked to see if a record for the combination of fiduciary bank, currency and notice period from the contract exists on the fiduciary group payment table. If this record is missing then the contract will be rejected at the validation stage. </p>
+            <p>Each record contains the interest rates applicable to the current interest period only. Once an interest settlement date has been passed then the record is written away to a history file, fiduciary group payment past. Each record contains all interest rates applicable to the interest period and the dates on which those rates become effective. The last rate from the previous period is also stored and is used as the first rate on the current table until a new rate is entered. </p>
+            <p>An interest settlement date may be entered at any time to indicate the date on which the system should calculate and settle interest the interest due for that period. This calculation is performed by an end of day routine. This same routine then writes the fiduciary group payment record away to the 'past' file and creates a new record for the new interest period using the last rate applicable from the old table </p>
+            <p>There follows a description of each fiduciary group payment field and its corresponding input. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>LAST.INT.SET.DATE</field>
+<desc>
+            <p>This field contains the date on which interest was last settled. </p>
+            <p>When interest is settled an end of day routine creates a new fiduciary group record for the new interest period. The settlement date from the old record is stored in this field. This is used to validate any interest settlement date entered on the new record to ensure it is greater than the previous one. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field.</p>
+        </desc>
+</t>
+<t>
+<field>LAST.RATE.APPLIED</field>
+<desc>
+            <p>This field contains the last interest rate form the previous interest period. </p>
+            <p>When interest is settled an end of day routine creates a new fiduciary group record for the new interest period. The last rate applied on the old record is copied into this field. This rate will then apply to the new period up to the first date entered in field 3 EFF.DATE at which point the associated rate in field 2 INTEREST.RATE will come into effect. </p>
+            <p>See field 4 INT.SET.DATE for an example. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field.</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.RATE</field>
+<desc>
+            <p>This field holds the interest rate to be used when calculating interest. </p>
+            <p>This field holds all the interest rates to be used when calculating the interest due for the current interest period. The field is multivalued and associated with field 3 EFF.DATE which gives the date on which the associated rate becomes effective. </p>
+            <p>See field 4 INT.SET.DATE for an example. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard rate format 6,9 (maximum 10 digits plus a decimal point). Input must be greater than zero. (Multivalue field associated with field 3 EFF.DATE) (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>This is a multi valued field. Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 35 characters may be entered.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>This field describes the fiduciary group payment record. </p>
+            <p>This is merely a descriptive field and acts as a title for the record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Alphanumeric field. Up to 35 characters. (Multivalue, Multilingual field).</p>
+        </desc>
+</t>
+<t>
+<field>EFF.DATE</field>
+<desc>
+            <p>Specifies the date from which the rate entered in the previous field is to be effective. </p>
+            <p>The multivalue dates in this field are used along with the associated rates in field 2 to calculate the interest due for the current period. </p>
+            <p>See field 4 INT.SET.DATE for an example. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format. (Multivalue field associated with field 2 INTEREST.RATE) (Optional input)</p>
+            <p>Input in this field must be in  the standard date format and all dates entered must be in ascending order.</p>
+        </desc>
+</t>
+<t>
+<field>FID.BANK.CCY.NP</field>
+<desc>
+            <p>Identifies the combination of fiduciary bank, currency and notice period to which the record applies. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input consists of three elements separated by a full stop. These are fiduciary bank, currency and notice period.</p>
+            <p>Each of the three elements in the ID is validated separately as follows: Fiduciary bank    Must be a valid customer on the customer file. Currency          Must be a valid currency on the currency file. Days notice       Must be numeric input between 0 and 999.</p>
+        </desc>
+</t>
+<t>
+<field>INT.SET.DATE</field>
+<desc>
+            <p>This field holds the interest settlement date for the current interest period and an optional frequency for the automatic renewal of this date. </p>
+            <p>Input of a date in this field will trigger the calculation of interest and commission for call/notice contracts associated with this fiduciary group payment record. The calculation is performed by the end of day routine on the date entered. </p>
+            <p>The interest settlement date will be changed automatically by the period indicated by the frequency code whenever the date equates to the end-of-day process date. </p>
+            <p>The following are examples of input into this field: </p>
+            <p>       a)   310388 M0131 - represents the date from            which the frequency is initiated, where:            M  = month            01 = at one month intervals            31 = the last day of the month. </p>
+            <p>       b)   310388 M0331 - represents a quarterly            interest due date frequency payable at            quarter end. </p>
+            <p>Thus, in example a), interest will be liquidated on 31/03/88 and then on 30/04/88 and so on. In example b), interest will be liquidated on 31/03/88 and then on 30/06/88 and so on. </p>
+            <p>Examples:   Field                  Input </p>
+            <p>           2.1 INTEREST RATE      1.0%            3.1 EFF DATE           10 JAN 1988            2.2 INTEREST RATE      1.5%            3.2 EFF DATE           15 JAN 1988            4   INT SET DATE       30 JAN 1988            5   LAST INT SET DATE  05 JAN 1988            6   LAST RATE APPLIED  0.75% </p>
+            <p>           For a contract with a principal of            1,000,000, with the interest basis E            (366/365) and a value date prior to the            last interest settlement date, then the            calculation of interest for the period            would be as follows:- </p>
+            <p>           a) from 05 JAN to 09 JAN </p>
+            <p>                 1,000,000 x 5 x 0.75%    = 102.74                         36500 </p>
+            <p>           b) from 10 JAN to 14 JAN </p>
+            <p>                 1,000,000 x 5 x 1.0%     = 136.99                         36500 </p>
+            <p>           c) from 15 JAN to 29 JAN </p>
+            <p>                 1,000,000 x 15 x 1.5%    = 616.44                         36500 </p>
+            <p>           The total interest due for the period is            therefore: </p>
+            <p>           102.74 + 136.99 + 616.44    = 856.17 </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Two part input consisting of a date and a frequency. Both are optional and may be entered independently or as a combination. Numeric Date Format. The format of the frequency is type 'AA'.</p>
+            <p>The date input must be greater than the previous interest settlement date in Field 5 LAST.INT.SET.DATE.</p>
+            <p>Where interest is to be paid via a nostro account, the frequency part of this field must be greater than the days delivery of the payment currency. For example, if DEM payments are sent two days prior to their value date (DAYS.DELIVERY field in CURRENCY record DEM has a value of 2), then a DAILY frequency will not be allowed for a DEM Call/Notice deposit that has a nostro account as the interest liquidation account. For deposits, this is to ensure that payments are not made for future interest periods that have yet to begin. For placements, this is to ensure that 'advice to receives' are not sent for future interest periods that have yet to begin.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

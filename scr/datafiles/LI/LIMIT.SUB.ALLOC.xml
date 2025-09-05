@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>LI</product>
+<table>LIMIT.SUB.ALLOC</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The purpose of this file is to record all Suballocations within the Limit system. Suballocations can either be between two Limits held on the system, from a Limit held on the system to a Limit held at another Branch, or from a Limit held at another Branch to a Limit held on the system.</p>
+            <p>The information recorded includes the identity of the giving and receiving Limits or the Branch giving or receiving, the amount of the Suballocation and the Start and Maturity dates.</p>
+            <p>Suballocations will update the LIMIT file only after they have been authorised.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Contains all the override messages which the User agreed to during input.</p>
+            <p>During the validation stage of the suballocation, the system may provide the User with a series of screen override messages to indicate an anomaly.</p>
+            <p>In the event of the User confirming the override, the full text of the actual override message will be stored, for reference purposes only, in this multivalue field.</p>
+            <p>For example, if the User tries to suballocate more than what is actually available then, when the transaction is validated, a warning bell will sound and a message will appear at the foot of the screen which reads as follows:</p>
+            <p>'EXCESS INCREASED TO ...........'</p>
+            <p>This will draw the User's attention to the amount suballocated which may be a mistake and can then be corrected.  On the other hand, the input may be correct and so the User confirms that this amount is intentional.</p>
+            <p>If, subsequently, the suballocation record is either fully displayed or printed, then all override messages will be present.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(Internal field) Multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>SUB.ALLOCATE.TO</field>
+<desc>
+            <p>Defines the credit line, or Sub Limit or Branch which is Receiving the Suballocation.</p>
+            <p>Information about the destination of a Suballocation must be input to the System.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>a)   1-6 numeric character Customer Number or 3-10 type MNE character Customer Mnemonic. b)   '.' c)   3 - 7 numeric character Limit Reference code. d)   '.' (Mandatory if Serial Number entered, otherwise not allowed.) e)   1-2 numeric character Serial Number in the range 1 to 99.  (Optional input, default is 1.) (Mandatory input.)</p>
+            <p>If a customer number is input, a valid record must exist on the Customer file with an ID equal to the input.</p>
+            <p>If a credit line or sub limit ID is input, it must be a valid ID on the Limit file.</p>
+            <p>The Limit reference portion of this will be used to check the Limit Reference file for the field GET SUB ALLOC.  If the SUB ALLOCATE FROM is also a credit line or Sub Limit, then the reference portion of this must be recorded in the GET SUB ALLOC field.</p>
+            <p>At least SUB ALLOCATE FROM or SUB ALLOCATE TO must be a credit line or Sub Limit ID.</p>
+            <p>Sharing group limits can be sub allocated. Sub allocation involving group limits can be any of the below,</p>
+            <p>
+                <p value="1">From a group limit to an individual limit.</p>
+                <p value="2">From an individual limit to group limit.</p>
+                <p value="3">From a group limit to a group limit.</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>ONLINE.LIMIT.AMT</field>
+<desc>
+            <p>Defines the ONLINE LIMIT to be Suballocated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (Standard Amount Format) characters. (Mandatory input;  No default value).</p>
+            <p>The position of the decimal point must be as given by the Currency table entry for the Currency shown in Field 21.</p>
+            <p>The ONLINE LIMIT Amount on the Limit record(s) must be present.</p>
+            <p>When there is a valid Limit facility defined in SUBALLOCATE FROM (Field 1), the system will check that the amount input in this field is not greater than the total of ONLINE LIMIT +  SUBALLOCATION TAKEN -  SUBALLOCATION GIVEN -  COMMITMENT AMOUNT of this Limit facility.  In case a conversion of amount the currency table middle rate will be used for comparison purposes.  A tolerance of 10% will be accepted.</p>
+            <p>If this amount is greater then the available amount of the Limit, an override will be required.</p>
+        </desc>
+</t>
+<t>
+<field>NOTES</field>
+<desc>
+            <p>Contains free format information about the Suballocation.</p>
+            <p>Note:      The free text input in this field could be used eventually for insertion in a Delivery message, (for example in confirmations sent when a suballocation is made to or from a branch).  In the present release, these confirmations must be produced manually.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 to 35 type SSS (uppercase alpha) SWIFT characters. (Mandatory input.)</p>
+        </desc>
+</t>
+<t>
+<field>SUB.ALLOCATE.FROM</field>
+<desc>
+            <p>Defines the credit line, or sub limit or branch which is Giving the Suballocation.</p>
+            <p>Information about the origin of a Suballocation must be input to the system.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>a    1 - 6 numeric characters Customer Number or 3-10 type MNE character Customer Mnemonic. b)   '.' c)   3 - 7 numeric character Limit Reference code. d)   '.' (Mandatory if Serial Number entered, otherwise not allowed). e)   1-2 numeric character Serial Number in the range 1 to 99.  (Optional input, default is 1.) (Mandatory Input.)</p>
+            <p>If a customer number is input, a valid record must exist on the Customer file with an ID equal to the input.</p>
+            <p>Any Limit Reference number or Serial Number input must also exist for the corresponding Liability number.</p>
+            <p>At least SUB ALLOCATE FROM or SUB ALLOCATE TO must be a credit line or Sub Limit ID.</p>
+            <p>If a valid limit is input in this field, an override will be requested if this Limit has been flagged as 'Not Available'.</p>
+            <p>Sharing group limits can be sub allocated. Sub allocation involving group limits can be any of the below,</p>
+            <p>
+                <p value="1">From a group limit to an individual limit.</p>
+                <p value="2">From an individual limit to group limit.</p>
+                <p value="3">From a group limit to a group limit.</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>K.CURRENCY</field>
+<desc>
+            <p>Limit Currency</p>
+        </desc>
+</t>
+<t>
+<field>SUB.ALLOC.ID</field>
+<desc>
+            <p>The key uniquely identifies the Suballocation being made. It is composed of a Literal 'SA', followed by the two last digits of the year and a six digit Serial Number.  See below for a further explanation</p>
+            <p>Note:      When only the serial number is entered, the system will automatically default to 'SA' and the 2 last digits of the current year.</p>
+            <p>If all parts are input, then a full 6 numerics must be input (i.e. leading zeros where appropriate).</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The key is always in the Format AAYYNNNNNN where: a)   AA = 'SA' which stands for Sub Allocation b)   YY = The two last digits of the year when the suballocation is being created. c)   NNNNNN = A serial number which allows to create up to 1 million suballocations per year. (Mandatory input.)</p>
+        </desc>
+</t>
+<t>
+<field>AUTO.RESTORE.ALLOC</field>
+<desc>
+            <p>Defines whether the sub-allocation is returned automatically or dependent on if the allocation is required to cover an excess.</p>
+            <p />
+            <p>Entering or defaulting the value Y indicates to the system that the allocation is automatically returned on expiry.</p>
+            <p />
+            <p>A value of N must be entrered manually to instruct the system to check the LIMIT that is receiving the sub-allocation and to return any or all unused Limit if possible. If there is an excess or returning the sub-allocation causes an excess then the expiry date is moved on one day and the checks are repeated until the sub-allocation is returned in full.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 character mandatory inout of Y or N</p>
+            <p>Defaults to Y</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>Defines the Currency of the Suballocation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 Swift character Currency code or  3 numeric character Currency code. (Optional input.  If not, input will default to the Currency of the Limit giving the Suballocation or, if a Branch is giving the Suballocation, then to the Currency of the Limit receiving.)</p>
+        </desc>
+</t>
+<t>
+<field>EFFECTIVE.DATE</field>
+<desc>
+            <p>Defines the date on which the Suballocation will become effective.  Within the LIMIT.SUB.ALLOC Application, this date can only be equal to the Run date.</p>
+            <p>This field will be used to record the effective date of the Suballocation ONLINE LIMIT AMT.  It can only be equal to the System Run Date (i.e. Today).</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>6 to 11 type D (date format in range 1950-2049) characters. (Optional input. Default to Run date.)</p>
+            <p>The date must be the same as the RUN date.</p>
+        </desc>
+</t>
+<t>
+<field>EXPIRY.DATE</field>
+<desc>
+            <p>Defines the date on which the Suballocation ceases to be effective.</p>
+            <p>If a Suballocation is to last for 1 day only, the Effective Date and the Maturity Date must be the same date.</p>
+            <p>Note:During end of day batch run, on the expiry date or on the last working day before the expiry date (in case if expiry date falls on a holiday), the sub allocation will be reversed. Any excess caused by this reversal will be reported in the normal way.</p>
+            <p />
+            <p>If field AUTO.RESTORE.ALLOC is set to N then the expiry date may be extended by one day until the suballocation can be returned withoout creating an excess Limit.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>6 to 11 type D (date format in range 1950-2049) characters. (Optional input.  Default to Effective Date.)</p>
+            <p>The date input must be greater than or equal to the Effective Date (Field 26).</p>
+            <p>The date input must be greater than or equal to the Run date.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

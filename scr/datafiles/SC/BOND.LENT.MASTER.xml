@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SC</product>
+<table>BOND.LENT.MASTER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The Bond Lent Master application allows a user to lend securities held within a particular depository.  It is a service offered by the larger depositories, Euroclear and Cedel being two of the larger examples, where the depository will lend bonds, where needed to their own clients.</p>
+            <p>The depository pays the lender a fee for the borrowed securities. The user has the facility to pass this fee onto his client less any commission and/or handling charges he may incur.</p>
+            <p>Any lent bonds are blocked on the clients' account with a warning message in the event that anyone tries to sell short.</p>
+            <p>Date of loan and date of return are both stored within this application and in the event that the same bonds are lent time after time a different suffix number is attached to the record.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>SECURITY.NUMBER</field>
+<desc>
+            <p>Display the information input under LENDING.KEY.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+            <p>Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>LENDING.TYPE</field>
+<desc>
+            <p>Field to hold the type of lending. i.e. Lending by a Portfolio or Depository.</p>
+        </desc>
+</t>
+<t>
+<field>RECORD.NUMBER</field>
+<desc>
+            <p>Display the information input under Field 0 (Bond.Loan.Key).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input required. Internally generated fields.</p>
+        </desc>
+</t>
+<t>
+<field>ORIG.NOMINAL</field>
+<desc>
+            <p>Field to hold the original amount of loan in  a Depository based lending.The related field NOMINAL  will hold the amount of loan pending.</p>
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p>Standard T24 numeric field and allows 1 to14 numeric characters (including 3 decimals).</p>
+            <p>It is a noinput field.</p>
+        </desc>
+</t>
+<t>
+<field>DEP.EXCH.RATE</field>
+<desc>
+            <p>Records the exchange rate for the conversion from FEE.CCY to ACCOUNT.CCY.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard rate format. (Mandatory input).  Default value = relevant rate as per currency files.</p>
+        </desc>
+</t>
+<t>
+<field>LENDING.KEY</field>
+<desc>
+            <p>A five part key that forms an unique identification of the Bond Loan.</p>
+            <p>1 to 4 - Identify the Security Position from which the Bond.Loan is made.</p>
+            <p>5 - Provides an identification number for the Bond.Loan.</p>
+            <p>Five part key, each part separated by `.'   Structured thus:-  1.2.3.4.5</p>
+            <p>1.  (a)   Specifies the Security Account that the Bond Loan is made from           (thus identifying which Customer is making the Bond Loan).     (b)   Must be a valid Sec.Acc.Master record Id.</p>
+            <p>2.  (a)   Identifies the Bond that is being loaned.     (b)   Must be a valid Security.Master record id.</p>
+            <p>3.  (a)   Specifies the Depository that the Bonds are held in.     (b)   Must be a valid Customer id for whom the Customer.Security           record (Field 1 Customer Type) equals Depository.</p>
+            <p>4.  (a)   Specifies the Nominee with whom the Bond is registered.     (b)   Must be a valid Nominee record id.     (c)   Only applicable to Registered Bonds.</p>
+            <p>5.  (a)   The identification number of the Bond Loan.     (b)   1 to 3 numeric characters in the range 1 to 999.</p>
+            <p>In all the above leading zeros (00) may be omitted.</p>
+            <p>The above components combine to form an unique key by which the Bond Loan is identified.</p>
+            <p>Examples: (A)        1 = Security Account   = 121212-1            2 = Security Number    = 003456-000            3 = Depository         = 009876            4 = Nominee            = 06969            5 = Record Number      = 001</p>
+            <p>1.       2.   3.   4.   5.       Key = 121212-1.3456.9876.6969.1</p>
+            <p>(B)        1-4 as above (A) , Record Number = 002</p>
+            <p>Key = 121212-1.3456.9876.6969.2</p>
+            <p>(C)        1-3 as above (A)&amp;(B), No Nominee, Record Number = 005</p>
+            <p>Key = 121212-1.3456.9876. .5</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Five part key, each part separated by `.'   i.e. 1.2.3.4.5  1 = Sec.Acc.Master Id number. 2 = Security.Master Id number/mnemonic. 3 = Depository = Customer Id no./mnemonic. 4 = Nominee.Company Id number. 5 = 1 to 3 numeric character Bond.Loan Id.  (1,2,3,5 Mandatory input; 4 Optional input)</p>
+            <p>As specified in Details (1 to 5 above).</p>
+        </desc>
+</t>
+<t>
+<field>NET.AMOUNT</field>
+<desc>
+            <p>Displays the amount due to the Lender of the Bonds, i.e. FEE.AMOUNT less CHARGES.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+            <p>Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>NOTES</field>
+<desc>
+            <p>Free format text field which may be utilised by the user to store any additional information relating to the Bond Lent transaction not covered by the allowed input fields.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 type A (alphanumeric) characters. (Optional input.) Multivalue field.</p>
+            <p>Input is validated and authorised after NOTES to create the initial Bond Loan record.</p>
+            <p>Fields RETURN.DATE onwards are concerned with the return of the Bond Loan and the associated fees and charges. These Fields cannot be accessed until after authorisation of field range LENDING.KEY to NOTES.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>Records the value date of the charges.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 9 type D characters (Standard Date Format in range 1950-2049). (Mandatory input.)</p>
+            <p>Must not be prior to RETURN.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.OF.LOAN</field>
+<desc>
+            <p>Specifies the start date of the loan.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 9 type D date characters (Standard Date Format in range 1950-2049).  (Mandatory input.)  Default value = Run Date.</p>
+            <p>Must less than EXPIRY.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>NOMINAL</field>
+<desc>
+            <p>Specifies the Nominal Amount (i.e. the face value) of the Bond to be lent.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>1-18 numeric characters (including up to 6 decimal         places).</p>
+            <p />
+            <p />
+            <p>The following multipliers may be used:</p>
+            <p>T = X 1,000         e.g. 1T = 1,000 2.5T = 2,500</p>
+            <p>M = X 1,000,000 e.g. 2M = 2,000,000 2.75M = 2,750,000</p>
+            <p>B = X 1,000,000,000 e.g. 3B = 3,000,000,000 (Mandatory         input.)</p>
+        </desc>
+</t>
+<t>
+<field>DEPOSITORY</field>
+<desc>
+            <p>Display the information input under LENDING.KEY.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+            <p>Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>DEP.ACCT.NUMBER</field>
+<desc>
+            <p>Identifies the Account of the Depository.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric character Account id number          or 1-10 type MNE (uppercase alpha or numeric         or ".") mnemonic Account id.  (Mandatory input.)</p>
+            <p>Must be a valid Account of the Depository.</p>
+        </desc>
+</t>
+<t>
+<field>DELIVERY.KEY</field>
+<desc>
+            <p>Specifies the reference number of the advices, delivery instructions and payment/receipt messages related to this transaction.</p>
+            <p>This field is generated by the delivery system when the messages are created.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>External field.</p>
+        </desc>
+</t>
+<t>
+<field>STATEMENT.NOS</field>
+<desc>
+            <p>A number generated automatically by the system after authorisation which identifies either a statement entry or a category entry in respect of a transaction. After validation but before authorisation, the value 'VAL' will be inserted in this field to indicate that the transaction has been validated successfully but is still waiting authorisation.</p>
+            <p>After authorisation of a Funds Transfer transaction, the system will automatically insert a number into this field and this number may refer to a statement entry or a category entry depending on the value contained in the corresponding multivalue fields. The following examples will illustrate the use of this field.</p>
+            <p>Example 1:</p>
+            <p>On the execution date of a transaction there will normally be an entry on a Customer account and the following type of number will be generated at this field:</p>
+            <p>24.1  STMT.NO  673732684.48            24.2  STMT.NO  1</p>
+            <p>The number automatically generated in field 24.1 is unique to the transaction in question and is built in the following way:</p>
+            <p>1.         The first four digits '6737' indicate the number of days since            the 1st of January 1968. In our example, it corresponds to the            11th of June 1986.</p>
+            <p>2.         The next five digits '32684' indicate the number of seconds            since midnight. In our example, it corresponds to an entry            generated on line at 09:04:44 AM.</p>
+            <p>3.         The last two digits '48' indicate the number of hundreds of            seconds.</p>
+            <p>The value assigned (again automatically) to field 24.2 identifies the number in 24.1 as a statement entry number. If the User wishes to call this statement entry record on to the screen the User will invoke the STMT.ENTRY Application and the type the following at 'Awaiting ID':</p>
+            <p>673732684.480001</p>
+            <p>where the suffix '0001' identifies it as the first statement entry (there will normally be more than one as the next example will illustrate).</p>
+            <p>Example 2:</p>
+            <p>A second example outlined here is similar to that in example 1, in that there is a statement entry on value date for both the our account and the customer account. The system handles this case as follows:</p>
+            <p>24.1  STMT.NO  673732684.48                  24.2  STMT.NO  1-2</p>
+            <p>Once again field 24.1 contains the identification number automatically generated by the system while field 24.2 now contains two separate numbers signifying that there are infact two separate statement entries, one in respect of the our account pay and one in respect of the our account receive. If the User wishes to see either of these he must first of all invoke STMT.ENTRY followed by the desired function and then at 'Awaiting ID' type EITHER:</p>
+            <p>673732684.480001</p>
+            <p>where the addition of the suffix '0001' identifies the statement entry in respect of the our account OR</p>
+            <p>673732684.480002</p>
+            <p>where the addition of the suffix '0002' identifies the statement entry in respect of the customer account.</p>
+            <p>Example 3:</p>
+            <p>A third example might be that of a category entry generated at initiation of a transaction where commission or charges have been debited to the customer and credited to a profit and loss category code. In this case the following entries are generated on the transaction:</p>
+            <p>24.1  STMT.NO  673732684.48                  24.3  STMT.NO  1</p>
+            <p>Once again the standard type number is generated and inserted at field 24.1</p>
+            <p>Now, however, field 24.2 is replaced by field 24.3 which now identifies the number in 24.1 as a category entry and not a statement entry.</p>
+            <p>To call this category entry record onto the screen the User must now type:</p>
+            <p>CATEG.ENTRY at 'Awaiting Application'</p>
+            <p>followed by:</p>
+            <p>673732684.480001 at 'Awaiting ID'.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>EXCHANGE.RATE</field>
+<desc>
+            <p>Records the exchange rate for the conversion from FEE.CCY to ACCOUNT.CCY.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard rate format. (mandatory input).  Default value = relevant rate as per Currency files.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Contains details of any overrides applicable to this Account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 type A (alphanumeric) characters. Multivalue field. (Internal field.)</p>
+        </desc>
+</t>
+<t>
+<field>CHARGES</field>
+<desc>
+            <p>Records the amount of charges (to the lender of the Bonds) to be deducted from the FEE.AMOUNT.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters (including up to 3 decimal places, dependant on the CCY).  The following multipliers may be used:     T = X 1,000         e.g. 1T = 1,000 2.5T = 2,500    M = X 1,000,000            or    B = X 1,000,000,000  (Optional input.)</p>
+            <p>Must not be greater than FEE.AMOUNT.</p>
+        </desc>
+</t>
+<t>
+<field>EXPIRY.DATE</field>
+<desc>
+            <p>Specifies the expiry date of the loan.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 9 type D date characters (Standard Date Format in range 1950-2049).  (Mandatory input.)</p>
+            <p>Must be greater than Run Date.</p>
+        </desc>
+</t>
+<t>
+<field>DEP.ACCT.CCY</field>
+<desc>
+            <p>Specifies the currency of the Depository Account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+            <p>Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>RETURN.DATE</field>
+<desc>
+            <p>Records the date on which the Bond Loan is returned.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 9 type D date characters (Standard Date Format in range 1950-2049). (Mandatory input.)</p>
+            <p>Must not be less than DATE.OF.LOAN.</p>
+        </desc>
+</t>
+<t>
+<field>REFERENCE.NUMBER</field>
+<desc>
+            <p>Automatically credited ID number for each Bond Lent Transaction.</p>
+            <p>Key is:</p>
+            <p>(i) Application mnemonic "BDLD".</p>
+            <p>(ii) Module mnemonic "SC"</p>
+            <p>(iii) Julian date</p>
+            <p>(iv) 6 character reference no.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+            <p>Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>FEE.CCY</field>
+<desc>
+            <p>Indicates the currency of any fees or charges relating to the Bond Loan.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 type SSS (uppercase alpha) character currency id         or 1-3 numeric character currency code.  (Mandatory input.)</p>
+            <p>Must be an existing currency on the CURRENCY table.</p>
+        </desc>
+</t>
+<t>
+<field>ADJ.NOMINAL</field>
+<desc>
+            <p>Associated multi-value field with ADJ.DATE and ADJ.NARRATIVE, will take positive or negative values to allow FOR adjustment of loan up or down. The outstanding loan amount after the adjustment would be reflected in the field NOMINAL. Mandatory field after the record is authorised when it is a depository based lending.</p>
+        </desc>
+</t>
+<t>
+<field>SECURITIES.ACCOUNT</field>
+<desc>
+            <p>Display the information input under LENDING.KEY.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+            <p>Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>SUB.ACCOUNT</field>
+<desc>
+            <p>Specifies the sub account at depository.</p>
+            <p>It must be defined in sub account fields of customer security record for the transaction depository.</p>
+            <p>It will be defaulted from SC.SUB.ACC.ROUTING record defined for the depository if the criteria match.</p>
+            <p>Optional field</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>1-16 numeric characters</p>
+            <p>Must be defined in CUSTOMER.SECURITY record for the depository</p>
+            <p>I</p>
+        </desc>
+</t>
+<t>
+<field>FEE.AMOUNT</field>
+<desc>
+            <p>Records the amount of the fee, payable by the Depository for the Bond Loan.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters (including up to 3 decimal places, dependant on the Ccy).  The following multipliers may be used:     T = X 1,000         e.g. 1T = 1,000 2.5T = 2,500    M = X 1,000,000              or    B = X 1,000,000,000  (Mandatory input.)</p>
+        </desc>
+</t>
+<t>
+<field>CLOSURE.NOTES</field>
+<desc>
+            <p>Free Format Text for information relating is closure of any particular Bond Lending Transaction.</p>
+            <p>Fields RETURN.DATE and onwards are concerned only with the return of the "lent securities".  It cannot be accessed and authorised until after field range SECURITIES.ACCOUNT to NOTES have been completed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 Type A (alphanumeric) characters. Free format input.</p>
+        </desc>
+</t>
+<t>
+<field>NOMINEE.CODE</field>
+<desc>
+            <p>Display the information input under LENDING.KEY.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+            <p>Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.CCY</field>
+<desc>
+            <p>Specifies the currency of the Account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+            <p>Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.NUMBER</field>
+<desc>
+            <p>Specifies the Account (of the lender) to be credited with the NET.AMOUNT.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric character Account id number             or 1-10 type MNE (uppercase alpha or numeric or ".") mnemonic Account      id. (Mandatory input.)</p>
+            <p>Must be a valid Account for the Customer.</p>
+        </desc>
+</t>
+<t>
+<field>ADJ.DATE</field>
+<desc>
+            <p>Associated multi-value field with ADJ.NOMINAL and ADJ.NARRATIVE, will hold the date on which he adjustment was made.</p>
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p>Forward value date is allowed only when the date of loan is foward dated.</p>
+            <p>Mandatory field if ADJ.NOMINAL is input</p>
+        </desc>
+</t>
+<t>
+<field>ADJ.NARRATIVE</field>
+<desc>
+            <p>Is a Standard T24 narrative field and describes the details of adjustment.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

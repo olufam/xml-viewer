@@ -1,0 +1,496 @@
+<t24help>
+<header>
+<product>ACHFRM</product>
+<title>ACH Entries</title>
+<table>ACH.ENTRIES</table>
+ </header>
+ <overview>
+<ovdesc>
+<p>This file contains the information required to post a deposit to an account or a withdrawal from an account like the account number involved, the dollar amount of the transaction made, the recipient name in case of an incoming entry. </p>
+<p>For the entries routed through other banks and for the entries returned, this file is used to retrieve information to construct the NACHA compliant output file.</p>
+</ovdesc>
+<ovimage>
+</ovimage>
+ </overview>
+<menu>
+ <t><field>
+ID
+</field>
+<desc>
+<p>The key of this application carries the ACH.BATCH ID, followed by the sequence number of the enties pertaining to the particular batch processed. For example, if a batch has three entries under it, the IDs will be formed as the &lt; BATCH.ID &gt; .1 , &lt; BATCH.ID &gt;.2, &lt;BATCH.ID &gt;.3</p>
+<p>Validation Rule : </p>
+<p>Upto 85 alphanumeric characters </p>
+</desc>
+</t>
+<t><field>
+STATUS
+</field>
+<desc>
+<p>Represents the status of the entries. This is updated after the respective service is run. The possible values are CLEARED, DEATH.NOTIFICATION, DELIVERED, NOTIFICATION, RECEIVED,REJECTED and RETURNED.</p>
+<p>Validation Rule: </p>
+<p>The status value entered must have a valid record in the EB.LOOKUP table as ACH.STATUS* &lt; STATUS &gt;</p>
+</desc>
+</t>
+<t><field>
+BATCH.ID
+</field>
+<desc>
+<p>Holds the value of the key of the record ACH.BATCH file for which the entries are posted.</p>
+<p>Validation Rule: </p>
+<p>Upto 20 alphanumeric characters</p>
+</desc>
+</t>
+<t><field>
+REC.TYPE.CODE
+</field>
+<desc>
+<p>Identifies the type of the record. As per the NACHA format, the file structure has different types of records which are identified by the codes as given below.</p>
+<p>1 - File Header Record           </p>
+<p>5 - Batch Header Record          </p>
+<p>6 - Entry Detail Record          </p>
+<p>7 - Entry Detail Addenda Record  </p>
+<p>8- Batch Control Total           </p>
+<p>9 - File Control Total           </p>
+<p>Validation Rule: </p>
+<p>Maximum of 1 character, as the file carries only entry details, the value is always 6.</p>
+</desc>
+</t>
+<t><field>
+TRANSACTION.CODE
+</field>
+<desc>
+<p>Identifies the various types of debit and credit entries. The existing values are </p>
+<p>22 - Demand credit       </p>
+<p>27 - Demand Debit        </p>
+<p>32 - Savings Credit      </p>
+<p>37 - Savings Debit       </p>
+<p>52 -  Loan Accoutn Credit</p>
+<p>Validation Rule: </p> 
+<p>Mandatory field, </p> <p>Upto 2 characters is allowed and should be a valid record in ACH.TRANSACTION</p>
+</desc>
+</t>
+<t><field>
+RECEIVING.DFI.ID
+</field>
+<desc>
+<p>Holds the transit routing number of the receiver's financial institution.</p>
+<p>Validation Rule: </p>
+<p>Mandatory field,</p> <p>Maximum of 8 characters</p>
+</desc>
+</t>
+<t><field>
+CHECK.DIGIT
+</field>
+<desc>
+<p>Holds the ninth digit of the receiving financial institutions transit routing number.</p>
+<p>Validation Rule: </p>
+<p>Mandatory field, with 1 allowable character</p>
+</desc>
+</t>
+<t><field>
+DFI.ACCOUNT.NO
+</field>
+<desc>
+<p>Holds the receiver's account number at their financial institution.</p>
+<p>Validation Rule: </p>
+<p>Mandatory field, Upto 17 characters</p>
+</desc>
+</t>
+<t><field>
+AMOUNT
+</field>
+<desc>
+<p>Carries the transaction amount in dollars with two decimal places.</p>
+<p>Validation Rule: </p>
+<p>Standard amount format, Type - AMT</p>
+</desc>
+</t>
+<t><field>
+INDIVIDUAL.ID.NO
+</field>
+<desc>
+<p>Holds the value of the receiver's identification number.</p>
+<p>Validation Rule: </p>
+<p>Upto 15 characters</p>
+</desc>
+</t>
+<t><field>
+INDIVIDUAL.NAME
+</field>
+<desc>
+<p>Carries the name of the receiver.</p>
+<p>Validation Rule: </p>
+<p>Upto 22 characters</p>
+</desc>
+</t>
+<t><field>
+DISCRETIONARY.DATA
+</field>
+<desc>
+<p>This field is updated for company's internal use if required. </p>
+<p>Validation Rule: </p>
+<p>Though not specified with any particular format, allowed Upto 2 characters</p>
+</desc>
+</t>
+<t><field>
+ADDENDA.REC.ID
+</field>
+<desc>
+<p>The field indicates whether an addenda record is available for the transaction. If there is no addenda available then the value is '0' and if there is an addenda record available then the value updated is '1'. </p>
+<p>Validation Rule: </p>
+<p>Possible values are 0 and 1</p>
+</desc>
+</t>
+<t><field>
+TRACE.NUMBER
+</field>
+<desc>
+<p>The field carries a trace number assigned by the Bank. This number is unique to every transaction and can be used to identify a transaction in case of an inquiry.</p>
+<p>Validation Rule: </p>
+<p>Mandatory field, Upto 15 characters</p>
+</desc>
+</t>
+<t><field>
+CHECK.SERIAL.NO
+</field>
+<desc>
+<p>This field carries the check serial number from the eligible source document to which the entry relates to.</p>
+<p>Validation Rule: </p>
+<p>Upto 15 characters</p>
+</desc>
+</t>
+<t><field>
+ROUTING.NO
+</field>
+<desc>
+<p>Holds the value of the sort code of the bank through which clearing is being done. Incase of the inward entries, the value is received from the incoming file and for the outward entries, the value for this field is fetched from the application BC.SORT.CODE</p>
+<p>Validation Rule: </p>
+<p>Upto 9 characters</p>
+</desc>
+</t>
+<t><field>
+FILE.ID
+</field>
+<desc>
+<p>Holds the value of the key of the record ACH.FILE file for which the entries are posted. This is also the first part of the @ID of the ACH.ENTRIES file itself.</p>
+<p>Validation Rule: </p>
+<p>Upto 35 alphanumeric characters</p>
+</desc>
+</t>
+<t><field>
+ACH.OP.DATA
+</field>
+<desc>
+<p>Field used by ACH operator and can have any value Upto 1</p>
+</desc>
+</t>
+<t><field>
+ACH.OP.ROUTING
+</field>
+<desc>
+<p>Field used by ACH operator to identify the routing information</p>
+</desc>
+</t>
+<t><field>
+JULIAN.DATE
+</field>
+<desc>
+<p>Indicates the Julian date on which the accounting Advice was created. </p>
+<p>Validation Rule: </p>
+<p>Upto 3 characters</p>
+</desc>
+</t>
+<t><field>
+NO.ADD.REC
+</field>
+<desc>
+<p>This field indicates the number of addenda records accompanying the detail record for the particular SEC type. The number of addenda records available for a particular SEC code is available in the table ACH.MESSAGE.</p>
+<p>Validation Rule</p>
+<p>Upto 4 numeric characters</p>
+</desc>
+</t>
+<t><field>
+TERMINAL.CITY
+</field>
+<desc>
+<p>This field identifies the city, town, village or township in which an Electronic terminal is located. In case of inward entries, the value for the field is received from the incoming file. </p>
+<p>Validation Rule: </p> 
+<p>Upto 4 characters</p>
+</desc>
+</t>
+<t><field>
+TERMINAL.STATE
+</field>
+<desc>
+<p>This field identifies the state of the United States in which an Electronic terminal is located. In case of inward entries, the value for the field is received from the incoming file. </p>
+<p>Validation Rule: </p>
+<p>Upto 2 characters</p>
+</desc>
+</t>
+<t><field>
+IMMEDIATE.ORIGIN
+</field>
+<desc>
+<p>This field identifies the origin that is the immediate sender of the incoming file. </p>
+<p>Validation Rule: </p>
+<p>Upto 9 characters</p>
+</desc>
+</t>
+<t><field>
+T24.TXN.CODE
+</field>
+<desc>
+<p>Carries the value of the transaction codes to differentiate between the credit and debit entries made. This is available in the table TRANSACTION. </p>
+<p>Validation Rule: </p>
+<p>Possible values are </p>
+<p>246 - Stands for ACH Debit</p>
+<p>247 - Stands for ACH Credit</p>
+</desc>
+</t>
+<t><field>
+CURRENCY
+</field>
+<desc>
+<p>Defines the currency in which the transaction was made.</p>
+<p>Validation Rule: </p>
+<p>Standard Currency format - CCY</p>
+</desc>
+</t>
+<t><field>
+VALUE.DATE
+</field>
+<desc>
+<p>Will be defaulted as the Settlement date if exists or the Effective entry date from the incoming file. For outward file, it will be the debit value date of the FUNDS.TRANSFER transaction.</p>
+</desc>
+</t>
+<t><field>
+ENTRY.TYPE
+</field>
+<desc>
+<p>This field identifies the type of the entry posted. </p>
+<p>Validation Rule: </p>
+<p>Allowed values are ACCOUNTING, NOTIFICATION and DEATH.NOTIFICATION</p>
+</desc>
+</t>
+<t><field>
+NARRATIVE
+</field>
+<desc>
+<p>Reserved for future use</p>
+</desc>
+</t>
+<t><field>
+ACH.RET.CODE
+</field>
+<desc>
+<p>The field carries the returned code value in case an entry is returned. This gives the reason as why the entry has been returned. These code values are available in the table DFE.RESPONSE.CODE.</p>
+<p>Validation Rule: </p>
+<p>Starts with 'R' followed by the code pertaining to the reason of returning the entries.</p>
+</desc>
+</t>
+<t><field>
+ORIG.US.ACH.ENTRY
+</field>
+<desc>
+<p>Not used</p>
+</desc>
+</t>
+<t><field>
+ORIG.TRACE.NO
+</field>
+<desc>
+<p>For returned records, this field will hold the trace number for the entry detail as received in the original incoming file. When a return file was generated and sent to the originator, the value in TRACE.NUMBER will be replaced with the trace number that was sent in the return file</p>
+</desc>
+</t>
+<t><field>
+ORIG.RECV.DFI.ID
+</field>
+<desc>
+<p>When an incoming entry is routed through our bank and returned, the ABA number or the routing number of our bank is updated in the DFI.ACCOUNT.NO and the original DFI ID with which the entry was raised is updated in this field.</p>
+<p>Validation Rule: </p>
+<p>Upto 10 characters</p>
+</desc>
+</t>
+<t><field>
+T24.ENTRY.AC
+</field>
+<desc>
+<p>Account number of the Entry detail in T24. The value will differ from the value in DFI.ACCOUNT.NO when the account number mentioned in the DFI.ACCOUNT.NO is an alternate account number for the account in this field</p>
+</desc>
+</t>
+<t><field>
+RECEIVING.CO.NAME
+</field>
+<desc>
+<p>Identifies the receiver of the transaction. This could either be the receiving company's name or an identification number of the same. The field is useful for descriptive purposes. </p>
+<p>Validation Rule: </p>
+<p>Maximum of 35 characters</p>
+</desc>
+</t>
+<t><field>
+AC.INWARD.ENTRY.ID
+</field>
+<desc>
+<p>AC.INWARD.ENTRY is the table were the accounting entry details are recorded  when the GAI is used for generating entry for the record. This field will hold the ID of the AC.INWARD.ENTRY for the record which holds the details of the entries raised. </p>
+<p>Validation Rule: </p>
+<p>Upto 35 characters</p>
+</desc>
+</t>
+<t><field>
+AML.RESPONSE
+</field>
+<desc>
+<p>Identifies the response received from the AML verification process. The response can be either positive or negative, that is the account is considered either legitimate or illegitimate. </p>
+<p>Validation Rule: </p>
+<p>Allowed values are 0 and 1</p>
+<p>0 - Denotes a clean entry</p> 
+<p>1 - Denotes an AML Hit</p>
+</desc>
+</t>
+<t><field>
+AML.REJ.REASON
+</field>
+<desc>
+<p>When the entries get rejected or returned post an AML verification process, the status can be either HIT or PENDING. While the entries with status updated as HIT cannot be processed further, those with status as PENDING will be taken up further for processing. In such cases, this field will be updated with the reason for AML rejection.</p>
+</desc>
+</t>
+<t><field>
+AML.RESERVED
+</field>
+<desc>
+<p>Reserved for future use</p>
+</desc>
+</t>
+<t><field>
+TAPE.REF
+</field>
+<desc>
+<p>Holds the name of the file from which the incoming entries were received. This is helpful in tracing the entries in case of an inquiry. </p>
+<p>Validation Rule: </p>
+<p>Upto 65 characters</p>
+</desc>
+</t>
+<t><field>
+ACCT.TYPE
+</field>
+<desc>
+<p>Field to identify if the account type is AA or NON_AA</p>
+</desc>
+</t>
+<t><field>
+CARD.EXPIRY.DATE
+</field>
+<desc>
+<p>Holds the expiry date of the card. This is useful in verifying the validity of the card for various security and authorisation procedures.</p>
+<p>Validation Rule: </p>
+Date format</p>
+</desc>
+</t>
+<t><field>
+DOCUMENT.REF.NO
+</field>
+<desc>
+<p>Document reference number received in the incoming file</p>
+</desc>
+</t>
+<t><field>
+INDV.CARD.ACCT.NO
+</field>
+<desc>
+<p>Card number received in the incoming file</p>
+</desc>
+</t>
+<t><field>
+PROCESS.CTRL.FLD
+</field>
+<desc>
+<p>Carries the optional code which is used to identify the document type. </p>
+<p>Validation Rule: </p>
+<p>Upto 10 characters</p>
+</desc>
+</t>
+<t><field>
+ITEM.RESEARCH.NO
+</field>
+<desc>
+<p>Contains the MICR locator number for Check item research.</p>
+<p>Validation Rule: </p>
+<p>Upto 18 characters</p>
+</desc>
+</t>
+<t><field>
+ITEM.TYPE.INDI
+</field>
+<desc>
+<p>This field carries the code that indicates the type of items being truncated.</p>
+<p>Validation Rule: </p>
+<p>Upto 2 characters</p>
+</desc>
+</t>
+<t><field>
+AML.VERIFICATION
+</field>
+<desc>
+<p>The field specifies the status of the entries with respect to AML verification process. </p>
+<p>Validation Rule: </p>
+<p>Possible values are as below</p>
+<p>PENDING - When the verification process is yet to be done</p>
+<p>INITIATED - When the AML verification is begun</p>
+<p>HIT - When the account pertaining to the transaction is found to be involved in Money Laundering Activities</p>
+<p>CLEAN - When the account involved in the transaction is legitimate.</p>
+</desc>
+</t>
+<t><field>
+AML.LEVELS
+</field>
+<desc>
+<p>Field to capture the number of levels AML check done for the entry record</p>
+</desc>
+</t>
+<t><field>
+MSG.TYPE
+</field>
+<desc>
+<p>Specifies whether the entry is posted for either incoming or outgoing messages.</p> 
+<p>Validation Rule: </p>
+<p>Allowed values are OUTWARD and INWARD</p>
+</desc>
+</t>
+<t><field>
+ENTRY.CLASS.CODE
+</field>
+<desc>
+<p>The field carries the standard entry class code type which uniquely identifies the class of the ACH transactions made. </p>
+<p>The following are the various SEC codes        </p>
+<p>ARC - Accounts receivable conversion.          </p>
+<p>BOC - Back office conversion.                  </p>
+<p>CBR - Corporate cross-border payment.          </p>
+<p>CCD - Cash Concentration or Disbursement.      </p>
+<p>CIE - Customer Initiated Entries.              </p>
+<p>CTX - Corporate trade exchange.                </p>
+<p>DNE - Death notification entry.                </p>
+<p>IAT - International ACH transaction.           </p>
+<p>MTE - Machine Transfer Entry                   </p>
+<p>POP - Point-of-purchase.                       </p>
+<p>POS - Point-of-sale.                           </p>
+<p>PPD - Prearranged payment and deposits.        </p>
+<p>RCK - Represented check entries.               </p>
+<p>TEL - Telephone-initiated entry.               </p>
+<p>WEB - Web-initiated entry.                     </p>
+<p>XCK - Destroyed check entry.                   </p>
+<p>Validation Rule: </p>
+<p>These are picked up from the EB.LOOKUP table and hence needs an entry in the same.</p>
+</desc>
+</t>
+<t><field>
+CUSTOMER.FILE
+</field>
+<desc>
+<p>Field to mention if the file uploaded was originated from Customer or Fed. Valid values are </p>
+<p>i) FED</p>
+<p>ii) CUS.BALANCED</p>
+<p>III)CUS.UNBALANCED</p>
+</desc>
+</t>
+	</menu>
+</t24help>

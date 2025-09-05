@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>BATCH</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This file holds the detail of the processes that are to be run in the T24 batch system. </p>
+            <p>It allows the user to setup individual process for applications and to define various control parameters.  These parameters specify how the process is to be run ie foreground or background, the default printer to be used for any reports created, the jobs(application rotuines) to be run, the cycling frequency and the next run date for the jobs. </p>
+            <p>In addition to this, there are other fields in the process record not input by the user but maintained by the batch control system.  These are used to store the current status of the process and the individual jobs and the last run date. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>JOB.NAME</field>
+<desc>
+            <p>The job name entered must be an entry on the main program file PGM.FILE. The PGM.FILE record should define the actual information commands or application routines to be executed as part of the job. The PGM.FILE record should be defined as type 'B'  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-32 type A (alphanumeric) characters.</p>
+        </desc>
+</t>
+<t>
+<field>NEXT.RUN.DATE</field>
+<desc>
+            <p>Specifies bank date on which the job is to be next run. </p>
+            <p>When the end of day is initiated by the batch control system, it only runs those jobs whose next run date is the same as the current bank date. Hence this field allows the user to control when the job is next run. </p>
+            <p>Note : If no date is entered in this field then the next run date is        automatically calculated (when the record is updated) using the        FREQUENCY specified and the LAST.RUN.DATE (field maintained by        batch control system). However if no last run date exists (i.e new        job) then the current bank date and frequency is used to calculate        the next run date. </p>
+            <p />
+            <p>For jobs with the frequency D, the NEXT.RUN.DATE is not taken into account and is run during every Close of Business. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>0-11 date characters. Year must be in the range 1950 - 2049</p>
+        </desc>
+</t>
+<t>
+<field>SELECT.AHEAD</field>
+<desc>
+            <p>Batch Stage can be defined here.Select will be performed as per the batch stage defined here.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.SELECT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>DEPARTMENT.CODE</field>
+<desc>
+            <p>This field specifies the department code to be used when running the process in the batch control system. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>0-4 type A (alphanumeric) characters.</p>
+            <p>Must be a valid record on the DEPT.ACCT.OFFICER file.</p>
+        </desc>
+</t>
+<t>
+<field>DATA</field>
+<desc>
+            <p>This field should be used to pass any data values which may be required by the job when it is being run.</p>
+            <p>==========================================================================</p>
+            <p>When specifying data to be used with the routine EOD.REPGEN.PRINT it is possible to define either a report or an enquiry report to be produced ;</p>
+            <p>ENQ enquiry.name Specifies an enquiry report report.name Specifies a report.</p>
+            <p>In addition, it is possible to specify that these reports should stop the batch from proceeding if any information regarding the report is missing (such as a missing REPORT.OUTPUT record) by appending '*FATAL' to the end of the report name ;</p>
+            <p>ENQ enquiry.name *FATAL report.name *FATAL</p>
+            <p>This field could contain the following values when the associated JOB.NAME is EB.PRINT:</p>
+            <p />
+            <p>RTN XXX - XXX denotes a basic program that gets invoked as a part of this job.</p>
+            <p>DAT YYY - The data that might be used in the enquiry, routine or repgen.</p>
+            <p>ENQ XXX - XXX denotes that the enquiry will be printed as a part of this job.</p>
+            <p>XXX - XXX denotes that the repgen XXX will be invoked as a part of this job.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>JOB.MESSAGE</field>
+<desc>
+            <p>Stores the job error message number. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System maintained.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>LAST.RUN.DATE</field>
+<desc>
+            <p>Indicates the date on which the job was last run. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System maintained.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>USER</field>
+<desc>
+            <p>Specifies the user name to be loaded for reporting jobs during COB . </p>
+            <p>This field allows a particular user environment (i.e company details etc.) to be established for a job when it is run as part of the batch control system. </p>
+            <p>The actual user profile (setup in file USER) for the user name entered is used. </p>
+            <p>Note : If no user name is entered in this field then the default profile for the user OPERATOR is used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>0 - 32 alphanumeric characters.</p>
+            <p>Must be a valid record on the USER file.</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.PRINTER</field>
+<desc>
+            <p>Specifies the default printer and form name to which all output is to be directed for the process. </p>
+            <p>If no printer name has been specified in field PRINTER.NAME for the individual jobs, then this field allows the user to define a default printer to direct all output to for the process.  If this field is left blank and no printer has been specified for the individual jobs, then the output is sent to the default SYSTEM printer defined in DE.FORM.TYPE. </p>
+            <p>Examples: </p>
+            <p>PR1         -   Direct output to system printer PR1. </p>
+            <p>/STFORM     -   Direct output to system printer with a form type of STFORM. </p>
+            <p>PR1/STFORM  -   Direct output to printer PR1 with a form type of STFORM. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>0-35 type A (alphanumeric) characters.  These can define:  'Printer name' (system defined)     or 'Printer name'/'Form name'          or /'Form name'</p>
+            <p>The 'Printer name' must be a valid system printer and exist on file F.PRINTER.ID.  The 'Form name' must be a valid entry on file F.DE.FORM.TYPE.</p>
+        </desc>
+</t>
+<t>
+<field>PROCESS.STATUS</field>
+<desc>
+            <p>Indicates the current process status.  Some common status values are: </p>
+            <p> 0 - Ready  1 - Running  2 - Completed successfully  3 - On hold or in error </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Numeric. System maintained.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>PRINTER.NAME</field>
+<desc>
+            <p>This field allows the user to control at which printer and form type the output from the specific job is to appear. It overrides the default process printer specified in field DEFAULT.PRINTER. </p>
+            <p>For further details refer to help text for field DEFAULT.PRINTER. </p>
+        </desc>
+</t>
+<t>
+<field>JOB.STATUS</field>
+<desc>
+            <p>Indicates the current status of the job. </p>
+            <p>Some common status values are: </p>
+            <p> 0  -  Ready  1  -  Running  2  -  Completed successfully  3  -  On hold or in error </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System maintained.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>VERIFICATION</field>
+<desc>
+            <p>The job name entered in field JOB.NAME can be made to be dependant on other jobs by specifying valid job name(s) in this field.  The batch control system verifies that all the jobs referenced here have completed successfully before executing the job specified in field JOB.NAME. </p>
+            <p>Note : The job(s) referenced in this field must have entries setup in the        main job field JOB.NAME.  This ensures that the jobs to be verified        are all part of the same process. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-32 alphanumeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>FREQUENCY</field>
+<desc>
+            <p>Defines the frequency at which the job is processed next.</p>
+            <p>The next run date entered in field NEXT.RUN.DATE for the job is automatically cycled when the system returns to on-line mode.  The value that gets updated is based on the frequency defined in this field. Following frequency formats are supported: </p>
+            <p>D - Every working day. Dnn - Every nnth working day. </p>
+            <p>W - Weekly every Friday. M - Last working day of every month. </p>
+            <p>Mnn – nn represents the offset added to the first day of every month to arrive at Next Run date. When the resultant date is a holiday, previous Working day is considered.</p>
+            <p>For example, say bank date is 15 MAY 2011 and following is the representation of the Holiday table for JUNE 2011</p>
+            <p> 01 02 03 04 05 06 07 08</p>
+            <p> W  W  W  H  H  H  W  W</p>
+            <p>Frequency M01 will default Next Run date as 02 JUNE 2011 and</p>
+            <p>Frequency M05 will default Next Run date as 03 JUNE 2011 since 6th is holiday</p>
+            <p>A - The job is picked on the any ad-hoc date. The next run date has to be updated manually. Y - Last working day of the year. Ynn -  Last working day of the nn'th month. Jxxx -  Always run with job name xxx. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>BATCH.ENVIRONMENT</field>
+<desc>
+            <p>Defines the environment to run the process in, i.e foreground or background. </p>
+            <p>A foreground process will be run directly on the users terminal, whereas a background process will run as a phantom task. The background facility allows the user to run a number of processes concurrently. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 uppercase alpha character.       F - Foreground      B - Background  (Mandatory input)</p>
+            <p>The background option may only be used for those processes which are in the reporting stage.</p>
+        </desc>
+</t>
+<t>
+<field>BATCH.PROCESS</field>
+<desc>
+            <p>This name is used when the batch control system is invoked to display the list of processes to be run. If a 'company mnemonic' has not been specified as part of the process name then the default company (for user OPERATOR) will be loaded and used, otherwise the specified company is loaded. The name should be made as meaningful as possible to reflect the application/function of the process. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-32 type A (alphanumeric) characters. This can be 'process name' or 'company mnemonic'/'process name'</p>
+            <p>If a company mnemonic has been specified as part of the process name then it must be a valid key on the MNEMONIC.COMPANY file.</p>
+        </desc>
+</t>
+<t>
+<field>BATCH.STAGE</field>
+<desc>
+            <p>This field allows the user to group the processes into four distinct stages (Application, System, Reporting Start of day and Online). Within the batch control system, each stage verifies that all the processes in the previous stage have completed successfully before continuing. </p>
+            <p>If no sequence number (process dependency) has been appended to the batch stage, then this process can be run concurrently within the stage. However if a sequence number (e.g. A009) has been specified then the process can be run only when all other processes with sequence numbers lower than this have completed successfully. Processes with the same sequence number can be run concurrently. </p>
+            <p>Modifications to the sequence number should adhere to the following guidelines: </p>
+            <p>1.  Sequence numbers in the range 000 to 099 should not be modified. </p>
+            <p>2.  Sequence numbers in the range 100 to 899 - only the last two digits     should be modified. </p>
+            <p>3.  Sequence numbers 900 - 999 should not be modified. </p>
+            <p />
+            <p>Certain restrictions apply to the system on the number of processes that can share a given stage based on the sequence. Pls. refer User Guide for more explanation on this. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-4 type A (alphanumeric) characters.  The first character is used to define the stage, it must be one of the following:    A - Application   D - Start of Day   R - Reporting   S - System   O - Online The remaining 3 characters (optional process sequence number) should be numeric.</p>
+            <p>Mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>CLEAR.STATIC.CACHE</field>
+<desc>
+            <p>This field signifies whether to clear the static cache while processing each job in a batch process</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

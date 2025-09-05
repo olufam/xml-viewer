@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>DB.SCRAMBLE.DEFINE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>DB.SCRAMBLE.DEFINE enables the user to amend sensitive data on a file or set of files.  The typical use of this utility would be to remove information about clients on a copy of the live database in order to create a test account. </p>
+            <p>Extreme caution must be taken when running this utility.  It should only be used on a test account. </p>
+            <p>Sample records to remove client information are supplied.  However, additional records can be added and routines to clear or reset data according to complex requirements can be written.  The records supplied will not remove all information which could identify a client. Information remaining could exist on reports in HOLD.CONTROL, or on messages within the delivery files.  As the position of the information within these files is impossible to determine, the user must decide whether to write a routine to "scramble" these files or simply to clear them. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>RUN.COMPANY</field>
+<desc>
+            <p>Maintains a history of each company DB.SCRAMBLE.DEFINE was run in. </p>
+            <p>Fields RUN.USER - RUN.DATE are related multi-value fields, which are system populated when DB.SCRAMBLE.DEFINE is run.  They maintain a history of each time the program is run. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field</p>
+        </desc>
+</t>
+<t>
+<field>LL.DESCRIPTN</field>
+<desc>
+            <p>This is a multi valued field. Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input.</p>
+            <p>A maximum of 35 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>POST.UPD.ROUTINE</field>
+<desc>
+            <p>Under some circumstances, it may be necessary to call a routine after all the files specified on this record have been processed.  For example, after updating the CUSTOMER files, you need to call a routine to rebuild the MNEMONIC.CUSTOMER file.  This routine can be specified in POST.UPD.ROUTINE. </p>
+            <p>The POST.UPD.ROUTINE is called only once, after all records on all files specified on this DB.SCRAMBLE.DEFINE record have been processed. </p>
+            <p>The routine is called with one argument - file name. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input</p>
+            <p>If entered, a VOC entry for the subroutine must exist.</p>
+            <p>Cannot be entered if ID is "ALL.FILES".</p>
+        </desc>
+</t>
+<t>
+<field>INCLUDE.ID</field>
+<desc>
+            <p>If the field specified is present, it will be replaced by the text specified in PREFIX and SUFFIX.  The id of the record being processed can also be used in the replacement characters. </p>
+            <p>For example, </p>
+            <p>PREFIX is specified as "ADDRESS LINE 1 ", INCLUDE.ID is specified as "Y" and SUFFIX is specified as " ***".  If the field named in FIELD.NAME is present, it will be replaced by:  "ADDRESS LINE 1 xyz ***" where xyz is the id of the record being processed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input</p>
+            <p>Y or NO</p>
+            <p>Default NO (if ID is not "ALL.FILES")</p>
+            <p>Cannot be entered if ID is "ALL.FILES".</p>
+        </desc>
+</t>
+<t>
+<field>RUN.USER</field>
+<desc>
+            <p>Maintains a history of each user id who ran DB.SCRAMBLE.DEFINE. </p>
+            <p>Fields RUN.USER - RUN.DATE are related multi-value fields, which are system populated when DB.SCRAMBLE.DEFINE is run.  They maintain a history of each time the program is run. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field</p>
+        </desc>
+</t>
+<t>
+<field>FILE.ROUTINE</field>
+<desc>
+            <p>Fields to be amended can be specified on the DB.SCRAMBLE.DEFINE record. Alternatively, a routine can be written to amend a file or set of files. For example, a routine could be written to amend all records or selected records on a file.  The FILE.ROUTINE is called once for each file; therefore, it must select the records to be amended and process each record in turn. </p>
+            <p>The routine is called with one argument - file name. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input</p>
+            <p>If entered, a VOC entry for the subroutine must exist.</p>
+            <p>If entered, SELECTION cannot be entered.</p>
+            <p>Cannot be entered if ID is "ALL.FILES".</p>
+            <p>If the ID is not "ALL.FILES", either FILE.ROUTINE or FIELD.NAME must be present.</p>
+        </desc>
+</t>
+<t>
+<field>SUFFIX</field>
+<desc>
+            <p>If the field specified is present, it will be replaced by the text specified in PREFIX and SUFFIX.  The id of the record being processed can also be used in the replacement characters. </p>
+            <p>For example, </p>
+            <p>PREFIX is specified as "ADDRESS LINE 1 ", INCLUDE.ID is specified as "Y" and SUFFIX is specified as " ***".  If the field named in FIELD.NAME is present, it will be replaced by:  "ADDRESS LINE 1 xyz ***" where xyz is the id of the record being processed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input</p>
+            <p>1-40 type "A" (alphanumeric) characters</p>
+            <p>Cannot be entered if ID is "ALL.FILES".</p>
+        </desc>
+</t>
+<t>
+<field>FILE.SUFFIX</field>
+<desc>
+            <p>When a record is input on DB.SCRAMBLE.DEFINE, this field is populated with the suffixes allowed for the current  file, unless the suffix was included in the id. </p>
+            <p>For example, if a record is input for CUSTOMER, this field will be populated with $NAU and $HIS.  However, if a record is input for CUSTOMER$NAU, this field will be blank. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input</p>
+            <p>If entered, must be $NAU, $HIS or $ARC.</p>
+            <p>If entered, must be a valid suffix according to FILE.CONTROL.</p>
+            <p>Cannot be entered if ID is "ALL.FILES".</p>
+        </desc>
+</t>
+<t>
+<field>PREFIX</field>
+<desc>
+            <p>If the field specified is present, it will be replaced by the text specified in PREFIX and SUFFIX.  The id of the record being processed can also be used in the replacement characters. </p>
+            <p>For example, </p>
+            <p>PREFIX is specified as "ADDRESS LINE 1 ", INCLUDE.ID is specified as "Y" and SUFFIX is specified as " ***".  If the field named in FIELD.NAME is present, it will be replaced by:  "ADDRESS LINE 1 xyz ***" where xyz is the id of the record being processed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input</p>
+            <p>1-40 type "A" (alphanumeric) characters</p>
+            <p>Cannot be entered if ID is "ALL.FILES".</p>
+        </desc>
+</t>
+<t>
+<field>SELECTION</field>
+<desc>
+            <p>Normally, all records on a file will be processed.  However, if only certain records should be amended, the selection criteria can be entered in SELECTION.  For example, when processing the ACCOUNT file, only customer accounts should be processed: internal accounts should be ignored.  Therefore, a selection of LIKE '1N0N' can be entered. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input</p>
+            <p>If FILE.ROUTINE has been entered, SELECTION cannot be entered.</p>
+            <p>If SELECTION does not begin with either "WITH" or "LIKE", it will be prefixed with "WITH".</p>
+            <p>Cannot be entered if ID is "ALL.FILES".</p>
+        </desc>
+</t>
+<t>
+<field>RUN.DATE</field>
+<desc>
+            <p>Maintains a history of the date on which DB.SCRAMBLE.DEFINE was run. </p>
+            <p>Fields RUN.USER - RUN.DATE are related multi-value fields, which are system populated when DB.SCRAMBLE.DEFINE is run.  They maintain a history of each time the program is run. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTN</field>
+<desc>
+            <p>Description of the data which will be amended when this record is run in "V"erify mode. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input</p>
+            <p>1-35 type "A" (any) characters</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.NAME</field>
+<desc>
+            <p>The name of the field to be amended should be entered in FIELD.NAME.  The field can be either entered as a field name defined on the STANDARD.SELECTION record or as a field number, which will be translated to the corresponding field name.  If the field is multi- or sub-valued, a particular value or sub-value can be specified, or the whole field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input</p>
+            <p>1-40 type "A" (alphanumeric) characters</p>
+            <p>Cannot be entered if ID is "ALL.FILES".</p>
+            <p>If the id is not "ALL.FILES", either FILE.ROUTINE or field name must be present.</p>
+            <p>If entered, must be in one of the following formats: Field name or Field name-xx where xx is the multivalue number or Field name-xx.yy where yy is the subvalue number or nn where nn is the field number or nn.xx or nn.xx.yy</p>
+            <p>The field name must exist on the STANDARD.SELECTION record</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.ROUTINE</field>
+<desc>
+            <p>Fields to be amended can be specified on the DB.SCRAMBLE.DEFINE record. Alternatively, a routine can be written to amend the field specified. Instead of the field being replaced with the  characters specified in PREFIX, INCLUDE.ID and SUFFIX, the routine specified in FIELD.ROUTINE is called and the amended field is passed back.  The routine does not need to update the field - that will be done DB.SCRAMBLE.DEFINE$RUN. </p>
+            <p />
+            <p>Variables for the routine are as follows: </p>
+            <p>ORIGINAL.FIELD, REPLACE.CHARS, NEW.FIELD, YERROR </p>
+            <p>ORIGINAL FIELD - Present contents of the field </p>
+            <p>REPLACE.CHARS - Replacement characters, as specified in PREFIX, INCLUDE.ID and SUFFIX. </p>
+            <p>NEW.FIELD - Amended field to be written back </p>
+            <p>YERROR - Error message </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input</p>
+            <p>If entered, a VOC entry for the subroutine must exist.</p>
+            <p>Cannot be entered if ID is "ALL.FILES".</p>
+        </desc>
+</t>
+<t>
+<field>FILE.NAME</field>
+<desc>
+            <p>Records can be created on DB.SCRAMBLE.DEFINE, for each file to be amended. The id of the record should exist on FILE.CONTROL.  However, the id may be appended with $NAU, $HIS or $ARC, if particular criteria are required for amending these files.  A record can also exist with an id of "ALL.FILES". </p>
+            <p>The "ALL.FILES" record can be used when running DB.SCRAMBLE.DEFINE in "V"erify mode, to enable all the records on DB.SCRAMBLE.DEFINE to be used, rather than having to run "V"erify on each record in turn.  Records will only be used for products which have been installed into the current company. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must exist on FILE.CONTROL  or  Must exist on FILE.CONTROL once the suffix of $NAU, $HIS or $ARC is removed  or  Must be "ALL.FILES"</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

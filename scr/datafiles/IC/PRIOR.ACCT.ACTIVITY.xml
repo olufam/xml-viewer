@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>IC</product>
+<table>PRIOR.ACCT.ACTIVITY</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This is an internal file containing details of Account Balances and Activity used to calculate interest and charges (see explanation about Value Dated Balances below). This table is used in premium processing calculation where a 5 year history is required to provide data for calculations. In some cases theis data may go back to before system take on. It has the same structure as ACCT.ACTIVITY the main provider of data for interest and charges calculations.</p>
+            <p />
+            <p>Details are held in separate records for each Account for each month in which there has been any Activity over the Account or in which the Value Dated Balance changes.</p>
+            <p />
+            <p>The details held in this file for the calculation of interest include Value Dated Balances and total Debit and Credit Turnover for each Value Date.</p>
+            <p />
+            <p>The details held for the calculation of charges include the total number of entries with each different Transaction Code processed during the month, and the total value of the entries with each Transaction Code. These details are held in the record for the month in which the entries are processed, regardless of the Value Dates of the entries.</p>
+            <p />
+            <p>The Value Dated Balances are also used for the calculation of Balance Requirement charges and for determining whether a high enough Balance has been maintained for waiving charges and for calculating Credit interest to offset charges.</p>
+            <p />
+            <p>VALUE DATED BALANCES</p>
+            <p />
+            <p>Interest is calculated on Value Dated Balances. All entries over an Account are considered to have a Value Date, which is the date on which the entry affects the (value dated) balance for interest purposes.</p>
+            <p />
+            <p>If no Value Date is entered in a transaction, it may be added automatically by the system, depending on rules specified in the Transaction Code table (TRANSACTION), or rules specified in the application which generated the transaction (e.g.Money Market).</p>
+            <p />
+            <p>If no Value Date has been entered or generated in an entry, a default of the Booking Date is assumed, i.e. the entry is considered to affect the balance for interest purposes on the same day as it is processed.</p>
+            <p />
+            <p>END OF DAY PROCESSING</p>
+            <p />
+            <p>This file is updated during the end of day process EOD.ACCT.ACTIVITY with the details of every entry which has been generated during the day and also during the end of day Capitalisation processes, EOD.CAPITALIS.CORR and (unless next day posting is specified in the Account Accrual table) EOD.CAPITALISATION.</p>
+            <p />
+            <p>A new Account Activity record is generated every time an entry is encountered with a Value Date or Booking Date in a month in which the Account has not previously had any entries.</p>
+            <p />
+            <p>If an entry has a Value Date in a different month from the Booking Date, at least 2 Account Activity records are updated, one containing the Value Dated Balances for interest purposes, the other containing the numbers and amounts of transactions for charges purposes.</p>
+            <p />
+            <p>If an entry has a Value Date earlier than entries which have previously been processed for the same Account, all subsequent Value Dated Balances are updated. This may involve updating several Account Activity records.</p>
+            <p />
+            <p>Only the See, Print and List functions may be used in this Application. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>DAY.NO</field>
+<desc>
+            <p />
+            <p>Specifies the value date of the entries which generated the credit and debit turnover and resulting balance in the corresponding field range TURNOVER.CREDIT to BALANCE.</p>
+            <p />
+            <p>The multivalue associated group of field range DAY.NO to BALANCE contain the total amount of credit entries, the total amount of debit entries and the resulting Balance for each Value Date for which there have been entries. The group is repeated for each different Value Date. </p>
+            <p />
+            <p>Fields DAY.NO to BALANCE form a related multi value set. Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 2 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>BK.TRADE.TOVR.DB</field>
+<desc>
+            <p>Debit adjustment for trade date on associated booking day. This is an amount field that is no input.</p>
+        </desc>
+</t>
+<t>
+<field>TURNOVER.DEBIT</field>
+<desc>
+            <p>Specifies total amount of debit entries with the Value Date specified in the corresponding DAY.NO.</p>
+            <p />
+            <p>The multivalue associated group of fields DAY.NO to BALANCE contain the total amount of credit entries, the total amount of debit entries and the resulting Balance for each Value Date for which there have been entries. The group is repeated for each different Value Date. </p>
+            <p />
+            <p />
+            <p />
+            <p>Fields DAY.NO to BALANCE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 19 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>BK.DAY.NO</field>
+<desc>
+            <p>The Day number in the month for the booking dated balance.</p>
+        </desc>
+</t>
+<t>
+<field>TRANSACT.AMT</field>
+<desc>
+            <p />
+            <p>Contains the total amount of entries with the Transaction Code specified in the corresponding field TRANSACT.CODE which have been processed during the month specified in ACCT.NO.YEAR.MONTH.</p>
+            <p />
+            <p>The multivalue associated group of field range TRANSACT.CODE to ACCT.NO.YEAR.MONTH contains the number of entries and the total amount of entries with each different Transaction Code which have been processed during the month specified in ACCT.NO.YEAR.MONTH. The group is repeated for each different Transaction Code.</p>
+            <p />
+            <p>These details are used for calculating activity charges based on the number or amount of transactions processed.</p>
+            <p />
+            <p>Note: The number and amount of any reversal entries are subtracted from the figures in fields NO.OF.TRANSACT and TRANSACT.AMT. </p>
+            <p>Fields TRANSACT.CODE to TRANSACT.AMT form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 19 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>BK.TRADE.TOVR.CR</field>
+<desc>
+            <p>Credit adjustment for trade date on the booking day. This is an amount field that is no input.</p>
+        </desc>
+</t>
+<t>
+<field>BOOKING.DATE</field>
+<desc>
+            <p>Specifies the booking date of the entries which generated the credit and debit turnover in the corresponding fields BOOK.TOVR.CR and BOOK.TOVR.DB. These fields are populated only when an entry is raised which has a booking date different to the value date of the entry.</p>
+            <p />
+            <p>The multivalue associated group of fields VALUE.DAY to BOOK.TOVR.DB contain the total amount of credit and debit entries for each value date for which there have been entries booked on a different date to their value date.</p>
+            <p />
+            <p>The group is repeated for each different VALUE.DAY and fields BOOKING.DATE to BOOK.TOVR.DB are additionally sub - valued by BOOKING.DATE</p>
+            <p />
+            <p>Fields VALUE.DAY to BOOK.TOVR.DB form a related multi value set. Standard T24 date field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 11 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>BK.TRADE.DATE</field>
+<desc>
+            <p>The TRADE.DATE supplied that is different to the entry processing date. This is a date field that is no input.</p>
+        </desc>
+</t>
+<t>
+<field>TRADE.TOVR.CR</field>
+<desc>
+            <p>Credit adjustment for trade date on assiciated booking day. This is an amount field that is no input.</p>
+        </desc>
+</t>
+<t>
+<field>TURNOVER.CREDIT</field>
+<desc>
+            <p>Specifies total amount of credit entries with the Value Date specified in the corresponding DAY.NO field.</p>
+            <p />
+            <p>The multivalue associated group of fields DAY.NO to BALANCE contain the total amount of credit entries, the total amount of debit entries and the resulting Balance for each Value Date for which there have been entries. The group is repeated for each different Value Date. </p>
+            <p />
+            <p>Fields DAY.NO to BALANCE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 19 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>TRANSACT.CODE</field>
+<desc>
+            <p>Specifies the Transaction Code of the entries for which the total number and amount are held in the corresponding NO.OF.TRANSACT and TRANSACT.AMT.</p>
+            <p />
+            <p>The multivalue associated group of fields TRANSACT.CODE to TRANSACT.AMT contain the number of entries and the total amount of entries with each different Transaction Code which have been processed during the month specified in ACCT.NO.YEAR.MONTH. The group is repeated for each different Transaction Code.</p>
+            <p />
+            <p>These details are used for calculating activity charges based on the number or amount of transactions processed.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Fields TRANSACT.CODE to TRANSACT.AMT form a related multi value set. Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+            <p>Must be the key to a valid entry on the TRANSACTION file.</p>
+        </desc>
+</t>
+<t>
+<field>TRADE.DATE</field>
+<desc>
+            <p>The TRADE.DATE supplied that is different to the entry processing date. This is a date field that is no input.</p>
+        </desc>
+</t>
+<t>
+<field>BK.DEBIT.MVMT</field>
+<desc>
+            <p>Debit movement for BK.DAY.NO. This is an amount field and can be left blank.</p>
+        </desc>
+</t>
+<t>
+<field>TRADE.TOVR.DB</field>
+<desc>
+            <p>Debit adjustment for trade date on associated booking day. This is an amount field that is no input.</p>
+        </desc>
+</t>
+<t>
+<field>BOOK.TOVR.CR</field>
+<desc>
+            <p>Specifies total amount of credit entries with the booking date specified in the corresponding BOOKING.DATE field and value date specified in the corresponding VALUE.DAY field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard amount format. Multivalue field associated with field range DAY.NO to BALANCE. Internal file. This is a NOINPUT field.</p>
+            <p>Fields VALUE.DAY to BOOK.TOVR.DB form a related multi value set. Standard T24 amount field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 19 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DAY</field>
+<desc>
+            <p>Specifies the value date of the entries which generated the credit and debit turnover in the corresponding fields BOOK.TOVR.CR and BOOK.TOVR.DB. These fields are populated only when an entry is raised which has a booking date different to the value date of the entry.</p>
+            <p />
+            <p>The multivalue associated group of fields VALUE.DAY to BOOK.TOVR.DB contain the total amount of credit and debit entries for each value date for which there have been entries booked on a different date to their value date.</p>
+            <p />
+            <p>The group is repeated for each different VALUE.DAY and fields BOOKING.DATE to BOOK.TOVR.DB are additionally subvalued by BOOKING.DATE. </p>
+            <p />
+            <p>Fields VALUE.DAY to BOOK.TOVR.DB form a related multi value set. Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 2 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>BOOK.TOVR.DB</field>
+<desc>
+            <p>Specifies total amount of debit entries with the booking date specified in the corresponding BOOKING.DATE field and value date specified in the corresponding VALUE.DAY field.</p>
+            <p />
+            <p>Fields VALUE.DAY to BOOK.TOVR.DB form a related multi value set. Standard T24 amount field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 19 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>NO.OF.TRANSACT</field>
+<desc>
+            <p>Contains the number of entries with the Transaction Code specified in the corresponding field TRANSACT.CODE which have been processed during the month specified in ACCT.NO.YEAR.MONTH.</p>
+            <p />
+            <p>The multivalue associated group of field range TRANSACT.CODE to TRANSACT.AMT contain the number of entries and the total amount of entries with each different Transaction Code which have been processed during the month specified in ACCT.NO.YEAR.MONTH. The group is repeated for each different Transaction Code.</p>
+            <p />
+            <p>These details are used for calculating activity charges based on the number or amount of transactions processed.</p>
+            <p />
+            <p>Note: The number and amount of any reversal entries are subtracted from the figures in fields NO.OF.TRANSACT and TRANSACT.AMT. </p>
+            <p />
+            <p />
+            <p>Fields TRANSACT.CODE to TRANSACT.AMT form a related multi value set. Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 6 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>BOOKING.DAY</field>
+<desc>
+            <p>he booking day number for which the following trade dated adjustments have been made.</p>
+        </desc>
+</t>
+<t>
+<field>ACCT.NO.YEAR.MONTH</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input.</p>
+            <p>A maximum of 26 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>BALANCE</field>
+<desc>
+            <p>Fields DAY.NO to BALANCE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 19 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>BK.BALANCE</field>
+<desc>
+            <p>Booking dated balance for BK.DAY.NO. This is an amount field and can be left blank.</p>
+        </desc>
+</t>
+<t>
+<field>BK.CREDIT.MVMT</field>
+<desc>
+            <p>Credit movement for BK.DAY.NO. This is an amount field and can be left blank.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

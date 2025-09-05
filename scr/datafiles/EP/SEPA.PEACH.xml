@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>EP</product>
+        <title>SEPA.PEACH</title>
+        <table>SEPA.PEACH</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>This ‘H’ type table contains basic information about Pan-European Automated Clearing House(PE-ACH), the business platform for the processing Euro payments. More than one PE-ACH can be chosen by the bank for processing SEPA XML payments. Each PE-ACH should have separate record with necessary information in this table. </p>
+            <p/>
+            <p>                     The information given in this application is used to fill the necessary PEACH specific fields while generating outward XML messages.</p>
+            <p/>
+            <p/>
+        </ovdesc>
+    </overview>
+    <menu>
+        <t>
+            <field>LAST.OUT.NUMBER</field>
+            <desc>
+                <p>This field contains the reference used in the key definition for SEPA outward files and messages. For instance: STEP2SCT000000001-000001 where STEP2SCT000000001 is the last part of the T24 key of the next SEPA outward file to be issued and STEP2SCT000000001-000001 is the key of the first SEPA XML message of that file (as handled by an outward mapping routine). </p>
+                <p/>
+                <p>      Validation rule</p>
+                <p>        Value upto 35 type A(Alphanumeric). Multivalue field associated with Fields MSG.NATURE to SERVICE.ID</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>MSG.NATURE</field>
+            <desc>
+                <p>This field holds the Key to SEPA.NATURE which used to store the SEPA product types. Denotes &apos;All&apos; if the field is left empty.</p>
+                <p/>
+                <p>      Validation rule</p>
+                <p>       Value upto 2 type A(Alphanumeric) and should exist in SEPA.NATURE Application. Mutli value set</p>
+            </desc>
+        </t>
+        <t>
+            <field>NAME</field>
+            <desc>
+                <p>This Field gives a description about the PE-ACH center.</p>
+                <p/>
+                <p>      Validation rule</p>
+                <p>       Value upto 35 type A(Alphanumeric) and Mandatory field</p>
+            </desc>
+        </t>
+        <t>
+            <field>OVERRIDE</field>
+            <desc>
+                <p>This field holds the Override message for this application.</p>
+                <p/>
+                <p>      Validation rule</p>
+                <p>       Value upto 35 type A(Alphanumeric) and NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>PEACH.ID</field>
+            <desc>
+                <p>This field holds the PE-ACH Id - and it should be a Valid T24 CUSTOMER ID. PE-ACH should have a record in CUSTOMER application and the same Customer ID should be used as PEACH.ID.</p>
+                <p/>
+                <p>      Validation rule</p>
+                <p>       Value from 6 to 10 and must exist in CUSTOMER Application</p>
+            </desc>
+        </t>
+        <t>
+            <field>SDD.FILE.PER.TYPE</field>
+            <desc>
+                <p>The SEPA module should be able to generate different file for the SEPA Direct Debits of the “Core”- and the “B2B”-type.</p>
+                <p>               This is not needed by every PE-ACH. Therefore this flag on PE-ACH-level should be added to decide whether the module should generate different files for the two different SEPA Direct Debit types, or not.</p>
+                <p>               Possible Values : Yes or No</p>
+                <p/>
+                <p/>
+                <p>               &apos;YES&apos; = Outward XML is generated per SDD Type</p>
+                <p>               &apos;NO&apos; = No separate XML file per SDD type. Both CORE and B2B will be generated in one file.</p>
+                <p>               &apos;NONE&apos; = Same as &apos;NO&apos;</p>
+                <p/>
+                <p>      Validation rule</p>
+                <p>       Value upto 3 and User can Input only &apos;YES&apos; or &apos;NO&apos;</p>
+            </desc>
+        </t>
+        <t>
+            <field>SERVICE.ID</field>
+            <desc>
+                <p>This field contains the Service Identifier for the outward XML File. Used to fill the tag &lt;SrvcID&gt; in file Header. (e.g. ‘SCT’ - for SEPA Credit Transfer, &apos;COR&apos; - for CORE Direct Debits and &apos;B2B&apos; for B2B Direct Debits).</p>
+                <p/>
+                <p>      Validation rule</p>
+                <p>       Value upto 35 type A(Alphanumeric). Multivalue field associated with Fields MSG.NATURE</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACCT.NUMBER</field>
+            <desc>
+                <p>This Field Defines the Nostro account number of the bank with the PE-ACH.</p>
+                <p/>
+                <p>     Validation rules:</p>
+                <p>      Value upto 16 type A(Alphanumeric) and must exist in ACCOUNT application.Multivalue field associated with Fields MSG.NATURE to SERVICE.ID</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>BIC.CODE</field>
+            <desc>
+                <p>This field has the BIC identification of the the PE-ACH center.</p>
+                <p> Valid BIC identification / SWIFT Code of the PE-ACH. e.g. &apos;EBATBEBBXXX&apos; is for EBA CLEARING, &apos;MARKDEFFXXX&apos; is for Bundesbank, Germany. Used for populating the Destination tag &lt;RcvgInst&gt; in the outward XML.</p>
+                <p/>
+                <p>      Validation rule</p>
+                <p>       Value upto 11 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>BULKING.ALLOWED</field>
+            <desc>
+                <p>This Field specifies whether Bulking is allowed or not by specifying either &apos;YES&apos; or &apos;NO&apos; .Not each PE-ACH supports more than one bulk in the SEPA XML file. For example PE-ACH “Equens”, does only allow one bulk per SEPA XML File. For that reason it should be possible to parameterize per PE-ACH, if bulking is allowed or not.</p>
+                <p/>
+                <p>      Validation rule</p>
+                <p>       Value upto 3 and User can Input only &apos;YES&apos; or &apos;NO&apos;</p>
+                <p/>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>CLEAR.SYSTEM.ID</field>
+            <desc>
+                <p>The Field holds the value of the Identifier of the the Clearing System. This is the Proprietary identification of the Clearing System. (e.g value for EBA STEP2 is &apos;ST2&apos;). This field is used to fill the tag &lt;Prtry&gt; in the below path of the outward message.</p>
+                <p>                    &lt;GrpHdr&gt;*&lt;SttlmInf&gt;*&lt;ClrSys&gt;*&lt;Prtry&gt;</p>
+                <p/>
+                <p>      Validation rule     </p>
+                <p>       Value upto 35 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>COMMENT</field>
+            <desc>
+                <p>This field is used the specify user comments about the PE-ACH center.</p>
+                <p/>
+                <p>      Validation rule</p>
+                <p>       Value upto 35 type A(Alphanumeric) and Mandatory field </p>
+            </desc>
+        </t>
+        <t>
+            <field>FILE.DATE</field>
+            <desc>
+                <p>This field holds the Date on which last file is posted to the PE-ACH, and no input is allowed. This field is Updated while generating the outward XML file.</p>
+                <p/>
+                <p>      Validation rule</p>
+                <p>       Value upto 8 type A(Alphanumeric)and NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>FILE.NAME.CRT.RTN</field>
+            <desc>
+                <p>Field contains the Routine name prefixed with @. It will get executed when the outward file is created.</p>
+                <p/>
+                <p>  This routine creates the File Name in the format specified by the PE-ACH. In addition, a specific sub-directory could be set by this routine where the outward generated SEPA file will be stored</p>
+                <p/>
+                <p>      Validation rule</p>
+                <p>        Value upto 45 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>FILE.NO</field>
+            <desc>
+                <p>Field holds the Number of files posted on the given file date, no input is allowed in this field and get Updated while generating the outward XML file.</p>
+                <p/>
+                <p>     Validation rule</p>
+                <p>      Value upto 6 type N(Numeric) and NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>IBAN.NUMBER</field>
+            <desc>
+                <p>This field contain the IBAN Number of the Nostro Account held by the bank with this PE-ACH.</p>
+                <p/>
+                <p>     Validation rule</p>
+                <p>        Value upto 34 type AA(Alphanumeric). Multivalue field associated with Fields MSG.NATURE to SERVICE.ID</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>XML.WITH.CRLF</field>
+            <desc>
+		<p>This Field specifies if the XML file has to be generested with/without CRLF </p>
+                <p>Validation Rules</p>
+                <p>  Value upto 3</p>
+                <p>  Values allowed are YES or NO</p>                
+            </desc>
+        </t>
+        <t>
+            <field>PEACH.NAME</field>
+            <desc>
+		<p>This Field specifies the name of the PEACH. </p>
+                <p>Validation Rules</p>
+                <p>  Value upto 10 and mandatory field</p>
+                <p>  Values allowed are EBA, BUBA and EQUENS</p>                
+            </desc>
+        </t>
+    </menu>
+</t24help>

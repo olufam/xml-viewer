@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DD</product>
+<table>DD.RETURN</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The DD.RETURN application is used to process the returns received for outward claims and to do resubmissions if required.</p>
+            <p>An item can be returned by giving in DD.RETURN only when its status is 'CLAIMED.ITEM' (ie. Claim accounting has already been raised on the value date of the DD.ITEM).</p>
+            <p>Records can be created in this application for return either manually or using local OFS routines.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>STMT.NOS</field>
+<desc>
+            <p>This field holds the statement nos created during return accounting. NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>RET.REASON</field>
+<desc>
+            <p>The actual reason code for the direct debit system rejection.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional Field</p>
+            <p>Must be a valid code for a RETURNED.ITEM event on DD.CODES. If not entered the first match on the DD.CODES record for the RETURNED.ITEM event will be used.</p>
+        </desc>
+</t>
+<t>
+<field>STATUS.HIST</field>
+<desc>
+            <p>Contains the Status History of the DD.RETURN record.</p>
+            <p>Whenever the status is changed in the previous field, this field is updated with the old status and status changed date on the next field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No Input field</p>
+            <p>Updated by the System</p>
+        </desc>
+</t>
+<t>
+<field>RESUB.VAL.DATE</field>
+<desc>
+            <p>Specify the  value date on which the DD.ITEM has to be resubmitted and same is used as the value date for the resubmit accounting. </p>
+            <p>If the STATUS is blank , then the value of this field will default to </p>
+            <p>Current Date + RESUB.DATE.PRD + CLAIM.DATE.PRD (both from DD.PARAMETER)</p>
+            <p>The above defaulting will happen only when the RESUB.DATE.PRD field in DD.PARAMETER is input with valid value. </p>
+            <p>To stop above defaulting mechanism even when RESUB.DATE.PRD is specified- set the DD.RESUBMIT as 'N'</p>
+            <p />
+            <p>In case a user wishes to input his own value date for resubmission then he may do so after considering the setup of the clearing cycle in DD.PARAMETER. </p>
+            <p />
+            <p>Ideally, the date given here must be greater than the current date + CLAIM.DATE.PRD field in DD.PARAMETER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>If DD.RESUBMIT is blank, this field is mandatory otherwise Optional</p>
+            <p>If entered it must be greater than the current date. Up to 9 date characters (standard Date format) - type D</p>
+        </desc>
+</t>
+<t>
+<field>REASON.CODE</field>
+<desc>
+            <p>The actual reason code for the direct debit system rejection.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional Field</p>
+        </desc>
+</t>
+<t>
+<field>DD.RETURN.ID</field>
+<desc>
+            <p>Contains the Id of the DD.RETURN record.</p>
+            <p>STMT.ENTRY created for resubmit will be having this id as its reference.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>It is of the form DDR/Julian date/sequence no</p>
+            <p>The sequence number can be from 0-99999</p>
+        </desc>
+</t>
+<t>
+<field>STATUS</field>
+<desc>
+            <p>Contains the status of the DD.RETURN record.</p>
+            <p>When a DD.ITEM is returned without  specifying the resubmission value date then the status is updated as "RETURNED.ITEM'. This record can be modified again for resubmission by giving the Resubmit value date.</p>
+            <p>In case DD.ITEM is given along with resubmission value date, then the status is updated as "PROCESSED.ITEM".</p>
+            <p>When status is set to "PROCESSED.ITEM", then changes are not allowed for this record.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field. </p>
+            <p>Updated by the System either "RETURNED.ITEM' or 'PROCESSED.ITEM'</p>
+        </desc>
+</t>
+<t>
+<field>STATUS.DATE</field>
+<desc>
+            <p>Contains the Status History date of the DD.RETURN record</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field.</p>
+            <p>Updated by the System</p>
+        </desc>
+</t>
+<t>
+<field>CLAIM.CONTENT</field>
+<desc>
+            <p>This is the text field to hold the claim message content. To be managed locally (if required).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional Field</p>
+        </desc>
+</t>
+<t>
+<field>CREATE.DATE</field>
+<desc>
+            <p>Date of creation of the DD.RETURN record is stored here </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input allowed</p>
+            <p>Updated by System.</p>
+        </desc>
+</t>
+<t>
+<field>DD.ITEM.ID</field>
+<desc>
+            <p>Give the DD.ITEM id which should be Returned / Resubmitted. It must be an Item for which the funds have already been received.</p>
+            <p>The STMT.ENTRY will be raised with the details as applicable for this ITEM.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a record in DD.ITEM  with status as 'CLAIMED.ITEM'</p>
+            <p>Mandatory Field</p>
+            <p>This is a No change field</p>
+        </desc>
+</t>
+<t>
+<field>DD.RESUBMIT</field>
+<desc>
+            <p>To stop defaulting RESUB.VAL.DATE field even when RESUB.DATE.PRD is specified in DD.PARAMEMTER- set this field as N.</p>
+            <p>If the user does not wish to resubmit the item irrespective of presence or absence of the field RESUB.VAL.DATE, then this field should be set to ‘N’. In such cases. STATUS of DD.RETURN shall be RETURNED.ITEM only.</p>
+            <p>If blank, resubmission entries shall be raised and the DD.RETURN status will be updated to PROCESSED.ITEM.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field- Valid values N or Null </p>
+            <p>If blank, then resubmission entries will be raised and hence RESUB.VAL.DATE is mandatory.</p>
+            <p>If the value is ‘N’ , then RESUB.VAL.DATE is Optional.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

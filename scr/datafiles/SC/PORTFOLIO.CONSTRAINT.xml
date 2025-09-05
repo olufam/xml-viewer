@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SC</product>
+<table>PORTFOLIO.CONSTRAINT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The PORTFOLIO.CONSTRAINT application enables the control of exposure to a particular issuer by portfolio. </p>
+            <p>Contraints may be set-up for individual portfolios but you should also set-up a basic default record for "SYSTEM". For the "SYSTEM" record you can only set-up checking to be performed so that transaction proceeds are added to other existing holdings for the same issuer. The result is then tested as a percentage of the total portfolio value. </p>
+            <p>For portfolios, you can request the System to perform the checks using either specific currency/cash amounts OR percentages of the total portfolio value by individual issuer. The former checks that the total existing holding for the issuer plus the new transaction does not exceed the limit amount. The latter checks that the total holding for the issuer plus the new transaction does not exceed the limit percentage of the total portfolio value. </p>
+            <p>When you have successfully defined a portfolio limit, you can add further special siuation limits for the same portfolios if necessary. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>MESSAGE.TYPE</field>
+<desc>
+            <p>This field is used to define the type of message the NARRATIVE field contains. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>0-8 characters  Only ERROR and OVERRIDE are acceptable values</p>
+        </desc>
+</t>
+<t>
+<field>ISSUER</field>
+<desc>
+            <p>This field specifies the Issuer to whom the limit per issuer is to apply. </p>
+            <p>The last value of this multi-valued field must be "REST" which denotes the rest of issuers not specified in this record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>"REST" or</p>
+            <p>1 to 10 digit CUSTOMER id</p>
+        </desc>
+</t>
+<t>
+<field>ISSUER.PERCENT</field>
+<desc>
+            <p>This field specifies the maximum percentage of a particular Issuer which can be held in a customer's portfolio. </p>
+            <p>Value 0 means the Issuer is blocked from the customer's portfolio, whereas, value 100 means no check is to be performed for this Issuer within this portfolio. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 3 numeric characters in the range of 0 to 100</p>
+            <p>NOINPUT field if ISSUER.EXPOSURE is defined.</p>
+        </desc>
+</t>
+<t>
+<field>NARRATIVE</field>
+<desc>
+            <p>This field is used to define the OVERRIDE/ERROR to display when the conditions defined in the previous 3 fields are met. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>0-65 alphanumeric characters</p>
+        </desc>
+</t>
+<t>
+<field>OPERATOR</field>
+<desc>
+            <p>This field contains the operator used to determine whether or not to trigger the OVERRIDE/ERROR message. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 character field  Acceptable values are :-        EQ - equal to       NE - not equal to       LT - less than       LE - less than or equal to       GT - greater than       GE - greater than or equal to</p>
+        </desc>
+</t>
+<t>
+<field>PORT.CONST.REF</field>
+<desc>
+            <p>Specifies a unique ID for each PORTFOLIO.CONSTRAINT record. It comprises a portfolio number and an optional serial number. </p>
+            <p>The serial number is used to differentiate multiple PORTFOLIO.CONSTRAINT records of the same customer's portfolio. For example:     65435-1.01    (bond trading)     65435-1.02    (new issues) </p>
+            <p>A special ID - "SYSTEM" is also allowed to facilitate user specifying a system wide portfolio constraint. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>"SYSTEM" or</p>
+            <p>(a) 1 - 18 digit SEC.ACC.MASTER id (b) '.' (c)  2 digit serial number.</p>
+            <p>Serial number must be between 01 and 99.</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+            <p>Identifies any additional element which has been defined locally to meet a particular requirement. </p>
+            <p>As in the majority of T24 Applications, the User is allowed to  define  in  the  Item file up to  999 Local Elements in addition to the standard fields previously specified. These Local Elements should be defined by the User where deemed necessary according to local practice. </p>
+            <p>The name(s) of the new element(s), as well as the Format and <p>Validation Rules:</p>, must be defined in the LOCAL.TABLE, prior to the creation of any conversion records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 characters as defined in the Local Table definition for this Local Reference field.  Multivalue field.  (Optional or Mandatory Input according to definition in LOCAL.TABLE for this Local Reference element)</p>
+            <p>As defined by the User within the LOCAL.TABLE and LOCAL.REF.TABLE.</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.CONTENT</field>
+<desc>
+            <p>This field contains the content of the field defined in FIELD.NAME . The fields FIELD.NAME, OPERATOR and FIELD.CONTENT are all used in conjunction to determine whether or not the SECURITY.MASTER record meets these criteria. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>0-35 alphanumeric characters</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.NAME</field>
+<desc>
+            <p>This field contains the field name for a field on the SECURITY.MASTER file. This will be used to define the condition that triggers the OVERRIDE/ERROR message. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>0-18 alphanumeric characters</p>
+            <p>This is the controlling field for the multi-value set including:-        OPERATOR       FIELD.CONTENT       NARRATIVE       MESSAGE.TYPE       LOCAL.REF</p>
+        </desc>
+</t>
+<t>
+<field>ISSUER.EXP.CCY</field>
+<desc>
+            <p>This field defines the currency of the Issuer Exposure. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 characters CURRENCY code.</p>
+            <p>Mandatory input if ISSUER.EXPOSURE is defined. Otherwise, NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>ISSUER.EXPOSURE</field>
+<desc>
+            <p>This field defines the maximum value of a particular Issuer which can be held in a customer's portfolio. </p>
+            <p>Value 0 means the Issuer is blocked from this portfolio. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters, standard AMOUNT format.</p>
+            <p>NOINPUT field if ISSUER.PERCENT is defined.</p>
+            <p>Not allowed for the "SYSTEM" record.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

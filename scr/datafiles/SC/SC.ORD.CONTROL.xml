@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SC</product>
+<table>SC.ORD.CONTROL</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Bulk SEC.TRADE transactions can be authorised in one of three ways ; 1. Using the authorise function online by replying NO to the prompt "Update through bulk order processing Y/NO ?" Which will cause the transaction to authorised immediately online but runs the risk of cache errors if the transaction is too large. 2. Answering Y to the prompt "Update through bulk order processing Y/NO ? and let the end of day authorise the trade. This is done by the Batch Job SC.EOD.BULK.PROCESS which forms part of the BATCH SC.BATCH.APP. 3. Answering Y to the prompt "Update through bulk order processing Y/NO ?" and running the background SEC.TRADE authorising phantom through SC.ORD.CONTROL which will authorise the transaction after a delay of a few minutes. The delay will be between the screen control being returned to the user and the phantom picking up the SEC.TRADE for authorisation. </p>
+            <p>If the user types Y to the bulk update prompt then the SEC.TRADE transaction will only be available for the S (See) and P (Print) functions until it has been authorised. </p>
+            <p>The background phantom can be kicked off and shutdown by the SC.ORD.CONTROL record SYSTEM. Any other records on the SC.ORD.CONTROL file are used by the phantom process and cannot be accessed through T24. </p>
+            <p>To kick off the phantom the V (Verify) function has to be used on the SC.ORD.CONTROL record SYSTEM with the START.PROCESS field set to YES. </p>
+            <p>The name of the phantom program is SC.BULK.PROCESS. </p>
+            <p>Validation Rules</p>
+            <p>ID must by SYSTEM</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>SLEEP.TIME</field>
+<desc>
+            <p>Field to allow the user to specify a length of time in seconds for the bulk processing phantom to sleep between authorisations. The phantom SC.BULK.PROCESS works by selecting SC.ORD.PROCESSING (which contains the IDs of all the SEC.TRADE transactions which have been selected for bulk processing but have not yet been authorised) and authorises them. It will then sleep for the number of seconds input here before selecting the SC.ORD.PROCESSING file again. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input of a number between 0 and 999 allowed.</p>
+            <p>Optional field.</p>
+            <p>No default value. Leaving the field blank will result in the phantom process not sleeping between selections of the SC.ORD.PROCESSING file.</p>
+        </desc>
+</t>
+<t>
+<field>STATUS</field>
+<desc>
+            <p>No input field that will contain ACTIVE if the bulk processing phantom is running and CLOSED if it is not. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field.</p>
+        </desc>
+</t>
+<t>
+<field>STOP.PHANTOM</field>
+<desc>
+            <p>YES / NO field controlling whether a user wants to kill off the bulk processing phantom or not. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only input of YES or NO is allowed</p>
+            <p>This field and the START.PROCESS field cannot both be YES.</p>
+            <p>If the STATUS flag is CLOSED then this field cannot be set to YES.</p>
+        </desc>
+</t>
+<t>
+<field>START.PROCESS</field>
+<desc>
+            <p>YES / NO field controlling whether a user wants to kick off the bulk processing phantom or not. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only input of YES or NO is allowed</p>
+            <p>This field and the STOP.PHANNTOM field cannot both be YES.</p>
+            <p>If the STATUS flag is ACTIVE then this field cannot be set to YES.</p>
+        </desc>
+</t>
+<t>
+<field>ERROR.CONDITION</field>
+<desc>
+            <p>No input field that will contain details of any error encountered by the bulk processing phantom. </p>
+            <p>If the phantom encounters an error then the ID of the SEC.TRADE transaction will be left in the PROCESSING.ID field and the error message reported here. The phantom will then close down. </p>
+            <p>The stage of authorisation will be recorded in the SC.ORD.PROCESSING record for the SEC.TRADE concerned. Each stage of bulk process authorisation will give rise to a separate JOURNAL record. </p>
+            <p>If there is anything in this field then the Temenos helpdesk should be contacted immediately. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field.</p>
+        </desc>
+</t>
+<t>
+<field>ID</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 6 characters may be entered.</p>
+            <p>The following values are permitted:       SYSTEM</p>
+        </desc>
+</t>
+<t>
+<field>PROCESSING.ID</field>
+<desc>
+            <p>No input field containing the ID of the SEC.TRADE transaction currently being processed by the bulk processing phantom. This field will be updated with the transaction ID when authorisation starts and cleared when authorisation has been successfully completed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field for information only.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

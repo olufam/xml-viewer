@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SC</product>
+<table>SCTR.GROUP.CONDITION</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This module defines the specific charge details for each customer group.</p>
+            <p>ID format for the group condition can be "NNN" ,"C-NNNNNN" or "P-NNNNNN-N" where NNNNNN is the customer ID and NNNNNN-N denotes the portfolio ID</p>
+            <p>On authorization of the customer level record, the ID (C-NNNNNN) will update the ACTUAL.GROUP in CUSTOMER.CHARGE to be used as the default condition for the charge type.</p>
+            <p>If a Portfolio level record exists, the ACTUAL.GROUP (for the portfolio) in CUSTOMER.CHARGE, for the charge type, will be updated with the portfolio record ID.</p>
+            <p>  The following data will be recorded on this file.</p>
+            <p>           Trading Activity-   Trading modules such as: SEC.TRADE and                     SECURITY.TRANSFER, (multivalued).</p>
+            <p>           Security Type       -         Sub-valued which must exist on                               the Trading charge parameters                               associated to the trading                               activity.</p>
+            <p>           Charge/ Commission Code -   Valid FT.COMMISSION.TYPE code for each                     security type.</p>
+            <p>           Percentage      -   Percentages applied to the charge calculated                     for each commission type.</p>
+            <p>           Admin Activity  -   Admin modules such as; DIV.COUP.CUS,                     REDEMPTION.CUS and STOCK.DIV.CUS                     (multivalued).</p>
+            <p>           Admin Percentage-   Percentage applied to the charge calculated                     for each admin activity.</p>
+            <p>           Depending on the Trading activity, charges are calculated for the security type required and the percentage applied to give the portfolio commission amount for the security on the transaction.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>	
+<menu>
+<t>
+<field>TRADE.ACTIVITY</field>
+<desc>
+            <p>Identifies the trading module for calculating charges.</p>
+            <p>           This is a multi-valued field which holds the trading activities for calculating commissions and charges.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>           Input of ALL is Mandatory</p>
+            <p>           Any input must either exist on the DIARY.TYPE application or be one of the following applications; SEC.TRADE  MF.TRADE  LIQD.TRADE SECURITY.TRANSFER OPTION.TAKEUP DIV.COUP.CUS STOCK.DIV.CUS REDEMPTION.CUS  Input of ALL is also allowed. Note; The applications SECURITY.TRANSFER , SEC.TRADE and MF.TRADE can have a valid SC.TRANS.NAME used as a suffix. e.g. SEC.TRADE-SPR, MF.TRADE-BUY</p>
+        </desc>
+</t>
+<t>
+<field>SEC.TYPE</field>
+<desc>
+            <p>Identifies the level for calculating commissions within each trading activity.</p>
+            <p>           For each trade activity the user may define several security types in order to calculate the commission amount.</p>
+            <p>           i.e. Valid security number, Asset types prefixed with "A-", Sub Asset types prefixed with "S-" or "ALL" for all other types not defined.</p>
+            <p>           All these must exist on the trading charge parameter table.</p>
+            <p>           In addition to the above a suffix of '*' followed by a country code can be added. This will be used to calculate different charges for different Stock Exchange Calculation Countries.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>           Input is Mandatory</p>
+            <p>           Must exist on SCTR.CHARGE.PARAMETER.</p>
+        </desc>
+</t>
+<t>
+<field>PERCENTAGE</field>
+<desc>
+            <p>Percentage to be applied to the commission calculated.</p>
+            <p>           This percentage relates to the security type within the trading activity and it is to be applied to the commission amount calculated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>           Input is Mandatory, numeric and positive.</p>
+        </desc>
+</t>
+<t>
+<field>SCTR.GROUP.NO</field>
+<desc>
+            <p>Identifies the group of customers for Securities Trading</p>
+            <p>           If the input is numeric it must be previously defined on the Securities Trading General Condition record and enriched with its description.</p>
+            <p>           If the input is for a specific customer then this is enriched with the short name of the customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>           Mandatory Input. Three numeric characters formatted with leading zeros or a valid customer number prefixed with "C-".</p>
+        </desc>
+</t>
+<t>
+<field>CHG.COMM.CD</field>
+<desc>
+            <p>Identifies the commission code on the FT.COMMISSION.TYPE table.</p>
+            <p>           This commission code will be used to calculate the commission amount for the security type within the trade activity.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>           Input is Mandatory of upto 11 characters.</p>
+        </desc>
+</t>
+<t>
+<field>DISC.PERCENT</field>
+<desc>
+            <p>Customer discount percentage. This is the percentage discount to be taken for SEC.TRADE transactions for customers linked to this SCTR.GROUP.CONDITION record. It will automatically feed through to the CU.DISC.PCENT field on any SEC.TRADE transaction. At present this field is only used by the SEC.TRADE and MF.TRADE applications and therefore input will not be allowed for other specific applications.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>           Mandatory input if the associated TRADE.ACTIVITY field is SEC.TRADE.</p>
+            <p>           Input is allowed only if the TRADE.ACTIVITY is SEC.TRADE, MF.TRADE or ALL.</p>
+            <p>           Any input must be in the range 0 to 100.</p>
+        </desc>
+</t>
+<t>
+<field>K.PERCENTAGE</field>
+<desc>
+            <p>Field not in use.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

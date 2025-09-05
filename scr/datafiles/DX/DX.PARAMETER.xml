@@ -1,0 +1,901 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DX</product>
+<table>DX.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This parameter file is the central point of control for the derivatives module.</p>
+            <p />
+            <p>Information from here either, controls, or is inherited by other applications in the derivatives module.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>COST.PR.METHOD</field>
+<desc>
+            <p />
+            <p>If it is 1 or null then costprice in sc.pos.asset will be calculated as COST.PRICE = PRICE + (COMMISSION.AMOUNT / NOMINALS) ,  If it is 2 then costprice will be calculated as COST.PRICE = ((PRICE * CONTRACT.SIZE) + (COMMISSION.AMOUNT / NOMINALS) / CONTRACT.SIZE).</p>
+            <p />
+            <p>Values</p>
+            <p>1 , 2 or NULL</p>
+        </desc>
+</t>
+<t>
+<field>CHECK.CUST.FUNDS</field>
+<desc>
+            <p>If the checking of a customers availibility of funds is required enter 'YES' otherwise enter 'NO'</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>3 Characters YES/NO</p>
+        </desc>
+</t>
+<t>
+<field>MARGIN.NETTING</field>
+<desc>
+            <p>Where Margin payments are reversed and re-booked each day, if this option is set to YES, each of the reversal entries for the suspense accounts are put through the exact suspense account from which they are being reversed, regardless of direction, otherwise all DRs are put through the DR suspense account and all CRs are put through the CR suspense account.</p>
+            <p>If the suspense accounts are set up such that both debits and credits go through the same account, then this parameter has no effect on the system.</p>
+        </desc>
+</t>
+<t>
+<field>COST.CALC.API</field>
+<desc>
+            <p>This field holds the name of the routine which calculates values to be shown in NET. COST field in DX. TRANSACTION.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>The routine has to be defined as API in DX.OBJECT.LIBRARY</p>
+        </desc>
+</t>
+<t>
+<field>HLD.EOE.DAYS</field>
+<desc>
+            <p>No of Days to hold revaluation details on the live files before liquidating them to history</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 3 characters</p>
+        </desc>
+</t>
+<t>
+<field>FUT.EST.API</field>
+<desc>
+            <p>If specified, this API will be invoked during valuation of a futures position as reported in SC.POS.ASSET and associated valuation tables.</p>
+            <p>The arguments passed to the API are ESTIMATION.VAL,MARKET.PRICE,INT.COST.PRICE,NO.LOTS,R.DX.CONTRACT.MASTER</p>
+            <p>ESTIMATION.VAL is to be returned by the API as the estimated valuation in trade currency in internal T24 format</p>
+            <p>MARKET.PRICE is the current market price of the futures contract in trade currency, passed to the API in internal T24 format</p>
+            <p>INT.COST.PRICE is the cost price of this position in trade currency, passed to the API in internal T24 format</p>
+            <p>NO.LOTS is the number of lots held in this position, passed to the API</p>
+            <p>CONTRACT.SIZE is the contract size as held on the corresponding DX.CONTRACT.MASTER record, passed to the API</p>
+            <p>Please note that this API is not invoked during valuation of an option.</p>
+        </desc>
+</t>
+<t>
+<field>SUPPRESS.VM.POST</field>
+<desc>
+            <p>If the user requires the Suppression of the variation margin (profit and loss) the flag should be set to YES.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>3 Characters YES/NO</p>
+        </desc>
+</t>
+<t>
+<field>SUPPRESS.UNDERLYING</field>
+<desc>
+            <p>When set to YES will suppress the creation of underlying during closeout process. Default value is NO.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>3 Characters YES/NO</p>
+        </desc>
+</t>
+<t>
+<field>KICKIN.EXPIRE</field>
+<desc>
+            <p>When set to YES and the exotic event triggered the exotic trade should get automatically expired by DX.CO.EXPIRE.MANUAL. This value set here can be overwritten at contract master and trade level.</p>
+            <p>
+               <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>        Upto 3 alphanumeric values</p>
+            <p>        Valid inputs are either YES or NO</p>
+        </desc>
+</t>
+<t>
+<field>ORTR.OV.RPR</field>
+<desc>
+            <p>This field is for TEMENOS internal use only.</p>
+            <p />
+            <p>Before using this field please consult with Temenos Helpdesk.</p>
+        </desc>
+</t>
+<t>
+<field>GRANT.PERMISSION</field>
+<desc>
+            <p>It controls the number of Permissions to be met to allow a transaction to be completed</p>
+            <p>Single - If single permission is met, will allow the transaction to complete</p>
+            <p>Blank or Null - All permissions should be met, to allow the transaction to complete</p>
+        </desc>
+</t>
+<t>
+<field>COPY.LOCAL.REF</field>
+<desc>
+            <p>Control the mechanism which copies the LOCAL.REF field on DX.ORDER into the generated records in DX.TRADE</p>
+            <p />
+            <p>3 Characters YES/NO</p>
+        </desc>
+</t>
+<t>
+<field>HLD.AD.PRI.DAYS</field>
+<desc>
+            <p>No of days to hold an ad-hoc price record held whose PRICE.SET is not held in PRICE.TO.STORE before liquidating /deleting it.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 3 characters</p>
+        </desc>
+</t>
+<t>
+<field>USE.MARGIN.ACCT</field>
+<desc>
+            <p>This field specifies if the system should post initial and variation amounts to a separate "margin" account or to the customers "normal" account.</p>
+            <p>If this field is set to YES then all initial and variation margin postings created by an End OF Exchange or End Of Day revaluations will be posted to the margin account, specified in the associated MARGIN.ACC.CCY and MARGIN.ACCOUNT fields in the DX.CUSTOMER application. If this field is set to NO then the initial and variation margin amount will be posted to the normal customer accounts.</p>
+            <p>Setting this field to yes enables the use of the maintenance margin facility to reduce the payments required by a customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to a 3 character field.</p>
+            <p>Must be one of YES or NO</p>
+            <p>Default to NO</p>
+        </desc>
+</t>
+<t>
+<field>CLOSEOUT.API</field>
+<desc>
+            <p>If specified, this API will be invoked during closeout/exercise/expire/assignment of the DX.TRADE.  The API has one argument, the DX.CLOSEOUT record, as a dynamic array.</p>
+            <p>The purpose of this API is to update the TAX.CODE, TAX.TYPE, TAX.ACY and TAX.TCY fields on the DX.CLOSEOUTrecord.  Any changes to other fields on the DX.CLOSEOUT record by the API will be ignored by the core processing.</p>
+            <p>Please note that the settings of these fields do not affect the values input into the DX.TRADE tax fields, as theseonly affect tax liable at trade inception.</p>
+        </desc>
+</t>
+<t>
+<field>PRICE.CHECK.SET</field>
+<desc>
+            <p>This field specifies the PRICE.SET that will be checked to ensure all the prices required for the end of exchange revaluation have been updated. When the end of exchange process is started any prices in this set required for revaluation that are not present or have not been updated on the run date will be listed in a warning report.</p>
+            <p>Input must be a valid price set.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 15 characters. Multivalue field associated with         DX.PRICE.SET application.</p>
+            <p>Mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>ORD.ASSIGN.PGM</field>
+<desc>
+            <p>A valid routine should be selected, this can be tested using DX.GET.OBJECT the object should be attached to the application DX.ORDER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input must be a valid record on DX.OBJECT.LIBRARY</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AVE.PRICE.METHOD</field>
+<desc>
+            <p>This field defines how the system should calculate the average price of a position. The average price is shown on reports and enquires for each specific contract held by a customer.</p>
+            <p>There are three methods that can be used to calculate the average price. These are</p>
+            <p>NORMAL         Weighted average of absolute value of prices of trades in         position; weighted by number of lots traded</p>
+            <p>UNWEIGHTED         Straight average of absolute value of prices of trades in         position by number of trades</p>
+            <p>PURCHASE         Average of buy prices in position only; weighted by the         number of lots traded.</p>
+            <p>4.   NONE</p>
+            <p>No average price will be calculated. This will apply mainly for options with deferred premium payments and for futures      contracts, as average price is not applicable.</p>
+            <p>5.   OPENING</p>
+            <p />
+            <p />
+            <p>Note. In phase one of the module only NORMAL is supported.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 10 character field.</p>
+            <p>Must be one of NORMAL, UNWEIGHTED, PURCHASE, NONE AND OPENING</p>
+        </desc>
+</t>
+<t>
+<field>PRICE.DAYS</field>
+<desc>
+            <p>In association with the PRICE TO STORE field this defines after how many business days the PRICE SETS should be deleted.</p>
+            <p>After the specified number of days, the End of Day routine will delete the specified price sets.</p>
+            <p>Input must be a valid number.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Numeric up to 3 digits. Multivalue field associated with PRICE TO STORE. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>SUPPRESS.IM.POST</field>
+<desc>
+            <p>If the user requires the Suppression of the initial margin the flag should be set to YES.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>3 Characters YES/NO</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>STP.ENABLED</field>
+<desc>
+            <p>Set this option to enable Straight-Through-Processing.  Applications enabled for STP produce child records in INAU status rather than IHLD status.</p>
+        </desc>
+</t>
+<t>
+<field>ONLINE.PRICE.SET</field>
+<desc>
+            <p>This field specifies the default PRICE.SET that will be used when an on-line revaluation process is run. When an on-line revaluation is requested this will be the default price set to use however it maybe overridden.</p>
+            <p>Input must be a valid price set.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 15 characters. Multivalue field associated with DX.PRICE.SET application.</p>
+            <p>Mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>VM.REVERSAL.STYLE</field>
+<desc>
+            <p>If set to 'New' and MARGIN.DIFF set to Yes, local currency amount of VM </p>
+            <p>is retrieved from field VM.LCY.AMOUNT in DX.TRANSACTION.</p>
+            <p>Otherwise, local ccy amount is arrived using rate in PREV.VM.EXC</p>
+        </desc>
+</t>
+<t>
+<field>PRICE.ORDER</field>
+<desc>
+            <p>This field defines the order that the PRICE.SETS should be searched in order to find missing prices when running the End Of Exchange process.</p>
+            <p>Input must be a valid price set.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 12 characters. Multivalue field associated with DX.PRICE.SET         application. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>OGM.SUPPORT</field>
+<desc>
+            <p>If this field is set to 'Yes' it will use OFS.GLOBUS.MANAGER else by default it will use OFS.BULK.QUEUE.MANAGER for executing DX transaction</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEARCH.ALL.COMMSN</field>
+<desc>
+            <p>If no commissions are matched, there is functionality to allow other commissions to be searched. If set to 'NO', the application will stop searching after the first match is found. If set to 'YES', the application will search all commissions to see if a match can be made.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Input must be either YES/NO</p>
+            <p>If no input, field will default to NO</p>
+        </desc>
+</t>
+<t>
+<field>EST.METHOD</field>
+<desc>
+            <p>Methods to calculate Estimation and Regulatory Fees</p>
+            <p>One:  Will Not Include Contract Size for calculation</p>
+            <p>Two:  Will Include Contract Size for calculation</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DX.SYSTEM</field>
+<desc>
+            <p>The key to the file.</p>
+            <p />
+            <p>Currently "SYSTEM"</p>
+        </desc>
+</t>
+<t>
+<field>STK.UPD.TYPE</field>
+<desc>
+            <p>This field controls generation of SC. STOCK. ENTRY records for derivative contracts depending on the underlying defined in relevant</p>
+            <p>DX. CONTRACT. MASTER</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Valid inputs are  CCY, STOCK, FUTURE ,ALL and NULL</p>
+            <p>Default set to NULL in which case no SC. STOCK. ENTRY records will be     generated</p>
+        </desc>
+</t>
+<t>
+<field>B2B.ACTIVE</field>
+<desc>
+            <p>This field defines whether the back to back closeout processing has been activated across the derivative module. This is the global setting which prevails over any other setup in any other application viz. DX.CONTRACT.CLASS, DX.CONTRACT.MASTER etc</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Valid inputs are YES      and NO</p>
+        </desc>
+</t>
+<t>
+<field>SC.ASSET.UPD</field>
+<desc>
+            <p>This field defines how  the user requires the SC.POS.ASSET file updated.</p>
+            <p>By either Transactional which is transaction by transaction or Positional or</p>
+            <p>BUY.SELL.POS</p>
+            <p>which updates SC.POS.ASSET  for total long and short positions separately</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Either Postional or Transactional or</p>
+            <p>BUY.SELL.POS</p>
+            <p />
+            <p>Upto 13 characters</p>
+        </desc>
+</t>
+<t>
+<field>REP.UPDATES</field>
+<desc>
+            <p>Controls Event Based reporting.  Concerns whether the reporting files DX.REP.POS.ACTIVITY and DX.REP.POS.ACT.HIST are to be updated or not.</p>
+        </desc>
+</t>
+<t>
+<field>DCLC.MSK</field>
+<desc>
+            <p>Only required for users running on jBase 4.1.4.10</p>
+            <p />
+            <p>jBase 4.1.4.10 has incompatabilityes with Derivatives Montly Date format. This is not a problem in lower releases and has been fixed in higher released of jBase.</p>
+            <p />
+            <p>Values</p>
+            <p>D         - Use this option for internal processing of Dates in  jBase 4.1.4.10</p>
+            <p>DYMD - This is the default/standard option.</p>
+        </desc>
+</t>
+<t>
+<field>HLD.REVAL.DAYS</field>
+<desc>
+            <p>No of Days to hold revaluation details on the live files before deleting them</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 3 characters</p>
+        </desc>
+</t>
+<t>
+<field>STP.TIMEOUT</field>
+<desc>
+            <p>This represents the number of seconds that a transaction can await processing before being deemed to have timed out. This field is non-mandatory and if left empty, no timeout checking is made.</p>
+        </desc>
+</t>
+<t>
+<field>CONT.ULYING.VAL</field>
+<desc>
+            <p>The Derivatives module offers the ability to choose two styles of contingent asset/liability posting for own-book trading.The DX.PARAMETER field CONT.ULYING.VAL has the following effect:</p>
+            <p />
+            <p> If CONT.ULYING.VAL is set to "NO":</p>
+            <p>Existing style - Only for futures and options with premium unposted</p>
+            <p />
+            <p>For Forex Derivatives (DX.CONTRACT.MASTER DELIVERY.METHOD = "CASH") - CR or DB CRF asset type Amount - cost of position or contingent value currency - contract currency</p>
+            <p />
+            <p>For all other Derivatives - CR or DB CRF asset type Amount - cost of position or contingent value Currency - contract currency</p>
+            <p />
+            <p> If CONT.ULYING.VAL is set to "YES":</p>
+            <p>New style for all trades</p>
+            <p />
+            <p>For Forex Derivatives (DX.CONTRACT.MASTER DELIVERY.METHOD = "CASH") - CR CRF asset type Amount - underlying receivable ccy amount currency - receivable currency DB CRF Amount - underlying payable ccy amount currency - payable currency</p>
+            <p />
+            <p>For all other Derivatives - CR and DB CRF asset type Amount - cost of position currency - contract currency</p>
+            <p />
+            <p>The CRF asset types used are:</p>
+            <p />
+            <p>DXFUTBUY</p>
+            <p>DXFUTSELL</p>
+            <p>DXOPTBUY</p>
+            <p>DXOPTSELL</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>3 Characters, YES/NO</p>
+        </desc>
+</t>
+<t>
+<field>ORD.CREATE.TRADES</field>
+<desc>
+            <p>This field controls creation of DX trades at average price on filling of DX order. This value defaults to DX.ORDER</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Valid inputs are YES      and NO</p>
+        </desc>
+</t>
+<t>
+<field>HOLD.POSN.HIST</field>
+<desc>
+            <p>This field defines after how many calendar days the historical position records will be automatically deleted. Storing these records enables reports and enquiries to be performed on historical positions.</p>
+            <p>After the specified number of days, the End of Day routine will delete the position records.</p>
+            <p>Input must be a valid number.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 3 numeric characters. (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>STP.ENABLED.APPS</field>
+<desc>
+            <p>Applications which will be enabled for Straight-Through-Processing. Must be a valid T24 Application.</p>
+        </desc>
+</t>
+<t>
+<field>HLD.PRI.INP.DAYS</field>
+<desc>
+            <p>No of days to hold Price Input records before deleting them.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 3 characters</p>
+        </desc>
+</t>
+<t>
+<field>CR.EXP.CALC.API</field>
+<desc>
+            <p>This field is used to store the Credit.Exposure Calculation API  routine (DX.BB.CREDIT.EXPOSURE). This API routine should be defined in DX.OBJECT.LIBRARY</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Inputtable field, upto 35 Alphanumeric characters</p>
+            <p />
+            <p>If the Credit.Exposure calculation is needed,       then this field should hold the API routine DX.BB.CREDIT.EXPOSURE</p>
+        </desc>
+</t>
+<t>
+<field>HLD.TRADE.DAYS</field>
+<desc>
+            <p>No of days to hold trade and transaction records in their live files after the trade has been marked inactive.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 3 characters</p>
+        </desc>
+</t>
+<t>
+<field>FEEDS.TO.CLEAR</field>
+<desc>
+            <p>List of manual Cash Settlement Input Feeds to be cleared during DX COB processing</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHK.PRICE.UPD</field>
+<desc>
+            <p>No of days before price checking routine should complain about prices not being updated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 3 characters</p>
+        </desc>
+</t>
+<t>
+<field>POS.DATE</field>
+<desc>
+            <p>NO-INPUT field.</p>
+            <p />
+            <p>This field is part of a multivalue set with POS.COMPANY.</p>
+        </desc>
+</t>
+<t>
+<field>LIM.AMT.VAL.CONT</field>
+<desc>
+            <p>This field dictates which value is associated to a trade to update the Limits system.</p>
+            <p>Contingent         Calculates a value for the trade using CONTINGENT.VALUE         specified in DX.CONTRACT.MASTER         number of lots * contingent value</p>
+            <p>Value         Calculates a value for the trade based on the following         principles :-         For futures: number of lots * internal price         For options (buyer): number of lots * internal price         For options (seller): number of lots * internal strike         price</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Must be one of VALUE or CONTINGENT</p>
+        </desc>
+</t>
+<t>
+<field>EOE.PRICE.SET</field>
+<desc>
+            <p>This field specifies the default PRICE.SET that will be used when the end of exchange process is run. When the end of exchange process is started this will be the default price set to use for revaluation however it maybe overridden.</p>
+            <p>Input must be a valid price set.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 15 characters. Multivalue field associated with DX.PRICE.SET application.</p>
+            <p>Mandatory input</p>
+        </desc>
+</t>
+<t>
+<field>HLD.WORK.HIST.DAYS</field>
+<desc>
+            <p>No of Days to hold historical revaluation details DX.COB.WORKFILE.HISTORY file before deletion</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 3 characters</p>
+        </desc>
+</t>
+<t>
+<field>BLOCK.AUTH</field>
+<desc>
+            <p>Blocking of the Security position happens during the authorised or the unauthorised stage based upon this field.</p>
+            <p />
+            <p>If this field is set to 'YES', the position blocking will happen during authorisation otherwise it will happen while commiting the DX.TRADE.</p>
+        </desc>
+</t>
+<t>
+<field>POS.COMPANY</field>
+<desc>
+            <p>NO-INPUT field.</p>
+            <p>Holds company mnemonic for company to which the POS.DATE in the related multivalue corresponds.</p>
+            <p />
+            <p>See POS.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>PRICE.TO.STORE</field>
+<desc>
+            <p>This field specifies when the prices stored in the PRICE.SETS should be deleted from the system. Unless specified no prices will be deleted.</p>
+            <p>This field, along with the associated PRICE.DAYS filed specifies how long the prices should be stored in the system. After the specfied number of days, the End of Day routine will delete the specified price sets.</p>
+            <p>Input must be a valid price set.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 12 characters multi value field associated with PRICE.SET. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>VM.POST.STYLE</field>
+<desc>
+            <p>As well as the standard method of posting the calculated Variation margin (P&amp;L Category in the currency of the contract), several choices are available:</p>
+            <p>PL (default) - P&amp;L calculated in contract currency. Posted to P&amp;L Category in DX.EVENT.TYPE "VM"</p>
+            <p>PLLCCY - P&amp;L calculated in contract currency, then converted to Local Currency Posted to P&amp;L Category in DX.EVENT.TYPE "VM"</p>
+            <p>PLRP - P&amp;L calculated in contract currency. Posted to P&amp;L Category in DX.EVENT.TYPE "VM" Sign reversed, posted to Premium Payment account (maintains "replacement value")</p>
+            <p>PLLCCYRP - P&amp;L calculated in contract currency, then converted to Local Currency Posted to P&amp;L Category in DX.EVENT.TYPE "VM" Sign reversed, posted to Premium Payment account in Premium ccy (maintains "replacement value")</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Choose from PL, PLLCCY, PLRP or PLLCCYRP</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>OFSSOURCE</field>
+<desc>
+            <p>This field defines the OFS (Open Financial Services providing an interface to allow update and interrogation of T24 applications) source.</p>
+            <p>i.e. Blocking of Securities</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>15, A</p>
+        </desc>
+</t>
+<t>
+<field>HLD.PS.PRI.DAYS</field>
+<desc>
+            <p>No of days to hold a price record held whose PRICE.SET is held in PRICE.TO.STORE before liquidating it.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 3 characters</p>
+        </desc>
+</t>
+<t>
+<field>RP.GROUP.PARTS</field>
+<desc>
+            <p>Allows the user to specify the granularity of the chunks in which DX.REP.POSITION is rebuilt.</p>
+            <p>Accepts the following values: ALL, NONE, OPTION.TYPE, CONTRACT.CODE, TRADE.CCY, MATURITY.DATE, CALL.PUT, STRIKE, DELIVERY.CCY and OPTION.STYLE.</p>
+        </desc>
+</t>
+<t>
+<field>MARGIN.DIFFERENCE</field>
+<desc>
+            <p>This field defines how the system should post initial and variation margins. If this field is set to YES then when a new margin figure has been calculated, the difference between the previous margin amount and the new amount will be posted. If this field is set to NO then the previous margin amount will be reversed and the new margin amount will be posted.</p>
+            <p>Margins are only posted during the End Of Exchange or the End Of Day processing, other re-valuations will report the new margin figures but no postings are created.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>3 character either YES/ NO</p>
+        </desc>
+</t>
+<t>
+<field>FWD.POST.EOD</field>
+<desc>
+            <p>Specifies whether forward postings held in DX.FWD.POSTINGS should be posted at the start or at the end of the business day.</p>
+            <p>Controls whether the postings are generated in DX.END.OF.DAY or DX.START.OF.DAY in the batch.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Input must be either START/END</p>
+            <p>If left NULL, field will default to END</p>
+        </desc>
+</t>
+<t>
+<field>SPECIAL.RATE</field>
+<desc>
+            <p>This Field Indicates whether the Best Rate has to be applied to or not. If the Field is left Blank Mid Rate will be Applied</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Upto 12 characters</p>
+            <p />
+            <p>Can take one of the below values</p>
+            <p />
+            <p>CUSTOMER, BROKER, DEALER, EXCHANGE, COUNTERPARTY</p>
+        </desc>
+</t>
+<t>
+<field>PREM.SETT</field>
+<desc>
+            <p>This field controls the VALUE.DATE which is applied to statement entries for premium posting when premium is due on SETTLEMENT.</p>
+            <p>When this field is set to Default the value date will be: settlement date (today) + days offset</p>
+            <p>Otherwise the value date will be: trade date + days offset</p>
+            <p>Possible Values are Default and null</p>
+        </desc>
+</t>
+<t>
+<field>CONSTRAINT.FAILURE</field>
+<desc>
+            <p>It controls the number of Restrictions to be executed to restrict a transaction</p>
+            <p>Single - When the first restriction is met stops further checks and reports</p>
+            <p>Multiple - Executes all the restrictions and reports</p>
+            <p>Blank or Null - Represents Single.</p>
+        </desc>
+</t>
+<t>
+<field>AUTO.CO.TRANS</field>
+<desc>
+            <p>If set to YES, automatically authorise closeout when exercising internal transfers.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNTING.API</field>
+<desc>
+            <p>User-defined API to append additional accounting entries as required to core accounting entries raised by T24.</p>
+        </desc>
+</t>
+<t>
+<field>AI.DEFAULT.REQD</field>
+<desc>
+            <p>Defines if the alternative index should default onto the DX.MARKET.PRICE record.</p>
+        </desc>
+</t>
+<t>
+<field>ALT.IND.NAME</field>
+<desc>
+            <p>Indentifies the alternate for contracts in this system. i.e. CUSIP, ISIN etc.</p>
+            <p>Once an ALT.IND.NAME has been entered and committed the ALT.IND.NAME must not be changed or removed. New ALT.IND.NAME may be added.</p>
+            <p>In order to stop an ALT.IND.NAME from being used, for example if CUSIP's stoped being used in the system then the associated ALT.IND.VAL can be removed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 35 alpha numeric characters allowed</p>
+            <p>No Duplicates allowed</p>
+            <p>No change field</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>ALT.IND.VAL</field>
+<desc>
+            <p>Identifies a routine used to validate a alternate index routine entered into a contract</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>35, A</p>
+            <p>DX.OBJECT.LIBRARY</p>
+        </desc>
+</t>
+<t>
+<field>REINVOICE</field>
+<desc>
+            <p>When the field is set to YES Broker re-invoicing entries are raised when OWN.COMP.ID of the customer portfolio is different from the transaction company.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Input allowed is YES</p>
+        </desc>
+</t>
+<t>
+<field>STP.VERSION</field>
+<desc>
+            <p>Holds the version name to be used by STP processing to automatically authorise the trade during fill order.</p>
+            <p>This field doesnt hold any significance to other STP related fields STP.ENABLED and STP.ENABLED.APPS.</p>
+            <p>The VERSION is used by order when AUTO.AUTHORISE is set to YES in DX.ORDER.</p>
+        </desc>
+</t>
+<t>
+<field>MARGIN.CALC.RTN</field>
+<desc>
+            <p>User defined margin calculation API can be attached here which updates the MARGIN.VALUE in SC.POS.ASSET.</p>
+            <p>This API should have an valid entry in DX.OBJECT.LIBRARY.The routine should hold 6 parameters.</p>
+            <p>First parameter is an input parameter to the routine holding transaction record detail.</p>
+            <p>Second, third and fourth parameters should return the margin value, top up margin amount and sell out margin amount value respectively.</p>
+            <p> Fifth and sixth parameter are for future use.</p>
+        </desc>
+</t>
+<t>
+<field>NETTING.REQD</field>
+<desc>
+            <p>Can hold the value YES or null. When set to YES, the netted exposure gets updated to tables DX.PORTFOLIO.MARGIN and DX.GROUP.PORT.MARGIN.</p>
+            <p>Once value set in this field cannot be changed.</p>
+        </desc>
+</t>
+<t>
+<field>SAME.STRIKE</field>
+<desc>
+            <p>Allowed values are YES or null. Inputtable only when NETTING.REQD is set to YES and when value not provided defaults to YES.</p>
+            <p>Once value set in this field cannot be changed.</p>
+        </desc>
+</t>
+<t>
+<field>MATURITY.DAYS</field>
+<desc>
+            <p>Inputtable only when NETTING.REQD is set to YES and a 3 digit numeric value alone is allowed.</p>
+            <p>Once value set in this field cannot be changed.</p>
+        </desc>
+</t>
+<t>
+<field>EXPOSURE.CALC</field>
+<desc>
+            <p>Inputtable only when NETTING.REQD is set to YES. Allowed values are MAX.NEGATIVE and TOTAL.NEGATIVE.</p>
+            <p>When set to MAX.NEGATIVE the maximum of the negative exposure is taken as the exposure of the portfolio.</p>
+            <p>When set to TOTAL.NEGATIVE the total negative exposure is considered as the exposure of the portfolio.</p>
+        </desc>
+</t>
+<t>
+<field>HLD.CONTRACT.DATE</field>
+<desc>
+            <p>Holds the number of months prior to which the DX.CONTRACT.DATES record is to be deleted</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 2 characters</p>
+        </desc>
+</t>
+<t>
+<field>USE.SC.MARGIN</field>
+<desc>
+            <p>When the field is set to YES, Margin rates from SC.CUSTOMER.MARGIN will be given priority than the margin from DX.CONTRACT.MASTER </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed values are YES or NULL</p>
+        </desc>
+</t>
+<t>
+<field>CLOSEOUT.VERSION</field>
+<desc>
+            <p>Version to be used for closeout process is defined here. </p>
+            <p>For example when inputted with �AUTO.CLOSE� then the version DX.CO.MANUAL.INPUT,AUTO.CLOSE will be used for automatic closeout by the square-off order. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 30 characters</p>
+        </desc>
+</t>
+
+<t>
+<field>IGNORE.PORT.VAL</field>
+<desc>
+            <p>Is a free text field which needs to be entered with portfolio. Once this field is set valuation on portfolio is not performed for DX product alone.</p>
+            
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 18 characters</p>
+        </desc>
+</t>
+
+<t>
+<field>VM.REV.TYPE</field>
+<desc>
+            <p>On setting this field with value INDIVIDUAL the table VARIATION.MARGIN.DETS gets updated with variation margin details during revaluation process. </p>
+            
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>This is a nochange field. Which can hold values either INDIVIDUAL or NULL. 
+</p>
+        </desc>
+</t>
+
+<t>
+<field>MTM.REQUIRED</field>
+<desc>
+            <p>When set to YES alone Mark-to-Market (MTM) entry is posted. This gets defaulted to DX.CONTRACT.MASTER.</p>
+        </desc>
+</t>
+
+<t>
+<field>MTM.METHOD</field>
+<desc>
+            <p>The allowed values are PROFIT.LOSS and OPTION.VALUE. When set to PROFIT.LOSS the difference between trade and market cost is posted. When set as OPTION.VALUE the entire market cost is posted on the first day. This gets defaulted to DX.CONTRACT.MASTER.</p>
+        </desc>
+</t>
+
+<t>
+<field>MTM.DIFFERENCE</field>
+<desc>
+            <p>The allowed values are ADJUST and REBOOK. When set to ADJUST the difference between pevious day and todays MTM amount is posted as entry. Whereas when set to REBOOK the previously posted MTM is reversed and the new MTM amount is posted.This gets defaulted to DX.CONTRACT.MASTER.</p>
+        </desc>
+</t>
+
+<t>
+<field>MTM.SPEC</field>
+<desc>
+            <p>When MTM.SPEC is set to YES, instead of raising the internal account entry based on ACCOUNT.CLASS category SPEC entry is raised.This gets defaulted to DX.CONTRACT.MASTER.</p>
+        </desc>
+</t>
+
+<t>
+<field>FTT.TYPE</field>
+<desc>
+            <p>Tax type considered for Financial Transaction Tax inputted here gets defaulted at DX.TRADE level.</p>
+        </desc>
+</t>
+<t><field>USE.CATEG.CODE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>EXCH.LIMIT.UPD</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>TRANSFER.LIMIT.UPD</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

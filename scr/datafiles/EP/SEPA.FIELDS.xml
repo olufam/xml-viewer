@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>EP</product>
+        <title>SEPA.FIELDS</title>
+        <table>SEPA.FIELDS</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>This ‘H’ type table contains the final mapping of any field belonging to a SEPA clearing message layout.</p>
+            <p>    Unless given here, any XML element of an outward SEPA message may only be defaulted to a fixed text value or calculated by an elementary routine without any argument.</p>
+            <p>    A numeric suffix n, separated by a ‘-‘, means the nth multi-value of a field in a T24 application. If the suffix is ‘–n.m’, the field content is associated to the mth sub-value of the nth multi-value.</p>
+            <p>    If allowed or vetting fields are left blank, default values from UNIFI.XML.FORMAT would apply</p>
+            <p/>
+            <p>   For example, the fields CREDIT.CUSTOMER and CREDIT.ACCT.NO may be defined as:</p>
+            <p>   NEWMASTER 5.0      SEPA.FIELDS, S=VOIR</p>
+            <p>   FIELD.DETAIL.ID... CREDIT.CUSTOMER</p>
+            <p>   -----------------------------------------------------------------------</p>
+            <p>      1. 1 DEST.APPL...... SEPA.OUTWARD        SEPA.OUTWARD</p>
+            <p>      3. 1 DEST.FINAL..... INITIAL.NAME</p>
+            <p>      1. 2 DEST.APPL...... SEPA.FOLLOW.UP      SEPA.FOLLOW.UP</p>
+            <p>      3. 2 DEST.FINAL..... INITIAL.NAME</p>
+            <p>      7. 1 ORIG.APPL...... CFONB</p>
+            <p>     10. 1 ORIG.FMT.RTN... @LOT.CUSTOMER.NAME</p>
+            <p>      7. 2 ORIG.APPL...... FUNDS.TRANSFER</p>
+            <p>      8. 2. 1 ORIG.JOIN... CUSTOMER&gt;CREDIT.CUSTOMER</p>
+            <p>      9. 2 ORIG.FINAL..... SHORT.NAME</p>
+            <p>      7. 3 ORIG.APPL...... SEPA.FOLLOW.UP</p>
+            <p>      8. 3. 1 ORIG.JOIN... ACCOUNT&gt;CREDIT.ACCT.NO</p>
+            <p>      8. 3. 2 ORIG.JOIN... CUSTOMER&gt;CUSTOMER</p>
+            <p>      9. 3 ORIG.FINAL..... SHORT.NAME</p>
+            <p>     14 LENGTH............ 35</p>
+            <p>     15. 1. 1 ATTRIBUTE... A</p>
+            <p/>
+            <p/>
+            <p>   NEWMASTER 5.0      SEPA.FIELDS, S=VOIR</p>
+            <p>   FIELD.DETAIL.ID... CREDIT.ACCT.NO</p>
+            <p>   -----------------------------------------------------------------------</p>
+            <p>      1. 1 DEST.APPL...... SEPA.INWARD         SEPA.INWARD</p>
+            <p>      3. 1 DEST.FINAL..... CREDIT.ACCT.NO@IBAN.TO.ACCOUNT (**)</p>
+            <p>      1. 2 DEST.APPL...... SEPA.INWARD         SEPA.INWARD</p>
+            <p>      3. 2 DEST.FINAL..... INITIAL.ACCOUNT@IBAN.TO.ACCOUNT</p>
+            <p>      1. 3 DEST.APPL...... SEPA.INWARD         SEPA.INWARD</p>
+            <p>      3. 3 DEST.FINAL..... INITIAL.IBAN</p>
+            <p>      1. 4 DEST.APPL...... SEPA.OUTWARD        SEPA.OUTWARD</p>
+            <p>      3. 4 DEST.FINAL..... INITIAL.ACCOUNT@IBAN.TO.ACCOUNT</p>
+            <p>      1. 5 DEST.APPL...... SEPA.OUTWARD        SEPA.OUTWARD</p>
+            <p>      3. 5 DEST.FINAL..... INITIAL.IBAN</p>
+            <p>      7. 1 ORIG.APPL...... CFONB (***)</p>
+            <p>     10. 1 ORIG.FMT.RTN... @LOT.CUST.IBAN.ACCOUNT</p>
+            <p>      7. 2 ORIG.APPL...... FUNDS.TRANSFER</p>
+            <p>      9. 2 ORIG.FINAL..... CREDIT.ACCT.NO</p>
+            <p>     10. 2 ORIG.FMT.RTN... @ACCOUNT.TO.IBAN</p>
+            <p>      7. 3 ORIG.APPL...... SEPA.FOLLOW.UP</p>
+            <p>      9. 3 ORIG.FINAL..... INITIAL.IBAN</p>
+            <p>      7. 3 ORIG.APPL...... SEPA.FOLLOW.UP</p>
+            <p>      9. 3 ORIG.FINAL..... INITIAL.IBAN</p>
+            <p/>
+            <p>   (**) The system is searching the SEPA.LAYOUT field associated to CREDIT.ACCT.NO, stores its content in field INITIAL.IBAN of SEPA.INWARD and converts its content from IBAN to T24 ACCOUNT key before storing it in 2 more fields of SEPA.INWARD: INITIAL.ACCOUNT and CREDIT.ACCT.NO. </p>
+            <p>    (***) If the generation of bulk outward messages is directly done from a fixed text file sent by a corporate customer, the mapping should be done through the definition of an additional multi-value associated to the original definition of the received file. The field ORIG.APPL should then be completed with the generic ‘CFONB’ or specific ‘CFONB.nnmm’ value referring to a specific layout description within the distinct LOT application.</p>
+            <p>   The following SEPA.FIELDS record is referring to the initial Credit Transfer message (and should therefore be given in the corresponding FIELD.DETAIL of its own SEPA.LAYOUT) to retrieve the original transaction Id in order to have it returned or cancelled:  </p>
+            <p>   FIELD.DETAIL.ID... ACT.TXN.ID</p>
+            <p>   -----------------------------------------------------------------------</p>
+            <p>      7. 1 ORIG.APPL...... !ORIGINAL.RECORD </p>
+            <p>      9. 1 ORIG.FINAL..... ACT.TXN.ID</p>
+            <p/>
+            <p>   The IBAN.TO.ACCOUNT as well as the ACCOUNT.TO.IBAN has to be defined as SEPA.FIELDS records that should only contain in the field FORMATING.RTN the exact name of the routine used by the bank to make the conversion through the input/output common variable COMI between the IBAN format and the T24 ACCOUNT key. These names will be extracted onto I_SEPAIBAN insert by any application or batch program to be available for standard routines all over the SEPA application. </p>
+            <p>   FIELD.DETAIL.ID... ACCOUNT.TO.IBAN</p>
+            <p>    ----------------------------------------------------------------------</p>
+            <p>     10. 1 ORIG.FMT.RTN... @ACCOUNT.TO.IBAN</p>
+            <p/>
+            <p>   FIELD.DETAIL.ID... IBAN.TO.ACCOUNT</p>
+            <p>   -----------------------------------------------------------------------</p>
+            <p>     10. 1 ORIG.FMT.RTN... @IBAN.TO.ACCOUNT</p>
+            <p>   A fixed value can also be assigned to an outward tag element as with:</p>
+            <p>   FIELD.DETAIL.ID... BANK.ID</p>
+            <p>   -----------------------------------------------------------------------</p>
+            <p>      9. 1 ORIG.FINAL..... &quot;DIRPFRBB&quot; </p>
+            <p/>
+        </ovdesc>
+    </overview>
+    <menu>
+        <t>
+            <field>DEST.FINAL</field>
+            <desc>
+                <p>This Field contains the Name of the field to be populated in the DEST.APPL. The content may have been transform by one or more link done at the previous field.  An optional suffix separated by ‘@’ allows a formating routine on its value as COMI input/output argument.</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 35 type A(AplhaNumeric)</p>
+                <p>  Associated Multi value set of field DEST.APPL to DEST.CHARS</p>
+            </desc>
+        </t>
+        <t>
+            <field>DEST.FMT.RTN</field>
+            <desc>
+                <p>This Field contains the Name of a routine prefixed par ‘@’ that will return a calculated value as common output COMI argument. Alternatively, a fixed value may be given between ˝˝.</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 40 type A(AplhaNumeric)</p>
+                <p>  Associated Multi value set of field DEST.APPL to DEST.CHARS</p>
+            </desc>
+        </t>
+        <t>
+            <field>DEST.JOIN</field>
+            <desc>
+                <p>This Field contains the Name of a T24 application:‘&gt;’: field name. </p>
+                <p>    With an optional suffix separated by ‘@’ for a preformating routine with COMI as input/output argument.</p>
+                <p>    Field name is the key to this application, originally content of the tag’s element, its value is the result of the previous link if DES.JOIN is sub-valued </p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 50 type A(AlphaNumeric)</p>
+                <p>  Associated Multi value subset of field DEST.APPL</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>DEST.JUSTIFY</field>
+            <desc>
+                <p>This Fields holds the Justification, if any, applies to the extracted and/or calculated data.</p>
+                <p>      ‘n”X”R’: Length n, “X” filled, right justify</p>
+                <p>      ‘n”X”L’: Length n, “X” filled, left justify </p>
+                <p>      ‘nR’: Length n, right justify/truncated</p>
+                <p>      ‘nL’: Length n, left justify/truncated</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 6 type ANY(Any Character)</p>
+                <p>  Associated Multi value set of field DEST.APPL to DEST.CHARS</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.DETAIL.ID</field>
+            <desc>
+                <p>This field holds Free alphanumeric key. </p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  value upto 35 type A(AplhaNumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>LENGTH</field>
+            <desc>
+                <p>This Field Gives the ‘N’ description associated to the field for SEPA.FOLLOW.UP definition.</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 7 type A(AplhaNumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>ORIG.APPL</field>
+            <desc>
+                <p>This Field contains the T24 application, original SEPA transaction or inward customer remitted file from LOT application containing the raw data (*):</p>
+                <p>    FUNDS.TRANSFER, SEPA.FOLLOW.UP</p>
+                <p>    !ORIGINAL.TRANSACTION, CFONB[.aa] … </p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 35 type A(AplhaNumeric)</p>
+                <p>  Multi Value set</p>
+            </desc>
+        </t>
+        <t>
+            <field>ORIG.CHARS</field>
+            <desc>
+                <p>In some cases it may be necessary to keep only certain parts of a data field. This can be done on the full initial record or on the resulting calculated data.</p>
+                <p>    This field being sub-valued, it is possible to concatenate different character strings.</p>
+                <p>    n1 being the 1st character position, the sequence may be identified as :</p>
+                <p>    n1,n2 (n2 = string length) or</p>
+                <p>    n1:n2 (n2 = last character position)</p>
+                <p>    For example, as a date is recorded in T24 under the format CCYYMMDD. Its extraction under the format YYMMDD requires for this field one of the following values: 3,6 (or 3:8).</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 7 type A(AplhaNumeric)</p>
+                <p>  Individual Multi Value field and Associated Multi value set of field ORIG.APPL</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ORIG.FINAL</field>
+            <desc>
+                <p>This Field contains the Name of a field from the application of the last multi-value of JOIN.FIELD or, if none, from the T24 SOURCE.APPL application. </p>
+                <p>   Alternatively, a fixed value may be given between ˝˝.</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 50 type A(AplhaNumeric)</p>
+                <p>  Associated Multi value set of field ORIG.APPL to ORIG.CHARS</p>
+            </desc>
+        </t>
+        <t>
+            <field>ORIG.FMT.RTN</field>
+            <desc>
+                <p>This Field contains the Name of a routine prefixed par ‘@’ that will use the value calculated through the FINAL.FIELD passed as the common input/output COMI argument.</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 40 type A(AplhaNumeric)</p>
+                <p>  Associated Multi value set of field ORIG.APPL to ORIG.CHARS</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ALLOWED.EXP.DAY</field>
+            <desc>
+                <p>This Field specifies the Maximum delay allowing this return/refund or reverse reason to be used in an outward message from the initial settlement date.</p>
+                <p>    If left blanc, the return/refund reason will be considered as a technical one allowing an immediate posting of a SEPA.FOLLOW.UP.</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Associated Multi Value set of Field ALLOWED.VALUE to ALLOWED.MAP</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ORIG.JOIN</field>
+            <desc>
+                <p>This Field contains the Name of a T24 application:‘&gt;’: field name. </p>
+                <p>    With an optional suffix separated by ‘@’ for a preformating routine with COMI as input/output argument.</p>
+                <p>    Field name, the key to this application, is the name of a field from the application of the previous multi-value or, for the first one, from SOURCE.APPL application (*).</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 50 type A(AplhaNumeric)</p>
+                <p>  Associated Multi value subset of field ORIG.APPL</p>
+            </desc>
+        </t>
+        <t>
+            <field>ORIG.JUSTIFY</field>
+            <desc>
+                <p>This Field specifies the Justification used, if any, applies to the retrieved and/or calculated data.</p>
+                <p>      ‘n”X”R’: Length n, “X” filled, right justify</p>
+                <p>      ‘n”X”L’: Length n, “X” filled, left justify </p>
+                <p>      ‘nR’: Length n, right justify/truncated</p>
+                <p>      ‘nL’: Length n, left justify/truncated</p>
+                <p/>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 6 type ANY(Any Character)</p>
+                <p>  Associated Multi value set of field ORIG.APPL to ORIG.CHARS</p>
+            </desc>
+        </t>
+        <t>
+            <field>OVERRIDE</field>
+            <desc>
+                <p>This field is defaulted with the Override message generated for this application.</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 35 and NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>VETTING.FIELD</field>
+            <desc>
+                <p>This Field specifies the Rank of a mandatory field from the vetting application.</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 3 </p>
+            </desc>
+        </t>
+        <t>
+            <field>VETTING.TABLE</field>
+            <desc>
+                <p>This Field specifies the Name of a T24 vetting table containing allowed values.</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 35 type A(AplhaNumeric) and must exist in Application FILE.CONTROL</p>
+            </desc>
+        </t>
+        <t>
+            <field>ALLOWED.MAP</field>
+            <desc>
+                <p>This field holds the List of the error messages that may be mapped with this return/refund reason.</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Multi Value field and Associated Multi Value set of Field ALLOWED.VALUE</p>
+            </desc>
+        </t>
+        <t>
+            <field>ALLOWED.NARR</field>
+            <desc>
+                <p>This field  Gives the narrative of the allowed value for the data field used in SEPA.FOLLOW.UP.</p>
+                <p>    This allows the production of an available list as enrichment redefining the modulo(3i) rank of fields in SEPA.FOLLOW.UP anytime that the data coding field modulo(3i-1) is set to null. Otherwise it only contains the narrative of the coded value.</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Associated Multi Value set of Field ALLOWED.VALUE to ALLOWED.MAP</p>
+            </desc>
+        </t>
+        <t>
+            <field>ALLOWED.PROCESS</field>
+            <desc>
+                <p>This field specifies the Default process type for a transaction if none is associated to its own definition:</p>
+                <p>    ‘SAO’: direct authorization attempt for the SEPA.FOLLOW.UP whatever the status of the customer account might be.</p>
+                <p>    ‘SNP’: direct authorization attempt for the SEPA.FOLLOW.UP if no non overridable message forbade the booking entry on the customer account (if one is involved).</p>
+                <p>    Otherwise, the SEPA.FOLLOW.UP is only validated with a ‘FNAO’ status.</p>
+                <p>    ‘RET’: direct authorization attempt for the SEPA.FOLLOW.UP through the same transit account as the one used for the inward entry.</p>
+                <p>    ‘MAN’: the SEPA.FOLLOW.UP is produced in the ‘FHLD’ non validated status.</p>
+                <p>    ‘NO’: SEPA.FOLLOW.UP not generated.</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 3 type A(AlphaNumeric) and user can input only &apos;NO&apos; &apos;MAN&apos; &apos;RET&apos; &apos;SAO&apos; and &apos;SNP&apos;</p>
+                <p>  Associated Multi Value set of Field ALLOWED.VALUE to ALLOWED.MAP</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ALLOWED.VALUE</field>
+            <desc>
+                <p>This field Gives the list of the allowed value for the data field to be used in SEPA.FOLLOW.UP.</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 35 type ANY(Any Character)</p>
+                <p>  Multi Value set</p>
+            </desc>
+        </t>
+        <t>
+            <field>ATTRIBUTE</field>
+            <desc>
+                <p>This field Gives the ‘T’ description associated to the field for its definition in SEPA.FOLLOW.UP.</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 35 type A(AplhaNumeric)</p>
+                <p>  Multi Value field</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>DESCRIPTION</field>
+            <desc>
+                <p>This field Gives the ‘F’ description to be associated to the redefinition as modulo (3i-2) of one of the 25 groups of 3 free fields foreseen in the SEPA.FOLLOW.UP application.</p>
+                <p>    If not null, the field will be present in any coding screen version of the application. All needed checks and cross controls are being defined here after and/or through the FORMATING.RTN.</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 35 type ANY(Any Character)</p>
+            </desc>
+        </t>
+        <t>
+            <field>DEST.APPL</field>
+            <desc>
+                <p>This Field contains the T24 application receiving the tag element SEPA.INWARD, SEPA.INWARD.FILES, SEPA.FOLLOW.UP, SEPA.OUTWARD, SEPA.OUTWARD.FILES … </p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 35 type A(AplhaNumeric) and must exist in FILE.CONTROL Application</p>
+                <p>  Multi value set</p>
+            </desc>
+        </t>
+        <t>
+            <field>DEST.CHARS</field>
+            <desc>
+                <p>In some cases it may be necessary to pass only certain parts of a data field. This is done on the extracted data.</p>
+                <p>    This field being sub-valued, it is possible to concatenate different character strings.</p>
+                <p>    n1 being the 1st character position, the sequence may be identified as :</p>
+                <p>    n1,n2 (n2 = string length) or</p>
+                <p>    n1:n2 (n2 = last character position)</p>
+                <p/>
+                <p>  Validation rules</p>
+                <p>  Value upto 7 type A(AplhaNumeric)</p>
+                <p>  Individual Multi Value field and Associated Multi value set of field DEST.APPL to DEST.CHARS </p>
+            </desc>
+        </t>
+    </menu>
+</t24help>

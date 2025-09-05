@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>CR</product>
+<table>CR.OPPORTUNITY.GENERATOR</table>
+</header>
+<overview>
+<ovdesc>
+
+ 
+ CR
+ CR.OPPORTUNITY.GENERATOR
+ CR.OPPORTUNITY.GENERATOR
+ 
+ 
+ 
+ The Opportunity generator specifies the customers and opportunity templates that should be run in a specific circumstance. There are multiple different circumstances that could apply.
+ 
+ • During a batch, an opportunity record could be generated to select a group of customers, and run a set of templates against them, to generate a number of propensity opportunities.
+ 
+ These would all require some mainline program to be run to generate the opportunities This program would specify both the customer(s) that would be tested in the engine, and also the templates they can be tested against. This record is verified directly, run in batch or from some other service.
+ An additional role of the opportunity generator is to generate the contexts that need to be passed to the rules engine for evaluation, when determining whether opportunities should be generated. The Opportunity Table therefore contains two multivalue sets. The first indicates which table will provide the ‘starting point’ list of records that will be used in the rules. The second multivalue set would use these records and identify the fields on the records which themselves hold ids which link to other contexts.
+ 
+ 
+ 
+</ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>STATUS</field>
+<desc>
+
+ Indicates status of this opportunity generator record – record cannot be updated while in a status of ‘running’ (when is being used to generate opportunities), can only be updated when this status is set to ‘PENDING’ 
+ 
+</desc>
+</t>
+<t>
+<field>PRIM.CTX.OPER</field>
+<desc>
+        <p>
+ Operand to be used in conjunction with Primary Context Field (above) and Criteria (below). 
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ Standard Enquiry Selection operands :
+ EQ, NE, GT, LT, GE, LE, LK, UL, RG, NR
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>SHORT.DESC</field>
+<desc>
+
+ Brief description of opportunity generator, to appear in enrichments etc.
+ 
+</desc>
+</t>
+<t>
+<field>TYPE</field>
+<desc>
+        <p>
+ Specifies whether the generation is for an event or a propensity. 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ Phase 1 : Must be set to ‘Propensity’
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>PRIM.CTX.TBL</field>
+<desc>
+        <p>
+ Selects the table to be used to provide the primary context – so if the opportunity is targeted at mortgage owners, the table would be mortgage – if it is targeted at a particular type of customer, it would be targeted at Customer. This field and the following three fields are a replica of those used in ENQUIRY.SELECT.
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ Mandatory Input.
+ Must be a record on Standard Selection.
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>START.DATE</field>
+<desc>
+        <p>
+ When the opportunity is generated, it will need a start and/or end date. Either a specific date could be specified here, or if left blank then it is assumed that the date is !TODAY
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ 
+ Can be either !TODAY, or Standard Date Format
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>OPPOR.DEF</field>
+<desc>
+        <p>
+ Opportunity Templates that are to be run against the customers selected in Customer Selection. Any valid opportunity Templates can be specified. 
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ 
+ Must be existing Opportunity Templates
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>PRIM.CTX.FLD</field>
+<desc>
+        <p>
+ This field is used when specifying only a selection of records from the primary context table.
+ So, for example, if we wished to generate opportunities for customers who had mortgages worth more than $1,000,000 – we would specify the USD Amount field here, the operand GT in the Context Operand (below) and 1,000,000 in the Criteria field.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ Optional Input
+ Must be a field on the Primary Context Table (defined above)
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>LINKED.CTX.FLD</field>
+<desc>
+        <p>
+ This field will tell the system which field in the Primary Context table contains the value which can be used as an Id for the linked context.
+ 
+ For example, if the main context is Mortgage, but we have a linked context of Customer, we need to specify which field on Mortgage gives the correct Customer Id, so this can be passed across to the Rules Interface
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ 
+ Must be a valid single-value field on Primary Context Table. Mandatory field.
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>OP.GEN.ID</field>
+<desc>
+        <p>
+ ID of opportunity generator
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 
+ Alpha Numeric input
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>PRIM.CTX.CRIT</field>
+<desc>
+        <p>
+ Criteria to be used in conjunction with Primary Context Field and Operand. 
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ 
+ Must be a valid data type entry for Primary Context Field.
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>LINKED.CTX</field>
+<desc>
+
+ This multivalue set will be automatically populated when the Opportunity Templates field is populated, as the Opportunity Template will specify the EB.RULES that are required to be run for this opportunity, and the EB.RULES store the contexts that are required to run the rules.
+ All contexts required by all rules required by all opportunity templates must be given a source id – an id from which the relevant data can be derived. Therefore, every Linked Context multivalue set must be told which field contains the value which can be used as an Id for this context.
+ 
+ For example, if we have a rule which is based on Mortgage, but which will only apply to a particular type of customer who has that mortgage, we need both the Mortgage context (a mortgage Id needs to be passed to the Rules Interface) and the Customer context (a Customer Id needs to be passed to the Rules Interface). We cannot pass just the Customer Id or the Mortgage Id however – we need to pair each context with an id and pass this, so the rules engine knows which piece of data fits with which context.
+ 
+ 
+</desc>
+</t>
+<t>
+<field>CUST.CTX.FLD</field>
+<desc>
+
+ Regardless of the opportunity context, it is mandatory that the customer field is identified to the system, as this will be used on the opportunity record, and will also be needed to find the customer history file to validate that the opportunity doesn’t already exist. Therefore, on this field the user should specify which field on the Primary Context Table holds the Customer Id.
+ 
+</desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+
+ Text description of reason that these customers are selected against these opportunities.
+ 
+</desc>
+</t>
+<t>
+<field>DURATION</field>
+<desc>
+        <p>
+ Duration after the start date that the opportunity will remain active. An opportunity may be limited to a single day, or week, or may be indefinite. If the opportunity is indefinite then this field should remain empty. This will only apply for inbound opportunities – outbound opportunities have sales workflows attached, so cannot expire automatically.
+ 
+ See workflow for recommendations of how expired opportunities can be processed.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ 
+ Either Null (signifying infinite duration) or
+ Standard Duration values : a numeric, 1-99, followed by :
+ C = Calendar Days
+ D = Working Days
+ W = Weeks
+ M = Months
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>K.TYPE</field>
+<desc>
+        <p>Please refer help text for field TYPE.  <![CDATA[
+]]></p>
+    </desc>
+</t>
+</menu>
+</t24help>
+

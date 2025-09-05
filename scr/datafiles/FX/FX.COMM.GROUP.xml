@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FX</product>
+<table>FX.COMM.GROUP</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p> Each customer belongs to a commission group which specifies a fee schedule. </p>
+            <p>    Forex spread is expressed as a percentage of the deal rate, depending on the range that the transaction   </p>
+            <p>    amount falls into. The percentages are stored in this table.</p>
+            <p>    The Forex spread could be also expressed as a percentage of the FX commission of another group.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>START.AMOUNT</field>
+<desc>
+            <p>The lowest amount for this range. Transaction amounts greater than this, and less than or equal to the following END.AMOUNT charge the percentage from the following SPREAD.</p>
+            <p>    The first START.AMOUNT should be Null or zero.</p>
+            <p>    Each START.AMOUNT should be the same as the previous END.AMOUNT.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>    Standard T24 amount validation. The actual format will depend on the number of decimal places in the currency. </p>
+        </desc>
+</t>
+<t>
+<field>END.AMOUNT</field>
+<desc>
+            <p>The highest amount for this range. Transaction amounts less than or equal to this, and greater than the previous </p>
+            <p>    START.AMOUNT charge the percentage from the following SPREAD.</p>
+            <p>    The last END.AMOUNT field for the set should be null.</p>
+            <p>    The last SPREAD applies to any amount greater than the last START.AMOUNT.</p>
+            <p />
+            <p>     For example:  </p>
+            <p />
+            <p>    START.AMOUNT     0   </p>
+            <p>    END.AMOUNT       100,000   </p>
+            <p>    SPREAD           0.5   </p>
+            <p>    START.AMOUNT     100,000   </p>
+            <p>    END.AMOUNT     </p>
+            <p>    SPREAD           0.4    </p>
+            <p />
+            <p>    If deal amount  =  900,000 and deal rate =  1.2 for the above setup,</p>
+            <p>    then  customer spread  = (0.4/100)*1.2 =0 .0048</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>    Standard T24 amount validation. The actual format will depend on the number of decimal places in the currency.</p>
+        </desc>
+</t>
+<t>
+<field>SPREAD</field>
+<desc>
+            <p>  The spread percentage to be applied to amounts falling between the previous  START.AMOUNT and   END.AMOUNT.</p>
+            <p>    The customer spread rate is this percentage of the deal rate.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>    Up to 16 characters (8 numbers, decimal point, 7 numbers)</p>
+        </desc>
+</t>
+<t>
+<field>GROUP.LINK</field>
+<desc>
+            <p> This is the ID of another FX.COMM.GROUP.</p>
+            <p>   If this field is completed, the percentage in SPREAD is a percentage of the commission of the linked group.</p>
+            <p />
+            <p>    For example, </p>
+            <p />
+            <p>    FX.COMM.GROUP 1 is set up like this:   </p>
+            <p />
+            <p>    COMM.CCY   USD   </p>
+            <p>    START.AMOUNT      0   </p>
+            <p>    END.AMOUNT        100,000   </p>
+            <p>    SPREAD            60   </p>
+            <p>    GROUP.LINK        2   </p>
+            <p>    START.AMOUNT      100,000   </p>
+            <p>    END.AMOUNT         </p>
+            <p>    SPREAD</p>
+            <p />
+            <p>    GROUP.LINK        2  </p>
+            <p />
+            <p>    FX.COMM.GROUP 2 is set up like this:   </p>
+            <p />
+            <p>    COMM.CCY    USD   </p>
+            <p>    START.AMOUNT      0  </p>
+            <p>    END.AMOUNT        150,000  </p>
+            <p>    SPREAD            0.4  </p>
+            <p>    GROUP.LINK        </p>
+            <p>    START.AMOUNT      150,000   </p>
+            <p>    END.AMOUNT         </p>
+            <p>    SPREAD             0.1   </p>
+            <p>    GROUP.LINK</p>
+            <p />
+            <p>    The amount is 120,000 USD, using commission from FX.COMM.GROUP 1,  the commission rate is 50% of 0.4%, that is, 0.2%.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>    1-3 numbers</p>
+            <p>    must be a key on the FX.COMM.GROUP table  </p>
+        </desc>
+</t>
+<t>
+<field>COMM.CCY</field>
+<desc>
+            <p>The currency that the commissions specified by this multi-value set apply to.</p>
+            <p>    If the commissions are different for different currencies, then they must be specified for each currency.</p>
+            <p>    To identify which commissions to use for a deal, T24 looks at: </p>
+            <p />
+            <p>    For inward payments, debit currency (from the bank point of view); </p>
+            <p>    For all other payments, credit currency (from the bank point of view)</p>
+            <p>    If there is no commission set for this currency, T24 uses the set for the DEFAULT.CCY.</p>
+            <p>    If the default currency is not defined, the local currency is used.</p>
+            <p>    To find which commission range the deal amount falls into,</p>
+            <p>    T24 converts the amount to the COMM.CCY using the CURRENCY BUY.RATE or SELL.RATE (depending on whether the customer is buying or selling).</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>    3 uppercase characters</p>
+            <p>    must be a </p>
+            <p>    CURRENCY</p>
+        </desc>
+</t>
+<t>
+<field>COMM.DESCRIPTION</field>
+<desc>
+            <p>A description of the commission group.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>    up to 25 alphanumeric characters</p>
+            <p>    mandatory input</p>
+        </desc>
+</t>
+<t>
+<field>COMM.GROUP.ID</field>
+<desc>
+            <p>Identifies the commission group.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>    1-3 numbers</p>
+            <p>    Mandatory input</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.CCY</field>
+<desc>
+            <p> If there is no commission set for the deal currency, T24 uses the commission set for the DEFAULT.CCY.</p>
+            <p>    If you do not specify a default.ccy, T24 sets it to the local currency. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>    3 uppercase characters</p>
+            <p>    must be a </p>
+            <p>    CURRENCY</p>
+        </desc>
+</t>
+<t>
+<field>GROUP.MNEMONIC</field>
+<desc>
+            <p>The mnemonic specifies an alternative easy means of referencing the commission group. Like the ID, the mnemonic must be unique across T24.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>    3-10 type MNE (uppercase alpha or numeric, first character alpha, or ".")  characters</p>
+            <p>    mandatory input</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

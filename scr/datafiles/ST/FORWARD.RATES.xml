@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>FORWARD.RATES</table>
+</header>
+<overview>
+<ovdesc>
+<p>This table allows the user to define for each currency and market, FORWARD exchange rates for any time period defined by the user.  These periods can be defined either in months, e.g. 1 month, 2 months, 3 months, 6 months etc. or in days, e.g. 7 days, 15 days, 30 days, etc..  The user will enter the details in the form of PREMIUM or DISCOUNT (preceded by the 'minus' sign). </p><p>This premium or discount must refer to the one for the currency of the ID against the local currency. </p><p>In accordance with the value of the field QUOTATION.PIPS, defined on the CURRENCY table for the ID currency, the system will automatically add/subtract this premium/discount from the Currency table middle rate. Forward rates are used by the Forward revaluation (Rebate method) and also to provide tolerance checks for forward rates on input of a Forward Foreign Exchange transaction. </p></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>FORWARD.PREMIUM</field>
+<desc><p>Specifies the Premium/Discount of the currency defined in the ID against local currency for the period stated in the rest period described.  The discount must be preceded by the '-' sign. </p><p>Example: </p><p>If the quotation PIPS for the Deutsche Mark has a value of 4 on the currency table and the Middle rate of the DEM against Local currency is equal to 3.0250: </p><p>An input of '200' will automatically generate a Forward rate of     3.0250                       +    200                         ------                         3.0450 </p><p>An input of '-150' will automatically generate a Forward rate of     3.0250                       -    150                         ------                         3.0100 </p><p>The system will automatically convert the input according to the value defined in the field QUOTATION.PIPS of the currency defined in the ID. </p><p><p>Validation Rules:</p></p><p>(+/-) Standard exchange rate format.</p></desc>
+</t>
+<t>
+<field>RATE.INPUT.MKR</field>
+<desc><p>Indicates whether this rate was input or derived from other rates input. </p><p><p>Validation Rules:</p></p><p>System generated.</p></desc>
+</t>
+<t>
+<field>REST.PERIOD</field>
+<desc>
+            <p data-mc-conditions="FROMRELEASE.R13">Indicates the period to which a rate applies. The period can be defined for days before spot date or after spot date based on the parameterization of REVALUATION.PARAMETER.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">By default, accepts only the period after spot. The period before spot i.e. ON and TOM can be defined only when the field REVAL.WITHIN.SP of REVALUATION.PARAMETER is set to "YES".</p>
+            <p data-mc-conditions="FROMRELEASE.R13">The period for days before spot date is prefixed with a negative sign representing ON(-2D) and TOM (-1D) and can be defined only in Days (D). The definition of negative rest period must always start with Today and ends with a day before spot which represents Tomorrow.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">For example:</p>
+            <p data-mc-conditions="FROMRELEASE.R13">When the spot market is defined as 2 days, the definition of negative rest dates will be -2D for Today and -1D for Tom. Using the Premium/discount defined for -2D and -1D along with Spot rate, system calculates Today's Rate and Tomorrow's Rate. For deriving Today's Rate the Premium/Discount defined for both -2D and -1D will be summated and added/subtracted from the Spot rate. For Tomorrow's Rate, the system will consider -1D.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">No interpolation is done while deriving today or Tom rates.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Validation rules:-</p>
+            <p>
+                <p value="1" data-mc-conditions="FROMRELEASE.R13">NNA where NN = Number of 'A' where:</p>
+            </p>
+            <p data-mc-conditions="FROMRELEASE.R13"> &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;A = M for months; D for days; R for rest.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;For example, a 12 month rest period would be written as 12M.  R must be the last rest period entered.</p>
+            <p>
+                <p value="1" data-mc-conditions="FROMRELEASE.R13">Multivalue field</p>
+                <p value="2" data-mc-conditions="FROMRELEASE.R13">Mandatory input</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>REST.DATE</field>
+<desc>
+            <p>Specifies the date of the rest period which is calculated by the system according to the value defined in REST.PERIOD.
+
+</p>
+            <p>To calculate the date of the rest period for negative rest period, system will subtract the value defined in REST.PERIOD from the spot date and arrive at the respective working days that fall between Today and Spot date.</p>
+            <p> 
+
+To calculate the date of the rest period for positive rest period, system will add to the SPOT date the value defined in the field REST.PERIOD.  It is important to note that if the Rest period is defined in months and the date which is calculated happens to be a non-working day, the system will automatically move forward to the next working day after this calculated date.  If, however, this next working day falls in the next month, the system will instead move BACKWARD to the previous working day.</p>
+			<p> This date calculation is generally based on holiday setups of local country and currency country. However if we need the system to calculate the date with some other country holiday setup instead of local country then it can be done through ST.RATE.PARAMETER table.</p>  
+            <p>Validation Rules:-</p>
+            <p>
+                <p value="1">System generated.</p>
+                <p value="2">Multivalue field.</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>CCY.CCY.MARKET</field>
+<desc><p>Contains the SWIFT currency code and Market indicator for which the user needs to define forward rates. </p><p><p>Validation Rules:</p></p><p>SWIFT currency code plus the currency market indicator.</p><p>SWIFT currency code must exist on the CURRENCY table.</p><p>The Market indicator must exist on the CURRENCY.MARKET table.</p><p>Currency cannot be the local currency of the country.</p></desc>
+</t>
+<t>
+<field>DAYS.SINCE.SPOT</field>
+<desc>
+            <p data-mc-conditions="FROMRELEASE.R13">For negative rest periods, specifies the number of days to  spot from rest date and for non-negative rest periods, specifies the number of days from spot date to rest date.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">For negative rest periods, the value will prefix with a negative sign representing the number of days to spot date from rest date.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Validation Rules:</p>
+            <p>
+                <p value="1" data-mc-conditions="FROMRELEASE.R13">System generated</p>
+                <p value="2" data-mc-conditions="FROMRELEASE.R13">Multivalue field</p>
+            </p>
+            <p>&#160;</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc><p>Allows the user to enter free form description of the key. </p><p><p>Validation Rules:</p></p><p>1-15 characters.  Default value is 'AAA(N) FWD RATE' where AAA is the currency code and N is the currency market.  Multivalue field.</p></desc>
+</t>
+<t>
+<field>EFFECTIVE.DATE</field>
+<desc><p>Represents the last date when Forward rates have been updated. </p><p>During the overall End of Day process, this date will be automatically updated by the system and moved to the next working day. </p><p><p>Validation Rules:</p></p><p>Standard date format System Generated Default to the Run date when updating the table.</p></desc>
+</t>
+</menu>
+</t24help>
+

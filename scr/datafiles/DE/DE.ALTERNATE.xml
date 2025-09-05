@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DE</product>
+<table>DE.ALTERNATE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>When REROUTE is specified for a Message, this table is used by the Outward Message Formatting module to replace the original carrier. </p>
+            <p>The Disposition field in the Message Header may be set to REROUTE using Message Management, or the Disposition Control Table may be used to set a condition on which to 'Reroute' all Messages where that condition applies. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>ID</field>
+<desc>
+            <p>Specifies the ID of the Company, Customer or Account that is to be rerouted. </p>
+            <p>When the ID is a Customer or Account number it is prefixed with the appropriate Company Code when building the key of this file. </p>
+            <p>The entire key may be input if desired, otherwise the Company code used will be from the user sign on. </p>
+            <p>When routing messages the Company Code used is 'CUS COMPANY' (from the Message header) for a Customer level ID, and 'COMPANY' for other IDs. </p>
+            <p>When a Message is to be 'Rerouted' this file is searched for a record providing a replacement for the Carrier Addr-No, Language, Format and Copies parameters that would otherwise be taken from the DE.PRODUCT file. The original Language, Format and Copies will be unchanged if they are not on the alternate file. </p>
+            <p>Only a record at the same level as the Product record will be accessed. Therefore, if Product routing was at customer level, the ALTERNATE table will be accessed at customer level. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>a)    Either a Company code               or       'C-'followed by a Customer number   or       'A-'followed by an Account number b)    '.' c)    The carrier, e.g. PRINT, SWIFT, TELEX d)    '.' e)    1-3 numeric characters  (Mandatory input.)</p>
+            <p>The carrier must reference a carrier defined on the carrier definition file, DE.CARRIER.</p>
+            <p>The carrier module, as defined in the field CARRIER.MODULE on the DE.CARRIER record, must be in the list of outward carriers on DE.PARM.</p>
+        </desc>
+</t>
+<t>
+<field>LANGUAGE</field>
+<desc>
+            <p>Defines the Language to be used for printed messages.  If not entered the Language on the message Header will remain unchanged. </p>
+            <p>If the alternate carrier is Print, then Language is required in order to select the appropriate record from the Format Print table. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 type A (alphanumeric) characters. (Optional input)  If entered it must be a valid Language mnemonic.  Must be blank if alternate carrier is EUCLID.</p>
+        </desc>
+</t>
+<t>
+<field>CARRIER.ADDR</field>
+<desc>
+            <p>Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input.</p>
+            <p>A maximum of 9 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>CARRIER.ADDR.NO</field>
+<desc>
+            <p>Specifies a new Carrier and Address Number to replace the usual one obtained from the delivery Product file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>a)    The carrier, e.g. SWIFT, PRINT, TELEX (Mandatory input.) b)    '.' c)    1-3 numeric character Address Version Number as in the ID of       the Address file. (Optional input, default value '.1')</p>
+            <p>Carrier must reference a record on the carrier definition file, DE.CARRIER.</p>
+            <p>A record must exist on the DE.ADDRESS file, with a key composed of:     -  the customer or company code in the ID of this record    -  the address field from the carrier record (DE.CARRIER)    -  the address number field from this field  e.g. If the ID of the record is US0010001.C-100001.PRINT.1 and this field contains TELEXF.1, the carrier record for TELEXF is accessed initially to find out the addresses used for TELEXF.  So, if the ADDRESS field for TELEXF is TELEX, a record must exist on DE.ADDRESS with a key of US0010001.C-100001.TELEX.1.</p>
+            <p>The carrier module, as defined in the field CARRIER.MODULE on the DE.CARRIER record, must be in the list of outward carriers on DE.PARM.</p>
+        </desc>
+</t>
+<t>
+<field>COPIES</field>
+<desc>
+            <p>Specifies the number of copies of a message to be generated.  If not entered the value on the message Header will be unchanged. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 numeric characters. (Optional input)  Must be blank if alternate carrier is EUCLID.</p>
+        </desc>
+</t>
+<t>
+<field>FORMAT</field>
+<desc>
+            <p>Specifies the Format version to be used when reading the DE.FORMAT.PRINT file.  If not entered, the value on the message header will be retained. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric characters. (Optional input)  If entered for alternate carrier of SWIFT, TELEXF or TELEX, must be 1.  Must be blank if alternate carrier is EUCLID.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

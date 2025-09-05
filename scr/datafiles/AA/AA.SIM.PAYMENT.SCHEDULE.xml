@@ -1,0 +1,789 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>AA</product>
+        <table>AA.SIM.PAYMENT.SCHEDULE</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>The PAYMENT SCHEDULE Property Class is used by all products which have amounts billed (i.e. made due) or capitalised. This component is used to define scheduled payment events with respect to different payment properties. The schedules of the payment can be based on a frequency or adhoc dates, depending on this definition payment end date is arrived. </p>
+            <p>     One can define number of days prior to the actual payments when the bill needs to be produced.  </p>
+            <p>                    Each T24 product defined and processed in AA can have a single PAYMENT SCHEDULE Property defined.</p>
+            <p/>
+            <p/>
+        </ovdesc>
+    </overview>
+    <menu>
+        <t>
+            <field>BILL.PRODUCED</field>
+            <desc>
+                <p>By default T24 will create the Bill on the due date, however for products which require a Bill notice to be sent in advance of the due date, it is possible for the user  to enter the number of days prior.  This will result in the due amounts being projected and recorded on the bill. </p>
+                <p>    Number of working days prior to the due date when the bill needs to be produced is defined in the field BILL.PRODUCED.</p>
+            </desc>
+        </t>
+        <t>
+            <field>BILL.TYPE</field>
+            <desc>
+                <p>Bill Type would be picked from EB.LOOKUP instead of the hard-coded values of PAYMENT, EXPECTED</p>
+                <p>However all the options would not be available for this field within PAYMENT.SCHEDULE</p>
+                <p>The following values would not be available,</p>
+                <p>1.INFO</p>
+                <p>2.PR.CHARGE</p>
+                <p>3.ACT.CHARGE</p>
+                <p>4.DEF.CHARGE</p>
+                <p>5.DISBURSEMENT</p>
+                <p>Other user defined values may be given which then can be used in Overdue PC to define different aging rules for the BillType</p>
+                <p>When a user defined value is captured it would be assumed as PAYMENT type Bill, and not “Expected” type bill</p>
+                <p>Validations:</p>
+                <p>•Standard lookup field</p>
+                <p>•Maximum number of characters is restricted to 15</p>
+                <p>•INFO, PR.CHARGE, ACT.CHARGE, DEF.CHARGE options not applicable for this field although it is part of the lookup values</p>
+            </desc>
+        </t>
+        <t>
+            <field>BILLING.METHOD</field>
+        </t>
+        <t>
+            <field>BILLS.COMBINED</field>
+            <desc>
+                <p>Indicates whether bills which have the same due date and are produced on the same date should be combined. In case of capitalisation (where we have two payment one is made due and other capitalised) even if bills combined set to YES, system would generate two separate bills. In another scenario where have one payment type to be made due and two payment types to be capitalised, then system would combine the those two payment types</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>                   Input allowed should be either YES or NO.</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>CALC.AMOUNT</field>
+            <desc>
+                <p>There can be two amounts for each payment definition; Calculated Amount and Actual Amount.  </p>
+                <p/>
+                <p>             A calculated amount is determined by T24 based upon the Payment Type and Properties involved.</p>
+                <p/>
+                <p>             System maintained(NOINPUT) field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHANGED.FIELDS</field>
+            <desc>
+                <p>No input and multi value field lists all fields that have been negotiated for each dated version of the property. For a subsequently dated property, the attributes listed in this field will appear in "Negotiated.Fields" and only newly negotiated fields will appear on "Changed.Fields"</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>DEFAULT.ATTR.OPTION</field>
+            <desc>
+                <p>Optional field - Allowed Values are RESETTING and NON-RESETTING.</p>
+                <p/>
+                <p> RESETTING - During any Renewal Activities (for eg : change.product, rollover or reset) the property conditions will be reset from the product.</p>
+                <p/>
+                <p> NON-RESETTING - During any Renewal Activities property conditions will be maintained from the Arrangement level.</p>
+                <p/>
+                <p> Not used in Arrangement/Sim level.</p>
+                <p/>
+                <p> Leaving the field blank sets NON-RESETTING as the default option.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>DEFAULT.NEGOTIABLE</field>
+            <desc>
+                <p>Not used for arrangement level conditions</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>DEFER.PERIOD</field>
+            <desc>
+                <p>Valid Period format that defines how long the scheduled payment should be deferred from original cycled date. If defined, then on the cycled date, system will schedule DEFER.MAKEDUE/DEFER.CAPITALISE activities moving the bills to DEFER status. On actual cycled date + Defer Period, system will schedule MAKEDUE/CAPITALISE activities where bills will be moved out from DEFER status to their respective status.</p>
+                <p>Example 1:</p>
+                <p>Date Convention – Forward; Date Adjustment – Period</p>
+                <p>•	Bill will be raised on 2nd Feb with PAYMENT.DATE as 2nd Feb, ACTUAL.PAY.DATE as 1st Feb, FINANCIAL.DATE as 2nd Feb &amp; Defer Date as 8th Feb.</p>
+                <p>•	Defer Date is calculated as 5 days from ACTUAL.PAY.DATE which is 6th Feb. As it is holiday, it will again apply Date Convention on top of this date. Hence Defer date in this case is 8th Feb.</p>
+                <p>•	For Defer activity(processed onn 2nd Feb), accounting entries will be raised with Value date as Financial Date.</p>
+                <p>•	The makedue/capitalise activity will be processed on the Defer Date which is 8th Feb. Here accounting entries will be moved to nullify DEF entries and raise real statement entries.</p>
+                <p>Example 2:</p>
+                <p>Date Convention – Forward; Date Adjustment – Value</p>
+                <p>•	Bill will be raised on 2nd Feb with PAYMENT.DATE as 2nd Feb, ACTUAL.PAY.DATE as 1st Feb, FINANCIAL.DATE as 2nd Feb &amp; Defer Date as 8th Feb.</p>
+                <p>•	Defer Date is calculated as 5 days from ACTUAL.PAY.DATE which is 6th Feb. As it is holiday, it will again apply Date Convention on top of this date. Hence Defer date in this case is 8th Feb.</p>
+                <p>•	For Defer activity(processed onn 2nd Feb), accounting entries will be raised with Value date as Financial Date.</p>
+                <p>•	The makedue/capitalise activity will be processed on the Defer Date which is 8th Feb. Here accounting entries will be moved to nullify DEF entries and raise real statement entries.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>DUE.FREQ</field>
+            <desc>
+                <p>Indicates the actual frequency when the payment needs to be made due. Due frequency is defined for each payment property under a payment type.</p>
+                <p>  Payment frequency is defaulted when due frequency is null. </p>
+                <p>  Generally both payment and due frequency has same value. When multiple properties are defined for a given payment type, due frequency of one of the property can de different from the payment frequency.</p>
+                <p/>
+                <p>                Example:</p>
+                <p/>
+                <p>                a) M 01 31. M = Monthly. 01 = one monthly intervals. 31 = the last day of the month.</p>
+                <p>                b) M 03 31 M = Monthly. 03 =  three monthly intervals. 31 = the last day of the month.</p>
+                <p>                c) M 01 10 M=Monthly, 01 = at monthly intervals10 = 10th of the month</p>
+                <p>                d) 31 MAR 2006 W , where W= weekly. In this case, the first schedule would fall on 31March 2006</p>
+                <p>                e) 31 Mar 2006 BSNSS, where BSNSS = every business day. In this case, the first schedule would fall on 31March 2006.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>                Standard T24 Recurrence frequency field</p>
+                <p>                Input prohibited for a date prior to the system date.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ACTION</field>
+            <desc>
+                <p>The activity that caused this arrangement property to be updated.</p>
+                <p>The activity is taken from the underlying AA.ARRANGEMENT.ACTIVITY request that caused the record to be modified</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>END.DATE</field>
+            <desc>
+                <p>If a frequency has been specified the user can specify a Start Date or it can be defaulted from the Base Date.  Additionally an End Date or a Number of Payments can be specified to indicate to T24 when the payments should terminate.</p>
+                <p/>
+                <p>                This field is part of a multi value set of fields with START.DATE, NUM.PAYMENTS and ACTUAL.AMT.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>              Must be a valid date.</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>GROUP.BILL.TYPE</field>
+        </t>
+        <t>
+            <field>GROUP.MIN.AMOUNT</field>
+        </t>
+        <t>
+            <field>HOL.NUM.PAYMENTS</field>
+            <desc>
+                <p>This field denotes the number of payments that are to be considered as payment holidays from the defined Holiday Start Date.</p>
+                <p/>
+                <p>This field is part of a multi value set of fields with HOL.PAYMENT.TYPE and HOL.START.DATE.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Must contain 1-3 numeric characters.</p>
+                <p>2. Mandatory input if HOL.PAYMENT.TYPE or HOL.START.DATE is defined, otherwise not allowed.</p>
+            </desc>
+        </t>
+        <t>
+            <field>HOL.PAYMENT.TYPE</field>
+            <desc>
+                <p>This field denotes the Payment Type on which Payment Holiday definition will be processed. </p>
+                <p/>
+                <p>This field is part of a multi value set of fields with HOL.START.DATE and HOL.NUM.PAYMENTS.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Should be a valid record id in the table AA.PAYMENT.TYPE.</p>
+                <p>2. Mandatory input when HOL.START.DATE or HOL.NUM.PAYMENTS is defined, otherwise not allowed.</p>
+                <p>3. This field does not allow Payment Types with Disbursement bill types.</p>
+                <p>4. No Duplicates allowed.</p>
+            </desc>
+        </t>
+        <t>
+            <field>HOL.START.DATE</field>
+            <desc>
+                <p>This field denotes the date from which the Payment Holiday definition is processed. The date will be defaulted as condition effective date when left blank.</p>
+                <p/>
+                <p>This field is part of a multi value set of fields with HOL.PAYMENT.TYPE and HOL.NUM.PAYMENTS.</p>
+                <p/>
+                <p>Standard T24 date field.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>The value in this field cannot be lesser than the condition effective date while defining newly.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.1</field>
+            <desc>
+                <p>Contains the arrangement number, extracted from the first component of the id</p>
+                <p>System updated field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.2</field>
+            <desc>
+                <p>Contains the name of the property that this arrangement level condition relates to</p>
+                <p>Name is defined in AA.PRORERTY table</p>
+                <p>System maintained field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.3</field>
+            <desc>
+                <p>Contains the Effective Date of this property condition</p>
+                <p>System updated field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.4</field>
+            <desc>
+                <p>Reserved for future use</p>
+                <p>System field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ACTIVITY</field>
+            <desc>
+                <p>The activity that caused this arrangement property to be updated.</p>
+                <p>The activity is taken from the underlying AA.ARRANGEMENT.ACTIVITY request that caused the record to be modified</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.5</field>
+            <desc>
+                <p>Reserved for future use</p>
+                <p>System field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.6</field>
+            <desc>
+                <p>Reserved for future use</p>
+                <p>System field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>INCLUDE.PRIN.PAYMENTS</field>
+            <desc>
+                <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+            </desc>
+        </t>
+        <t>
+            <field>INITIAL.AMOUNT</field>
+        </t>
+        <t>
+            <field>INSTALL.AMOUNT</field>
+        </t>
+        <t>
+            <field>ISSUE.BILL</field>
+            <desc>
+                <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+            </desc>
+        </t>
+        <t>
+            <field>LAST.RECALC.DT</field>
+        </t>
+        <t>
+            <field>NEGOTIATED.FLDS</field>
+            <desc>
+                <p>No input and multi value field that lists the attributes on the arrangement property record that have been fixed and/or negotiated. These are stored when the arrangement level record is committed. When the arrangement level record is next used all items in the NEGOTIATED.FIELDS list will be maintained</p>
+                <p>Once an attribute has been fixed or negotiated it will remain in negotiated field list on all subsequent dated versions of the property.</p>
+            </desc>
+        </t>
+        <t>
+            <field>NO.OF.COUPON</field>
+        </t>
+        <t>
+            <field>NR.ATTRIBUTE</field>
+            <desc>
+                <p>System field - not used for arrangement conditions</p>
+                <p/>
+                <p/>
+                <p>System Field NoINPUT allowed -</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACTUAL.AMT</field>
+            <desc>
+                <p>There can be two amounts for each payment definition; Calculated Amount and Actual Amount.  </p>
+                <p/>
+                <p>                   An actual amount can be entered by the user to override the calculated amount or manual payments. When adhoc payments are defined we need to define the actual anount for each payment date</p>
+                <p/>
+                <p>                   This field is part of a multi value set of fields with START.DATE, END.DATE and NUM.PAYMENTS.</p>
+                <p/>
+                <p/>
+                <p>               1-9 numeric characters plus decimal point and commas.</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>NR.MESSAGE</field>
+            <desc>
+                <p>System field - not used for arrangement conditions</p>
+                <p/>
+                <p/>
+                <p>System Field NoINPUT allowed -</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.OPTIONS</field>
+            <desc>
+                <p>System field - not used for arrangement conditions</p>
+                <p/>
+                <p/>
+                <p>System Field NoINPUT allowed -</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.RESERVED1</field>
+            <desc>
+                <p>System Field - Reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>NR.RESERVED2</field>
+            <desc>
+                <p>System Field - Reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>NR.STD.COMP</field>
+            <desc>
+                <p>Not used for Arrangement Conditions</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>Input not allowed</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.TYPE</field>
+            <desc>
+                <p>System field - not used for arrangement conditions</p>
+                <p/>
+                <p/>
+                <p>System Field NoINPUT allowed -</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.VALUE</field>
+            <desc>
+                <p>System field - not used for arrangement conditions</p>
+                <p/>
+                <p/>
+                <p>System Field NoINPUT allowed -</p>
+            </desc>
+        </t>
+        <t>
+            <field>NUM.PAYMENTS</field>
+            <desc>
+                <p>If a frequency has been specified the user can specify a Start Date or it can be defaulted from the Base Date.  Additionally an End Date or a Number of Payments can be specified to indicate to T24 when the payments should terminate.</p>
+                <p/>
+                <p>                This field is part of a multi value set of fields with START.DATE, END.DATE and ACTUAL.AMT.</p>
+            </desc>
+        </t>
+        <t>
+            <field>NXT.SCHED.FQU</field>
+        </t>
+        <t>
+            <field>ON.ACTIVITY</field>
+            <desc>
+                <p>Field to state a list of activities during which payment schedule is to be recalculated. When those activities are performed, system would automatically recalculate the payment schedule. For example, the following Activity Classes may require a recalculation:</p>
+                <p>        UPDATE – CHARGE</p>
+                <p>        CHANGE - INTEREST</p>
+                <p>        CHANGE– PAYMENT.SCHEDULE</p>
+                <p>        CHANGE.TERM – TERM.AMOUNT</p>
+                <p>        INCREASE – TERM.AMOUNT</p>
+                <p>        DECREASE -TERM.AMOUNT</p>
+                <p/>
+                <p>        NEW-ARRANGEMENT - by default calculates payment amount.</p>
+                <p/>
+                <p>        For each component specified above, the resulting recalculation types must be specified in the associated field - RECALCULATE.</p>
+                <p/>
+                <p>        Validation rules:</p>
+                <p/>
+                <p>        More than one activity may be stated for recalculation. But there should be no duplication.</p>
+                <p>        Should be a valid entry in AA.ACTIVITY file.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>AMORTISATION.TERM</field>
+            <desc>
+                <p/>
+                <p>     If specific amount (residual amount) needs to be collected at the maturity date of the term, we can achieve this either by actually defining the residual amount or by defininng a amortisation term.</p>
+                <p/>
+                <p>     This field indicates the term for amortisation. The actual payment amount is calculated based on the amortisation term and not on the actual term defined in TERM.AMOUNT property of the arrangement. This calculated payment is then spread across actual term of the arrangement. If the amortisation term is greater than the actual term then we would be left with residual amount at the maturity date.</p>
+                <p>                   Any residual amount must then be paid by the client on maturity of the arrangement. Input in this field is allowed only for Constant, linear payment types. The term can be entered as a number of Days (D), Weeks(W), Months(M) or Years(Y)</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ONLINE.CAPITALISE</field>
+            <desc>
+                <p>When this field is set to YES, capitalise bill would be created online as part of online service. </p>
+                <p>However the accounting for the capitalise amount would still be raised during scheduled capitalise activity processing during COB.</p>
+                <p/>
+                <p>        Validation rules:</p>
+                <p/>
+                <p>Input is allowed only if there is(are) capitalise payment method in payment schedule condition.</p>
+                <p>Input is allowed only if ISSUE.BILL is set to NO for all capitalise payment method.</p>
+                <p>Online capitalise is not allowed for periodic charges.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>OVERRIDE</field>
+            <desc>
+                <p>Standard Override field containing override messages generated by amendments to this property</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PAYMENT.FREQ</field>
+            <desc>
+                <p/>
+                <p>   This field indicates the frequency at which the payments will be made due. The actual payment date moves forward or backward depending on the values in the fields DATE.ADJUSTMENT and DATE.CONVENTION. </p>
+                <p>   One can also define a holiday period for the payment with the combination of the fields START.DATE, NO.OF.PAYMENTS and PAYMENT.FREQUENCY. </p>
+                <p/>
+                <p>                Example:</p>
+                <p/>
+                <p>                a) M 01 31. M = Monthly. 01 = one monthly intervals. 31 = the last day of the month.</p>
+                <p>                b) M 03 31 M = Monthly. 03 =  three monthly intervals. 31 = the last day of the month.</p>
+                <p>                c) M 01 10 M=Monthly, 01 = at monthly intervals10 = 10th of the month</p>
+                <p>                d) 31 MAR 2006 W , where W= weekly. In this case, the first schedule would fall on 31March 2006</p>
+                <p>                e) 31 Mar 2006 BSNSS, where BSNSS = every business day. In this case, the first schedule would fall on 31March 2006.</p>
+                <p/>
+                <p/>
+                <p>                 The frequency is specified as a T24 Recurrence  field.  </p>
+                <p>                 Input prohibited for a date prior to the system date.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PAYMENT.METHOD</field>
+            <desc>
+                <p>Once the Payment Type has been specified, the user can specify whether the amount will be Due (to or from the customer) or Capitalised.</p>
+                <p/>
+                <p/>
+                <p>                 Input allowed should be either CAPITALISE or DUE.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PAYMENT.TYPE</field>
+            <desc>
+                <p>T24 provides a mechanism (AA.PAYMENT.TYPE) by which users can define  standard payment types that can be used by a product. For example Annuity or Linear.</p>
+                <p/>
+                <p>   The Payment types defined should be a valid record id of the file AA.PAYMENT.TYPE. </p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PERCENTAGE</field>
+            <desc>
+                <p/>
+                <p>  This field allows the user to define a percentage that would be applied on the outstanding balances and made due. </p>
+                <p/>
+                <p>       Only the percentage of the amount would be issued in the bill and Made due. The remaining amount would remain on their respective balances and any further calculation would be based on this balance.</p>
+                <p/>
+                <p>       Validation rule:</p>
+                <p/>
+                <p>       Would only be allowed for ACCOUNT and INTEREST properties.</p>
+                <p>       The payment type should be belong to CALCULATED type with the CALC.TYPE set as ACTUAL.</p>
+                <p>       Should be in the range of 0 to 100</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PR.APP.METHOD</field>
+            <desc>
+                <p>This field denotes the application method that needs to be applied to the periodic rule charges.</p>
+                <p>Allowed values are</p>
+                <p>Due - The periodic rule charges are made due</p>
+                <p>Capitalise - The periodic rule charges are capitalised</p>
+                <p>Not inputtable at arrangement level</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PR.APP.PERIOD</field>
+            <desc>
+                <p>This field denotes the application period for the given periodic rule charges.</p>
+                <p>The periodic rule charges will be applied at the end of the period. If the value defined is zero, then the charges are applied immediately.</p>
+                <p>Standard T24 period field.</p>
+                <p>Not inputtable at arrangement level</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PR.ATTRIBUTE</field>
+            <desc>
+                <p>These are set of Attributes which define the names of the rule, which will be applied on certain attributes of property classes over a period of time</p>
+                <p/>
+                <p/>
+                <p>Input must be a valid record from AA.PERIODIC.ATTRIBUTE</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.BRK.CHARGE</field>
+            <desc>
+                <p>Not used for arrangement level conditions</p>
+                <p/>
+                <p/>
+                <p>Input not allowed.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ANNUAL.ANALYSIS</field>
+        </t>
+        <t>
+            <field>PR.BRK.MSG</field>
+            <desc>
+                <p>Based on the PR.BRK.RES option selected, this will hold either an OVERRIDE or EB.ERROR id. By default the ids will be picked from the associated EB.COMPARISON.TYPE record. If CAP or FLOOR values are given, then the underlying AA.PERIODIC.ATTRIBUTE.CLASS should have this type defined in it</p>
+                <p/>
+                <p/>
+                <p>Input must be a valid OVERRIDE ID or EB.ERROR ID</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.BRK.RES</field>
+            <desc>
+                <p>When a rule is broken what action needs to be taken is defined here. Currently, the various options available are </p>
+                <p/>
+                <p>Error block further processing</p>
+                <p>Override Give an override</p>
+                <p>Information  Record details only</p>
+                <p>CAP the rule value is to be used as a CAP if the rule is broken</p>
+                <p>FLOOR the rule value is to be used as a FLOOR if the rule is broken</p>
+                <p/>
+                <p/>
+                <p>Should be one of the above valid options</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.RESERVED.1</field>
+        </t>
+        <t>
+            <field>PR.RESERVED.2</field>
+        </t>
+        <t>
+            <field>PR.RESERVED.3</field>
+        </t>
+        <t>
+            <field>PR.VALUE</field>
+            <desc>
+                <p>This is the actual rule value, which will be applied on certain attributes of the property classes over a period of time.</p>
+                <p/>
+                <p/>
+                <p>Input must be a valid data type defined in the corresponding</p>
+                <p>AA.PERIODIC.ATTRIBUTE.CLASS record.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PROG.PAY.PERC</field>
+            <desc>
+                <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PROPERTY</field>
+            <desc>
+                <p>For each Payment definition the user must specify the Properties with amounts to be paid. </p>
+                <p/>
+                <p>                This field is part of a multi value set with field DUE.FREQ. The property defined should match with the allowed property class defined for the payment type. </p>
+                <p/>
+                <p/>
+                <p>                 Input must be a valid record from AA.PROPERTY.</p>
+            </desc>
+        </t>
+        <t>
+            <field>RECALC.FREQUENCY</field>
+            <desc>
+                <p>If "Nothing" is selected in field RECALCULATE, a recalculation frequency should be specified. </p>
+                <p>                Example:</p>
+                <p/>
+                <p>                a) M 01 31. M = Monthly. 01 = one monthly intervals. 31 = the last day of the month.</p>
+                <p>                b) M 03 31 M = Monthly. 03 =  three monthly intervals. 31 = the last day of the month.</p>
+                <p>                c) M 01 10 M=Monthly, 01 = at monthly intervals10 = 10th of the month</p>
+                <p>                d) 31 MAR 2006 W , where W= weekly. In this case, the first schedule would fall on 31March 2006</p>
+                <p>                e) 31 Mar 2006 BSNSS, where BSNSS = every business day. In this case, the first schedule would fall on 31March 2006.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>                Standard date format.</p>
+                <p>                Must be a valid date.</p>
+                <p>                An override will be required if the date is not defined on the HOLIDAY table.</p>
+                <p>                An override will be required if the date as defined on the HOLIDAY table is a non working day.</p>
+                <p>                Input prohibited for a date prior to the system date.</p>
+                <p/>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>RECALCULATE</field>
+            <desc>
+                <p/>
+                <p>    This field indicates which payment parameter to change when changes occur to payment schedule or when any specific activity is triggered on the arrangement.The recalculation types are:</p>
+                <p>                   • Payment – the payment amount will be changed.</p>
+                <p>                   • Term – the term of the arrangement will be altered.</p>
+                <p>                   • Residual – the residual amount will be changed.</p>
+                <p>                   • Nothing – the payments, term, and residual will be unchanged.  In this case a recalculation frequency should be specified. </p>
+                <p/>
+                <p>                   This field is part of a multi value set with ON.ACTIVITY field.</p>
+                <p/>
+                <p/>
+                <p>                Input allowed should be either PAYMENT, TERM, RESIDUAL or NOTHING.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>APPLY.PAYMENT</field>
+            <desc>
+                <p/>
+                <p>       This field denotes the activity that has to get triggered when there is unallocated amount.</p>
+                <p/>
+                <p>     Validation rules</p>
+                <p>     Should be valid record id of the file AA.ACTIVITY</p>
+            </desc>
+        </t>
+        <t>
+            <field>REPRINT.COUPON</field>
+        </t>
+        <t>
+            <field>RESIDUAL.AMOUNT</field>
+            <desc>
+                <p>If a specific amount needs to be collected on the final schedule date, that amount may be stated in this field. The amount stated in this field is "Exclusive" of any scheduled calculated amount on the final schedule and is always considered to be belonging to ACCOUNT property.</p>
+                <p> As an illustration, if an Annuity Arrangement for 100000 is assumed and an amount of 20000 is stated as RESIDUAL.AMOUNT, the Annuity amount(CALC.AMOUNT) would be computed based on only 80000. If the Annuity amount is say 1500, on the final schedule date, system would make due 1500+20000 = 21500. </p>
+                <p> The residual amount would be recorded in bills under a special payment type called "RESIDUAL.PRINCIPAL"</p>
+                <p> The amount stated in this field would be automatically made due on PAYMENT.END.DATE</p>
+                <p/>
+                <p/>
+                <p>               Standard T24 amount field in the arrangement currency</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>START.DATE</field>
+            <desc>
+                <p>  This field indicates the actual payment start date. If Start date is mentioned then the payment frequecy if specified is applied on the start date else it is defaulted from the Base Date.  Additionally an End Date or a Number of Payments can be specified to indicate to T24 when the payments should terminate. Adhoc payment dates can be defined by expanding the multivalue sets and defining the dates in the field START.DATE. Payment and Due Frequency needs to be null.</p>
+                <p/>
+                <p>                This field is part of a multi value set of fields with  END.DATE, NUM.PAYMENTS and ACTUAL.AMT.</p>
+                <p/>
+                <p/>
+                <p>                Must be a valid date.</p>
+            </desc>
+        </t>
+        <t>
+            <field>STMT.NOS</field>
+            <desc>
+                <p>Contains the key to the accounting entries raised by the activity being applied to this arrangement property</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE1</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE2</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE3</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE4</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE5</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE6</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ARRANGEMENT.KEY</field>
+            <desc>
+                <p>The key to the arrangement property condition. The key is comprised of the following components (delimited by a -):</p>
+                <p>Arrangement Id</p>
+                <p>Property name&gt;</p>
+                <p>Effective Date</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE7</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>TARGET.PRODUCT</field>
+            <desc>
+                <p>This field denotes the target classic product of the given property class</p>
+                <p/>
+                <p>The already existing T24 products are mapped using AA infrastructure</p>
+                <p>These are called classic products</p>
+                <p>These products are mapped to different property clases</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>TEST.ANLYSIS.DT</field>
+        </t>
+        <t>
+            <field>AUTO.SETTLE</field>
+            <desc>
+                <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+            </desc>
+        </t>
+        <t>
+            <field>BASE.DATE</field>
+            <desc>
+                <p>The base date is an Arrangement Activity date (e.g. ‘arrangement start’, ‘first disbursement’, etc.) which will be used during automatic payment date generation.   </p>
+                <p/>
+                <p/>
+                <p>                   Input allowed should be either   APPROVED, CONTRACT, DISBURSE or VALUE.</p>
+                <p>                 Currently the only option allowed is VALUE. The rest would be developed later.</p>
+            </desc>
+        </t>
+    </menu>
+</t24help>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>RE</product>
+<table>RE.RPT.CCY.RATE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Overview Special Currency Rates for Combined Reporting </p>
+            <p>This file holds the details of the rates to be used when producing combined reports. </p>
+            <p>The key to the records on this file are the reporting currency followed by a 'sequence' number thus allowing more than one set of rates to be loaded per reporting currency. This allows for the cases where for haed office a different rate is required to the current market rates which maybe needed for other reporting. </p>
+            <p>When converting to the reporting currency, the 'local' currency amount field is the one converted not the foreign currency (original currency) field. </p>
+            <p>This means that only rates between the reporting currency and the local currency for each company need to be loaded. Where one or more companies share the same local currency, then the exchange rate between the local currency and reporting currency will be shared by all the companies with the same local currency. It is not possible to load diferent rates per company. </p>
+            <p>               FIELD NO        FIELD NAME </p>
+            <p>                 0             RATE.LIST.ID                  1.1           DESCRIPTION                  2.1           LOCAL.CCY                  3.1           BASE.CCY                  4.1           QUOTE.CODE                  5.1           EXCH.RATE                  6.1           RPT.RATE                  7.1           OVERRIDE </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>RPT.RATE</field>
+<desc>
+            <p>Fields LOCAL.CCY to RPT.RATE form a related multi value set. Standard T24 rate field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 11 characters may be entered.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RECORD.STATUS</field>
+<desc>
+            <p>Contains details of all the overrides that user has responed to positively. </p>
+            <p>For those local currencies used within the system for which no rate is entered will require an override to be given. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System maintained. Multivalued</p>
+        </desc>
+</t>
+<t>
+<field>RATE.LIST.ID</field>
+<desc>
+            <p>This is made up of the Report Currency code followed by a sequence number. </p>
+            <p>This key is made up of the report currency code followed by a sequence number to allow for different sets of exchange rates to be loaded for each reporting currency. </p>
+            <p>A second record for the same reporting currency will only be required when two diffirent set of rates are to be used for diffirent printed reports. This could be the case when a reported is to be produced using the 'budgetted' rates while another report is required with the 'current' rates. </p>
+            <p>Leading zeros will be inserted into the sequence number as required. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>7 character field made up as follows - 3 type SSS (uppercase alpha) characters. "." full stop to separate the two components. 3 Numeric characters. (Mandatory input)</p>
+            <p>The currency code must be a valid record on the Currency.Param file.</p>
+            <p>The sequence number must be a valid number in the range 001 to 999.</p>
+        </desc>
+</t>
+<t>
+<field>QUOTE.CODE</field>
+<desc>
+            <p>Is the rate of exchange between the report and associated local currency. </p>
+            <p>This field contains the rate of exchange between the report and associated local currency. </p>
+            <p>This field is used in conjunction with the field Base.Cyy (field 3), which specifies the base currency for the quotation and with the field Quote.Code (field 4), which specifies the number of units that are quoted. </p>
+            <p>The rate enter in this field is the amount in the non base currency for X of the base currency. </p>
+            <p>Where X depends upon the value in the field Quote.Code (field 4) as follows - </p>
+            <p>     Value             Meaning </p>
+            <p>     0 or Blank        1 UNIT of the base currency      1                10 UNITS         "     "      2               100 UNITS         "     "      3              1000 UNITS         "     "      4             10000 UNITS         "     "      5            100000 UNITS         "     " </p>
+            <p>Thus the following examples with a reporting currency of BEF. - </p>
+            <p>    Local.ccy  Base.ccy  Quote.Code  Exch.Rate.        CHF        CHF         0        24.15        DEM        BEF         2         4.85        FRF        FRF         1        60.85        GBP        GBP                  60.85        ITL        ITL         3        27.40 </p>
+            <p>Means as follows -         24.15 BEF for     1 CHF.          4.86 DEM for   100 BEF.         60.85 BEF for    10 FRF.         60.85 BEF for     1 GBP.         27.40 BEF for 1,000 ITL. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 type R characters plus a decimal point.  [Standard rate format.] Multi value field associated with fields 2.1 to 4.1 and 6.1. (Mandatory input.)</p>
+            <p>Must be a valid rate.</p>
+            <p>If Local.Ccy field is equal to Reporting currency then the rate must be 1 (one).</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Is the rate of exchange between the report and associated local currency converted to be the rate used at report production time. </p>
+            <p>This field contains the rate of exchange between the report and associated local currency that is used at report production time. </p>
+            <p>The value stored in here is calculated by the system and is the exchange rate for 1 of the base unit to the other currency. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 type R characters plus a decimal point.  [Standard rate format.] Multi value field associated with fields 2.1 to 5.1. (System Calculated.)</p>
+        </desc>
+</t>
+<t>
+<field>BASE.CCY</field>
+<desc>
+            <p>This is the currency for which the rate is quoted. </p>
+            <p>This field contains the currency for which the rates in the fields Exch.rate and Rpt.rate (fields 5 and 6) are quoted. </p>
+            <p>This field is used in conjunction with the field Quote.Code (field 4), which specifies the number of units that are quoted. </p>
+            <p>The rate enter in the field Exch.Rate (field 5) is the amount in the non base currency for X of the base currency. </p>
+            <p>Where X depends upon the value in the field Quote.Code (field 4) as follows - </p>
+            <p>     Value             Meaning </p>
+            <p>     0 or Blank        1 UNIT of the base currency      1                10 UNITS         "     "      2               100 UNITS         "     "      3              1000 UNITS         "     "      4             10000 UNITS         "     "      5            100000 UNITS         "     " </p>
+            <p>Thus the following examples with a reporting currency of BEF. - </p>
+            <p>    Local.ccy  Base.ccy  Quote.Code  Exch.Rate.        CHF        CHF         0        24.15        DEM        BEF         2         4.85        FRF        FRF         1        60.85        GBP        GBP                  60.85        ITL        ITL         3        27.40 </p>
+            <p>Means as follows -         24.15 BEF for     1 CHF.          4.86 DEM for   100 BEF.         60.85 BEF for    10 FRF.         60.85 BEF for     1 GBP.         27.40 BEF for 1,000 ITL. </p>
+            <p>As the rates in fields Exch.rate and Rpt.Rate are the rate between the reporting currency and the appropriate local currency, then the base currency must be one of these two currencies. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The 3 digit currency code or the 3 digit numeric currency code. Multi value field associated with fields 2.1 and 4.1 to 6.1. Mandatory input.</p>
+            <p>Must be a valid Currency code on the Currency.Param file.</p>
+            <p>Must be either the report currency from the key or the associated local currency.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Narrative (description) for this record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 type A (alphanumeric) characters. Mandatory input. Multivalue field to cater for the printing of the description in several languages.</p>
+        </desc>
+</t>
+<t>
+<field>EXCH.RATE</field>
+<desc>
+            <p>Identifies the method of quotation of the exchange rate. </p>
+            <p>This field contains the quotation code which indicates the number of units of the base currency to be quoted against. </p>
+            <p>This field is used in conjunction with the field Base.Cyy (field 3), which specifies the base currency for the quotation. </p>
+            <p>The rate enter in the field Exch.Rate (field 5) is the amount in the non base currency for X of the base currency. </p>
+            <p>Where X depends upon the value in this field Quote.Code as follows - </p>
+            <p>     Value             Meaning </p>
+            <p>     0 or Blank        1 UNIT of the base currency      1                10 UNITS         "     "      2               100 UNITS         "     "      3              1000 UNITS         "     "      4             10000 UNITS         "     "      5            100000 UNITS         "     " </p>
+            <p>Thus the following examples with a reporting currency of BEF. - </p>
+            <p>    Local.ccy  Base.ccy  Quote.Code  Exch.Rate.        CHF        CHF         0        24.15        DEM        BEF         2         4.85        FRF        FRF         1        60.85        GBP        GBP                  60.85        ITL        ITL         3        27.40 </p>
+            <p>Means as follows -         24.15 BEF for     1 CHF.          4.86 DEM for   100 BEF.         60.85 BEF for    10 FRF.         60.85 BEF for     1 GBP.         27.40 BEF for 1,000 ITL. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Blank  or 1 numeric character in the range 0 to 5. Multi value field associated with fields 2.1 to 3.1 and 5.1 to 6.1. (Optional input.  Default value = blank.)</p>
+            <p>Must be either blank or in the range 0 to 5.</p>
+            <p>If Local.Ccy field is equal to Reporting currency then quotation code not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.CCY</field>
+<desc>
+            <p>The local currencies of all the companies. </p>
+            <p>This field contains a list of the local currency for all the companies. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The 3 digit currency code or the 3 digit numeric currency code. Multi value field associated with fields 3.1 to 6.1. Mandatory input.</p>
+            <p>Must be a valid Currency code on the Currency.Param file.</p>
+            <p>Must be a local currency for one of the companies on the company file.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

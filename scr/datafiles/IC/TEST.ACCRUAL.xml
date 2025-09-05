@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>IC</product>
+<table>TEST.ACCRUAL</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>A utility to test and demonstrate the T24 accrual process. It allows example contracts to be input together with interest rates and principal movements with their effective dates.</p>
+            <p>It allows the input of EB.ACCRUAL.PARAM keys so that the principal amounts and dates can be manipulated by the core accrual processing. EB.ACCRUAL.PARAM can be used to indicate the following: -</p>
+            <p>To include the start date of the contract in the acrual processing</p>
+            <p>Whether last day inclusive is used</p>
+            <p>How many days + or - to adjust the effective date of a principal increase or decrease.</p>
+            <p>It also allows the input of an EB.ROUNDING.RULE key to indicate how accrual amoutns are rounded.</p>
+            <p>It will display the prinicpal amounts and effective dates that are passed to EB.PERFORM.ACCRUAL, the core accrual processing routine, and will display the adjusted principal amounts and effective dates acutally used in the accrual processing.</p>
+            <p>It will also display the full results ot the accrual that has taken place, including the total accrual amounts. It is possible to simulate daily accrual by retaining the existing accrual data and incrementing the accrue to date value, and their is an option to clear the existing accrual data.</p>
+            <p />
+            <p>When this contract is verified the an array of principal amounts and pricipal change dates will be determined and the values used to populate the PRIN.IN.AMT and PRIN.IN.DATE fields.</p>
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>INT.PERIODS</field>
+<desc>
+            <p>INT.PERIODS is used to define an interest payment frequency for the contract.</p>
+            <p>If defined then the accrual calculation will be performed for each interest period.</p>
+            <p>If you wish to calculate the interest for the whole contract then set the ACCRUE.TO.DATE, LAST.INT.DATE and NEXT.INT.DATE fields to null and set the CLEAR.CALC.DATA to Y. The value entered into this field should be a frequency that corresponds to the start and end of the contract. For example an annual contract starting on 05/05 to 05/05 , set the frequency to 05/06 M0106.</p>
+            <p>It is also possible to set the ACCRUE.TO.DATE to a value within a period and then to simulate daily accruals up to the end of a period. In this case the CLEAR.ACCRUAL field should be set to null, and the LAST.ACCRUAL and next ACCRUAL dates should be set up correctly, if they have not already been populated.</p>
+            <p />
+            <p>This is a standard frequency field.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CLEAR.ACCR.DATA</field>
+<desc>
+            <p>Indicates whether any exisiting accrual results should be cleared. The default is to retain any existing accrual data.</p>
+            <p />
+            <p>Optional input.</p>
+            <p>Y NO null.</p>
+            <p>Y = clear existing accrual data</p>
+            <p>NO ro null = retain existing accrual data</p>
+        </desc>
+</t>
+<t>
+<field>MOVEMENT.AMT</field>
+<desc>
+            <p>A signed amount field indicating a principal increase or decrease.</p>
+            <p />
+            <p>Multi valued associated with MOVEMENT.DATE.</p>
+            <p>Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.RATE</field>
+<desc>
+            <p>The interest rate applied during the accrual period.</p>
+            <p />
+            <p>No Input field</p>
+            <p>Part of the multi valued associated set from ACCR.FROM.DATE to ACCR.ACT.AMT that holds the accrual results.</p>
+            <p>Standard amount field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MOVEMENT.TYPE</field>
+<desc>
+            <p>MOVEMENT.TYPE is used to define a special type of principal movement that has its effective date adjusted differently to the default. For example the default principal increase adjustment may be zero days that is nor adjustment but the adjustment for interest capitalisation should be +1 day. An example follows.</p>
+            <p>Assume the following setup on EB.ACCRUAL.PARAM</p>
+            <p>PRIN.INCR.ADJUST    null</p>
+            <p>PRIN.DECR.ADJUST  +1</p>
+            <p>MOVEMENT.TYPE    BS</p>
+            <p>MOVEMENT.ADJ      +1</p>
+            <p>MOVEMENT.TYPE    BD</p>
+            <p>MOVEMENT.ADJ      -1</p>
+            <p />
+            <p>So the default for a principal increase is no change to the principal effective date.</p>
+            <p>For a principal decrease we add 1 day to the effective date.</p>
+            <p>For movement type BD we add 1 day and for movement type BD we subtract 1 day.</p>
+            <p />
+            <p>Contract start balance is +1,000,000</p>
+            <p />
+            <p>On 20th the following movements take place</p>
+            <p>Decrease ot -500,000 with an effective date of the 21st.</p>
+            <p>Increase of 250,000 no change to effective date</p>
+            <p>BS movement of 50,000 effective date of 21st</p>
+            <p>BD movement of -200,000 effective date of 19th</p>
+            <p />
+            <p>The balances will be</p>
+            <p />
+            <p>19th - 800,000 i.e. 1,000,000 - 200,000</p>
+            <p>20th 1,050,000 i.e. 800,000 + 250,000</p>
+            <p>21st    600,000 ie. 1,050,000 - 500,000 + 50,000</p>
+            <p />
+            <p>This is an alphanumeric field up to 10 characters and must be defined on the relevant EB.ACCRUAL.PARAM record.</p>
+            <p>This is multi valued associated with MOVEMENT.DATE and MOVEMENT.AMT</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>OTS.AMOUNT</field>
+<desc>
+            <p>The total amount of accrued interest.</p>
+            <p />
+            <p>No Input field.</p>
+            <p>Standard amount field.</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.PRIN</field>
+<desc>
+            <p>The amount of pricipal being accrued during the current period.</p>
+            <p />
+            <p>No Input field</p>
+            <p>Part of the multi valued associated set from ACCR.FROM.DATE to ACCR.ACT.AMT that holds the accrual results.</p>
+            <p>Standard amount field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONTRACT.START</field>
+<desc>
+            <p>The start date of the contract for accrual purposes.</p>
+            <p />
+            <p />
+            <p>Mandatory input</p>
+            <p>Standard date field.</p>
+            <p>Must be equal to or less than the contract end date.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>A standard description field to indicate the type of test or example being set up.</p>
+        </desc>
+</t>
+<t>
+<field>COMPOUND.FREQ</field>
+<desc>
+            <p>Specifies the compounding frequency to be used for non linear interest accurals.</p>
+            <p>Mandatory if EFF.INT.RATE is present.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TEST.ACCRUAL</field>
+<desc>
+            <p>The key to the TEST.ACCRUAL record. Can be used to indicate the type of test /example being set up.</p>
+            <p />
+            <p>Mandatory input, up to 35 alphanumeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>PREV.MONTH.ACCR</field>
+<desc>
+            <p>The amount of interest accrued in previous months of this year excluding the current month.</p>
+            <p />
+            <p>No Input field.</p>
+            <p>Standard amount field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ACCR.TO.DATE</field>
+<desc>
+            <p>The date to accrue to, or the end date of the accrual period.</p>
+            <p>This could be either a month end, the final accrual date of the contract, or the date of a change of principal or interest.</p>
+            <p />
+            <p />
+            <p>No Input field</p>
+            <p>Part of the multi valued associated set from ACCR.FROM.DATE to ACCR.ACT.AMT that holds the accrual results.</p>
+            <p>Standard amount field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>NEXT.INT.DATE</field>
+<desc>
+            <p>Indicates the next interest payment date of the contract.</p>
+            <p />
+            <p>Optional input.</p>
+            <p>Standard date field.</p>
+            <p>If present must greater than or equa to the contract start date and less than or equal to the contract end date. Must be greater than the LAST.INT.DATE.</p>
+            <p>For example this field can be used to simulate an interest schedule within a contract.</p>
+            <p>contract start - 01 Jan</p>
+            <p>contract end - 31 Dec</p>
+            <p>LAST.INT - 31 Jun</p>
+            <p>NEXT.INT.DATE - 31 Jul</p>
+            <p>ACCRUE.TO.DATE - 15 Jul</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.END</field>
+<desc>
+            <p>The end date of the contract for accrual purposes.</p>
+            <p />
+            <p />
+            <p>Mandatory input</p>
+            <p>Standard date field.</p>
+            <p>Must be equal to or greater than the contract start date.</p>
+        </desc>
+</t>
+<t>
+<field>PREV.YEAR.ACCR</field>
+<desc>
+            <p>The amount of interest accrued in previous years excluding the current year.</p>
+            <p />
+            <p>No Input field.</p>
+            <p>Standard amount field.</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.OUT.AMT</field>
+<desc>
+            <p>The principal amounts that are returned by  the core accrual routine.</p>
+            <p>They can be different to the PRIN.IN.AMT data if the associated EB.ACCRUAL.PARAM record indicates that principal increase and decrease effective dates are to be adjusted. For example any increases of principal may have the interest effective date adjusted by +1.</p>
+            <p>No Input field</p>
+            <p>Part of the multi valued associated set from PRIN.OUT.AMT to PRIN.OUT.DATE.</p>
+            <p>Standard amount field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ADJUST.DATE</field>
+<desc>
+            <p>The date to which accruals are adjusted, for example if a back valued principal or interest change is made and the accrual data is not set to be cleared, then the adjustment date should be entered to make sure that the accruals are recalculated from that date.</p>
+            <p />
+            <p>Optional input</p>
+            <p>Date field</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER</field>
+<desc>
+            <p>The customer of the contract, this can be input if there are any special rounding conditions set up at customer level.</p>
+            <p>Optional input, can be either a customer number of menmonic.</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.DATE</field>
+<desc>
+            <p>The effective date of the associated interest rate.</p>
+            <p />
+            <p>Multi valued associated with INTEREST.RATE.</p>
+            <p>Mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>ACCRUE.TO.DATE</field>
+<desc>
+            <p>The date to which the accruals should be calcualted.</p>
+            <p>If this is not input then it will defualt first to the NEXT.INT.DATE if present otherwise it will default to the CONTRACT.END date.</p>
+            <p />
+            <p>Optional input</p>
+            <p>Standard date field.</p>
+            <p>Must be equal to or greater than the contract start date, or last interest date if present.</p>
+            <p>Must be less than or equal to the contract end date, or next interest date is present.</p>
+            <p>Must be equal to or greater than the first value of ACCR.TO.DATE if present.</p>
+            <p />
+            <p>Optional input</p>
+            <p>Standard date field.</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.IN.AMT</field>
+<desc>
+            <p>The principal amounts that are passed to the core accrual routine.</p>
+            <p>No Input field</p>
+            <p>Part of the multi valued associated set from PRIN.IN.AMT to PRIN.IN.DATE.</p>
+            <p>Standard amount field.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>TIER.PERCENT</field>
+<desc>
+            <p>THe tierd percentage</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.OUT.DATE</field>
+<desc>
+            <p>The principal effecitve dates that are returned by  the core accrual routine.</p>
+            <p>They can be different to the PRIN.IN.AMT data if the associated EB.ACCRUAL.PARAM record indicates that principal increase and decrease effective dates are to be adjusted. For example any increases of principal may have the interest effective date adjusted by +1.</p>
+            <p>No Input field</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRIN.IN.DATE</field>
+<desc>
+            <p>The principal efective dates that are passed to the core accrual routine.</p>
+            <p>No Input field</p>
+            <p>Part of the multi valued associated set from PRIN.IN.AMT to PRIN.IN.DATE.</p>
+            <p>Standard amount field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>The currency of the contract for accrual purposes</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.RATE</field>
+<desc>
+            <p>The interest rate of the contract.</p>
+            <p />
+            <p>Multi valued field associated with INTEREST.DATE.</p>
+            <p>mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>LAST.INT.DATE</field>
+<desc>
+            <p>Indicates the last interest payment date of the contract.</p>
+            <p />
+            <p>Optional input.</p>
+            <p>Standard date field.</p>
+            <p>If present must greater than or equa to the contract start date and less than or equal to the contract end date. Must be less than the NEXT.INT.DATE field.</p>
+            <p>For example this field can be used to simulate an interest schedule within a contract.</p>
+            <p>contract start - 01 Jan</p>
+            <p>contract end - 31 Dec</p>
+            <p>LAST.INT - 31 Jun</p>
+            <p>NEXT.INT.DATE - 31 Jul</p>
+            <p>ACCRUE.TO.DATE - 15 Jul</p>
+        </desc>
+</t>
+<t>
+<field>RATE.TIER.TYPE</field>
+<desc>
+            <p>The type of rate tier</p>
+        </desc>
+</t>
+<t>
+<field>EFF.INT.RATE</field>
+<desc>
+            <p>Specifies the interest Rate to be used for non linear interest accurals.</p>
+        </desc>
+</t>
+<t>
+<field>MOVEMENT.DATE</field>
+<desc>
+            <p>The actual date of a principal movement.</p>
+            <p />
+            <p>Multi valued associated with MOVEMENT.AMT.</p>
+            <p>Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>THIS.MONTH.ACCR</field>
+<desc>
+            <p>The total amount of interest accrued this month.</p>
+            <p />
+            <p>No Input</p>
+            <p>Standard T24 amount field.</p>
+        </desc>
+</t>
+<t>
+<field>EB.ACCRUAL.PARAM</field>
+<desc>
+            <p>The key to an EB.ACCRUAL.PARAM record.</p>
+            <p>Mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>TIER.AMOUNT</field>
+<desc>
+            <p>The iered amount</p>
+        </desc>
+</t>
+<t>
+<field>PRINCIPAL</field>
+<desc>
+            <p>The principal amount of the contract to be applied at the contract start date.</p>
+            <p />
+            <p>Mandatory amount field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>INTEREST.DAY.BASIS</field>
+<desc>
+            <p>The interest day basis of the test contract.</p>
+            <p />
+            <p>Optional input - will default to the interest day basis of the curreny of the contract.</p>
+        </desc>
+</t>
+<t>
+<field>EB.ROUNDING.RULE</field>
+<desc>
+            <p>The key to an EB.ROUNDING.RULE record.</p>
+            <p />
+            <p>Optional Input.</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.ACT.AMT</field>
+<desc>
+            <p>The actual unrounded accrual amount.</p>
+            <p />
+            <p>Part of the multi valued associated set from ACCR.FROM.DATE to ACCR.ACT.AMT.</p>
+            <p>Standard amount field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ACCR.AMT</field>
+<desc>
+            <p>The rounded accrual amount.</p>
+            <p />
+            <p>No Input field</p>
+            <p>Part of the multi valued associated set from ACCR.FROM.DATE to ACCR.ACT.AMT that holds the accrual results.</p>
+            <p>Standard amount field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ACCR.DAYS</field>
+<desc>
+            <p>The number of days in the accrual period.</p>
+            <p>No Input field</p>
+            <p>Part of the multi valued associated set from ACCR.FROM.DATE to ACCR.ACT.AMT that holds the accrual results.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ACCR.FROM.DATE</field>
+<desc>
+            <p>The first date of the accrual period.</p>
+            <p>The total accrual period begins with the contract start date and continues to the contract end date.</p>
+            <p>The accrual periods are broken up in to monthly segments unless there is a change of principal or interest rate during the month.</p>
+            <p />
+            <p>No Input field</p>
+            <p>Part of the multi valued associated set from ACCR.FROM.DATE to ACCR.ACT.AMT that holds the accrual results.</p>
+            <p>Standard date field.</p>
+            <p />
+        </desc>
+</t>
+</menu>
+</t24help>
+

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FD</product>
+<table>FD.POOL.GROUP.XREF</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This concat file holds information regarding the pooling of fiduciary orders and refers to the FD.POOL.GROUP file. When a group is open for pooling the key of the FD.POOL.GROUP record is held on this concat file for ease of reference. </p>
+            <p>Each pool group record which is not created from an order which is set no pooling (POOLING field on the FD.FID.ORDER record set to NONE) will be referenced on this table when the status of the group is OPEN. However, once the placement has been created the reference to the relevant pool group is removed. </p>
+            <p>For notice contracts, when the FD.PARAMETER record specifies this, the reference to the pool group is replaced on this file to allow orders to be pooled into an existing placement. Hence there are three types of record which will be on this table: </p>
+            <p>1) FIXED groups </p>
+            <p>   These records are for FIXED orders and have a key of </p>
+            <p>               CCY - VALUE DATE - MAT DATE </p>
+            <p>   in the form </p>
+            <p>               CCC - YYYYMMDD - YYYYMMDD </p>
+            <p>2) Open NOTICE groups </p>
+            <p>   For NOTICE contracts which have not yet had the placement authorised    records on this table will have a key of </p>
+            <p>               CCY - VALUE DATE - DAYS NOTICE </p>
+            <p>   in the form of </p>
+            <p>               CCC - YYYYMMDD - DD </p>
+            <p>3) Existing NOTICE groups </p>
+            <p>   This group is used to pool notice orders onto an existing placement.    This type of group is checked in preference to any open groups during    the automatic pooling process and has a key of </p>
+            <p>               CCY - - DAYS NOTICE </p>
+            <p>   in the form </p>
+            <p>               CCC -- DD </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CCY.VALUE.MAT</field>
+<desc>
+            <p>This is the key to the records on this concat file and is used to uniquely identify each record. The layout of the key is the currency of the fiduciary followed by the value date of the currency and finally the maturity date of the contract. </p>
+            <p>For notice contracts the number of days notice is held in the maturity date part of this key. When it is possible to pool orders onto existing placements, as specified on the FD.PARAMETER system record the corresponding record on this file will have a null value date. </p>
+            <p>Each part of the key is separated by a '-' character. </p>
+        </desc>
+</t>
+<t>
+<field>GROUP.ID</field>
+<desc>
+            <p>Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 11 characters may be entered.</p>
+            <p>Must be the key to a valid entry on the FD.POOL.GROUP file.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

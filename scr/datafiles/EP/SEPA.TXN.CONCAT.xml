@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>EP</product>
+        <title>SEPA.TXN.CONCAT</title>
+        <table>SEPA.TXN.CONCAT</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>This ‘L’ type application is automatically updated by both inward and outward treatments. </p>
+            <p>     Its aim is to make easier any search for an original or a duplicate transaction and to track down any further event susceptible to affect it (e.g. the reception of a BC transaction, its sending to SEPA as BB transaction and following reject by the system or return by the receiver).</p>
+            <p>     Its key concatenates some choosen tag elements from the XML message sequences that have to be defined by inputing TNEWn in associated FIELD.EXTRCT of SEPA.LAYOUT and/or SEPA.HEADER.</p>
+            <p>     E.g.: Operation nature + Instructing agent BIC code + Settlement date + Issuer transaction reference</p>
+            <p>     After having added ‘I.’ as prefix for a SEPA.INWARD key or ‘O.’ as prefix for a SEPA.OUTWARD key, the system will check first and then record this calculated key in this concat file.</p>
+            <p>     The SEPA.TXN.CONCAT key is then recorded in the first multi-value of field HIST.TXN.ID of the concerned transaction archive file (either SEPA.INWARD or SEPA.OUTWARD). </p>
+            <p>     For an initial transaction, if the record already exists, the key is inserted in an additional multi-value. If required by the parameters, a duplicate check can be done. The similar transactions with the same way prefix are red from the concerned archive file with the key contained in the first sub-value of any existing multi-values. If all the elements of the transaction information are identical, an override message, that can be bypassed, is issued:</p>
+            <p>     “Identical transaction already processed”</p>
+            <p>     For an operation related to an initial one, its initial key is calculated from the tag elements defined by inputing TOLDn in associated FIELD.EXTRCT of SEPA.LAYOUT and SEPA.HEADER.</p>
+            <p>     If the initial record is not found, the override message “Initial transaction not found” is issued. It could be the same if the record exists in SEPA.TXN.CONCAT but no multi-value corresponds to the expected content in which case a new multivalue is added for it.</p>
+            <p>     If the initial transaction is found, the system checks all previous recorded operations on that initial  one and sees if the new one is compatible with them. If not, the new one is also recorded, but an error message is issued that triggers a manual treatment of acceptation or an automatic outward Return if possible:</p>
+            <p>     “Equivalent operation under way: &amp;” (&amp; = key to archive file)</p>
+            <p>     “Operation already processed: &amp;” (&amp; = key to archive file)</p>
+            <p>     “Operation would open a balance of &amp;” (if &amp; = resulting amount &lt;&gt; ABS(initial one) or 0)</p>
+            <p>     These error messages could be triggered by a duplicate RET/REF, REV or REJ attempt.</p>
+            <p>     The initial SEPA.TXN.CONCAT is then recorded as 2nd multi-value of HIST.TXN.ID of concerned archive file (either SEPA.INWARD or SEPA.OUTWARD) and the CLEARING.ID field is copied as additional multi-value in the HIST.OPE.ID field of all related archive records thanks to the link created between the 2nd multi-value of one record and the 1st multi-value of the previous one.</p>
+            <p/>
+        </ovdesc>
+    </overview>
+    <menu>
+        <t>
+            <field>CLEARING.AMT</field>
+            <desc>
+                <p>This field specifies the Amount of the operation with the customer’s sign.</p>
+                <p/>
+                <p>   Validation Rules </p>
+                <p>   Value upto 18 and NOINPUT Field</p>
+            </desc>
+        </t>
+        <t>
+            <field>CLEARING.ID</field>
+            <desc>
+                <p>This field holds the Key to the archive files. Prefixed by ‘I.‘ for SEPA.INWARD  and by ‘O.’ for SEPA.OUTWARD.</p>
+                <p>    The first sub-value of any multi-values represents the initial operation. The following sub-values are used to record the RET/REF, REV or REJ actions.</p>
+                <p>    If the initial operation is not found, an additional multi-value is created with ‘UNKNOWN’ as contents followed by the RET/REF, REV or REJ key.</p>
+                <p/>
+                <p>   Validation Rules </p>
+                <p>   Value upto 22 type ANY(Any Character)</p>
+                <p>   NOINPUT Field and Multivalue Set</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>TXN.CONCAT.KEY</field>
+            <desc>
+                <p>This Field contains the Concatenation of selected elements from the Transaction Information with a dot ‘.’ as separator.</p>
+                <p/>
+                <p>   Validation Rules </p>
+                <p>   Value upto 95 type ANY(Any Character)</p>
+                <p/>
+            </desc>
+        </t>
+    </menu>
+</t24help>

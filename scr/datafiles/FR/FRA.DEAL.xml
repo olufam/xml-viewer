@@ -1,0 +1,1614 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FR</product>
+<table>FRA.DEAL</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The main file within this module, FRA.DEAL, is split into 3 distinct parts. </p>
+            <p>Part one stores the basic elements, either input or table generated defaults, essential to the FRA processing.  Such details are; Counterparty ID, rates, type of FRA (Hedge or Trade), dates (Start, maturity and trade), and additionally, where appropriate, Broker ID's, commissions and charges and calculation parameters. </p>
+            <p>The second part of the record facilitates the settlement of the FRA deal, when, on rate fixing day, the prevailing settlement rate is input and actioned accordingly.  Settlement accounts, addresses and relevant narratives for the delivery/receipt of advices and payments are picked up from here. </p>
+            <p>The third part stores the internally generated fields, providing accrual information, LCY equivalents of amount fields, status on advices and payments sent, and references to consolidation of generated transactions. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>MKT.EX.PL.AC.EQUIV</field>
+<desc>
+            <p>This field holds the local currency equivalent of the accrual amount as on date for the market exchange profit/loss as given in MKT.EX.PL.AC.TODAT. This is for the period between START.DATE and the MATURITY.DATE of the deal.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Display only field for HEDGE type deals.</p>
+            <p>System field.</p>
+            <p>Display only field.</p>
+        </desc>
+</t>
+<t>
+<field>BEN.BANK.2</field>
+<desc>
+            <p>Contains the Counterparty reference for the second Beneficiary Bank for the Settlement Amount. Used where contracts involve four party transfers of funds. </p>
+            <p>If for example, at the start date of a FRA, the customer requests the delivery of the settlement amount to his  account that he maintains with American Bank A, Detroit which has an account with American Bank B, New York, the User will then make the following input: </p>
+            <p>        (i) Default (or Enter) the standard Nostro account number in the             SETTLEMENT.ACCT. This field is always used to indicate the             account where the book-keeping entries must be recorded by the             system. </p>
+            <p>       (ii) Enter the Agent code (Customer number) of the American Bank B,             New York, in BEN.BANK.1. In case this Bank does not exist on             the Database, the User can then enter the name and address of             this Bank in BANK.ADDR. </p>
+            <p>      (iii) Enter the Agent code (Customer number) of the Bank of Detroit             in this field. In case this Bank does not exist on the             Database but there was a Customer reference for the Bank             identified in the previous field, the User can enter the name             and address of this Bank in BANK.ADDR. This means that at             least one of the two banks must have been defined on the             CUSTOMER and AGENCY files. </p>
+            <p>       (iv) Enter the beneficiary account number in BENEF.ACCT. </p>
+            <p>            Once the payment has been sent, this field can no more be             changed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-10 Character Mnemonic (Uppercase alpha, numeric or ".")  Type MNE. Input will be checked against the AGENCY file.  or  1-6 Numeric character Agent code.  (Optional input when SETTLEMENT is a Nostro and settlement amount is a loss).</p>
+            <p>Input is only allowed when the contract has been done at a loss.</p>
+            <p>Input in this field is only allowed when SETTLEMENT.ACCT is a Nostro.</p>
+            <p>Input in this field must correspond to a valid Agent on the AGENCY file.</p>
+            <p>When used in conjunction with BEN.BANK.1, the two customer references must differ.</p>
+            <p>Input in this field will not be allowed if BEN.BANK.1 and BANK.ADDR have both been entered.</p>
+            <p>The customer reference input must be different from the Customer reference of the Nostro account used in SETTLEMENT.ACCT.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.COM.AMT</field>
+<desc>
+            <p>Using the conditions specified for the charge/commission code in the FT.CHARGE.TYPE or FT.COMMISSION.TYPE tables, the system automatically calculates the amount to be charged. Input of an amount, however, will be accepted and override the amount calculated by the system. </p>
+            <p>If this account is in foreign currency, the amount input in this field will be automatically converted at middle rate to generate the Profit and loss entry. The P&amp;L category code will be taken from the charge/commission tables. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 amount format in the currency of the counterparty CHG/COM.ACCT.  Associated Multivalue field.  Input of an amount is only allowed if a CHG/COM.CODE was previously entered.</p>
+        </desc>
+</t>
+<t>
+<field>BEN.BANK.1</field>
+<desc>
+            <p>Identifies the counterparty Bank where the payment of the Settlement Amount (loss) has to be done. </p>
+            <p>This field is used when the counterparty does not require the funds to be credited to his current account but instead requests an external delivery of the funds to a Bank different to the one where you maintain your Nostro account. </p>
+            <p>If this Bank does not yet exist on the Database, the user may: </p>
+            <p>      a) Create a new record in the CUSTOMER and AGENCY file which will          contain the information necessary to generate automatically          advices, confirmations etc. for this bank or, </p>
+            <p>      b) Use the Bank ADDRESS to directly input the name and address of          the Counterparty Bank without having to create a Customer and/or          an Agent record.  This option is very useful if the settlement          amount has to be paid to a bank which is rarely dealt with. </p>
+            <p>As this field indicates the disposal of the settlement amount, it may only be used for contracts done at a loss for the Bank. </p>
+            <p>Once the payment has been sent, this field can no more be changed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-10 Character Mnemonic (Uppercase alpha, numeric or ".") - Type MNE.  Input will be checked against the AGENCY file.  or  1-6 Numeric character Agent code (Optional input when Settlement Account is a Nostro and Settlement amount is a loss).</p>
+            <p>Input is only allowed when the contract has been done at a loss.</p>
+            <p>Input in this field is only allowed when Settlement Account is a Nostro.</p>
+            <p>Input in this field must correspond to a valid Agent on the AGENCY file.</p>
+            <p>When use in conjunction with the BEN.BANK2 field, the two Customer references must differ.</p>
+            <p>Input in this field will not be allowed at the same time with an input in BEN.BANK2 and BANK.ADDR.</p>
+        </desc>
+</t>
+<t>
+<field>FRA.AMOUNT</field>
+<desc>
+            <p>Indicates the amount of the FRA contract. </p>
+            <p>Standard amount format from T24.  All standard abbreviations will be accepted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Any amount.  Input in this field is always mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.COM.ACCT</field>
+<desc>
+            <p>Specifies the counterparty CHG/COM ACCOUNT that is to be debited for any commission/charge defined in the field (CHG/COM.CODE). This amount will be debited on Trade date or settlement date according to the value defined in the FRA.PARAMETER table. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard account format.</p>
+            <p>Input mandatory when CHG/COM.CODE was input; Otherwise not allowed.</p>
+            <p>Account must be from the counterparty otherwise override will be required.</p>
+            <p>Account must exist on the ACCOUNT file. Normal validation for inactive, posting restrictions etc.</p>
+        </desc>
+</t>
+<t>
+<field>NUMBER.OF.DAYS</field>
+<desc>
+            <p>Indicates the number of days between the start and the maturity date. </p>
+            <p>This is an internal field and no input is allowed. </p>
+            <p>The value of this field is generated after pressing the carriage return key on the maturity date field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 numeric digits.</p>
+        </desc>
+</t>
+<t>
+<field>KEY</field>
+<desc>
+            <p>Identifies each Future Rate Agreement transaction. </p>
+            <p>The Reference Number will be shown on all output generated from the transaction and will be generated automatically when specified as such in the Company table for the Future Rate Agreement Application. Otherwise, it will need to be entered for each transaction and subsequently checked by the System for uniqueness. </p>
+            <p>To avoid the necessity to input the complete Reference Number, the User has the facility to input only the sequence number of the transaction to access any transaction which has been input that day. The Application will automatically generate the seven first digits and append them to the front of the sequence number in order to retrieve the requested transaction. </p>
+            <p>Access to any FRA transaction from a previous day requires the input of the corresponding julian day and the year if the contract has been done in a previous year. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>10 numeric characters, prefixed by FR yydddnnnnn FR followed by 10 numbers (see Details)  (Mandatory Input)</p>
+            <p>If the Reference Number is entered, during initial input, it will be validated for uniqueness.</p>
+            <p>When input, this field will only be allowed in the format specified above.</p>
+            <p>This field can never be changed.</p>
+        </desc>
+</t>
+<t>
+<field>MKT.EXCH.PL.EQUIV</field>
+<desc>
+            <p>This field holds the local currency equivalent of the market exchange profit/loss as given in MKT.EXCH.PL.AMT.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field.</p>
+            <p>Display only field.</p>
+        </desc>
+</t>
+<t>
+<field>BUS.CENTRES</field>
+<desc>
+            <p>This field is used with the </p>
+            <p>REGION</p> table to generate the financial centre tag 22B on the MT340 swift message.  <p><p>Validation Rules:</p></p><p /><p>Input </p><p>COUNTRY</p> (2 characters) or <p>REGION</p> (4 characters).   <p>The default value will be the </p><p>COUNTRY</p> of the     currency of the contract.   <p>Additional </p><p>COUNTRY</p> codes can be manually     input if required.   </desc>
+</t>
+<t>
+<field>MKT.EX.PL.AC.TODAT</field>
+<desc>
+            <p>This field holds the accrual amount as on date of the market exchange profit/loss for the non-treasury customers with HEDGE type deals. This is for the period between START.DATE and the MATURITY.DATE of the deal.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Display only field for HEDGE type deals.</p>
+            <p>System field.</p>
+            <p>Display only field.</p>
+        </desc>
+</t>
+<t>
+<field>BROK.CHG.BOOKING</field>
+<desc>
+            <p>These fields are reserved for future use. They cannot be accessed by the user. </p>
+        </desc>
+</t>
+<t>
+<field>POSITION.TYPE</field>
+<desc>
+            <p>Identifies the position type applicable to the FRA transaction. This facility is used to update the appropriate position file as the Position type is part of the ID of the FRA position file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>"TR"(ading).  Optional input.  "TR" when "FRA.TYPE is equal to "TRADING"; Otherwise, input not allowed.</p>
+            <p>Must exist on FX.POS.TYPE table.</p>
+            <p>Input only allowed when FRA type is equal to "TRADING".</p>
+        </desc>
+</t>
+<t>
+<field>SETTLEMENT.AMT</field>
+<desc>
+            <p>Indicates the value of the amount to be settled. </p>
+            <p>On the RATE.FIX.DATE of the FRA agreement, the fixed rate of the contract is compared with the  settlement rate and counterparties settle between them the value of the interest rate differential on the agreed principal over the agreed period. Since the interest rate differencial is paid in advance at the START.DATE of the fixed rate period, the settlement amount is DISCOUNTED as per formula indicated in addendum. Thus, the settlement amount of a FRA is the profit or loss that is realised upon the settlement (START) date, and whose value is discounted back from the date of maturity. </p>
+            <p>       1. When the SETTLEMENT.RATE is greater than the INTEREST.RATE of           the FRA contract then: </p>
+            <p>          -     If the FRA contract is an Asset (SALE), then the                 settlement amount is a LOSS and the settlement amount will                 be displayed with a "-" (minus) sign. </p>
+            <p>          -     If the FRA contract is a Liability (PURCHASE), then the                 settlement amount is a PROFIT and the settlement amount                 will be displayed with a "+" (positive) sign. </p>
+            <p>       2. When the SETTLEMENT.RATE is smaller than the INTEREST.RATE of           the FRA contract then: </p>
+            <p>          -     If the FRA contract is an Asset (SALE), then the                 settlement amount is a PROFIT and the settlement amount                 will be displayed with a "+" (positive) sign. </p>
+            <p>          -     If the FRA contract is a Liability (PURCHASE), then the                 settlement amount is a LOSS and the settlement amount will                 be displayed with a "-" (minus) sign. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard amount format.  System generated field.  Access not allowed.  Amount is always displayed in the currency of SETTLEMENT.CCY.</p>
+        </desc>
+</t>
+<t>
+<field>CORR.AMEND.MKR</field>
+<desc>
+            <p>Indicated, in SWIFT terminology, if this is a correction or an amendment. It is used to indicate the code word to be used on a SWIFT confirmation. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>"A" for Amend, "C" for Correct.</p>
+            <p>Mandatory input when REPLACING/DEAL NO has been entered.</p>
+            <p>"Amend" is not allowed without a replacing deal number.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.ACCRUAL</field>
+<desc>
+            <p>Indicates the total accrual amount in the (accrual) FRA currency.  This amount will be accrued from the START.DATE to the MATURITY.DATE on a linear basis. </p>
+            <p>It must be remembered that for all HEDGE contracts, the settlement amount (profit or loss) which is received or paid on the settlement date will be accrued during the notional period of the FRA contract (from START to MATURITY date) as an interest income or expense. The offset to this entry is a contra entry in the suspense account "Unearned Interest and Discount" (when profit) or "Interest Paid In Advance" (when settlement amount = loss). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 amount format.  System generated field when the FRA TYPE is equal to "HEDGE".  This amount is always identical to the settlement amount.</p>
+        </desc>
+</t>
+<t>
+<field>NON.SETL.NARR</field>
+<desc>
+            <p>This field allows the user to enter any free text in a FRA deal which was not updated with the settlement rate before the START.DATE. </p>
+            <p>Only becomes live after settlement date. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Multivalue Field.  35 Alpha-numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>FRA.CURRENCY</field>
+<desc>
+            <p>Indicates the currency code of the FRA contract. </p>
+            <p>The numeric code of the currency can also be used instead of the alpha code. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid code on the CURRENCY table. Default = Local Currency.</p>
+        </desc>
+</t>
+<t>
+<field>TR.DEAL.WISE.REVAL</field>
+<desc>
+            <p> For trade deals the value in this field gets defaulted from the FRA.PARAMETER. </p>
+        </desc>
+</t>
+<t>
+<field>MATURITY.DATE</field>
+<desc>
+            <p>Specifies the maturity (ending) date of the FRA contract.  When the FRA PERIOD has been entered, the maturity date will be calculated automatically by the system in the following way : it will take the calculated contract START.DATE and add the difference in number of months resulting from input in field FRA PERIOD. The result (after checking of the relevant HOLIDAY record) will be the Maturity date of the FRA. </p>
+            <p>The following input is also allowed : </p>
+            <p>          "NNM" where NN = 01 to 99                       M  = Month indicator </p>
+            <p>the number of months input is then added to the START.DATE to calculate the maturity date. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format.</p>
+            <p>The date must be greater than the Start date.</p>
+            <p>Any non working day will require an override.</p>
+            <p>Any input will override the default calculation.</p>
+            <p>Input in this field is mandatory if a FRA PERIOD was not defined previouly in the transaction.</p>
+        </desc>
+</t>
+<t>
+<field>BROKERAGE.CCY</field>
+<desc>
+            <p>The valid currency code of the Broker or the currency mnemonic. </p>
+            <p>The system allows brokerage to be settled in any currency providing it has been set up in the brokerage conditions on the BROKER table. </p>
+            <p>The operator may enter the currency as an alpha code or its numeric equivalent. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 characters - type SSS (uppercase alpha)            or 1-3 numeric characters currency code.  (Input only allowed when brokerage has been entered.)  Default as the first currency in the BROKER record field CCY.FOR.PAYMENT.</p>
+            <p>The currency must appear on the CURRENCY table.</p>
+            <p>The currency must be specified on the BROKER table.</p>
+            <p>Input is not allowed in this field when the broker has not been specified.</p>
+            <p>This field cannot be amended once the deal has been authorised.</p>
+        </desc>
+</t>
+<t>
+<field>MKT.EX.PL.DLY.ACCR</field>
+<desc>
+            <p>This field holds the daily accrual amount of the market exchange profit/loss for the non-treasury customers with HEDGE type deals.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field.</p>
+            <p>Display only field.</p>
+        </desc>
+</t>
+<t>
+<field>LINK.REFERENCE</field>
+<desc>
+            <p>Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 12 characters may be entered.</p>
+            <p>This is a A field.</p>
+        </desc>
+</t>
+<t>
+<field>PAYMENT.SENT</field>
+<desc>
+            <p>Specifies the date and time when the payment settlement details have been passed over to the T24 Delivery module for onward communication to the receiver of the message.  This is only applicable when the contract is done at a loss. </p>
+            <p>The FRA call to the T24 Delivery Module is acknowledged by the latter, sending back the ID it has generated for the message.  This ID takes the following form: </p>
+            <p>          D 1986 1105 - 334335 </p>
+            <p>          where: </p>
+            <p>          D means a message is to be delivered (as opposed to R for           a message received). </p>
+            <p>          1986 is the current year             11 is the current month number             09 is the current day and, </p>
+            <p>          334335 is a serial number taken form the computer time clock,           i.e. the number of seconds (in tenths) elapsed since midnight.           This number corresponds to 09:17:13 AM. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Content is automatically generated.</p>
+        </desc>
+</t>
+<t>
+<field>MKT.EXCH.PL.AMT</field>
+<desc>
+            <p>This field holds the market exchange profit/loss amount calculated on the trade date for a non-treasury customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field.</p>
+            <p>Display only field.</p>
+        </desc>
+</t>
+<t>
+<field>SETL.ADV.NARR</field>
+<desc>
+            <p>To specify any narrative to be included on the settlement advice sent to the counterparty. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Multivalue field.  35 alphanumeric characters.  Input is optional and no default is applicable.  Maximum 6 lines of 35 characters will be allowed.</p>
+        </desc>
+</t>
+<t>
+<field>BROKERAGE</field>
+<desc>
+            <p>Contains the amount of brokerage to be paid to the broker defined above. Expressed in terms of the deal currency. </p>
+            <p>If no value is entered here but a broker code is defined above, then the system will attempt to calculate a default brokerage amount based on the conditions set up on the BROKER file.  If an amount is calculated succesfully the it will be defaulted in this field, and will be expressed in the deal currency. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 numeric characters.  (Optional Input, Default calculated using the BROKER file.)  Only allowed if broker code entered above.</p>
+            <p>Input only allowed when BROKER.CODE field is entered.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.COM.EQUIV</field>
+<desc>
+            <p>The equivalent, in local currency of the total CHARGE.AMOUNT. </p>
+            <p>The field only contains a value if charges in foreign currency has been entered for the deal.  The amount recorded is the equivalent of the total CHARGE.AMOUNT converted at the mid-rate for the currency specified in CHG/COM ACCT.  This mid-rate is taken from the CURRENCY table at the time of input and will be used for all positions updates and accounting for the charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard amount format.  System generated field.</p>
+        </desc>
+</t>
+<t>
+<field>TREASURY.CUSTOMER</field>
+<desc>
+            <p>This field indicates whether the customer is a treasury customer or not.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>NULL or NO accepted only, NULL is defaulted.</p>
+            <p>A Value NO indiactes that the entered Customer is not a treasury customer.</p>
+            <p>A value NULL indicates that the customer is a treasury customer.</p>
+            <p>When NO is selected a TREASURY.RATE is mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>MIS.ACCT.OFF</field>
+<desc>
+            <p>Specifies the account officer responsible for the relationship with the customer. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid code on the DEPT.ACCT.OFFICER table.  Account officer defined on customer record of the counterparty.</p>
+        </desc>
+</t>
+<t>
+<field>STMT.NO</field>
+<desc>
+            <p>A sub-value number generated automatically by the system which identifies either a statement entry or a category entry in respect of a contract. </p>
+            <p>The system will automatically insert a number into this field and this number may refer to a statement entry or a category entry depending on the value contained in the corresponding multivalue fields. The following examples will illustrate the use of this field. </p>
+            <p>          Example 1:           On the start date of a FRA contract there will be an entry on           the Settlement Account and the following type of number will be           generated at this field: </p>
+            <p>          SV1 STMT.NO ........... 673732684.48           SV2 STMT.NO ........... 1 </p>
+            <p>          The number automatically generated in S.V.1 is unique to the           contract in question and is built in the following way: </p>
+            <p>          1. The first four digits '6737' indicate the number of days              since the 1st of January 1968. In our example, it corresponds              to the 11th of June 1986. </p>
+            <p>          2. The next five digits '32684' indicate the number of seconds              since midnight. In our example, it corresponds to an entry              generated on line at 09:04:44 AM. </p>
+            <p>          3. The last two digits '48' indicate the number of hundreds of              seconds. </p>
+            <p>             The value assigned (again automatically) to S.V.2 identifies              the number in S.V.1 as a statement entry number. If the user              wishes to call this statement entry record on to the screen              the user will invoke the STMT.ENTRY Application and then type              the following at 'AWAITING ID': </p>
+            <p>             67372684.480001 </p>
+            <p>             where the suffix '0001' identifies it as the first              statement entry (there may be more than one as the next              example will illustrate). </p>
+            <p />
+            <p>          Example 2:           A second example outlined here is similar to example 1 in that           there is a statement entry on start date for both the           Settlement Account and the CHG/COM Acct. The system handles this           case as follows: </p>
+            <p>          SV.1   STMT.NO ........... 673732684.48           SV.2   STMT.NO ........... 1-2 </p>
+            <p>          Once again S.V.1 contains the identification number           automatically generated by the system while S.V.2 now contains           two separate numbers signifying that there are in fact two           separate statement entries, one in respect of the Settlement           Account and one in respect of the CHG/COM Acct. If the user           wishes to see either of these he must first of all invoke           STMT.ENTRY followed by the desired function and then at           'AWAITING ID' type either: </p>
+            <p>                673732684.480001 </p>
+            <p>          where the addition of the suffix '0001' identifies the           statement entry in respect of the settlement account or, </p>
+            <p>                673732684.480002 </p>
+            <p>          where the addition of the suffix '0002' identifies the           statement entry in respect of the CHG/COM ACCT. </p>
+            <p />
+            <p>          Example 3:           A third example might be that of a category entry generated at           initiation of a contract where commission or charges have been           debited to the customer and credited to a profit and loss           category code. In this case the following entries are generated           on the contract: </p>
+            <p>          SV1 STMT.NO ............... 673732684.48           SV3 STMT.NO ............... 1 </p>
+            <p>          Once again the standard type number is generated and inserted at           S.V.1. </p>
+            <p>          Now, however, S.V.2 is replaced by S.V.3 which now identifies           the number in S.V.1 as a category entry and not a statement           entry. </p>
+            <p>          To call this category entry record onto the screen the user must           now type: </p>
+            <p>          CATEG.ENTRY at 'AWAITING APPLICATION' </p>
+            <p>          followed by: </p>
+            <p>          673732684.480001 at 'AWAITING ID' </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>CONF.ADV.SENT</field>
+<desc>
+            <p>Specifies the date and time when the confirmation details have been passed over to the T24 Delivery module for onward communication to the receiver of the message. </p>
+            <p>The FRA call to the T24 Delivery Module is acknowledged by the latter, sending back the ID it has generated for the message.  This ID takes the following form: </p>
+            <p>          D 1986 1105 - 334335 </p>
+            <p>          where: </p>
+            <p>          D means a message is to be delivered (as opposed to R for a           message received). </p>
+            <p>          1986 is the current year             11 is the current month number             09 is the current day and, </p>
+            <p>          334335 is a serial number taken form the computer time clock,           i.e. the number of seconds (in tenths) elapsed since midnight.           This number corresponds to 09:17:13 AM. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Content is automatically generated.</p>
+        </desc>
+</t>
+<t>
+<field>CONF.BY.BROKER</field>
+<desc>
+            <p>To confirm on-line the transaction with the broker confirmation. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Automatically updated by the on-line "V"(erify) function with the user id + date, time and terminal id.  or  "O" (onesided) meaning that no counterparty confirmation is expected. In this case, the deal will not be included in the broker unconf deals report.  Only "O" accepted from the operator.</p>
+        </desc>
+</t>
+<t>
+<field>SPOT.DATE</field>
+<desc>
+            <p>Indicates the market spot date applicable on the date the contract is done. This date is calculated automatically by the system according to the TRADE.DATE and the value of the parameters defined in the FRA.PARAMETER table. </p>
+            <p>The FRA START date is calculated from this date and not from the trade date when a value has been entered in the field FRA.PERIOD. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is an internal, NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>BEN.ACCT.NO</field>
+<desc>
+            <p>Identifies the Account details (number or name) of the Beneficiary (with his bank) to be credited, with the Settlement Amount (only allowed when contract has been done at a loss). </p>
+            <p>This field concerns third party transfers where the customer is requesting an external delivery of the settlement amount and for which you have received Account Details corresponding to the final Beneficiary account. </p>
+            <p>Any amendment to this field after payment has been sent will be refused. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 35 Characters - Type SSS.  Multi-value field (Maximum of four lines).  (Optional input when SETTLEMENT ACCT is a Nostro account; Default value = counterpart (i.e. CUSTOMER.ID) himself.</p>
+            <p>Input in this field will only be allowed for transactions done at a loss and when the SETTLEMENT.ACCT is a Nostro account.</p>
+        </desc>
+</t>
+<t>
+<field>FRA.PERIOD</field>
+<desc>
+            <p>Indicates which period is covered by the FRA contract.  For example, a "6-9" called a "six against nine" agreement means that the bank wants to enter into an FRA for 3 months commencing 6 months after signing. </p>
+            <p>      Examples: </p>
+            <p>       "1-6"  =  1 against 6 agreement        "6-12" =  6 against 12 agreement       "12-18" = 12 against 18 agreement </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>"nn-NN"  where : nn = 1 to 99         NN = 1 to 99         NN &gt; nn  This field is optional and input is used to calculate automatically the "START" and "MATURITY" dates of the contract.</p>
+        </desc>
+</t>
+<t>
+<field>RESIDENCE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>INTERNAL.NARR</field>
+<desc>
+            <p>To specify any narrative for the benefit of the back office. This internal narrative will not be included on the settlement advice sent to the counterparty. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Multivalue field.  35 alphanumeric characters.  Input is optional and no default is applicable.</p>
+        </desc>
+</t>
+<t>
+<field>PORTFOLIO.NO</field>
+<desc>
+            <p>Identifies the portfolio number to which this FRA contract must be linked. This link is important for deals done in the overall management of customer portfolios. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to three numeric characters to identify a specific portfolio of a customer.  As defined on the Customer security file for the FRA application.  Any portfolio number input by the user must be existing on the SEC.ACCT.MASTER file.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.COM.CCY</field>
+<desc>
+            <p>Specifies the currency of the CHG/COM.ACCT. All the charges, commissions and applicable taxes will be indicated in this currency. Any required conversion is done at the current middle rate found on the CURRENCY table. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System generated value.</p>
+        </desc>
+</t>
+<t>
+<field>BROK.EQUIV</field>
+<desc>
+            <p>The equivalent, in local currency of BROKERAGE.AMT. </p>
+            <p>The field only contains a value if brokerage in foreign currency has been entered for the deal.  The amount recorded is the equivalent of BROKERAGE.AMT converted at the mid-rate for the currency specified in BROKERAGE CCY.  This mid-rate is taken from the CURRENCY table at the time of input and will be used for all positions updates and accounting for the brokerage. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard amount format.  System generated field.</p>
+        </desc>
+</t>
+<t>
+<field>CONF.NARRATIVE</field>
+<desc>
+            <p>To specify any narrative to be included on the confirmation sent to the counterparty. </p>
+            <p>If the Floating Rate Option code defined in MARKET.RATE.TEXT is OTHER, which is mapped to the tag 14F of SWIFT confirmation, this field gets defaulted with the value from the field SWIFT.CODE.WORD followed by the value from the DESCRIPTION of the MARKET.RATE.TEXT.</p> 
+            <p>The SWIFT.CODE.WORD defined in MARKET.RATE.TEXT table is meant for use when the floating Rate Option code is OTHER. System, therefore, defaults the same if User has not keyed in the same word manually.</p>
+            <p>As per SWIFT standards, the code FROP must be used if the Floating Rate Option code is OTHER. Therefore, a validation is provided to ensure that the FROP defaulted by system is retained and not manually deleted.</p>
+            <p>MARKET.RATE.TEXT record is identified using REFERENCE.RATE key on the contract. In case a record is not found, then the MARKET.RATE.TEXT record that contains the RATE.KEY value same as the REFERENCE.RATE is retrieved. When  REFERENCE.RATE KEY  is found in multiple records,the first record of MARKET.RATE.TEXT is considered after sorting by ID.</p>
+            <p>This field is mapped to the tag 72 of the SWAP Confirmation Message.</p>
+             
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Multivalue field.  35 alphanumeric characters.  Input is optional and no default is applicable.  Maximum 4 lines of 35 characters.</p>
+	    
+        </desc>
+</t>
+<t>
+<field>REFERENCE.RATE</field>
+<desc>
+            <p>Indicates the reference rate from the PERIODIC.INTEREST table against which the variance allowance will be checked. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>00 to 99.  Input in this field is optional.  Default = Reference rate from FRA.PARAMETER table.  This reference rate  must exist on the PERIODIC.INTEREST rate table for the currency of the FRA transaction.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.AMT</field>
+<desc>
+            <p>Based on the tax code obtained from the commission and/or charges table, the system will automatically calculate any tax which is to be added to the charges/commissions. </p>
+            <p>The total of the charges and commissions amount plus the tax amount will be debited to the account specified in CHG/COM.ACCT. When this account is in FCY, the local currency tax liability account will be credited in LCY equivalent at the current middle rate. The account to be credited is found on the tax table. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 amount in the currency of the CHG/COM.ACCT.  System generated.  Associated multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>CONSOL.KEY</field>
+<desc>
+            <p>Indicates the consolidation key which has been generated for this contract. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System generated.  The first four parameters will always contain the Application ID (i.e. FR), the Currency Market, the Position Type and the Currency Code.  The other parameters will default in accordance with the conditions defined in the file CONSOLIDATE.COND.</p>
+        </desc>
+</t>
+<t>
+<field>PURCHASE.SALE</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input.</p>
+            <p>A maximum of 8 characters may be entered.</p>
+            <p>The following values are permitted:       PURCHASE      SALE</p>
+        </desc>
+</t>
+<t>
+<field>SETTLEMENT.EQUIV</field>
+<desc>
+            <p>The equivalent, in local currency, of the SETTLEMENT.AMT. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard amount format.  System generated field.</p>
+        </desc>
+</t>
+<t>
+<field>BROKERAGE.AMT</field>
+<desc>
+            <p>Contains the amount of brokerage to be credit to the broker account specified in the broker currency defined above. </p>
+            <p>If a brokerage amount has been entered above, then this field will identify the amount to be credited to the broker account.  If no input is made a default will be calculated from the brokerage using the current mid market exchange rates.  If the brokerage is specified in the same currency as the broker currency then the brokerage will be copied to this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard amount format for currency.  (Optional Input. Default calculated from the brokerage at mid market rates.)</p>
+            <p>Input is not allowed in this field when the broker code has not been entered.</p>
+            <p>Input not allowed in this field if no BROKERAGE, or BROKERAGE.CCY has been specified.</p>
+            <p>The amount must be in a valid format for the brokerage currency.</p>
+            <p>Input not allowed for Internal or Negotiated deals.</p>
+        </desc>
+</t>
+<t>
+<field>DAILY.ACCRUAL</field>
+<desc>
+            <p>Indicates the Daily accrual amount in the FRA (accrual) currency. </p>
+            <p>This amount corresponds to the settlement amount divided by the number of calendar days in the notional period of the FRA contract. </p>
+            <p>It must be remembered that for all HEDGE contracts, the settlement amount (profit or loss) which is received or paid on the settlement date will be accrued during the notional period of the FRA contract (from START to MATURITY date) as an interest income or expense. The offset to this entry is a contra entry in the suspense account "Unearned interest and discount" (when profit) or "Interest paid in advance" (when settlement amount = loss). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 amount format.  System generated field when the FRA TYPE is equal to "HEDGE".</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Contains all the override messages which the user agreed to during input. </p>
+            <p>During the validation stage of a FRA contract, the system may provide the user with a series of screen override messages to indicate an anomaly, for instance, that the interest rate varies by more thatn the variation tolerance defined in the FRA parameters table. </p>
+            <p>In the event that the user confirms the Override, the full text of the actual Override Message will be stored, for reference purposes on in this multivalue field. </p>
+            <p>For example, if the user inserts an 'abnormal' interest rate in the field corresponding to the interest rate then when the deal is validated a warning bell will sound and a message will appear, at the foot of the screen, which reads: </p>
+            <p>'VARIANCE OF RATE EXCEEDS PERMITTED TOLERANCE' </p>
+            <p>This will draw the user's attention to the rate entered, which may be a mistake and can then be corrected, or, on the other hand, it may be correct input and so the user confirms that this rate is really intended. </p>
+            <p>A second example might be in respect of a contract done with a client who has a credit line established with the bank but where the start date of the intended FRA contract goes beyond the credit line expiry date. In this case when the deal is validated a warning bell will sound and a message will appear, at the foot of the screen, which reads: </p>
+            <p>'LINE EXPIRES BEFORE TXN START DATE' </p>
+            <p>Once again the user's attention is drawn to the situation and either corrected or conrimed via a positive response to the Override Message. </p>
+            <p>If, subsequently, the contract record is either fully displayed or printed, then all override messages will be present. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field.  Multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>CONF.BY.CUSTOMER</field>
+<desc>
+            <p>To confirm on-line the transaction with the Counterparty confirmation. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Automatically updated by the on-line "V"(erify) function with the user id + date, time and terminal id.  or  "O" (onesided) meaning that no counterparty confirmation is expected. In this case, the deal will not be included in the ctpy unconf deals report.  Only "O" accepted from the operator.</p>
+        </desc>
+</t>
+<t>
+<field>RATE.FIXING.DATE</field>
+<desc>
+            <p>Specifies the date on which the prevailing interest rate for the period of the deposit/placement is determined. </p>
+            <p>For foreign currency transactions, this will normally happen 2 business days before the START.DATE while for local currency FRA it will be the same day. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format.  If no input is done by the user, the system will automatically calculate this date according to the number of (business) days defined in the FRA.PARAMETER table. This number of days will be subtracted from the START.DATE.</p>
+            <p>This date must be smaller or equal to the START.DATE.</p>
+            <p>When this date is more than 4 days prior to the START.DATE, an override will be required from the user.</p>
+        </desc>
+</t>
+<t>
+<field>SETL.ADV.SENT</field>
+<desc>
+            <p>Specifies the date and time when the settlement advice details have been passed over to the T24 Delivery module for onward communication to the receiver of the message. </p>
+            <p>The FRA call to the T24 Delivery Module is acknowledged by the latter, sending back the ID it has generated for the message.  This ID takes the following form: </p>
+            <p>          D 1986 1105 - 334335 </p>
+            <p>          where: </p>
+            <p>          D means a message is to be delivered (as opposed to R for a           message received). </p>
+            <p>          1986 is the current year             11 is the current month number             09 is the current day and, </p>
+            <p>          334335 is a serial number taken form the computer time clock,           i.e. the number of seconds (in tenths) elapsed since midnight.           This number corresponds to 09:17:13 AM. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Content is automatically generated.</p>
+        </desc>
+</t>
+<t>
+<field>TREASURY.RATE</field>
+<desc>
+            <p>A rate has to be entered incase the customer is not a treasury customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>9 Type N (Numeric) Digits.</p>
+            <p>Mandatory if TREASURY.CUSTOMER field has a value of NO.</p>
+        </desc>
+</t>
+<t>
+<field>SOD.MAT</field>
+<desc>
+            <p />
+            <p>This field is used to define whether the FRA contract is subject to the Start of day maturity or not. If left blank, value from field SOD.MAT in FRA.PARAMETER is populated. Otherwise 'NO' is defaulted.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Valid inputs are 'NO' or 'YES'. </p>
+            <p />
+            <p>Default 'NO'.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SETTLEMENT.CCY</field>
+<desc>
+            <p>Indicates the currency in which the settlement amount will be paid. This will always be in the currency of the contract. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System generated field. Access not allowed.  Same as FRA CURRENCY.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.EQUIV</field>
+<desc>
+            <p>The equivalent, in local currency of the total TAX.AMT. </p>
+            <p>The field only contains a value if tax in foreign currency has been entered for the deal.  The amount recorded is the equivalent of TAX.AMT converted at the mid-rate for the currency specified in CHG/COM.ACCT. This mid-rate is taken from the CURRENCY table at the time of input and will be used for all positions updates and accounting for the tax. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard amount format.  System generated field.</p>
+        </desc>
+</t>
+<t>
+<field>POSITION.OPN.CLOSE</field>
+<desc>
+            <p>For the contracts which are specified as NON HEDGE, this will specify if the contract being done is to open (create) a new FRA position or to close an existing open FRA position. </p>
+            <p>This information is important because a different accounting treatment exists for FRA positions which have been matched (closed) vis-a-vis the positions which are still unmatched (open). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>         Nil (when HEDGE contracts)         Open (for TRADING contracts)        Close (for TRADING contracts)  Automatically defaulted by the system.</p>
+            <p>"Open" or "Close" are mandatory for TRADING contracts.  "Close" is only allowed if a position already exists on the dates (START.DATE and MATURITY.DATE) specified in the deal.  "Open" will only be allowed for new or increases in existing positions.</p>
+            <p>"Nil" is mandatory for HEDGE deals.</p>
+            <p> This functionality is not available for contracts which has TR.DEAL.WISE.REVAL set to yes.</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.TODATE.EQUIV</field>
+<desc>
+            <p>The equivalent, in local currency, of ACCRUAL.TODATE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Amount Format System generated field.</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.TODATE</field>
+<desc>
+            <p>Indicates the Accrual Todate in the FRA currency, i.e. in the accrual currency. This amount will be updated by the End of day process on each accrual run. </p>
+            <p>It must be remembered that for all HEDGE contracts, the settlement amount (profit or loss) which is received or paid on the settlement date will be accrued during the notional period of the FRA contract (from START to MATURITY date) as an interest income or expense. The offset to this entry is a contra entry in the suspense account "Unearned Interest and Discount" (when profit) or "Interest Paid In Advance" (when settlement amount = loss). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 amount format.  System generated field when the FRA.TYPE is equal to "HEDGE".</p>
+        </desc>
+</t>
+<t>
+<field>ACCRUAL.CCY</field>
+<desc>
+            <p>Indicates the currency in which the accrual amount will be done. </p>
+            <p>This will always be in the currency of the contract. </p>
+            <p>When this is a foreign currency, the exchange position will be updated on a daily basis by this amount. The equivalent in local currency will then be the entry in the profit and loss category which is calculated everyday using the prevailing middle rate. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System generated field. Access not allowed. Same as FRA CURRENCY.</p>
+        </desc>
+</t>
+<t>
+<field>AGREEMENT.TYPE</field>
+<desc>
+            <p>Defines the </p>
+            <p>FRA.DEAL</p> contract agreement type. If a master agreement type is entered then the default full agreement type (eg TYPE / DATE // VERSION) will be used on the contract if such an agreement type has been entered on the master <p>FRA.AGREEMENT.TYPE</p> record.   <p>Eg. ISDA (ISDA master agreement), FRABBA, AFB, etc. This is also used to define Swift Message conditions. Corresponds to field 77 on Swift messages.</p><p><p>Validation Rules:</p></p><p /><p>1-12 Alphanumeric characters. (Mandatory input). </p><p>Must be a valid definition on the </p><p>FRA.AGREEMENT.TYPE</p>     file.    <p>Each contract must be linked to an agreement type.</p></desc>
+</t>
+<t>
+<field>HEDGE.TRANS.IDS</field>
+<desc>
+            <p>Specifies the contracts IDs of the Assets/Liabilities where an interest rate exposure exists. The recording of this information at the FRA contract level is relevant when the FRA transaction is done specifically to reduce this risk and as such is designated as a 'Hedge' type. </p>
+            <p>In various countries, local authorities require that the bank specifically identifies the Assets/Liabilities being hedged by the FRA. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Any value even free text if required.  Multivalue field.  Up to 35 alphanumeric characters for each expanded line.</p>
+            <p>Input allowed in this field only when FRA TYPE = HEDGE.</p>
+        </desc>
+</t>
+<t>
+<field>SWIFT.REF</field>
+<desc>
+            <p>SWIFT common reference automatically generated by the system. To be used for FRA messages transmitted through SWIFT i.e. : </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>MT 340 : for the Confirmation Advice. MT 341 : for the Settlement Advice.</p>
+        </desc>
+</t>
+<t>
+<field>FRA.TYPE</field>
+<desc>
+            <p>Specifies the underlying strategy of the FRA transaction. Two main types exist: </p>
+            <p>          HEDGE  &lt;--------&gt;  TRADING </p>
+            <p>A distinction is made between the two in order to allow different accounting procedures to be implemented and for the timing of the recognition of profits and losses and as to when they are to be incorporated into the balance sheet. </p>
+            <p />
+            <p>HEDGE Transactions </p>
+            <p>Because the maturity dates of deposits and other sources of funds available in the market do not always sufficiently match the maturity of banks' assets, bankers make use of interest rate hedging instruments to reduce their interest gap exposure to acceptable limits.  The FRAs have become today a popular alternative to Financial Futures as a means of hedging interest rate exposure. In order for a bank to enter into a FRA for hedging purposes, the following conditions will apply: </p>
+            <p>      1. The bank must have net assets or liabilities which are subject to          interest rate risk. This condition must exist after commitments          and anticipated transactions reducing the risk have been taken          into account. </p>
+            <p>      2. The FRA transaction must be designated as a hedge and must reduce          the interest rate risk on exposed assets and liabilities. </p>
+            <p>As it can be seen, a conscious decision is done at deal level and since FRAs may be tailored into individual requirements, it is easier for such a trade to qualify as a hedge than for normal exchange governed Financial Futures. </p>
+            <p />
+            <p>TRADING Transactions </p>
+            <p>Apart from Hedging facilities, bankers will operate for other purposes such as general trading and arbitrage. Since such activities may be deemed to be of a more speculative nature, the concept of revaluing such positions is of importance. </p>
+            <p>In order to allow the segregation of the above trade concepts, the input of trades requires the inclusion of the type of trade. This will allow the system to distinguish trades into their relevant categories both for accounting purposes and for revaluing. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>H(edge), T(rading).  Default none; Input is always mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.RATE</field>
+<desc>
+            <p>Specifies the future fixed interest rate on the notional Deposit/ Placement. </p>
+            <p>This rate is guaranteed and set at the time of the FRA transaction. On the RATE FIXING DATE, the prevailing interest rate for the period of the deposit/placement is determined and compared to this rate. Any difference between these rates is settled between the counterparties based on the nominal amount of the notional deposit/placement. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Any value is accepted.  Input in this field is mandatory.</p>
+            <p>Only a fixed interest rate type is accepted for FRA transactions. Floating or periodic interest rates are not allowed.</p>
+            <p>The rate input will be checked against the PERIODIC.INTEREST rate table (for a similar current period in the same currency and for the same reference rate). Any variation greater than the one specified in the FRA.PARAMETER table will require an override.</p>
+        </desc>
+</t>
+<t>
+<field>TRADE.DATE</field>
+<desc>
+            <p>Indicates the trade date of the contract. From this date will be calculated the market Spot date according to the values defined in the FRA.PARAMETERS table e.g. </p>
+            <p>        .  "+2 working days" for foreign currency transactions,         .  "equal" for local currency contracts. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date Format.  Default = Today's date (Bank date)</p>
+            <p>Date must be smaller or equal than the Bank date.</p>
+            <p>Any non working day or back-value greater than 15 days will require an override.</p>
+        </desc>
+</t>
+<t>
+<field>DEAL.EQUIV</field>
+<desc>
+            <p>The equivalent, in local currency, of FRA.AMOUNT when the FRA.CURRENCY is different from the local currency. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Amount Format System generated field.</p>
+        </desc>
+</t>
+<t>
+<field>RECALC.MKT.PL.AMT</field>
+<desc>
+            <p>This field holds the recalculated market exchange profit/loss amount on the settlement of the deal for a non-treasury customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Display only field.</p>
+            <p>System field.</p>
+        </desc>
+</t>
+<t>
+<field>CATEGORY.CODE</field>
+<desc>
+            <p>Specifies the product category code applicable to the transaction. This category code is used for CRF consolidation and reporting. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Any category code in range:  26000 - 26099  Default, as per FRA.PARAMETER table.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.COM.CODE</field>
+<desc>
+            <p>Identifies the type(s) of commissions or charges to be levied on the FRA transaction being processed. </p>
+            <p>This is really only applicable when the bank makes the deal with one of its clients and has decided to charge some commission for the service. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Any valid code on FT.COMMISSION.TYPE or FT.CHARGE.TYPE.  Associate multivalue field.  Optional input.  Default Value, none.</p>
+            <p>The code must be existing on the FT.COMMISSION.TYPE or FT.CHARGE.TYPE tables.</p>
+        </desc>
+</t>
+<t>
+<field>CLOSED.FRA.IDS</field>
+<desc>
+            <p>Specifies the FRAs contracts IDs which are being closed by this deal. The recording of this information at the FRA contract level is only for information and is relevant when the FRA transaction is done specifically to close an existing FRA position. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard FRA ID i.e. FRYYDDDNNNNN  Multivalue field.  Standard ID Number in each expanded line.</p>
+            <p>Input allowed in this field when POS OPEN/CLOSE = "Close".</p>
+            <p>The FRA ID input in this field must be an existing and Live FRA contract and in the opposite sense of the current transaction (purchase &lt;---&gt; sale), open on the FRA Trading position file.</p>
+            <p> This functionality is not available for contracts which has TR.DEAL.WISE.REVAL set to yes.</p>
+        </desc>
+</t>
+<t>
+<field>PAY.SETTLEMENT.ACT</field>
+<desc>
+            <p>Identifies the account through which the settlement loss amount is to be settled. </p>
+            <p>At initiation both settlement accounts (Receive and Pay) will be allowed in order to enable the correct generation of the SWIFT confirmation advice. </p>
+            <p>When the settlement rate is entered later, the user will be requested to erase one of the two accounts depending on the profit/loss resulting from the settlement rate. </p>
+            <p>When no input has been entered in this field, the system will proceed as follows: </p>
+            <p>       a) In a first stage, the application will check if the counterparty           has specific instructions defined on the Agency table for the           settlement currency. If yes, the existing conditions will be           followed. Otherwise, </p>
+            <p>       b) In a second stage, the FRA application will check in the           internal file Customer Ccy Acct if the counterparty with whom           the bank is making the deal has an account in that currency           (i.e. settlement currency). If yes, this customer account will           then be credited. If the counterparty does not maintain an           account in the settlement currency with the bank, </p>
+            <p>       c) The FRA application will then, in a third stage, find in the           table NOSTRO ACCOUNT the relevant nostro account for the           settlement currency. If this account exists on the Nostro table,           it will then be used to record the credit accounting entry. If           at the Nostro table more than one nostro exists per currency,           the system will default to the first account listed. However,           the user has the ability to select which Nostro account by           entering 'A' to give the first, 'B' to give the second and so           forth. If no account is defined on the Nostro table, </p>
+            <p>       d) The user will then need to enter an account number which can be           a customer account, a nostro account or an internal account. The           internal account details must be present on the FX.TEXT table.           Input to this field for internal accounts must be entered in the           format 1 to give the first account: 2 to give the second and so           forth as detailed on the FX.TEXT table. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Account number or Mnemonic.  Default = As indicated here below.</p>
+            <p>If entered as an account number or mnemonic, the account must be present on the accounts file and must be in the appropriate currency.</p>
+            <p>An override is required where the account is not an account of the counterparty unless a nostro is specified.</p>
+            <p>Posting restrictions require an override.</p>
+        </desc>
+</t>
+<t>
+<field>MKT.EX.PL.TOT.ACCR</field>
+<desc>
+            <p>This field holds the total accrual amount of the market exchange profit/loss for the non-treasury customers with HEDGE type deals.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Display only field for HEDGE type deals.</p>
+            <p>System field.</p>
+            <p>Display only field.</p>
+        </desc>
+</t>
+<t>
+<field>INDUSTRY</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.CHARGES</field>
+<desc>
+            <p>Specifies, in the currency of the CHG/COM.ACCT, the total of the charge and/or the commission amounts plus the tax amounts to be debited to the counterparty by the debit of the CHG/COM.ACCT. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 amount format.  System generated value.</p>
+        </desc>
+</t>
+<t>
+<field>REC.SETTLEMENT.ACT</field>
+<desc>
+            <p>Identifies the account through which the settlement profit amount is to be received. </p>
+            <p>At initiation both settlements accounts (Receive and Pay) will be allowed in order to enable the correct generation of the SWIFT confirmation advice. </p>
+            <p>When the settlement rate is entered later, the user will be requested to erase one of the two accounts depending on the profit/loss resulting from the settlement rate. </p>
+            <p>When no input has been entered in this field, the system will proceed as follows: </p>
+            <p>       a) In a first stage, the FRA application will check in the internal           file Customer Ccy Acct if the counterparty with whom the bank is           making the deal has an account in the settlement currency. If           yes, this customer account will then be debited. If the           counterparty does not maintain an account in the settlement           currency with the bank, </p>
+            <p>       b) The FRA application will then, in a second stage, find in the           table NOSTRO ACCOUNT the relevant nostro account for the           settlement currency. If this account exists on the Nostro table,           it will then be used to record the debit accounting entry. If at           the Nostro table more than one nostro exists for that currency,           the system will default to the first account listed. However,           the user has the ability to select which Nostro account by           entering 'A' to give the first, 'B' to give the second and so           forth. If no account is defined on the Nostro table, </p>
+            <p>       c) The user will then need to enter an account number which can be           a customer account, a nostro account or an internal account.           The internal account details must be present on the FX.TEXT           table. Input to this field for internal accounts must be entered           in the format 1 to give the first account: 2 to give the second           and so forth as detailed on the FX.TEXT table. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Account number or mnemonic.  Default = As indicated here below.</p>
+            <p>If entered as an account number or mnemonic, the account must be in the appropriate currency.</p>
+            <p>An override is required where the account is not an account of the counterparty unless a nostro is specified.</p>
+            <p>Posting restrictions require an override.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.CODE</field>
+<desc>
+            <p>Contains the code of the tax table which has been used when calculating taxes on the charges and/or commissions. This field does not require any operator input as it is obtained from the relevant commission or charge table. </p>
+            <p>System generated. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 numeric characters with enrichment display.  Associated multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>START.DATE</field>
+<desc>
+            <p>Specifies the commencing (starting) date of the FRA contract. When the FRA PERIOD has been entered, the start date will be calculated automatically by the system in the following way : it will take the calculated market SPOT.DATE and add the number of months specified in the first part of the field FRA.PERIOD. The result (after checking of the relevant HOLIDAY record) will be the Start date of the FRA. </p>
+            <p>The following input is also allowed : </p>
+            <p>          "NNM" where NN = 01 to 99                       M  = Month indicator </p>
+            <p>the number of months input is then added to the SPOT.DATE to calculate the START.DATE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format.</p>
+            <p>The date must be greater than the Spot date.</p>
+            <p>Any non working day will require an override.</p>
+            <p>Any input will override the default calculation.</p>
+            <p>Input in this field is mandatory if a FRA.PERIOD was not defined previously in the transaction.</p>
+        </desc>
+</t>
+<t>
+<field>SETTLEMENT.RATE</field>
+<desc>
+            <p>Indicates the rate at which FRA contract is settled.  On the START.DATE of the FRA agreement, the fixed rate of the contract is compared with this settlement rate and counterparties settle between them the value of the interest rate differential on the agreed principal over the agreed period. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard interest rate format.</p>
+            <p>The rate input will be checked against the PERIODIC.INTEREST rate table for a similar period in the same currency. Any variation greater than the one specified in the FRA.PARAMETER table will require an override.</p>
+            <p>The rate can only be input on or after the date specified in the field RATE.FIXING.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>CALC.OR.BOOK</field>
+<desc>
+            <p>Indicates whether the revaluation entries for FRA Hedge Deals are to be Booked or only Calculated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Defaulted from the field HEDGE.REVAL.METHOD from FRA.PARAMETER and can be </p>
+            <p> modified as under :</p>
+            <p>If the value defaulted is BOOK, then the user can over-ride it either by clearing </p>
+            <p>the defaulted value or by inputting CALC.</p>
+            <p>If the value defaulted is CALC, it can be over-ridden by clearing it.</p>
+            <p>NOCHANGE field</p>
+        </desc>
+</t>
+<t>
+<field>AMORT.HEDGE</field>
+<desc>
+            <p>Indicates whether the settlement profit/loss on HEDGE deal  is to be accrued or not. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Defaulted from the field AMORT.HEDGE from FRA.PARAMETER.</p>
+            <p>NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>COUNTRY.RISK</field>
+<desc>
+            <p>Specifies the country risk applicable to the FRA transaction. This information will be used for the production of the country exposure report. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Any valid country code from the COUNTRY table.  Country of residence of the counterparty.</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+            <p>Identifies any additional element which has been defined locally to meet a particular requirement. </p>
+            <p>As in the majority of T24 Applications, the User is allowed to define in the FRA file up to 999 Local Elements in addition to the standard fields previously specified. These local elements should be defined by the User where deemed necessary according to local practice. </p>
+            <p>The name(s) of the new element(s), as well as the Format and <p>Validation Rules:</p>, must be defined in the Local Tables prior to the creation of any FRA transactions. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 characters as defined in the local table definition for this local reference field.  Multivalue field.  (Optional or Mandatory input according to definition in LOCAL.TABLE)  As defined by the User within the individual Local Tables.</p>
+        </desc>
+</t>
+<t>
+<field>DEALER.DESK</field>
+<desc>
+            <p>To record the dealer desk of the contract. Revaluations results are provided at the contract level and can be globalised by dealer desk if required. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid code in the DEALER.DESK table. Default dealer desk is taken from user profile. If not found, input is mandatory.  2 alphanumeric characters in the range A-Z, a-z, plus 0-9.</p>
+        </desc>
+</t>
+<t>
+<field>BANK.ADDR</field>
+<desc>
+            <p>Identifies the full name and address of a Beneficiary Bank, in respect of the Settlement Amount, where no Agent details are maintained for this Beneficiary Bank. </p>
+            <p>This field provides flexibility during input of transactions where external movements of funds are involved. When you do not currently maintain a Customer reference for a third or fourth party bank, you can use this field to enter the full details of the name and address of the Beneficiary Bank directly. </p>
+            <p>It is important to note that only one address, as free format, has been included in the module. This means that, in the case of a four party transfer, at least one of the two customers banks involved in the transfer of funds must have a Customer reference and the AGENCY defined. </p>
+            <p>Once the payment has been sent, this field cannot be changed. </p>
+            <p>for external delivery of Settlement Amount (Loss) </p>
+            <p>       --------------            --------------       |    GLOBUS    |          |     GLOBUS   |       |              |=========&gt;|     NOSTRO   |       |    BANK      |          |              |       |              |          |              |       |              |          |              |       |              |          |              |       |              |          |              |        --------------            --------------                                         |                                         |                                         |                                  --------------       May be BEN.BANK1---------&gt;| INTERMEDIARY |           or BANK.ADDR---------&gt;|              |                                 |              |                        OPTIONAL |              |                                 |              |                                 |     BANK     |                                 |              |                                  --------------                                         |                                         |                                         |                                  --------------       May be BEN.BANK1---------&gt;|    ACCOUNT   |           or BEN.BANK2---------&gt;|     WITH     |           or BANK.ADDR---------&gt;|              |                                 |              |                                 |              |                                 |     BANK     |                                 |              |                                  --------------                              MANDATORY IF PAYMENT THRU NOSTRO and no                              Agency details exist. </p>
+            <p>The following summarises the rules concerning the use of the 3 fields BEN.BANK1, BEN.BANK2 and BANK.ADDR: </p>
+            <p>      (iv)  BEN.BANK1 may be an ACCOUNT WITH Bank(i.e. the final             destination of the funds) or an INTERMEDIARY bank which will             pass the funds onto a second bank. </p>
+            <p>       (v)  BEN.BANK2 may be an ACCOUNT WITH Bank (ie. the final             destination of the funds) but may NOT be an INTERMEDIARY bank. </p>
+            <p>      (vi)  BANK.ADDR may be an ACCOUNT WITH Bank (i.e. the  final             destination of the funds) or it may be an INTERMEDIARY Bank             which will pass the funds on to a second bank. It is only             used if no customer ID is available. </p>
+            <p>At contract loading, if the INTERMEDIARY Bank is identified in BEN.BANK1, then the ACCOUNT WITH Bank must be input either directly at BEN.BANK2 or within BANK.ADDR in which case the system will automatically apply it to BEN BANK2. </p>
+            <p>Otherwise, when the INTERMEDIARY Bank is identified within BANK.ADDR - (and is thus automatically applied to BEN.BANK1) then the ACCOUNT WITH Bank must be identified in BEN.BANK2. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 4 lines of 35 Alpha-numeric characters. - Type AAA.  Multi-value field.  (Optional input when SETTLEMENT.ACCT is a Nostro and settlement amount is a loss.</p>
+            <p>Input in this field is only allowed when the contract has been done at a loss.</p>
+            <p>Input in this field is only allowed when SETTLEMENT.ACCT is a Nostro.</p>
+            <p>Input in this field will not be allowed if BEN.BANK1 and BEN.BANK2 have both been entered.</p>
+        </desc>
+</t>
+<t>
+<field>INT.NARRATIVE</field>
+<desc>
+            <p>To specify any narrative for the benefit of the back office. This internal narrative will not be included on the confirmation sent to the counterparty. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Multivalue field.  35 alphanumeric characters.  Input is optional and no default is applicable.</p>
+        </desc>
+</t>
+<t>
+<field>SECTOR</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>CCY.MARKET</field>
+<desc>
+            <p>The system recognises the need for a number of different markets within one currency. For this reason, this field identifies which currency market is accessed for this contract. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 9.  Optional Input. Default = Market "1".</p>
+            <p>The market entered must exist on the CURRENCY.MARKET table.</p>
+        </desc>
+</t>
+<t>
+<field>REFERENCE.PRICE</field>
+<desc>
+            <p>Represents the interest rate on the cash market applicable to the longest period of the FRA. This field will be used only for HEDGING purposes against Futures or Cash transactions. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Interest rate.  Input in this field is mandatory for HEDGE type contracts. It is not allowed otherwise.  Any value is accepted but the rate input will be checked against the PERIODIC.INTEREST rate table (for a similar current period in the same currency and for the same reference rate).  Any variation greater than the one specified in the FRA.PARAMETER table will require an override.</p>
+        </desc>
+</t>
+<t>
+<field>TARGET</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>COUNTERPARTY</field>
+<desc>
+            <p>Specifies the counterparty with whom the bank is dealing. </p>
+            <p>The user is allowed to enter either the counterparty numeric code or the unique Mnemonic. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid code on the CUSTOMER file.  Input is always mandatory.</p>
+            <p>When OC module is installed and FRA contracts are required to be reported to a trade repository, the Customer ID of the Counterparty must be a valid record in OC.CUSTOMER  table. </p>  
+        </desc>
+</t> 
+<t>
+<field>REPL.DEAL.NO</field>
+<desc>
+            <p>Identifies a previous contract which has been reversed (due to an error) and which is replaced by this new transaction. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid deal number in the format FR YY DDD NNNNN  Input mandatory when CORR.AMEND = A Input optional  when CORR.AMEND = C Otherwise not allowed.  The deal number must exist on the history file in reverse status.</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.REFERENCE</field>
+<desc>
+            <p>Specifies the limit reference number applicable to this FRA transaction. </p>
+            <p>Counterparty risk is limited since settlement is only on interest rate differentials. The counterparty exposure to credit risk is thus limited to the interest variation based on the principal and not on the full principal amount. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>As defined on LIMIT.PARAMETER file.  Optional input.</p>
+            <p>Standard T24 limit call. When no limit exists or the limit is in excess, an override is required.</p>
+            <p>Any input of a specific LIMIT.REFERENCE must exist on the LIMIT.REFERENCE file and refer to a FRA limit type.</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.BASIS</field>
+<desc>
+            <p>Specifies the interest basis applicable to the FRA contract. This basis is taken into account in the calculation of the settlement profit/loss once the </p>
+            <p>SETTLEMENT.RATE has been determined. If no input is made by the user, the system default automatically to the INTEREST.BASIS defined in the CURRENCY table for the currency of the FRA contract.</p>
+            <table>
+                <tr>
+                    <td>
+                        <p>Key</p>
+                    </td>
+                    <td>
+                        <p>Days/Denominator</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>A</p>
+                    </td>
+                    <td>
+                        <p>360/360</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>A3</p>
+                    </td>
+                    <td>
+                        <p>30/360</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>B</p>
+                    </td>
+                    <td>
+                        <p>366/360</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>E</p>
+                    </td>
+                    <td>
+                        <p>366/365</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>F</p>
+                    </td>
+                    <td>
+                        <p>360/365</p>
+                    </td>
+                </tr>
+            </table>
+            <p>For illustrations of all supported INTEREST.BASIS types see: INTEREST.BASIS</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1 type A (alphanumeric) character. </p>
+            <p>Valid input is A, A3, B, E, F, or blank. </p>
+            <p>Default Value = Interest Day Basis as specified on the         Currency table for the currency of the contract. </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>BROKER.DEAL.METH</field>
+<desc>
+            <p>Indicates the Broker code or deal method that applies to the contract. </p>
+            <p>Indicates the method under which the deal has been booked. This can be via a broker or telex/telephone. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-10 type A (alphanumeric) characters.  (Optional input.)</p>
+            <p>Must be a valid entry on the "BROKER" table or "FX DEAL METHOD".</p>
+        </desc>
+</t>
+<t>
+<field>COLLATERALISATION</field>
+<desc>
+             <p>Part of Regulatory Reporting information to a Trade Repository. </p>
+	<p>specifies whether collateralisation was performed</p>
+	<p>Input to this field is allowed only when OC module is installed </p>
+			<p>
+                <p>Validation Rules: </p>
+            </p>
+	  <p> This is an OPTIONAL field</p>
+  <p> Allowed optional values are U (Uncollateralised), PC (Partially Collateralised), OC (One way collateralised), FC (Fully Collateralised) and NULL</p>
+</desc>
+</t>
+
+
+<t>
+<field>COLLAT.PORT.IND</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p>	
+<p>Specifies if the collateralisation was performed on a portfolio basis</p> 
+	<p>Input to this field is allowed only when OC module is installed </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	  <p> This is an OPTIONAL field</p>
+	  <p> Input not allowed when COLLATERALISATION is NULL </p>
+	  <p> Allowed optional values are Y, N or NULL </p>
+	  <p> ‘Y’ indicates that the collateralisation was performed on a portfolio basis </p>
+	  <p> ‘N’ indicates that the collateralisation was not performed on a portfolio basis </p>
+</desc>
+</t> 
+		
+<t>
+<field>COLLAT.PORT.CODE</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository</p>	
+	 <p> An unique code given by the reporting counterparty to identify the portfolio, if collateralization is reported on a portfolio basis </p>
+	 <p> Input to this field is allowed only when OC module is installed </p>
+		
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	  <p> This is a conditionally mandatory field </p>
+	  <p> Mandatory if the COLLAT.PORT.IND is set to 'Y' </p>
+                      <p> Numeric field up to 10 digits </p>
+</desc>
+</t>			
+		 
+<t>
+<field>UNI.TRAN.ID</field>
+<desc>
+ <p>Part of Regulatory Reporting information to a Trade Repository</p>     
+ <p>All Trades should have a Unique Transaction Identifier (UTI) which is generated, communicated and matched</p>
+ <p>Determination of who generates the UTI should follow the existing industry best practices for that Asset class</p>
+ <p>The UTI.USI.API attached in OC.PARAMETER and invoked during FRA deal capture determines who is the party responsible for UTI generation and does the following.
+•	If a value is present during deal capture the API is not invoked, on the assumption that the UTI is generated and supplied by the other Counterparty.
+•	If no value is present during the deal capture, the API is invoked to determine the party responsible for generating the UTI. If the Other counterparty is responsible, still an UTI is generated with a suffix as TEMP to show that the UTI from the other counterparty is awaited and in the meantime, the reporting is done with a Temporary ID. If T24 Bank is responsible for UTI generation, then the same is generated without TEMP. 
+•	Where a reporting has been made with UTI having TEMP as suffix and subsequently the Counterparty supplies the UTI, the following procedure has to be followed to ensure reporting with actual UTI.
+•	The field Action Type needs to be changed to ‘E’ and record to be authorized. Later, the UTI field should be modified with the actual UTI received. Set the Action Type field to ‘N’ and authorize the record. In this way, the previous reporting gets cancelled and the new reporting goes with correct UTI. </p>
+ <p> Input to this field is allowed only when OC module is installed </p>
+             <p>
+                <p>Validation Rules : </p>
+            </p>
+	<p> can contain up to 52 alphanumeric characters </p>
+			
+</desc>
+</t>
+
+
+<t>
+<field>EXEC.VENUE</field>
+<desc>  
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Specifies the unique code that identifies the venue of execution </p>
+<p> Provides a drop down list of the OC.EXCHANGE.FACILITY records </p>
+<p> Input to this field is allowed only when OC module is installed or ‘BR’</p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	<p> This is an OPTIONAL field </p>
+	<p> Can contain up to 10 alphanumeric characters </p>
+			
+</desc>
+</t>
+
+<t>
+<field>PORT.COMPRESSION</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Specifies if the trade is as a result of a portfolio compression event</p>
+<p> Input to this field is allowed only when OC module is installed </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is an OPTIONAL field </p>
+		<p> Allowed optional values are Y or N or NULL </p>
+		<p> Y denotes that the contract results from a portfolio compression event</p>
+		<p> N denotes that the contract is not due to portfolio compression event </p>
+                                                  
+</desc>
+</t>
+
+<t>
+<field>ACTION.TYPE</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p>Under the Regulatory Reporting to a Trade Repository, it is not only the initial trade that is reported but also the life cycle events of the Trade that follow. A change in the action type is indicative of an event on the contract and requires to be reported.  Change in Action Types is allowed both manually and automatically. </p>
+<p> Specifies the ACTION.TYPE that is populated based on the event on trade </p>
+<p> Input to this field is allowed only when OC module is installed  </p>
+
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	 <p> Allowed optional values are N, M, E, C, Z and O </p>
+	 <p> N denotes that the ACTION.TYPE is NEW. Value of 'N' is defaulted for a new contract. User is also allowed to change the status to N if the previous status is E. </p>
+	 <p> E denotes that the ACTION.TYPE is REVERSE or Correction. In case of wrongly entered UTI values or a Temporary UTI was used previously, the old UTI should be reported with ACTION.TYPE as 'E' for error reporting first and then change the Action Type to NEW after keying in the actual UTI. This way the previous reporting with temporary UTI is replaced by the one with final UTI. Action Type ‘E’ is also used to undo the reporting of a particular transaction done which should not have been done reported at all in the first instance.</p>
+	<p> M denotes that the ACTION.TYPE is MODIFIED. In case of change in the RATE.FIXING.DATE the ACTION.TYPE is set to 'M'</p>
+<p> C denotes that the ACTION.TYPE is CANCELLED. In case of any change in maturity/value date i.e. early termination of the contract should be reported with C. In FRA this MATURITY.DATE field is No change field. So ACTION.TYPE never gets populated automatically with type as C but It can be manually updated as ‘c’ and the contract can be cancelled. </p> 
+<p> Z denotes Compression update. This means the trade being reported is generated out of a compression activity. </p>
+<p> O denotes OTHER types. When OTHER is used, additional information as to what OTHER mean should be mentioned separately. </p>
+</desc>
+</t>
+
+<t>
+<field>ADDL.REP.INFO</field>
+<desc>
+<p>Part of Regulatory Reporting info to a Trade Repository. </p> 
+<p> Denotes the additional report info when the ACTION.TYPE is 'O'</p>
+<p> Input to this field is allowed only when OC module is installed </p>
+
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	<p> This is a conditionally mandatory field </p> 
+	<p> Value to be entered only when ACTION.TYPE is 'O' </p>
+			
+</desc>
+</t>
+
+<t>
+<field>OWN.BOOK.PORT</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the Bank’s own book portfolio ID </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	 <p> This is an OPTIONAL field </p>
+	 <p> The own book portfolio should be a valid SEC.ACC.MASTER record and also be an own book </p>
+<p>The logic to update the Portfolio with the trade details will be introduced in the next phase of OC module development. </p>
+			
+</desc>
+</t>
+
+
+<t>
+<field>NON.STND.FLAG</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes if the contract is a standard or a non-standard contract </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+<p>The significance of this field is better appreciated in the context of clearing of OTC derivatives. </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is an OPTIONAL field </p>
+		<p> Allowed optional values are Y, N or NULL</p>
+		<p> Y denotes that the contract is a non-standard contract </p>
+		<p> N denotes that the contract is a standard contract </p>
+</desc>
+</t>
+
+<t>
+<field>PRE.UTI.ID.1</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the Previous UNI.TRAN.ID value. When UNI.TRAN.ID is changed, it replaces the previous one and the previous one is moved into this field. </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+
+             <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is an OPTIONAL field </p>
+		<p> Can contain upto 52 alphanumeric characters </p>
+
+</desc>
+</t>
+
+<t>
+<field>PRE.UTI.ID.2</field>
+<desc>
+<p>Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the Previous PRE.UTI.ID.1 value. When UNI.TRAN.ID is changed, it replaces the previous one and the previous value in PRE.UTI.ID.1 is moved into this field. </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	  <p> This is an OPTIONAL field </p>
+	  <p> Can contain upto 52 alphanumeric characters </p>
+
+</desc>
+</t>
+
+<t>
+<field>EXEC.TIME.STAMP</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the date and time of execution of the transaction and is User inputtable field. </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+             <p>
+                <p>Validation Rules :</p>
+            </p>
+	<p> This is an OPTIONAL field </p>
+	<p> The format should be "YYYYMMDDTHH:MM:SS+/-(UTC.TIME.ZONE)"  or "YYYYMMDDTHH:MM:SSZ"</p>
+	<p> Example 20150101T10:10:10+05:30</p>
+	<p> Example 20150101T10:10:10-05:30</p>
+	<p> Example 20150101T10:10:10Z</p>
+</desc>
+</t>
+
+<t>
+<field>CP.TRADE.PURPOSE</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes if the contract is objectively measurable as directly linked to the other counterparty’s commercial or treasury financial activity</p>
+<p> Input to this field is allowed only when OC module is installed </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+	<p> This is an OPTIONAL field and value is User inputted</p>
+	<p> Allowed optional values are YES, NO or NULL </p>
+	<p> YES denotes that the contract is directly linked to the other counterparty’s commercial or treasury financial activity</p>
+	<p> NO denotes that the contract is not directly linked to the other counterparty’s commercial or treasury financial activity</p>
+	<p> Input allowed only when the Other counterparty is a NON FINANCIAL COUNTERPARTY</p>
+	<p> This is a no change field </p>
+
+</desc>
+</t>
+
+<t>
+<field>TRADE.REPOSITORY</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the trade repository information</p>
+<p> Input to this field is allowed only when OC module is installed </p>
+           <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is an OPTIONAL field </p>
+		<p> Defaulted with value from OC.PARAMETER record </p>
+		<p> User can override with a valid value in OC.TRADE.REPOSITORY record </p>
+		<p> This is a no change field </p>
+</desc>
+</t>
+
+<t>
+<field>UNIQUE.PROD.ID</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p>
+<p> Denotes the unique product identifier. When a Unique Product Identifier (UPI) is available the same is mentioned here. When it UPI is not available there are other alternatives allowed like ISIN, AII, CFI. Hence no validations are created </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+                     <p> This is an OPTIONAL field </p>  			
+</desc>
+</t>
+
+<t>
+<field>CLG.MEMBER.ID</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the clearing member identifier. It contains the reporting counterparty ID. If the reporting counterparty is not a clearing member, its clearing member shall be identified in this field by a unique code. In case of an individual, a client code, as assigned by the CCP, shall be used. </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+            <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is a conditionally mandatory field </p>
+<p> This is mandatory when the clearing status (OC.CLG.STATUS) of the contract is CLEARED. </p>
+		<p> This is a no change field </p>
+			
+</desc>
+</t>
+
+<t>
+<field>BILATERAL.REF</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the Bilateral Reference. It contains the transaction ID of the Bilateral Trade that is cleared. </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+           <p>
+                <p>Validation Rules: </p>
+            </p>
+		<p> This is a conditionally mandatory field</p>
+<p> This field is mandatory when the clearing status (OC.CLG.STATUS) of the contract is CLEARED</p>
+		<p> This is a no change field </p>
+			
+</desc>
+</t>
+
+
+<t>
+<field>OC.CLG.STATUS</field> 
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository. </p> 
+<p> Denotes the OC Clearing Status. </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+
+              <p>
+                <p>Validation Rules: </p>
+            </p>
+<p> Allowed optional values are Bilateral, Submitted, Accepted, Rejected, Cleared and Terminated. </p>
+<p> BILATERAL - when a fresh contract is inputted this field should be updated as BILATERAL</p>
+<p> SUBMITTED - when the inputted contract is submitted to Trade Repository it should get updated as SUBMITTED. 
+                              <p>The previous clearing status of the contract should be BILATERAL</p>
+	          <p>when OC.CLG.STATUS of the contract is SUBMITTED both CLG.MEM.ID and CENTRAl.CLG.PARTY fields cannot be NULL</p>
+</p>
+<p> ACCEPTED - when the contract is accepted by the Trade Repository it should get updated as ACCEPTED. 
+         <p>The previous status should be SUBMITTED</p>
+</p>
+<p> REJECTED - when the contract is rejected by the Trade Repository it should get updated as REJECTED.
+         <p>The previous status should be SUBMITTED</p>
+</p>
+<p> CLEARED - When the status of the contract is ACCEPTED, User is expected to reverse the contract and enter a new one with Trade status as CLEARED
+	       <p>when the status is CLEARED fields like CENTRAL.CLG.PARTY, CLG.MEM.ID, BILATERAL.REF are mandatory</p>
+</p>
+<p> Terminated - A cleared contract when cancelled/terminated by the Trade Repository should be updated as TERMINATED. 
+        <p>The previous status should be CLEARED</p>
+</p>
+<p> This is a no change field </p>		
+</desc>
+</t>
+
+<t>
+<field>CENTRAL.CLG.PARTY</field>
+<desc>
+<p> Part of Regulatory Reporting information to a Trade Repository.</p> 
+<p> Denotes the central clearing party. If it doesn’t contain any value it gets defaulted with the clearing member id (CLG.MEM.ID) </p>
+<p> Input to this field is allowed only when OC module is installed </p>
+           <p>
+                <p>Validation Rules : </p>
+            </p>
+	<p> This is a conditionally mandatory field</p>
+<p> This field is mandatory when the clearing status (OC.CLG.STATUS) of the contract is CLEARED</p>
+	<p> This is a no change field </p>
+</desc>
+</t> 
+
+<t><field>CONTRACT.GRP</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FTT.TAX.TYPE.KEY</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FTT.TAX.KEY</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FTT.TAX.BASE.CCY</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FTT.TAX.BASE.AMT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FTT.TAX.AMT.BASE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FTT.TAX.AMT.EUR</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FTT.TAX.AMT.LCY</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>FTT.COLL.CPTY.TAX</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

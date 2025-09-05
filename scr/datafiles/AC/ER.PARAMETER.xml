@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>AC</product>
+<table>ER.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Specify the parameter details like Accounts / Category details , match criteria, moving to History etc related to AC.EXPECTED.RECS.</p>
+            <p>AC.EXPECTED.RECS is created to keep track of Funds which are likely to be Paid/ received on the future date and based on this record the account projected balance can be determined.</p>
+            <p>The allowed values for ID is SYSTEM or COVER.</p>
+            <p>A record with Id as "SYSTEM" is required to handle expected Receipt/Payments through AC.EXPECTED.RECS.</p>
+            <p>"COVER" as id is created for tracking of Correspondent Bank cover limits while processing Inward Messages (MT103) through OFS.GLOBUS.MANAGER.</p>
+            <p>See User Guide for Funds Transfer/ Application Delivery for more details.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>PARAMETER.KEY</field>
+<desc>
+            <p>Valid ID to this application are "SYSTEM" or "COVER".</p>
+            <p>ID "System" is used to specify parameters related to Expected Receipts and Payments functionality.</p>
+            <p>ID "Cover" is used to specify parameters related to Cover limit processing.</p>
+        </desc>
+</t>
+<t>
+<field>REQUEST.ADV.DAYS</field>
+<desc>
+            <p>In AC.EXPECTED.RECS, when RC (Received Cover) is not available, EC (Expected Cover) record is created for Inward MT103 messages during Correspodent Cover Limit processing . Whenever RC is received , same is matched with EC.</p>
+            <p>Incase the EC record remains unmatched from Date.Entered for more than the days specified here, then MT195 (Queries) is sent to the Sender of MT103 for clarification about the message with tag 75 as "'/2/".</p>
+            <p>Incase Request.Query details given in the respective AC.EXPECTED.RECS, then same is used in tag 75 of MT195.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory Input for ID = "COVER" otherwise Not allowed   </p>
+            <p>1-2 Numeric Characters denoting the working days.</p>
+        </desc>
+</t>
+<t>
+<field>ACCT.BAL.FIELD</field>
+<desc>
+            <p>Included in G14.1</p>
+            <p>Indicates which ACCOUNT balance field to update: ER.BALANCE or EP.BALANCE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory field</p>
+            <p>Allowed values are ER or EP only</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXP.FUNDS.TYPE</field>
+<desc>
+            <p>(Added in G14.1)</p>
+            <p>The types of EXPECTED FUNDS that are allowed is to be given in this field.  Allowed values are </p>
+            <p>A) ERR - Expected Regular Receipts</p>
+            <p>B) ER  - Expected Receipts</p>
+            <p>C) EP - Expected Payments</p>
+            <p>Note : Above functionality is not applicable for if the ID of the application is "COVER",and the details given in fields 13 - Match.Field &amp; 14 -Tolerance is alone taken for processing Cover Limit. Hence incase the values from 5 to 14 is multivalued then for Cover Processing, the information as available in the First Multi value is alone taken for processing.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory Field </p>
+            <p>Multivalue field associated from field 5 to 14 </p>
+            <p>Allowed values are ERR, ER and EP only</p>
+            <p>The field PAY.FUNDS.TYPE should be       filled in with the opposite of the value filled in this field.  The       values are given below.</p>
+            <p>                                EXP.FUNDS.TYPE        PAY.FUNDS.TYPE</p>
+            <p>                                    ERR                                     RR</p>
+            <p>                                    ER                                       RECEIPT</p>
+            <p>                                    EP                                       PAYMENT</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.ID</field>
+<desc>
+            <p>This will be a multi-valued list of accounts that the bank wishes to be available for Expected Receipt processing.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Account should be a valid account on the bank account file.</p>
+            <p />
+            <p>Allowed only for ID = "SYSTEM"</p>
+            <p />
+            <p>This and all Account related fields (Ret days / Over Days) -No Input fields   for ID = "COVER"</p>
+        </desc>
+</t>
+<t>
+<field>AUTO.PART.MATCH</field>
+<desc>
+            <p>(Included in G14.1)</p>
+            <p>Indicates whether automatic partial matching is allowed for this funds type pair.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional field</p>
+            <p>Allowed values are Y or Null only</p>
+            <p>Default is NULL and in this case,  partial matching will not be done.</p>
+        </desc>
+</t>
+<t>
+<field>CATEGORY</field>
+<desc>
+            <p>This will be the category of accounts; that should be selected for expected receipt processing. It may be easier, if a bank anticipates doing large volumes of Expected Receipts, to use the category codes instead of individual account numbers.</p>
+            <p>Either this field or ACCOUNT.ID must be populated otherwise nothing will be processed for expected receipts.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>The category should be a valid account category, defined in the system</p>
+            <p />
+            <p>No Input field for ID= "COVER"</p>
+        </desc>
+</t>
+<t>
+<field>CCY.MKT</field>
+<desc>
+            <p>Specify the Currency Market from which the Exchange rate to be taken for updating Correspondent Limit.</p>
+            <p>When a limit is specified in ER.COVER.LIMIT  for a Currency and an Incoming MT103 is processed with Debit Currency other than the Limit Currency,  then the Limit currency amount is arrived using the Exchange rate applicable for the Currency Market as specified here.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional field-Default value is "1"   </p>
+            <p>Value entered should be a record in CURRENCY.MARKET.   </p>
+            <p>Input allowed only for ID = "COVER" - Otherwise No input field.</p>
+        </desc>
+</t>
+<t>
+<field>MATCH.FIELD</field>
+<desc>
+            <p>For matching purposes the fields ACCOUNT.ID, VALUE.DATE and CCY.AMOUNT must be entered here so matching can be done. It is also possible to refine the processing so a match needs to check either or both of the TRANSACTION.REFERENCE or ORD.CUSTOMER.</p>
+            <p>Tolerance checking is allowed on the CCY.AMOUNT and/or VALUE.DATE fields.</p>
+            <p>Associated with the multi-value set from field 5 to 12 and associated with sub-value set from field 13 to 14</p>
+            <p>If the Exp.Funds.Type is mentioned as ERR, then the fields ACCOUNT.ID and CCY.AMOUNT are mandatory.  </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>ACCOUNT.ID, VALUE.DATE and CCY.AMOUNT must be entered for Exp.Type ER       and EP</p>
+            <p>ACCOUNT.ID, and CCY.AMOUNT must be entered for Exp.Type ERR</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RETENTION.DAYS</field>
+<desc>
+            <p>This field determines how long (in days) matched items remain on the live file before being transferred to the history file. This will be the system wide default for all accounts entered above unless they have the AC.RET.DAYS set.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>The number of days is the working days and not the calendar days.</p>
+        </desc>
+</t>
+<t>
+<field>PAY.TYPE.CR.DR</field>
+<desc>
+            <p>(Included in G14.1)</p>
+            <p>Transaction Sign Code</p>
+            <p>This field indicates whether the updation for this type is to be done as Cr. or Dr. in the Account Record.  If this is given as Dr. then Exp.Funds.Type in this multi-value set must be given as Cr. and vice-versa.  If both are given same sign code, an online error message will be flashed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>D - Debit or C - Credit (Mandatory input)      </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PAY.TYPE.DESC</field>
+<desc>
+            <p>(Included in G14.1)</p>
+            <p>Description for the funds type mentioned in the previous field</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional field</p>
+            <p>Up to 35 type A (alphanumeric) characters.</p>
+        </desc>
+</t>
+<t>
+<field>EXP.TYPE.CR.DR</field>
+<desc>
+            <p>(Included in G14.1)</p>
+            <p>Transaction Sign Code</p>
+            <p>This field indicates whether the updation for this type is to be done as Cr. or Dr. in the Account Record.  If this is given as Cr. then Pay.Funds.Type in this multi-value set must be given as Dr. and vice-versa.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>D - Debit or C - Credit (Mandatory input)      </p>
+        </desc>
+</t>
+<t>
+<field>CANCEL.ADV.DAYS</field>
+<desc>
+            <p>In AC.EXPECTED.RECS, when RC (Received Cover) is not available, EC (Expected Cover) record is created for Inward MT103 messages during Correspodent Cover Limit processing . Whenever RC is received , same is matched with EC.</p>
+            <p>Incase the EC record remains unmatched from Date.Entered for more than the days specified here, then MT195 (Queries) is sent to the Sender of MT103 for Cancellation of the message(MT103) with tag 75 as "'/36/". The EC record is cancelled from AC.EXPETED.RECS application.</p>
+            <p>Incase Cancel.Query details given in the respective AC.EXPECTED.RECS, then same is used in tag 75 of MT195.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory Input for ID = "COVER" - Otherwise Not allowed.   </p>
+            <p>1-2 Numeric Characters denoting the working days.   </p>
+            <p>No of days entered here should be more than REQUEST.ADV.DAYS as specified     in previous field.</p>
+        </desc>
+</t>
+<t>
+<field>EXP.TYPE.DESC</field>
+<desc>
+            <p>(Included in G14.1)</p>
+            <p>Description for the funds type mentioned in the previous field</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional field</p>
+            <p>Up to 35 type A (alphanumeric) characters. </p>
+        </desc>
+</t>
+<t>
+<field>TOLERANCE</field>
+<desc>
+            <p>This will be the tolerance for the related multi-value, explained above. If there is no tolerance entered then there must be an exact match on the related field. There will be some fields where having a tolerance is pointless, such as narrative, but this will be up to the bank to decide and no controls will be added for that here.</p>
+            <p>Currently, the system can handle tolerances on CCY.AMOUNT and the VALUE.DATE. When the tolerance is defined, the system will first try to match with the exact keys. </p>
+            <p>If no match is found then the tolerances defined are used for calculating/determining the tolerance keys on the record to be matched. The matching process is repeated to find the tolerance match.</p>
+            <p> It should be noted that the match on the ACCOUNT.ID, VALUE.DATE and CCY.AMOUNT are mandatory for EXP.FUND.TYPE: ER and EP and for EXP.FUND.TYPE : ERR, the match on the ACCOUNT.ID, CCY.AMOUNT are mandatory </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>CCY.AMOUNT</p>
+            <p>The tolerance on amount is entered as a percentage. This is a plus and minus tolerance with a maximum permitted tolerance of 10. </p>
+            <p>The expected and receipts will be matched when the amount is within the tolerance limits, if specified. The lower and higher tolerance amount is calculated on the expected amount. The amount on received record should be within these limits. In the event of their being more than one record matched within the limits the first record from the selected list is matched, this may not be the closest matched record.</p>
+            <p>VALUE.DATE</p>
+            <p>The tolerance for the VALUE.DATE is in number of days and expected funds with receipt funds will be matched when the value dates are with in the tolerance date. This is plus and minus number of calendar days. A maximum value of plus/minus 9 days is permitted.</p>
+            <p>When there is a match under these conditions then the amount expected and received will be shown on the different value dates on the ACCOUNT file on the ER.VALUE.DATE and ER.BALANCE. </p>
+            <p>The receipts will be in negative where as the expected will be positive.</p>
+            <p>If it is required to correct the ER.BALANCE in the system for a particular account, it will be necessary manually create opposite records; one for the expected funds and another for the receipt funds.</p>
+        </desc>
+</t>
+<t>
+<field>OVERDUE.DAYS</field>
+<desc>
+            <p>This field determines how long (in days) unmatched items remain on the live file until being deleted. This will be the system wide default for all accounts entered above unless they have the AC.OVER.DAYS set.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>The number of days is the working days and not the calendar days</p>
+            <p />
+            <p>No Input field for ID = "COVER"</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PAY.FUNDS.TYPE</field>
+<desc>
+            <p>(Added in G14.1)</p>
+            <p>The types of  PAYMENT. FUNDS that are allowed is to be given in this field.  Allowed values are </p>
+            <p>A) Payment </p>
+            <p>B) Receipt</p>
+            <p>C) RR</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory Field</p>
+            <p>Allowed values are PAYMENT, RECEIPT and RR  only</p>
+            <p>The field EXP.FUNDS.TYPE should  be filled in with the opposite of     the value filled in this field.  The values are given below.</p>
+            <p>                                EXP.FUNDS.TYPE        PAY.FUNDS.TYPE</p>
+            <p>                                    ERR                                     RR</p>
+            <p>                                    ER                                       RECEIPT</p>
+            <p>                                    EP                                       PAYMENT</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AC.OVER.DAYS</field>
+<desc>
+            <p>This field determines how long (in days) unmatched items remain on the live file until being deleted for the account. If not defined then the system wide default value from OVERDUE.DAYS is used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>The number of days is the working days and not the calendar days.</p>
+        </desc>
+</t>
+<t>
+<field>AC.OVERDUE.DAYS</field>
+<desc>
+            <p>This field determines how long (in days) unmatched items remain on the live file until being deleted, for the attached account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>The number of days is the working days and not the calendar days.</p>
+        </desc>
+</t>
+<t>
+<field>AC.RET.DAYS</field>
+<desc>
+            <p>This field determines how long (in days) matched items remain on the live file before being transferred to the history file. For the specific account, if not entered, the default value from RETENTION.DAYS is used.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>The number of days is the working days and not the calendar days.</p>
+        </desc>
+</t>
+<t>
+<field>AC.RETENTION.DAYS</field>
+<desc>
+            <p>This field determines how long (in days) matched items for the above account remain on the live file before being transferred to the history file. If this field is left blank then the number of days will be the system wide no of days defined later on this file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>The number of days is the working days and not the calendar days. </p>
+            <p />
+        </desc>
+</t>
+</menu>
+</t24help>
+

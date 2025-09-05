@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>DE.CUSTOMER.PREFERENCES</table>
+</header>
+<overview>
+<ovdesc>
+<p /><p>Customer Preferences is a user friendly interface for creating records in DE.PRODUCT.</p><p /><p>The record can be created for a CUSTOMER or an Account.  For each Message Group (from the new DE.MESSAGE.GROUP table), customer can define the following:</p><p /><p>a) Carrier in which the messages should be sent through</p><p>b) Address version where the message has to be delivered</p><p>c) Special format of the message</p><p>d) Language definition</p><p>e) Copy customer - the other customer/employee to receive that message group</p><p>f) Number of copies needed</p><p>g) The blackout SMS start and end times</p><p>h) The local time offset from UST.</p><p /><p>When the Preferences are set and the record is authorised, DE.PRODUCT records will be created and DE.ADDRESS for the customer SMS addresses will be updated with the blackout start and end time.</p><p /><p /></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>FORMAT</field>
+<desc><p>Specifies the format version to be used, and must always be '1' if the formatting module is SWIFT.</p><p /><p><p><p>Validation Rules:</p>:</p></p><p>        1) 1-2 numeric characters</p><p>        2) Optional Input </p><p>        3) Defaults to 1</p><p /></desc>
+</t>
+<t>
+<field>DE.PRODUCT.ID</field>
+<desc><p>Specifies the Key of DE.PRODUCT record which will be</p><p>        created on authorisation of this Customer preferences</p><p /><p>        Validation rules:</p><p>        1)System updated field </p><p /></desc>
+</t>
+<t>
+<field>PRD.ID.REBUILD</field>
+<desc><p>Flag to force the rebuild of the DE.PRODUCT keys updated in Customer preferences</p><p>        DE.PRODUCT.ID keys will be generated based on Message type defined in DE.MESSAGE.GROUP</p><p>        When DE.MESSAGE.GROUP is modified ,then corresponding Customer Preferences record need to</p><p>        be rebuild.</p><p /><p><p>Validation Rules:</p></p><p>        1) Tick box field. </p></desc>
+</t>
+<t>
+<field>REQUIRED</field>
+<desc><p>Provides an option to the user to specify if the Preference details provided in the associated set of fields of Carrier, Address are indeed correct and messages could be triggered by the system.  Otherwise, the details entered will be treated as informatory or yet to be confirmed.  </p><p /><p><p>Validation Rules:</p></p><p>        1)1 to 3 Alpha numeric Characters</p><p>        2)Can be YES or NO</p><p>When ‘YES’ is opted, DE.PRODUCT records will be created and delivery messages will be triggered.  Option ‘NO’ will not trigger the creation of DE.PRODUCT records.</p><p>When the option "REMOVE" is opted, the preference details in this DE.CUSTOMER.PREFERENCES record will be moved to history, further this information is not available to the user for attaching to any DE.PRODUCT. Also, when REMOVE option is opted the corresponding DE.PRODUCT records are also reversed. To use to remove option at least one Carrier to be set as YES along with PRD.ID.REBUILD should be set to YES. Newly created DE.CUSTOMER.PREFERENCES record cannot have the option "REMOVE".
+</p><p>When an ‘YES’ option is changed to ‘NO’, all related preference details will be removed from DE.PRODUCT</p><p /><p /><p /></desc>
+</t>
+<t>
+<field>OFFSET</field>
+<desc><p>Holds the time zone differences between the customer’s Home time zone and UST (Universal Standard Time).</p><p /><p>Validation rules:</p><p> Entered in  +HH:MM or –HH:MM format ,</p><p>Example, Customer in Paris will enter +01:00 hours and Customer in Central America will enter -06:00 hours denoting time difference with UST </p><p /></desc>
+</t>
+<t>
+<field>LANGUAGE</field>
+<desc><p>Specifies the language to be used for messages</p><p><p>Validation Rules:</p></p><p /><p>        1)1-2  A (alphanumeric) characters. (A valid language mnemonic.) </p><p>        2) Optional input. If it is not entered the 1st language in the LANGUAGE table will be used. </p><p>        If entered it must be a key to the LANGUAGE table. </p><p /><p /></desc>
+</t>
+<t>
+<field>COPIES</field>
+<desc><p>Specifies the number of copies of a message required. </p><p /><p><p>Validation Rules:</p></p><p>        1)1-3 numeric characters</p><p>        2)Allowed only for Print carrier</p><p>        3)Not valid for formatting carrier module of 'SWIFT'.</p><p>        4)Default value is'1'</p></desc>
+</t>
+<t>
+<field>COPY.CUSTOMER</field>
+<desc><p> Specify other Customers for whom a copy of the message needs to be sent.</p><p /><p>        Validation rules:</p><p>        1)Valid customer </p><p>        2)Copy customers will be updated in DE.PRODUCT only for PRINT,SMS and EMAIL carriers</p><p /></desc>
+</t>
+<t>
+<field>PREFERENCE.ID</field>
+<desc><p>Key to this application is a Customer number or an Account number facilitating the user to provide message preferences in terms of selecting carrier, address, related customers to be copied and so.  </p><p /><p>Validation rules:</p><p>        1)Key can be valid Customer number or A-Account number</p><p>        Eg: 1000 or A-25143</p><p>        2)DE.PRODUCT records will be created / updated using the  MESSAGE.GROUP and PREFERENCE.ID as the id.</p></desc>
+</t>
+<t>
+<field>ADDRESS</field>
+<desc><p>Specifies the Version of address to which the message should be sent to.</p><p>        Validation rules:</p><p>        1)Mandatory Input</p><p>        2)Address version number must be 1-3 numeric character</p><p>        3)Record must exist in DE.ADDRESS file with this version specific to the Carrier.</p></desc>
+</t>
+<t>
+<field>BLACKOUT.END</field>
+<desc><p /><p>Indicates the End time of blackout period.</p><p> It is possible to specify one or more time periods using fields BLACKOUT.START and BLACKOUT.END</p><p>during which customer may not wish to receive a SMS message during a day.</p><p /><p>Validation rules</p><p>1)Time should be entered in HH:MM format (24 hour format).</p><p>HH – denoting hours and MM -  denoting minutes</p><p>2) Applicable to SMS carrier only. Valid only for SMS carrier</p><p /></desc>
+</t>
+<t>
+<field>BLACKOUT.START</field>
+<desc><p>Indicates the start time of blackout period.</p><p>It is possible to specify one or more time periods using fields BLACKOUT.START and BLACKOUT.END</p><p>during which customer may not wish to receive a SMS message during a day.</p><p /><p /><p>     Validation rules:</p><p /><p>1)Time should be entered in HH:MM format (24 hour format).</p><p>HH – denoting hours and MM -  denoting minutes</p><p>2)Applicable to SMS carrier only.</p></desc>
+</t>
+<t>
+<field>CARRIER</field>
+<desc><p>Specifies the Carrier to be used for sending messages</p><p>        Validation rules:</p><p>        1)Mandatory Input</p><p>        2)Carrier must reference a record on the carrier definition file, DE.CARRIER</p><p>        3) Must be in the list of outward carriers on DE.PARM.</p><p /></desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc><p>Contains all the override messages which the user has</p><p>confirmed during input.</p><p> At validation,the system may generate a series of screen</p><p> override messages to indicate some anomaly within the</p><p> transaction (e.g. maturity date is not a working day for</p><p> this currency). User may change the data or override the</p><p> message. </p><p /><p><p>Validation Rules:</p></p><p> (System generated. Multivalue field.)</p><p> This is a NOINPUT field.</p><p /></desc>
+</t>
+<t>
+<field>SMS.ADDRESS</field>
+<desc><p>Specifies the Customer‘s SMS address to define the blackout periods.  During the blackout period, SMS message will not reach the Customer.</p><p /><p>Validation rules</p><p>SMS address should be defined in the format like SMS.1, SMS.2 where SMS.1 represents the first SMS number provided in Customer table, SMS.2 represents the second SMS number in Customer table.</p></desc>
+</t>
+<t>
+<field>MESSAGE.GROUP</field>
+<desc><p>Specifies the Message group name that provides details of all Messages to be triggered.  </p><p /><p>        Validation rules:</p><p>        1)Must be a valid entry in DE.MESSAGE.GROUP</p></desc>
+</t>
+</menu>
+</t24help>
+

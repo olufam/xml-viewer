@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SC</product>
+<table>REDEMPTION.DET</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>OVERVIEW FOR REDEMPTION DET </p>
+            <p>The Redemption detail program allows the user to input as much data as possible concerning any forthcoming redemption.  He can indicate whether the redemption is a final maturity transaction - the system knows to redeem all holdings in that particular security;  If it is an early redemption of a partial holding type the system will withdraw only sufficient securities to meet the draw down requirement. </p>
+            <p>The user can enter the rate at which these securities are being withdrawn and indicate at transaction level or by default to standard default tables the commission charged by the depository involved and/or any commission the bank is to levy on the clients redemption proceeds with a higher and lower level of commission input available. </p>
+            <p>Additionally, there is a pre-advice run which will advise clients and account officers of impending redemptions and in the case of early partial redemptions - block these within a clients' account to prevent any short position arising. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>SECURITY.CURR</field>
+<desc>
+            <p>Defines the currency of the security as specified at security master level. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input.  Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>FOREIGN.CHARGES</field>
+<desc>
+            <p>Specifies what the depository is charging you, 'his client' for this redemption transaction.  This foreign charge is to be passed on to the client field 13 indicates whether this numeric input is a percentage type rate or not. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard amount format. Maximum 6 integers with a maximum of 8 decimal places. Examples:  Depository charge on a redemption at par of $10,000 security ABS is 1% Field 12 = 1   Field 13 = Y on the customer record the foreign charge will be calculated as 1% of the gross amount. i.e. gross amount = $10,000 x 100 = $10,000 100 Foreign charge = $100 - Net payment from depository = $9,900 -</p>
+        </desc>
+</t>
+<t>
+<field>COMMISSION.LEVEL</field>
+<desc>
+            <p>The user is able by entering a commission level to charge a fee on all considerations greater than or less than this specified level.  The higher and lower rates are specified in Fields 10 and 11. </p>
+            <p>A banks commission on a redemption may be 1% for all considerations greater than $1,000,000 - or for example 2% on smaller considerations.  The level entered would be 1,000,000 - the higher rate 1% and the lower rate 2%. </p>
+            <p>Examples:  A client holds a bond being redeemed at            par the gross consideration is $500,000 -            The commission level is net at $1,000,000            The system would calculate the commission            as being 2% of the $500,000 - i.e.            $10,000. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard amount format.</p>
+        </desc>
+</t>
+<t>
+<field>NOMINAL.REDEEMED</field>
+<desc>
+            <p>For a partial or early redemption the nominal amount of stock to be redeemed is entered. </p>
+            <p>For a final maturity the user cannot enter a nominal amount as the system will default to its total position held in that particular security. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard amount format.</p>
+            <p>Cannot be greater than the total amount of stock held.</p>
+            <p>The system will not let the user enter a nominal amount not divisible by the preset trading unit F6.</p>
+        </desc>
+</t>
+<t>
+<field>UNIT</field>
+<desc>
+            <p>This field defaults to the input at security master level F34 Trading Units. </p>
+            <p>This specifies the smallest nominal amount of the market size.  Default is 'O' which allows for fractions as with British Gilts and Unit Trusts. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-15 numeric character input.</p>
+            <p>Cannot be greater than amount as entered at security master level.</p>
+        </desc>
+</t>
+<t>
+<field>RERUN.CANCEL</field>
+<desc>
+            <p>If on checking the customer records after a redemption detail record has been authorised the user discovers an incorrect record he has the facility to 'rerun' the transaction process for that redemption transaction.  But this will only take effect at E.O.D.  Likewise a cancel feature is provided for all authorised records. </p>
+            <p>On checking customer records a mistake is discovered the user can do two things: </p>
+            <p>1) Correct the clients position and enter 'R' for rerun in the redemption detail record; which will recalculate, using the corrected balances - but only at End of Day Routine. </p>
+            <p>2) He may decide to cancel the transaction altogether in which case he will enter 'C' for cancel at the redemption detail record - which will cancel the customer records - but again only at End of Day routine. </p>
+            <p>If the user wishes to pass the redemption transaction again - he must use a different 'redemption type' in order to create a unique transaction key.  It is suggested therefore that the user set up a redemption type say 'CORR' - for correction entry which would be identical for purposes of creating the same customer records, yet different for purposes of creating the Redemption Detail record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Enter R or C only allowed.</p>
+        </desc>
+</t>
+<t>
+<field>SECURITY.NAME</field>
+<desc>
+            <p>Identifies the security involved in this particular redemption transaction. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input.  Internally generated field. Contain a 1-6 numeric character security number separated from a 3 numeric character suffix by "-".</p>
+            <p>Must exist as a valid record on the security master file.</p>
+        </desc>
+</t>
+<t>
+<field>ID.</field>
+<desc>
+            <p>Unique key which identifies each redemption transaction and the various components of that transaction. </p>
+            <p>Once the key has been input the user will be able to access the following fields with information relating to the particular redemption. </p>
+            <p>Examples:  123456.1.FIN.300686. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The detail key is made up of the following format:- NNNNNN-NNN - 1-6 numeric character security master number. XXXXXX     - 1-6 numeric character depository ID number. NNNNN      - 1-5 type S (uppercase alpha or numeric) character redemption type ID code. YYYYMMDD   - Standard date format.</p>
+            <p>Must be a valid security number existing on the security master record.</p>
+            <p>Must be a valid date type entry.</p>
+            <p>Must be a valid depository number which exists on the customer security file as a depository type customer.</p>
+            <p>Must be a valid redemption type which exists on the redemption type file.</p>
+            <p>For a final redemption type transaction the date entered must be the final maturity date.</p>
+        </desc>
+</t>
+<t>
+<field>NO.DELETED</field>
+<desc>
+            <p>Fields 17-20 are multivalue fields which are used to store details of the depository affected, the number of transactions created, posted and deleted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input.  Internally generated field. (Multivalue field).</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.NO.NOMINAL</field>
+<desc>
+            <p>This field is updated at authorisation with the total number of a security nominal being redeemed by this particular redemption transaction. </p>
+            <p>For a partial redemption it will obviously be equal to the amount as input in field 5 'Nominal.Redeemed'.  For a final redemption type it will pick up the total amount to be redeemed i.e. the total of all the customer holdings. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input.  Internally generated field.</p>
+            <p>This input cannot be greater than the total amount held for all clients.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>RATE</field>
+<desc>
+            <p>Specifies the rate at which the bond (security) is to be redeemed.  It is assumed to be a percentage type input where field 8 UNIT.CURR has not been entered. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard rate format. Maximum of 6 integers with a maximum of 8 decimal place. Defaults to par (100%).</p>
+        </desc>
+</t>
+<t>
+<field>NO.POSTED</field>
+<desc>
+            <p>fields 17-20 are multivalue fields used to store details for the depository affected the number of transactions created, posted and deleted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input.  Internally generated field. (Multivalue field).</p>
+        </desc>
+</t>
+<t>
+<field>RECORD.STATUS</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>REDEMPTION.SUFFIX</field>
+<desc>
+            <p>For partial redemptions where the securities must be blocked to avoid selling short the system withdraws them from the base security position and places them on a suffix security position as per the standard default table. </p>
+            <p>A user wishing to block a partial redemption security position would set up an identical security master record with a suffix of '234'.  A partial redemption pre-advice would then place these securities on this suffix number say with and ID - 'Early Redemption'.  On or before the value date the user can then run a partial redemption on the security suffix '-23x'update his financial account. </p>
+            <p>The client, account officer would have been provided with a pre-advice informing him of what was to be redeemed in the future and with an actual advice on or before the value date. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input.  Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>NO.CREATED</field>
+<desc>
+            <p>Fields 17-20 are multivalue fields which store details of the depository affected, the number of transactions created, posted and deleted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input.  Internally generated field. (Multivalue field).</p>
+        </desc>
+</t>
+<t>
+<field>DEPT.CODE</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>UNIT.CURR</field>
+<desc>
+            <p>Only required if the bond is to be redeemed in a different currency from the security currency.  In which case the rate field 7 is not a percentage i.e. per unit rate. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 uppercase alpha characters (SSS) at 1-3 numeric character currency code.</p>
+            <p>If entered validate against currency table.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.TIME</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>CURR.NO</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>INPUTTER</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>DEP.NO</field>
+<desc>
+            <p>Fields 17-20 are multi valued fields which store details of the depository affected, the number of transactions created, posted and deleted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input. Internally generated field. (Multivalue field).</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input.</p>
+        </desc>
+</t>
+<t>
+<field>COMM.LOWER.RATE</field>
+<desc>
+            <p>Where the consideration of a bond redemption is less than the commission level at field 9.  This field contains the rate that will apply for calculation of the banks' commission. </p>
+            <p>A banks' commission on a redemption may be 2% on all considerations less than $1,000,000.  The commission level entered at F9 would be $1,000,000. the commission lower rate entered would be 2%. </p>
+            <p>Examples:  A client holds a bond being redeemed at            par the gross consideration is $750,000- </p>
+            <p>           The commission level is net at $1,000,000- </p>
+            <p>           The system would calculate the commission            as being 2% of $750,000 - ie. $15,000- </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard amount format. Defaults is the standard default values as entered at SC.STD.BOND.RED.</p>
+        </desc>
+</t>
+<t>
+<field>DEPOSITORY</field>
+<desc>
+            <p>Identifies the depository where the security is held and upon which the transaction is to be effected. </p>
+            <p>Where the depository number is not entered within the key the system will automatically utilise all depository holdings when it processes the transaction. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input.  Internally generated field.</p>
+            <p>Must exist as a valid depository type record on the customer security record.</p>
+        </desc>
+</t>
+<t>
+<field>AUTHORISER</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>CHARGES.INDICATOR</field>
+<desc>
+            <p>Indicates whether the charge specified in Field 12 Foreign.Charges is a percentage type input or not. </p>
+            <p>The rate input at Field 12 will be applied either as a straight unit type charge per nominal unit or as a percentage of the nominal x price = gross amount security redemption proceeds. </p>
+            <p>Examples:  Field 12 I            Field 13 Y </p>
+            <p>           i.e. Foreign charge on Nominal value = 1%. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only input allowed is:- (Y)es or     (N)o Default = (N)o</p>
+        </desc>
+</t>
+<t>
+<field>CO.CODE</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>COMM.HIGHER.RATE</field>
+<desc>
+            <p>Where the consideration of a bond redemption exceeds the commission level at field 9.  This entry specifies the rate that will apply for calculation of the banks commission. </p>
+            <p>A Banks' commission on a redemption may be 1% for all considerations greater than $1,000,000 - or for example 2% on smaller considerations.  The level entered F9 would be $1,000,000 .  The comm. higher rate entered would be 1%. </p>
+            <p>Examples:  A client holds a bond being redeemed at            par the gross consideration is $1,500,000            The commission level is set at $1,000,000            The system would calculate the commission            as being 1% of the $1,500,000 - i.e.            $1,500. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard amount format. Defaults to the standard default values as entered at SC.STD.BOND.RED.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>Defines the value date of the transaction.  The date on which bonds are to be withdrawn and any financial consideration passed. </p>
+            <p>For a final maturity type redemption this date will automatically coincide with the final maturity of the particular bonds. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>PRINTER.ID</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This file is used to define the valid printers on the system. It used both to validate the entry of a printer id and to determine the physical destination of the output. </p>
+            <p>It can be used to 'translate' a logical printer id to the Primos Printer Name as defined in the PROP environment. Eg. the name LASER might be more meaningful to a user than PR3. Hence all output destined to the printer LASER will be directed to the physical printer PR3. </p>
+            <p>However, there is nothing to stop you defining the same logical and physical printer name. </p>
+            <p>A 'SYSTEM' entry must exist on this file. This is used as the default for all output. </p>
+            <p>A entry of HOLD can be set up. This special entry will hold all output in the &amp;HOLD&amp; file and not spool the output. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>RESERVE1</field>
+<desc>
+            <p>This field is reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input</p>
+        </desc>
+</t>
+<t>
+<field>RESERVE2</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 50 characters may be entered.</p>
+            <p>This is a no input, no copy field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVE3</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 50 characters may be entered.</p>
+            <p>This is a no input, no copy field.</p>
+        </desc>
+</t>
+<t>
+<field>PRINTER.TYPE</field>
+<desc>
+            <p>Specifies the "make" or "model" of the printer, eg. QMS, EPSON etc. </p>
+            <p>The "make" or "model" of the printer should be specified here.  This is used by the report control system to determine whether any special attributes need to be set up on the printer before the report is spooled, i.e. set printer to LANDSCAPE, PORTRAIT mode etc. </p>
+            <p>The attributes (initialisation/reset escape sequences) for this printer type should be defined in file PRINTER.ATTRIBUTES. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-10 type A (alphanumeric) characters.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVE4</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 50 characters may be entered.</p>
+            <p>This is a no input, no copy field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVE6</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 50 characters may be entered.</p>
+            <p>This is a no input, no copy field.</p>
+        </desc>
+</t>
+<t>
+<field>PRINTER.NAME</field>
+<desc>
+            <p>Logical printer name used to identify the valid printers for the T24 system. </p>
+            <p>Used to define a valid printer for the T24 system. It is used to translate the printer name as understood by the user to a valid Primos printer name. The two can be the same. </p>
+            <p>A entry of 'SYSTEM' must exist. This is used as the default for all output (apart from Delivery) where a destination printer has not been specified. </p>
+            <p>A special entry 'HOLD' can be set up. When output is directed to this logical printer then the report is not spooled immediately but stored in the &amp;HOLD&amp; file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>30 Alphanumeric Characters.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVE5</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 50 characters may be entered.</p>
+            <p>This is a no input, no copy field.</p>
+        </desc>
+</t>
+<t>
+<field>COMMAND</field>
+<desc>
+            <p>Instead of sending all output to a particular printer, T24 can execute another command specified here. Typically this would be used to send the report to a file. </p>
+            <p>This command can be any command executable from Universe. Unix commands may be executed by enclosing the command in quotation marks and prefixing with         SH -c </p>
+            <p>This command can contain variable information and can be broken down into 3 component parts. </p>
+            <p>i) the statement of execution.    e.g. the Unix commands cat , cp for example. </p>
+            <p>ii) the source.     Reports will always be found in the &amp;HOLD&amp; file, the file HOLD.CONTROL     contains details about the report and has the same key. </p>
+            <p>iii) the selection/destination criteria.     e.g. all Forex deals that were input today,          a specified subdirectory.      Note that when Unix commands are specified the Unix path name      relative to the current location must be specified. </p>
+            <p />
+            <p>For Example, </p>
+            <p> i) It is possible to copy a report to another area such as     'REPORTS' which is a subdirectory of 'FOREX.ARCHIVES', a command     should be entered to copy the specified report from &amp;HOLD&amp; to     FOREX.ARCHIVES. The format of a possible Unix command if executed from     universe would be </p>
+            <p>    SH -c "cat ../bnk.data/eb/'&amp;HOLD&amp;'/id &gt; FOREX.ARCHIVES/REPORTS" </p>
+            <p>    Since the key to &amp;HOLD&amp; will be different for each report generated,     the key cannot be specified directly in the command, so an element     which can be evaluated to generate the required key can be specified.     This should be defined in the format (e.g. &amp;filename &gt; field&amp;). In     this case the key to the &amp;HOLD&amp; record to be copied can be found in     the field @ID of the file HOLD.CONTROL, so this should be specified as </p>
+            <p>    &amp;HOLD.CONTROL &gt; @ID&amp; giving a command to be defined as : </p>
+            <p>    SH -c "cat ../bnk.data/eb/'&amp;HOLD&amp;'/&amp;HOLD.CONTROL&gt;@ID&amp; &gt;            FOREX.ARCHIVES/REPORTS" </p>
+            <p>NOTE : The Unix cat command with &gt; option will append the contents of the        source file to the target file. </p>
+            <p />
+            <p>This can be made more flexible. </p>
+            <p>ii) For example it is possible to specify a variable target file name     based on the type of report produced.     To expand on the previous example, consider only copying any reports     in &amp;HOLD&amp; to a file name (e.g. OUTPUT.FILE) defined in the     corresponding entry on REPORT.CONTROL in the field     LOCAL.REFERENCE.FILE. </p>
+            <p>    SH -c "cat ../bnk.data/eb/'&amp;HOLD&amp;'/&amp;HOLD.CONTROL&gt;@ID&amp; &gt;            LINKUP/&amp;REPORT.CONTROL&gt;OUTPUT.FILE&amp;" </p>
+            <p>The value of 'OUTPUT.FILE' in the REPORT.CONTROL record related to the &amp;HOLD&amp; and HOLD.CONTROL record will be evaluated to give the file name within the LINKUP directory that the report could be copied to. In order to execute the above, the following should be defined. </p>
+            <p>  i) An entry on the LOCAL.TABLE should be created for the 'OUTPUT.FILE'.  ii) An entry for the 'OUTPUT.FILE' local table should be included in the      LOCAL.REF.TABLE REPORT.CONTROL record. iii) In the STANDARD.SELECTION REPORT.CONTROL record an I-descriptor      should be included for the LOCAL.TABLE item (i.e. 'OUTPUT.FILE').  iv) Ensure that the STANDARD.SELECTION record for HOLD.CONTROL contains      REPORT.CONTROL in the field SYS.REL.FILE or USR.REL.FILE in an item      defined for SYS.FIELD.NO or USR.FIELD.NO. </p>
+            <p />
+            <p />
+            <p>NOTE : </p>
+            <p>     An additional feature has been included which, in relation to the      example will search for the path of &amp;HOLD&amp; and assign it to the      variable 'HOLD.UNIX.PATH'. Therefore, </p>
+            <p>   SH -c "cat ../bnk.data/eb/'&amp;HOLD&amp;'/&amp;HOLD.CONTROL&gt;@ID&amp; &gt; REPORTS" </p>
+            <p>could be replaced with </p>
+            <p>   SH -c "cat &amp;HOLD.CONTROL&gt;HOLD.UNIX.PATH&amp;/&amp;HOLD.CONTROL&gt;@ID&amp; &gt; REPORTS" </p>
+            <p>This requires an I-descriptor called 'HOLD.UNIX.PATH' to be entered into USR.FIELD.NAME in the STANDARD.SELECTION HOLD.CONTROL record. This I-descriptor will call the UNIX.FILE.PATH subroutine and pass &amp;HOLD&amp; as a parameter. </p>
+            <p>For example, </p>
+            <p>    FILE.NAME............HOLD.CONTROL --------------------------------------------------------  15.1 USR.FIELD.NAME. HOLD.UNIX.PATH  16.1 USR.TYPE....... I  17.1.1 USR.FIELD.NO. SUBR("UNIX.FILE.PATH", "&amp;HOLD&amp;") -------------------------------------------------------- </p>
+            <p>This subroutine may be used as an I-descriptor for any file. </p>
+            <p />
+            <p>COMMAND (Optional Input) Can be multivalued to allow for multiple commands, or subvalued to allow for a lengthy command. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The source must be a valid entry on FILE.CONTROL.</p>
+            <p>Must be followed by '&gt;' (greater than sign).</p>
+            <p>To be followed by a valid multivalue entry in SYS.FIELD.NAME on STANDARD.SELECTION.</p>
+            <p>The whole to be contained within '&amp;' (ampersand).</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>A description of the printer. Should contain any special characteristics e.g. Landscape mode etc.. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>40 Any Character.</p>
+        </desc>
+</t>
+<t>
+<field>PRIME.PRINTER.ID</field>
+<desc>
+            <p>The Primos printer name as defined in the PROP environment. No validation is applied. </p>
+            <p>The physical destination of the output. </p>
+            <p>Can be used to re-direct output from one printer to another (providing the entry is not on the spool queue). i.e. Change the default SYSTEM printer to spool at PR1 instead of PR0. </p>
+            <p>When the key to PRINTER.ID is HOLD then this field is not used - but an entry must be specified anyway. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>30 Alphanumeric Characters. (Mandatory Input)</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

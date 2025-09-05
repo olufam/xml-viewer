@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>EB.CONTEXT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>EB.CONTEXT is the T24 Application to define CONTEXT records which will serve as data pool for defining RULES through the RULES DESINGER front-end tool. This will hold T24 applications from where the actual data are fetched to form a rule. This Application can hold two types of records, one is SYSTEM record which  contains common variables that can  be used across rules and the other is CONTEXT specific records that can be used for specific rules. The ID of CONTEXT specific records can be like</p>
+            <p>           &lt;context.id&gt;</p>
+            <p>                          OR</p>
+            <p />
+            <p>          &lt;context-id&gt; *&lt;purpose of context&gt;</p>
+            <p />
+            <p>         Where “context-id” can be the name of a T24 application and the “purpose of context” can be any meaningful definition based on the purpose of the definition of CONTEXT record.  </p>
+            <p />
+            <p>          Eg.  CUSTOMER</p>
+            <p>                 CUSTOMER*CREDITRATE</p>
+            <p />
+            <p />
+            <p>         A Rule will look like </p>
+            <p />
+            <p>          IF (CUSTOMER&gt;SECTOR eq 1000) AND (CUSTOMER*STANDARD&gt;DERIVED&gt;AGE gt 18) THEN</p>
+            <p>            RULE.STATUS = "TRUE"</p>
+            <p>            RULE.MESSAGE = "Regular current account holder"</p>
+            <p>          END</p>
+            <p />
+            <p>            OR</p>
+            <p />
+            <p>          IF (CUSTOMER&gt;SECTOR eq 1000) AND (CUSTOMER*STANDARD&gt;DERIVED&gt;AGE gt 19890101) THEN</p>
+            <p>            RULE.STATUS = "TRUE"</p>
+            <p>            RULE.MESSAGE = "Regular current account holder"</p>
+            <p>          END</p>
+            <p />
+            <p />
+            <p>         EB.CONTEXT </p>
+            <p />
+            <p>         Context.id                                  - CUSTOMER*SIMPLE</p>
+            <p>         tables used                                - CUSTOMER</p>
+            <p>         data labels derived                      - AGE</p>
+            <p>         data type                                   - number   </p>
+            <p>         evaluation of data label                - CALC.AGE (routine to evaluate a derived data label)</p>
+            <p />
+            <p>                          OR</p>
+            <p />
+            <p>         data labels derived                      - AGE</p>
+            <p>         data type                                   - date   </p>
+            <p>         evaluation of data label                - CUSTOMER&gt;BIRTH.INCORP.DATE (selection process to </p>
+            <p>                                                                                                  evaluate a derived data label)</p>
+            <p />
+            <p />
+            <p>         The records in EB.CONTEXT shall have two types of variables called direct and derived variables</p>
+            <p />
+            <p>         Direct variables </p>
+            <p>          These are fields fetched directly from the T24 tables mentioned in the PRIMARY/LINKED tables or the two standard system variables defined in the SYSTEM Record.</p>
+            <p />
+            <p>          SYSTEM record has only two direct DATA.LABELs(variables)  supplied from common variables ID.COMPANY and OPERATOR. </p>
+            <p />
+            <p>          Other CONTEXT records</p>
+            <p>                 The fields of T24 tables used in the CONTEXT record. </p>
+            <p>                 example - SECTOR ( from CUSTOMER table) </p>
+            <p />
+            <p />
+            <p>         Derived variables   </p>
+            <p>                These are DATA.LABELs defined in the EB.CONTEXT record with respective evaluation</p>
+            <p>                method.</p>
+            <p>                The evaluation can be through a SELECTION.PROCESS or by a DATA.ROUTINE (a valid  </p>
+            <p>                EB.API routine). </p>
+            <p>         All derived labels must have a valid data type. </p>
+            <p />
+            <p>           DATA.LABEL                           - BIRTH.DATE</p>
+            <p>           DATA.TYPE                             - date  </p>
+            <p>           DATA.ROUTINE                       - CALC.AGE</p>
+            <p>           DATA.ARG.TABLE                   - CUSTOMER</p>
+            <p>           DATA.ARGUMENT                   - BIRTH.INCORP.DATE</p>
+            <p />
+            <p>            OR</p>
+            <p />
+            <p>            DATA.TYPE  - date         </p>
+            <p>            SELECTION.PROCESS - CUSTOMER&gt;BIRTH.INCORP.DATE</p>
+            <p />
+            <p />
+            <p>       The data types of the derived variables are to be defined by the user who is setting up the </p>
+            <p>       EB.CONTEXT record in relevance to the type of value the routine or SELECTION.PROCESS will return. </p>
+            <p />
+            <p />
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>DATA.TYPE</field>
+<desc>
+            <p>The allowed data types for the DATA.LABELs are</p>
+            <p />
+            <p>          number       - any number with/without decimal</p>
+            <p>          date           - date in standard T24 date format(yyyymmdd)</p>
+            <p>          text            - any string</p>
+            <p />
+            <p>         The value of a DATA.LABEL evaluated through a DATA.ROUTINE or a SELECTION.PROCESS should be of the same data type.</p>
+            <p />
+            <p>         Validation rules</p>
+            <p>         This can accept only the 3 predefined data types. </p>
+        </desc>
+</t>
+<t>
+<field>DATA.ROUTINE</field>
+<desc>
+            <p>This will take any valid EB.API routine. The routine mentioned here will be used to derive the value for  the respective DATA.LABEL. It must accept at least one argument mentioned in the respective DATA.ARGUMENT field. </p>
+            <p>         The values passed to the routine is defined through the DATA.ARG.TABLE &amp; DATA.ARGUMENT fields. </p>
+            <p />
+            <p>         Validation rules</p>
+            <p>         The routine name can be of 35 characters maximum.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SELECTION.PROCESS</field>
+<desc>
+            <p>This is a field similar to that of a jdescriptor in T24. </p>
+            <p>         This can accept any valid T24 applications of type H,U,L,T,W or D and their respective data or local reference fields.</p>
+            <p />
+            <p>          Example:</p>
+            <p>          COMPANY&gt;LOCAL.COUNTRY&gt;COUNTRY&gt;GEOGRAPHICAL.BLOCK </p>
+            <p />
+            <p>           The above will fetch the GEOGRAPHICAL.BLOCK of the COMPANY ID passed.</p>
+            <p />
+            <p>          CUSTOMER&gt;RESIDENCE&gt;COUNTRY&gt;GEOGRAPHICAL.BLOCK</p>
+            <p />
+            <p>           The above will fetch the GEOGRAPHICAL.BLOCK of the CUSTOMER ID passed. </p>
+            <p />
+            <p />
+            <p>         For the SYSTEM record, </p>
+            <p>          The applications used in the SELECTION.PROCESS must be either of the three applications </p>
+            <p>          COMPANY, USER or DATES.</p>
+            <p />
+            <p>         For other CONTEXT records,</p>
+            <p>          The first application in the field must be one among the T24 applications defined in the PRIMARY.TABLE or LINKED.TABLE fields of the respective CONTEXT record.</p>
+            <p />
+            <p />
+            <p>          Example:</p>
+            <p>          CONTEXT.ID                      - CUSTOMER*SIMPLE</p>
+            <p>          PRIMARY.TABLE               - CUSTOMER</p>
+            <p>          LINKED.TABLE                  - CUSTOMER.CHARGE</p>
+            <p>                                                   - CUSTOMER.ACCOUNT</p>
+            <p />
+            <p>          .</p>
+            <p>          .</p>
+            <p>          SELECTION.PROCESS     - FILE1&gt;field1&gt;FILE2&gt;field2</p>
+            <p />
+            <p>           Here, the first application "FILE1" must be either CUSTOMER ,   CUSTOMER.CHARGE or CUSTOMER.ACCOUNT.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>         Validation rules</p>
+            <p>         It can accept a maximum of 50 characters. </p>
+            <p>         Expandable Multi value field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>LABEL.DESCRIPTION</field>
+<desc>
+            <p>The description for the DATA.LABEL defined can be input in this field. </p>
+            <p />
+            <p>         Validation rules</p>
+            <p>         This can accept a maximum of 35 characters.</p>
+        </desc>
+</t>
+<t>
+<field>MULTI.VALUE.ACTION</field>
+<desc>
+            <p>The allowed options for this field are</p>
+            <p />
+            <p>          FIRST           - applicable for all DATA.TYPEs </p>
+            <p>          LAST            - applicable for all DATA.TYPEs </p>
+            <p>          HIGHEST      - applicable for 'date' and 'number' DATA.TYPEs</p>
+            <p>          LOWEST      - applicable for 'date' and 'number' DATA.TYPEs</p>
+            <p>          TOTAL          - applicable for 'number' DATA.TYPE alone.</p>
+            <p>          AVERAGE    - applicable for 'number' DATA.TYPE alone.</p>
+            <p />
+            <p>         A DATA.LABEL is derived through a DATA.ROUTINE or SELECTION.PROCES and if the resultant output has multiple values then the value shall be processed based on the option given </p>
+            <p>         in the respective MULTI.VALUE.ACTION field. If nothing is mentioned in this field then always the first value from the output will be taken and sent to the rules engine for processing the rule.</p>
+            <p />
+            <p>         Validation rules</p>
+            <p>         This is an optional field and can accept only the above predefined values.</p>
+        </desc>
+</t>
+<t>
+<field>LINKED.TABLE</field>
+<desc>
+            <p>A valid T24 table can be given in this field. This is a multi-value field. </p>
+            <p>         PRIMARY.TABLE and LINKED.TABLE will not accept duplicate table names.</p>
+            <p />
+            <p>         The ID of the T24 tables mentioned in this field and in the PRIMARY.TABLE field must be of same type for grouping relevant applications together in a CONTEXT record. </p>
+            <p />
+            <p>          Example</p>
+            <p>                 A valid definition </p>
+            <p />
+            <p>           PRIMARY.TABLE          -- CUSTOMER</p>
+            <p>           LINKED.TABLE             -- CUSTOMER.CHARGE</p>
+            <p />
+            <p>                An  Invalid Definition ( IDs of Application that does not match) </p>
+            <p />
+            <p />
+            <p>           PRIMARY.TABLE           -- CUSTOMER</p>
+            <p>           LINKED.TABLE LD.        -- LOANS.AND.DEPOSITS</p>
+            <p />
+            <p />
+            <p>         Validation rules</p>
+            <p>         This can accept applications of types H,U,L,T,W or D.</p>
+            <p>         Maximum of 35 characters.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRIMARY.TABLE</field>
+<desc>
+            <p>A valid T24 table must be given in this field. This is a single value field. </p>
+            <p>         Any further addition of T24 application to be linked </p>
+            <p />
+            <p>         Validation rules</p>
+            <p>         This can accept applications of types H,U,L,T,W or D.</p>
+            <p>         Maximum of 35 characters.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>The description on the EB.CONTEXT record can be given in this field. </p>
+            <p />
+            <p>         Validation rules</p>
+            <p>         1-35 characters can be input (Free text format)</p>
+            <p />
+            <p>         Mandatory input </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Contains details of any overrides applicable to this CONTEXT record.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>         Up to 35 type A (alphanumeric) characters. Multivalue field. (Internal field.)</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONTEXT.ID</field>
+<desc>
+            <p>This is the ID of the EB.CONTEXT record. This refers to the nature of CONTEXT record to be defined </p>
+            <p>           The record with ID as SYSTEM is one standard record which will contain the definitions for common variables to be </p>
+            <p>           used across RULES.</p>
+            <p>           The other EB.CONTEXT records are rule specific. </p>
+            <p>           The ID may look like</p>
+            <p />
+            <p>            CUSTOMER</p>
+            <p>            CUSTOMER*SIMPLE </p>
+            <p />
+            <p />
+            <p />
+            <p>           Validation rules</p>
+            <p>           It can accept up to 65 characters.</p>
+            <p>           This is a free format text.</p>
+            <p>           To define derived DATA.LABELs in a record the ID should be separated by a '*' to name the CONTEXT more meaningful</p>
+            <p />
+            <p>           eg. CUSTOMER, CUSTOMER*SIMPLE, CUSTOMER*CREDIT-RATING </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DATA.ARG.TABLE</field>
+<desc>
+            <p>Contains the Application name from which a field is passed as DATA.ARGUMENT to a DATA.ROUTINE</p>
+            <p>         This is a no input field for SYSTEM record. For other EB.CONTEXT records where a derived data label is defined, this can accept only the tables that are defined in the PRIMARY/LINKED TABLE field of respective records.</p>
+            <p />
+            <p>         Validation rules</p>
+            <p>         Maximum of 40 characters</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DATA.ARGUMENT</field>
+<desc>
+            <p>This will take 3 types of values </p>
+            <p>         1. a valid data or local reference field of a T24 table given in the respective DATA.ARG.TABLE field .</p>
+            <p>         2. a constant value within quotations (" or ') </p>
+            <p>         3. a valid DATA.LABEL from SYSTEM record as found below. </p>
+            <p />
+            <p>         In SYSTEM record the only values accepted are !ID.OPERATOR and !ID.COMPANY. </p>
+            <p>         In other CONTEXT records it will also accept DATA.LABELs from SYSTEM record. </p>
+            <p />
+            <p>           Eg.</p>
+            <p>           DATA.ARG.TABLE          - CUSTOMER</p>
+            <p>           DATA.ARGUMENT          - SECTOR</p>
+            <p />
+            <p>            OR</p>
+            <p />
+            <p>          DATA.ARG.TABLE </p>
+            <p>          DATA.ARGUMENT           - "A-rated-customer"</p>
+            <p />
+            <p>            OR</p>
+            <p />
+            <p>           DATA.ARG.TABLE</p>
+            <p>           DATA.ARGUMENT           - !OPERATING.COMPANY (this is a DATA.LABEL defined in SYSTEM record)</p>
+            <p />
+            <p />
+            <p>         DATA.ARG.TABLE &amp; DATA.ARGUMENT are associated sub-value fields to pass arguments to the DATA.ROUTINE. This field set can be </p>
+            <p>         used to pass one or more arguments.</p>
+            <p />
+            <p>         Validation rules</p>
+            <p>         It can accept a maximum of 35 characters.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DATA.LABEL</field>
+<desc>
+            <p>This contains the name of the derived data variables. </p>
+            <p>         This is the key field of the associated multi-value set from DATA.LABEL to MULTI.VALUE.ACTION. </p>
+            <p />
+            <p />
+            <p>         Validation rules</p>
+            <p>         3-35 characters can be input.(characters allowed are : "A-Z"</p>
+            <p>         "0-9" and  "-.", first character alpha ) </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>SHORT.DESC</field>
+<desc>
+            <p>This is to have a short description on the CONTEXT record defined.</p>
+            <p />
+            <p>         Validation rules</p>
+            <p />
+            <p>         1-20 characters of free text format</p>
+            <p>         Mandatory input</p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+</menu>
+</t24help>
+

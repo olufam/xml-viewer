@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DE</product>
+<table>DE.STATISTICS</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Statistics are calculated during end of period processing.  The quantities accumulated are: </p>
+            <p>         -  The number of messages </p>
+            <p>         -  Amount in each currency (only if Currency is one of the             selection criteria) </p>
+            <p>         -  Time taken to deliver the message (from application hand-off             to being successfully handed to the carrier) </p>
+            <p>These totals include all messages, or only those where particular conditions apply.  The Statistics Table is used to define the conditions for which statistics should be maintained and the sequence in which they should be presented. </p>
+            <p>A Statistics Table record is set up for each statistics report required. For the collection of statistics the ID of a record is unimportant because all Delivery Statistics records are checked with each message to see if the message should be added into the statistics totals.  A careful choice of IDs will be helpful, however, when using the resulting reports. </p>
+            <p>Statistical totals are not set to zero by the End of Period processing, this is done when the report is printed.  (Reports can be viewed on line at any time without being zeroised.)  This enables the statistics to accrue through several periods, thus reports that are printed weekly will contain weekly totals; reports printed monthly will contain monthly totals.  It would be advisable to assign a different range of numbers for the IDS of daily, weekly and monthly reports so that reports are not printed before their due date. </p>
+            <p>Statistics table records are set up containing multivalue sets of: </p>
+            <p>           Field name            Operand            Condition </p>
+            <p>Complex conditions can be built by setting up several simple conditions in a multivalue set.  All the conditions must be true for the combined condition to apply.  Where the Operand and Condition are omitted the field name indicates the sequence of the report. </p>
+            <p />
+            <p>Example: </p>
+            <p>The user might choose to select urgent messages for customer number 1234 and to display the totals primarily in order of currency code and then, within each Currency Code, by Message Type.  To achieve this a Statistics Table record is set up as follows: </p>
+            <p>Field name 1    CURRENCY (No operand or condition) Field name 2    MESSAGE.TYPE (No operand or condition) Field name 3    MESSAGE.PRIORITY Operand 3       EQUAL Condition 3     U Field name 4    CUSTOMER Operand 4       EQUAL Condition 4     1234 </p>
+            <p />
+            <p>Note that the report generated would contain separate totals for each Message Type within each Currency, but no overall total (for all Message Types) by Currency.  To obtain these an additional record is required as follows: </p>
+            <p>Field name 1    CURRENCY (No operand or condition) Field name 2    MESSAGE.PRIORITY Operand 2       EQUAL Condition 2     U Field name 3    CUSTOMER Operand 3       EQUAL Condition 3     1234 </p>
+            <p>Note : For improved performance, put the least common selection parameter        first, i.e. the one that will exclude most records.  For example,        if there are fewer records with a priority of 'U' than messages        for customer 1234, specify the priority selection before the        customer selection. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>STATISTICS.ID</field>
+<desc>
+            <p>Identifies a particular statistics report.  Choose a meaningful number, as described in the overview of this table. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-5 numeric digits.</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.NAME</field>
+<desc>
+            <p>Controls the sequence or contents of statistics reports. Must be on the message header. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be one of the following: COUNTRY.CODE   LANGUAGE      VALUE.DATE AMOUNT         TRANS.REF     CURRENCY MESSAGE.TYPE   APPLICATION   ACCOUNT CUSTOMER       COMPANY       CARRIER STATUS         TO.ADDRESS MESSAGE.PRIORITY FORMAT         APP.FORMAT    IN.PAY.TYPE TEST.KEY.REQ   TEST.KEY.AUTH TEST.KEY.INP TELEX.BATCH.NO FIELD NAME, OPERAND (Field 4.1) and CONDITION (Field 5.1) form a multivalue set. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>OPERAND</field>
+<desc>
+            <p>If the field name is not being used to determine the sequence of the statistics report, then OPERAND and CONDITION are entered to define a selection condition. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>One of the following:  EQUAL           NOT EQUAL GREATER THAN    LESS THAN  FIELD NAME, OPERAND and CONDITION form a multivalue set. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>INWARDXOUTWARD</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 7 characters may be entered.</p>
+            <p>The following values are permitted:       INWARD      OUTWARD</p>
+        </desc>
+</t>
+<t>
+<field>INWARD.OUTWARD</field>
+<desc>
+            <p>Defines whether this record is to be used for maintaining statistics for inward messages or for outward messages. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be either 'INWARD' or 'OUTWARD'. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.POS</field>
+<desc>
+            <p>Specifies the field number in Outward Header corresponding to the Field Name used for calculating statistics.  This improves performance when checking whether conditions match. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 numeric characters. Multivalue set. (No input)</p>
+        </desc>
+</t>
+<t>
+<field>CLEARED.DATE</field>
+<desc>
+            <p>Holds the date when a statistic report was last printed for this statistics table record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 8 characters.  Updated by DE.O.STATISTICS. (No input.)</p>
+        </desc>
+</t>
+<t>
+<field>CLEARED.TIME</field>
+<desc>
+            <p>Holds the time of day when a statistics report was last printed for this statistics table record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 6 characters.  Updated by DE.O.STATISTICS. (No input.)</p>
+        </desc>
+</t>
+<t>
+<field>CONDITION</field>
+<desc>
+            <p>If the field name is not being used to determine the sequence of the statistics report, then OPERAND and CONDITION are entered to define a selection condition. </p>
+            <p>Condition is the value that the field name is to be compared with. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-30 type A (alphanumeric) characters.  Either a character string (no delimiters - e.g. SMITH not 'SMITH)  or     a numeric value (with sign and decimal point if required)  or     a date (8 digits: 4 digit year, 2 digit month, 2-digit day)  FIELD NAME, OPERAND and CONDITION form a multivalue set. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Brief description. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-35 type A (alphanumeric) characters.  Multilanguage field. (Mandatory input)</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

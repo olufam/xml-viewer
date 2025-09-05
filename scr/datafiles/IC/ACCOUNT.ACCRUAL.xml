@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>IC</product>
+<table>ACCOUNT.ACCRUAL</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>ACCOUNT.ACCRUAL</p>
+            <p />
+            <p />
+            <p>  The purpose of the Account Accrual table is to provide the system with information at Company level about how and when to process Accruals of interest and charges on Customer Accounts and whether interest capitalisation is inclusive or exclusive of the balance on capitalisation date, the value dates of interest entries generated and the day on which the entries are booked.</p>
+            <p>  Interest Accruals may be processed daily or monthly. or it could be specified that no accrual is to be made. Account charges may only be processed at calendar month end.</p>
+            <p>  The periodicity of interest accrual could be specified at  Account Group or Category Level for different  Currency types (foreign or local). For  Accounts not covered by  specified definition,  default interest accrual periodicity could be defined based  on Account Currency type.</p>
+            <p>  Dates for interest capitalisation are specified at group level in the Group Capitalisation table and for specific Accounts in the Account Capitalisation table.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>WRITE.ACCR.ACCT</field>
+<desc>
+            <p>Optional input.</p>
+            <p> YES indicates that the information only ACCR.ACCT.XX for accounts accruals are written out.</p>
+            <p> Where XX indicates DR, DR2, CR, CR2, and CH</p>
+            <p> NO or null indicattes that the records are not written.</p>
+            <p> NB: The INFO.ACCT.XX application can be used to view accrual information for an individual account.</p>
+        </desc>
+</t>
+<t>
+<field>DEFLT.ACCR.TYPE</field>
+<desc>
+            <p>Introduced in G14.0.0.</p>
+            <p>  Specifies the Currency Type (Foreign, Local or Both) of  the Accounts.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Mandatory field.</p>
+            <p>  Field associated with the field DEFLT.ACCR.FQU.</p>
+            <p>  Valid values are BOTH, FOREIGN, LOCAL.</p>
+            <p>  Duplicates not allowed.</p>
+            <p>  BOTH could not be specified  either with FOREIGN or LOCAL.</p>
+            <p>  If  either  FOREIGN or LOCAL is specified, then a second value     of either LOCAL or FOREIGN respectively,  is mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>CAT.ACCR.FQU</field>
+<desc>
+            <p>Introduced in G14.0.0.</p>
+            <p>  Specifies the frequency of  Interest accrual for the Account types specified in the associated  fields  CATEG.TYPE  and ACCRUAL.CAT.</p>
+            <p>  If the value is NONE, then interest would not be accrued.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>  Mandatory     field, if value is specified in ACCRUAL.CAT.</p>
+            <p />
+            <p />
+            <p>  Field     associated with the fields  ACCRUAL.CAT  and CATEG.TYPE.</p>
+            <p />
+            <p />
+            <p>  Valid     values are DAILY, MONTHLY, NONE.</p>
+        </desc>
+</t>
+<t>
+<field>GRP.ACCR.FQU</field>
+<desc>
+            <p>Introduced in G14.0.0.</p>
+            <p>  Specifies the frequency of  Interest accrual for the Account types specified in the associated  fields  GRP.ACCR.TYP and ACCRUAL.GRP.</p>
+            <p>  If the value is NONE, then interest would not be accrued.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>  Mandatory     field, if value is specified in ACCRUAL.GRP.</p>
+            <p />
+            <p />
+            <p>  Field     associated with the fields  ACCRUAL.GRP and GRP.ACCR.TYP.</p>
+            <p />
+            <p />
+            <p>  Valid     values are DAILY, MONTHLY, NONE.</p>
+        </desc>
+</t>
+<t>
+<field>COMP.ACC.RTN</field>
+<desc>
+            <p>Identifies a local routine that can be called to adjust the compensation account data.</p>
+            <p>This routine will be called with 1 multi valued argument delimited by field marks.</p>
+            <p>The argument data is as follows:-</p>
+            <p>Field 1 - the lead acount number i.e. the account being compensated to, this is for information only</p>
+            <p>Field 2 - the start date of the calculation period, this can be adjusted if required</p>
+            <p>Field 3 - The end date of the calculation period, this is for information only</p>
+            <p>Field 4 - Indicates the type of processing taking palce, and is information only, "S" = capitalisation, "A" = accrual, "C" = back value correction, "I" = information only, no accounting entries are posted nb: this can be used via the INFO.ACCT.XX routines for testing purposes where XX indicates the type of interest calculation DR,DR2, CR, CR2, CH   </p>
+            <p>Field 5 - the current list of compensation accounts delimited by value marks marks, this can be adjusted by the local routine</p>
+            <p>Field6 - associated with field5 this can be returned from the local routine and can contain the start date when the balances for the relevant compensation account in field5 are included in the compensation group balances</p>
+            <p>Field7 - associated with field5 this can be returned from the local routine and can contain the end date when the balances for the relevant compensation account in field5 are excluded from the compensation group balances</p>
+            <p>An example follows of how this local routien could be used to adjust the calculation of the compensation group balances.</p>
+            <p>Acount 100002 was compensated to account 10001 from the second of the month to the tenth of the month.</p>
+            <p>The calcuation period is the 1st to the 31st of the month.</p>
+            <p>Account 100002 has a balance of 1000 for the whole period.</p>
+            <p>Account 100001 has a balance of 2000 for the whole period.</p>
+            <p>The calculation takes place on the 2nd of the month and is projected to the end of the month.</p>
+            <p>Normally the compensation group balance will be 3000 for the whole month.</p>
+            <p>However if the local routine is called the compensation balances can be calculated as follows</p>
+            <p>1st  2000</p>
+            <p>2nd  3000</p>
+            <p>10th 2000</p>
+            <p>nb: the above example will require a local development to store the start and end dates of the compensation group memberships.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CATEG.TYPE</field>
+<desc>
+            <p>Introduced in G14.0.0.</p>
+            <p>  Specifies the Currency Type (Foreign, Local or Both) of  the Accounts in the Category  specified in ACCRUAL.CAT.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>  Mandatory     if ACCRUAL.CAT  is specified.</p>
+            <p />
+            <p />
+            <p>  Field     associated with the fields ACCRUAL.CAT  and CAT.ACCR.FQU.</p>
+            <p />
+            <p />
+            <p>  Valid     values are BOTH, FOREIGN, LOCAL.</p>
+            <p />
+            <p />
+            <p>  Duplicates     not allowed.</p>
+            <p />
+            <p />
+            <p>  BOTH     could not be specified  either with FOREIGN or LOCAL.</p>
+            <p />
+            <p />
+            <p>  If      either  FOREIGN or LOCAL is specified, then a second value of either     LOCAL or FOREIGN respectively,  is mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>VAL.DATE.ADJUST</field>
+<desc>
+            <p>Can be used to adjust the number of calendar days forward that the value date of an account balance can be adjusted.</p>
+            <p>For example certain countries require that interest accruals take place on the opening balance of an account rather than the closing balance. Setting this field to 1 will have this effect. </p>
+        </desc>
+</t>
+<t>
+<field>DEFLT.ACCR.FQU</field>
+<desc>
+            <p>Introduced in G14.0.0.</p>
+            <p>  Specifies the frequency of  Interest accrual for the Account types specified in the associated  field DEFLT.ACCR.TYPE.</p>
+            <p>  If the value is NONE, then interest would not be accrued.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Mandatory field.</p>
+            <p>  Field associated with the field DEFLT.ACCR.TYPE.</p>
+            <p>  Valid values are DAILY, MONTHLY, NONE.</p>
+        </desc>
+</t>
+<t>
+<field>INCLUDE.CHARGES</field>
+<desc>
+            <p>Specifies whether Account charges are to be accrued every month end, or only booked to Profit and Loss when they are applied.</p>
+            <p>  Account charges may be applied monthly, quarterly or six-monthly as specified in the Company table, always at the end of a calendar month.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Y (Yes), N or NO. (Mandatory input.)</p>
+        </desc>
+</t>
+<t>
+<field>CONVERT.FCY.TAX</field>
+<desc>
+            <p>This field is for future use, it specifies whether or not Tax calculated in foreign currency should be converted to Local Currency before it is booked to a Tax Account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Y             or N(o)          or Nill (Must be NO at present.) (Optional input.  No input means Tax is booked in the currency in which it is calculated).</p>
+        </desc>
+</t>
+<t>
+<field>GRP.ACCR.TYP</field>
+<desc>
+            <p>Introduced in G14.0.0.</p>
+            <p>  Specifies the Currency Type (Foreign, Local or Both) of  the Accounts in the Group specified in ACCRUAL.GRP.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>  Mandatory     if ACCRUAL.GRP is specified.</p>
+            <p />
+            <p />
+            <p>  Field     associated with the fields</p>
+            <p>  ACCRUAL.GRP and     GRP.ACCR.FQU.</p>
+            <p />
+            <p />
+            <p>  Valid     values are BOTH, FOREIGN, LOCAL.</p>
+            <p />
+            <p />
+            <p>  Duplicates     not allowed.</p>
+            <p />
+            <p />
+            <p>  BOTH could     not be specified  either with FOREIGN or LOCAL.</p>
+            <p />
+            <p />
+            <p>  If      either  FOREIGN or LOCAL is specified, then a second value of either     LOCAL or FOREIGN respectively,  is mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>COMPANY.CODE</field>
+<desc>
+            <p>This is the code that defines the Company for which the Accrual information is applicable.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  9 type A (alphanumeric) character Company Code     OR 2-3 type MNE company mnemonic characters (will be converted to Company Code). (Mandatory input.)</p>
+            <p>  If the Company Code is entered, it must be input as CCGGGNNNN where CC is Country Code GGG is Company Group Code and NNNN is a local number It is always displayed as CC-GGG-NNNN.</p>
+            <p>  If the Company Mnemonic is entered, it is converted and stored as the Company Code.</p>
+        </desc>
+</t>
+<t>
+<field>MTH.END.UPTO.DAY</field>
+<desc>
+            <p>Specifies the day of the month on which  monthly Interest Accrual processes will take place.</p>
+            <p>  If the day specified falls on a non-working day, the Accrual will take place on the previous working day.  The accrual calculation will include the month end to date if LAST.DAY.INCLUSIVE is set to Y, otherwise the calculation will not include this date.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  1-2 numeric characters in the range 1 to 31.  At present only 31 is allowed. Mandatory input. Cannot be changed.</p>
+        </desc>
+</t>
+<t>
+<field>ACCRUAL.CAT</field>
+<desc>
+            <p>Introduced in G14.0.0.</p>
+            <p>  Specifies the Account Category  for which the associated Interest Accrual  parameters are defined.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>  Optional     field.</p>
+            <p />
+            <p />
+            <p>  Field     associated with the fields CATEG.TYPE  and CAT.ACCR.FQU.</p>
+            <p />
+            <p />
+            <p>  Value not     allowed if values are defined in the multi-value set of ACCRUAL.GRP.</p>
+            <p />
+            <p />
+            <p>  Should be     a valid Customer Account Category in the range 1000 to 9999.</p>
+        </desc>
+</t>
+<t>
+<field>ACCRUAL.GRP</field>
+<desc>
+            <p>Introduced in G14.0.00.</p>
+            <p>  Specifies the Account Group for which the associated Interest Accrual  parameters are defined.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Optional field.</p>
+            <p>  Field associated with the fields GRP.ACCR.TYP and GRP.ACCR.FQU.</p>
+            <p>  Value not allowed if values are defined in the multi-value set of     ACCRUAL.CAT.</p>
+            <p>  Should be the ID of a valid record in ACCT.GEN.CONDITION.</p>
+        </desc>
+</t>
+<t>
+<field>APP.POSTING.DAY</field>
+<desc>
+            <p>Specifies whether interest is to appear on a Customer statement on the date it is calculated or on the following day.</p>
+            <p>  If NEXT is specified, details for producing the interest entries are written in a temporary file. The entries are booked at the start of end-of-day processing on the next working day, by the program IC.POST.NEXT.</p>
+            <p>  The Profit and Loss entries are booked on application (Capitalisation) day, regardless of the contents of this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  NEXT or TODAY or any abbreviation thereof. (Mandatory input.) Cannot be changed.</p>
+        </desc>
+</t>
+<t>
+<field>AUTO.SETTLE</field>
+<desc>
+            <p>Specifies whether the system must automatically raise the accounting transactions to move the IC P&amp;L to xxxxxSP when an account is suspended and then move the xxxxxSP to P&amp;L when the suspense is removed.</p>
+            <p>  If the indicator on ACCT.GROUP.CONDITION is not set, then the indicator on ACCOUNT.ACCRUAL is checked.</p>
+            <p>  Valid Option : 'YES', 'NO' or Null</p>
+        </desc>
+</t>
+<t>
+<field>LAST.DAY.INCLUSIVE</field>
+<desc>
+            <p>Specifies whether interest calculations for application are inclusive or exclusive of the capitalisation date.</p>
+            <p>  Assuming MTH.END.UPTO.DAY (field 1) contains 20 and an Account also has Interest Capitalisation on 20th of the month, Monthend Accrual processing and interest application will both take place on the 20th of each month (or on the previous working day if 20th is not a working day).</p>
+            <p>  If this field contains Y, the amount booked to the Customer's Account will include interest calculated on balances with value up to and including 20th.  The entry booked to the Account will have a value date of 21st.</p>
+            <p>  If this field contains NO, the amount booked to the Customer's Account will only include interest calculated on balances with value up to and including the last calender day before 20th.  The entry booked to the Account will have a value date of the day after the last balance included.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Y (inclusive), N or NO (exclusive). Mandatory input. Cannot be changed once a customer account has been opened in the company.</p>
+        </desc>
+</t>
+<t>
+<field>EXCLUSIVE.TYPE</field>
+<desc>
+            <p>No helptext available.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

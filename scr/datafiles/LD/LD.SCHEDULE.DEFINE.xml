@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>LD</product>
+<table>LD.SCHEDULE.DEFINE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This facility enables the user to specify scheduled events which are to occur during the life of the contract. </p>
+            <p>  Such events can include the definition and processing of some or all of the following components: </p>
+            <p>            Principal           Interest           Commission           Fees           Margin revisions           Rate revisions           Diary entries </p>
+            <p>  Updates to this file are effected solely by the user and the only functions users are allowed to perform are (L)IST, (E)XCEPTION, (S)EE, and (P)rint. </p>
+            <p>  Input to this facility can only be via field DEFINE.SCHEDULES on LD.LOANS.AND.DEPOSITS. </p>
+            <p>  Upon responding YES to DEFINE SCHEDS and validating the contract the system will take you to the following input screen: </p>
+            <p>   ---------------------------------------------------------------  |   LOANS DEPOSITS TESTING      LD.SCHEDULE DEFINE       111  |  |                                                             |  |   222          333            444    555        666         |  |   777     INT: 888        COM:999                           |  |                                                             |  |-------------------------------------------------------------|  | FORWARD.BACKWARD KEY:A1             BASE.DATE KEY:B1        |  | SCH  DATE  AMOUNT      RATE  CHRG   NO   FREQ  DIARY ACTION|  | C1   C2    C3                       C4    C5    C6  C7      |  |                                                             |  --------------------------------------------------------------- </p>
+            <p>  Where the following 9 items are automatically supplied by the system: </p>
+            <p>           111 = Contract number          222 = Currency mnemonic          333 = Amount of contract (or Principal to be re-defined                inclusive of forward dated principal increases)          444 = Start date of contract          555 = Maturity date of contract          666 = Payment method and category          777 = Customer mnemonic          888 = Interest rate type and interest basis          999 = Commission rate type and commission calculation method </p>
+            <p>  The remaining items are described in detail in the remaining part of this manual. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>RESERVED8</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>FREQ.CODE</field>
+<desc>
+            <p>This field stores a standard T24 frequency code of the associated schedule. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  This is a NOINPUT field.</p>
+            <p>  Standard T24 frequency code.</p>
+        </desc>
+</t>
+<t>
+<field>SCH.TYPE</field>
+<desc>
+            <p>This field indicates the schedule type that can be created by the user. </p>
+            <p>  The user can input a single schedule or a valid combination of schedules eg PIC except the A schedule. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  A combination of up to 3 schedule types each represented by a single alphabetic character of the form: A = Annuity (principal + interest) P = principal B = Principal Increase I = interest C = commission R = revision M = margin F = fees N = capitalised charge D = diary K = Asset Leasing schedule.</p>
+            <p>  If a schedule type is input this must be of the form A, P, B, I, C, M, D, F, N, K, or R, or a valid combination of up to three e.g. PIC. </p>
+            <p>  "P" schedules are only allowed for commitment contracts where the COMMIT.DRAWING field is set to NO. </p>
+            <p>  "B" schedules are prohibited for Drawing commitment contracts and if interest basis is set to 'S'. </p>
+            <p>  "N" shedules are prohibited for Commitment contract. </p>
+            <p>  "C" schedules are prohibited for Deposit contracts. </p>
+            <p>  "R" and "I" schedules are prohibited if no interest is due on the Contract. </p>
+            <p>  "C" schedules are prohibited if no commission is due on the contract. </p>
+            <p>  "P" &amp; "I" &amp; "C" schedules cannot be defined together as "PIC" when interest and commission is/are discounted. </p>
+            <p>  "R" schedules cannot be combined with "I" schedules when interest is discounted as "R" schedules are prohibited for system date. </p>
+            <p>  Multiple "I" schedules must be defined if the value in field CAPITALISATION = (Y)es on LD.LOANS.AND.DEPOSITS. </p>
+            <p>  "I" schedules must be defined alone if interest basis = "S". </p>
+            <p>  "C" schedules must be defined alone if commission basis = "S".</p>
+            <p>  "R" schedules are mandatory for PERIODIC.AUTOMATIC Interest Rate type. "R" schedules are mandatory for PERIODIC.MANUAL Interest Rate type. "R" schedules are prohibited for PERIODIC.STRAIGHT Interest Rate type. "R" schedules are prohibited from amending the next "R" date for PERIODIC.AUTOMATIC Interest Rate type. "R" schedules are prohibited for FLOATING Interest Rate type contracts. "R" schedules are prohibited if Interest Basis is "S". "R" - for PERIODIC AUTOMATIC Interest Rate type only; a new "R" Schedule can only be input if an "R" Schedule is still outstanding. The new Schedule must be later than the existing Schedule.</p>
+            <p>  "M" schedules are prohibited when no Interest due on the Contract. "M" schedules are prohibited for Fixed Interest Rate type. "M" schedules are prohibited for Commitments.</p>
+            <p>  "K" schedules are only allowed for finance leasing annuity contracts, where a financial charge ( depreciation) is required and must be input after the "A" schedule is defined. Input can only take place for the following financial charge types: -</p>
+            <p>  "RB" - reducing balance method, the dates and frequency must conform to the "A" schedule type, a depreciation rate must be input.</p>
+            <p>  "FS" - flexible schedule method, using this method different rates can be applied over the life of the contract, and therefore a new "K" schedule must be input for each rate change.</p>
+            <p>  "AN" and "SL" type financial charges do not require "K" schedules to be input as the schedule dates will conform to the "A" schedules, and no rate input is required.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED7</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED4</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.CODE</field>
+<desc>
+            <p>This field indicates the charge code applicable to the "F", "N", "P", "I" or "A" schedules.  This forms an association with the next field CHG.BASE.AMT to provide a flexible charge calculation mechanism. </p>
+            <p>  Contains the id to the LMM.CHARGE.CONDITIONS record. The charge type may be RECEIVEable by the bank (i.e paid by the customer), or PAYable (paid by the bank). </p>
+            <p>  A charge code must be defined with a type F schedule together with an AMOUNT. A charge code may also be linked to a P or I schedule, providing the LMM.CHARGE.CONDITIONS record is linked to a FT.CHARGE/ COMMISSION.TYPE. When A, P or I schedule with a linked charge is processed, the charge amount will be calculated according to the FT charge definition, based on the amount specified in CHG.BASE.AMT field. </p>
+            <p>  Charges are debited or credited as follows: </p>
+            <p>  Type F schedule RECEIVE debited from CHARG.LIQ.ACCT, PAY credited to FEE.PAY.ACCOUNT. </p>
+            <p>  Type P schedule RECEIVE debited from  PRIN.LIQ.ACCT, PAY credited to PRIN.LIQ.ACCT. </p>
+            <p>  Type I schedule RECEIVE debited from INT.LIQ.ACCT, PAY credited to INT.LIQ.ACCT. </p>
+            <p>  Receivable charges may be amortised if requried. This is denoted by the AMORTISATION field on the LMM.CHARGE.CONDITIONS record. </p>
+            <p>  Example: </p>
+            <p>  CHARGE.CODE 1 is a  PAYABLE charge linked to a FT.COMMISSION.TYPE of 0.25% CHARGE.CODE 2 is a  PAYABLE charge linked to a FT.COMMISSION.TYPE of 0.5% CHARGE.CODE 3 is a  RECEIVABLE charge. </p>
+            <p>  The following deposit schedules are defined for 31/03/96 </p>
+            <p>  Type P 25,000 USD    Charge Code 1 Type I               Charge Code 2 (Interest Amount 1,000 USD) Type F 50 USD        Charge Code 3 </p>
+            <p>  On 31/03/96 the following entries will be raised: </p>
+            <p>  Credit PRIN.LIQ.ACCT 25,000 USD Credit PRIN.LIQ.ACCT 25,000 * 0.25% = 62.50 USD (linked CHARGE.CODE 1) </p>
+            <p>  Credit INT.LIQ.ACCT 1,000 USD Credit INT.LIQ.ACCT 1,000 * 0.5% = 5 USD (linked CHARGE.CODE 2) </p>
+            <p>  Debit CHRG.LIQ.ACCOUNT 50 USD (Charge Code 3) </p>
+            <p>  This must be a valid charge code as defined on the LMM.CHARGE.CONDITIONS table. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  1-3 numeric characters.</p>
+            <p>  Must be a valid entry on LMM.CHARGE.CONDITIONS.</p>
+            <p>  For "N" type schedules the value entered here must not have a value of YES in the MTHLY.AMORTISATION field of the LMM.CHARGE.CONDITIONS record.</p>
+            <p>  For "A", "P" or "I" schedules the value entered must be defined in LMM.CHARGE.CONDITIONS with a linked CHARGE.CODE.KEY</p>
+        </desc>
+</t>
+<t>
+<field>SCHED.DATE</field>
+<desc>
+            <p>This field gets defaulted with the schedule date if  FWD.PROJ is set and schedules defined with frequency. </p>
+            <p />
+            <p />
+            <p>  Validation rules:</p>
+            <p>  NOINPUT field</p>
+            <p>  Not applicable for INTEREST.DUE.DATE</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>The CURRENCY of the loan or deposit for which schedules are defined/ NOINPUT field, automatically populated from the underlying contract. </p>
+        </desc>
+</t>
+<t>
+<field>RESERVED5</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>This is a multi valued field. Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  A maximum of 35 characters may be entered.</p>
+            <p>  This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED3</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>NOTE.DENOM</field>
+<desc>
+            <p>Specifies the denomination of Notes which will be repurchased as part of a new Bond Issue. </p>
+            <p>  Together with the field NOTE.QUANT, this field specifies the value of Bonds repurchased at this denomination. The total value of the notes purchased, must equal the associated AMOUNT. A Bond issue may contain notes of different denominations so this field is sub-valued to allow such cases to be defined. </p>
+            <p>  When a scheduled repayment takes place the system will attempt to reduce the value of the notes according to the denominations specified here and in NOTE.QUANT. </p>
+            <p>  If it is not possible to allocate the amounts accross the denominations, an exception message will be raised. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Optional field.  Must be a positive amount obeying the currency decimal definitions.  No duplicate values allowed.</p>
+            <p>  The denomination must be defined in the main LD record.</p>
+            <p>  Only allowed with a P schedule definition.</p>
+            <p>  Not allowed if there is no note denomination on the main LD record.</p>
+            <p>  Mandatory if notes are defined on the main LD record.</p>
+            <p>  Not allowed if associated FREQUENCY field contains data.</p>
+        </desc>
+</t>
+<t>
+<field>SCHED.AMT.DUE</field>
+<desc>
+            <p>Field holds the schedule amount when f  FWD.PROJ is set and schedules defined with frequency.</p>
+            <p>  The amount can be a credit or debit.  </p>
+            <p />
+            <p>  Validation rules:</p>
+            <p>  NOINPUT field</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>NOTE.QUANT</field>
+<desc>
+            <p>Specifies the number of notes of the associated NOTE.DENOM which will repaid when these bonds are repurchased. </p>
+            <p>  Together with the field NOTE.DENOM, this field specifies the value of Bonds repurchased at this denomination. The total value of the notes issued, must equal the assocaited AMOUNT of the contract. A Bond issue may contain notes of different denominations so this field is multi-valued to allow such cases to be defined. </p>
+            <p>  When a scheduled repayment takes place the system will attempt to reduce the value of the notes issued by the number specified here. </p>
+            <p>  If it is not possible to allocate the amounts accross the denominations, an exception message will be raised. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Optional field.  Must contain a positive whole number, greater than zero.</p>
+            <p>  Not allowed if the associated NOTE.DENOM is not specified.</p>
+            <p>  Not allowed if there are no denominations specified on the main LD record.</p>
+            <p>  Mandatory with a P schedule when denominations are defined on the main LD record.</p>
+            <p>  Only allowed with a P schedule.</p>
+            <p>  Cannot exceed the number available on the main LD record of the associated NOTE.DENOM.</p>
+            <p>  Not allowed if the associated FREQUENCY field contains data.</p>
+        </desc>
+</t>
+<t>
+<field>FORWARD.BACKWARD</field>
+<desc>
+            <p>This field indicates the method which will be followed for the generation of schedules and the action which will be taken if the derived date is a non working day. </p>
+            <p>  The user has three options avaliable when it comes to the generation of schedule dates. Either he can manually generate, date by date, the complete schedule plan or, the system can automatically generate the plan based on the input of salient data supplied by the user (amounts, frequencies etc.). Alternatively, a combination of the previous two methods can be employed. </p>
+            <p>  Additionally the field indicates the method to be employed if the user opts for automatic generation of schedules and the date derived by the system is a non-working day in the relative currency. </p>
+            <p>  The following provides an explanation of the various input values for this field: </p>
+            <p>  If the derived day is a non working day the system response will be: </p>
+            <p>  1 = forward The system will go forward to the next working day. </p>
+            <p>  2 = backward The system will go backward to the last working day. </p>
+            <p>  3 = fwd same month The system will go forward to the next working day provided it is within the same month. If it is not within the same month the system will go backward to the last working day. </p>
+            <p>  4 = not automatic The user has not opted for the automatic generation of schedules and consequently must specify each and every event date. If non-working days are specified the system will prompt for overides. </p>
+            <p>  5 = Calendar The system will use the same date irrespective of whether dates cycled are working days or not. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  A single numeric value in the range 1-5. 1 = Forward 2 =         Backward 3 = Forward same month 4 = Not automatic 5 =         Calendar (Single value field. Default = 4)</p>
+            <p>  Input must be a value in the range 1-5.</p>
+            <p>  Input of 4 is mandatory if interest basis "S"         is used.</p>
+            <p>  Input of 5 is mandatory for Annuity contracts</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BASE.DATE.KEY</field>
+<desc>
+            <p>BASE DATE KEY This field provides the user with the option to specify the basis under which subsequent event dates will be derived. </p>
+            <p>  The value in this field indicates to the system how the future event dates are to be computed. </p>
+            <p>  1 = base The system will use the first scheduled date entered to compute the subsequent event date(s). </p>
+            <p>  2 = previous The system will use the last computed schedule date in order to compute the subsequent event date. </p>
+            <p>  3 = not automaticThe user has opted for the manual definition of dates. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  A single numeric value in the range 1-3. 1 = Base 2 =         Previous 3 = Not automatic (Single value field. Default =         3)</p>
+            <p>  Input must be a value in the range 1-3.</p>
+            <p>  Input of 3 is prohibited unless the value in field         FORWARD BACKWARD KEY = 4.</p>
+            <p>  Input of 3 is mandatory if interest basis "S"         is used.</p>
+            <p>  Must be 1 for Annuity contracts</p>
+        </desc>
+</t>
+<t>
+<field>REF</field>
+<desc>
+            <p>The contract number to which this schedule relates. </p>
+            <p>  The value in this field is generated automatically by the system. The user cannot create a schedule record directly; entry to this facility is always via field DEFINE SCHEDS on the main Loans contract. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  12 Type A alphanumeric characters. (System generated. Single value field.)</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED1</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.BASE.AMT</field>
+<desc>
+            <p>This field specifies the amount that the charge calculation is based on. This forms an association with the previous field CHARGE.CODE to provide a flexible charge calculation mechanism. </p>
+            <p>  Valid input is: </p>
+            <p>  IP - Initial Principal </p>
+            <p>  OP - Outstanding Principal </p>
+            <p>  PR - Principal Repayment </p>
+            <p>  IA - Interest Amount </p>
+            <p>  AP - Annuity Payment (Interest + Principal) </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Mandatory field if corresponding CHARGE.CODE is defined.         Otherwise, no input is allowed.</p>
+            <p>  Input must be either IP, OP, PR, IA or AP.</p>
+        </desc>
+</t>
+<t>
+<field>RATE</field>
+<desc>
+            <p>This field indicates the revision rate for either the interest or margin components. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  1-10 numeric characters plus a decimal point.</p>
+            <p>  Rate mandatory if "R" Schedule for a Commitment Contract.</p>
+            <p>  Rate mandatory for each tiered amount for a Multi-valued Commitment Contract.</p>
+            <p>  Rate prohibited if "R" Schedule not for a Commitment Contract.</p>
+            <p>  Rate input mandatory for "M" schedules.</p>
+        </desc>
+</t>
+<t>
+<field>DIARY.ACTION</field>
+<desc>
+            <p>The diary narrative. </p>
+            <p>  For "D"iary type schedules this field contains the Diary instructions. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  1-35 alphanumeric characters.</p>
+            <p>  Mandatory for "D" type schedules.</p>
+        </desc>
+</t>
+<t>
+<field>SCHED.TYPE</field>
+<desc>
+            <p>This field gets defaulted with the schedule type if  FWD.PROJ is set and schedules defined with frequency. </p>
+            <p />
+            <p />
+            <p>  Validation rules:</p>
+            <p>  NOINPUT field</p>
+            <p>  Not applicable for INTEREST.DUE.DATE</p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>RESERVED2</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>PREV.SCHED.TYPE</field>
+<desc>
+            <p>Holds the last processed schedule type like P,I etc on the associated date in PREV.SCHED.DATE </p>
+        </desc>
+</t>
+<t>
+<field>INCLUSIVE.CHG</field>
+<desc>
+            <p>Where the contract type is an Annuity and commission is specified via a charge code. This flag will affect the payment amount, if set to Yes the annuity amount will include the charge.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Optional value, default is blank</p>
+            <p>  Requires input in CHG.BASE.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>PREV.SCHED.DATE</field>
+<desc>
+            <p>Holds the process date on which the schedule in PREV.SCHED.TYPE was lastly processed </p>
+        </desc>
+</t>
+<t>
+<field>FREQUENCY</field>
+<desc>
+            <p>This field indicates the frequency of the scheduled event. </p>
+            <p>  This field indicates the frequency for which schedules will be created. The result of this will be to see the number of schedules specified in field NO generated for the frequency indicated in this field. </p>
+            <p>  Frequencies can take the following form: </p>
+            <p>            nnnD = daily           nnnM = monthly           nnnQ = quarterly           nnnS = semi annually           nnnA = annually </p>
+            <p>            with </p>
+            <p>            nnn  = 1 to 999 and indicates the period between schedule event,                  i.e. 4 D = every four days. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Standard frequency.</p>
+            <p>  Input must be a valid form.</p>
+            <p>  Input of a frequency which will cause the generation of a schedule after the maturity date is prohibited.</p>
+            <p>  Input not allowed if associated fields NOTE.DENOM and NOTE.QUANT contain data.</p>
+        </desc>
+</t>
+<t>
+<field>BILL.NO</field>
+<desc>
+            <p>If there are multiple bills attached to an LD loan contract as part of a bill discounting/rediscounting transaction, the IDs of the same (from BILL.REGISTER) are to be entered in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Should be a valid ID in the BILL.REGISTER application</p>
+        </desc>
+</t>
+<t>
+<field>DATE</field>
+<desc>
+            <p>This field indicates the date of the event. </p>
+            <p>  If a multiple period contract is involved and the date inserted in this field does not represent the maturity date this field will represent the end date of the period and the starting date for the next period. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Standard date format.</p>
+            <p>  A valid date is mandatory for each schedule type.</p>
+            <p>  If a date is input it must be a valid date format.</p>
+            <p>  An override will be required if the date is not defined         on the HOLIDAY table.</p>
+            <p>  An override will be required if the date, as defined on         the HOLIDAY table, is a non-working day.</p>
+            <p>  Input prohibited for dates prior to the value in the         field VALUE.DATE on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  Input prohibited for dates later than the value in the         field FIN.MAT.DATE on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  Schedules can only be defined for dates greater than the         process date except for I + C schedules when the process         date may equal an interest period end date as in the case         of back valued contracts.</p>
+            <p>  "P" schedule date must be greater than the date         indicated in the field VALUE.DATE on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  "P" schedule mandatory for the date indicated         in the field FIN.MAT.DATE on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  "P" schedule is prohibited on any date other         than the date indicated in field FIN.MAT.DATE on LD.LOANS.AND.DEPOSITS         if the interest basis is "S" (Special).</p>
+            <p>  "P" and "I" schedule dates must be         greater than process date + liquidation currency delivery         days, if a Nostro payment for Deposits/Syndicated Loans         is required.</p>
+            <p>  "P" and "I" schedule periods must be         greater than the liquidation currency delivery days, if a         Nostro payment for Deposits/Syndicated Loans is required.</p>
+            <p>  "I" schedule for a discounted contract is         prohibited on the date indicated in field FIN.MAT.DATE on         LD.LOANS.AND.DEPOSITS.</p>
+            <p>  "I" schedule for a discounted contract is         mandatory on the date indicated in field VALUE.DATE on LD.LOANS.AND.DEPOSITS         if VALUE.DATE is greater than the process date.</p>
+            <p>  "I" schedule on an interest bearing contract is         prohibited for the value in field VALUE.DATE on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  "I" schedule on a Commitment contract is         prohibited for the value in field INT.START.DATE on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  "I" schedule on an interest bearing contract is         mandatory for the value in field FIN.MAT.DATE on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  "I" schedule on a Commitment contract is         mandatory for the value in field FIN.MAT.DATE OR the         field INT.END.DATE if earlier.</p>
+            <p>  "C" schedule on a discounted contract is         mandatory for the value in field VALUE.DATE on LD.LOANS.AND.DEPOSITS         if value date is a forward date.</p>
+            <p>  "C" schedule on an interest bearing contract is         prohibited for the value in field VALUE.DATE on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  "C" schedule on an interest bearing commitment         is prohibited for the value in the field INT.START.DATE         on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  "C" schedule on an interest bearing commitment         is mandatory for the value in the field FIN.MAT.DATE on         LD.LOANS.AND.DEPOSITS, OR the field INT.END.DATE         whichever is least.</p>
+            <p>  "D" schedule is prohibited after the value in         field FIN.MAT.DATE on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  "D" schedule is prohibited before the value in         field VALUE.DATE on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  "D" schedule is prohibited before the process         date.</p>
+            <p>  "R" schedule is prohibited for a value prior to         or equal to the process date.</p>
+            <p>  "R" schedule must be after the value in the         field VALUE.DATE on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  "R" schedule must be after the value in the         field INT.START.DATE on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  "R" schedule is prohibited on or after the         value in the field FIN.MAT.DATE on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  "R" schedules on non-working days prohibited         for PERIODIC.AUTOMATIC.</p>
+            <p>  "R" schedules prohibited on or after the value         in the field INT.END.DATE on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  "M" schedules are prohibited on the value in         field FIN.MAT.DATE on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  "M" schedules must be after the value in field         VALUE.DATE on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  "F" schedules are prohibited for the value in         the field VALUE.DATE on LD.LOANS.AND.DEPOSITS.</p>
+            <p>  "F" and "N" schedules are prohibited         prior to process date.</p>
+            <p>  "I" &amp; "C" dates must be defined         together if both interest and commission are discounted.</p>
+            <p>  Annuity contracts with inclusive commission must have         "C" schedules date frequencies matching the         "A" frequency.</p>
+        </desc>
+</t>
+<t>
+<field>NUMBER</field>
+<desc>
+            <p>This field indicates the number of subsequent scheduled events that are to occur. </p>
+            <p>  This field indicates the number of events subsequent to the one defined that are to be created by the system. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  1-3 numeric characters.</p>
+            <p>  Input prohibited if the value in FORWARD BACKWARD KEY = 4.</p>
+            <p>  Input of a number which will cause the generation of a schedule after the maturity date is prohibited.</p>
+        </desc>
+</t>
+<t>
+<field>CYCLED.DATES</field>
+<desc>
+            <p>Contains all future schedule dates when this schedule will be executed. </p>
+            <p>  Where a frequency and a number is specified, each future date will be stored here. When each scheduled event is processed, the date is removed from this field, the next event date replaces the DATE. When the last schedule is processed the scheduled line definition will be removed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  This is a NOINPUT, system field.</p>
+        </desc>
+</t>
+<t>
+<field>SCHED.AMT</field>
+<desc>
+            <p>Please refer the helptext section of LMM.SCHEDULES</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONTRACT.ID</field>
+<desc>
+            <p>Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  A maximum of 12 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED6</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>CAP.INT</field>
+<desc>
+            <p>Indicates whether the interest schedules needs to be capitalised. It is possible to capitalise the interest schedules during the contract, except maturity interest schedule.</p>
+            <p>  Similar to CAPITALISATION field in LD.LOANS.AND.DEPOSITS template.</p>
+            <p />
+            <p>  Validation rules:</p>
+            <p>  Field Value  Can be YES or null.</p>
+            <p>  Applicable for I schedule alone</p>
+            <p>  Prohibited for Commitment contracts, Sundries and Accounts Receivable. </p>
+            <p>  Prohibited if Interest Basis is ""S"" - Special.</p>
+            <p>  Not applicable for discounted contracts.</p>
+            <p>  Not applicable for annuity contracts </p>
+            <p>  Not applicable when CAPITALISATION set to YES</p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field></field>
+<desc>
+        <p>The CURRENCY of the loan or deposit for which schedules are defined/ NOINPUT field, automatically populated from the underlying contract.</p>
+        <p>CYCLED.DATES</p>
+        <p>Contains all future schedule dates when this schedule will be executed. Where a frequency and a number is specified, each future date will be stored here. When each scheduled event is processed, the date is removed from this field, the next event date replaces the DATE. When the last schedule is processed the scheduled line definition will be removed. </p>
+        <p>Validation Rules</p>
+        <p> This is a NOINPUT, system field.</p>
+        <p>DATE</p>
+        <p>This field indicates the date of the event. If a multiple period contract is involved and the date inserted in this field does not represent the maturity date this field will represent the end date of the period and the starting date for the next period. </p>
+        <p>Validation Rules</p>
+        <p> Standard date format. A valid date is mandatory for each schedule type. If a date is input it must be a valid date format. An override will be required if the date is not defined on the HOLIDAY table. An override will be required if the date, as defined on the HOLIDAY table, is a non-working day. Input prohibited for dates prior to the value in the field VALUE.DATE on LD.LOANS.AND.DEPOSITS. Input prohibited for dates later than the value in the field FIN.MAT.DATE on LD.LOANS.AND.DEPOSITS. Schedules can only be defined for dates greater than the process date except for I + C schedules when the process date may equal an interest period end date as in the case of back valued contracts. "P" schedule date must be greater than the date indicated in the field VALUE.DATE on LD.LOANS.AND.DEPOSITS. "P" schedule mandatory for the date indicated in the field FIN.MAT.DATE on LD.LOANS.AND.DEPOSITS. "P" schedule is prohibited on any date other than the date indicated in field FIN.MAT.DATE on LD.LOANS.AND.DEPOSITS if the interest basis is "S" (Special). "P" and "I" schedule dates must be greater than process date + liquidation currency delivery days, if a Nostro payment for Deposits/Syndicated Loans is required. "P" and "I" schedule periods must be greater than the liquidation currency delivery days, if a Nostro payment for Deposits/Syndicated Loans is required. "I" schedule for a discounted contract is prohibited on the date indicated in field FIN.MAT.DATE on LD.LOANS.AND.DEPOSITS. "I" schedule for a discounted contract is mandatory on the date indicated in field VALUE.DATE on LD.LOANS.AND.DEPOSITS if VALUE.DATE is greater than the process date. "I" schedule on an interest bearing contract is prohibited for the value in field VALUE.DATE on LD.LOANS.AND.DEPOSITS. "I" schedule on a Commitment contract is prohibited for the value in field INT.START.DATE on LD.LOANS.AND.DEPOSITS. "I" schedule on an interest bearing contract is mandatory for the value in field FIN.MAT.DATE on LD.LOANS.AND.DEPOSITS. "I" schedule on a Commitment contract is mandatory for the value in field FIN.MAT.DATE OR the field INT.END.DATE if earlier. "C" schedule on a discounted contract is mandatory for the value in field VALUE.DATE on LD.LOANS.AND.DEPOSITS if value date is a forward date. "C" schedule on an interest bearing contract is prohibited for the value in field VALUE.DATE on LD.LOANS.AND.DEPOSITS. "C" schedule on an interest bearing commitment is prohibited for the value in the field INT.START.DATE on LD.LOANS.AND.DEPOSITS. "C" schedule on an interest bearing commitment is mandatory for the value in the field FIN.MAT.DATE on LD.LOANS.AND.DEPOSITS, OR the field INT.END.DATE whichever is least. "D" schedule is prohibited after the value in field FIN.MAT.DATE on LD.LOANS.AND.DEPOSITS. "D" schedule is prohibited before the value in field VALUE.DATE on LD.LOANS.AND.DEPOSITS. "D" schedule is prohibited before the process date. "R" schedule is prohibited for a value prior to or equal to the process date. "R" schedule must be after the value in the field VALUE.DATE on LD.LOANS.AND.DEPOSITS. "R" schedule must be after the value in the field INT.START.DATE on LD.LOANS.AND.DEPOSITS. "R" schedule is prohibited on or after the value in the field FIN.MAT.DATE on LD.LOANS.AND.DEPOSITS. "R" schedules on non-working days prohibited for PERIODIC.AUTOMATIC. "R" schedules prohibited on or after the value in the field INT.END.DATE on LD.LOANS.AND.DEPOSITS. "M" schedules are prohibited on the value in field FIN.MAT.DATE on LD.LOANS.AND.DEPOSITS. "M" schedules must be after the value in field VALUE.DATE on LD.LOANS.AND.DEPOSITS. "F" schedules are prohibited for the value in the field VALUE.DATE on LD.LOANS.AND.DEPOSITS. "F" and "N" schedules are prohibited prior to process date. "I" &amp; "C" dates must be defined together if both interest and commission are discounted. Annuity contracts with inclusive commission must have "C" schedules date frequencies matching the "A" frequency.</p>
+        <p>DIARY.ACTION</p>
+        <p>The diary narrative. For "D"iary type schedules this field contains the Diary instructions. </p>
+        <p>Validation Rules</p>
+        <p> 1-35 alphanumeric characters. Mandatory for "D" type schedules.</p>
+        <p>FORWARD.BACKWARD</p>
+        <p>This field indicates the method which will be followed for the generation of schedules and the action which will be taken if the derived date is a non working day. The user has three options avaliable when it comes to the generation of schedule dates. Either he can manually generate, date by date, the complete schedule plan or, the system can automatically generate the plan based on the input of salient data supplied by the user (amounts, frequencies etc.). Alternatively, a combination of the previous two methods can be employed. Additionally the field indicates the method to be employed if the user opts for automatic generation of schedules and the date derived by the system is a non-working day in the relative currency. The following provides an explanation of the various input values for this field: If the derived day is a non working day the system response will be: 1 = forward The system will go forward to the next working day. 2 = backward The system will go backward to the last working day. 3 = fwd same month The system will go forward to the next working day provided it is within the same month. If it is not within the same month the system will go backward to the last working day. 4 = not automatic The user has not opted for the automatic generation of schedules and consequently must specify each and every event date. If non-working days are specified the system will prompt for overides. 5 = Calendar The system will use the same date irrespective of whether dates cycled are working days or not. </p>
+        <p>Validation Rules</p>
+        <p> A single numeric value in the range 1-5. 1 = Forward 2 = Backward 3 = Forward same month 4 = Not automatic 5 = Calendar (Single value field. Default = 4) Input must be a value in the range 1-5. Input of 4 is mandatory if interest basis "S" is used. Input of 5 is mandatory for Annuity contract.</p>
+        <p>FREQ.CODE</p>
+        <p>This field stores a standard T24 frequency code of the associated schedule. </p>
+        <p>Validation Rules</p>
+        <p> This is a NOINPUT field. Standard T24 frequency code.</p>
+        <p>FREQUENCY</p>
+        <p>This field indicates the frequency of the scheduled event. This field indicates the frequency for which schedules will be created. The result of this will be to see the number of schedules specified in field NO generated for the frequency indicated in this field. Frequencies can take the following form: nnnD = daily nnnM = monthly nnnQ = quarterly nnnS = semi annually nnnA = annually with nnn = 1 to 999 and indicates the period between schedule event, i.e. 4 D = every four days. </p>
+        <p>Validation Rules</p>
+        <p> Standard frequency. Input must be a valid form. Input of a frequency which will cause the generation of a schedule after the maturity date is prohibited. Input not allowed if associated fields NOTE.DENOM and NOTE.QUANT contain data.</p>
+        <p>INCLUSIVE.CHG</p>
+        <p>Where the contract type is an Annuity and commission is specified via a charge code. This flag will affect the payment amount, if set to Yes the annuity amount will include the charge. </p>
+        <p>Validation Rules</p>
+        <p> Optional value, default is blank Requires input in CHG.BASE.AMT.</p>
+        <p>NOTE.DENOM</p>
+        <p>Specifies the denomination of Notes which will be repurchased as part of a new Bond Issue. Together with the field NOTE.QUANT, this field specifies the value of Bonds repurchased at this denomination. The total value of the notes purchased, must equal the associated AMOUNT. A Bond issue may contain notes of different denominations so this field is sub-valued to allow such cases to be defined. When a scheduled repayment takes place the system will attempt to reduce the value of the notes according to the denominations specified here and in NOTE.QUANT. If it is not possible to allocate the amounts accross the denominations, an exception message will be raised. </p>
+        <p>Validation Rules</p>
+        <p> Optional field. Must be a positive amount obeying the currency decimal definitions. No duplicate values allowed. The denomination must be defined in the main LD record. Only allowed with a P schedule definition. Not allowed if there is no note denomination on the main LD record. Mandatory if notes are defined on the main LD record. Not allowed if associated FREQUENCY field contains data.</p>
+        <p>NOTE.QUANT</p>
+        <p>Specifies the number of notes of the associated NOTE.DENOM which will repaid when these bonds are repurchased. Together with the field NOTE.DENOM, this field specifies the value of Bonds repurchased at this denomination. The total value of the notes issued, must equal the assocaited AMOUNT of the contract. A Bond issue may contain notes of different denominations so this field is multi-valued to allow such cases to be defined. When a scheduled repayment takes place the system will attempt to reduce the value of the notes issued by the number specified here. If it is not possible to allocate the amounts accross the denominations, an exception message will be raised. </p>
+        <p>Validation Rules</p>
+        <p> Optional field. Must contain a positive whole number, greater than zero. Not allowed if the associated NOTE.DENOM is not specified. Not allowed if there are no denominations specified on the main LD record. Mandatory with a P schedule when denominations are defined on the main LD record. Only allowed with a P schedule. Cannot exceed the number available on the main LD record of the associated NOTE.DENOM. Not allowed if the associated FREQUENCY field contains data.</p>
+        <p>ADVICE.DATE</p>
+        <p>Please refer the helptext section of LMM.SCHEDULE.</p>
+        <p>NUMBER</p>
+        <p>This field indicates the number of subsequent scheduled events that are to occur. This field indicates the number of events subsequent to the one defined that are to be created by the system. </p>
+        <p>Validation Rules</p>
+        <p> 1-3 numeric characters. Input prohibited if the value in FORWARD BACKWARD KEY = 4. Input of a number which will cause the generation of a schedule after the maturity date is prohibited.</p>
+        <p>OVERRIDE</p>
+        <p>This is a multi valued field. Standard T24 numeric field. </p>
+        <p>Validation Rules</p>
+        <p> A maximum of 35 characters may be entered. This is a NOINPUT field.</p>
+        <p>RATE</p>
+        <p>This field indicates the revision rate for either the interest or margin components. </p>
+        <p>Validation Rules</p>
+        <p> 1-10 numeric characters plus a decimal point. Rate mandatory if "R" Schedule for a Commitment Contract. Rate mandatory for each tiered amount for a Multi-valued Commitment Contract. Rate prohibited if "R" Schedule not for a Commitment Contract. Rate input mandatory for "M" schedules.</p>
+        <p>REF</p>
+        <p>The contract number to which this schedule relates. The value in this field is generated automatically by the system. The user cannot create a schedule record directly; entry to this facility is always via field DEFINE SCHEDS on the main Loans contract. </p>
+        <p>Validation Rules</p>
+        <p> 12 Type A alphanumeric characters. (System generated. Single value field..</p>
+        <p>RESERVED1</p>
+        <p>This field is reserved for future expansion. </p>
+        <p>Validation Rules</p>
+        <p> This is a NOINPUT field.</p>
+        <p>RESERVED2</p>
+        <p>This field is reserved for future expansion. </p>
+        <p>Validation Rules</p>
+        <p> This is a NOINPUT field.</p>
+        <p>RESERVED3</p>
+        <p>This field is reserved for future expansion. </p>
+        <p>Validation Rules</p>
+        <p> This is a NOINPUT field.</p>
+        <p>RESERVED4</p>
+        <p>This field is reserved for future expansion. </p>
+        <p>Validation Rules</p>
+        <p> This is a NOINPUT field.</p>
+        <p>RESERVED5</p>
+        <p>This field is reserved for future expansion. </p>
+        <p>Validation Rules</p>
+        <p> This is a NOINPUT field.</p>
+        <p>RESERVED6</p>
+        <p>This field is reserved for future expansion. </p>
+        <p>Validation Rules</p>
+        <p> This is a NOINPUT field.</p>
+        <p>ADVICE.TYPE</p>
+        <p>Please refer the helptext section of LMM.SCHEDULE.</p>
+        <p>RESERVED7</p>
+        <p>This field is reserved for future expansion. </p>
+        <p>Validation Rules</p>
+        <p> This is a NOINPUT field.</p>
+        <p>RESERVED8</p>
+        <p>This field is reserved for future expansion. </p>
+        <p>Validation Rules</p>
+        <p> This is a NOINPUT field.</p>
+        <p>SCH.TYPE</p>
+        <p>This field indicates the schedule type that can be created by the user. The user can input a single schedule or a valid combination of schedules eg PIC except the A schedule. </p>
+        <p>Validation Rules</p>
+        <p> A combination of up to 3 schedule types each represented by a single alphabetic character of the form: A = Annuity (principal + interest) P = principal I = interest C = commission R = revision M = margin F = fees N = capitalised charge D = diary K = Asset Leasing schedule. If a schedule type is input this must be of the form A, P, I, C, M, D, F, N, K, or R, or a valid combination of up to three e.g. PIC. "P" schedules are only allowed for commitment contracts where the COMMIT.DRAWING field is set to NO. "N" shedules are prohibited for Commitment contract. "C" schedules are prohibited for Deposit contracts. "R" and "I" schedules are prohibited if no interest is due on the Contract. "C" schedules are prohibited if no commission is due on the contract. "P" &amp; "I" &amp; "C" schedules cannot be defined together as "PIC" when interest and commission is/are discounted. "R" schedules cannot be combined with "I" schedules when interest is discounted as "R" schedules are prohibited for system date. Multiple "I" schedules must be defined if the value in field CAPITALISATION = (Y)es on LD.LOANS.AND.DEPOSITS. "I" schedules must be defined alone if interest basis = "S". "C" schedules must be defined alone if commission basis = "S". "R" schedules are mandatory for PERIODIC.AUTOMATIC Interest Rate type. "R" schedules are mandatory for PERIODIC.MANUAL Interest Rate type. "R" schedules are prohibited for PERIODIC.STRAIGHT Interest Rate type. "R" schedules are prohibited from amending the next "R" date for PERIODIC.AUTOMATIC Interest Rate type. "R" schedules are prohibited for FLOATING Interest Rate type contracts. "R" schedules are prohibited if Interest Basis is "S". "R" - for PERIODIC AUTOMATIC Interest Rate type only; a new "R" Schedule can only be input if an "R" Schedule is still outstanding. The new Schedule must be later than the existing Schedule. "M" schedules are prohibited when no Interest due on the Contract. "M" schedules are prohibited for Fixed Interest Rate type. "M" schedules are prohibited for Commitments. "K" schedules are only allowed for finance leasing annuity contracts, where a financial charge ( depreciation) is required and must be input after the "A" schedule is defined. Input can only take place for the following financial charge types: - "RB" - reducing balance method, the dates and frequency must conform to the "A" schedule type, a depreciation rate must be input. "FS" - flexible schedule method, using this method different rates can be applied over the life of the contract, and therefore a new "K" schedule must be input for each rate change. "AN" and "SL" type financial charges do not require "K" schedules to be input as the schedule dates will conform to the "A" schedules, and no rate input is required.</p>
+        <p>SCHED.AMT</p>
+        <p>Please refer the helptext section of LMM.SCHEDULE.</p>
+        <p>SCHED.AMT.DUE</p>
+        <p>Field holds the schedule amount when f FWD.PROJ is set and schedules defined with frequency. The amount can be a credit or debit. </p>
+        <p>Validation Rules</p>
+        <p>: NOINPUT fiel.</p>
+        <p>SCHED.DATE</p>
+        <p>This field gets defaulted with the schedule date if FWD.PROJ is set and schedules defined with frequency. </p>
+        <p>Validation Rules</p>
+        <p>: NOINPUT field Not applicable for INTEREST.DUE.DAT.</p>
+        <p>SCHED.TYPE</p>
+        <p>This field gets defaulted with the schedule type if FWD.PROJ is set and schedules defined with frequency. </p>
+        <p>Validation Rules</p>
+        <p>: NOINPUT field Not applicable for INTEREST.DUE.DAT.</p>
+        <p>AMOUNT</p>
+        <p>This field specifies the financial value of "A", "P", "F", "I" &amp; "C" schedules, to be processed on the date given in the field DATE. </p>
+        <p>Validation Rules</p>
+        <p> Must be a valid amount format. An amount is mandatory if "P" and/or "F" OR "N" schedules are defined. If basis "S" is used then an amount is mandatory against the "I" and/or "C" schedules. If both "I" &amp; "C" are under basis "S" then the two cannot be combined. "P" schedules total must equal Principal outstanding; prepayments will not be included in the principal outstanding figure as supplied by the system. Annuity contracts will check the amount entered is sufficient to repay at least the interest of the Annuity.</p>
+        <p>BASE.DATE.KEY</p>
+        <p>BASE DATE KEY This field provides the user with the option to specify the basis under which subsequent event dates will be derived. The value in this field indicates to the system how the future event dates are to be computed. 1 = base The system will use the first scheduled date entered to compute the subsequent event date(s). 2 = previous The system will use the last computed schedule date in order to compute the subsequent event date. 3 = not automaticThe user has opted for the manual definition of dates. </p>
+        <p>Validation Rules</p>
+        <p> A single numeric value in the range 1-3. 1 = Base 2 = Previous 3 = Not automatic (Single value field. Default = 3) Input must be a value in the range 1-3. Input of 3 is prohibited unless the value in field FORWARD BACKWARD KEY = 4. Input of 3 is mandatory if interest basis "S" is used. Must be 1 for Annuity contract.</p>
+        <p>BILL.NO</p>
+        <p>If there are multiple bills attached to an LD loan contract as part of a bill discounting/rediscounting transaction, the IDs of the same (from BILL.REGISTER) are to be entered in this field. </p>
+        <p>Validation Rules</p>
+        <p> Should be a valid ID in the BILL.REGISTER applicatio.</p>
+        <p>CAP.INT</p>
+        <p>Indicates whether the interest schedules needs to be capitalised. It is possible to capitalise the interest schedules during the contract, except maturity interest schedule. Similar to CAPITALISATION field in LD.LOANS.AND.DEPOSITS template. </p>
+        <p>Validation Rules</p>
+        <p>: Field Value Can be YES or null. Applicable for I schedule alone Prohibited for Commitment contracts, Sundries and Accounts Receivable. Prohibited if Interest Basis is ""S"" - Special. Not applicable for discounted contracts. Not applicable for annuity contracts Not applicable when CAPITALISATION set to YE.</p>
+        <p>CHARGE.CODE</p>
+        <p>This field indicates the charge code applicable to the "F", "N", "P", "I" or "A" schedules. This forms an association with the next field CHG.BASE.AMT to provide a flexible charge calculation mechanism. Contains the id to the LMM.CHARGE.CONDITIONS record. The charge type may be RECEIVEable by the bank (i.e paid by the customer), or PAYable (paid by the bank). A charge code must be defined with a type F schedule together with an AMOUNT. A charge code may also be linked to a P or I schedule, providing the LMM.CHARGE.CONDITIONS record is linked to a FT.CHARGE/ COMMISSION.TYPE. When A, P or I schedule with a linked charge is processed, the charge amount will be calculated according to the FT charge definition, based on the amount specified in CHG.BASE.AMT field. Charges are debited or credited as follows: Type F schedule RECEIVE debited from CHARG.LIQ.ACCT, PAY credited to FEE.PAY.ACCOUNT. Type P schedule RECEIVE debited from PRIN.LIQ.ACCT, PAY credited to PRIN.LIQ.ACCT. Type I schedule RECEIVE debited from INT.LIQ.ACCT, PAY credited to INT.LIQ.ACCT. Receivable charges may be amortised if requried. This is denoted by the AMORTISATION field on the LMM.CHARGE.CONDITIONS record. Example: CHARGE.CODE 1 is a PAYABLE charge linked to a FT.COMMISSION.TYPE of 0.25% CHARGE.CODE 2 is a PAYABLE charge linked to a FT.COMMISSION.TYPE of 0.5% CHARGE.CODE 3 is a RECEIVABLE charge. The following deposit schedules are defined for 31/03/96 Type P 25,000 USD Charge Code 1 Type I Charge Code 2 (Interest Amount 1,000 USD) Type F 50 USD Charge Code 3 On 31/03/96 the following entries will be raised: Credit PRIN.LIQ.ACCT 25,000 USD Credit PRIN.LIQ.ACCT 25,000 * 0.25% = 62.50 USD (linked CHARGE.CODE 1) Credit INT.LIQ.ACCT 1,000 USD Credit INT.LIQ.ACCT 1,000 * 0.5% = 5 USD (linked CHARGE.CODE 2) Debit CHRG.LIQ.ACCOUNT 50 USD (Charge Code 3) This must be a valid charge code as defined on the LMM.CHARGE.CONDITIONS table. </p>
+        <p>Validation Rules</p>
+        <p> 1-3 numeric characters. Must be a valid entry on LMM.CHARGE.CONDITIONS. For "N" type schedules the value entered here must not have a value of YES in the MTHLY.AMORTISATION field of the LMM.CHARGE.CONDITIONS record. For "A", "P" or "I" schedules the value entered must be defined in LMM.CHARGE.CONDITIONS with a linked CHARGE.CODE.KE.</p>
+        <p>CHG.BASE.AMT</p>
+        <p>This field specifies the amount that the charge calculation is based on. This forms an association with the previous field CHARGE.CODE to provide a flexible charge calculation mechanism. Valid input is: IP - Initial Principal OP - Outstanding Principal PR - Principal Repayment IA - Interest Amount AP - Annuity Payment (Interest + Principal) </p>
+        <p>Validation Rules</p>
+        <p> Mandatory field if corresponding CHARGE.CODE is defined. Otherwise, no input is allowed. Input must be either IP, OP, PR, IA or AP.</p>
+        <p>CONTRACT.ID</p>
+        <p>Standard T24 alphanumeric field. </p>
+        <p>Validation Rules</p>
+        <p> A maximum of 12 characters may be entered.</p>
+        <p>PREV.SCHED.TYPE</p>
+        <p>Holds the last processed schedule type like P,I etc on the associated date in PREV.SCHED.DAT.</p>
+        <p>PREV.SCHED.DATE</p>
+        <p>Holds the process date on which the schedule in PREV.SCHED.TYPE was lastly processed</p>
+    </desc>
+</t>
+<t>
+<field>ADVICE.DATE</field>
+<desc>
+            <p>Please refer the helptext section of LMM.SCHEDULES</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ADVICE.TYPE</field>
+<desc>
+            <p>Please refer the helptext section of LMM.SCHEDULES</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AMOUNT</field>
+<desc>
+            <p>This field specifies the financial value of "A", "P", "F", "I" &amp; "C" schedules, to be processed on the date given in the field DATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Must be a valid amount format.</p>
+            <p>  An amount is mandatory if "P" and/or "F"         OR "N" schedules are defined.</p>
+            <p>  If basis "S" is used then an amount is         mandatory against the "I" and/or "C"         schedules. If both "I" &amp; "C" are         under basis "S" then the two cannot be combined.</p>
+            <p>  "P" schedules total must equal Principal         outstanding; prepayments will not be included in the         principal outstanding figure as supplied by the system.</p>
+            <p>  Annuity contracts will check the amount entered is         sufficient to repay at least the interest of the Annuity.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

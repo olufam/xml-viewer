@@ -1,0 +1,1350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>REPGEN.CREATE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The T24 Report Generator utility provides the means to define and produce reports.  It covers both the need to respond to an ad hoc request in an effective way or to run the defined reports in a regular batch control environment, within an application or system-wide End-of-Day process. </p>
+            <p>The application consists of five modules as follows: </p>
+            <p>REPGEN.CREATE       To define reports and maintain these report                     definitions. </p>
+            <p>REPGEN.SOURCE       To generate source code and catalogue the                     programs. </p>
+            <p>REPGEN.SORT         To create/set up a "work file" as source for                     print or display. </p>
+            <p>REPGEN.OUTPUT       To define/trigger display or printing of a                     report. </p>
+            <p>REPGEN.DROP.LIST    To physically delete existing work files,                     where this is not done as part of the                     processing. </p>
+            <p>There is also a batch program which allows the report names to be entered, and will run the REPGEN SORT and REPGEN OUTPUT.  This batch program is called EOD REPGEN PRINT. </p>
+            <p>For a new report the following sequence is to be followed: </p>
+            <p>          Run REPGEN CREATE in Input and then Authorisation           mode to load the details of the report. </p>
+            <p>          Run REGEN.SOURCE to create, compile and catalogue the           sort and print programs. </p>
+            <p>          Run REPGEN SORT to load a record for running of the sort           and to run the sort.  Use 'I' input mode to load a record           and 'V' Verify to run the sort .  (Note 'V' mode can also be           used to load the record). </p>
+            <p>          Run REPGEN.OUTPUT to load a record for the running of           the print and to run the print.  Use 'I' input mode and 'V'           Verify mode as for REPGEN.SORT. </p>
+            <p>Every time a report is to be produced run: </p>
+            <p>          REPGEN.SORT and REPGEN.OUTPUT. </p>
+            <p>If a report is to be reprinted then run REPGEN OUTPUT only unless the sort files was deleted in which case REPGEN.SORT must be rerun. </p>
+            <p>When a report is to be modified then run: </p>
+            <p>          REPGEN.CREATE, REPGEN SOURCE, REPGEN.SORT and           REPGEN.OUTPUT, the later two for checking that the           change was correctly made. </p>
+            <p />
+            <p>The module REPGEN.CREATE is the report definition and maintenance facility within the T24 report generator utility. </p>
+            <p>All the standard functions within T24 (with the exception of H [history restore]) are available.  The file type is "U", i.e. no history is being kept and any maintenance overwrites the previous live version of a report definition.  The reversal function, in addition to the REPGEN.CREATE maintenance record, also physically removes the related source and the work file of the reversed ID. </p>
+            <p>The report definition, as detailed in the field descriptions, is dealing with the following main components: </p>
+            <p>Environment - A report can be set up to either reflect a single company (or financial data base), an aggregation of any number or combination of companies or an aggregation of all existing companies.  (For details please refer to Field 2 DEFINE COMPANY.) The source of the report can be a single file or any number (theoretically) of files as long as the (print) fields are compatible.  A practical example are the files STMT.ENTRY and CATEG.ENTRY which can be combined into a single activity or movement list type report. DATA - The source fields of the defined READ FILE can be manipulated or modified in several ways with regard to format, linkage to other files or as parameters of an arithmetic operation. Some of the facilities available are: </p>
+            <p>          Linkage to other files, where the field value constitutes           the key to the next file is (theoretically) unlimited.  The           main use might be translation of an ID into the meaningful           description by linking to the main file. (for details refer to           Field 14.1 MODIFICATION) </p>
+            <p>          Another usage of linkage is to obtain a run time variable           for the REPGEN SORT routine.  This is achieved by           entering the following data: </p>
+            <p>          Field 13.1.1        Mnemon Field contains key of                               REPGEN SORT routine           Field 14.1.1        Modification is set to REPLACE           Field 15.1.1        Modif File is set to REPGEN                               SORT           Field 16.1.1        Modif Field is set to 5.1.1 etc. or                               6.1 etc. which is the field                               number from REPGEN SORT                               routine. </p>
+            <p>          Amounts and dates are subject to special conversion into           output masks.  Foreign currency amounts will contain           correct number of decimals (link to CURRENCY table) and           date fields can be output in various formats (for details           refer to Field 20.1 SPECIAL MASK) </p>
+            <p>          Common Subroutines can be used, a record specifying the           parameters to be used and the actual subroutine name must           be set up on the PGM.FILE, see field 14.1 MODIFICATION           for details and the chapter on REPGEN SUBROUTINES. </p>
+            <p>          Arithmetic operations on all numeric field - for details           refer to Field MODIFICATION (Field 14.1). </p>
+            <p>          A field can be set up depending upon whether a decision           set up in fields DECISION NAME (field 68.1) to REL NEXT           FD (field 75.1.1) is true or not see field 14.1           MODIFICATION for details. </p>
+            <p>GROUPS - The expression/definition of "groups" allows production of several reports from a single file read.  It is based on decisions identifying the characteristics of such groups.  The output will be broken down accordingly and can contain separate descriptions or headers for each report.  The sorts and the print fields that are used may be different  for each group (for details refer to Fields 43.1 DECIS GROUP FR to 67.1 MNEMON.SEQU).  Field MNEMON.SEQU specifies fields to be used for printing and sorting.  Where a mnemonic is used in more than on group, it's value and use will be the same in all the groups it is used in. FORMAT - The presentation of reports can be controlled/defined with regard the column position of a field, the sequence, the page breaks, the page numbering, the blank lines and totals. </p>
+            <p>The headings and titles can correspond to the standard of T24 reporting headings. See fields REPORT TITLE (Field 1), SPEC NUMB CHAR (Field 18.1) to TEXT (Field 26.1) and HDR 1 001- 040 (Field 27.1) to HDR 4 121 - 132  (Field 42.1) and GROUP TITLE (Field 47.1.1) to GROUP TEXT (Field 65.1.1) and fields NEW PAGE GROUP (Field 78) to EMPTY LINE WANTED (Field 84). </p>
+            <p>A report limited to up to 80 columns can also be directed to a screen (for details refer to REPGEN.OUTPUT). </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>HDR.1.121..132</field>
+<desc>
+            <p>Text (header) information for the first of four header lines for column 121 to 132. </p>
+            <p>The first header line will be output below the report name and date. Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 12 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 27.1 to 29.1 and 31.1 to 42.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 30.1 and following, existence of 4.2 allows definition in 30.2.... etc.).</p>
+            <p>Input only allowed if Field 3 USING 132 COLUMNS set to 'Y'.</p>
+        </desc>
+</t>
+<t>
+<field>HDR.2.001..040</field>
+<desc>
+            <p>Text (header) information for the second of four header lines for column 001 to 040. </p>
+            <p>The second header line will be output below the first as defined in Fields 27.1 to 30.1.  Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 27.1 to 30.1 and 32.1 to 42.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 31.1 and following, existence of 4.2 allows definition in 31.2.... etc.).</p>
+        </desc>
+</t>
+<t>
+<field>GH1.121..132</field>
+<desc>
+            <p>Text (header) information for GROUP (Field 43.1) for the first of the four header lines for column 121 to 132. </p>
+            <p>The first group header line will be output below the overall report header lines.  Spaces will not be cancelled.  Each group change will start a new page with the corresponding new group header line(s), unless NEW PAGE FOR GROUP (Field 78) is null. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 12 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 46.1 to 47.1 and 52.1 to 67.1.  Subvalue field associated with fields 47.1.1 to 50.1.1 and 52.1.1 to 63.1.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in field 4.1 allows header definition in 51.1.1 and following, existence of 4.2 allows definition in 51.1.2...etc.).</p>
+            <p>No input will be allowed if GROUP (Field 46.1) has not been defined.</p>
+        </desc>
+</t>
+<t>
+<field>DECISION</field>
+<desc>
+            <p>Operand in the condition statement for the value in the next or the next two fields. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The following values will be accepted: EQ    equal to GT    greater than GE    greater than or equal to NE    not equal to LT    less than LE    less than or equal to LK    like UL    unlike This is a multivalue field associated with fields 68.1 to 70.1 and 72.1 to 75.1 (Optional field)</p>
+            <p>Input is mandatory if DECIS MNEMON (Field 70.1.1) has been defined.</p>
+        </desc>
+</t>
+<t>
+<field>LANGUAGE.CODE</field>
+<desc>
+            <p>Defines the language in which a text field will be loaded. </p>
+            <p>This language code relates to text data and controls the usage of the header, the Text and the description fields where the desired language text must be input as part of the report definition. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 numeric characters (01 to 99) Multivalue field. (Optional field).</p>
+            <p>Input must be an ID of a LANGUAGE record.</p>
+            <p>Input is mandatory if data is to be entered into a field which is described as being a text field.</p>
+            <p>No duplicate language codes are allowed.</p>
+        </desc>
+</t>
+<t>
+<field>FL.DECISION</field>
+<desc>
+            <p>Operand for limiting file reads if not all the records are to be used for the report defined. </p>
+            <p>The value entered indicates the type of comparison that is to be performed against the actual data in each record. </p>
+            <p>          EQ    equal to           GT    greater than           GE    greater than or equal to           NE    not equal to           LT    less than           LE    less than or equal to           LK    like           UL    unlike When there are more than one set of conditions loaded into fields 6.1.1 to 10.1.1 the linkage between the sets can be either an 'and' or 'or' condition. </p>
+            <p>Example:           a)    Say we only wished to extract Internal Accounts                 from the ACCOUNT FILE the lowest possible                 internal is entered in FL DECIS FR from (field                 8.1.1) and the highest possible Internal Account                 number is entered in FL DECIS TO to (fields                 9.1.1). </p>
+            <p>                Field 5.1   Read File    Account                 Field 6.1.1 FL FIELD NO   0                 Field 7.1.1 FL DECISION   EQ                 Field 8.1.1 FL DECIS FR "AAA000000000"                 Field 9.1.1 FL DECIS TO "ZZZ999999999" </p>
+            <p>          b)    Say we only wished to extract internal Accounts                 which have  Currency of USD or a currency of                 GBP. </p>
+            <p>                Field 5.1    Read File Account                 Field 6.1.1  FL FIELD NO   0                 Field 7.1.1  FL DECISION   LK                 Field 8.1.1  FL DECIS FR   "USD..."                 Field 9.1.1  FL DECIS FR                 Field 10.1.1 FL REL NEXT   OR                 Field 6.1.2  FL FIELD NO   0                 Field 7.1.2  FL DECISION   LK                 Field 8.1.2  FL DECIS FR   "GBP..."                 Field 9.1.2  FL DECIS TO                 Field 10.1.2 FL FIELD NO </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The following values will be accepted: BLANK (no input) all records will be used (read) EQ, GT, GE, NE, LT, LE, LK, UL This is a multivalue field associated with Fields 5.1 - 6.1 and 8.1. to 10.1 and a subvalue field associated with fields 6.1.1 and 8.1.1 to 10.1.1. (Optional field.)</p>
+            <p>Input is only allowed if Field 6.1.1 has been defined.</p>
+        </desc>
+</t>
+<t>
+<field>GH2.041..080</field>
+<desc>
+            <p>Text (header) information for GROUP (Field 46.1) for the second of the four header lines for column 041 to 080. </p>
+            <p>The second header line will be output below the first as defined in Fields 48.1.1 to 51.1.1. Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 46.1 to 52.1 and 54.1 to 67.1.  Subvalue field associated with fields 47.1.1 to 52.1.1 and 54.1.1. to 63.1.1. (Optional input)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 53.1.1 and following, existence of 4.2 allows definition in 53.1.2 etc...).</p>
+            <p>No input will be allowed if GROUP (Field 46.1) has not been defined.</p>
+        </desc>
+</t>
+<t>
+<field>USING.132.COLUMNS</field>
+<desc>
+            <p>Defines the format of a report </p>
+            <p>Whether the report is produced on the screen or printed is defined in the REPGEN.OUTPUT file record which also controls the language and the page length. </p>
+            <p>Input of "Y" (132 columns) excludes the display option. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The following values will be accepted: "Y"  The report output format will be 132 columns wide "Null"  The report output format will be  80 columns wide and may be directed to a screen.</p>
+        </desc>
+</t>
+<t>
+<field>EMPTY.LINE.WANTED</field>
+<desc>
+            <p>Indicates whether a completely blank print line is to be printed or not. </p>
+            <p>For this field 'line' means an actual print line, which may be one of a set of lines to be printed for a record.  The need to print blank lines occurs when printing items like Address Labels. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid input is. "Y" means print all lines. Blank means if a line of print is null then do not print it. (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>NUMBER.OF.CHAR</field>
+<desc>
+            <p>Length of the field as defined in the program or in previous field 18.1. SPEC.NUM.CHAR. </p>
+            <p>If SPEC NUMB CHAR (Field 18.1) has been defined the value of Field 19.1 will default to the same number of characters as input in Field 18.1.  If Field 18.1 has not been defined, the length of the field as defined in the program will be moved in. In either case, the indicated length will be used in verification for the available space on the output report (line). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Multivalue field associated with Fields 11.1 to 18.1 and 20.1 to 26.1. No input field.</p>
+        </desc>
+</t>
+<t>
+<field>KEY.TYPE</field>
+<desc>
+            <p>Definition of the output sequence of the defined field including control of totals and page breaks based on change of the value. </p>
+            <p>If for example 3 definitions of TOTAL.BY.CHANGE are defined, then they act in sequence of DEFINE MNEMONIC.  Therefore first defined is treated as the Grand Total.  The second definition is treated as the Total and the third definition is treated as a subtotal. </p>
+            <p>Formats for this field are as follows: </p>
+            <p>"1"   = SEQUENCE CONTROL </p>
+            <p>The Display of the records will be done in sequence of this mnemonic </p>
+            <p>"2"   = TOTAL.BY.CHANGE </p>
+            <p>Whenever the value of the field changes a total will be produced.  The fact that a field needs to be totalled is defined in DISPLAY TYPE (Field 23.1). </p>
+            <p>The level of the total (subtotal, total, grand total) is dependent on the sequence of the DEFINE MNEMONIC or the specific MNEMON SEQU (Field 67.1.1). </p>
+            <p>"3"   = PAGING.BY.CHANGE </p>
+            <p>Whenever the value of the field changes a new page will be started. </p>
+            <p>"4"   = TOTAL AND PAGING BY CHANGE </p>
+            <p>Combination of "2" and "3" above. </p>
+            <p>          NO INPUT </p>
+            <p>Mnemonic is not used for sequence control. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input format is limited to indication of one of the 4 sequence/total control types.  See Details below. Multivalue field, associated with fields 11.1 to 21.1 and 23.1 to 26.1. (Optional input)</p>
+            <p>No input is allowed if DEFINE MNEMONIC (field 11.1) is missing.</p>
+        </desc>
+</t>
+<t>
+<field>GROUP.TEXT</field>
+<desc>
+            <p>Text (label) associated with the group. </p>
+            <p>Text can be defined in various languages to accommodate language needs as defined in LANGUAGE CODE (Field 4.1). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 type A (alphanumeric) characters, including spaces.  Spaces will not be cancelled. Multivalue field, associated with fields 46.1 to 64.1 and 66.1 to 67.1.  Subvalue field for language on its own. (Optional input.)</p>
+            <p>No input is allowed if GROUP (Field 46.1) or LANGUAGE CODE (Field 4.1) are missing.</p>
+            <p>Length of text must be equal or less than the value defined in GROUP TEXT MAX (Field 64.1).</p>
+        </desc>
+</t>
+<t>
+<field>GH4.001..040</field>
+<desc>
+            <p>Text (header) information for the GROUP (Field 46.1) for the fourth of the four header lines for column 001 to 040. </p>
+            <p>The fourth header line will be output below the third as defined in fields 56.1.1. to 59.1.1.  Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 46.1 to 59.1 and 61.1 to 67.1.  Subvalue fields associated with fields 47.1.1 to 59.1.1 and 61.1.1 to 63.1.1. (Optional input)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 60.1.1 and following, existence of 4.2 allows definition in 60.1.2...etc.).</p>
+            <p>No input will be allowed if GROUP (Field 46.1) has not been defined.</p>
+        </desc>
+</t>
+<t>
+<field>HDR.2.041..080</field>
+<desc>
+            <p>Text (header) information for the second of four header lines for column 041 to 080. </p>
+            <p>The second header line will be output below the first as defined in Fields 27 to 30. Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 27.1 to 31.1 and 33.1 to 42.1. (Optional input)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 32.1 and following, existence of 4.2 allows definition in 32.2.... etc.).</p>
+        </desc>
+</t>
+<t>
+<field>CO.CODE.SORT</field>
+<desc>
+            <p>Indicates the company code for which REPGEN.SORT was run for. </p>
+            <p>This field is updated each time a REPGEN.SORT record containing this record name is run.  The company code is stored is CO CODE SORT (Field 87.1) and the Date and Time is stored in DATE TIME SORT (Field 88.1). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>9 digit company code. Externally maintained field. Multivalue associated with field 88.1</p>
+        </desc>
+</t>
+<t>
+<field>GROUP</field>
+<desc>
+            <p>Identity of a group for which the details are set up in Fields 47.1.1 to 67.1.1. </p>
+            <p>Groups facility is used when more than one report is required from the same extract base. </p>
+            <p>These reports can differ in format and/or in their selection of records shown and/or in order of printing of the records. </p>
+            <p>The individual group headings, decision criteria, report sequence and report contents are defined in fields GROUP (46.1) to MNEMON SEQU (67.1.1). </p>
+            <p>In fields DECIS GROUP FR (43.1) to GLOBAL DEC NAME (45.1) a decision is linked to several groups. </p>
+            <p>If there is only one report and therefore no groups but not all records are to be printed, then the DECISION NAME determining which records are to be extracted is entered in GROUP DEC NAME (Field 66.1). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 numeric characters. Multivalue associated with Fields 47.1 to 67.1. (Optional input).</p>
+            <p>If only one group exists (or no groups have been defined) input is not allowed.</p>
+            <p>No duplicate numbers allowed.</p>
+        </desc>
+</t>
+<t>
+<field>DECISION.FR</field>
+<desc>
+            <p>The only value or the starting value in a range of values which are to be used in the decision making. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 type A (alphanumeric) characters or the following specific formats: A constant between "double quotation marks". The name of another mnemonic. Multivalue field, associated with fields 68.1 to 71.1 and 73.1 to 75.1.</p>
+            <p>Input is mandatory if DECISION (Field 71.1.1) has been defined.</p>
+            <p>Input must begin and/or end with "..." if DECISION (Field 71.1.1) is equal to 'LK' or 'UL'.</p>
+            <p>If the format used is the name of another mnemonic that mnemonic must be defined in DEFINE MNEMONIC (Field 11.1).</p>
+            <p>If a constant entered it must be between double quotation makes e.g. if constant of GBP required it will be entered as "GBP".</p>
+        </desc>
+</t>
+<t>
+<field>GH3.121..132</field>
+<desc>
+            <p>Text (header) information for GROUP (Field 46.1) for the third of the four header lines for column 121 to 132. </p>
+            <p>The third header line will be output below the second as defined in Fields 52.1.1 to 55.1.1. Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 12 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 46.1 to 54.1 and 56.1 to 67.1.  Subvalue field associated with fields 47.1.1 to 58.1.1 and 60.1.1 to 63.1.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 59.1.1 and following, existence of 4.2 allows definition in 59.1.2..etc.).</p>
+            <p>No input will be allowed if GROUP (Field 46.1) has not been defined.</p>
+        </desc>
+</t>
+<t>
+<field>FL.DECIS.TO</field>
+<desc>
+            <p>Identifies the last record in a range to be used (read) in the file, as specified in READ FILE (Field 5.1). </p>
+            <p>The Value can be defined as a possible existing value or range of values, e.g. (Customer ID EQ 010001 to 019999). </p>
+            <p>When there are more than one set of conditions loaded into fields 6.1.1 to 10.1.1 the linkage between the sets can be either an 'and' or 'or' condition. </p>
+            <p>Example:  a)    Say we only wished to extract Internal Accounts                 from the ACCOUNT FILE the lowest possible                 internal is entered in FL DECIS FR from (field                 8.1.1) and the highest possible Internal Account                 number is entered in FL DECIS TO to (fields                 9.1.1). </p>
+            <p>                Field 5.1   Read File    Account                 Field 6.1.1 FL FIELD NO   0                 Field 7.1.1 FL DECISION   EQ                 Field 8.1.1 FL DECIS FR "AAA000000000"                 Field 9.1.1 FL DECIS TO "ZZZ999999999" </p>
+            <p>          b)    Say we only wished to extract internal Accounts                 which have  Currency of USD or a currency of                 GBP. </p>
+            <p>                Field 5.1    Read File Account                 Field 6.1.1  FL FIELD NO   0                 Field 7.1.1  FL DECISION   LK                 Field 8.1.1  FL DECIS FR   "USD..."                 Field 9.1.1  FL DECIS FR                 Field 10.1.1 FL REL NEXT   OR                 Field 6.1.2  FL FIELD NO   0                 Field 7.1.2  FL DECISION   LK                 Field 8.1.2  FL DECIS FR   "GBP..."                 Field 9.1.2  FL DECIS TO                 Field 10.1.2 FL REL NEXT </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 type A (alphanumeric) characters. Multivalue field associated with Fields 5.1 to 8.1 and 10.1 Subvalue field associate with Fields 6.1.1 to 8.1.1 and 10.1.1. (Optional input)</p>
+            <p>Input is only allowed if operands in FL DECISION (Field 7.1.1) are equal to "EQ" or "NE".</p>
+            <p>Input value must be GT value in FL DECIS FR (Field 8.1.1).</p>
+            <p>The value must be entered between double quotation marks (").</p>
+        </desc>
+</t>
+<t>
+<field>MODIF.FILE</field>
+<desc>
+            <p>Name of data file to which MNEMON FIELD (Field 13.1.1) and its associated operand MODIFICATION (Field 14.1.1) are linked. </p>
+            <p>This field is the name of the file from which the replacement field is to be obtained. </p>
+            <p />
+            <p>Note:     If a series of replacements required it is necessary to do           this under different mnemonics one at a time. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 25 type A (alphanumeric) characters, must be a valid file or program name. Multivalue field associated with fields 11.1 to 14.1 and 16.1 to 26.1 and Subvalue field associated with fields 12.1.1 to 14.1.1 and 16.1.1.</p>
+            <p>Input is mandatory if MODIFICATION (Field 14.1.1) is equal to REPLACE</p>
+            <p>No input is allowed if MODIFICATION (Field 14.1.1) is different than REPLACE</p>
+            <p>The file must belong to the type "H" or "U" or "L" or "T" or "W".</p>
+        </desc>
+</t>
+<t>
+<field>GH1.041..080</field>
+<desc>
+            <p>Text (header) information for the GROUP (Field 46.1) for the first of the four header lines for column 41 to 80. </p>
+            <p>The first group header line will be output below the overall report header lines.  Spaces will not be cancelled.  Each group change will start a new page with the corresponding new group header line(s) unless NEW PAGE FOR GROUP (Field 76) is null. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 46.1 to 48.1 and 50.1 to 67.1.  Subvalue associated with fields 47.1.1 to 48.1.1 and 50.1.1 to 51.1.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 49.1.1 and following, existence of 4.2 allows definition in 49.1.2..etc.).</p>
+            <p>No input will be allowed if GROUP (Field 46.1) has not been defined.</p>
+        </desc>
+</t>
+<t>
+<field>GROUP.TEXT.MAX</field>
+<desc>
+            <p>Length of text (label) as defined in GROUP TEXT (Field 65.1.1) for the field value to be printed.  This is independent of any header information and will be appearing on the left of the field value. </p>
+            <p>If no length is defined but if GROUP TEXT (Field 65.1.1) is defined the length will be set to that value or if multilanguage definitions exist, to the highest length of any defined sub values. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Numeric values "1 to 35" or blank. Multivalue field, associated with fields 46.1 to 63.1 and 65.1 to 67.1 (Optional input)</p>
+            <p>No input allowed if GROUP (Field 46.1) has not been defined.</p>
+        </desc>
+</t>
+<t>
+<field>GH1.081..120</field>
+<desc>
+            <p>Text (header) information for the GROUP (Field 46.1) for the first of the four header lines for column 81 to 120. </p>
+            <p>The first group header line will be output below the overall report header lines.  Spaces will not be cancelled.  Each group change will start a new page with the corresponding new group header line(s), unless NEW PAGE FOR GROUP (Field 78) is null. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 44.1 to 49.1 and 51.1 to 67.1.  Subvalue field associated with fields 47.1.1 to 49.1.1 and 51.1.1 to 63.1.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 50.1.1 and following, existence of 4.2 allows definition in 50.1.2...etc.).</p>
+            <p>No input will be allowed if GROUP (Field 46.1) has not been defined.</p>
+        </desc>
+</t>
+<t>
+<field>GLOBAL.DEC.NAME</field>
+<desc>
+            <p>Identifies DECISION NAME (Field 63.1) where all decisions (Field association 69.1 to 75.1) are defined. </p>
+            <p>Groups facility is used when more than one report is required from the same extract base. </p>
+            <p>These reports can differ in format and/or in their selection of records shown and/or in order of printing of the records. </p>
+            <p>The individual group headings, decision criteria, report sequence and report contents are defined in fields GROUP (46.1) to MNEMON SEQU (67.1.1). </p>
+            <p>In fields DECIS GROUP FR (43.1) to GLOBAL DEC NAME (45.1) a decision is linked to several groups. </p>
+            <p>If there is only one report and therefore no groups but not all records are to be printed, then the DECISION NAME determining which records are to be extracted is entered in GROUP DEC NAME (Field 66.1). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 20 type A (alphanumeric) characters</p>
+            <p>Input is mandatory if Field 43.1 DECIS GROUP FR has been specified.</p>
+            <p>Must be a valid DECISION NAME (Field 68.1).</p>
+        </desc>
+</t>
+<t>
+<field>SORT.FILE.TYPE</field>
+<desc>
+            <p>Refer to documentation PRIME/INFORMATION </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Numeric field, valid input 1-16. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>MODIFICATION</field>
+<desc>
+            <p>Impact on MNEMON FIELD (Field 13.1.1) expressed as an operand relative to MODIF FIELD (Field 16.1.1). </p>
+            <p>This field allows for output of a value, based on an arithmetic operation or on the conditions (related to a decision) regarding printing or is used to provide for a replace of a field value with another file or the details are for a parameter of a called routine and this field indicates the routine and the parameter number for the routine. </p>
+            <p>The process relates to what happens to the contents of Field 13.1.1 Mnemon field with relationship to the field in Field 16.1.1 MODIFY FIELD. </p>
+            <p>Values accepted are as follows: </p>
+            <p>ADD             Field 16.1.1 added to field 13.1.1 </p>
+            <p>CONCATENATE     Field 16.1.1 concatenated to the end of field                 13.1.1. </p>
+            <p>DIVIDE          Field 13.1.1 is divided by Field 16.1.1 (example                 Field 13.1.1 contains 99.  Field 16.1.1 contains 11.                 Answer will be 9.) </p>
+            <p>FIELD DECISION  This mnemonic only has the value stored in field                 13.1.1 set up if the Decision name indicated in                 field 16.1.1. is true. </p>
+            <p>MULTIPLY        Field 13.1.1 will be multiplied by Field 16.1.1 </p>
+            <p>REPLACE         Field 13.1.1 contains the key of the file entered in                 field 15.1.1 modify file and the value in field                 indicated by field 16.1.1 replaces this key. </p>
+            <p>SUBTRACT        Field 16.1.1 will be subtracted from Field 13.1.1 </p>
+            <p>-C -W     minus calendar (C) or working (W) days.  The date in field           13.1.1 will be cycled back the appropriate number of days. +C+W      plus calendar (C) or working (W) days.  The date in field           13.1.1 will be cycled forward the appropriate number of           day. </p>
+            <p>If the format used is -C -W +C +W the MNEMON FIELD should be a date and the MODIFY FIELD should be a constant. </p>
+            <p>@xx....xx#This option is used when this mnemonic set of information           is a passed argument to a called subroutine. </p>
+            <p>          The details entered here are of the format @xx...xx#nn. </p>
+            <p>          Where xx...xx is the key to a record on the file           PGM.FILE, this record must have a type of "R". </p>
+            <p>          The number and type of arguments are held on the           PGM.FILE record. </p>
+            <p>          NN contains the argument number and must be a valid           argument on PGM.FILE, if argument  in PGM.FILE is *           then it is not to be used, therefore it must not be entered           here. </p>
+            <p>          The arguments must be set up in order and in adjacent           sets of mnemonics.  Returned argument fields should be           set with a constant of "". </p>
+            <p>Example: </p>
+            <p>The Middle Rate Conv Check routine has been set up to be called using a PGM.FILE record called MID RATE CONV and requires the currency Amount, Currency, Currency Market and Local Amount as arguments. </p>
+            <p>Let us say we are using ACCOUNT File the REPGEN CREATE fields will be set as follows: 11.2      AMOUNT 13.2.1    24 14.2.1    @MID.RATE.CONV #1 11.3      CCY 13.3.1    8 14.3.1    @MID.RATE.CONV #2 11.4      MARKET 13.4.1    9 14.4.1    @MID RATE CONV #4 11.5      ANSWER 13.5.1    "" 14.5.1    @MID.RATE.CONV #5 See chapter REPGEN.SUBROUTINES for full list of subroutine available. </p>
+            <p />
+            <p>Note:     (i)   If there are two formats FIELD DECISION (for                 same report) referring to the same DEFINE                 MNEMONIC and both decisions are true, the first                 decision only will be considered. </p>
+            <p>          (ii)  A PGM.FILE record for using a Middle Rate Conv                 Check routine has been set up.  This routine as                 set up will convert a currency amount into local                 amount or vice versa.  The PGM file record is                 called MID.RATE.CONV and needs the following                 arguments to be set up: </p>
+            <p>                No 1          Currency Amount                    2          Currency Code                    4          Currency Market                    5          Local Amount </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The following values will be accepted: ADD             CONCATENATE   DIVIDE FIELD.DECISION  MULTIPLY      REPLACE SUBTRACT        -C -W         +C +W @xxxxx . . . x (For more information see Details below) Multivalue field associated with Field 11.1 to 13.1 and 15.1 to 26.1 and subvalue field associated with fields 12.1.1 to 13.1.1 and 15.1.1 to 16.1.1. (Optional input)</p>
+            <p>No input allowed if DEFINE MNEMONIC (Field 11.1) is missing.</p>
+            <p>One of the above values must be entered.</p>
+            <p>If link to PGM.FILE then there must be a record present on PGM.FILE and the argument number must have been set up so as to be used in the PGM.FILE record.</p>
+        </desc>
+</t>
+<t>
+<field>MNEMON.FILE</field>
+<desc>
+            <p>Identifies the data file to which the mnemonic (Field 11.1) refers. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 25 type A (alphanumeric) characters, must be a valid file or program name Multivalue field, associated with Field 11.1 and 13.1 to 26.1. and subvalue field associated with fields 13.1.1 to 16.1.1. (Optional input)</p>
+            <p>Input is mandatory if more than one file in READ FILE (Field 5.1) has been defined.</p>
+            <p>File name must be defined in READ FILE (Field 5.1).</p>
+            <p>Duplication of file name within the same multivalue set not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>MULTI.SPLIT.TOT</field>
+<desc>
+            <p>Controls whether multi value fields are output as one single field value (total) or if they are shown individually according to the number of occurrences or treated as separate records or a multivalue field is returned from a called subroutine. </p>
+            <p>Use of value "TOTAL" will cause all occurrence of the multivalue field to be combined into one total for the report.  For this option the fields should be numeric.  Definition of non numeric fields is possible but result will be shown as blank on the report. </p>
+            <p>The value of "SPLIT" means treat each occurrence of the multivalue field as a separate record and therefore produce a separate print record for each occurrence. </p>
+            <p>If the Split option is used on one multivalue/ subvalue mnemonic then it should be used for all multivalue/subvalues otherwise the other multivalue fields will be printed for each occurrence of the "SPLIT" multivalue fields. </p>
+            <p>If the multivalue field is to be split over different columns then leave this field blank. </p>
+            <p>"MULTI" is to be used when a returned parameter form a subroutine is to be treated as a multivalue field etc. though it was originally a single value field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid input is 'TOTAL', 'SPLIT' or 'MULTI'. Multivalue field associated with field 11.1 to 16.1 and 18.1 to 26.1. (Optional input)</p>
+            <p>Input is only allowed if the multi value field number in MNEMON FIELD (Field 13.1.1) or MODIF FIELD (Field 16.1.1) is defined without the multi value/sub field or the MNEMON (Field 13.1.1) contains a value of "".</p>
+        </desc>
+</t>
+<t>
+<field>SUPPR.GRAND.TOTAL</field>
+<desc>
+            <p>Indicates that the grand total at the end of the report is not to be printed. </p>
+            <p>If totalling has been requested a meaningless grand total can be suppressed by entering Y in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Allowed values are 'Y'. (Optional input.)</p>
+            <p>Input not allowed if no total has been requested (totalling is requested by setting the DISPLAY TYPE Field 23.1 to one of the totalling options).</p>
+        </desc>
+</t>
+<t>
+<field>SPEC.NUMB.CHAR</field>
+<desc>
+            <p>Length of the defined field on the output report. Non usage of the field uses length of the field as defined in the program. </p>
+            <p>Definition of a special number of characters allows shortening of lengthy descriptions or short names, necessary in certain reports to provide for a one line information output, per record. Definition of too long a length gives space away, definition of too short a length might result in incomprehensible information.  If no special number of characters are defined the default number, taken from the program, will be moved to NUMB OF CHAR (Field 19.1). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Numeric characters, value '1 to 35'. Multivalue field associated with field 11.1 to 17.1 and 19.1 to 26.1. (Optional input)</p>
+            <p>No input allowed if DEFINE MNEMONIC (Field 11.1) is missing or if the fields a KEY TYPE (Field 22.1) or DISPLAY TYPE (Field 23.1) have not been set up with data.</p>
+            <p>Input is mandatory if MNEMON FIELD (Field 13.1.) or MODIFY FIELD (Field 16.1.1) equals name of another mnemonic, or is a constant or a called routine has been used in MODIFICATION field (14.1.1) and the fields KEY TYPE (field 22.1) or DISPLAY TYPE (field 23.1) have been set up.  In these cases no default length is available.</p>
+        </desc>
+</t>
+<t>
+<field>READ.FILE</field>
+<desc>
+            <p>Name of (main) file(s) used for the defined report. </p>
+            <p>The number of files is not limited but the files must contain similar data.  Each record from each file being processed separately. Files will be read in sequence of definition.  Any mnemonics definitions need to be done once only and are then linked to the respective files using the sub-value field association (13.1.1). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input must be a valid application (file) name of up to 25 characters Multivalue field associated with Fields 6 to 8. (Mandatory input)</p>
+            <p>Input must be a valid application (file) name meaning that there must be a record in the PGM.FILE for this application and the program type must be H or U or L or T or W.</p>
+            <p>Every file must at least have one define mnemonic set of fields which has DISPLAY TYPE (Field 23.1) of 2 to 6.</p>
+        </desc>
+</t>
+<t>
+<field>FL.DECIS.FR</field>
+<desc>
+            <p>Identifies the only record or the first record in a range of the records which is/are on the file defined in READ FILE (Field 5.1). </p>
+            <p>The value can be defined as a possible existing value or range of values, e.g. (Customer ID EQ 010001 to 019999) or a virtual value, e.g. account number LT A (numeric account numbers only). </p>
+            <p>When there are more than one set of conditions loaded into fields 6.1.1 to 10.1.1 the linkage between the sets can be either an 'and' or 'or' condition. </p>
+            <p>Example:           a)    Say we only wished to extract Internal Accounts                 from the ACCOUNT FILE the lowest possible                 internal is entered in FL DECIS FR from (field                 8.1.1) and the highest possible Internal Account                 number is entered in FL DECIS TO to (fields                 9.1.1). </p>
+            <p>                Field 5.1   Read File    Account                 Field 6.1.1 FL FIELD NO   0                 Field 7.1.1 FL DECISION   EQ                 Field 8.1.1 FL DECIS FR "AAA000000000"                 Field 9.1.1 FL DECIS TO "ZZZ999999999" </p>
+            <p>          b)    Say we only wished to extract internal Accounts                 which have  Currency of USD or a currency of                 GBP. </p>
+            <p>                Field 5.1    Read File Account                 Field 6.1.1  FL FIELD NO   0                 Field 7.1.1  FL DECISION   LK                 Field 8.1.1  FL DECIS FR   "USD..."                 Field 9.1.1  FL DECIS FR                 Field 10.1.1 FL REL NEXT   OR                 Field 6.1.2  FL FIELD NO   0                 Field 7.1.2  FL DECISION   LK                 Field 8.1.2  FL DECIS FR   "GBP..."                 Field 9.1.2  FL DECIS TO                 Field 10.1.2 FL REL NEXT </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 type A (alphanumeric) characters Multivalue field associated with Fields 5.1 to 7.1 and 9.1 to 10.1 and subvalue field associated with Fields 6.1.1 to 7.1.1. and 9.1.1 to 10.1.1. (Mandatory field only if FL FIELD NO (Field 6.1.1) has been defined.)</p>
+            <p>If operands in FL DECISION  Field 7.1.1 are LK or UL, input in this field must begin and/or end with "..."</p>
+            <p>The value must be entered between double quotation marks (").</p>
+        </desc>
+</t>
+<t>
+<field>HDR.3.001..040</field>
+<desc>
+            <p>Text (header) information for the third of four header lines for column 001 to 040. </p>
+            <p>The third header line will be output below the second as defined in Fields 31.1 to 34.1.  Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 27.1 to 35.1 and 36.1 to 42.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 35.1 and following, existence of 4.2 allows definition in 35.2.... etc.).</p>
+        </desc>
+</t>
+<t>
+<field>GROUP.TITLE</field>
+<desc>
+            <p>Free format text appearing as group title on the printed report or the screen </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 54 type A (alphanumeric) characters. Multivalue field associated with fields 46.1 and 48.1 to 67.1 and subvalue field associated with field 48.1.1 to 63.1.1. (Optional input.)</p>
+            <p>The input length plus the length of REPORT NAME (ID Field 0) cannot be exceed 32 characters if the report is only 80 columns wide (i.e. if USING 132 COLUMNS (Field 3) is blank).</p>
+        </desc>
+</t>
+<t>
+<field>GH2.121..132</field>
+<desc>
+            <p>Text (header) information for GROUP (Field 46.1) for the second of the four header lines for column 121 to 132. </p>
+            <p>The second header line will be output below the first as defined in Fields 48.1.1 to 51.1.1. Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 12 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 46.1 to 54.1 and 56.1 to 67.1.  Subvalue field associated with fields 47.1.1 to 54.1.1 and 56.1.1 to 63.1.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 55.1.1 and following, existence of 4.2 allows definition in 55.1.2..etc.).</p>
+            <p>No input will be allowed if GROUP (Field 46.1) has not been defined.</p>
+        </desc>
+</t>
+<t>
+<field>DECIS.MNEMON</field>
+<desc>
+            <p>Field (name) mnemonic to which the condition statement refers, i.e. The mnemonic on which the decision are to be made. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 20 type A (alphanumeric) characters. No spaces allowed. Multivalue field, associated with fields 68.1 to 69.1 and 71.1 to 75.1.</p>
+            <p>Input must be defined in DEFINE MNEMONIC (Field 11.1).</p>
+        </desc>
+</t>
+<t>
+<field>DECIS.GROUP.TO</field>
+<desc>
+            <p>Identifies the last group number in a range of "groups" where the decision name specified in GLOBAL DEC NAME (Field 45.1) applies. </p>
+            <p>Groups facility is used when more than one report is required from the same extract base. </p>
+            <p>These reports can differ in format and/or in their selection of records shown and/or in order of printing of the records. </p>
+            <p>Th individual group headings, decision criteria, report sequence and report contents are defined in fields GROUP (46.1) to MNEMON SEQU (67.1.1). </p>
+            <p>In fields DECIS GROUP FR (43.1) to GLOBAL DEC NAME (45.1) a decision is linked to several groups. </p>
+            <p>If there is only one report and therefore no groups but not all records are to be printed, then the DECISION NAME determining which records are to be extracted is entered in GROUP DEC NAME (Field 66.1). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 numeric characters Multivalue field, associated with fields 43.1 and 45.1. (Optional input.)</p>
+            <p>Input must be numeric.</p>
+            <p>Input is mandatory if DECIS GROUP FR (Field 43.1) has been defined.</p>
+            <p>Numeric value must be greater than in DECIS GROUP FR (Field 43.1).</p>
+            <p>There must be at least one GROUP (Field 46.1) set up for range entered in DECIS GROUP FR (Field 43.1) and this field.</p>
+        </desc>
+</t>
+<t>
+<field>MNEMON.FIELD</field>
+<desc>
+            <p>Data (field) which is represented by the mnemonic name in DEFINE MNEMONIC (Field 11.1). </p>
+            <p>Field number in the file defined in MNEMON FILE (Field 12).  This field number can also be expressed as multi value/sub number to define a specific multi value/sub field. To define the key of file being processed use 'O' as field number. </p>
+            <p>It can also be defined to be part of a field with the format 'n[s,l]mj'. </p>
+            <p>Where:    n=    field number           s=    start character of the data to be used           l=    length (number of characters to be used)           m=    maximum is the number of characters to be taken                 from the source field           j=    justification </p>
+            <p>Start character plus length cannot be greater than number of characters taken form the same field. Justification can be 'R' or 'L' for right or left adjustment respectively. </p>
+            <p>Within the processing a temporary field is set up this field will contain the first m characters from the source field, this temporary field will then be right or left justified. </p>
+            <p>For example take the SHORTNAME (Field 2.1) on the CATEGORY file. Value in SHORTNAME field     SEVENDAY NOTICE (15)  A/C ADVANCE (11) REST DATE ENTERED HERE            VALUE DISPLAYED ON OUTPUT </p>
+            <p>2.1 [1M,6] 15L  SEVEND        A/C ADREST 2.1 [9,6]  15L   NOTIC        NCE 2.1 [1,6]  15R  SEVEND            A/ 2.1 [9,6]  15R   NOTIC        ADVANC    RES 2.1 [1,6]   8L  SEVEND        A/C ADREST 2.1 [2,6]   8L  EVENDA        /C ADVEST 2.1 [1,6]   8R  SEVEND        A/C AD    RE 2.1 [2,6]   8R  EVENDA        /C ADV   RES 2.1 [6,2]  10R  DA  DV             R </p>
+            <p>To define (select) a component or part of a composite key then details are entered as n[ce] </p>
+            <p>          n     =   the field number </p>
+            <p>          c     =   the delimiter character (e.g. '.' full stop) </p>
+            <p>          e     =   the data element to be extracted from the                     composite key, </p>
+            <p>e.g. composite key LIAB.REF.CUST to select customer, definition would be 0[.3] where as to select Ref definition would be 0[.2] </p>
+            <p>For the following conditions (needs) the input (definition) of a multivalue field must always be explicit, i.e. 10.7 and not 10 or 10.1. </p>
+            <p>          -     for a LOCAL REF field </p>
+            <p>          -     If a multivalue field is to be used KEY TYPE (i.e.                 field 22.1 contains a value) or is to be used for a                 decision or the DISPLAY TYPE (Field 23.1) is                 defined as '1 header' and the field SPLIT or                 TOTAL (field 17.1) contains neither SPLIT or                 TOTAL. </p>
+            <p>Input of a constant placed between double quotation marks (").  An example being that a particular currency is required e.g. USD in the DECISION section later on, the value entered here would be "USD". </p>
+            <p>Input of another mnemonic e.g. 'Total amount outstanding' could be defined as: </p>
+            <p>          Field 11.1   TOTAL.AMOUNT.OUTSTANDING           Field 13.1.1 PRINCIPAL.AMOUNT           Field 14.1.1 ADD           Field 16.1.1 INTEREST.AMOUNT </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 type A (alphanumeric) characters (for specific formats see Details below). Multivalue field associated with Fields 11.1, 12.1 and 14.1. to 26.1.   Sub value field associated with Fields 12.1.1 and 16.1.1.</p>
+            <p>Input is mandatory if DEFINE MNEMONIC or MNEMON FILE have been specified</p>
+            <p>No input allowed if DEFINE MNEMONIC is missing</p>
+            <p>No input for a second subfield (13.2) allowed if MNEMON FILE is missing</p>
+        </desc>
+</t>
+<t>
+<field>DATE.TIME.SORT</field>
+<desc>
+            <p>Indicates the time and date that a REPGEN SORT record was run for this report. </p>
+            <p>This field is updated each time a REPGEN.SORT record containing this record name is run.  The company code is stored is CO CODE SORT (Field 87.1) and the Date and Time is stored in DATE TIME SORT (Field 88.1). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Displayed as Date followed by Time. Held as 6 numeric characters for the date followed by 4 numeric characters for the date followed by 4 numeric characters for the line (YYMMDDHHMM).</p>
+        </desc>
+</t>
+<t>
+<field>COLUMN</field>
+<desc>
+            <p>Starting point (column) indicator for the fields defined as output fields in the report. </p>
+            <p>If no input is made a default position, based on the previous field plus one space character, is calculated.  If defined, the space must be included in the apportioning of space otherwise the following field will be printed on the next line.  The definition of a horizontal sequence for multi value/sub value fields may be done be expanding Field 24 (subfields).  This expansion is not allowed when the SPLIT TOTAL option in field 17.1 SPLIT or TOTAL has been taken. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Numeric values "1 to 130" or blank. Multivalue field, associated with fields 11.1 to 23.1 and 25.1 to 26.1 and subvalue field on its own. (Optional input)</p>
+            <p>No input allowed if DEFINE MNEMONIC (field 11.1) is missing.</p>
+            <p>No input allowed if DISPLAY TYPE (Field 23.1) is equal to blank.</p>
+            <p>The value entered, plus value in field 25.1 TEXT.CHAR.MAX plus '1' must not be greater than 80 or 132 if field 3 USING 132 COLUMNS is 'Y'.</p>
+            <p>If SPLIT.OR.TOTAL (Field 17.1) is set then only one column number field can be defined.  Subvalue expansion not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>NEW.PAGE.FOR.GROUP</field>
+<desc>
+            <p>Indicator to force a new page on a group change. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid input is "Y"   Yes for page break when a new group starts. Blank if a new page is not required. (Optional input.)</p>
+            <p>Input in this field is only allowed if the group heading details have been defined in Fields 46.1 to 67.1.1.</p>
+            <p>Input must be equal to "Y" if KEY TYPE (Field 22.1) is equal to 3 or 4.  (i.e. cause a page change).</p>
+        </desc>
+</t>
+<t>
+<field>SUPPR.SINGLE.TOTAL</field>
+<desc>
+            <p>Indicator to suppress total line if total is equivalent to a single display line. </p>
+            <p>Note:     If there is a DISPLAY TYPE equal to 4 "Total only", input           of "Y" in this field has no effect. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>"Y"  Yes if no total line is required for the equivalent of a single display line. Blank to always print total line. (Optional input.)</p>
+            <p>Input is only allowed if there is a DISPLAY TYPE (Field 22.1) equal to 3.</p>
+        </desc>
+</t>
+<t>
+<field>MODIF.FIELD</field>
+<desc>
+            <p>Field (number) of the file MODIF FILE (Field 15.1.1) used in the report definition or is a constant or name of another Mnemonic (Field 11.1) or the name of DECIS Mnemonic (Field 70.1.1). </p>
+            <p>The data can be a field number in the file defined in MODIF FILE (Field 15). </p>
+            <p>It can also be defined to be part of a field with the format 'n[s,l]mj'. </p>
+            <p>Where:    n =   field number           s =   start character of the data to be used           l =   length (number of characters to be used)           m =   maximum is the number of characters to be taken                 from the source field           j =   justification </p>
+            <p>Start character plus length cannot be greater than number of characters taken form the same field. Justification can be 'R' or 'L' for right or left adjustment respectively. </p>
+            <p>Within the processing a temporary field is set up this field will contain the first m characters from the source field, this temporary field will then be right or left justified. </p>
+            <p>For example take the SHORTNAME (Field 2.1) on the CATEGORY file. Value in SHORTNAME field     SEVENDAY NOTICE (15)  A/C ADVANCE (11) REST DATE ENTERED HERE            VALUE DISPLAYED ON OUTPUT </p>
+            <p>2.1 [1M,6] 15L  SEVEND        A/C ADREST 2.1 [9,6]  15L   NOTIC        NCE 2.1 [1,6]  15R  SEVEND            A/ 2.1 [9,6]  15R   NOTIC        ADVANC    RES 2.1 [1,6]   8L  SEVEND        A/C ADREST 2.1 [2,6]   8L  EVENDA        /C ADVEST 2.1 [1,6]   8R  SEVEND        A/C AD    RE 2.1 [2,6]   8R  EVENDA        /C ADV   RES 2.1 [6,2]  10R  DA  DV             R </p>
+            <p>To define (select) a component or part of a composite key then details are entered as n[ce]: </p>
+            <p>          n     =   the field number </p>
+            <p>          c     =   the delimiter character (e.g. '.' full stop) </p>
+            <p>          e     =   the data element to be extracted from the                     composite key, </p>
+            <p>e.g. composite key LIAB.REF.CUST to select customer, definition would be 0[.3] where as to select Ref definition would be 0[.2] </p>
+            <p>For the following conditions (needs) the input (definition) of a multivalue field must always be explicit, i.e. 14.5 and not 14 or 14.X </p>
+            <p>-         for a LOCAL REF field -         if KEY TYPE (Field 22.1) is defined and SPLIT or TOTAL           (Field 17.1) is not used -         If DISPLAY TYPE (Field 23.1) is defined as '1.HEADER'           and SPLIT or TOTAL (Field 17.1) is not used </p>
+            <p>Input of a constant placed between double quotation marks (").  An example being that a value of 100 is required the value entered here would be "100". </p>
+            <p>Input of another mnemonic e.g. 'Total amount outstanding' could be defined as: </p>
+            <p>          Field 11.1   TOTAL.AMOUNT.OUTSTANDING           Field 13.1.1 PRINCIPAL.AMOUNT           Field 14.1.1 ADD           Field 16.1.1 INTEREST.AMOUNT </p>
+            <p>Input of a mnemonic acting as a DECISION NAME (Field 69.1.1) if MODIFICATION (Field 14.1.1) is equal to FIELD DECISION. </p>
+            <p />
+            <p>Note:     Numeric is defined as 14 integers, 9 decimals, 14 maximum.           Precision of the result is defined by fractional part of           numeric value (Default = 9). e.g. "DIVIDE 1000000.00" in           field 14.1.1 and Field 16.1.1 means divide by 1 million and           hold hundred- and ten-thousands as decimals. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 type A (alphanumeric) characters (for specific formats see Details below). Multivalue field associated with Fields 11.1 to 15.1 and 17.1 to 26.1 and subvalue field associated with fields 12.1.1 to 15.1.1.</p>
+            <p>Input not allowed if MODIFICATION (field 14.1.1) for a called routine, i.e. Modification starts with an @ sign.</p>
+            <p>Input is mandatory if MODIFICATION (Field 14.1.1) has been defined and is not covered by Rule (i).</p>
+            <p>No input allowed if MODIFICATION (field 14.1.1) missing.</p>
+            <p>Input of a single 0 (zero) = ID is not allowed, if MODIFICATION  Field 14.1.1 is REPLACE.</p>
+            <p>Format of "constant" must be numeric if MODIFICATION (field 14.1.1) is equal to ADD, SUBSTRACT, -C, -W, +C, +W</p>
+            <p>Format of "constant " must be numeric and can be prefixed by a "-" (minus) sign if MODIFICATION (field 14.1.1) is equal to DIVIDE OR MULTIPLY.</p>
+            <p>If MODIFICATION (field 14.1.1) is equal to FIELD DECISION input of a valid DECIS MNEMON (Field 69.1.1) is mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>SPECIAL.HEADING</field>
+<desc>
+            <p>Determines what page headings are to appear at the top of each page. </p>
+            <p>This field controls heading lines printed at the top of each page above the details entered in fields 27.1 to 42.1 or fields 47.1.1 to 63.1.1.  The values are: </p>
+            <p>STANDARD -      Print the 3 lines of headings that are normally                 printed on each report containing page counts,                 dates, user names etc. </p>
+            <p>NONE     -      Suppress headings and "end of group/report" -                 this would be used for advices to customers etc. </p>
+            <p>FLAT -     Same as 'NONE' excepting that no extra characters            generated in the header since this report is used            like a flat file. </p>
+            <p>If field left blank then only the REPORT TITLE (Field 1.1) and page count are printed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid input is: STANDARD NONE FLAT Nulls (Optional input.)</p>
+            <p>Input must be STANDARD, NONE or LEFT BLANK.</p>
+            <p>None can not be entered if field RESET PAGE NO (Field 79) is set to "Y".</p>
+        </desc>
+</t>
+<t>
+<field>GH2.081..120</field>
+<desc>
+            <p>Text (header) information for GROUP (Field 46.1) for the second of the four header lines for column 081 to 120. </p>
+            <p>The second header line will be output below the first as defined in Fields 48.1.1 to 51.1.1. Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 46.1 to 53.1 and 55.1 to 67.1.  Subvalue field associated with fields 47.1.1. to 53.1.1 and 55.1.1 to 63.1.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 54.1.1 and following, existence of 4.2 allows definition in 54.1.2..etc.).</p>
+            <p>No input will be allowed if GROUP (Field 46.1) has not been defined.</p>
+        </desc>
+</t>
+<t>
+<field>DEFINE.COMPANY</field>
+<desc>
+            <p>Allows restriction of report usage (run) to one company only or alternatively aggregation (inclusion) of two or more companies in one single report output. </p>
+            <p>If each company requires the same information, the  report definition is only done once, leaving this field blank (null).  The resulting file can then be applied in any existing company.  If the "ALL" or Company Code option is used the report generation may be run in any one company but will aggregate the information of all companies specified. </p>
+            <p>Null      Means the report can be run for any company.  But will           only contain the details for that company for which it is           being run. </p>
+            <p>ALL       To consolidate information of all companies in one single           report.  Only "Processing" companies (COMPANY record           with the field CONSOLIDATION.MARK equal to "N") will           be processed. </p>
+            <p>XX9999999       Valid company code.  If more than one company                 code is input, the information will be consolidated                 in one single report for the company codes input.                 Alternatively, this option accepts input of a valid                 company mnemonic. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The following values will be accepted: " "- Null All XX9999999 Valid company code or mnemonic. Multivalue field. (Optional Input).</p>
+            <p>Input if present must be "ALL" or a valid company code or a valid company mnemonic.</p>
+            <p>If a valid company code is entered it cannot be a consolidation company (field CONSOLIDATION.MARK on the COMPANY record equal to "C").</p>
+        </desc>
+</t>
+<t>
+<field>HDR.1.001..040</field>
+<desc>
+            <p>Text (header) information for the first of four header lines for column 01 to 40. </p>
+            <p>The first header line will be output below the report name and date. Spaces will not be cancelled. </p>
+            <p>An EB.DICTIONARY key proceeded by '!' can be entered anywhere in this field. The key is replaced by value in field CAPTION in EB.DICTIONARY record. </p>
+            <p>For e.g. the input can be like XXXX !EB.DICTIONARY.KEY XXXXX . The dictionary key in the middle is replaced by value in field CAPTION while displaying the header. The dictionary key can be entered anywhere in the first header line (i.e. HDR1 001 040, HDR1 041 080, HDR1 081 120 or HDR1 121 132)</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 40 type A (alphanumeric) characters including         required spaces. Multivalue field, associated with fields         28.1 to 42.1. (Optional input.) Input will not be allowed         if the corresponding LANGUAGE CODE (Field 4.1) has not         been defined. (e.g. existence of a value in Field 4.1         allows header definition in 27.1 and following, existence         of 4.2 allows definition in 27.2.... etc.).</p>
+            <p>The value following '!' should be a valid key in EB.DICTIONARY         table.</p>
+        </desc>
+</t>
+<t>
+<field>DECISION.TO</field>
+<desc>
+            <p>The ending (last) value in a range of values which are to be used in decision making. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 type A (alphanumeric) characters or one of the following formats: A constant between "quotation marks". The name of another mnemonic. Multivalue field, associated with fields 69.1 to 72.1 and 74.1 to 75.1.</p>
+            <p>The input is only allowed if the value of the DECISION (Field 71.1.1) is equal to 'EQ' or 'NE'.</p>
+            <p>The input value must be greater than DECISION FR (Field 72.1.1).</p>
+        </desc>
+</t>
+<t>
+<field>HDR.2.121..132</field>
+<desc>
+            <p>Text (header) information for the second of four header lines for column 121 to 132. </p>
+            <p>The second header line will be output below the first as defined in fields 27.1 to 30.1. Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 12 type A (alphanumeric) characters including required spaces. Optional input field. Multivalue field, associated with fields 27.1 to 33.1 and 35.1 to 42.1</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 34.1 and following, existence of 4.2 allows definition in 34.2.... etc.).</p>
+            <p>Input only allowed if field 3 USING 132 COLUMNS set to 'Y'.</p>
+        </desc>
+</t>
+<t>
+<field>GH4.121..132</field>
+<desc>
+            <p>Text (header) information for GROUP (Field 46.1) for the fourth of the four header lines for column 121 to 132. </p>
+            <p>The fourth header line will be output below the third as defined in Fields 56.1.1 to 61.1.1. Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 12 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 46.1 to 62.1 and 64.1 to 67.1.  Subvalue field associated with fields 47.1.1 to 62.1.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 63.1.1 and following, existence of 4.2 allows definition in 63.1.2..etc.).</p>
+            <p>No input will be allowed if GROUP (Field 46.1) has not been defined.</p>
+        </desc>
+</t>
+<t>
+<field>HDR.4.081..120</field>
+<desc>
+            <p>Text (header) information for the fourth of four header lines for column 081 to 120. </p>
+            <p>The fourth header line will be output below the third as defined in fields 35.1 to 40.1. Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 27.1 to 40.1 and 42.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE.CODE (field 4.1) has not been defined. (e.g. existence of a value in field 4.1 allows header definition in 41.1 and following, existence of 4.2 allows definition in 41.2.... etc.).</p>
+            <p>Input only allowed if field 3 USING 132 COLUMNS set to 'Y'.</p>
+        </desc>
+</t>
+<t>
+<field>HDR.4.041..080</field>
+<desc>
+            <p>Text (header) information for the fourth of four header lines for column 041 to 080. </p>
+            <p>The third header line will be output below the fourth as defined in Fields 35.1 to 38.1.  Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 27.1 to 39.1 and 41.1 to 42.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 40.1 and following, existence of 4.2 allows definition in 40.2.... etc.).</p>
+        </desc>
+</t>
+<t>
+<field>REPORT.NAME</field>
+<desc>
+            <p>Identifies the report. </p>
+            <p>This field holds the identity or key of the report.  This name is used by the other REPGEN routines to identify this report. This ID is used in the name of the programs and files created to produce this report. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 - 15 type S (S.W.I.F.T) characters. (Mandatory input.)</p>
+            <p>Only characters allowed are 0-9, A-Z and '.' (full stop).</p>
+            <p>'.' (full stop) cannot be first character.</p>
+        </desc>
+</t>
+<t>
+<field>REL.NEXT.FD</field>
+<desc>
+            <p>Chaining element to next condition statement. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid input formats are: AND OR Blank Multivalue field, associated with fields 68.1 to 74.1. (Optional input.)</p>
+            <p>Input is only allowed if DECIS MNEMON (Field 70.1.1) has been defined and the next subfield exists (i.e. 70.1.1 followed by 70.1.2 or 70.2.3 followed by 70.2.4).</p>
+        </desc>
+</t>
+<t>
+<field>RESET.PAGE.NO</field>
+<desc>
+            <p>Allows page numbering to be reset to one after each change of group. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid input is "Y"   Yes for the resetting of page number after group change. Blank if resetting is not required. (Optional input.)</p>
+            <p>Input is only allowed if NEW PAGE FOR GROUP (Field 78) is equal to "Y".</p>
+        </desc>
+</t>
+<t>
+<field>GH4.081..120</field>
+<desc>
+            <p>Text (header) information for GROUP (Field 43.1) for the fourth of the four header lines for column 081 to 120. </p>
+            <p>The fourth header line will be output below the third as defined in Fields 56.1.1 to 59.1.1. Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 46.1 to 61.1 and 63.1 to 67.1.  Subvalue field associated with fields 47.1.1. to 61.1.1 and 63.1.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 62.1.1 and following, existence of 4.2 allows definition in 62.1.2..etc.).</p>
+            <p>No input will be allowed if GROUP (Field 46.1) has not been defined.</p>
+        </desc>
+</t>
+<t>
+<field>HDR.4.121..132</field>
+<desc>
+            <p>Text (header) information for the fourth of four header lines for column 121 to 132. </p>
+            <p>The fourth header line will be output below the third as defined in fields 35.1 to 38.1. Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 12 type A (alphanumeric) characters including required spaces. Optional input field. Multivalue field, associated with fields 27.1 to 41.1.</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 42.1 and following, existence of 4.2 allows definition in 42.2.... etc.).</p>
+            <p>Input only allowed if field 3 USING 132 COLUMNS set to 'Y'.</p>
+        </desc>
+</t>
+<t>
+<field>GH2.001..040</field>
+<desc>
+            <p>Text (header) information for the GROUP (Field 46.1) for the second of the four header lines for column 001 to 040. </p>
+            <p>The second header line will be output below the first as defined in fields 48.1.1. to 51.1.1.  Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 46.1 to 51.1 and 53.1 to 67.1.  Subvalue fields associated with fields 47.1.1 to 51.1.1 and 53.1.1 to 63.1.1. (Optional input)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 52.1.1 and following, existence of 4.2 allows definition in 52.1.2...etc.).</p>
+            <p>No input will be allowed if GROUP (Field 46.1) has not been defined.</p>
+        </desc>
+</t>
+<t>
+<field>DECIS.GROUP.FR</field>
+<desc>
+            <p>Identifies the first group number in range of "groups" where the decision name specified in GLOBAL DEC NAME (Field 45.1) applies. </p>
+            <p>Groups facility is used when more than one report is required from the same extract base. </p>
+            <p>These reports can differ in format and/or in their  selection of records shown and/or in order of printing of the records. </p>
+            <p>The individual group headings, decision criteria, report sequence and report contents are defined in fields GROUP (46.1) to MNEMON SEQU (67.1.1). </p>
+            <p>In fields DECIS GROUP FR (43.1) to GLOBAL DEC NAME (45.1) a decision is linked to several groups. If there is only one report and therefore no groups but not all records are to be printed, then the DECISION NAME determining which records are to be extracted is entered in GROUP DEC NAME (Field 66.1). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 numeric characters Multivalue field, associated with fields 44.1 and 45.1. (Optional input.)</p>
+            <p>Even if there are groups details in GROUP (Field 46.1) this field is not compulsory.</p>
+            <p>Input must be numeric.</p>
+        </desc>
+</t>
+<t>
+<field>REPORT.TITLE</field>
+<desc>
+            <p>Free format text appearing as report title on the printed report or the screen </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 54 type A (alphanumeric) characters (Optional input)</p>
+            <p>Input (length) cannot exceed 32 characters, including the ID when the report is only 80 columns wide (i.e. if USING 132 COLUMNS (Field 3) is blank).</p>
+        </desc>
+</t>
+<t>
+<field>GH4.041..080</field>
+<desc>
+            <p>Text (header) information for GROUP (Field 46.1) for the fourth of the four header lines for column 041 to 080. </p>
+            <p>The fourth header line will be output below the third as defined in Fields 56.1.1 to 59.1.1. Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 46.1 to 60.1 and 62.1 to 67.1.  Subvalue field associated with fields 47.1.1 to 60.1.1 and 62.1.1. to 63.1.1. (Optional input)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 61.1.1 and following, existence of 4.2 allows definition in 61.1.2 etc...).</p>
+            <p>No input will be allowed if GROUP (Field 46.1) has not been defined.</p>
+        </desc>
+</t>
+<t>
+<field>GH1.001..040</field>
+<desc>
+            <p>Text (header) information for the GROUP (Field 46.1) for the first of the four header lines for column 01 to 40. </p>
+            <p>The first group header line will be output below the overall report header lines.  Spaces will not be cancelled.  Each group change will start a new page with the corresponding new group header line(s), unless NEW PAGE FOR GROUP (Field 78) is null. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 46.1, 47.1 and 49.1 to 67.1.  Subvalue field associated with fields 47.1.1 and 49.1.1 to 63.1.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined (e.g. existence of a value in field 4.1 allows header definition in 48.1.1 and following, existence of 4.2 allows definition in 48.1.2..etc.).</p>
+            <p>No input will be allowed if GROUP (Field 46.1) has not been defined.</p>
+        </desc>
+</t>
+<t>
+<field>HDR.3.121..132</field>
+<desc>
+            <p>Text (header) information for the third of four header lines for column 121 to 132. </p>
+            <p>The third header line will be output below the second as defined in fields 31.1 to 34.1. Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 12 type A (alphanumeric) characters including required spaces. Optional input field. Multivalue field, associated with fields 27.1 to 37.1 and 39.1 to 42.1</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 38.1 and following, existence of 4.2 allows definition in 38.2.... etc.).</p>
+            <p>Input only allowed if field 3 USING 132 COLUMNS set to 'Y'.</p>
+        </desc>
+</t>
+<t>
+<field>HDR.2.081..120</field>
+<desc>
+            <p>Text (header) information for the second of four header lines for column 081 to 120. </p>
+            <p>The second header line will be output below the first as defined in fields 27.1 to 30.1. Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 27.1 to 32.1 and 34.1 to 42.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE.CODE (field 4.1) has not been defined. (e.g. existence of a value in field 4.1 allows header definition in 33.1 and following, existence of 4.2 allows definition in 33.2.... etc.).</p>
+            <p>Input only allowed if field 3 USING 132 COLUMNS set to 'Y'.</p>
+        </desc>
+</t>
+<t>
+<field>HDR.3.041..080</field>
+<desc>
+            <p>Text (header) information for the third of four header lines for column 041 to 080. </p>
+            <p>The third header line will be output below the second as defined in Fields 31.1 to 34.1.  Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 27.1 to 35.1 and 37.1 to 42.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 36.1 and following, existence of 4.2 allows definition in 36.2.... etc.).</p>
+        </desc>
+</t>
+<t>
+<field>DEFINE.MNEMONIC</field>
+<desc>
+            <p>Mnemonic name of the data field(s) used as a field to be printed or as a virtual field employed as a component for a decision or in an another definition. </p>
+            <p>The mnemonic defined here and complemented by further static definitions in this multivalue association, serves as reference for any use of the field in the report definition.  The input sequence of these mnemonics is used as the sort sequence and also as the output sequence if no specific output sequence is defined in MNEMON SEQU (Field 67.1.1). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 20 alpha type characters. No spaces allowed Multivalue field associated with Fields 12 to 26.1. (Mandatory input)</p>
+            <p>No duplicates allowed (mnemonic name must be unique) unless field 14.1.1 is set with the value "FIELD.DECISION".</p>
+        </desc>
+</t>
+<t>
+<field>SPECIAL.MASK</field>
+<desc>
+            <p>Defines the output format for any output field to provide for separators, left/right adjustments and correct decimals in amounts.  The justification is also used in the sort routine. </p>
+            <p>If no special mask is defined the default 'output' mask as defined in the program will be assumed and its' format moved to MASK (Field 21.1). </p>
+            <p>Formats for this field are as follows: </p>
+            <p>Input of 'L' or 'R' for left or right adjustments plus any number of '#' with or without any character to act and be displayed as separator.  For example,  input of R###### for customer number will display the number right adjusted without a mask; input of R###-### will display the number right adjusted and print a hyphen as a separator between the two pairs of 3 characters. </p>
+            <p>The input of the mnemonic name covering the definition of Currency field creates the amount mask in accordance to the defined number of decimals in the currency table.  The mnemonic used must be defined in DEFINE MNEMONIC (Field 11.1). </p>
+            <p>Input of '@AMT0' ...'@AMT9' to define a general amount mask, i.e. 0 to 9 decimals. </p>
+            <p>Input of '@DATE' to define the standard date mask (DD MMM YY) if length has been defined as 9 (nine) or (DD MMM YYYY) if length has been defined as 11 (eleven). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 type A (alphanumeric) characters (see Details for formats). Multivalue field, associated with fields 11.1 to 19.1 and 21.1 to 26.1 (Optional input)</p>
+            <p>No input allowed if field DEFINE MNEMONIC (Field 11.1) is missing or the field is not used as KEY TYPE (Field 22.1) or DISPLAY TYPE (Field 23.1).</p>
+            <p>Length of defined mask or of default mask from program must be equal to SPEC NUMB CHAR (Field 18.1) or default number of characters (Field 19.1 - no input field).</p>
+        </desc>
+</t>
+<t>
+<field>TEXT</field>
+<desc>
+            <p>Text (label) associated with the defined field. </p>
+            <p>Text can be defined in various languages to accommodate the language needs defined in LANGUAGE CODE (Field 4.1). </p>
+            <p>If the value in this field is proceeded by '!' symbol, the value following it is the key in EB.DICTIONARY table. The value in field CAPTION in EB.DICTIONARY record will be used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 35 type A (alphanumeric) characters, including         spaces. Spaces will not be cancelled. Multivalue field,         associated with fields 11.1 to 25.1 subvalue for language         purposes. (Optional input.)</p>
+            <p>No input is allowed if fields DEFINE MNEMONIC (field 11.1)         or DISPLAY TYPE (field 23.1) or LANGUAGE CODE (field 4.1)         are missing.</p>
+            <p>Length of text must be equal or less than the value         defined in TEXT CHAR MAX (Field 25.1).</p>
+            <p>The value following '!' should be a valid key in EB.DICTIONARY         table.</p>
+        </desc>
+</t>
+<t>
+<field>DECISION.NAME</field>
+<desc>
+            <p>Decision name for the decision specified in Fields 69.1.1 to 75.1.1. </p>
+            <p>This field contains the name of the decision specified in the Fields 69.1.1 and 75.1.1 and provides the reference for the decision back to the field(s) which in turn are dependent on the decision. </p>
+            <p>The places where decisions, are used are: </p>
+            <p>           (i)  in deciding whether a mnemonic is to be set up in                 this case Field 14.1.1 MODIFICATION will contain                 FIELD DECISION and field 16.1.1 the DECISION                 NAME. </p>
+            <p>          (ii)  In deciding whether the record is to be included                 on the print, this uses fields 45.1. GLOBAL DEC                 NAME and/or Field 66.1 GROUP DEC NAME. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 20 type A (alphanumeric) characters Multivalue field, associated with fields 69.1 to 75.1. (Optional input.)</p>
+            <p>The input must exist in one of the following fields: 16.1.1  MODIFY FIELD 45.1    GLOBAL DEC NAME 66.1    GROUP DEC NAME</p>
+            <p>The input must be unique.</p>
+        </desc>
+</t>
+<t>
+<field>HDR.3.081..120</field>
+<desc>
+            <p>Text (header) information for the third of four header lines for column 081 to 120. </p>
+            <p>The third header line will be output below the second as defined in fields 31.1 to 34.1. Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 27.1 to 36.1 and 38.1 to 42.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE.CODE (field 4.1) has not been defined. (e.g. existence of a value in field 4.1 allows header definition in 37.1 and following, existence of 4.2 allows definition in 37.2.... etc.).</p>
+            <p>Input only allowed if field 3 USING 132 COLUMNS set to 'Y'.</p>
+        </desc>
+</t>
+<t>
+<field>DISPLAY.TYPE</field>
+<desc>
+            <p>Defines the method on how information is to be displayed in the report.  Options available are headers, lines, totals, lines and totals and footers </p>
+            <p>The totals being shown (printed) as a result of inputting type 3 or 4 are in relation to the KEY TYPE (Field 22.1 values 2 and 4). Otherwise the totalling will be done at the end of the report or end of a group. </p>
+            <p>Formats for this field are as follows: </p>
+            <p>"1"   HEADER The field will be displayed as a header or title only, i.e. only when the value of the field changes. </p>
+            <p>"2"   LINE The field will be displayed on each line (occurrence) </p>
+            <p>"3"   LINE AND TOTAL The field will be displayed on each line and will be totalled  The total will be printed in the total line. </p>
+            <p>"4"   TOTAL ONLY The field will be totalled and displayed on the total line only. </p>
+            <p>"5"   CONTIN.TOTAL The value in the column will represent an aggregated total in each new line. (example 1: running sequence or line count based on a constant value of "1". example 2: running balance column based on previous line and addition of previous field through use of field 14.1.1 MODIFICATION.) </p>
+            <p>"6" FOOTER This field will be displayed in a total line, but will not be totalled. e.g. CUSTOMER NAME. </p>
+            <p />
+            <p>Note:     Clearance of the Total, is governed by the values in KEY           TYPE (Field 22.1) of other mnemonics. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input format is limited to one of the 6 options described in Details below. Multivalue field, associated with fields 11.1 to 22.1 and 24.1 to 26.1. (Optional input.)</p>
+            <p>No input is allowed if DEFINE MNEMONIC (field 11.1) is missing.</p>
+            <p>No input is allowed if mnemonic is used for KEY or DECISION processing only.</p>
+            <p>Input of 3, 4, or 5  for a non-numeric field is accepted, but the result (output) will be a blank field.</p>
+        </desc>
+</t>
+<t>
+<field>GH3.041..080</field>
+<desc>
+            <p>Text (header) information for GROUP (Field 44.1) for the third of the four header lines for column 041 to 080. </p>
+            <p>The third header line will be output below the second as defined in Fields 52.1.1 to 55.1.1. Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 46.1 to 56.1 and 57.1 to 67.1.  Subvalue field associated with fields 47.1.1 to 42.1.1 and 58.1.1. to 63.1.1. (Optional input)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 57.1.1 and following, existence of 4.2 allows definition in 57.1.2 etc...).</p>
+            <p>No input will be allowed if GROUP (Field 46.1) has not been defined.</p>
+        </desc>
+</t>
+<t>
+<field>BRACKETS.OP</field>
+<desc>
+            <p>Mathematical brackets to define priority in the decision specified in Fields 71.1.1 to 73.1.1 if chaining through use of 'or' and 'and' is required. </p>
+            <p>Example: If A = 1 and B = 2 or C = 3 </p>
+            <p>without brackets Element 1 =     A = 1 and B = 2                  Element 2 =     C = 3 </p>
+            <p>with brackets    If A = 1 and (B = 2 or C = 3) </p>
+            <p>                 Element 1 =     A = 1                  Element 2 =     B = 2 or C = 3 </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The following values will be accepted: "1 (" "2 ((" "3 (((" "4 ((((" Multivalue field, associated with fields 68.1 and 70.1 to 75.1. (Optional input) Input is only allowed if DECIS MNEMON (Field 70.1.1) is defined.</p>
+        </desc>
+</t>
+<t>
+<field>GH3.001..040</field>
+<desc>
+            <p>Text (header) information for the GROUP (Field 46.1) for the third of the four header lines for column 001 to 040. </p>
+            <p>The third header line will be output below the second as defined in fields 52.1.1. to 55.1.1.  Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 46.1 to 54.1 and 57.1 to 67.1.  Subvalue fields associated with fields 47.1.1 to 55.1.1 and 57.1.1 to 63.1.1. (Optional input)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 56.1.1 and following, existence of 4.2 allows definition in 56.1.2...etc.).</p>
+            <p>No input will be allowed if GROUP (Field 46.1) has not been defined.</p>
+        </desc>
+</t>
+<t>
+<field>TEXT.CHAR.MAX</field>
+<desc>
+            <p>Length of text (label) as defined in TEXT (Field 26.1.1) for the field value to be printed.  This is independent of any header information and will be appearing on the left of the field value. </p>
+            <p>If no length is defined but if TEXT (Field 26.1.1) is defined the length will be set to that value or if multilanguage definitions of TEXT exist, to the highest length of the defined sub values of TEXT. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Numeric values "1 to 35" or blank. Multivalue field, associated with fields 11.1 to 24.1 and 26.1. (Optional input)</p>
+            <p>No input allowed if DEFINE MNEMONIC (field 11.1) or DISPLAY TYPE (field 23.1) are missing.</p>
+        </desc>
+</t>
+<t>
+<field>GH3.081..120</field>
+<desc>
+            <p>Text (header) information for GROUP (Field 43.1) for the third of the four header lines for column 081 to 120. </p>
+            <p>The third header line will be output below the second as defined in Fields 52.1.1 to 55.1.1. Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 46.1 to 57.1 and 59.1 to 67.1.  Subvalue field associated with fields 47.1.1. to 57.1.1 and 59.1.1 to 63.1.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 58.1.1 and following, existence of 4.2 allows definition in 58.1.2..etc.).</p>
+            <p>No input will be allowed if GROUP (Field 46.1) has not been defined.</p>
+        </desc>
+</t>
+<t>
+<field>FL.FIELD.NO</field>
+<desc>
+            <p>Indicates the field number whose contents are to be used in the selection process. </p>
+            <p>If only particular records are required from a file then the field number of the field to be used in deciding which records are to be extracted is entered here.  If the key of the record is to be used enter '0' (zero). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 3 numeric digits. This is a multivalue field associated with fields 5.1 and 7.1 to 10.1 and a subvalue field associated with fields 7.1.1 to 10.1.1. (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>HDR.1.041..080</field>
+<desc>
+            <p>Text (header) information for the first of four header lines for column 41 to 80. </p>
+            <p>The first header line will be output below the report name and date.  Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 27.1 and 29.1 to 42.1. (Optional input) Input will not be allowed if the corresponding LANGUAGE CODE (field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 28.1 and following, existence of 4.2 allows definition in 28.2.... etc.).</p>
+        </desc>
+</t>
+<t>
+<field>DATE.TIME.COMPILER</field>
+<desc>
+            <p>Indicates last time REPGEN SOURCE was run for this report. </p>
+            <p>This field is updated each time the REPGEN.SOURCE routine is run for this report. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Displayed as date followed by time. Held as 6 numeric characters for Date followed by 4 numeric characters for the time (YYMMDDHHMM). (Externally maintained field.)</p>
+        </desc>
+</t>
+<t>
+<field>MASK</field>
+<desc>
+            <p>Output mask (format) for the field as defined in the program. </p>
+            <p>If no special mask has been defined in SPECIAL MASK (Field 20.1) then the default output mask as defined in the program will be assumed and its format moved to this field. If a special mask has been defined in Field 20.1 this field will take on the same value. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Multivalue field associated with fields 11.1 to 20.1 and 22.1 to 26.1. This field is a "no input" field</p>
+        </desc>
+</t>
+<t>
+<field>GROUP.DEC.NAME</field>
+<desc>
+            <p>The group decision name provides a linkage for the group to DECISION NAME (Field 68.1) and its associated Fields 69.1.1 to 75.1.1 containing the decision parameter. </p>
+            <p>Groups facility is used when more than one report is required from the same extract base. </p>
+            <p>These reports can differ in format and/or in their selection of records shown and/or in order of printing of the records. </p>
+            <p>The individual group headings, decision criteria, report sequence and report contents are defined in fields GROUP (46.1) to MNEMON SEQU (67.1.1). </p>
+            <p>In fields DECIS GROUP FR (43.1) to GLOBAL DEC NAME (45.1) a decision is linked to several groups. </p>
+            <p>If there is only one report and therefore no groups but not all records are to be printed, then the DECISION NAME determining which records are to be extracted is entered in GROUP DEC NAME (Field 66.1). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 20 type A (alphanumeric) characters. Multivalue field associated with fields 46.1 to 65.1 and 67.1.</p>
+            <p>Input must be a valid DECISION NAME (Field 68.1).</p>
+        </desc>
+</t>
+<t>
+<field>SORT.FILE.MODULO</field>
+<desc>
+            <p>Refer to documentation PRIME/INFORMATION </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Numeric field, valid input 10 to 10000 (Optional input)</p>
+            <p>If SORT FILE TYPE (Field 76) is equal to 2 to 16, input in this field is mandatory.</p>
+            <p>If SORT FILE TYPE (Field 76) is equal to 1 no input is allowed.</p>
+        </desc>
+</t>
+<t>
+<field>HDR.1.081..120</field>
+<desc>
+            <p>Text (header) information for the first of four header lines for column 81 to 120. </p>
+            <p>The first header line will be output below the report name and date.  Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 27.1 to 28.1 and 30.1 to 42.1. (Optional input)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 29.1 and following, existence of 4.2 allows definition in 29.2.... etc.).</p>
+            <p>Input only allowed if field 3 USING 132 COLUMNS is set to 'Y'.</p>
+        </desc>
+</t>
+<t>
+<field>FL.REL.NEXT</field>
+<desc>
+            <p>Is the component to link condition decisions to one anther. </p>
+            <p>This field links this condition with the next condition.  If left blank then the 'and' condition is assumed. </p>
+            <p>Care must be taken when using a mix of 'and' and 'or' conditions as 'and' condition has priority. </p>
+            <p>Example   a)    Say that for customer file records with a section                 code of 102 and residence code of GB are required                 then data loaded will be as follows: </p>
+            <p>                Field 5.1 Read File      CUSTOMER                 Field 6.1.1 FL Field NO  10                 Field 7.1.1 FL DECISION  EQ                 Field 8.1.1 FL DECIS FR  '102'                 Field 9.1.1 FL DECIS TO </p>
+            <p>                Field 10.1.1 FL REL NEXT  AND                 Field 6.1.2 FL Field NO   17                 Field 7.1.2 FL DECISION   EQ                 Field 8.1.2 FL DECIS FR   'GB'                 Field 9.1.2 FL DECIS TO                 Field 10.1.2 FL REL NEXT </p>
+            <p>          b)    Say that for CUSTOMER file records with either a                 sector code of 102 or resident code of GB are                 required then data loaded will be as follows: </p>
+            <p>                Field 5.1 Read File      CUSTOMER                 Field 6.1.1 FL Field NO  10                 Field 7.1.1 FL DECISION  EQ                 Field 8.1.1 FL DECIS FR  '102'                 Field 9.1.1 FL DECIS TO                 Field 10.1.1 FL REL NEXT  OR                 Field 6.1.2 FL Field NO   17                 Field 7.1.2 FL DECISION   EQ                 Field 8.1.2 FL DECIS FR   'GB'                 Field 9.1.2 FL DECIS TO                 Field 10.1.2 FL REL NEXT </p>
+            <p>          c)    Say that for customer file records with a sector                 code of '102' and a resident code of GB or US are                 required then data loaded will be as follows: </p>
+            <p>                Field 5.1 Read File      CUSTOMER                 Field 6.1.1 FL Field NO  10                 Field 7.1.1 FL DECISION  EQ                 Field 8.1.1 FL DECIS FR  '102'                 Field 9.1.1 FL DECIS TO                 Field 10.1.1 FL REL NEXT  AND </p>
+            <p>                Field 6.1.2 FL Field NO   17                 Field 7.1.2 FL DECISION   EQ                 Field 8.1.2 FL DECIS FR   'GB'                 Field 9.1.2 FL DECIS TO                 Field 10.1.2 FL REL NEXT   OR                 Field 6.1.3 FL Field NO  10                 Field 7.1.3 FL DECISION  EQ                 Field 8.1.3 FL DECIS FR  '102'                 Field 9.1.3 FL DECIS TO                 Field 10.1.3 FL REL NEXT  AND                 Field 6.1.4 FL Field NO   17                 Field 7.1.4 FL DECISION   EQ                 Field 8.1.4 FL DECIS FR   'US'                 Field 9.1.4 FL DECIS TO                 Field 10.1.4 FL REL NEXT </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only values allowed are 'and' or 'or. Multivalue field associated with fields 5.1. to 9.1. Subvalue field associated with fields 6.1.1 to 9.1.1 (Optional input.)</p>
+            <p>Input is only allowed if FL DECISION (Field 7.1.1) contains a value.</p>
+        </desc>
+</t>
+<t>
+<field>MNEMON.SEQU</field>
+<desc>
+            <p>Allows definition of the print sequence and report content for each group, where the group does not require the sequence in which the mnemonics have been defined and/or does require to print all the mnemonics defined for print. </p>
+            <p>If no groups have been defined the print sequence cannot be redefined and output (print) is in accordance to the definition sequence of the mnemonics. </p>
+            <p>For a group the sort and print sequence is the order in which the mnemonic fields are entered into this field. </p>
+            <p>It is not necessary to use each mnemonic in each group. </p>
+            <p>If no details entered in this field for this group, then the details from previous group that had details loaded are used.  If no details have been loaded for an preceding group, then the order etc. is taken from the order in which the mnemonics have been defined. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 20 type A (alphanumeric) characters. Multivalue field associated with fields 46.1 to 66.1 and subvalue field on its own. (Optional input.)</p>
+            <p>All definitions must exists as mnemonics in DEFINE MNEMONIC (Field 11.1).</p>
+            <p>All mnemonics must be defined as a KEY and/or DISPLAY Type in Field 22.1 and 23.1 respectively.</p>
+            <p>The total number of characters of KEY TYPE mnemonics must be less than 189 characters for all SORT FILE TYPES above 1.  If SORT FILE TYPE (Field 76) equal 1 then maximum length is 33.</p>
+        </desc>
+</t>
+<t>
+<field>CUST.PRINT.MNE</field>
+<desc>
+            <p>Mnemonic field from the FIELD DEFINE MNEMONIC which contains the value of the customer number which is to be passed to the REPORT CONTROL RECORD. </p>
+            <p>This value may be used in order to control the customer           output. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 20 alpha type characters. No spaces allowed (Optional input)</p>
+            <p>Must already be defined on the DEFINE MNEMONIC FIELD</p>
+        </desc>
+</t>
+<t>
+<field>HDR.4.001..040</field>
+<desc>
+            <p>Text (header) information for the fourth of four header lines for column 001 to 040. </p>
+            <p>The fourth header line will be output below the third as defined in Fields 35.1 to 38.1.  Spaces will not be cancelled. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 40 type A (alphanumeric) characters including required spaces. Multivalue field, associated with fields 27.1 to 38.1 and 40.1 to 42.1. (Optional input.)</p>
+            <p>Input will not be allowed if the corresponding LANGUAGE CODE (Field 4.1) has not been defined. (e.g. existence of a value in Field 4.1 allows header definition in 39.1 and following, existence of 4.2 allows definition in 39.2.... etc.).</p>
+        </desc>
+</t>
+<t>
+<field>ACCT.PRINT.MNE</field>
+<desc>
+            <p>Mnemonic field from the FIELD DEFINE MNEMONIC which contains the value of the account number which is to be passed to the REPORT CONTROL RECORD. </p>
+            <p>This value may be used in order to control the customer           output. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 20 alpha type characters. No spaces allowed (Optional input)</p>
+            <p>Must already be defined on the DEFINE MNEMONIC FIELD</p>
+        </desc>
+</t>
+<t>
+<field>ADD.BLANK.LINE</field>
+<desc>
+            <p>Indicator to control the spacing between the information lines and total lines. </p>
+            <p>Line in this context means the set of information printed for a record.  If this actually takes two or three lines and "2" has been entered in this field then the blank line is not inserted until after the printing of all the lines for each record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid input is "1" - AFTER TOTAL, after a total line a blank line follows "2" - AFTER EVERY LINE, after every line a blank line follows Blank if no spacing is required. (Optional input.)</p>
+            <p>If no totals have been defined input of "1" is not allowed</p>
+        </desc>
+</t>
+<t>
+<field>ADD.TOT.BLANK.LINE</field>
+<desc>
+            <p>Indicator to control spacing (additional to Field 80 ADD BLANK LINE) before and after total and header lines </p>
+            <p>An input in this field and in Field 81 ADD BLANK LINE results in 2 blank lines on the report output. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid input is "1" - HEADER, to print a blank line before and after a header line. "2" - TOTAL, to print a blank line before and after a total line. "3" - HEADER+TOTAL, to print a blank line before and after a header and total line. (Optional input.)</p>
+            <p>Input of "1 HEADER" is not allowed if no header has been defined.</p>
+            <p>Input of "2 TOTAL" is not allowed if no total has been defined.</p>
+            <p>Input of "3 HEADER+TOTAL is not allowed if no header and/or no total have been defined.</p>
+        </desc>
+</t>
+<t>
+<field>BRACKETS.CL</field>
+<desc>
+            <p>Mathematical brackets to define priority in the decision specified in Fields 70.1.1 to 73.1.1 if chaining through the use of 'or' and 'and' is required. </p>
+            <p>Example: If A = 1 and B = 2 or C = 3 without brackets Element 1 =     A = 1 and B = 2                  Element 2 =     C = 3 </p>
+            <p>with brackets    If A = 1 and (B = 2 or C = 3)                  Element 1 =     A = 1                  Element 2 =     B = 2 or C = 3 </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The following values will be accepted: "1 )" "2 ))" "3 )))" "4 ))))" Multivalue field, associated with fields 68.1 to 73.1 and 75.1. (Optional input.) Input is only allowed if DECIS MNEMON (Field 70.1.1) is defined.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

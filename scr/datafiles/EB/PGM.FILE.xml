@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>PGM.FILE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This file is an inventory of all T24 programs or processes that can be run from the action line, run from within the &amp;apos;BATCH.CONTROL&amp;apos; environment, or used in the execution of report programs written using the T24 report generator.</p>
+            <p>Whenever an application or batch job is selected, the PGM.FILE table is read to firstly see if the program or process exists, and secondly to see what its characteristics are.  If there is no entry on the PGM.FILE table then it cannot be executed from within the T24 environment.  If there is an entry then the system reviews its characteristics to ascertain:</p>
+            <p>i)What type of process is it? e.g. - is it only to be executed from the batch system? - does it maintain history?</p>
+            <p>(ii)What is the screen title?</p>
+            <p>(iii)Are there any special characteristics. e.g. - should the &amp;quot;!&amp;quot; function be disabled?</p>
+            <p>iv)If it is a batch job what is the actual program that is to be run?</p>
+            <p> This table can also hold the names of all subroutines within T24 (i.e. programs that are used but cannot be accessed from the action line), and routines that are referenced by the report generator.</p>
+            <p>However it is not recommended that this file should contain all subroutines and hence be a complete inventory of all T24 software because  </p>
+            <p>(i) there are better ways of maintaining an inventory of programs; </p>
+            <p>(ii) the size of the file, which is continually being referred to, would be larger than it need be.</p>
+            <p>Only the subroutines likely to be used by any report generator record should be loaded into this file.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>MT.KEY.FILE</field>
+<desc>
+            <p>This is the file to read when MT.KEY.COMPONENT has an entry. The key returned from MT.KEY.COMPONENT is used to read from this file. If the company (CO.CODE) contained in the record returned is different from the current company, the records company is loaded.</p>
+            <p>A maximum of 35 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>TYPE</field>
+<desc>
+            <p>Identifies the type applicable to the program referenced by the ID.</p>
+            <p>Type :</p>
+            <p />
+            <p>H - A program that has this type maintains three files - the unauthorised, live and history files. The unauthorised file is updated at Input; the live file at authorisation; and the history file whenever there is an authorised change to a record. e.g MM.MONEY.MARKET. </p>
+            <p>U - A program similar to type 'H' except that history is not maintained. e.g. ABBREVIATION </p>
+            <p>L - A program that displays the data of a live file but does not allow updates. Updates to these files would be controlled by the System automatically. e.g. STMT.ENTRY </p>
+            <p>T - A program that displays data in a table file (such as a list of keys) but does not allow update. e.g. LMM.CUSTOMER </p>
+            <p>W - A program that permits updates to a work or temporary file. A typical example would be the REPGEN.OUTPUT program where print or display parameters for a report can be loaded. </p>
+            <p>B - A Batch job that can only be accessed during the 'off-line' processing in BATCH.CONTROL. </p>
+            <p>M - Main-line program that can be run from the action line but has no file directly associated with it. </p>
+            <p>A - Access to T24 environment program. There is only one such program, called "EX" and it is this program that is automatically initiated when a user logs into "INFORMATION" and enters the T24 environment. </p>
+            <p>S - Subroutine. A program used in the T24 system but one that is executed automatically whenever required. It cannot be entered by the user either at the action line or from within the Batch Control system. It is recommended that these are loaded only when they are needed by the report generator. e.g. IN2... routines. </p>
+            <p>R - Report Generator routine. Report programs written via the report generator can use T24 subroutines. These type 'R' records define the routines to be used and the validation on the arguments that are present in the calls. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>The following values will be accepted:</p>
+            <p>H = History, Unauthorised + Live file</p>
+            <p>U = Unauthorised + Live file</p>
+            <p>L = Live only</p>
+            <p>T = Table</p>
+            <p>W = Workfile</p>
+            <p>B = Batch job</p>
+            <p>M = Main Line program (no file)</p>
+            <p>A = Access to T24 Environment</p>
+            <p>S = Subroutine</p>
+            <p>R = Report Generator routine.</p>
+        </desc>
+</t>
+<t>
+<field>MT.KEY.COMPONENT</field>
+<desc>
+            <p>This field is used to return a key for the file MT.KEY.FILE. This field is only used when MT.KEY.FILE has an entry.</p>
+            <p>Two parameters may be entered here, separated by a comma.</p>
+            <p>There are two formats available:</p>
+            <p>1) Parameter 1 can be a character for a field delimiter, with the second parameter being the field number.</p>
+            <p>eg. *,1 - This will retrieve AAA in a multithreaded batch list key formatted AAA*BBB*CCC</p>
+            <p>2) Parameter 1 can be numeric for the character start position, with the second parameter being the number of characters to return</p>
+            <p>eg. 5,3 - This will retrieve BBB in a multithreaded batch list key formatted AAA*BBB*CCC</p>
+            <p>A maximum of 35 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>JOB.RATING</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>SUB.PRODUCT</field>
+<desc>
+            <p>Standard T24 alphanumeric field.</p>
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p>A maximum of 20 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>SCREEN.TITLE</field>
+<desc>
+            <p>Identifies the program title which will be displayed as a header when the corresponding application (ID) is invoked in the action line.</p>
+            <p>Only used by on-line applications although can be entered for any type of record for reference purposes.</p>
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p>1)1 to 32 alphanumeric characters Multivalue field Multilanguage Mandatory Input</p>
+        </desc>
+</t>
+<t>
+<field>REC.VERIFY</field>
+<desc>
+            <p>This field will be updated by system with Y/N based the verification mechanism of the Job.</p>
+            <p>For a multithreaded job,if the record routine has got the mechanism to eliminate unnecessary keys,then it returns -1(processing) or -2(eliminating).That is, when the record routine has the intelligence to respond with a value back on the argument that it takes in, then this field is updated with Y.</p>
+            <p>If the record routine does not follow the above concept,this field is updated with an N.</p>
+            <p>Validation rules:</p>
+            <p>1)System Updated field</p>
+            <p>2)Options are Y/N</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>This is a multi valued field. Standard T24 alphanumeric field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 35 characters may be entered</p>
+        </desc>
+</t>
+<t>
+<field>PRODUCT</field>
+<desc>
+            <p>Standard T24 alphanumeric field</p>
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p>1)Mandatory input</p>
+            <p>2)A maximum of 2 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>K.TYPE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>BULK.NO</field>
+<desc>
+            <p>Specifies the number of records that can be selected in bulk by a Job</p>
+            <p>Validation rules:</p>
+            <p>1)1-3 numeric </p>
+            <p>2)No of contracts to be bulked cannot exceed 200</p>
+        </desc>
+</t>
+<t>
+<field>BATCH.LIST.MAXIMUM</field>
+<desc>
+            <p>Field BATCH.LIST.MAXIMUM is to hold the maximum number of contract id's in the multi-thread batch list for the job.   The default is 1 - to avoid any possible lock contentions but this will be modified for each batch job as there are performance   implications. The optimum is probably 20.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard T24 numeric field.</p>
+            <p>A maximum of 5 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>RUN.INFO</field>
+<desc>
+            <p>Updated with the results of Conversion programs.</p>
+        </desc>
+</t>
+<t>
+<field>PROGRAM</field>
+<desc>
+            <p>Identifies the name of the Program (application), Batch job, or routine used in the report generator for which a record is being created. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1)Up to 35 alphanumeric characters</p>
+            <p>2)Mandatory Input</p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>BYPASS.SEL</field>
+<desc>
+            <p>Specifies whether selection criterira made on the .SELECT routine of batch job need to be bypassed or not.</p>
+            <p>When updated with 'Y',system will select all the records from the file and send it to record routine.when updated with 'N',System will follow normal procedure of using the criteria in the .SELECT routine.</p>
+            <p>Validation rules:</p>
+            <p> 1.Can be Y/N</p>
+            <p>2.This field can be updated with Y only if REC.VERIFY is set to "Y"</p>
+        </desc>
+</t>
+<t>
+<field>ACTIVATION.FILE</field>
+<desc>
+            <p>This field denotes whether underlying batch job uses Activation Files. Jobs that work on Activation file do repeated selects on a file and process transactions. These jobs are set to run AUTO throughout the day. Allowed only for batch jobs</p>
+        </desc>
+</t>
+<t>
+<field>ADDITIONAL.INFO</field>
+<desc>
+            <p>Defines any special attributes or  characteristics that a program or batch process must have. The current values  are:</p>
+            <p />
+            <p />
+            <table>
+                <tr>
+                    <td>
+                        <p>R </p>
+                    </td>
+                    <td>
+                        <p>(re-runable batch job) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.IDA </p>
+                    </td>
+                    <td>
+                        <p>(add/subtract 1 for the next record) </p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.ALL </p>
+                    </td>
+                    <td>
+                        <p>(During COB/Service,PURGE.HOLD.RPTS and PURGE.HELD.OUTPUT will select the whole HOLD.CONTROL records instead of doing select for every single company ) </p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.NO! </p>
+                    </td>
+                    <td>
+                        <p>(no level down processing) </p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.NOD</p>
+                    </td>
+                    <td>
+                        <p>(no date record required) </p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>NOH </p>
+                    </td>
+                    <td>
+                        <p>(no hold facility after 1st input) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.NOU </p>
+                    </td>
+                    <td>
+                        <p>(no user checking)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.PHN </p>
+                        <p />
+                    </td>
+                    <td>
+                        <p>(phantom task allowed)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.REF </p>
+                    </td>
+                    <td>
+                        <p>(non standard key display position) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.PAR </p>
+                        <p />
+                    </td>
+                    <td>
+                        <p>(parameter info for report records) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.GUI </p>
+                    </td>
+                    <td>
+                        <p>(application can run under GUI) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.NOG </p>
+                    </td>
+                    <td>
+                        <p>(application cannot be run under GUI) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.GAC </p>
+                    </td>
+                    <td>
+                        <p>(application uses GAC files. Refer to the GAC user guide) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.NOFS</p>
+                    </td>
+                    <td>
+                        <p>(application cannot be run in OFS. Refer to the OFS user guide) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.BDA</p>
+                    </td>
+                    <td>
+                        <p>(application may be run in a branch database) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.UNP</p>
+                    </td>
+                    <td>
+                        <p>(application will be taken for generic unauth processing)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.OEU</p>
+                    </td>
+                    <td>
+                        <p>(OFS flag for generic unauth processing)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.NUH</p>
+                    </td>
+                    <td>
+                        <p>(INAU records will not be put on HOLD by unauth processing)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.BLK</p>
+                    </td>
+                    <td>
+                        <p>(application may be run in bulk mode) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.HLD</p>
+                    </td>
+                    <td>
+                        <p>(New records of the specified application will be released in HOLD status during upgrade)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.INFORM</p>
+                    </td>
+                    <td>
+                        <p>To notify TEC whenever a record is updated in the Application(Creating records)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.CRITICAL</p>
+                    </td>
+                    <td>
+                        <p>(Stops the execution of a job immediately when an error is encountered) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.MODIFY</p>
+                    </td>
+                    <td>
+                        <p> Allows local hook routine to modify the contents of data record during release mechanism and core standard always override this local change. </p>
+                        <p> The name of hook routine should be T24.MODIFY.RELEASE.DATA. </p>
+                        <p> If any error returned by this routine will release the record in IHLD. </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.NUC</p>
+                    </td>
+                    <td>
+                        <p>(Not to use cache for transaction processing) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.NTX</p>
+                    </td>
+                    <td>
+                        <p>(No transaction management) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.KEY</p>
+                    </td>
+                    <td>
+                        <p>(Keys in activation file will be used instead of activation file content)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.NOL</p>
+                    </td>
+                    <td>
+                        <p>(Locking information not reported to user) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.BLB </p>
+                    </td>
+                    <td>
+                        <p>(Enables binary large object file creation) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.NBK </p>
+                    </td>
+                    <td>
+                        <p>(No Bulk mode processing) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.PREVIEW </p>
+                    </td>
+                    <td>
+                        <p>(Enabling preview of delivery messages) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.NJT </p>
+                    </td>
+                    <td>
+                        <p>(No JOB.TIMES record will be updated for the job with .NJT(No Job Times) ) </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>.TOE </p>
+                    </td>
+                    <td>
+                        <p>(Fields will be validated in the sequence as defined in the template and not as defined in the Version) </p>
+                    </td>
+                </tr>
+            </table>
+            <p />
+            <p />
+            <p>R: the batch job can be re-run  without restoring the data files if the process is interrupted.</p>
+            <p />
+            <p>.IDA key generation will be  automatic by adding (or subtracting) the number on to the previous key to obtain  the next (or last) key. Similar automatic key operation can be achieved through  the company record.</p>
+            <p />
+            <p>.NO! the ! or level down function  is disabled for the program.</p>
+            <p />
+            <p>.NOD the program can run even when  the DATES record is not established e.g. DATES program itself.</p>
+            <p />
+            <p>.NOH the HOLD facility is disabled  except for the first in put.</p>
+            <p />
+            <p>.NOU the user profile (ie. SMS) is  not checked when this program is run.</p>
+            <p />
+            <p>.PHN the program is able to submit  phantom tasks.</p>
+            <p />
+            <p>.REF the key to the records that  the program is accessing will display in the top line on the right of the screen  instead of the normal position.</p>
+            <p />
+            <p>.PAR (arg 1, arg 2), where arg =  argument. If a PGM.FILE record is a type 'R' then this field defines the  arguments to be used in the call to the T24 routine shown in field four. The  names for the arguments must be valid T24 keywords for which there are IN2...  subroutines. For example .PAR(AMT, CCY, *,, AMT,*,*) means that the routine in  field four is to be called with seven arguments. The first must be an amount  field and will be checked by the IN2AMT routine; the second must be a currency  field and will be checked by the IN2CCY routine; the third argument is not to be  used; the fourth will be checked by the standard IN2 routine; the fifth will be  checked by IN2AMT; and the sixth and seventh are not to be used. It should be  noted that any IN2 routine that is required in the above example must be loaded  as a 'S'ubroutines on PGM.FILE.</p>
+            <p />
+            <p>Except when .PAR is used, each  program can have more than one of these additional characteristics, if required.  This is achieved by typing the values one after another as follows:</p>
+            <p />
+            <p>.NOD.NOU.REF</p>
+            <p />
+            <p>The values that are assigned should  generally not be changed.</p>
+            <p />
+            <p>.UNP.OEU</p>
+            <p />
+            <p>The unauthorised records of this application will be processed by generic unauth processing. That is will be processed by the batch job UNAUTH.PROCESSING. The INAU records will be deleted and put on hold through OFS. When .UNP is specified .OEU should also be specified. Only then records will be taken for unauth processing.</p>
+            <p />
+            <p>.NUH</p>
+            <p />
+            <p>The INAU records will be deleted through OFS but will not be put on HOLD by generic unauth processing. Has significance only with .UNP and .OEU together.</p>
+            <p>.NTX</p>
+            <p>For record routines, do not call EB.TRANS if .NTX</p>
+            <p>.BLK</p>
+            <p>application runs in bulk mode when this is set</p>
+            <p>.HLD</p>
+            <p />
+            <p>New records of the specified application will be released in HOLD status after upgading from lower release to higher release.Existing records will remain the same</p>
+            <p />
+            <p>.CRITICAL</p>
+            <p />
+            <p>Set .CRITICAL to a job when its expected to stop its execution as and when an error is encountered. COB will not be continued till the error is rectified. PROCESS.STATUS and JOB.STATUS will be set to ‘3’ in the BATCH file</p>
+            <p />
+            <p>.MODIFY</p>
+            <p />
+            <p> Allows local hook routine to modify the contents of data record during release mechanism and core standard always override this local change. </p>
+            <p> The name of hook routine should be T24.MODIFY.RELEASE.DATA. </p>
+            <p> If any error returned by this routine will release the record in IHLD. </p>
+            <p />
+            <p>.NUC </p>
+            <p />
+            <p>Caching mechanism is enabled by default for Batch processing. When there is a specific need to not use cache, .NUC can be used.  Every Read/Write operation will then happen directly from/to the disk immediately and cache will not be maintained.  It is however advisable to use cache to improve COB performance.</p>
+            <p />
+            <p>.NTX</p>
+            <p />
+            <p>Transaction Management takes full control of all file updates happening at each transaction level during online/cob.  When there is a need for a job to run without transaction management, .NTX option can be preferred.  In such case, the updates to the disk will happen immediately.</p>
+            <p />
+            <p>.KEY</p>
+            <p />
+            <p>Generally, While preparing list of keys for activation file based job, contract Ids are selected from the record content in Activation File. By enabling .KEY option, List is build based on the keys in Activation file.</p>
+            <p />
+            <p>.NOL</p>
+            <p />
+            <p>When .NOL is set for a job, REPORT.LOCKS in VERSION will be reset to ‘NO’ thereby not reporting any warning messages when waiting for record locks.</p>
+            <p />
+            <p>.BLB</p>
+            <p />
+            <p>Files are generally created  based on database type (either XMLORACLE or J4/JR). But in oracle environment when  .BLB is set,  files will be created of type BLOB and not XML.</p>
+            <p />
+            <p>.NBK </p>
+            <p />
+            <p>There are two modes of processing a transaction online – bulk mode and standard mode. In bulk mode, single or multiple OFS requests are processed under transaction boundary as a single database transaction.  When '.NBK' is set, transaction is processed in standard mode with the updates happening to disk during commit stage</p>
+            <p />
+            <p>.PREVIEW </p>
+            <p />
+            <p>This option enables preview icon in desktop and browser tool.  When transaction details are keyed in completely, a facility to preview all delivery messages is enabled.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>APPL.FOR.SUBR</field>
+<desc>
+            <p>This is a multi valued field. Standard T24 alphanumeric field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 35 characters may be entered.</p>
+            <p>Must be the key to a valid entry on the PGM.FILE file.</p>
+        </desc>
+</t>
+<t>
+<field>BATCH.JOB</field>
+<desc>
+            <p>Identifies the Batch job(s) when the program has been identified as type &amp;apos;B&amp;apos; in field 1; or the routine to be called in the Report program produced by the report generator when the record has been identified as type &amp;apos;R&amp;apos;.</p>
+            <p>For a Batch job, this field contains the actual process name(s) that this batch job is to execute.  The values can either be program (typically subroutine) names, in which case they will be prefixed by the @ sign; or they can be &amp;quot;voc&amp;quot; paragraphs such as JOURNAL.LIST.</p>
+            <p>For a multi-threaded batch job, the value can be either null or @BATCH.JOB.CONTROL.</p>
+            <p>If this field contains any value other than @BATCH.JOB.CONTROL , then, it indicates that the job is single-threaded.</p>
+            <p>The routine or VOC paragraph entered should be valid.</p>
+            <p>For a report program, this field must contain the subroutine that is to be called (prefixed by the @ sign). eg. @ MIDDLE.RATE.CONV.CHECK.</p>
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p>1)up to 32 alphanumeric characters Multivalue field</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

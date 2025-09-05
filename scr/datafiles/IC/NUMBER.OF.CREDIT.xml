@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>IC</product>
+<table>NUMBER.OF.CREDIT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This table allows a fixed charge to be specified for each chargeable credit entry which passed over an Account during the Capitalisation period. Alternatively, the TURNOVER.CREDIT table may be used to specify a charge expressed as a percentage of the total value of the entries.  Only one of these two types of charges can be specified for each Account. </p>
+            <p>The GENERAL.CHARGE Record referred to in the relevant Group Debit Interest Record or Account Debit Interest Record, specifies whether or not this charge is applicable to an Account. </p>
+            <p>Entries are chargeable only if the record on the TRANSACTION table corresponding to the Transaction Code in the entry contains 'Y' in the TURNOVER CHARGE field. </p>
+            <p>If the associated GENERAL.CHARGE record indicates that charges for debit and credit entries should be combined, the total number of chargeable entries is calculated and then the details from the NUMBER.OF.CREDIT table are used. </p>
+            <p>The amount per entry and Free, Minimum and Maximum Amounts may be defined for specific Currencies. Default amounts in local currency equivalent may also be defined and are used for Accounts in Currencies for which no amounts are specified. </p>
+            <p>The associated GENERAL.CHARGE record specifies whether this charge should be applied to the Account as a separate entry, or combined into one entry with other Account Maintenance Charges which may include: </p>
+            <p>           BALANCE.REQUIREMENT            NUMBER.OF.DEBIT or TURNOVER.DEBIT            TRANSACTION.CHARGE </p>
+            <p>All Account Maintenance Charges are applied on the same day, monthly, quarterly or six monthly, at the end of the appropriate month, as specified in the Company record. </p>
+            <p>The Number of Credit record which is in effect on the date of the charges Capitalisation is applicable for the whole of the Captilisation period. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>TAX.CODE</field>
+<desc>
+            <p>Specifies the Tax record containing details of the calculation and processing of Tax applicable to the Number of Credit Charge. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 2 numeric character Tax code. (Optional input) There must be an existing record for this code on the TAX table (Ref: General Tables), with an effective date no later than the effective date of this record.</p>
+        </desc>
+</t>
+<t>
+<field>SEQUENCE.YEAR.MTH</field>
+<desc>
+            <p>This is the Number of Credit code and effective date which form a key to which General Charge records may be linked. </p>
+            <p>The date may be entered as: </p>
+            <p>           1)   YYYY-MM  year-month            2)   YYYYMM   yearmonth            3)   MM-YY    month-year            4)   MMYY     monthyear     or     5)   MM       month (current year assumed) </p>
+            <p>The month may be 01-12 or 1-12. </p>
+            <p>It is always displayed formatted YYYY-MM.  For new input the date may not be earlier than today. </p>
+            <p>The Number of Credit record which in effect on the date of the charges capitalisation is applicable for the whole of the capitalisation period. </p>
+            <p>Note:     Altering an existing Number of Credit            record does not cause any adjustment to            charges already processed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1)  1-2 numeric characters (Mandatory input). 2)  '-' (Mandatory input if date is input, otherwise no input). Prime Sites '.' 3)  1-7 date characters, year and month (Optional input, default is current year and month).</p>
+        </desc>
+</t>
+<t>
+<field>TR.CODE.DR</field>
+<desc>
+            <p>Identifies the Transaction Code to be assigned to Account entries generated for Number of Credit Charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. (Mandatory Input)</p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+            <p>It must be a valid code on the TRANSACTION table (Ref: General Tables).</p>
+            <p>The Debit Credit Indicator in the Transaction record must be 'DEBIT'.</p>
+        </desc>
+</t>
+<t>
+<field>MINIMUM.AMOUNT</field>
+<desc>
+            <p>Specifies the Minimum Amount to be charged to the Account, for Accounts in the Currency specified in the associated Field 10. </p>
+            <p>Fields 10-14 are used to define Amounts for calculating Number of Credit Charges in specific Currencies.  The Default Amounts specified in Fields 6-9 are used if there is no entry in Field 10 for the Currency of the Account. </p>
+            <p>If after the Free Amount has been subtracted from the calculated charge the result is less than the Minimum Amount, the Minimum Amount is used.  Otherwise the Maximum Amount is checked. </p>
+            <p>The Company record specifies when the charges are to be applied.  If, however, the associated General Charge record specifies that charges should be calculated on a monthly basis (Calcul Step Period = M), the charge for each month is compared with the Minimum Amount and adjusted if necessary. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point. Multivalue Field associated with Fields 10-14. (Optional input, only allowed if Field 10 is input.  Default is zero.) The number of decimals may not exceed the number for Currency in Field 10.</p>
+        </desc>
+</t>
+<t>
+<field>MAXIMUM.AMOUNT</field>
+<desc>
+            <p>Specifies the Maximum Amount to be charged to the Account, for Accounts in the Currency specified in the associated Field 10. </p>
+            <p>Fields 10-14 are used to define Amounts for calculating Number of Credit Charges in specific Currencies.  The Default Amounts specified in Fields 6-9 are used if there is no entry in Field 10 for the Currency of the Account. </p>
+            <p>If after the Free Amount has been subtracted from the calculated charge the result is greater than the Maximum Amount, the Maximum Amount is used. </p>
+            <p>The Company record specifies when the charges are to be applied.  If, however, the associated General Charge record specifies that charges should be calculated on a monthly basis (Calcul Step Period = M), the charge for each month is compared with the Maximum Amount and adjusted if necessary. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point. Multivalue field associated with Fields 10-14. (Optional input, only allowed if Field 10 is input.) The number of decimals may not exceed the number for Currency in Field 10.</p>
+        </desc>
+</t>
+<t>
+<field>FREE.AMOUNT</field>
+<desc>
+            <p>Specifies the amount to be deducted from the total charge calculated, subject to the Minimum and Maximum Amounts, for Accounts in the Currency specified in the associated FIELD 10. </p>
+            <p>Fields 10-14 are used to define Amounts for calculating Number of Credit Charges in specific Currencies.  The Default Amounts specified in Fields 6-9 are used if there is no entry in Field 10 for the Currency of the Account. </p>
+            <p>The Free Amount is subtracted from the calculated charge and further adjustments are made as specified in Fields 13 and 14. </p>
+            <p>The Company record specifies when the charges are to be applied.  If, however, the associated General Charge record specifies that charges should be calculated on a monthly basis (Calcul Step Period = M), the Free Amount is subtracted from the charge calculated for each month. </p>
+            <p>Note:       (i) The result may be zero, but not                  negative, i.e. the Customer will not                  receive a Credit. </p>
+            <p>            (ii) Even if the Free Amount is greater                  than or equal to the calculated                  charge, any Minimum specified in                  Field 13, Minimum Amount, is still                  applicable. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point. Multivalue field associated with Fields 10-14. (Optional input, only allowed if Field 10 is input.) The number of decimals may not exceed the number for currency in Field 10.</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.FREE.AMT</field>
+<desc>
+            <p>Specifies the Free Amount, in local currency equivalent, to be deducted from the total charge calculated, subject to the Minimum and Maximum Amounts, if there is no entry in Field 10 for the Currency of the Account. </p>
+            <p>Amounts for calculating Number of Credit Charges in specific Currencies can be specified in the multivalue associated group of Fields, 10-14. The Default Amounts specified in Fields 6-9 are used if there is no entry in Field 10 for the Currency of the Account. </p>
+            <p>The Default Free Amount is subtracted from the calculated local currency charge and further adjustments are made as specified in Fields 8 and 9. The result is converted to the Currency of the Account. </p>
+            <p>The Company record specifies when the charges are to be applied.  If, however, the associated General Charge record specifies that charges should be calculated on a monthly basis (Calcul Step Period = M), the Free Amount is subtracted from the charge calculated for each month. </p>
+            <p>Note:       (i) The result may be zero, but not                  negative, i.e. the Customer will not                  receive a Credit. </p>
+            <p>            (ii) Even if the Free Amount is greater                  than or equal to the calculated                  charge, any Minimum specified in                  Field 8, Default Min Amt, is still                  applicable. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point. (Optional input) The number of decimals may not exceed the number for local currency.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Describes the Number of Credit Charge, and can be used for reporting. </p>
+            <p>The Description may be entered in each of the Languages defined in the LANGUAGE table (Ref: General Tables). </p>
+            <p>It will be displayed in the Language specified in the User Record of the person using the System. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-35 type A (alphanumeric) characters Multilanguage field. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>TR.CODE.CR</field>
+<desc>
+            <p>Identifies the Transaction Code to be assigned to Profit and Loss entries generated for Number of Credit Charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. (Mandatory Input)</p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+            <p>Must be a valid code on the TRANSACTION table (Ref: General Tables).</p>
+            <p>The Debit Credit Indicator in the Transaction record must be 'CREDIT'.</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.MIN.AMT</field>
+<desc>
+            <p>Specifies the Minimum Amount, in local currency equivalent, to be charged if there is no entry in Field 10 for the Currency of the Account. </p>
+            <p>Amounts for calculating Number of Credit Charges in specific Currencies can be specified in the multivalue associated group of Fields 10-14.  The Default Amounts specified in Fields 6-9 are used if there is no entry in Field 10 for the Currency of the Account. </p>
+            <p>If after the Default Free Amount has been subtracted from the calculated local currency charge, the result is less than the Default Minimum Amount, the Default Minimum Amount is used.  Otherwise the Default Maximum Amount is checked.  The result is converted to the Currency of the Account. </p>
+            <p>The Company record specifies when the charges are to be applied.  If, however, the associated General Charge record specifies that charges should be calculated on a monthly basis (Calcul Step Period = M), the charge for each month is compared with the Minimum Amount and adjusted if necessary. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point. (Optional input, default is zero.) The number of decimals may not exceed the number for local currency.</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.MAX.AMT</field>
+<desc>
+            <p>Specifies the Maximum Amount, in local currency equivalent, to be charged if there is no entry in Field 10 for the Currency of the Account. </p>
+            <p>Amounts for calculating Number of Credit Charges in specific Currencies can be specified in the multivalue associated group of Fields 10-14.  The Default Amounts specified in Fields 6-9 are used if there is no entry in Field 10 for the Currency of the Account. </p>
+            <p>If after the Default Free Amount has been subtracted from the calculated local currency charge, the result is greater than the Default Maximum Amount, the Default Maximum Amount is used.  The result is converted to the Currency of the Account. </p>
+            <p>The Company record specifies when the charges are to be applied.  If, however, the associated General Charge record specifies that charges should be calculated on a monthly basis (Calcul Step Period = M), the charge for each month is compared with the Maximum Amount and adjusted if necessary. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point. (Optional input, default is zero.) The number of decimals may not exceed the number for local currency.</p>
+        </desc>
+</t>
+<t>
+<field>K.CURRENCY</field>
+<desc>
+            <p>Defines the Currency for which the Number of Credit Charge details in associated Fields 11-14 apply.  For Accounts in Currencies not specified by this Field, the Default Amounts specified in Fields 6-9 are used. </p>
+            <p>Fields 10-14 are used to define Amounts for calculating Number of Credit Charges on Accounts in specific Currencies.  For any Accounts in Currencies not specified in Field 10, the Default (local currency equivalent) Amounts specified in Fields 6-9 are used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 type SSS (SWIFT) characters Currency code. or     1-3 numeric characters (will be converted to Currency code). Multivalue Field associated with Fields 11-14. (Mandatory Input if any input in associated Fields 11-14, otherwise optional.) It must be a valid code on the CURRENCY table (Ref: General Tables).</p>
+        </desc>
+</t>
+<t>
+<field>CATEGORY</field>
+<desc>
+            <p>Identifies the Category code to be assigned to Profit and Loss entries generated for Number of Credit Charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4 or 5 numeric character Category code. (Mandatory input)</p>
+            <p>It must be a valid code on the CATEGORY table (Ref: General Tables).</p>
+            <p>System Indicator in Category record must be 'PL'.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.AMOUNT</field>
+<desc>
+            <p>Specifies the amount to be charged per chargeable Credit entry for Accounts in the Currency specified in the associated Field 10. </p>
+            <p>Fields 10-14 are used to define amounts for calculating Number of Credit Charges in specific Currencies.  The Default Amounts (in local currency) specified in Fields 6-9 are used if there is no entry in Field 10 for the Currency of the Account. </p>
+            <p>Entries are chargeable only if the Transaction record corresponding to the Transaction Code in the entry contains 'Y' in the TURNOVER CHARGE field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point. Multivalue Field associated with Fields 10-14. (Mandatory input if Field 10 is input, otherwise not allowed.) The number of decimals may not exceed the number for Currency in Field 10.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>Defines the Currency for which the Number of Credit Charge details in associated Fields 11-14 apply.  For Accounts in Currencies not specified by this Field, the Default Amounts specified in Fields 6-9 are used. </p>
+            <p>Fields 10-14 are used to define Amounts for calculating Number of Credit Charges on Accounts in specific Currencies.  For any Accounts in Currencies not specified in Field 10, the Default (local currency equivalent) Amounts specified in Fields 6-9 are used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 type SSS (SWIFT) characters Currency code. or     1-3 numeric characters (will be converted to Currency code). Multivalue Field associated with Fields 11-14. (Mandatory Input if any input in associated Fields 11-14, otherwise optional.) It must be a valid code on the CURRENCY table (Ref: General Tables).</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.CHARGE.AMT</field>
+<desc>
+            <p>Specifies the amount, in local currency equivalent, to be charged per chargeable Credit entry if there is no input in Field 10 for the Currency of the Account. </p>
+            <p>Amounts for calculating Number of Credit Charges in specific Currencies can be specified in the multivalue associated group of Fields 10-14.  The Default Amounts specified in Fields 6-9 are used if there is no entry in Field 10 for the Currency of the Account. </p>
+            <p>Entries are chargeable only if the Transaction record corresponding to the Transaction Code in the entry contains 'Y' in the TURNOVER CHARGE field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point. (Mandatory input if no input made to Field 10, otherwise optional.) The number of decimals may not exceed the number for local currency.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

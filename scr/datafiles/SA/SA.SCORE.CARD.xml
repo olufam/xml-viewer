@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SA</product>
+<table>SA.SCORE.CARD</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>
+Scorecards could be defined in the table SA.SCORE.CARD. The ID of the record would be the same as SA.SCORE.DATA or ID of SA.SCORE.DATA : any allowed value in the linked field of CUSTOMER table (as defined in parameter file). Thus for a mortgage loan product, the ID of SA.SCORE.CARD could be MORTGAGE (as defined in SA.SCORE.DATA) or MORTGAGE-US (if separate score card is to be defined for US residents). Similarly for corporate loan product scorecard could be defined for corporate loan in general with ID as CORP.LOAN or CORP.LOAN-MFG (if separate score card is to defined for manufacturing industry).
+
+The individual scores for each of the data can be defined in score card. Flexibility has been provided to define the score based on a data type, data group and or ratio. It is also possible to have a score based two or more data together.
+
+For sample definitions of score card please refer to USER GUIDE.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>OPERAND</field>
+<desc>
+            <p>The operand to decide whether ONE or ALL of the multiple conditions stipulated are to be satisfied for the rule to apply.
+
+OR - One of the conditions should satisfy
+
+ALL - All the conditions are to be satisfied
+
+Example (a) - A score of 10 points is given if either ratio ABC is less than 1 or ratio CBA is less than 5. The definition in this case will be as follows;
+
+2.1       Operand                OR
+3.1.1    Ratio.Type            ABC
+4.1.1    Decision                LT
+5.1.1    Decision fr            1.00
+6.1.1    Decision to               
+3.1.2    Ratio.Type            CBA
+4.1.2    Decision                LT
+5.1.2    Decision fr            5.00
+6.1.2    Decision to               
+7.1       FS.Score                10
+
+Example (b)  - A score of 15 is applicable if ratio DEF value is less than 1 and ABC ratio value is less than 2. In this case, the definition is as follows;
+
+2.1       Operand               AND
+3.1.1    Ratio.Type            DEF 
+4.1.1    Decision                LT
+5.1.1    Decision fr            1.00
+6.1.1    Decision to               
+3.1.2    Ratio.Type            ABC
+4.1.2    Decision                LT
+5.1.2    Decision fr            2.00
+6.1.2    Decision to              
+7.1       FS.Score                15
+
+Note that if multiple conditions are satisfied, the scores for each satisfied set will be reckoned and hence care should be exercised in defining the rule.
+
+Example (c) - If value of ratio ABC is less than 1 the points are 10, for value 1-1.99 the points are 15, for value 2-2.99 the points are 20 and for value greater than or equal to 3 the points are 25. In this case the definition should be as follows;
+
+2.1       Operand                OR
+3.1.1    Ratio.Type            ABC
+4.1.1    Decision                LT
+5.1.1    Decision fr            1.00
+6.1.1    Decision to               
+7.1       FS.Score                10
+2.2       Operand                OR
+3.2.1    Ratio.Type            ABC
+4.2.1    Decision                RG
+5.2.1    Decision fr            1.00
+6.2.1    Decision to            1.99   
+7.2        FS.Score                15
+2.3       Operand                OR
+3.3.1    Ratio.Type            ABC
+4.3.1    Decision                RG
+5.3.1    Decision fr            2.00
+6.3.1    Decision to            2.99   
+7.3      FS.Score                20
+2.4       Operand                OR
+3.4.1    Ratio.Type            ABC
+4.4.1    Decision                GE
+5.4.1    Decision fr            3.00
+6.4.1    Decision to               
+7.4       FS.Score                25
+
+In the above case if the actual score is say 2.75 only one condition is satisfied (set 3) and hence 20 points are given.
+
+However, if the definition is as follows for the same rule (this is an incorrect definition and should NOT be made)
+
+2.1       Operand                OR
+3.1.1    Ratio.Type            ABC
+4.1.1    Decision                LT
+5.1.1    Decision fr            1.00
+6.1.1    Decision to               
+7.1       FS.Score                10
+2.2       Operand                OR
+3.2.1    Ratio.Type            ABC
+4.2.1    Decision                LT
+5.2.1    Decision fr            2.00
+6.2.1    Decision to               
+7.2       FS.Score                15
+2.3       Operand                OR
+3.3.1    Ratio.Type            ABC
+4.3.1    Decision                LT
+5.3.1    Decision fr            3.00
+6.3.1    Decision to               
+7.3    FS.Score                 20
+2.4       Operand                OR
+3.4.1    Ratio.Type            ABC
+4.4.1    Decision                GE
+5.4.1    Decision fr            3.00
+6.4.1    Decision to               
+7.4       FS.Score                25
+
+In this case if the value of the calculated ration is say 0.90, conditions 1, 2 and 3 are satisfied and hence 10+15+20 = 45 points will be given.
+</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only allowed values are AND and OR</p>
+        </desc>
+</t>
+<t>
+<field>RATIO.TYPE</field>
+<desc>
+            <p>The ratio type for which conditions are stipulated. For more details refer the help on field OPERAND</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid record on SA.RATIOS</p>
+            <p>Input allowed in DATA.TYPE, DATA.GROUP or RATIO field in one set. </p>
+        </desc>
+</t>
+<t>
+<field>SCORE.CARD.ID</field>
+<desc>
+            <p>ID of the score card.  ID could as under
+
+a) Should be the same as SA.SCORE.DATA ID OR
+
+b) SA.SCORE.DATA ID - ATTRIBUTE as defined in SA.SCORE.PARAMETER.
+
+For example if MORTGAGE product score table is required by residence, then the same is defined in parameter file by linking MORTGAGE product to RESIDENCE field in CUSTOMER table. Thus score cards with different IDs can be defined as under
+
+MORTGAGE-US or MORTGAGE-EU (the value after '-' must be an accepted value in RESIDENCE field in CUSTOMER)
+</p>
+        </desc>
+</t>
+<t>
+<field>DECISION.FR</field>
+<desc>
+            <p>Specifies the value or the start of a range of values for which the allocation of score as per field 9 applies.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Negative values not allowed. Zero allowed.</p>
+        </desc>
+</t>
+<t>
+<field>EXCL.NULL.VAL</field>
+<desc>
+            <p>Indicates the method of scoring calculation to be used if the data is undefined.</p>
+            <p> If blank, then null will be treated as '0'.</p>
+            <p> If yes , then the field will be excluded from calculation of scores </p>
+            <p> For example </p>
+            <p>Total elements in group = 4</p>
+            <p>Total score for group = 100</p>
+            <p> If EXCL.NULL.VAL is not defined then each element will have value as 25(100/4)</p>
+            <p>If for same example, if EXCL.NULL.VALS is set, then  each element should have score as 100/3 </p>
+        </desc>
+</t>
+<t>
+<field>DECISION.TO</field>
+<desc>
+            <p>Specifies the end of a range of values for which the allocation of score as per field 9 applies. Input allowed only if value in DECISION field is RG or NR</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Negative values not allowed</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>General description of the score card. Multivalue to accomodate for description in various languages.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory Input</p>
+        </desc>
+</t>
+<t>
+<field>DECISION</field>
+<desc>
+            <p>Specifies the type of function that the user wants to perform. The allowed values are
+
+EQ - Equals                                         NE - Not Equal to
+GE - Greater than or Equals                         RG - Range
+GT - Greater than                                   NR - Not in Range
+LE - Less than or Equals                            LT - Less than
+</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only allowed values are EQ, NE, GE, RG, GT, NR, LE, LT</p>
+        </desc>
+</t>
+<t>
+<field>FS.SCORE</field>
+<desc>
+            <p>The score (points) applicable subject to satisfaction of conditions stipulated in fields OPERAND to DECISION.TO</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 characters numeric field with decimal point</p>
+            <p>Negative values allowed.</p>
+        </desc>
+</t>
+<t>
+<field></field>
+<desc>
+        <p>General description of the score card. Multivalue to accomodate for description in various languages. </p>
+        <p>Validation Rules</p>
+        <p> Mandatory Inpu.</p>
+        <p>SCORE.CARD.ID</p>
+        <p>ID of the score card. ID could as undera) Should be the same as SA.SCORE.DATA ID ORb) SA.SCORE.DATA ID - ATTRIBUTE as defined in SA.SCORE.PARAMETER.For example if MORTGAGE product score table is required by residence, then the same is defined in parameter file by linking MORTGAGE product to RESIDENCE field in CUSTOMER table. Thus score cards with different IDs can be defined as underMORTGAGE-US or MORTGAGE-EU (the value after '-' must be an accepted value in RESIDENCE field in CUSTOMER.</p>
+        <p>RATIO.TYPE</p>
+        <p>The ratio type for which conditions are stipulated. For more details refer the help on field OPERAND </p>
+        <p>Validation Rules</p>
+        <p> Must be a valid record on SA.RATIOS Input allowed in DATA.TYPE, DATA.GROUP or RATIO field in one set.</p>
+        <p>OPERAND</p>
+        <p>The operand to decide whether ONE or ALL of the multiple conditions stipulated are to be satisfied for the rule to apply.OR - One of the conditions should satisfyALL - All the conditions are to be satisfiedExample (a) - A score of 10 points is given if either ratio ABC is less than 1 or ratio CBA is less than 5. The definition in this case will be as follows;2.1 Operand OR3.1.1 Ratio.Type ABC4.1.1 Decision LT5.1.1 Decision fr 1.006.1.1 Decision to 3.1.2 Ratio.Type CBA4.1.2 Decision LT5.1.2 Decision fr 5.006.1.2 Decision to 7.1 FS.Score 10Example (b) - A score of 15 is applicable if ratio DEF value is less than 1 and ABC ratio value is less than 2. In this case, the definition is as follows;2.1 Operand AND3.1.1 Ratio.Type DEF 4.1.1 Decision LT5.1.1 Decision fr 1.006.1.1 Decision to 3.1.2 Ratio.Type ABC4.1.2 Decision LT5.1.2 Decision fr 2.006.1.2 Decision to 7.1 FS.Score 15Note that if multiple conditions are satisfied, the scores for each satisfied set will be reckoned and hence care should be exercised in defining the rule.Example (c) - If value of ratio ABC is less than 1 the points are 10, for value 1-1.99 the points are 15, for value 2-2.99 the points are 20 and for value greater than or equal to 3 the points are 25. In this case the definition should be as follows;2.1 Operand OR3.1.1 Ratio.Type ABC4.1.1 Decision LT5.1.1 Decision fr 1.006.1.1 Decision to 7.1 FS.Score 102.2 Operand OR3.2.1 Ratio.Type ABC4.2.1 Decision RG5.2.1 Decision fr 1.006.2.1 Decision to 1.99 7.2 FS.Score 152.3 Operand OR3.3.1 Ratio.Type ABC4.3.1 Decision RG5.3.1 Decision fr 2.006.3.1 Decision to 2.99 7.3 FS.Score 202.4 Operand OR3.4.1 Ratio.Type ABC4.4.1 Decision GE5.4.1 Decision fr 3.006.4.1 Decision to 7.4 FS.Score 25In the above case if the actual score is say 2.75 only one condition is satisfied (set 3) and hence 20 points are given.However, if the definition is as follows for the same rule (this is an incorrect definition and should NOT be made)2.1 Operand OR3.1.1 Ratio.Type ABC4.1.1 Decision LT5.1.1 Decision fr 1.006.1.1 Decision to 7.1 FS.Score 102.2 Operand OR3.2.1 Ratio.Type ABC4.2.1 Decision LT5.2.1 Decision fr 2.006.2.1 Decision to 7.2 FS.Score 152.3 Operand OR3.3.1 Ratio.Type ABC4.3.1 Decision LT5.3.1 Decision fr 3.006.3.1 Decision to 7.3 FS.Score 202.4 Operand OR3.4.1 Ratio.Type ABC4.4.1 Decision GE5.4.1 Decision fr 3.006.4.1 Decision to 7.4 FS.Score 25In this case if the value of the calculated ration is say 0.90, conditions 1, 2 and 3 are satisfied and hence 10+15+20 = 45 points will be given. </p>
+        <p>Validation Rules</p>
+        <p> Only allowed values are AND and O.</p>
+        <p>FS.SCORE</p>
+        <p>The score (points) applicable subject to satisfaction of conditions stipulated in fields OPERAND to DECISION.TO </p>
+        <p>Validation Rules</p>
+        <p> 1-14 characters numeric field with decimal point Negative values allowed.</p>
+        <p>DECISION</p>
+        <p>Specifies the type of function that the user wants to perform. The allowed values areEQ - Equals NE - Not Equal toGE - Greater than or Equals RG - RangeGT - Greater than NR - Not in RangeLE - Less than or Equals LT - Less than </p>
+        <p>Validation Rules</p>
+        <p> Only allowed values are EQ, NE, GE, RG, GT, NR, LE, L.</p>
+        <p>DECISION.TO</p>
+        <p>Specifies the end of a range of values for which the allocation of score as per field 9 applies. Input allowed only if value in DECISION field is RG or NR </p>
+        <p>Validation Rules</p>
+        <p> Negative values not allowe.</p>
+        <p>DECISION.FR</p>
+        <p>Specifies the value or the start of a range of values for which the allocation of score as per field 9 applies. </p>
+        <p>Validation Rules</p>
+        <p> Negative values not allowed. Zero allowed.</p>
+        <p>DATA.TYPE</p>
+        <p>The data type for which conditions are stipulated. For more details refer the help on field OPERAND </p>
+        <p>Validation Rules</p>
+        <p> Must be a valid record on SA.DATA.TYPE Input allowed in DATA.TYPE, DATA.GROUP or RATIO field in one set.</p>
+        <p>DATA.GROUP</p>
+        <p>The data group for which conditions are stipulated. For more details refer the help on field OPERAND </p>
+        <p>Validation Rules</p>
+        <p> Must be a valid record on SA.DATA.GROUP Input allowed in DATA.TYPE, DATA.GROUP or RATIO field in one set.</p>
+        <p>CALC.ROUTINE</p>
+        <p>If the bank desires a local routine may be attached to calculate the score. </p>
+        <p>Validation Rules</p>
+        <p> Must be a valid record on PGM.FILE The record should have PGM.TYPE as 'S' Either scoring rules can be defined using the fields or local routine can be attached.</p>
+    </desc>
+</t>
+<t>
+<field>CALC.ROUTINE</field>
+<desc>
+            <p>If the bank desires a local routine may be attached to calculate the score.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid record on PGM.FILE</p>
+            <p>The record should have PGM.TYPE as 'S'</p>
+            <p>Either scoring rules can be defined using the fields or local routine can be attached.</p>
+        </desc>
+</t>
+<t>
+<field>DATA.GROUP</field>
+<desc>
+            <p>The data group for which conditions are stipulated. For more details refer the help on field OPERAND</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid record on SA.DATA.GROUP</p>
+            <p>Input allowed in DATA.TYPE, DATA.GROUP or RATIO field in one set.</p>
+        </desc>
+</t>
+<t>
+<field>DATA.TYPE</field>
+<desc>
+            <p>The data type for which conditions are stipulated. For more details refer the help on field OPERAND</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid record on SA.DATA.TYPE</p>
+            <p>Input allowed in DATA.TYPE, DATA.GROUP or RATIO field in one set.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

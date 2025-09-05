@@ -1,0 +1,463 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>AA</product>
+        <table>AA.ARR.DORMANCY</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>As part of KYC, a bank would want to monitor Accounts that have been Inactive for a certain period - implying that the Customer has not been in contact either by way of transacting on the account nor been in touch with the bank regarding any non-transactional requests such as reprinting of statement or a new Cheque book to be issued on the Account. The Dormancy Property Class consists of the attributes and actions related to this Dormancy/Inactivity processing. It is possible to </p>
+            <p> (a) Configure different "Dormancy Status" based on period of Inactivity </p>
+            <p> (b) Specify different Charges &amp; Charging frequency for each Dormancy status </p>
+            <p> (c) Apply some exception rule filtering at an individual arrangement level (ex, Account is in Debit Balance) and such rules could either be a T24 API or a rule created using T24 Rules Engine </p>
+            <p> (d) Specify notices and notice frequency for each Dormancy status </p>
+            <p> (e) Specify Activities/Activity Classes/Activity Initiation Types which are qualified to keep an Account active. </p>
+            <p>It is also possible to take over the Date of last qualified activity in the Legacy system and/or Legacy Dormany Status &amp; Dormancy date, during Conversion of legacy system into T24. During run time processing, system would schedule an "Evaluate Dormancy" activity based on the Dormancy period specified, starting from the date of New Arrangement creation. Subsequently, it would trigger the "Set Dormancy" activity should an arrangement meet the criteria and also schedule the "Scheduled Charge for Dormancy" Activity if there is any Charge frequency specified. A Dormant Account can be reactivated through "Manual Reset Dormancy" Activity which is a user initiated activity. It is also possible for a user to force an Arrangement to any Dormancy status by using the appropriate activity under the "Manual Set Dormancy" Activity Class. When an arrangement is manually set to a Dormant status, system will treat that arrangement to have been taken control of, by the user - therefore, it will not schedule further evaluation of the arrangement, until it is reactivated by a user again.</p>
+        </ovdesc>
+    </overview>
+    <menu>
+        <t>
+            <field>EXCEPTION.RULE</field>
+            <desc>
+                <p>Allows a user to Specify Rule (T24 Rules Engine) that the system can call to get a final decision.  When the system evaluates based on the Dormancy criteria and the Activity history and determines that a given arrangement has been Inactive for the set period, it will invoke the Exception API and/or Exception Rules to allow them to filter this arrangement as an Exception and not mark it as Dormant. The role of this Exception Rule is simply to give a decision on not marking the arrangement as Dormant. Where the system determines that an Arrangement has infact been active, it will not call this Exception Rule.</p>
+                <p> It is possible to attach more than one Rule per status and it is also possible to attach both a Rule and an API to the same status. </p>
+                <p>When there is more than one Rule is attached, the system will invoke both of them and will respect the most restrictive answers of them. The Rule should return a reason through the RULE.MESSAGE and RULE.STATUS must be set to FALSE. This field is optional and should be a valid record in EB.RULE.GATEWAY. On a given subvalue, either this or Exception API can be specified but not both.</p>
+            </desc>
+        </t>
+        <t>
+            <field>FULL.DESCRIPTION</field>
+            <desc>
+                <p>Full description of the Record and it's purpose.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.1</field>
+            <desc>
+                <p>Contains the arrangement number, extracted from the first component of the id</p>
+                <p>Not applicable at product level</p>
+                <p>System updated field no input allowed</p>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.2</field>
+            <desc>
+                <p>The action that was triggered on the arrangement property</p>
+                <p>The action is taken from ACTIVITY.CLASS record of the underlying AA.ARRANGEMENT.ACTIVITY request that caused the record to be modified.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.3</field>
+            <desc>
+                <p>Contains the effective date of the property condition</p>
+                <p>Not applicable at product level</p>
+                <p>System updated field no input allowed</p>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.4</field>
+            <desc>
+                <p>Reserved for future use</p>
+                <p>Not applicable at product level</p>
+                <p>System field no input allowed</p>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.5</field>
+            <desc>
+                <p>Reserved for future use</p>
+                <p>Not applicable at product level</p>
+                <p>System field no input allowed</p>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.6</field>
+            <desc>
+                <p>Reserved for future use</p>
+                <p>Not applicable at product level</p>
+                <p>System field no input allowed</p>
+            </desc>
+        </t>
+        <t>
+            <field>INCLUDE.INDICATOR</field>
+            <desc>
+                <p>A set of associated multi-value fields that would be used to configure which Initiation Type, Class or individual Activity should be included/excluded from consideration as a qualified activity.</p>
+                <p>First specify at the top level, the Type of Activity that could be considered as a qualified activity for Dormancy Processing.</p>
+                <p>• Within that activity type, if there is only a sub-set of Activity Classes that should be respected, then they should be explicitly specified.</p>
+                <p>• Alternately, any Activity Classes to be excluded can also be specified.</p>
+                <p>• Within the excluded or included activity classes, if there are individual Activities to be included or excluded, they can be explicitly specified.</p>
+                <p>• The column ‘Include/Exclude’ is to specify if that Activity/Class/Type is ‘Qualified’ to keep an Arrangement from becoming Inactive.</p>
+                <p>• Where there is a conflict, the Order of precedence would be from Bottom Up.</p>
+                <p>• Include/Exclude definition of Specific Activities takes the top precedence, followed by that of the Activity Class level definition followed by that of the Activity Type level definition.</p>
+                <p>• For ex, a definition such as ‘Exclude User Activity Type’ + ‘Include Accounts-Update-Customer Activity Class’ would mean that all User Activity types will be excluded but for the activities under the ‘Accounts-Update-Customer’ class</p>
+                <p>• This field accepts the value of EXCLUDE/INCLUDE.</p>
+            </desc>
+        </t>
+        <t>
+            <field>NEGOTIATED.FLDS</field>
+            <desc>
+                <p>No input and multi value field that lists the attributes on the arrangement property record that have been fixed and/or negotiated. These are stored when the arrangement level record is committed. When the arrangement level record is next used all items in the NEGOTIATED.FIELDS list will be maintained.</p>
+                <p>Once an attribute has been fixed or negotiated it will remain in negotiated field list on all subsequent dated versions of the property.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACTIVITY.CLASS</field>
+            <desc>
+                <p>Associated with ACTIVITY.INITIATION, this field allows us to specify an AA Activity Class as a next level of classifying Activities. This takes precedence over its corresponding Initiation Type specification. For ex, ACTIVITY INITIATION User may be set to be 'Excluded' but a specific AA Activity Class of User initiation type may be set to be 'Included'.</p>
+                <p/>
+                <p>For a given subvalue, only one of the below field can be given with value,</p>
+                <p>ACTIVITY.INITIATION,ACTIVITY.CLASS and ACTIVITY.NAME.</p>
+            </desc>
+        </t>
+        <t>
+            <field>NOTICE.DAYS</field>
+            <desc>
+                <p>Number of days that the system should wait after reaching the corresponding status, before generating an Advice</p>
+            </desc>
+        </t>
+        <t>
+            <field>NOTICE.FREQ</field>
+            <desc>
+                <p>The Frequency in which Chasers need to be sent out, so long as the Account remains in the corresponding status.</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.ATTRIBUTE</field>
+            <desc>
+                <p>Defines which individual attribute (field) has the negotiation rules defined in fields "Nr.Negotiable" through to "Nr.Message"</p>
+                <p/>
+                <p>Must be a valid field name within this property</p>
+                <p>This field is part of a multi value set</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.MESSAGE</field>
+            <desc>
+                <p>This field indicates whether to raise error or override message when rule is broken</p>
+                <p>Allows only two values ERROR or OVERRIDE</p>
+                <p>ERROR error message is raised</p>
+                <p>OVERRIDE Override message is generated</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>NR.OPTIONS</field>
+            <desc>
+                <p>Defines named values to indicate if an option applies to the associated NR.ATTRIBUTE. More than one option can be associated with the NR.ATTRIBUTE, with certain restrictions.</p>
+                <p/>
+                <p>Valid Inputs are NEGOTIABLE, NON-NEGOTIABLE, OVERRIDE, FIX-VALUE, MANDATORY as described below: -</p>
+                <p/>
+                <p>NEGOTIABLE</p>
+                <p>The value of NEGOTIABLE will indicate that the associated NR.ATTRIBUTE can be negotiated at the arrangement level.</p>
+                <p/>
+                <p>NON-NEGOTIABLE</p>
+                <p>The value of NON-NEGOTIABLE will indicate that the associated NR.ATTRIBUTE cannot be negotiated at the arrangement level. Both NEGOTIABLE and NON-NEGOTIABLE cannot be defined together</p>
+                <p/>
+                <p>OVERRIDE</p>
+                <p>Specifies if a default override message should be generated if the default attribute is amended at the arrangement level. If OVERRIDE is not specified, no override will be generated.</p>
+                <p/>
+                <p>FIX-VALUE</p>
+                <p>Specified if the field value is to be fixed at the arrangement level. If FIX-VALUE is not specified the field value will vary with the changes to the underlying product condition.</p>
+                <p/>
+                <p>MANDATORY</p>
+                <p>Specifies if the attribute is mandatory for this product condition. Can only be specified where the attribute is not defined as mandatory in the property class.</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.RESERVED1</field>
+            <desc>
+                <p>System Field - Reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>NR.RESERVED2</field>
+            <desc>
+                <p>System Field - Reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>NR.STD.COMP</field>
+            <desc>
+                <p>It is possible to define negotiation rules in EB.COMPARISON.TYPE.</p>
+                <p/>
+                <p>Input must be a valid record from EB.STANDARD.COMPARISON</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.TYPE</field>
+            <desc>
+                <p>Defines the negotiation rule that is linked to the field defined in "Nr.Attribute". If an attribute has a negotiation rule linked to it (in associated fields NR.TYPE, NR.VALUE and NR.MESSAGE) the attribute must be defined as negotiable.</p>
+                <p>It is possible to define more than one negotiation rule for an attribute</p>
+                <p/>
+                <p>Input must be a valid record from EB.COMPARISON.TYPE</p>
+                <p>This is a multi value set of fields</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.VALUE</field>
+            <desc>
+                <p>Defines the value that links to the rule in field "Nr.Type"</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACTIVITY.INITIATION</field>
+            <desc>
+                <p>First field in a set of associated multi value fields to specify which activities are qualified to keep an Account active. Allowed values are USER, CUSTOMER, BANK and AUTO. The values CUSTOMER, BANK and AUTO are derived from the INITIATION attribute in TRANSACTION table. This is the highest level of classifying Activities.</p>
+                <p/>
+                <p>For a given subvalue, only one of the below field can be given with value,</p>
+                <p>ACTIVITY.INITIATION,ACTIVITY.CLASS and ACTIVITY.NAME.</p>
+            </desc>
+        </t>
+        <t>
+            <field>OVERRIDE</field>
+            <desc>
+                <p>Standard Override field containing override messages generated by amendments to this property.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PERIOD</field>
+            <desc>
+                <p>The period of Inactivity when the account reaches the corresponding status. </p>
+                <p>It  accepts the period either in Months or Days or Years</p>
+                <p>Subsequent periods are treated as incremental from the previous period.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.APP.METHOD</field>
+            <desc>
+                <p>This will hold two values either DUE or CAPITALISE.This Field denote which application method(DUE or CAPITALISE)should be taken while applying periodic rule charges.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.APP.PERIOD</field>
+            <desc>
+                <p>This will have to accept a valid T24 period.This Field will denote the application period for current aplication method.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.ATTRIBUTE</field>
+            <desc>
+                <p>These are set of Attributes which define the names of the rule, which will be applied on certain attributes of property classes over a period of time.</p>
+                <p/>
+                <p>Input must be a valid record from AA.PERIODIC.ATTRIBUTE</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.BRK.CHARGE</field>
+            <desc>
+                <p>Charge can be collected when the periodic rule is broken</p>
+                <p>This field denotes the charge property. The property and its condition is</p>
+                <p>defined the product designer and validated during publishing</p>
+                <p/>
+                <p>Valid charge property</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.BRK.MSG</field>
+            <desc>
+                <p>Based on the PR.BRK.RES option selected, this will hold either an OVERRIDE or EB.ERROR id. By default the ids will be picked from the associated EB.COMPARISON.TYPE record. If CAP or FLOOR values are given, then the underlying AA.PERIODIC.ATTRIBUTE.CLASS should have this type defined in it.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.BRK.RES</field>
+            <desc>
+                <p>When a rule is broken what action needs to be taken is defined here. Currently, the various options available are </p>
+                <p/>
+                <p>Error block further processing</p>
+                <p>Override Give an override</p>
+                <p>Information  Record details only</p>
+                <p>CAP the rule value is to be used as a CAP if the rule is broken</p>
+                <p>FLOOR the rule value is to be used as a FLOOR if the rule is broken</p>
+                <p/>
+                <p>Validation ules</p>
+                <p>Should be one of the above valid options</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.RESERVED.1</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PR.RESERVED.2</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ACTIVITY.NAME</field>
+            <desc>
+                <p>Associated with ACTIVITY.INITIATION, this field allows us to specify an AA Activity . An Activity Initiation Type, Class may be set to be Include/Exclude but configuration here takes ultimate precedence when the system tries to evaluate an AA Activity as to whether its qualified to keep an Arrangement active or not.</p>
+                <p/>
+                <p>For a given subvalue, only one of the below field can be given with value,</p>
+                <p>ACTIVITY.INITIATION,ACTIVITY.CLASS and ACTIVITY.NAME.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.RESERVED.3</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PR.VALUE</field>
+            <desc>
+                <p>This is the actual rule value, which will be applied on certain attributes of the property classes over a period of time.</p>
+                <p/>
+                <p>Input must be a valid data type defined in the corresponding</p>
+                <p>AA.PERIODIC.ATTRIBUTE.CLASS record.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PRODUCT.KEY</field>
+            <desc>
+                <p>This field represents the key to the product level conditions of a property class</p>
+                <p>This field basically has three components seperated by a hyphen</p>
+                <p>Condition id</p>
+                <p>Currency - if the property class is currency based. By default takes up local currency</p>
+                <p>Effective date - if the property class is dated</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>STATUS</field>
+            <desc>
+                <p>The Dormancy Status to be set in AA.ACCOUNT.DETAILS, after the corresponding Period of Inactivity. Values in this field are defined under the Virtual table (EB.LOOKUP) AA.DORMANCY.STATUS. This is the first field in a set of associated multi value fields upto &lt;&lt;EXCEPTION RULE&gt;&gt;</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>STMT.NOS</field>
+            <desc>
+                <p>System field - not used for property conditions</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE1</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE2</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE3</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE4</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE5</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHANGED.FIELDS</field>
+            <desc>
+                <p>No input and multi value field - lists all fields that have been negotiated for each dated version of the property. For a subsequently dated property, the attributes listed in this field will appear in "Negotiated.Fields" and only newly negotiated fields will appear on "Changed.Fields"</p>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE6</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE7</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+            </desc>
+        </t>
+        <t>
+            <field>TARGET.PRODUCT</field>
+            <desc>
+                <p>This field denotes the target classic product of the given property class</p>
+                <p/>
+                <p>The already existing T24 products are mapped using AA infrastructure</p>
+                <p>These are called classic products</p>
+                <p>These products are mapped to different property clases</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHARGE.FREQUENCY</field>
+            <desc>
+                <p>The frequency of the periodic charge. When a frequency is specified, it means that a charge should be collected periodically from the account, as long as it remains in the corresponding Dormancy status. If the Frequency is left Blank, then no periodic charge would be collected from the account during the corresponding Dormancy status. Normally scheduled charges are defined through Payment Schedule. However, since this is a conditional charge (to be collected only based on the Dormancy status), the scheduling of this Charge is driven by this field in Dormancy condition. The Activity Class &lt;&lt;PL&gt;&gt;-SCHEDULE.CHARGE-DORMANCY is used for this purpose. For each Dormancy status, system would automatically create an AA Activity under this Activity Class (for ex, ACCOUNTS-SCHEDULE.CHARGE-DORMANCY*INA where INA is a Dormancy status) and based on the frequency specified, system will schedule the respective Activity, based on the Dormancy status. We will be able to apply the Charge by defining Activity Charge for this Activity.  If a frequency is specified but not the respective Activity Charge, then during Proof and Publish of the Product, system will raise an error with details of the Activity for which Charges should be specified.</p>
+            </desc>
+        </t>
+        <t>
+            <field>DEFAULT.ATTR.OPTION</field>
+            <desc>
+                <p>Optional field - Allowed Values are RESETTING and NON-RESETTING.</p>
+                <p/>
+                <p> RESETTING - During any Renewal Activities (for eg : change.product, rollover or reset) the property conditions will be reset from the product.</p>
+                <p/>
+                <p> NON-RESETTING - During any Renewal Activities property conditions will be maintained from the Arrangement level.</p>
+                <p/>
+                <p> Leaving the field blank sets NON-RESETTING as the default option.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>DEFAULT.NEGOTIABLE</field>
+            <desc>
+                <p>Defines whether all attributes (fields) can be negotiable or not.</p>
+                <p/>
+                <p>This field is Mandatory</p>
+                <p>Valid options are YES and NO</p>
+            </desc>
+        </t>
+        <t>
+            <field>DESCRIPTION</field>
+            <desc>
+                <p>DESCRIPTION</p>
+                <p>Describes this condition record and is used for enrichment.</p>
+                <p>This field can be expanded to allow the User to enter the Description of the property condition in various languages. Each expansion of the field will correspond to a new Language as defined in the LANGUAGE table (Ref: GENERAL TABLES), and will indicate to the User the Language in which the Description must be entered.</p>
+                <p>Validation Rules:</p>
+                <p>Up to 35 type A (alphanumeric) characters</p>
+            </desc>
+        </t>
+        <t>
+            <field>EXCEPTION.API</field>
+            <desc>
+                <p>ExceptionAPI allows a user to specify  an API (jBC or Java) that the system can call to get a final decision. When the system evaluates based on the Dormancy criteria and the Activity history and determines that a given arrangement has been Inactive for the set period, it will invoke the Exception API and/or Exception Rules to allow them to filter this arrangement as an Exception and not mark it as Dormant. The role of this Exception API is simply to give a decision on not marking the arrangement as Dormant. Where the system determines that an Arrangement has infact been active, it will not call this Exception API.</p>
+                <p> It is possible to attach more than one API per status and it is also possible to attach both a Rule and an API to the same status. </p>
+                <p>When there is more than one API is attached, the system will invoke both of them and will respect the most restrictive answers of them. </p>
+                <p>• The below are the arguments to pass in the exception API: </p>
+                <p> Input Arguments: </p>
+                <p> ArrangementId       - Arrangement Reference</p>
+                <p> EffectiveDate       - Current activity effective date</p>
+                <p> ActivityId          - Current activity id</p>
+                <p> ActivityRecord      - Current activity record</p>
+                <p> DormancyStatus&lt;1&gt;   - Current dormancy status</p>
+                <p> DormancyStatus&lt;2&gt;   - Evaluated dormancy status</p>
+                <p> CurrentDormancyDate - Current dormancy date</p>
+                <p/>
+                <p> Output Argument:</p>
+                <p/>
+                <p> ResultsType   - Result type (SUCCESS/ERROR)</p>
+                <p> ResultsValue  - If result type is error then the error message needs to be raised</p>
+                <p> Routine AA.LOCAL.SENSITIVE.CUSTOMER can be viewed for reference purpose</p>
+                <p>On a given subvalue, either this or Exception API can be specified but not both.</p>
+                <p/>
+            </desc>
+        </t>
+    <t><field>ARRANGEMENT.KEY</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>ACTIVITY</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>ACTION</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>PERIODIC.INTEREST</table>
+</header>
+<overview>
+<ovdesc>
+<p>This table defines, for each currency, interest rates for any time period desired by the user.  These periods can be defined either in months, e.g. 1 month, 2 months, 3 months, 6 months etc.. or in days, e.g. 7 days, 15 days, 30 days etc..  For each period defined by the user, both a BID and OFFER rate can be entered. </p><p>PERIODIC.INTEREST will be used by applications such as Foreign Exchange to default interest rate on Forward contracts using the Interest revaluation method or the Loans and Deposits applications to perform automatic Rollover. </p><p /><p /><p>In LD contracts, where the INT.RATE.TYPE is set to PERIODIC.AUTOMATIC, on the R (rate revision) schedule dates, the PERIODIC.INTEREST table will be referred to, for the interest rate from the appropriate key (record). Changes can be made to keys which were created before current date, and contracts which have accessed these keys will also get updated with the changes, provided the R schedules were not prior to any principal or interest movements on the contract. Whenever a backvalued key in PERIODIC.INTEREST is changed, the ID of such key is stored in an internal file called PERIODIC.RATE.CHANGE.</p><p /></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>DESCRIPTION</field>
+<desc><p>Allows the user to enter free form description of the key. </p><p>This field can be expanded to allow the User to enter the Description of the Periodic Interest rate in various languages.  Each expansion of the field will correspond to a new Language as defined in the LANGUAGE Table and will indicate to the User the Language in which the Description must be entered. </p><p><p>Validation Rules:</p></p><p>Up to 15 type A (alphanumeric) characters. Multilanguage field. Multivalue field. (Optional input; default = currency of ID followed by literal 'TERM RATES'.)</p></desc>
+</t>
+<t>
+<field>LOCAL.ROUTINE</field>
+<desc><p>By using local routines in this field, regional developers can add their own tables to T24 and return spreads and/or interest rates based upon decisions in their own routines. This field allows local routines to be called when this record is accessed by the TERMRATE routine. </p><p>Two parameters are passed to, and returned by, the local  routine: </p><p>- INTEREST.RATE  the derived Periodic interest rate - MARGIN         which can be passed from the calling process </p><p>If more than one local routine is defined then each routine will be called in turn with the above parameters. </p><p>As an example, Money Market Auto Rollovers can use a routine to determine new rates and/or spreads based on locally developed spread tables related to department and customer groups. </p><p>See Helptext for Money Market ROLLOVER.INT.RATE. </p><p><p>Validation Rules:</p></p><p>Optional input. Multi Valued field up to 35 alphanumeric characters in length.</p><p>Any value(s) entered must be the name(s) of a uniVerse routine(s) that have been compiled and cataloged successfully.</p></desc>
+</t>
+<t>
+<field>REF.CCY.DATE</field>
+<desc><p>Contains the key to access a specific record on the table. </p><p><p>Validation Rules:</p></p><p /><p>NNCCYDATE       where: NN   =   Sequence number in range 01-99 CCY  =   Valid currency code in SWIFT Format DATE =   Valid date in format YYYYMMDD (Mandatory input for NN and CCY.  Date will be defaulted to the RUN date if not input.)</p><p>As a minimum the sequence number and the currency code must be entered.</p><p>SWIFT currency code must exist on the CURRENCY table.</p></desc>
+</t>
+<t>
+<field>RESERVED.1</field>
+<desc><p>This field is reserved for future expansion. </p><p><p>Validation Rules:</p></p><p>This is a NOINPUT field.</p></desc>
+</t>
+<t>
+<field>DEFAULT.MIS.TABLE</field>
+<desc><p>Identifies the default M.I.S. rate to be taken when the ID has been defined in a transaction. </p><p><p>Validation Rules:</p></p><p>2 numeric characters in range 01-99. Default to the sequence number of the ID.</p><p>The sequence number of this currency must already exist on the PERIODIC.INTEREST table.</p></desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc><p>Identifies any additional element which has been defined locally to meet a particular requirement. </p><p>As in the majority of T24 Applications, the User is allowed to define up to 999 Local Elements in addition to the standard fields previously specified. These Local Elements should be defined by the User where deemed necessary according to local practice. </p><p>The name(s) of the new element(s), as well as the Format and <p>Validation Rules:</p>, must be defined in the LOCAL.TABLE. </p><p><p>Validation Rules:</p></p><p>Up to 35 characters as defined in the Local Table definition for this Local Reference field.</p><p>Multivalue field. (Optional or Mandatory Input according to definition in LOCAL.TABLE for this Local Reference element)</p><p>As defined by the User within the LOCAL.TABLE and LOCAL.REF.TABLE.</p></desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc><p>Contains details of any overrides applicable to this Account. </p><p><p>Validation Rules:</p></p><p>Up to 35 type A (alphanumeric) characters.</p><p>Multivalue field.</p><p>(Internal field.)</p></desc>
+</t>
+<t>
+<field>MAX.INT.RATE</field>
+<desc><p> Definition of the largest possible interest rate for the currency.  No input indicates that there is no maximum rate. </p><p><p>Validation Rules:</p></p><p>Standard Rate Format. Optional input. Should only be allowed if the key begins 01.</p></desc>
+</t>
+<t>
+<field>RESERVED.2</field>
+<desc><p>This field is reserved for future expansion. </p><p><p>Validation Rules:</p></p><p>This is a NOINPUT field.</p></desc>
+</t>
+<t>
+<field>HIST.DATE</field>
+<desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc>
+</t>
+<t>
+<field>RESERVED.5</field>
+<desc><p>This field is reserved for future expansion. </p><p><p>Validation Rules:</p></p><p>This is a NOINPUT field.</p></desc>
+</t>
+<t>
+<field>REST.DATE</field>
+<desc><p /><p /><p>To calculate the date of the rest period, the system will add to the effective date of the key the value defined in REST.PERIOD (Field 3). If that date is a holiday then system will take the next date as REST.DATE. This REST.DATE can also be arrived based on base country setup done in ST.RATE.PARAMETER table</p><p><p>Validation Rules:</p></p><p>Standard Date Format. System generated. Multivalue field</p></desc>
+</t>
+<t>
+<field>INT.TOLERANCE</field>
+<desc><p>Interest percentage tolerance allowed on money market contracts.  A tolerance entered here will be used to check if an over-ride is required for any interest rate difference found on any money market contracts entered. </p><p>The existence of a default INT.TOLERANCE in LMM.INSTALL.CONDS indicates that a check for an interest rate difference over-ride should be made on money market contracts.  If the difference between the rate entered and that calculated exceeds the percentage tolerance entered here then an over-ride is required. </p><p><p>Validation Rules:</p></p><p>4 Numeric character input up to 100% (Optional input)</p><p>This field may only be entered for records in this file with a leading sequence number of '01'.</p></desc>
+</t>
+<t>
+<field>DAYS.SINCE.SPOT</field>
+<desc><p>Specifies the number of days from the effective date of the key to the Rest date. Format;    System generated. Multivalue field. </p></desc>
+</t>
+<t>
+<field>HIST.CO.CODE</field>
+<desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc>
+</t>
+<t>
+<field>HIST.NO</field>
+<desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc>
+</t>
+<t>
+<field>USE.LAST.WRKNG.DAY</field>
+<desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc>
+</t>
+<t>
+<field>RESERVED.4</field>
+<desc><p>This field is reserved for future expansion. </p><p><p>Validation Rules:</p></p><p>This is a NOINPUT field.</p></desc>
+</t>
+<t>
+<field>RESERVED.3</field>
+<desc><p>This field is reserved for future expansion. </p><p><p>Validation Rules:</p></p><p>This is a NOINPUT field.</p></desc>
+</t>
+<t>
+<field>REST.PERIOD</field>
+<desc><p>Indicates the period to which a rate applies.</p><p><p>Validation Rules:</p></p><p /><p>'R' for Remaining, NND for Rest period in Days where D = Number of Days,      NNNM for Rest Period in Months where M= Number of Months and NNY for rest     period in years where Y= Number of years. e.g. a 10 day rest period would be     written as 10D, a 120 month rest period as 120M and a 20 year rest period as     20Y. R must be the last rest period entered. Multi value field. (Mandatory     input. No default.)   </p><p>The number of days or months must be entered in logical order i.e. in     ascending sequence.   </p><p>For days the range 01-31 will be allowed while for months 01-360 will be     accepted. For years the range 01-30 is accepted.   </p><p>When 'R' is defined, at least one additional rest period must be defined.   </p><p>When more than one rest period is defined, 'R' must be entered on the last     entered rest period.</p></desc>
+</t>
+<t>
+<field>OFFER.RATE</field>
+<desc><p>Identifies the OFFER rate of the related currency for the time period defined in REST PERIOD (Field 3.1). Standard Rate Format Subvalue associated field. (Mandatory input) </p><p><p>Validation Rules:</p></p><p>The OFFER rate must be greater than the BID rate.</p></desc>
+</t>
+<t>
+<field>AMT</field>
+<desc><p>Defines the amount in the band. The field must be entered in an ascending order with no duplicate amounts. If this field is left blank then the below rates will be the defaults. If the BUILD.FWD.RATE field is set to Y then the rate with the amount set to blank will be used for the update of the forward rates in the end of day process. </p><p><p>Validation Rules:</p></p><p>Input Optional</p><p>No Duplicates allowed</p><p>Mutlivalued associated field</p></desc>
+</t>
+<t>
+<field>APPLICATION</field>
+<desc><p>(Added in G14.0.0)</p><p>Negative interest rates can be accessed in the application given in this field.  At present DX, MM, SW applications are given in the pick list attached to this field.  If this field is blank, the negative interest rates cannot be accessed in the application mentioned above. </p><p><p>Validation Rules:</p></p><p /><p>Optional input</p><p>At present only DX, MM, SW can be given</p><p>Default is NULL</p></desc>
+</t>
+<t>
+<field>BID.RATE</field>
+<desc><p>Identifies the BID rate of the related currency for the time period defined in REST PERIOD (Field 3.1). </p><p><p>Validation Rules:</p></p><p>Standard Rate Format. Subvalue associated field. (Mandatory input) The BID rate must be less than the OFFER rate.</p></desc>
+</t>
+<t>
+<field>BUILD.FWD.RATE</field>
+<desc><p>Flag to indicate if Forward rate for this currency should be calculated automatically using the bid and offer rate from the Periodic Interest table. Format;    Y (Optional input) </p><p><p>Validation Rules:</p></p><p>Only allowed for current record and for ID's having 01 as sequence number.</p></desc>
+</t>
+</menu>
+</t24help>
+

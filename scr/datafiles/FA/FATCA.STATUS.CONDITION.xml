@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FA</product>
+<table>FATCA.STATUS.CONDITION</table>
+</header>
+<overview>
+<ovdesc>
+
+        <p>The rule based automatic status classification will be based on the conditions defined in this table.
+The account classification logic within T24 will be rule based, so that if there are any modifications (new documentation requirements, addition of new classifications, etc.), these can be easily handled by changing the rules set. 
+The FATCA.STATUS in FATCA.CUSTOMER.SUPPLEMENTARY.INFO will be updated based on the conditions defined here, when AUTO.UPDATE is set as “YES” in FATCA.PARAMETER
+</p>
+    </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CHECK.JO.BO.STATUS</field>
+<desc>
+        <p>If this field is set to “YES”, then the owner status will also be considered in evaluating the account classification. Owners with role type JOINT / BENEFICIAL / SUBSTANTIAL will only be considered for evaluation.</p>
+        <p>If the field is blank then it will not be considered for status classification.</p>
+        <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>Allowed value is “YES”</p>
+    </desc>
+</t>
+<t>
+<field>DECISION.FIELD</field>
+<desc>
+        <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">This is a valid field from FATCA CUSTOMER SUPPLEMENTARY INFO based on which the rule is defined. As of now, the only field allowed is FORM TYPE.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p data-mc-conditions="FROMRELEASE.R13">The only allowed input is FORM TYPE</p>
+    </desc>
+</t>
+<t>
+<field>DECISION</field>
+<desc>
+        <p data-mc-conditions="FROMRELEASE.R13">The field links the DECISION.FIELD to DECISION.VALUE.</p>
+        <p>The operand governing whether the value given below fits in with the above condition</p>
+        <p>Validation Rules:</p>
+        <p>EQ or NE</p>
+    </desc>
+</t>
+<t>
+<field>DECISION.VALUE</field>
+<desc>
+        <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">A valid value for the field specified in DECISION.FIELD. Since only FORM TYPE is allowed as of now, the field will hold the valid document type (FATCA.FORM.TYPE).</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p data-mc-conditions="FROMRELEASE.R13">A valid FATCA.FORM.TYPE</p>
+    </desc>
+</t>
+<t>
+<field>ENTITY.STATUS</field>
+<desc>
+        <p>If the client choice (entity self-classification) also has to be checked for arriving at the account classification, the self-classification pertaining to this account classification has to be defined here. The condition match will happen only when the value specified here is same as the value specified in ENTITY.STATUS field of FATCA.CUSTOMER.SUPPLEMENTARY.INFO</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p data-mc-conditions="FROMRELEASE.R13">A valid FATCA TAX STATUS ID</p>
+    </desc>
+</t>
+<t>
+<field>EXISTING.NEW</field>
+<desc>
+        <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">The field is used to indicate whether the conditions above are applicable only to new clients or existing clients or both.  </p>
+        <p>This will be determined by referring to the CUSTOMER SINCE field in CUSTOMER. If the date is on or after 1st July 2013, the relationship will be considered new else (even if the field is blank), the relationship will be considered existing. If the condition, for example, is specified only for New, the conditions specified here will not apply for Existing accounts.</p>
+        <p>When this field value is not updated, it will be considered as “BOTH”, it will be applicable to both New and Existing accounts.</p>
+        <p>Validation Rules:</p>
+        <p>NEW or EXISTING or BOTH</p>
+    </desc>
+</t>
+<t>
+<field>FATCA.STATUS.CONDITION.ID</field>
+<desc>
+        <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">The ID will be a valid FATCA STATUS or Account classification defined in FATCA TAX STATUS.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p data-mc-conditions="FROMRELEASE.R13">A valid FATCA TAX STATUS ID</p>
+    </desc>
+</t>
+<t>
+<field>JO.BO.STATUS</field>
+<desc>
+        <p>This field accepts one of the values defined in DEFLT.US.STATUS, DEFLT.NONUS.STATUS fields in FATCA.PARAMETER.</p>
+        <p>If the JO.BO.STATUS value is defined with a value specified in DEFLT.US.STATUS field of FATCA.PARAMETER, then the account with even one US Joint or beneficial or Substantial owner will be considered as US account.</p>
+        <p>If the JO.BO.STATUS value is defined with a value specified in DEFLT.NONUS.STATUS field of FATCA.PARAMETER, then the account with all non-us owners (Joint or beneficial or Substantial owner) will be considered as Non-US account.</p>
+        <p>Validation Rules:</p>
+        <p>
+            <p value="1">Mandatory when CHECK.JO.BO.STATUS is set as “YES”</p>
+            <p value="2">Must be a valid value from the FATCA.TAX.STATUS application.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>KYC.CHECK</field>
+<desc>
+        <p>If this field is set to YES, only clients with KYC checks completed (KYC CHECK field in FATCA CUSTOMER record set to YES), will be considered to have complied with this rule. If this field is left blank, then the value of KYC check field will not be considered for status classification.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules</p>
+        <p data-mc-conditions="FROMRELEASE.R13"> The allowed values are YES or NO</p>
+    </desc>
+</t>
+<t>
+<field>LEVEL</field>
+<desc>
+        <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">Level will be used to group the conditions and evaluate based on the condition level.</p>
+        <p>When no value is specified it will be considered as previous conditions level value.</p>
+        <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">An example is provided below:</p>
+        <p>
+            <p style="text-align: left;" value="1" data-mc-conditions="FROMRELEASE.R13">To be considered a non-US account, the client has to provide W-8BEN or FGN.PASSPORT. In this case, the Level field will be blank.</p>
+            <p style="text-align: left;" value="2" data-mc-conditions="FROMRELEASE.R13">If the requirement is to provide (W-8BEN-E and FIN.REPORT) or (OWNER.CONFIRMATION), then W-8BEN-E and FIN.REPORT can be set as LEVEL 1 (to be evaluated together) and OWNER CONFIRMATION as LEVEL 2 (this will be evaluated after Level 1 has been evaluated and no match has been found).</p>
+        </p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules</p>
+        <p>
+            <p value="1" data-mc-conditions="FROMRELEASE.R13">Numeric input</p>
+            <p value="2">Must be defined in ascending order.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+        <p>Identifies any additional element which has been defined locally to meet a particular requirement.</p>
+        <p>As in the majority of T24 Applications, the User is allowed to define in the up to 999 Local elements in addition to the standard fields previously specified. These local elements should be defined by the User where deemed necessary according to local practice.</p>
+        <p>The name of the new element(s), as well as the Format and Validation Rules, must be defined in the Local Tables and LOCAL.REF.TABLE prior to their use in the FATCA.PARAMETER application.</p>
+        <p>Validation Rules:</p>
+        <p>
+            <p value="1">Up to 35 characters as defined in the Local Table definition for this local reference field. Multi-value field. (Optional or Mandatory input according to definition in Local Table for this Local Reference element.)</p>
+            <p value="2">As defined by the User within the individual Local Table</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>NARRATIVE</field>
+<desc>
+        <p>The Narrative to be updated in the Status Narrative field in FATCA.CUSTOMER.SUPPLEMENTARY.INFO along with the Account classification</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Validation rules </p>
+        <p>1-35 ANY characters</p>
+    </desc>
+</t>
+<t>
+<field>OPERAND</field>
+<desc>
+        <p style="text-align: left;" data-mc-conditions="FROMRELEASE.R13">The fields from Decision Field to Operand are associated multi-value fields. If there are more than one set of values, the Operand will determine whether both these conditions will have to be satisfied or if it is sufficient even if one of the conditions is met.</p>
+        <p>Validation Rules:</p>
+        <p>
+            <p value="1">Mandatory when multiple conditions are specified. Not required for the last condition defined.</p>
+            <p value="2">AND or OR</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.1</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.2</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.3</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>STATUS.COND.ID</field>
+<desc>
+        <p>Specifies a valid FATCA.TAX.STATUS id.</p>
+        <p>Validation Rules:</p>
+        <p>Must be a valid value from the FATCA.TAX.STATUS application</p>
+    </desc>
+</t>
+<t>
+<field>INDICIA</field>
+<desc>
+	  <p>If the FATCA.STATUS has to be automatically updated for clients with no indicia (say, NON.US.NO.INDICIA), then this field will have to be set as ‘NULL’ and only the clients with no indicia (identified based on INDICIA STRENGTH in FATCA.CUSTOMER.SUPPLEMENTARY.INFO) will be considered as complying with the condition. </p>
+  	  <p>This can be set only in conjunction with any of the documents in DECISION.FIELD and DECISION.VALUE above. </p>
+  			<p>Validation Rules:</p>
+  				<p>NULL is the only allowed value for this field.</p>
+</desc>
+  </t>	
+</menu>
+</t24help>
+

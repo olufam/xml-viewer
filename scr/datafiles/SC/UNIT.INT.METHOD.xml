@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SC</product>
+<table>UNIT.INT.METHOD</table>
+</header>
+<overview>
+<ovdesc>
+
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>PAR.VALUE</field>
+<desc>
+            <p>Determines if the element PAR.VALUE should be rounded during the calculation or after the calculation</p>
+            <p>"PRE" will round during the calculation &amp; "POST" will round after the calculation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>NUMERATE</field>
+<desc>
+            <p>This table will specify when unit rounding will occur within the accrued interest calculation.</p>
+            <p>This file will be keyed on a number basis.</p>
+            <p>Depending on the options keyed into each field, "PRE" or "POST", the system will identify when a calculation is done. PRE (Before) then rounding will occur (as specified in SC.BOND.ROUNDING table) before the final calculation is done POST (After) to give the final interest figure.</p>
+            <p>The basic accrued interest calculation is: -</p>
+            <table border="0" cellpadding="3">
+                <tr>
+                    <td>Accrued Interest</td>
+                    <td>=</td>
+                    <td>Nominal x Accrued Days x Coupon Rate         Days in Year x Coupon Denominator</td>
+                </tr>
+            </table>
+            <p>An example of this calculation is as follows</p>
+            <table border="0">
+                <tr>
+                    <td>Nominal</td>
+                    <td><strong>GBP 1,500,000.00</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Coupon Rate</td>
+                    <td><strong>10 %</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Accrued Days</td>
+                    <td><strong>300</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Calculation Basis </td>
+                    <td><strong>366/365</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Coupon Denominator</td>
+                    <td><strong>100</strong>
+                    </td>
+                </tr>
+            </table>
+            <p>Interest calculated would be:</p>
+            <table border="0" cellpadding="3">
+                <tr>
+                    <td>
+                        <p>1,500,000 * 300 x 10         365 * 100</p>
+                    </td>
+                    <td>=</td>
+                    <td>GBP 123,287.67</td>
+                </tr>
+            </table>
+            <p>However, if different elements of the calculation where calculated PRE rounded and then calculated POST the results produced will be different.</p>
+            <p> An example is as follows based in the above criteria and the following tables defined.</p>
+            <p>SC.BOND.ROUNING</p>
+            <table border="0">
+                <tr>
+                    <td>ACR.INT.ROUND</td>
+                    <td><strong>OFF</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>ACR.DEC.PLC</td>
+                    <td><strong>2</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>UNIT.INT.METHOD</td>
+                    <td><strong>1</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>UNIT.INT.ROUND</td>
+                    <td><strong>OFF</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>UNIT.DEC.PLC</td>
+                    <td><strong>2</strong>
+                    </td>
+                </tr>
+            </table>
+            <p>UNIT.INT.METHOD</p>
+            <table border="0">
+                <tr>
+                    <td>NOMINAL</td>
+                    <td><strong>POST</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>DAYS.NUMARATOR</td>
+                    <td><strong>PRE</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>DAYS.DENOMINATOR</td>
+                    <td><strong>PRE</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>RATE.NUMARATOR</td>
+                    <td><strong>PRE</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>RATE.DENOMINATOR</td>
+                    <td><strong>POST</strong>
+                    </td>
+                </tr>
+            </table>
+            <p>The calculation process would be </p>
+            <p>1. PRE Calculation - DAYS.NUMERATOR (300) * RATE.NUMARATOR (10) / DAYS.DENOMINATOR(365) =<strong> 8.219178082</strong></p>
+            <p>2. Apply Rounding - as specified in SC.BOND.ROUNDING table fields UNIT.DEC.PLC(2) and UNIT.INT.ROUND(OFF) =<strong> 8.22</strong></p>
+            <p>3. POST Calculation - NOMINAL(1,500,000) / RATE.DENOMINATOR (100) X 8.22 = GBP 123,300.00</p>
+            <p>3. Accrued interest rounding as ACR.INT.ROUND(OFF) with ACR.DEC.PLC(2) leaves a final figure of GBP 123,300.00 as transaction interest.</p>
+            <p>Other unit methods can be defined in a similar way to achieve different results.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 10 Alpha Characters</p>
+        </desc>
+</t>
+<t>
+<field>RATE.NUMERATOR</field>
+<desc>
+            <p>Determines if the element RATE.NUMERATOR should be rounded during the calculation or after the calculation</p>
+            <p>"PRE" will round during the calculation &amp; "POST" will round after the calculation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>"PRE" or "POST"</p>
+            <p>Mandatory</p>
+        </desc>
+</t>
+<t>
+<field>RATE.DENOMINATOR</field>
+<desc>
+            <p>Determines if the element RATE.DENOMINATOR should be rounded during the calculation or after the calculation</p>
+            <p>"PRE" will round during the calculation &amp; "POST" will round after the calculation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>"PRE" or "POST"</p>
+            <p>Mandatory</p>
+        </desc>
+</t>
+<t>
+<field>NOMINAL</field>
+<desc>
+            <p>Determines if the element NOMINAL should be rounded during the calculation or after the calculation</p>
+            <p>"PRE" will round during the calculation &amp; "POST" will round after the calculation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>"PRE" or "POST"</p>
+            <p>Mandatory</p>
+        </desc>
+</t>
+<t>
+<field>DAYS.DENOMINATOR</field>
+<desc>
+            <p>Determines if the element DAYS.DENOMINATOR should be rounded during the calculation or after the calculation</p>
+            <p>"PRE" will round during the calculation &amp; "POST" will round after the calculation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>"PRE" or "POST"</p>
+            <p>Mandatory</p>
+        </desc>
+</t>
+<t>
+<field>DAYS.NUMERATOR</field>
+<desc>
+            <p>Determines if the element DAYS.NUMERATOR should be rounded during the calculation or after the calculation</p>
+            <p>"PRE" will round during the calculation &amp; "POST" will round after the calculation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>"PRE" or "POST"</p>
+            <p>Mandatory</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Use this field to describe the type of rounding that this record denotes.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>65 Character text.</p>
+        </desc>
+</t>
+<t>
+<field>LAST.DAY.AI.INT</field>
+<desc>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+        </desc>
+</t>
+</menu>
+</t24help>
+

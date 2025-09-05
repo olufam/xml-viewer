@@ -1,0 +1,1709 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>AZ</product>
+<table>AZ.ACCOUNT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>All in One Account module enables the Banks to define Account based Loan and Deposit products. The loan/ deposit accounts opened under this module, based on a pre defined All in One Products,  are different from the Contract based Loans and Deposits, in view of flexibility in  operations, like a normal account. The  repayment schedules defined under this module are for the purpose of reference with the account balance, for arriving at the arrears or allowing redraw facilities, on the scheduled dates.</p>
+            <p>The file AZ.ACCOUNT defines a LOAN or DEPOSIT account opened under a AZ.PRODUCT.PARAMETER.</p>
+            <p>The ID of a new ACCOUNT opened for this purpose is to be used for opening AZ.ACCOUNT also. The category of the ACCOUNT is defaulted  to AZ.ACCOUNT. The category should match with the category defined in the corresponding AZ Product.</p>
+            <p>The AZ account opened under a particular All In One Product inherits the default features of  the  product, like penal rate, Repayment type,  Maximum Interest only period, etc. However, at AZ account level also, changes are accepted to override the defaulted values.</p>
+            <p>Certain validations like the minimum term, maximum term, allowed category, maximum back date, minimum and maximum amount (in the case of deposit) are done at the AZ account, with respect to the values defined under the corresponding AZ Product.</p>
+            <p />
+            <p>From 200607 onwards, History restore functionality if available for AZ Contracts. 'H' function is allowed for reversed, matured &amp; pre-closed contracts</p>
+            <p>Existing accounts with balance are not to be used to create deposit type AZ contracts.</p>
+            <p>Notice period in ACCT.GROUP.CONDITION should not be setup for groups in which AZ account category falls.</p>
+            <p />
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>PAY.INT.AT.MAT</field>
+<desc>
+            <p>This field is used to decide whether accrued interest has to be paid out or rolled over during rollover of a fixed deposit. Allowed values are YES or NO</p>
+            <p />
+            <p>If  'YES' is defined, then during rollover, the accrued interest before rollover will be paid out .When final maturity is reached or maturity instruction is Payment to Nominated account, then interest will be paid to Nominated account.</p>
+            <p />
+            <p>If  'NO' is defined, then interest will be rolled over along with the principal deposit amount by default. The amount of rolled over deposit can anyway be overridden by the rollover amount definition at AZ.ACCOUNT level</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ROLL.INT.PAY.FQU</field>
+<desc>
+            <p>This field is to capture the interest payment frequency which would be used to define interest payment schedules after rollover. </p>
+            <p />
+            <p>This field is applicable only for fixed deposits with Maturity instruction is set as Automatic rollover and Schedules set as Y.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Types of input allowed are Dnn,Wnn,Mnn</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>NOMINATED.ACCOUNT</field>
+<desc>
+            <p>Defines the Customer account or the Internal account in T24, to which the loan draw down amounts are credited.</p>
+            <p />
+            <p>If no nominated account is defined, then the system will create a TELLER.DEFAULT for the draw down amount.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional Input</p>
+            <p>In deposits if MATURITY.INSTR is set to 'Payment to Nominated Account' then this field is mandatory.</p>
+            <p>AZ.ACCOUNT not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>ROLL.INT.CAP.FQU</field>
+<desc><p>This field is to capture the interest capitalisation frequency which would be used to define interest capitalisation schedules after rollover. </p><p /><p>This field is applicable only for fixed deposits with Maturity instruction is set as Automatic rollover and Schedules set as Y.</p><p /><p><p>Validation Rules:</p></p><p /><p>Types of input allowed are Dnn,Wnn,Mnn</p><p /></desc>
+</t>
+<t>
+<field>RATE.SCH.KEY</field>
+<desc>
+            <p>This field, as a part of  R type schedule, contains the linking reference number (key) of the appropriate interest rate defined in BASIC.INTETEST table, which will be used for interest computation purposes.</p>
+            <p>Based on the key defined here, the interest rate will be taken by the system  from the BASIC.INTEREST table for interest calculation, from the date defined under  Frequency.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Input is  allowed only if  SCHEDULE is defined  as 'Y'</p>
+            <p>part of a set of multi value fields</p>
+            <p>Allowed only for R type Schedules</p>
+            <p>Should have been defined in BASIC.RATE.TEXT and in BASIC.INTEREST</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>ANNUITY.ADJUST</field>
+<desc>
+            <p>In case of ANNUITY type of loans, this field indicates if the annuity amount can be lesser than the interest amount for the period.</p>
+            <p />
+            <p>If 'YES' is defined, then system allows user to define ANNUITY Amount lesser than the interest amount .</p>
+            <p />
+            <p>If 'NO' is defined, then system validates that the ANNUITY amount should be atleast interest.</p>
+            <p />
+            <p>In case of user defined annuity contracts with TERM.PRIORITY as 'N', it is possible that even after crossing the original maturity date in the contract , the system needs to further extend the term due to the presence of outstanding balance which is not fully repaid.</p>
+            <p>In such case when Interest amount happens to be more than total repayment amount, then the system shall  raise error irrespective of settings in this field .</p>
+            <p>User can choose to either change TERM.PRIORITY to Yes or  user defined annuity amount.</p>
+            <p />
+            <p>It is defaulted from AZ.PRODUCT.PARAMETER &amp; is NOCHANGE field</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid options are 'YES', 'NO'.</p>
+            <p>Default is 'NO'.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.ACCT</field>
+<desc>
+            <p>The field can be input with any valid account.</p>
+            <p />
+            <p>This field is a part of the Charge code multivalue and indicates tax on charge.</p>
+            <p />
+            <p>The account specified in this field is the a/c to which such TAX on charge is debited.</p>
+            <p />
+            <p>VALIDATIONS</p>
+            <p />
+            <p>Any valid account can be specified.</p>
+        </desc>
+</t>
+<t>
+<field>MATURITY.DATE</field>
+<desc>
+            <p>Defines the maturity date of the loan / deposit account of All in One Product.</p>
+            <p />
+            <p>The date is validated against the maximum term and minimum term defined in the AZ Product Parameter of the account.</p>
+            <p />
+            <p>The date cannot be less than the business date/ Value date.</p>
+            <p />
+            <p>If MULTI is set to 'Y' then for a CREDIT CARD type of loan or FIXED type of deposit this field should be left BLANK and the maturity date will be set in the sub accounts that are created.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard Date format</p>
+            <p>Can accept values of period  like number of days, months (example: 12D, 60M) also, for calculating Maturity Date.</p>
+        </desc>
+</t>
+<t>
+<field>RATE.SCH.OPERND</field>
+<desc>
+            <p>Determines the method by which the basic  interest rate  is to be adjusted by the RATE.SPREAD  to arrive at the Variable interest rate for the  loan account under R schedule..</p>
+            <p>This field specifies whether the Spread Rate is to be added to, subtracted from or multiplied by the basic interest rate to arrive at the final variable interest rate.</p>
+            <p>If Multiply is specified the final rate is (100 + M) percent of the effective interest rate , where M is the Margin Rate percentage.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Valid values are ADD, SUBTRACT     or MULTIPLY.</p>
+            <p>This field is available for     input only when SCHEDULES is defined as Y and a  RATE.KEY is provided.</p>
+            <p>Valid for only R type     schedules.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.AMOUNT</field>
+<desc>
+            <p>Tax amount specified in ACCOUNT currency</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>LOAN.INT.ADJUST</field>
+<desc>
+            <p>This field is used to decide whether interest adjustment is allowed or not in an ANNUITY or CREDIT-CARD type AZ loan account. Refer helptext of AZ.PRODUCT.PARAMETER for further details</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.RATE</field>
+<desc>
+            <p>This field is valid for products with FIXED RATE of interest. Rate of interest mentioned in the APP gets defaulted here. User can change the defaulted value, if needed.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional Field</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.IMMED</field>
+<desc>
+            <p>Valid inputs are Y or ''.</p>
+            <p />
+            <p>If Y is input then the accounting entries for charges are raised online even if the charge date is blank.</p>
+            <p />
+            <p>If '' is input then the accounting entries are raised on the EOD of charge date.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Valid inputs are Y or ''.</p>
+        </desc>
+</t>
+<t>
+<field>SL.CHG.BASE.AMT</field>
+<desc>
+            <p>This field specifies the base amount for the charge during C schedule.</p>
+            <p>Allowed values are PRINCIPAL, INTEREST, INSTALLMENT or ANNUITY.</p>
+            <p>If PRINCIPAL is defined then the base amount is the Outstanding balances of the  az.account.</p>
+            <p>If INTEREST is defined then the base amount is the amount of the N schedule. In this case N schedule is mandatory on this date.</p>
+            <p>If INSTALLMENT is defined then the base amount is either the amount of P( for loans) or B schedule( for Savings plan). In this case the 'P' is  mandatory  for loans and 'B' is mandatory for Savings on this date.</p>
+            <p>if ANNUITY is defined then the base amount is the amount is A schedule. In this case A schedule is mandatory in this date.</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.EFF.DATE</field>
+<desc>
+            <p>Field to hold the princial change effective rate.Applicable only if PRIN.CHG.AMT is present.</p>
+            <p>Validation rules:</p>
+            <p>Noinput field.</p>
+            <p>Applicable only with ACCT.SYNC null.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>System maintained field.</p>
+            <p>This field displays the contents of various overrides raised to the contract at the time of data input and amendments</p>
+        </desc>
+</t>
+<t>
+<field>ROLL.AIO.PRODUCT</field>
+<desc>
+            <p>This field is used to decide the AZ.PRODUCT.PARAMETER that should be used during rollover of deposits.</p>
+            <p />
+            <p>Applicable only for NON-MULTI FIXED DEPOSITS . Maturity instruction of current fixed deposit should be Automatic rollover</p>
+            <p />
+            <p> During rollover, if the system cannot roll to new product then an exception log will be updated.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>WAIVE.CHG</field>
+<desc>
+            <p>Permitted inputs YES or NO. Charges are not collected if this field is 'YES' and collected if this field is NO.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1.Permitted values YES or NO</p>
+            <p />
+            <p>Mandatory field</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT.V.DATE</field>
+<desc>
+            <p>Determines the value date for the draw down amount.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard Date format</p>
+            <p>Input is allowed only if draw down amount is defined</p>
+            <p>The date entered here cannot be less than the value date of the account.</p>
+            <p>If it a back date then the date cannot be lesser than or equal to any schedule date.</p>
+            <p />
+            <p>For example,</p>
+            <p>Assume that we have scheduled repayment on 30th of every month and last due was on 30 Aug . We made online repayments on 5th &amp; 10th  of Sep. Bank date is 12th Sep.</p>
+            <p />
+            <p>Annuity loans:  It is possible to set AMOUNT.V.DATE from 31st Aug onwards .In case REDUCE.LIMIT is NO, then it is possible do drawdowns to the extent of  amount repaid till bank date.</p>
+            <p />
+            <p>Non-annuity loans: AMOUNT.V.DATE is allowed only from 11th onwards.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>REVOLVING.RATIO</field>
+<desc>
+            <p>Defaults from APP. User can change it. Refer to APP for details.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SUB.AZ.ACCT</field>
+<desc>
+            <p>This field specifies the sub AZ.ACCOUNT from which the part withdrawal has to be made.</p>
+            <p>Allowed only if the az.account record is a master / main account.</p>
+            <p>Only sub az.accounts of the main account is allowed to input in this field.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.KEY</field>
+<desc>
+            <p>Defines the charge and overrides applicable to the account.  The codes are drawn from GENERAL charge records.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-4 numeric character General Charge Code</p>
+            <p>There must be a valid record already defined in the GENERAL.CHARGE table for this code.</p>
+        </desc>
+</t>
+<t>
+<field>AMT.PERCENT</field>
+<desc>
+            <p>For future use.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>IAS.SUB.TYPE</field>
+<desc>
+            <p>This field holds the Sub type  for the corresponding classification defined in IAS.CLASSIFICATION field </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a valid sub type for the corresponding classification defined in IAS.CLASSIFICATION file.</p>
+            <p>This field cannot be amended after authorization</p>
+        </desc>
+</t>
+<t>
+<field>PI.METHOD</field>
+<desc>
+            <p>Refer to PI.METHOD in APP.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>INT.ONLY</field>
+<desc>
+            <p>This field is used to define whether 'interest only repayment' is allowed for this account or not.</p>
+            <p>If Y (Yes) is defined, the AZ loan account shall be able to have Interest Only repayment facility</p>
+            <p>If N (No) is defined, the account shall not be able to have the Interest Only repayment facility.</p>
+            <p>The value is defaulted from the corresponding AZ Product Parameter.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>The permitted values are 'Y' or 'N'</p>
+            <p>Valid only for Loan products</p>
+            <p>Default is 'N'</p>
+        </desc>
+</t>
+<t>
+<field>COMPOUND.TYPE</field>
+<desc>
+            <p>This field accepts the frequency like DAILY,WEEKn, MONTHnn, Nnn to determine the compounding period in a year</p>
+            <p />
+            <p>VALIDATIONS</p>
+            <p>ALLOWED for fixed deposits only</p>
+            <p>NOCHANGE field</p>
+        </desc>
+</t>
+<t>
+<field>RESIDUAL.PRINCIPAL</field>
+<desc>
+            <p>Specifies the residual (remaining) amount of Principal that can be paid at the maturity date of the AZ loan account.</p>
+            <p />
+            <p>Repayment schedule for the loan account is generated for the Principal amount after deducting the Residual portion.</p>
+            <p />
+            <p>This is allowed only for 'PRINCIPLE' and 'SCHEDULE BALANCE'  as the calculation base. It is not allowed for NON REDEMPTION and OTHER types of loan. As in OTHER type of loan the system will ask for the P sch amount to be input. The drawdown amount should be greater than the residual amount.</p>
+            <p />
+            <p>Example:</p>
+            <p />
+            <p>Principal amount : 100,000</p>
+            <p />
+            <p>Residual Principal: 25,000</p>
+            <p />
+            <p>Repayment schedule with different installment frequency will be generated based on 75,000 only. Residual amount 25,000 will be collected on the date of maturity.</p>
+            <p />
+            <p>Once the Residual Principal is defined, it cannot be changed subsequently.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard amount field</p>
+            <p>Input must be less than the Principal amount.</p>
+        </desc>
+</t>
+<t>
+<field>EARLY.RED.INT</field>
+<desc>
+            <p>Specifies the PENAL rate applicable in case of EARLY/Part withdrawl.  Defaulted from AZ Product Parameter. The inputter can alter the defaulted rates.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>Allowed only for deposits.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.CODE</field>
+<desc>
+            <p>This field defines the tax on charge and is defaulted from FT.CHARGE.TYPE / FT.COMMISSION.TYPE.</p>
+            <p>Noinput field.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.AMT.LCY</field>
+<desc>
+            <p>Tax amount in LOCAL currency</p>
+        </desc>
+</t>
+<t>
+<field>GRACE.PERIOD</field>
+<desc>
+            <p>Defaulted from APP. Can be changed at az.account level.</p>
+            <p>Refer to help in APP.</p>
+        </desc>
+</t>
+<t>
+<field>RATE.CHG.SUB.ACC</field>
+<desc>
+            <p>Input here can be 'Y' or Null</p>
+            <p />
+            <p>If input as 'Y', it is to be understood that change in rate of interest will be applicable not only to the new drawls but also the existing ones.</p>
+            <p />
+            <p>For the existing drawls, the changed rate will be applicable from the date such change becomes effective.</p>
+            <p />
+            <p>For ex: Loan draw down is 10.11.2002.  Applicable rate is 10%. If effective from 10.06.2003 this rate has been changed to, 14%, then</p>
+            <p />
+            <p>(1)   Any draw down made on or after 10.06.2003 will attract 14%.</p>
+            <p />
+            <p>(2)   For the existing draw downs the interest rate will be 10% up to 09.06.2003 and 14% from 10.06.2003</p>
+            <p />
+            <p>If the field is null, then only the future drawdowns will attract the changed rate while the existing one will continue to be ruled by the earlier rate.</p>
+            <p />
+            <p>VALIDATIONS</p>
+            <p>Input may be 'Y' or Null</p>
+            <p>Allowed for CREDIT CARD type of products.</p>
+            <p>Allowed in master account.</p>
+        </desc>
+</t>
+<t>
+<field>CONSOL.KEY</field>
+<desc>
+            <p>For future use.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>FINAL.DD.IND</field>
+<desc>
+            <p>Indicates whether the final draw down in the case of AZ Loan account is over or not.</p>
+            <p />
+            <p>By defining 'Y' here, it is implied that the final draw down of loan amount is over an no more draw down could be made.</p>
+            <p />
+            <p>When draw downs are made by using the AZ account, or through B schedules, when the total draw down amount is  equal to Principal amount, the system automatically updates the final draw down indicator as 'Y'.</p>
+            <p />
+            <p>If the Bank wishes to restrict the draw down to a certain amount, even if it is less than the sanctioned Principal amount, then this field can be filled with a value as 'Y'.</p>
+            <p />
+            <p>After the final draw down is over, and this indicator is 'Y', Banks can use POSTING RESTRICTION to restrict any debit transaction like Redraw, in AZ loan accounts.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Valid values are 'Y' or 'N'</p>
+            <p>Not allowed for CREDIT CARD type of products and revolving limt setup in loans.</p>
+        </desc>
+</t>
+<t>
+<field>NOM.BEN.ACCT</field>
+<desc>
+            <p>The Account details (number or name) of the ultimate beneficiary to be credited with the Principal Amount.</p>
+            <p>This field concerns transfers where the customer is requesting the delivery of funds outside the branch. In the case where the customer is able to provide the branch with account details, such information may be entered in this field for use in the Payment and Receipt function.</p>
+            <p>This field may be amended at any time during the life of the contract.</p>
+            <p>'Auto-routing of payments'</p>
+            <p>Standard payment details held on the Agency table for the contract customer will be used in this field when payment is required only if no input is made by the user.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>1-20 type A (alphanumeric)     characters. (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>PAY.INT.AT.PARTRED</field>
+<desc>
+            <p>Field at the account level to indicate if interest is to be paid to Settlement account immediately during part redemption.</p>
+            <p />
+            <p>If set to NULL then interest is paid out immediately to Settlement account during part redemption.</p>
+            <p />
+            <p>If set to NO then interest will be paid only during the next IN or on the maturity date.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed only for normal Fixed deposits.</p>
+            <p>Default is null.</p>
+        </desc>
+</t>
+<t>
+<field>PENAL.RATE</field>
+<desc>
+            <p>Defines the penal rate of interest that can be applied  on the value (like arrears) defined under  PENALTY.ON  field of the AZ product.</p>
+            <p />
+            <p>At present, the penal  rate is  applied on the  arrears amount only.</p>
+            <p />
+            <p>The penal interest rate is defaulted to AZ loan account, from the AZ Product Parameter. However, the value can be changed at account level also, in case of need.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Rate type, numeric value</p>
+            <p>Maximum value 100</p>
+            <p>Negative values not accepted</p>
+        </desc>
+</t>
+<t>
+<field>PRD.RATE.KEY</field>
+<desc>
+            <p>This field specifies the PERIODIC.INTEREST key for the R schedule.</p>
+            <p>Allowed only for R schedules.</p>
+            <p>Allowed only for deposits products.</p>
+            <p>Refer to PERIODIC.RATE.KEY in APP.</p>
+        </desc>
+</t>
+<t>
+<field>CAP.INT.AT.SOD</field>
+<desc>
+            <p> Field at the account level, to indicate if the Schedule on the Due date should be processed during the Start of Day or End of Day.</p>
+            <p> If set to YES, then the Schedule is processed during the Start of Day.</p>
+            <p> If set to NO, then the Schedule is processed during the End of Day.</p>
+            <p />
+            <p> Validation rules</p>
+            <p> Allowed only for Fixed Deposits.</p>
+            <p> Defaulted to NO</p>
+        </desc>
+</t>
+<t>
+<field>REPAY.STO.ACCT</field>
+<desc>
+            <p>Defines the Debit  account number for raising standing order ( STO ). On scheduled dates of the loan, STO of AC type will be generated for debiting the account defined here and crediting the AZ loan account for the scheduled amount.</p>
+            <p>On reschedule if the Repayment amount changes, the STO amount also gets suitably altered.</p>
+            <p>On due date of the loan or on pre-closure, STO is moved to history.</p>
+            <p>For Nostro accounts defined under this field MT104 will be generated in advance based on the days defined in DAYS.BEF.EVENT</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Allows only a valid  Nostro or Internal account</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>REP.BEN.ACCT</field>
+<desc>
+            <p>The Account details (number or name) of the ultimate beneficiary to be debited for the repayment amount.</p>
+            <p>This field concerns transfers where the customer is requesting the funds from outside the branch. In the case where the customer is able to provide the branch with account details, such information may be entered in this field for use in the Receipt function.</p>
+            <p>This field may be amended at any time during the life of the contract.</p>
+            <p>'Autorouting of payments'</p>
+            <p>Standard payment details held on the Agency table for the contract customer will be used in this field when payment is required, only if no input is made by the user.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>1-20 type A (alphanumeric)     characters. (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>CHG.LIQ.ACCT</field>
+<desc>
+            <p>Whenever charges are entered, input in this field is mandatory.</p>
+            <p />
+            <p>An account specified here is debited for the charge amount specified.</p>
+            <p />
+            <p>The a/c may be either customer account or internal a/c</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>An account is a mandatory input.</p>
+            <p>Account cannot be an az.account.</p>
+        </desc>
+</t>
+<t>
+<field>ROLLOVER.DATE</field>
+<desc>
+            <p>The field defines the date on which the rollover has happened.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Rule 1:-NO INPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>FINAL.MATURITY</field>
+<desc>
+            <p>The date mentioned in the field is the maximum period up to which the ROLLOVER can be EXTENDED. I.e. this is the date when the deposit / loan FINALLY matures and should be credited / debited to the account or dispersed as per the customer directions.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Accepts date only.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.AMOUNT</field>
+<desc>
+            <p>Defaulted automatically once the charge code is entered. The values are derived from FT.CHARGE.TYPE / FT.COMMISSION.TYPE which contains the charge codes and amount of charge.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CALCULATION.BASE</field>
+<desc>
+            <p>Defines the basis for calculation of repayment amount  for the term of the loan or for recalculation for the remaining term.</p>
+            <p />
+            <p>Available options are, Principal, Scheduled Balance and Current Balance.</p>
+            <p />
+            <p>Currently allowed values are,</p>
+            <p />
+            <p>If 'Principal' is defined, entire Principal amount will be taken into account,  for deriving the repayment amount and interest calculations, irrespective of the amount of Principal drawn.</p>
+            <p />
+            <p>If 'Schedule Balance' is defined, the amount drawn down till date will be taken into account for repayment amount and interest calculation purposes.</p>
+            <p />
+            <p>If SCHEDULES is set to 'N' then allowed value is 'Principal' else 'Schedule Balance'.</p>
+        </desc>
+</t>
+<t>
+<field>ROLLOVER.AMT</field>
+<desc>
+            <p>The amount that has to be deducted from or added to the final maturity value of the deposit for further rollover. The amount specified in the field may be LESS, EQUAL or MORE than the deposit.</p>
+            <p />
+            <p>In case the amount of roll over is more than the deposit amount- the system takes the difference between the deposit amount and the maturity amount from the REPAY account. In case the balance in the repay account is not sufficient to supplement the addition to the deposit - then the account is moved to AZOD category and the exception log is updated i.e. the instruction to  rollover the deposit  is IGNORED and the AZ is matured.</p>
+            <p />
+            <p>In case of loans, the difference between principal amount and balance in the loan account is credited to the nominated account.</p>
+            <p />
+            <p>If the rollover amount is for a value less than the deposit maturity value, then the difference is credited to the Nominated account.</p>
+            <p />
+            <p>In case of loans, the difference between principal amount and balance in the loan account is debited from repay account. In case balance in the repay account is not sufficient to supplement the addition to the principal amount, then based on PD.LINK.TO.AZ field in APP the oustanding balance amount will be debited. If  PD.LINK.TO.AZ is 'YES' then PD will be debited. If PD.LINK.TO.AZ is 'NO' then AZ.OVERDUES will be updated. If  PD.LINK.TO.AZ is 'NULL' then FT on hold will be raised.</p>
+            <p />
+            <p>For reducing the rollover amount, minus sign is to be prefixed with the amount specified under this field. For increasing the rollover amount, the amount by which it is to be increased must be specified under this field.</p>
+            <p />
+            <p>Example:</p>
+            <p />
+            <p>Maturity value of a deposit = 100200 If the user wishes to rollover for an amount of 60000, then -40200 is to be entered in this field.</p>
+            <p />
+            <p>If the user wishes to renew for 150000, then 49800 is to be entered here.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Rule 1: ""-"" sign with amounts to be used in case of decrease in rollover amount. For increase in rollover amount simply the amount need to be mentioned without ""+"" sign.</p>
+        </desc>
+</t>
+<t>
+<field>REDEMPTION.AMT</field>
+<desc>
+            <p>Specifies the amount of early redemption of a  part of  Deposit.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Input allowed only if early redemption is opted as 'Y' is AZ.PRODUCT.PARAMETER corresponding to this account.</p>
+        </desc>
+</t>
+<t>
+<field>INT.ADJ.AMT</field>
+<desc>
+            <p>For ANNUITY Contracts, this field has to be used if Interest adjustment is to be affected directly through AZ.ACCOUNT . If Repayment account is present, then the system shall  debit AZINTADJ Suspense account  for the interest adjustment amount and credit repayment account. Other wise Teller default shall be created. Amount debit from suspense shall be recovered back along with interest, during subsequent Online/ scheduled repayment,  when 'IN' component is defined in AZ.SETTLEMENT.PRIORITY.</p>
+            <p />
+            <p>VALIDATIONS</p>
+            <p>Numeric input depicting amount</p>
+            <p>Negative values not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.AMT.LCY</field>
+<desc>
+            <p>NO INPUT field- Charge amount EQUIVALENT to LOCAL currency is populated in this field.</p>
+            <p>If the account currency or transaction is in foreign currency the equivalent is converted and displayed in this field.</p>
+        </desc>
+</t>
+<t>
+<field>DRAWDOWN.AMOUNT</field>
+<desc>
+            <p>Defines the draw down amount for Loan accounts. The type of draw down is defined at the AZ Product level. Three types of draw down are, Full, Partial with no interest payment and Partial with Interest payment. The amount of draw down defined here is validated against the type defined in the AZ Product Parameter.</p>
+            <p />
+            <p>If a nominated account is defined, the system will automatically transfer the drawdown amount on the specified drawdown date to the nominated account.  If no nominated account is defined and if the drawdown is preferred through the AZ account itself, then a teller default will be created and the amount can be drawn through teller using the teller default feature.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard Amount field</p>
+            <p>Negative values not accepted</p>
+            <p>Valid for AZ Loan accounts only</p>
+            <p>Validation is done with respect to the Principal</p>
+        </desc>
+</t>
+<t>
+<field>NOM.INT.BANK</field>
+<desc>
+            <p>Identifies the intermediary Bank through which the All in One nominated account funds ( transactions like credit of draw down amount) must pass prior to receipt by the Beneficiary Bank or account with Bank.</p>
+            <p>As there is minimum validation for this field, care must be taken by the user while entering free text in this field.</p>
+            <p>If nothing is entered in this field, will be defaulted automatically as per the auto routing instruction on the Agency file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>3-10 character Customer Mnemonic Type MNE or 1-6 numeric character     customer code, or 35 character</p>
+            <p>Multi value field</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>TAX.E.I</field>
+<desc>
+            <p>Specifies whether the calculation of Tax on the Tax basis is Inclusive of Tax (I) or Exclusive of Tax(E) or no Tax (N).</p>
+            <p>For example if Tax is on Interest and I (Inclusive ) is mentioned here then the calculated interest amount in the schedule includes the tax amount also. If  E (Exclusive) is mentioned, then the interest amount does not include the tax portion and the tax amount will be shown as additional.</p>
+            <p>If 'N' is defined here, no tax will be calculated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Valid values are ' I ', 'E' or 'N'</p>
+        </desc>
+</t>
+<t>
+<field>RES.5</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>SL.CHARGE.CODE</field>
+<desc>
+            <p>This field specifies the charge code that has to be taken during the C schedule.</p>
+            <p>Valid only for C schedule.</p>
+            <p>Allowed valid ids from FT.CHARGE.TYPE or FT.COMMISSION.TYPE.</p>
+        </desc>
+</t>
+<t>
+<field>REPAYMENT.TYPE</field>
+<desc>
+            <p>Defines the Repayment type of the AZ Account.</p>
+            <p />
+            <p>The value for this field is defaulted from the corresponding AZ Product Parameter, after the schedule is opted. However, this can be modified at AZ account level also.</p>
+            <p />
+            <p>The repayment type determines the way in which the loan/ deposit account is to be repaid.</p>
+            <p />
+            <p>Refer to APP for details.</p>
+        </desc>
+</t>
+<t>
+<field>TERM.PRIORITY</field>
+<desc>
+            <p>Defaulted from APP. Can be changed at az.account level. Refer to APP for details.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RATE.SCH.SPREAD</field>
+<desc>
+            <p>Indicates the spread or margin of interest, which has to be applied to the Basic interest rate defined in BASIC.INTEREST ( and linked through RATE.KEY ), to arrive at the variable interest.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>1-5 numeric characters of rate type (example 3.25, 99.99)</p>
+            <p>Cannot be greater than 100</p>
+            <p>A margin, which will result in a negative interest rate is prohibited.</p>
+            <p>Input is  allowed only if  SCHEDULE is specified as 'Y'     and a valid RATE.KEY is provided.</p>
+            <p>Part of a set of multi value fields</p>
+            <p>Allowed only for R type Schedules</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.CODE</field>
+<desc>
+            <p>Any valid code from FT.CHARGE.TYPE / FT.COMMISSION.TYPE can be entered here.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>REPAY.V.DATE</field>
+<desc>
+            <p>The effective date of Repay amount is specified here. When repaying the loan the date can be only today.</p>
+            <p />
+            <p>If PD.LINK.TO.AZ is 'Y', the PD created will have this date as its value date.</p>
+            <p />
+            <p>If this is a back date then the repay amount will be treated as back dated principal repayment instead of loan repayment .</p>
+            <p> For credit cards with CREATE.PD.EOD as NO, if the actual payment is received only X days and if PD is created by the system, then the PD shall use this date as its value date.</p>
+            <p> Backdated REPAY.V.DATE is not applicable if CREATE.PD.EOD is YES.</p>
+            <p />
+            <p>Future date not allowed.</p>
+            <p />
+            <p>VALIDATIONS</p>
+            <p />
+            <p>Enter valid date format.</p>
+        </desc>
+</t>
+<t>
+<field>FORWARD.BACKWARD</field>
+<desc>
+            <p>Defines the method followed by the system, when the derived date of the generated P, B, N and C schedule, is a non working day.</p>
+            <p />
+            <p>The various methods are:</p>
+            <p />
+            <p>1. Forward: The system will go forward to the next working day.</p>
+            <p />
+            <p>2. Backward: The system will go back to the last working day.</p>
+            <p />
+            <p>3. Fwd Month: The system will go forward to the next working day provided it is within the same month. If it is not within the same  month, the system will go backward to the last working day.</p>
+            <p />
+            <p>4. Calendar: The system will use the same date, irrespective of whether it is holiday or not.</p>
+            <p />
+            <p>This field is not applicable for maturity date.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Valid values are 1 Forward  2 Backward  3 Fwd Month  4 Calendar.</p>
+        </desc>
+</t>
+<t>
+<field>STMT.NO</field>
+<desc>
+            <p>Stores the ID of the accounting entries raised</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>All entries passed to this account must be in this currency only.</p>
+            <p>The value for this field is populated from the corresponding ACCOUNT record of the same ID.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Must be an existing code in the CURRENCY table</p>
+            <p>3 type SSS (upper case Alpha - like USD) or 1-3 numeric character currency code</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRINCIPAL</field>
+<desc>
+            <p>Defines the Principal amount of the loan or deposit account.</p>
+            <p />
+            <p>Principal is one of the basis for calculating the repayment schedule in the case of loan account. In the case of Principal increase or decrease the schedule will be redefined based on the new principal amount.</p>
+            <p />
+            <p>The Principal amount of a loan account is validated against the limit set for the account.</p>
+            <p />
+            <p>Principal increase by way of pre defined draw downs can be done through B type of schedules.</p>
+            <p />
+            <p>The drawdown amounts are validated against the Principal amount defined for the Loan account, so that the total draw down amount does not exceed the Principal.</p>
+            <p />
+            <p>If the draw down type defined in APP as 'Full' and the draw down amount is not equal to Principal, an error is raised by the system. Similarly, if the draw down type is defined as 'PARTIAL' and draw down is done in full, an override is raised to that extent.</p>
+            <p />
+            <p>If the repayment type is CREDIT CARD then for the AZ Main acct this field will be '0.00'.</p>
+            <p />
+            <p>For the CREDIT CARD type sub accts this field is filled by the amount of draw down made.</p>
+            <p />
+            <p>Whenever repayments are made the value in this fields is reduced accordingly till it becomes zero.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard amount field.</p>
+            <p>Negative values not permitted.</p>
+            <p>Input can be 0.00 if the repayment type is Credit Card and the Az acct is a main acct.</p>
+            <p>In case of Credit card type of repayment for a Sub acct the value in this field diminishes as the repayment starts.</p>
+            <p>Nochange field.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.ON</field>
+<desc>
+            <p>This field indicates the amoun ton which the tax is to be calculated. Currently allowed value is 'I' (Interest).</p>
+            <p>Allowed values are I or '''</p>
+        </desc>
+</t>
+<t>
+<field>MARKET.MARGIN</field>
+<desc>
+            <p>Margin to calculate the NPV based on future cashflow information</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The field  can either be positive or negative. </p>
+            <p>Input is optional.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>REP.INT.BANK</field>
+<desc>
+            <p>Identifies the intermediary Bank through which the All in One repayment related funds passes.</p>
+            <p>As there is minimum validation for this field, care must be taken by the user while entering free text in this field.</p>
+            <p>If nothing is entered in this field, will be defaulted automatically as per the auto routing instruction on the Agency file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>3-10 character Customer Mnemonic Type MNE or 1-6 numeric character     customer code, or 35 character text</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CATEGORY</field>
+<desc>
+            <p>Specifies the category to which the AZ account belongs. This field is populated from the corresponding ACCOUNT of the same ID.</p>
+            <p />
+            <p>The category code in All in One module is used to group the AZ accounts under a Product code of the same category.</p>
+            <p />
+            <p>A validation is done by the system to ensure that the category code of the AZ account and the AZ Product are the same.</p>
+            <p />
+            <p>The category code is used to classify financial transactions in T24 according to the type of business operations or product type.</p>
+            <p />
+            <p>The use of these codes with personal customer characteristics (like Residence, Status, Sector code etc.,) will enable the Banks to produce balance sheets and returns reflecting a coordinated and structured view of its operation, by directing business transactions to their appropriate place in the report.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>5-7 Numeric Codes</p>
+            <p>It must be an existing code in the CATEGORY table</p>
+            <p>For customer Accounts, it must be in the range of 1000 to 9999</p>
+            <p>Validated against the category code defined in AZ.PRODUCT.PARAMETER</p>
+            <p>No input field</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>INTEREST.LIQU.ACCT</field>
+<desc>
+            <p>Identifies the customer account to which the interest for the AZ account is to be booked.</p>
+            <p />
+            <p>This field is used only when interest is to be posted to a customer account, which is different from this AZ account. The value is defaulted from the ACCOUNT record, if it is already defined there.</p>
+            <p />
+            <p>If no account is defined in this field, then the interest will be capitalised in the AZ account itself.( The ID account)</p>
+            <p />
+            <p>Once an account becomes a loan az.account then this cannot be changed in the account. If an account becomes a deposit az.account then it is possible to change the account if already defined to another account, but if not defined then it cannot be defined and cannot be made null if already defined.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>2-14 numeric character customer account number or 3-10 type  MNE Mnemonic</p>
+            <p>It must be an existing Customer account</p>
+        </desc>
+</t>
+<t>
+<field>MESSAGE.CLASS</field>
+<desc>
+            <p>Not used</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.NUMBER</field>
+<desc>
+            <p>The Id of this would be a valid CUSTOMER account.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Can be a Valid customer a/c only.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ACTIVITY</field>
+<desc>
+            <p>ACTIVITY CODE of the delivery message produced from AZ. Only 104 message  is currently supported in AZ and the related activity code is AZ-0104</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>ADDITIONAL.SPREAD</field>
+<desc>
+            <p>This field specifies the additional spread that is to be added or subtracted from the interest rate at the time of sub account  creation of  Multi- Fixed deposits  or rollover.</p>
+            <p>Input can be a local routine, e.g., '@LOCAL.ROUTINE(ACCT.NO, ADDITIONAL.SPREAD)'. The local routine needs to be defined in the PGM.FILE.</p>
+            <p>Input can be 'S+nn' or 'S-nn', where 'nn' is the additional spread that has to be added or subtracted from the interest rate.</p>
+            <p>Allowed only for deposits.</p>
+        </desc>
+</t>
+<t>
+<field>ALL.IN.ONE.PRODUCT</field>
+<desc>
+            <p>Identifies the All in One Account Product, to which this AZ account belongs.</p>
+            <p>The AZ account inherits the default features of the All in One  product  defined here, like penal rate, Repayment type,  Maximum Interest only period, etc. However, at AZ account level also, changes are accepted to override the defaulted values.</p>
+            <p>Certain validations like minimum term, maximum term, allowed category, maximum back date, minimum and maximum amount (in the case of deposit) are done at the AZ account, with respect to the values defined under the corresponding AZ Product.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a valid ID in APP.</p>
+            <p>The value cannot be changed after the account is authorised.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.CCY</field>
+<desc>
+            <p>NO input field. Automatically defaults currency of the a/c WHEN the</p>
+            <p>transaction is committed.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.DATE</field>
+<desc>
+            <p>Defines the date the charge is to be taken.</p>
+            <p>Defaults to TODAY. If the date is a future date then for the date entered here a 'C' schedule is created in AZ.SCHEDULES.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid date format.</p>
+        </desc>
+</t>
+<t>
+<field>SL.CHG.LIQ.ACCT</field>
+<desc>
+            <p>This field specifies the account that is to be debited with the charge amount during C schedule processing.</p>
+            <p>Valid customer accounts are allowed. AZ.ACCOUNT is not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>LAST.DAY.INCL</field>
+<desc>
+            <p>Defaulted from APP. Can be changed at az.account level during creation. Once defined cannot be changed.</p>
+            <p>Refer to help in APP.</p>
+        </desc>
+</t>
+<t>
+<field>ORIG.PRINCIPAL</field>
+<desc>
+            <p>When the AZ Main account record is committed, the amount entered in the principal field will be automatically populated to this field.</p>
+            <p />
+            <p>For an AZ main a/c this field will contain only 0.00.  For AZ sub a/cs it contains the FIRST draw down amount.</p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p />
+            <p>A no input field.</p>
+            <p />
+            <p>Populated from the Principal field</p>
+        </desc>
+</t>
+<t>
+<field>IAS.CLASSIFICATION</field>
+<desc>
+            <p>This field holds the classification of contract based on IFRS standard.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a Valid record ID in  IAS.CLASSIFICATION file.</p>
+            <p>Input not allowed for Credit-cards</p>
+            <p>Input not allowed when ACCT.SYNC is set to null.</p>
+            <p>Input not allowed for contracts with maturity date as TODAY</p>
+            <p>This field cannot be amended after authorization</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AMOUNT</field>
+<desc>
+            <p>Defines the amount of the schedule type.</p>
+            <p />
+            <p>In the case of P type schedule, the amount represents the Principal Repayment amount. Sum of the amount defined for P schedules  cannot be greater than the amount specified as per Schedule Calculation Basis (Schedule Balance/ Principal amount).</p>
+            <p />
+            <p>In the case of B type schedules, the amount represents the amount of future drawdowns in case of loans. System validates for  the total amount of B schedules and the total amount of drawdowns made so far, to be less than the Principal.</p>
+            <p />
+            <p>In the case of I type schedules, amount not to be specified.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard amount format of length 25; formatted according to the Account Currency</p>
+            <p>Input allowed only if SCHEDULES is defined as  'Y'</p>
+            <p>Part of a multi value set of fields.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.PL.ACCT</field>
+<desc>
+            <p>If the repayment. type is CREDIT-CARD then during repayment if the charges need to be posted to an account or category to setoff the one that was posted online then it needs to be specified here.</p>
+            <p />
+            <p>VALIDATIONS</p>
+            <p>Any PL category or internal accounts are permitted for input.</p>
+        </desc>
+</t>
+<t>
+<field>ORIG.INTEREST.RATE</field>
+<desc>
+            <p>Original Interest rate of the contract at the time its Opening</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>NUMBER</field>
+<desc>
+            <p>Specifies the number of times the repayment frequency has to be carried out.</p>
+            <p>Any number defined here will be treated as an addition to the existing one.</p>
+            <p>Example:</p>
+            <p>Schedule type: P    Amount: 1000   Frequency: 20010521M0120    Number: 7 .</p>
+            <p>This implies -</p>
+            <p>A principal repayment of 1000 has to be made for 7 more times apart from the defined one, starting from 21-5-2001, for every month on 20th.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>1-9999 numeric character; no negative value</p>
+            <p>No input for R type of schedule</p>
+            <p>Input is allowed only  if SCHEDULES  is defined as  Y</p>
+            <p>Part of a multi value set of fields</p>
+            <p />
+            <p>Value of '0' is allowed only for "A" schedule &amp; the start &amp; end date shall be same as the date component of FREQUENCY field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RES.4</field>
+<desc>
+            <p>reserved for future use</p>
+        </desc>
+</t>
+<t>
+<field>MIN.MAT.DATE</field>
+<desc>
+            <p>Define the minimum maturity date of the revolving loan account of all in one product. Repayment schedules need to be defined after MIN.MAT.DATE which specifies the drawdown end period.</p>
+            <p>This field is applicable for all the revolving loan product other than credit card.</p>
+            <p>The date cannot be less than or equal to value date and cannot be greater than or equal to Maturity date.</p>
+            <p>Validation:</p>
+            <p>1. Standard date format</p>
+            <p>2. Optional field</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ORIG.MAT.DATE</field>
+<desc>
+            <p>For future use.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RATE.SCH.PERCNT</field>
+<desc>
+            <p>Defines the percentage of outstanding  amount up to which the Variable interest rate  is applicable, under a R type schedule of AZ account. For the rest of the percentage amount, fixed  interest rate  will be applicable.</p>
+            <p>Example:</p>
+            <p>If 60 is defined here, variable interest will be applied on  60% of the outstanding  amount and Fixed interest will be applied on the remaining 40% of the outstanding  amount.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>1-5 numeric rate type like 60, 45.50 etc.</p>
+            <p>Maximum value 100.</p>
+            <p>No negative values will be accepted.</p>
+            <p>Input allowed only if SCHEDULES is defined as Y.</p>
+            <p>Valid for R type of Schedules only.</p>
+        </desc>
+</t>
+<t>
+<field>CANCEL.LAST.DD</field>
+<desc>
+            <p>In CREDIT CARD type of loan, draw down is made through draw down amount field.</p>
+            <p />
+            <p>If such a draw down is to be cancelled for any reason then this field should be flagged as 'Y'.</p>
+            <p />
+            <p>If the draw down is done through any other application (and not through Draw Down amount field in AZ) and subsequently if this field is flagged as 'Y' then the last draw down made through AZ account will be deleted.</p>
+            <p />
+            <p>For ex:</p>
+            <p />
+            <p>There are 3 drawls made through AZ,</p>
+            <p>(1) 200000</p>
+            <p>(2) 550000</p>
+            <p>(3) 750000</p>
+            <p />
+            <p>A fresh drawl (4) is made through say teller for 650000.  Now if this field is input with a 'Y' then the drawl (3) i.e. 750000 will be REVERSED in place of the last drawl (4).  To recap drawl through any other application should be done through REVERSAL of the application and not through this field.</p>
+            <p />
+            <p>VALIDATIONS</p>
+            <p>Valid input is 'Y'.</p>
+            <p>Input not allowed with INT.ADJ.AMT set.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>REDUCE.LIMIT</field>
+<desc>
+            <p>Defaulted from APP. Can be changed at az.account level.</p>
+            <p>Refer to help in APP.</p>
+        </desc>
+</t>
+<t>
+<field>SCH.FIXED.RATE</field>
+<desc>
+            <p>Indicates the annual fixed interest rate applicable for the R schedule defined under the AZ loan / deposit account.</p>
+            <p />
+            <p>The fixed interest can be defined for the entire amount outstanding or to a percentage of the outstanding amount.</p>
+            <p />
+            <p>The fixed interest can be defined for the entire period of the loan account or in parts.</p>
+            <p />
+            <p>Example:</p>
+            <p />
+            <p>Type of Schedule:     R</p>
+            <p>Frequency:               20010522</p>
+            <p>Rate Sch Key:           1</p>
+            <p>Rate Sch Spread:      6</p>
+            <p>Rate Sch Operand:   Add</p>
+            <p>Rate Sch Percent:    60</p>
+            <p>Sch Fixed Rate:       15</p>
+            <p>As per the above R schedule, a rate revision will happen on 22-05-2001, with 60% of the outstanding amount by a variable interest (key1 and spread 6 on Basic Interest) and 40% of the outstanding amount by fixed interest 15%</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1- 5 numeric characters of rate type, like 18.50.</p>
+            <p />
+            <p>Input is allowed only if SCHEDULES is defined as Y</p>
+            <p />
+            <p>Part of a multi value set of fields.</p>
+        </desc>
+</t>
+<t>
+<field>FREQUENCY</field>
+<desc>
+            <p>This field defines the frequency of repayment. In the case of Draw down of loan amount, through B type schedule, this field identifies the date on which the draw down amount is to be transferred to the nominated account.</p>
+            <p />
+            <p>It is a combination of date( starting date of the frequency) and a frequency.</p>
+            <p />
+            <p>Frequency not allowed for R schedule in loans.</p>
+            <p />
+            <p>Valid frequencies are D (Daily), W (Weekly), M (Monthly)</p>
+            <p />
+            <p>Examples:</p>
+            <p />
+            <p>20010521DAY01 (Starting from 21-05-2001, every day)</p>
+            <p />
+            <p>20010521M0130 (30th of every month, starting from 21-05-2001)</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Input allowed only if  SCHEDULES field is defined as 'Y'</p>
+        </desc>
+</t>
+<t>
+<field>DAYS.BEF.EVENT</field>
+<desc>
+            <p>Defines the number of days before which the delivery should be made.</p>
+            <p />
+            <p>This field is used for generating MT104 advice in advance to the Beneficiary bank for the debit to be made in the Nostro account by STO.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Default will be from the CURRENCY table relating to ACCOUNT currency.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.FROM.RED.AMT</field>
+<desc>
+            <p>Applicable in case of EARLY/PART redemption of Deposits. Permitted inputs YES or NO.</p>
+            <p />
+            <p>Option YES means-the early redemption charges and differential interest if any will be taken from the Nominated account.  If NO then Early redemption charges are applied to the remaining Principal .</p>
+            <p />
+            <p>For ex:-&gt; Total deposit is 10000 and if 3000 is early redeemed and 7000 is renewed. When the column is YES then 3000 MINUS the charge and differential interest if any is credited to the nominated account and if NO, then the charge amount and the differential interest will be deducted from remaining amount. I.e.  remaining principal will be 7000 MINUS charges.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Permitted inputs are YES or NO.</p>
+        </desc>
+</t>
+<t>
+<field>DELIVERY.REF</field>
+<desc>
+            <p>The DELIVERY REFERENCE of the 104 message generated for AZ Loans</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>CC.PR.GRACE.PERIOD</field>
+<desc>
+            <p>The value in this field is populated from AZ product parameter. User can alter the input manually.</p>
+            <p />
+            <p>Input in this field indicates that the type is NON-redemption and the generation of CC schedules will be postponed until such time.</p>
+            <p />
+            <p>Input in this field is numeric but should be read along with the frequency input in the card issue.  If value entered here, are 3 and the frequency in card issue is Monthly, it means generation of 'CC' schedules will be postponed by 3 months.  If the frequency is weekly then it means generation of CC schedules will be postponed by 3 weeks.</p>
+            <p />
+            <p>VALIDATIONS</p>
+            <p>Input allowed is numeric.</p>
+            <p>Input should be read along with the frequency entered in card issue.</p>
+            <p>Allowed for CREDIT CARD type of products.</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.CHG.AMT</field>
+<desc>
+            <p>Amount field to  hold the principal increase / decrease amount, formatted in account's currency .It  should allow '-' to indicate principal decrease.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard amount field.</p>
+            <p>Allowed only with ACCT.SYNC null.</p>
+        </desc>
+</t>
+<t>
+<field>NOM.BEN.BANK</field>
+<desc>
+            <p>Identifies the Bank which is the ultimate receiver of the funds transferred by the sending Bank.</p>
+            <p>The account of the Beneficiary Bank will receive the funds from a Bank to Bank transfer.</p>
+            <p>For auto payment , standard payment details held on the Agency table for the contract customer will be used in this field when payment is required only if no input is made by the user.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>3-10 character Customer Mnemonic Type MNE or 1-6 numeric character     customer code, or 35 character</p>
+            <p>Multi value field</p>
+        </desc>
+</t>
+<t>
+<field>DEL.CARRIER</field>
+<desc>
+            <p>This field gives the type of delivery carriers available for delivery of messages, transfers etc.</p>
+            <p>Input in this field should be a valid record in DE.CARRIER application. SWIFT, TELEX, SIC are some of the valid inputs.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input in this field should exist in the DE.CARRIER.</p>
+        </desc>
+</t>
+<t>
+<field>CREDIT.AMOUNT</field>
+<desc>
+            <p>This field defines the amount the periodic credits that are allowed in SAVINGS PLAN.</p>
+            <p>This field should be read along with the field  CREDIT.AMT.MULTI in APP.</p>
+            <p>The amount that is input here will be validated against the B schedule amount. If CREDIT.AMT.MULTI is defined as 'YES' then the amount input in B schedules should be in multiples of the amount input here.</p>
+            <p />
+            <p>Example,</p>
+            <p>Case (1)</p>
+            <p>CREDIT.AMT.MULTI is set as Yes and this field is null, then the "B" schedule amount can be input with any amount.</p>
+            <p>Case (2)</p>
+            <p>CREDIT.AMT.MULTI is set as Yes and this field is input with say 5000 then "B" schedule amount can be 5000 or multiples of 5000, say 10000, 15000 etc. But "B" schedule amount can't be LESS than the the value defined here.</p>
+            <p>Case (3)</p>
+            <p>CREDIT.AMT.MULTI field is '' and this field is input as 7000, then "B" schedule amount should be 7000 ONLY and even multiples of 7000 are not permitted.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed only for SAVINGS PLAN type of deposit product.</p>
+            <p>Allowed only if ACCT.SYNC is set to 'YES'.</p>
+        </desc>
+</t>
+<t>
+<field>MARKET.RATE</field>
+<desc>
+            <p>Market rate to calculate the NPV based on future cashflow information</p>.
+<p><p>Validation Rules:</p></p><p>The field can either be a Fixed rate or PERIODIC.INTEREST key with prefix 'P'</p><p>Input is mandatory if IAS.CLASSIFICATION field is entered.</p><p /></desc>
+</t>
+<t>
+<field>TYPE.B.SYS</field>
+<desc>
+            <p>Noinput field.</p>
+            <p>System maintained field.</p>
+        </desc>
+</t>
+<t>
+<field>REPAY.AMT</field>
+<desc>
+            <p>In loans when repayment has to be affected in the loan a/c directly through AZ account, instead of using other applications like TELLER, then this field is used.</p>
+            <p />
+            <p>The effect of this repayment is ONLINE. When used the LOAN.REPAY txn code is used in the entry being raised.</p>
+            <p />
+            <p>In deposits the deposit credit amount is input here. The DEPOSIT.CR txn code will be used in the entry being raised.</p>
+            <p />
+            <p>VALIDATIONS</p>
+            <p>Numeric input depicting amount</p>
+            <p>Negative values not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>MAX.INSTL.INT.ONLY</field>
+<desc>
+            <p>Total period of time that the interest only repayment could be defined for a loan during the life time of a loan account.</p>
+            <p>If input is given in numbers it is treated as number of days.</p>
+            <p>If input is given prefixing P,  it is treated as number of installments.</p>
+            <p>The value is populated to this field from AZ product Parameter.</p>
+            <p>Example:</p>
+            <p>If input is given as 60, it implies that the total number of Interest Only repayment period cannot exceed 60 days during the life of the loan account.</p>
+            <p>If input is given as P60, it implies that the total number Interest only repayment period cannot exceed 60 installments (of any frequency like daily, monthly) during the life of the loan account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Value for this field will be accepted only if  'INT ONLY' field is     defined as Y</p>
+            <p>Valid only for Loan Product</p>
+            <p>Cannot have negative values</p>
+        </desc>
+</t>
+<t>
+<field>DD.INT.RATE</field>
+<desc>
+            <p>When draw down is made through AZ.ACCOUNT using the draw down amount field the user is given the flexibility to input a new rate if desired which will OVERRIDE all the other inputs made on interest rate.</p>
+            <p />
+            <p>This new rate will be assigned to that particular Sub AZ account. It will be cleared after the particular withdrawal, so that next withdrawal rate can be a different or the default one.</p>
+            <p />
+            <p>While making a draw down if this field is left blank, then the rate of interest input in the APP is defaulted, unless it is changed in the account level.</p>
+            <p />
+            <p>Input can also be in the format 'S+nn' or 'S-nn', where 'nn' is a number. Based on the input, the interest rate that is applied on the sub account during draw down will be arrived by either adding or subtracting from the existing interest rate.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input permitted 1 to 100</p>
+            <p>Input in the format 'S+nn' or 'S-nn'.</p>
+            <p>Allowed only for CREDIT CARD type products.</p>
+        </desc>
+</t>
+<t>
+<field>MAT.DATE</field>
+<desc>
+            <p>This field is used to specify the maturity date for the fixed deposits that are being created from AZ.ACCOUNT where MULTI is set to 'Y'.</p>
+            <p>Must be greater then TODAY.</p>
+            <p>Allowed for FIXED deposits.</p>
+        </desc>
+</t>
+<t>
+<field>TYPE.OF.SCHDLE</field>
+<desc>
+            <p>This field indicates the type of schedule defined by the user.</p>
+            <p />
+            <p>Based on the schedule types defined here, AZ.SCHEDULE is generated by the system.</p>
+            <p />
+            <p>The types of schedules are:</p>
+            <p />
+            <p>A - For defining annuity type of repayment, where a constant repayment amount is generated based on the  frequency.</p>
+            <p />
+            <p>It is possible to define multiple 'A' type of schedules within an AZ loan account for different periods during the term of the loan. In such cases, it is necessary to input at least one 'A' type schedule that includes the maturity date and brings the loan balance to zero (or the residual amount).</p>
+            <p />
+            <p>B - In loans this type is used for effecting loan drawdowns on pre-defined dates. On the specified dates the system will transfer the draw down amount to the credit of the nominated account. It is validated to see that the sum of the amount specified in all B schedules and the Drawdowns made so far, do not exceed the Principal. In deposits this is used to specify the installment deposit credit. If MULTI is defined as 'Y' then each deposit credit will create a sub az.account.</p>
+            <p />
+            <p>I - Defines schedule for interest payments. For I type schedule, amount cannot be specified by the user. Total period of all I type schedules are validated against the Maximum Interest Only period defined for the AZ account.</p>
+            <p />
+            <p>N - In loans this schedule specifies the interest repayment by the customer. In deposits it specifies the interest receivable to the customer.</p>
+            <p />
+            <p>P- This type defines the Repayment of Principal</p>
+            <p />
+            <p>R - This type is used for effecting Interest Rate revision on specified dates. The value defined under Term Priority will be taken into account for effecting this type of schedule.</p>
+            <p />
+            <p>Both Variable interest rate and Fixed Interest rate can be defined for a loan account, through this type, for a certain percentage of the outstanding amount and also for various periods within the life of the loan account.</p>
+            <p />
+            <p>Example:</p>
+            <p />
+            <p>Type of Schedule:     R</p>
+            <p>Frequency:               20010522</p>
+            <p>Rate Sch Key:           1</p>
+            <p>Rate Sch Spread:      6</p>
+            <p>Rate Sch Operand:   Add</p>
+            <p>Rate Sch Percent:    60</p>
+            <p>Sch Fixed Rate:       15</p>
+            <p>As per the above R schedule, a rate revision will happen on 22-05-2001, with 60% of the outstanding amount by a variable interest (key1 and spread 6 on Basic Interest) and 40% of the outstanding amount by fixed interest 15%</p>
+            <p />
+            <p>For changing the values of  interest rates defaulted from the AZ Product to  the AZ.ACCOUNT, R type of schedule can be used at the start of the loan account.</p>
+            <p />
+            <p>C - This is a charge schedule. Incase of CREDIT CARD The charge on individual drawdowns are shown by way of 'C'schedules in the AZ sub a/c and the combined 'C' schedule amount is shown in the schedules of AZ Main a/c.</p>
+            <p />
+            <p>BC - This is specific to deposits where a charge can be taken if the B schedule is successful. In this case the repayment account is mandatory.</p>
+            <p />
+            <p>CI - This is specific to CREDIT CARD type of products. This is the committed interest schedule. The amount of interest from the date of draw down to the repayment date is populated through these schedules. Interest on each of the drawdowns is populated in the respective sub a/cs and the combined CI amount is populated in the AZ main a/c. Apart from the draw down date, this schedule is created automatically at every repayment date also covering interest upto the next repayment date.</p>
+            <p />
+            <p>CC - This is specific to CREDIT CARD type od products. This is for repayment of Principal.  Raised, based on the AZ product parameter setup in either revolving ratio/Highest range etc.  Similar to CI, C schedules the individual CC schedule amounts are populated in the AZ sub a/cs and the combined CC schedule is populated in the AZ main a/c.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory field,  if the option for SCHEDULE is given as Y</p>
+            <p>Schedule definition should be for one type at a time. Combinations like PI, RI etc., are not allowed</p>
+            <p>Valid schedule types are A, B, BC, I, IN, N, P, R, Z, C, CC and CI.</p>
+            <p>Part of a multi value set of fields.</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER</field>
+<desc>
+            <p>Identifies the customer to whom the AZ account belongs.</p>
+            <p>The value for this field is populated from the corresponding ACCOUNT record</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>1-10 numeric customer code</p>
+            <p>No input field</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>REP.BEN.BANK</field>
+<desc>
+            <p>Identifies the ultimate  Bank from which funds for repayment to All in One account is to be transferred.</p>
+            <p>The All in One account will receive the funds through a Bank to Bank transfer.</p>
+            <p>For auto payment , standard payment details held on the Agency table for the contract customer will be used in this field when payment is required, only if no input is made by the user.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>3-10 character Customer Mnemonic Type MNE or 1-6 numeric character     customer code, or 35 character</p>
+            <p>Multi value field</p>
+        </desc>
+</t>
+<t>
+<field>INT.CORR.IMMED</field>
+<desc>
+            <p>Valid inputs are CURRENT or NEXT</p>
+            <p />
+            <p>If CURRENT  is input then the accounting entries for interest correction are raised online by debiting repay account.</p>
+            <p />
+            <p>If NEXT is input then the accounting entries for interest correction are raised online by debiting AZINTADJ suspense account &amp; then the actual debit to repay account shall happen only during NEXT online/ scheduled repayment.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Valid inputs are CURRENT or NEXT.</p>
+            <p />
+            <p>NEXT allowed only if ANNUITY.ADJUST = 'YES'. If INT.CORR.RTN is defined in AZ.PRODUCT.PARAMETER, then it takes priority over the value in this field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ROLLOVER.TERM</field>
+<desc>
+            <p>This field specifies the PERIOD for which the Rollover amount will be REINVESTED in the deposit account.</p>
+            <p />
+            <p>Incase of loans the loan account will be extended for the period in this period.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1.Permitted values:-  D (Days), W (Week), M (month) and Y Year).</p>
+        </desc>
+</t>
+<t>
+<field>REDEMPTION.DATE</field>
+<desc>
+            <p>Field to indicate the effective date of part redemption or pre-closure of a normal Fixed type deposits.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard date field.</p>
+            <p>Can be backdated or TODAY. Default is TODAY.</p>
+            <p>Cannot be forward value.</p>
+            <p>Cannot be beyond last capitalisation date.</p>
+            <p>Pre-closure date cannot be beyond last redemption.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MATURITY.INSTR</field>
+<desc>
+            <p>Defaulted from APP. Can eb changed at az account level.</p>
+            <p>Refer to help in APP.</p>
+        </desc>
+</t>
+<t>
+<field>SCHEDULES</field>
+<desc>
+            <p>Determines whether schedule for the AZ loan / deposit account is to be defined or not.</p>
+            <p />
+            <p>If 'Y' is given, further fields relating to schedule will be available to the user for defining various types of  schedules.</p>
+            <p>If 'N' is given, schedule will not be permitted.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional field</p>
+            <p>Valid options are, 'Y', 'N' or ''</p>
+            <p>Default is taken as 'Y'</p>
+        </desc>
+</t>
+<t>
+<field>PRE.CLOSURE.IND</field>
+<desc>
+            <p>Indicates whether pre closure of the loan / deposit account is opted or not. If 'Y' is defined here, the system will inform the users the total amount due in the account, inclusive of interest. Based on these details, decisions can be made to proceed further in closing the account or not.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Valid values 'Y' or ' ' (Null).</p>
+        </desc>
+</t>
+<t>
+<field>REPAY.ACCOUNT</field>
+<desc>
+            <p>Defines the Customer account or the Internal account in T24, from which the repayment amount for AZ loan account is debited.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional Input</p>
+            <p>Accepts existing valid Customer account or Internal Account</p>
+            <p>In loans if PD.LINK.TO.AZ is defined as 'Y' then this field is mandatory.</p>
+            <p>In deposits if BC schedule is to be defined then this field is mandatory.</p>
+            <p>AZ.ACCOUNT not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc><p>Defines the date from which the loan/ deposit account is effective.</p><p /><p>Any date entered earlier than the business date,  is validated against the MAX.BACK.DATE defined under the respective AZ Product parameter.</p><p /><p>The future date entered here cannot be greater than the Forward Maximum Date defined under DATES.</p><p /><p>If PROD.START.DATE or PROD.END.DATE is defined in APP then it is validated against it.</p><p /><p><p>Validation Rules:</p></p><p /><p>Standard date format.</p><p>Default is current Business Date</p></desc>
+</t>
+<t>
+<field>ROLLOVER.INT.RATE</field>
+<desc>
+            <p>Specifies the RATE OF INTEREST applicable for the rollover period.  If undefined, then the rate of interest of the existing contract is taken by default.</p>
+            <p />
+            <p>Only fixed interest rates are handled incase of loans.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Rule 1: Optional field.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.KEY</field>
+<desc>
+            <p>This field is used to define the tax code, to be applied on  the tax component like Interest.</p>
+            <p>There are two ways of  specifying the tax code here. One way is to enter  the code from the  TAX file. If any valid code already existing in TAX file is entered  here, the relevant information will  be picked up from the TAX file, for calculation purposes.</p>
+            <p>Another way is to specify a valid code from  TAX.TYPE.CONDITION file. In this case, the system first reads the CUSTOMER.CHARGE  table and then based on the charge group of the customer, picks up the relevant tax record from TAX.TYPE.CONDITION.</p>
+            <p>To distinguish the code of TAX.TYPE.CONDITION from the TAX file, the code is to be entered by prefixing ' * '.</p>
+            <p>For example, if ' *VAT' is  entered here, it will  pick up the relevant code from the TAX.TYPE.CONDITION file. A code entered  like '10' (without *),  will refer TAX file and pick up the record relating to code 10.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Should have been already defined as a valid record in TAX /       TAX.TYPE.CONDITION file.</p>
+        </desc>
+</t>
+<t>
+<field>CREATE.DATE</field>
+<desc>
+            <p>This field contains the date the AZ contract was created. It is a noinput field and updated by the system at INAU stage. This is used to validate if the contract was a NS contract.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>TAX.TYPE.CONDITION</table>
+</header>
+<overview>
+<ovdesc>
+<p>TheTAX.TYPE.CONDITION file links types of customer to types of
+ tax thus enabling T24 to calculate different levels of tax
+ depending on the type of customer. Using this mechanism, for
+ example, it is possible to charge a different rate of VAT to
+ residents and non-residents. </p><p>To activate this facility the user must first set up the
+ different taxes on the TAX.TYPE file. An example of a tax on this
+ file would be VAT, value added tax. </p><p>Secondly the user must establish the rules by which the
+ different types of customer are to be determined. This is done
+ firstly by establishing a record for TAX on the
+ CONDITION.PRIORITY file. This record will indicate the fields on
+ the customer that are to be examined when determining the type of
+ customer for tax purposes. For example the user may decide that
+ the customer's tax status can be identified from the SECTOR and
+ RESIDENCE codes. </p><p>Thirdly the user must define the different types of customer
+ by setting up the TAX.GEN.CONDITION file. For example the user
+ may decide that 'private individuals' that are 'resident' are a
+ type of customer for tax purposes. </p><p>Fourthly the user must define the different rates of tax that
+ may be charged on the TAX table. For example the user may input
+ records for VAT full rate and VAT reduced rate and VAT zero rate.
+ </p><p>Finally the user links these different tables together on the
+ TAX.TYPE.CONDITION table. At least one record will be established
+ on this table for each TAX.TYPE. The record then links the types
+ of customer with the tax rates to be applied. For example a
+ single record may indicate that for VAT, resident individuals are
+ to be charged 15%, all non-residents are to be charged 0%, etc. </p><p>More than one record may be set up on TAX.TYPE.CONDITION for
+ each type of tax by the addition of a numeric sequence. Thus VAT
+ may exist but also VAT-001. This facility is used where there are
+ more than one set of rates for a particular tax, for example full
+ rate value added tax and reduced rate value added tax. </p><p>The tables link thus: </p><p>CUSTOMER</p><p>to</p><p>CONDITION.PRIORITY</p><p>to</p><p>TAX.GEN.CONDITION</p><p>to</p><p>TAX.TYPE.CONDITION &lt;===TAX.TYPE</p><p>to</p><p>TAX</p></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>LOCAL.REF</field>
+<desc><p>Local reference fields if defined. </p></desc>
+</t>
+<t>
+<field>PL.CATEGORY</field>
+<desc><p>Reserved for future use </p><p><p>Validation Rules:</p></p><p>System field no input</p></desc>
+</t>
+<t>
+<field>TAX.TYPE.PROD</field>
+<desc><p>The key of the the TAX.TYPE.CONDITION file is TAX.TYPE and product. </p><p>The former must exist on the TAX.TYPE file (e.g. VAT). The latter is optional and is an incremental number (e.g. VAT-001). It is used when more than one variation on a tax exists, for example value added tax at full rate and at reduced rate. </p><p><p>Validation Rules:</p></p><p>First part of field, tax.type, must exist on the tax type field.  If a product is entered then this must be separated from the tax.type by a '-'. The product must be a number between 001 and 999 with leading zeros.`</p></desc>
+</t>
+<t>
+<field>TAX.CODE</field>
+<desc><p>Identifies the tax code (from the TAX file) that holds the tax rate to be applied for this customer group. </p><p><p>Validation Rules:</p></p><p>Must exist on the TAX table.</p></desc>
+</t>
+<t>
+<field>ACCT.CATEG</field>
+<desc><p>Identifies the category code of the tax account to be credited with the tax. If specified it overrides the category code specified on the TAX record. </p><p><p>Validation Rules:</p></p><p>Must be a valid CATEGORY in the range 0-19999</p></desc>
+</t>
+<t>
+<field>CONTRACT.GRP</field>
+<desc><p>Allows tax codes to be assigned to particular groups of contract as well as to the type of customer. </p><p>For example using this field and the customer charge conditions a specific tax code could be assigned to fixed deposits over a particular equivalent value for tax paying residents of a particular country. </p><p>The CONTRACT.GRP code is determined from the conditions defined in the  APPL.GEN.CONDITION record for the relevant application. </p><p><p>Validation Rules:</p></p><p>Five character alphanumeric Optional Input.</p></desc>
+</t>
+<t>
+<field>CUST.TAX.GRP</field>
+<desc><p>Identifies the type of customer for whom the related tax rate is to be applied. Input to this field is a customer tax group number from the TAX.GEN.CONDITION file. </p><p><p>Validation Rules:</p></p><p>Must exist on the TAX.GEN.CONDITION file for the same type of tax. e.g. if this record is VAT (or VAT-001) and the group in put is 010</p></desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc><p>Describes the type of tax condition. For example: </p><p>Value added tax </p><p>Value added tax reduced rate. </p><p><p>Validation Rules:</p></p><p>3-35 type A (alphanumeric) characters. Multilanguage field. (Mandatory input).</p></desc>
+</t>
+</menu>
+</t24help>
+

@@ -1,0 +1,1826 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SL</product>
+<table>SL.LOANS</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>A drawing under a facility could be in any allowed currency under the facility. The drawing could also be made by any allowed customer defined in the facility. At the time of each drawing checks are performed by the system to ensure that the drawing complies with the terms defined at the facility and tranche level.</p>
+            <p>  Facility is available to the user to input amount of drawing in the drawing currency or base currency equivalent. Further features such as exchange rate fixing and interest rate fixing for forward dated drawings are also available.</p>
+            <p>  Each drawing is identified against the tranche under which it is drawn and the individual participant's share in the tranche is updated by the system automatically. The share of participants in the drawing is defaulted by the system with an option to change the participant shares, if so required. The amounts due from individual participant at the time of drawdown and due to the individual participant on maturity is held and processed by the system automatically. Liquidation of amounts due from the borrower could follow an automatic route or through an internal account. If automatic route is chosen, on the due date the amounts due to individual participant is distributed. If internal option is chosen, distribution of funds to the participants could be done after the borrower has settled the dues. Separate front ends are available for settlement of dues after the liquidation date.</p>
+            <p />
+            <p />
+            <p>  Loans under syndication can be input with a value date that is less than today. However this can be done only in cases when it otherwise satisfies the normal input conditions of a Loan, viz., Validity of the Tranche under question, availability of funds under the Tranche, within the exposure level of each of the participants, etc. Impact of limit line and collection of any charges attached to this would be done as on the date of input of such a backdated Loan. In the case of commitment fee, the recalculation would be done for the current schedule.</p>
+            <p>  To cater to instances such as undrawn commitment amount under the Tranche is less than the loan amount although the Tranche is live, the user has the option of input of SL.BUY.SELL, for Principal Movements that are backdated as well.</p>
+            <p>  Principal Increase/Decrease in an existing undiscounted loan is permitted during the Tenor ranging between the value date and the maturity date of the Loan. The movement input shall however not conflict with the SL.EXPOSURE.LEVEL.</p>
+            <p>  For Principal reduction, new participants would not be permitted, but such a decrease could result in exit of a participant. For Principal increase, new participants would be permitted provided such a participant is already recorded in the Tranche and has adequate share to participate.</p>
+            <p>  If the loan were in a currency different from that of the Facility, then the impact of the Principal movements in the Facility would happen at the historic rate. Any adjustment of interest and commitment fee on account such principal movements would be confined to the current schedule only.</p>
+            <p />
+            <p>  Reversal function is restricted even if one schedule has been processed (or) Charges exist for the loan contract. In such cases where charges exist, reversal of charges should be done first before reversing the loan contract.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>NEW.INT.RATE</field>
+<desc>
+            <p>New interest rate to be applied on the loan. The effective date for such change is provided in New.Int.Effect.</p>
+            <p>  Input permitted in this field only if Int.Rate.Type is 1 Fixed</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-10 numeric characters plus decimal point</p>
+            <p>  Optional input</p>
+            <p>  Input prohibited in Int.Rate.Type is 2 Floating</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.LIQ.ACCT</field>
+<desc>
+            <p>Indicates the account number where entries are made for the reimbursement of the principal at liquidation or scheduled date.</p>
+            <p>  Accounting entries would be raised on the principal schedule date, debiting this account with the scheduled amount.</p>
+            <p>  If liquidation mode is Automatic the debit would be made for the entire value of the principal due.</p>
+            <p>  If liquidation mode is Internal, accounting entry would get raised only for the share of T24 bank in the scheduled amount.</p>
+            <p>  Optional input. Drawdown account would get defaulted if no input is made.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Must be a valid record on ACCOUNT table</p>
+            <p>  Account must be denominated in the Deal.Currency</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>STMT.NO</field>
+<desc>
+            <p>Holds the IDS of STMT and Categ accounting entries raised</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>PART.INT.AMOUNT</field>
+<desc>
+            <p>Holds the particpant's interest amount. Allowed only for 'S' basis contract.</p>
+        </desc>
+</t>
+<t>
+<field>NEW.INT.EFFECT</field>
+<desc>
+            <p>The effective date of change of new interest or spread</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-9 type A alpha numeric character date format</p>
+            <p>  Date entered should be greater than or equal to system date</p>
+        </desc>
+</t>
+<t>
+<field>MSG.CLASS</field>
+<desc>
+            <p>Forms a part of the multi-value set of delivery related fields.  This field is system written and is used to determine whether message is to be sent to BORROWER or PARTICIPANT.</p>
+            <p>  At present the values allowed are ADVICEBORR  and  ADVICEPART, which are defined in the EB.MESSAGE.CLASS file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Values now used are ADVICEBORR and ADVICEPART.</p>
+        </desc>
+</t>
+<t>
+<field>MIS.ACCT.OFFICER</field>
+<desc>
+            <p>Indicates the account officer for MIS reporting and profitability purposes.</p>
+            <p>  This field may be changed anytime during the life of the contract</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-4 numeric characters</p>
+            <p>  Optional input</p>
+            <p>  Must be a valid record on DEPT.ACCT.OFFICER table</p>
+        </desc>
+</t>
+<t>
+<field>TAX.AMOUNT</field>
+<desc>
+            <p>Tax amount on commitment fee calculated and written by system for the current period. Amount is populated for both WHT and Interest tax</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  System written. No input allowed</p>
+        </desc>
+</t>
+<t>
+<field>SPL.CAP.SPREAD</field>
+<desc>
+            <p>The value will be defaulted from FACILITY.Associated multi-value field to split special spread to cash and cap spread. Rate defined in this field cannot be greater than SPECIAL.SPREAD.</p>
+        </desc>
+</t>
+<t>
+<field>MATURED.ONLINE</field>
+<desc>
+            <p> Indicates if  the contract has matured online or not </p>
+            <p>Validation rules</p>
+            <p>NOINPUT field.Will be set to YES if matured online</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.REPAY.CCY</field>
+<desc>
+            <p>Currency in which principal is expected to be repaid. Currently, only allowed value is DEAL.CURRENCY</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  3 alpha currency mnemonic or 1-3 currency code</p>
+            <p>  Must be a valid record on CURRENCY table</p>
+            <p>  Must be the same as DEAL.CURRENCY</p>
+        </desc>
+</t>
+<t>
+<field>INT.RT.FIX.DT</field>
+<desc>
+            <p>Date on which interest rate is to be determined. For more details see help on Holding.Rate</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-9 type A alpha numeric character date field</p>
+            <p>  Date should be prior to maturity date and greater than value date.</p>
+            <p>  Recorded for information only</p>
+        </desc>
+</t>
+<t>
+<field>SL.PURPOSE</field>
+<desc>
+            <p>Purpose for which the loan is drawn. Different purposes could be listed in SL.PURPOSE table and the appropriate value picked here.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Optional input</p>
+            <p>  Information field. Not used for any processing</p>
+        </desc>
+</t>
+<t>
+<field>MARKET.KEY</field>
+<desc>
+            <p>Market rate information to calculate the EIR. It can either be a fixed rate or PERIODIC.INTEREST  key with prefix P.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>INTEREST.BASIS</field>
+<desc>
+            <p>Indicates the calculation method for interest computation purposes.</p>
+            <p>  Input in this field determines the components for the interest calculation.</p>
+            <p>  For illustrations of all supported interest basis types see INTEREST.BASIS</p>
+            <p>  Int basis changes allowed after authorisation </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  2 type A alphanumeric characters</p>
+            <p>  Optional input. System defaults currency table value</p>
+            <p>  Interest basis 'S' not allowed</p>
+            <p>  W1/W2 Basis allowed for 252/252 Brasil method calculations</p>
+        </desc>
+</t>
+<t>
+<field>BASE.CCY.AMT</field>
+<desc>
+            <p>Extent to which the facility would be reduced out of the drawing made.</p>
+            <p>  This field shows the facility currency equivalent of the drawing made and this amount will be reduced from the commitment available with respect to this loan. For a revolving facility, on maturity of a loan, this amount would get re-instated at the facility.</p>
+            <p>  Input can be made in this field directly provided AMOUNT field is not input. If no input is made, the value in AMOUNT and BASE.CCY.CONV fields would be used to arrive the value in this field.</p>
+            <p>  Ex. Facility currency is USD and Loan currency is GBP.</p>
+            <p>  Situation A - Borrower desires to draw 100,000 GBP and the conversion rate that is to be applied is 1.4. So 100,000 is defined in AMOUNT and 1.4 in BASE.CCY.CONV.</p>
+            <p>  Situation B - Borrower desires to draw in GBP equivalent of USD 100,000. In this case 100,000 is defined in BASE.CCY.AMT</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-14 numeric characters plus decimal point</p>
+            <p>  Optional input. System writes the facility currency equivalent of the       amount drawn during validation.</p>
+            <p>  Input allowed only if AMOUNT field is Null</p>
+            <p>  Amount input in this field may not exceed the undrawn balance in the       facility</p>
+        </desc>
+</t>
+<t>
+<field>DELIVERY.CUST</field>
+<desc>
+            <p>The ID of the customer who is the addressee of the message is system written in this field.</p>
+            <p>  This field is the first of the set of multi-value fields which contain the delivery related information.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  System written.</p>
+        </desc>
+</t>
+<t>
+<field>NEW.INT.SPREAD</field>
+<desc>
+            <p>New spread that is to be applied on the loan. The effective date for such change is provided in New.Int.Effect</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-9 numeric characters plus decimal point</p>
+            <p>  Optional input. Input allowed only for Int.Rate.Type 2 (Floating) and       not allowed otherwise</p>
+        </desc>
+</t>
+<t>
+<field>FIN.BCCY.RATE</field>
+<desc>
+            <p>The final conversion rate that is to be adopted for the loan. Input allowed only if system date is equal to Excg.Fix.Dt.</p>
+            <p>  For more details see help on Excg.Fix.Dt</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Input allowed only on Excg.Fix.Dt</p>
+            <p>  No input allowed after value date of the loan</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>BS.AMORTISATION</field>
+<desc>
+            <p>Decision to amortise the premium or discount on the purchase of loan is entered here.</p>
+            <p>  Only values allowed are YES or NO.</p>
+            <p>  If value YES is defined the premium or discount is accounted to the Asset type specified in SL.PARAMETER (field PL.CAT.SALE.PRFT or PL.CAT.SALE.LOSS) depending on profit or loss (premium or discount)</p>
+            <p>  For value NO the amount is directly debited to P&amp;L.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Optional input. Default value is NO</p>
+            <p>  Input allowed only for mere participant facility and only during first     input of loan.</p>
+        </desc>
+</t>
+<t>
+<field>MIS.INT.KEY</field>
+<desc>
+            <p>Contains the reference number indicating the MIS cost of funds rate</p>
+            <p>  One change in the MIS interest rate table will automatically update during end of day processing all the applicable MIS interest rates on all contracts that contain the code</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-3 numeric characters</p>
+            <p>  Optional input</p>
+            <p>  Input allowed only if MIS.INT.RATE is blank</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.RATE</field>
+<desc>
+            <p>Indicates the annual interest rate applicable on the contract. When a credit facility is extended to the borrower the interest rate quoted for drawings under the facility could either be a fixed rate or a floating rate (with or without spread). If the rate quoted is fixed the value is input here.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-10 numeric characters plus a decimal point</p>
+            <p>  Optional input. Input allowed only if INT.RATE.TYPE is 1 FIXED</p>
+            <p>  Input prohibited for INT.RATE.TYPE 2 (FLOATING)</p>
+            <p>  Value input here must be greater than zero</p>
+        </desc>
+</t>
+<t>
+<field>ROUNDING.RULE</field>
+<desc>
+            <p>This field will hold contract level rounding rule for interest calculations.  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Should be a valid EB.ROUNDING.RULE id. </p>
+            <p>  No change permitted after first authorization </p>
+            <p>   For detailed options on different rounding options help text on EB.ROUNDING.RULE file can be referred. </p>
+        </desc>
+</t>
+<t>
+<field>INT.FWD.BKD</field>
+<desc>
+            <p>Indicates the method that will be followed for the generation of interest schedules and the action that will be taken if the derived date is a holiday</p>
+            <p />
+            <p />
+            <p>  FWD  The system will go forward to the next working day</p>
+            <p />
+            <p />
+            <p>  BWD  System will go backward to the last working day</p>
+            <p />
+            <p />
+            <p>  FSM  System will go forward to the next working day if within the same month. Else it will go backward to the last working day</p>
+            <p />
+            <p />
+            <p>  CAL - The system will use the derived date without change, irrespective of the fact whether it is a working day or not.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>  The user may choose from any of       the following options,</p>
+            <p>  FWD, BWD, FSM, CAL       &amp; NAM</p>
+            <p>  Optional input. Default value is FWD</p>
+        </desc>
+</t>
+<t>
+<field>DRAW.EXCG.RATE</field>
+<desc>
+            <p>Reserved for future use</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Rule 1</p>
+            <p>  Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>ONLINE.PAY.TYPE</field>
+<desc>
+            <p>Field to indicate whether it is a partial online repayment only towards the principal component or principal and interest</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Can hold values - P, I, PI</p>
+            <p>'P' is mandatory</p>
+            <p>For 'S' basis contracts 'P' and 'I' has to be defined separately </p>
+            <p>Prohibited for Annuity type of contracts.</p>
+            <p>Probihited for Discounted type of contracts.</p>
+            <p>Prohibited on the maturity date of the contract.</p>
+            <p>Input not allowed along with principal change</p>
+            <p>Prohibited for forward dated contracts and after tranche expiry </p>
+        </desc>
+</t>
+<t>
+<field>RECALC.ANNUITY</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>BASE.CCY.CONV</field>
+<desc>
+            <p>Conversion rate to be used for translation of loans/drawings to facility equivalent. When a loan is drawn under a facility in a currency different to the facility currency, the rate input in this field would used to translate the loan into facility currency equivalent. This would then be used to arrive at the amount available under the facility.</p>
+            <p>  For example,</p>
+            <p>  Sanctioned facility is USD 100 million. A GBP loan of 50 million is drawn against the facility. If the conversion rate is input as 1.5, the facility currency equivalent of the GBP loan would be USD 75 million. The facility would now have an available amount (undrawn amount) of USD 25 million. For a revolving facility when the loan matures, the available amount under the facility would be re-instated with an amount equal to the facility currency amount only (USD 75 million) irrespective of any movement in the GBP/USD exchange rate during this period.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-10 numeric characters plus a decimal point of the form 999999.9999</p>
+            <p>  Optional input. System would default mid rate from currency table.</p>
+            <p>  Input allowed only if the loan/drawdown is in a currency other than the       facility currency.</p>
+            <p>  This field cannot be changed once input in this field is made and       authorised.</p>
+        </desc>
+</t>
+<t>
+<field>WHT.CERT.ACCT</field>
+<desc>
+            <p>Account number where WHT certificate amount is to be posted. For details see help on WHT.Tax.Key</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Must be a valid record on ACCOUNT table</p>
+            <p>  Account must be denominated in SL.CURRENCY</p>
+        </desc>
+</t>
+<t>
+<field>MSG.DATE</field>
+<desc>
+            <p>The date on which the message will be generated is system written in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  System written.</p>
+        </desc>
+</t>
+<t>
+<field>INT.TAX.KEY</field>
+<desc>
+            <p>Represents a reference on the TAX table that will indicate the rate to be used for computation of interest tax</p>
+            <p>  Interest tax in all instances is charged on the relevant fee payment dates. No accrual will be performed. Interest would be grossed up to include the tax component.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  2 numeric characters</p>
+            <p>  Optional input. Default is no tax</p>
+            <p>  Must be a valid ID on the tax table</p>
+            <p>  Either Int.Tax.Key or WHT.Tax.Key only may be defined</p>
+        </desc>
+</t>
+<t>
+<field>EFF.CAP.RATE</field>
+<desc>
+            <p>This field will hold the rate at which the capitalisation will be done considering the cap percentage and the cap spreads.</p>
+        </desc>
+</t>
+<t>
+<field>INT.LIQ.ACCT</field>
+<desc>
+            <p>Indicates the account number where entries are made for the reimbursement of the interest at liquidation or scheduled date.</p>
+            <p>  Accounting entries would be raised on the interest schedule date, debiting this account with the scheduled amount.</p>
+            <p>  If liquidation mode is Automatic the debit would be made for the entire value of the interest due.</p>
+            <p>  If liquidation mode is Internal, accounting entry would get raised only for the share of T24 bank in the scheduled amount.</p>
+            <p>  Optional input. Drawdown account would get defaulted if no input is made.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Must be a valid record on ACCOUNT table</p>
+            <p>  Account must be denominated in the Deal.Currency</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>BENF.PRIN.ACCOUNT</field>
+<desc>
+            <p />
+            <p>  Account details of the ultimate beneficiary to be credited with the principal amount. This field concerns transfers where the customer is requesting the delivery of funds outside the branch.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  3-35 characters free text field</p>
+        </desc>
+</t>
+<t>
+<field>SEND.RECE.INFO</field>
+<desc>
+            <p>This field may be used to specify additional information to the Receiver, catering to Tag 72.</p>
+            <p>  Permits input up to 6 lines of 35 characters.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Optional Input</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.REF</field>
+<desc>
+            <p>Free text field to describe the customer reference to the loan</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  3-35 character free text field</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.NO.</field>
+<desc>
+            <p>Unique reference number for a draw down under a facility.</p>
+            <p>  The @ID is the ID of the Pre-Syndication suffixed with the tranche code under the facility and a 4 digit sequence number.</p>
+            <p>  Foe example</p>
+            <p>  Pre-Syndication ID            - SL/01088/00001</p>
+            <p>  Facility ID                         - SL/01088/00001/01</p>
+            <p>  Tranche.Code                   - 001</p>
+            <p>  SL.LOANS ID                 - SL/01088/00001-001-0001</p>
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>COUNTRY.OF.RISK</field>
+<desc>
+            <p>The country code representing the country where the credit risk is deemed to reside</p>
+            <p>  This field could be used to generate country risk information</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  2 type A alphanumeric characters. Optional input. Default value is the country (residence) of the borrower</p>
+            <p>  Must be a valid record on COUNTRY table</p>
+            <p>  This field could be maintained anytime during the life of the deal</p>
+        </desc>
+</t>
+<t>
+<field>INT.RATE.TYPE</field>
+<desc>
+            <p>Indicates the type of interest rate to be used for loans</p>
+            <p>  Int Rate type changes allowed after Authorisation</p>
+            <p>  One of the following two values are supported;</p>
+            <p>  1 - FIXED - The rate of interest to be charged over the life of the contract is fixed at a specific percentage and is input as a numeric value. The rate is inclusive of spread if any</p>
+            <p>  2 - FLOATING - A rate of interest that would be charged on a non-determined basis with immediate impact. Input is in the form of a valid key from the BASIC.RATE.TEXT with the associated rate defined in BASIC.INTEREST table.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1 numeric character</p>
+            <p>  Only allowed value is 1 or 2</p>
+            <p>  Mandatory input</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>BUS.DAY.DEFN</field>
+<desc>
+            <p>Indicates those countries whose calendars must be checked with regard to holiday validation. The default value would be the country of the currency of the contract. The user may however modify this field, if required.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  4 type A alphanumeric characters.</p>
+            <p>  Optional input</p>
+            <p>  Multivalue field.</p>
+            <p>  Code must have a valid entry on the REGION/HOLIDAY table.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.SPREAD</field>
+<desc>
+            <p>Indicates the spread or margin on the floating rate. This spread or margin would be applied to the percentage interest derived from Basic Interest table.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-9 numeric characters plus a decimal point</p>
+            <p>  Optional input</p>
+            <p>  Input prohibited for FIXED interest rate type</p>
+            <p>  Cannot be greater than 100%</p>
+        </desc>
+</t>
+<t>
+<field>PENDING.TRANS</field>
+<desc>
+            <p>Field that would list any pending (INAU status) transactions under the facility. If this field contains any value, the facility is not available for input.</p>
+            <p>  Once the pending transactions are authorised, this field is cleared and the facility could be input.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  System maintained field to prevent input of the facility while other     transactions are unauthorised.</p>
+            <p>  Input not allowed</p>
+        </desc>
+</t>
+<t>
+<field>PIK.RATE</field>
+<desc>
+            <p>The value will be defaulted from FACILITY.This field holds the PIK rate. PIK is always 100% capitalisation.</p>
+        </desc>
+</t>
+<t>
+<field>DRAWDOWN.ACCOUNT</field>
+<desc>
+            <p>The account number for drawdown to be used on the value date.</p>
+            <p>  Accounting entries would be raised crediting the account mentioned in this field for the amount drawn.</p>
+            <p>  System defaults the first account in the respective currency for the customer, if no input is made</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-14 numeric characters relating to a customer account or a Nostro</p>
+            <p>  Must be a valid record on the ACCOUNT table</p>
+            <p>  The account must be denominated in the DEAL.CURRENCY</p>
+        </desc>
+</t>
+<t>
+<field>CAPITALISATION</field>
+<desc>
+            <p>Reserved for future use</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Rule 1</p>
+            <p>  Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.INT.AMOUNT</field>
+<desc>
+            <p>Total computed interest for the life of the current/first period of the contract.</p>
+            <p>  Specifies the automatically calculated interest amount due for the current interest period.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-14 numeric characters plus decimal point</p>
+            <p>  System maintained field. Input not allowed</p>
+        </desc>
+</t>
+<t>
+<field>DEAL.CURRENCY</field>
+<desc>
+            <p>The currency in which the loan under the facility is denominated. The liability of the customer to the loan would be to repay the loan amount in this currency and the loan asset would be held in the system in this currency.</p>
+            <p>  Note that, similar to ALLOWED.CUST, if drawings are permissible in facility currency and a few optional currencies, the entire list is to be defined in ALLOWED.CCY field in Facility.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  3 alpha currency mnemonic or 1-3 numeric character currency code</p>
+            <p>  Mandatory input</p>
+            <p>  Should be a valid ID in the CURRENCY table.</p>
+            <p>  Should be same as the currency of facility (if no ALLOWED.CCY is       defined) or any of the allowed       currencies under the tranche defined in facility.</p>
+        </desc>
+</t>
+<t>
+<field>PRINCIPAL.CHANGE</field>
+<desc>
+            <p>Represents the value of a principal increase or decrease of the Contract. The amount specified here will be posted to the DRAWDOWN.ACCOUNT with value date of AMT.VAL.DATE. The effective date for interest purposes of this amount is always the AMT.VAL.DATE. When  a backdated movement is defined the recalculation of Interest at Loan level and Facility level fee would be done only for the Current Interest/Fee period. The redistribution of the participant's share would be done at the ratio at which the Loan is currently held. This can however be changed by the User. In the event of such a change, for a Principal Increase the redistributed share for any participant cannot be less than what was already outstanding. Likewise for a Principal Decrease, the redistributed share cannot be greater than what was already outstanding. Inclusion of New Participant would be permitted for a Principal Increase  provided the same has been defined at the facility level.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-19 numeric characters plus decimal point and commas. (Optional input.)</p>
+            <p>  Input allowed in conjunction with AMT.VAL.DATE field.</p>
+            <p>  Principal schedules must be redefined.</p>
+            <p>  Contract must have status CUR.</p>
+            <p>  One forward action can be outstanding at any one time.</p>
+            <p>  Input prohibited prior to first authorization of contract.</p>
+            <p>  Input prohibited for forward dated contracts.</p>
+            <p>  Input of a decrease must be preceded by a '-' (negative sign).</p>
+            <p>  Decrease must be dated prior to the process date.</p>
+            <p>  Decrease may however be done for a future date if the repayment schedules are defined at the facility level.</p>
+            <p>  Input prohibited for discounted type contracts.</p>
+        </desc>
+</t>
+<t>
+<field>IAS.CLASSIFICATION</field>
+<desc>
+            <p>This field holds the classification of contract based on IFRS standard.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a Valid record ID in  IAS.CLASSIFICATION file.</p>
+            <p>This field cannot be amended after authorization</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>LIQUIDATION.MODE</field>
+<desc>
+            <p>Identifies the manner in which overdue payments are handled. The default for all contracts is AUTOMATIC.</p>
+            <p>  Two options are provided;</p>
+            <p>  AUTOMATIC - On maturity of the loans (or while processing schedules), accounting entries would be passed across the liquidation account for the entire dues and the respective participant's share would be disbursed through their Nostro accounts automatically. In this scenario, the Agent expects funds to be credited to his Nostro on the due dates and hence automates the liquidation and disbursement entries.</p>
+            <p>  INTERNAL - In this scenario the Agent would pay the participants only on actual receipt of funds in his Nostro/liquidation account. The Agent's share (in case the Agent is also a participant) would be liquidated to the account provided in the deal for the respective due but no amounts would be disbursed to the participants. The overdue amounts would get captured in SL.OD.DUES and SL.OD.PART files. On receipt of funds, the application SL.OD.DUES may be used to pay off the participant's share as well as to reverse out own share in the internal account where Agent's share is stored.</p>
+            <p>  In case the borrower has followed a different method of rounding with that compared to the Agent, the participant's share of interest, commitment fee and tax on both could differ. In such scenario the borrower would remit an amount different to the one calculated and stored by the Agent in his overdue files. Hence an application SL.ROUND.ADJ has been provided where the Agent could re-allocate the share of interest, commitment fee and tax thereon between the participants, to be in line with the borrower's calculation. This front-end could also be used in case the Agent does a skimming of the interest (on loans) or commitment fee. In this case the borrower is charged a different rate than the one quoted by the participants and the Agent skims the difference.</p>
+            <p>  Liquidation mode INTERNAL could hence be used where ;</p>
+            <p>  (a) The agent would repay the participants only on sighting the funds</p>
+            <p>  (b) Where the agent would require to do rounding adjustments to re-allocate the participant's share</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Only allowed values are AUTOMATIC and  INTERNAL</p>
+            <p>  Once authorised this field may not be changed</p>
+        </desc>
+</t>
+<t>
+<field>BS.SETTLE.ACCOUNT</field>
+<desc>
+            <p>The account reference over which accounting entries are to be raised for the consideration paid. For more details see help on Bs.Consideration</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Must be a valid record on the ACCOUNT table</p>
+            <p>  Must be denominated in the SL.CURRENCY</p>
+            <p>  Input allowed only for mere participant facility and only during first     input</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.REF</field>
+<desc>
+            <p>Specifies the credit line number to which the transaction is assigned.</p>
+            <p>  If no input is made in this field, the LIMIT system will provide a default value according to the limit reference record that has its field Application.Ident set to SL. If no match is found, the default value will be the reference with its Field Reference blank.</p>
+            <p>  The credit line number generated will be NNNN-01 where NNNN is the ID of the limit reference.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  3-7 numeric characters</p>
+            <p>  Conditional input. Default will be as explained above</p>
+            <p>  Must be a valid reference on the LIMIT.REFERENCE table</p>
+        </desc>
+</t>
+<t>
+<field>AMT.VAL.DATE</field>
+<desc>
+            <p>The effective date of the principal Increase/Decrease. The date when the principal increase/decrease becomes effective for interest purposes.</p>
+            <p>  In the event of a definition of a future dated movement, this  future date can be amended at any time prior to that date, such that  the new date is not less than the date on which it is amended.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Standard date format.</p>
+            <p>  Default value is TODAY.</p>
+            <p>  Must be a valid date.</p>
+            <p>  One forward dated action can be outstanding at any one time.</p>
+            <p>  Schedules must be redefined.</p>
+            <p>  Cannot be greater than the MATURITY.DATE.</p>
+            <p>  Input prohibited prior to first authorization of contract.</p>
+            <p>  Input prohibited for forward dated contracts.</p>
+        </desc>
+</t>
+<t>
+<field>EXCG.FIX.DT</field>
+<desc>
+            <p>Date on which exchange rate between facility currency and loan currency is to be determined.</p>
+            <p>  While granting forward dated loans in a currency other than the facility currency, the exchange rate at which the drawing would get converted to base currency equivalent would be determined few days before the value date. Such date is input in this field.</p>
+            <p>  A tentative rate is provided in Base.Ccy.Conv field that would be used for updation of facility and limit. On the exchange rate fixing date, the final rate is provided by the user. This rate would be used to update the facility and limit and the earlier updations dropped.</p>
+            <p>  Ex. Facility is for USD 100,000 and Loan is granted for GBP 10,000 on 01JAN02 with following inputs</p>
+            <p>  Value date = 12JAN02, Base.Ccy.Conv = 1.40, Excg.Fix.Dt 10JAN02</p>
+            <p>  On 01st Jan the initial rate of 1.40 would be used and the commitment available amount would get reduced by 14,000 (10,000 * 1.40) to stand at 86,000. On 10th Jan the final rate provided in Excg.Fix.Dt is 1.5. Now this rate would be used to update the facility and hence the new commitment available amount would be 85,000 ie. 86,000 + 14,000(updated earlier) - 15,000 (current update of 10,000 * 1.5).</p>
+            <p>  Two entries to LIVECMT asset type would be raised for the above example, one for 15,000 (new value) and one for 14,000 (old value)</p>
+            <p>  While providing the new exchange rate, error would be shown if the new rate results in overdrawing the commitment available amount. In this case the user may alter the AMOUNT field by reducing the value of the loan. On such action, the accounting entries for asset type FORWARDDB would be raised dropping the old amount and raising the new amount. Limit, facility balances and participant balances files will be rebuilt for such change.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Input allowed only if loan is forward dated</p>
+            <p>  Date entered should be within value date and system date.</p>
+        </desc>
+</t>
+<t>
+<field>PARTICIPANT</field>
+<desc>
+            <p>Name of the participant who is a contributory to the loan.</p>
+            <p>  Once DEAL.CURRENCY and  AMOUNT is entered, system would default the participant's ID, share and the share expressed in facility equivalent. The user can modify the share provided that the none of the participant's portion gets overdrawn.</p>
+            <p>  Inclusion of New Participant would be permitted for a Principal Increase provided the same has been defined at the facility level.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Must be an existing participant of the tranche.</p>
+        </desc>
+</t>
+<t>
+<field>MARKET.MARGIN</field>
+<desc>
+            <p>Margin to calculate the EIR based on future cashflow information. It can be either positive or negative  value</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RETURN.INT</field>
+<desc>
+            <p>Refer to helptext of SL.PARAMETER</p>
+        </desc>
+</t>
+<t>
+<field>ONLINE.PAY.AMT</field>
+<desc>
+            <p>Field to indicate the principal component of the repay amount during an online partial repayment when ONLINE.REPAY.TYPE </p>
+            <p>set to 'P' or 'PI'.When the ONLINE.REPAY.TYPE is 'I' it indicates the accrued interest amount till the online repayment date</p>
+            <p>For 'S' Basis type of contract user can specify interest amount to be repaid.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Standard amount field . Should be positive amount</p>
+        </desc>
+</t>
+<t>
+<field>DTLS.OF.CHRG</field>
+<desc>
+            <p>This field is mapped to field 71A of MT103 message.</p>
+            <p />
+            <p />
+            <p>  Only SHA is supported</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>  Input of BEN, OUR and SHA is     allowed.</p>
+            <p />
+            <p />
+            <p>  Default value is SHA.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>AMORTISE.FREQ</field>
+<desc>
+            <p>This field holds the frequency at which the amortisation should take place. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Standard T24 frequency type field</p>
+        </desc>
+</t>
+<t>
+<field>COUNTRY.OF.EXPOS</field>
+<desc>
+            <p>The country code representing the country where the exposure is deemed to reside</p>
+            <p>  This field could be used to generate reports with exposure information</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  2 type A alphanumeric characters. Optional input. System defaults country (residence) of the customer</p>
+            <p>  Must be a valid record on the COUNTRY table</p>
+        </desc>
+</t>
+<t>
+<field>WHT.TAX.KEY</field>
+<desc>
+            <p>Represents a reference on the TAX table that will indicate the rate to be used for computation of withholding tax</p>
+            <p>  Withholding tax in all instances is charged on the relevant fee payment dates. No accrual will be performed.</p>
+            <p>  Accounting for these two types of tax would happen as follows;</p>
+            <p>  Eg Interest amount for the period is 1,000 and tax amount 100. T24 banks portion is 50% and two other participants share is 30% and 20% respectively</p>
+            <p>  On the interest due date; liquidation mode is AUTOMATIC</p>
+            <p>  Dr</p>
+            <p />
+            <p />
+            <p />
+            <p>  Cr</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>  Cr</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>  Cr</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>  ------------------------------------------------------</p>
+            <p />
+            <p>  Dr</p>
+            <p />
+            <p />
+            <p />
+            <p>  Cr</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>  ---------------------------------------------------------------------</p>
+            <p />
+            <p>  Following accounting would happen for liquidation mode INTERNAL;</p>
+            <p>  Dr</p>
+            <p />
+            <p />
+            <p />
+            <p>  Cr</p>
+            <p />
+            <p />
+            <p />
+            <p>  Dr</p>
+            <p />
+            <p />
+            <p />
+            <p>  Cr</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>  ------------------------------------------------------------</p>
+            <p />
+            <p>  Note that no tax amount is to be written to SL.OD.DUES if the tax type is WHT. Only interest tax would be written to SL.OD.DUES.</p>
+            <p>  For liquidation both modes (automatic and internal) on receipt of the actual tax certificate, the user should reverse out the certificate and reserve accounts manually.</p>
+            <p>  The WHT Certificate a/c and WHT Reserve a/c may be denominated only in the Facility currency (for commitment fee). Note that the interest rate quoted by the bank would be exclusive of tax thereon.</p>
+            <p />
+            <p>  For this purpose, two fields are provided in FACILITY, one for WHT.CERT.ACCT and one for WHT.RES.ACCT. These are mandatory input if WHT.TAX.KEY is defined and not allowed otherwise. The values defined in WHT.CERT.ACCT and WHT.RES.ACCT must be an authorized record in the ACCOUNT file.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  2 numeric characters</p>
+            <p>  Optional input. Default is no tax</p>
+            <p>  Must be a valid ID on the tax table</p>
+            <p>  Either Int.Tax.Key or WHT.Tax.Key only may be defined</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.KEY</field>
+<desc>
+            <p>Contains the reference number of the appropriate interest rate that would be used for interest calculation purposes.</p>
+            <p>  A rate change on the interest rate table will automatically, during End of Day, all contracts linked to the basic interest table</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-4 numeric characters. Optional input</p>
+            <p>  Input mandatory if INT.RATE.TYPE is 2 (Floating) and not allowed other     wise.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DELIVERY.REF</field>
+<desc>
+            <p>System written and maintained field.</p>
+            <p>  Contains the delivery keys used for the generation of the advices.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  System written.</p>
+            <p>  User input not allowed</p>
+        </desc>
+</t>
+<t>
+<field>PIK.INT.FQY</field>
+<desc>
+            <p>The value will be defaulted from FACILITY.This field holds the frequency at which PIK interest needs to be capitalised..</p>
+        </desc>
+</t>
+<t>
+<field>ROLLOVER.LOANS</field>
+<desc>
+            <p>The IDs of the SL.LOANS that were rolled over resulting in creation of this loan. Multi-valued field to display more than one loan ID if loans were merged.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  System written. No input allowed</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CAP.PERC</field>
+<desc>
+            <p>The value will be defaulted from FACILITY.This field is used to specify capitalisation percentage - partial or full </p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.STATUS</field>
+<desc>
+            <p />
+            <p>  This is a system maintained field which indicates the processing status of the contract. During its life cycle within the system a contract will be</p>
+            <p />
+            <p />
+            <p>  in one of three states. These are:</p>
+            <p />
+            <p />
+            <p>  1. FWD - forward</p>
+            <p />
+            <p />
+            <p>  The contract is forward dated and has not yet reached its value date. At this stage no funds have been drawn down and no processing will be</p>
+            <p />
+            <p />
+            <p>  performed until the value date is reached. The contract appears as a contingent entry in the general ledger.</p>
+            <p />
+            <p />
+            <p>  2. CUR - current (live)</p>
+            <p />
+            <p />
+            <p>  The contract has now become "current" or "live". The value date has been passed and the principal drawn down. Interest is being accrued</p>
+            <p />
+            <p />
+            <p>  on the outstanding principal and repayments are in progress. The contract now represents a live credit balance in the general ledger.</p>
+            <p />
+            <p />
+            <p>  3. LIQ - liquidated (matured).</p>
+            <p />
+            <p />
+            <p>  The outstanding principal and interest have been fully repaid and no further processing or amendments are possible.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>  3 alpha characters either FWD, CUR       or LIQ.</p>
+            <p />
+            <p />
+            <p>  Input to this field is not       allowed.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CAP.SPREAD</field>
+<desc>
+            <p>The value will be defaulted from FACILITY.This field is used to split interest spread to cash and cap spread. CAP.SPREAD rate cannot be greater than Customer spread</p>
+        </desc>
+</t>
+<t>
+<field>PIK.START.DATE</field>
+<desc>
+            <p>Holds the start date from which PIK interest calculation will take place.</p>
+            <p>Value is defaulted from the field FACILITY.PIK.START.DATE</p>
+        </desc>
+</t>
+<t>
+<field>MIS.FUNDING.DEPT</field>
+<desc>
+            <p>This field is used within the MI module to define the profit centre that funded the contract. It is used in the generation of cost of funds entries when either MIS.INT.KEY or MIS.INT.RATE is used.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Optional input</p>
+            <p>  Must be a valid record on the DEPT.ACCT.OFFICER table</p>
+        </desc>
+</t>
+<t>
+<field>INT.REPAY.RATE</field>
+<desc>
+            <p>Reserved for future use</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Rule 1</p>
+            <p>  Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>SEND.MSG</field>
+<desc>
+            <p>Acting as part of the delivery multivale set, this field provides the user with the ability to decide whether to send or withhold sending the delivery of any message produced under the contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Options available are (Y)es - Send Message or (N)o - Do Not Send Message</p>
+            <p>  Default is YES.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>INT.REPAY.CCY</field>
+<desc>
+            <p>Indicates the currency in which interest is to be repaid. Currently, only allowed value is DEAL.CURRENCY</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  3 alpha currency mnemonic or 1-3 numeric currency code</p>
+            <p>  Must be a valid record on CURRENCY table</p>
+            <p>  Must be the same as DEAL.CURRENCY</p>
+        </desc>
+</t>
+<t>
+<field>MNEMONIC</field>
+<desc>
+            <p>Specifies an alternative easy means of referencing the loan. The Mnemonic must be unique across T24. The same Mnemonic cannot be assigned to a Facility record and a loan record.</p>
+            <p>  For each facility and loan the system will update an internal file SL.MNEMONIC.</p>
+            <p>  While taking charges on the SL.CHARGES template, the mnemonic of the facility or loan could be input in place of  the actual ID</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  3-10 type MNE Uppercase alpha or numeric first character alpha</p>
+            <p>  Optional input</p>
+            <p>  Mnemonic should be unique across T24 for FACILITY and  SL.LOANS. Same     mnemonic cannot be assigned to FACILITY and  SL.LOANS</p>
+        </desc>
+</t>
+<t>
+<field>INT.PAY.FQY</field>
+<desc>
+            <p>Identifies the first interest payment date and its frequency.</p>
+            <p>  This field displays the next interest payment date and the associated frequency at which subsequent schedules are to be cycled.</p>
+            <p>  The system will produce a single schedule for the first period. Upon reaching the scheduled event date a subsequent schedule will be generated based on the value in this field</p>
+            <p>  Ex - 31OCT2002M0131</p>
+            <p>  M= Monthly, 01 = monthly intervals, 31 = last day of the month.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Standard date format</p>
+            <p>  Optional input. If no input is made interest will be processed on       maturity date</p>
+            <p>  May not precede value date and be greater than maturity date</p>
+        </desc>
+</t>
+<t>
+<field>INT.ON.REPAY</field>
+<desc>
+            <p>This field will determine the interest amount to be collected either to be on the online partial repayment amount or the Total Loan amount.</p>
+            <p>Field should be flagged 'YES' for interest to be calculated on the online repay amount.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Allowed Value is 'YES' </p>
+            <p>  Default value is NULL in which case interest will be collected for the Loan Amount.</p>
+            <p>  Allowed Only for the Online partial repayment.</p>
+            <p>  Not allowed for Annuity type of SL.LOANS contracts</p>
+            <p>  Not allowed for Special interest Basis(S-basis)</p>
+            <p>  Not allowed for the Last day accrual contracts. </p>
+            <p>  No input field if SL.LOANS contract is rolled over. </p>
+            <p>  Interest Type(I) schedule is mandatory for online repayment with this field flagged 'YES' . </p>
+        </desc>
+</t>
+<t>
+<field>PART.INT.CAP</field>
+<desc>
+            <p>This field holds the total capitalised interest amount for the loan contract for each participant in participant’s multi value set.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>The value date or start of the deal.</p>
+            <p>  Indicates the date on which loan is drawn and commencement of interest accrual.</p>
+            <p>  Date entered in this field may not be less than system date.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-9 type A alphanumeric character. Standard date field</p>
+            <p>  Input of date less than system date is prohibited. Forward dates allowed</p>
+        </desc>
+</t>
+<t>
+<field>PIK.END.DATE</field>
+<desc>
+            <p>The value will be defaulted from FACILITY.This field holds the end date for PIK interest calculation.</p>
+        </desc>
+</t>
+<t>
+<field>HOLDING.RATE</field>
+<desc>
+            <p>Defines that rate at which accruals are to be handled in the loan if no interest rate or key is input.</p>
+            <p>  When loan is drawn, there could be circumstances when the interest rate is not determinable in advance. The interest rate is agreed/fixed at a date prior to the maturity of the loan, but well after the value date.</p>
+            <p>  In such cases, the bank may accrue interest at a holding rate for the interim period. Once the actual interest rate is defined in the loan contract, the accruals done at the holding rate is dropped and are made at the newly defined interest rate.</p>
+            <p>  The actual interest rate (or key plus spread) could be defined at any date prior to the maturity of the contract. If no such rate is given the interest schedules would be processed at the holding rate only.</p>
+            <p>  If actual interest rate (or key) is provided after one or more interest schedules are processed, the dropping of accruals at holding rate and re-accrual at final rates would be handled only for the current interest period</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-10 numeric characters plus decimal point</p>
+            <p>  Must be greater than zero</p>
+            <p>  Maximum value allowed is 100</p>
+            <p>  Once input and authorised, value in this field cannot be changed</p>
+        </desc>
+</t>
+<t>
+<field>WHT.RESERVED.ACCT</field>
+<desc>
+            <p>Account number where entries for WHT reserve is to be credited. For details see help on WHT.Tax.Key</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Must be a valid record on the ACCOUNT table</p>
+            <p>  Account must be denominated in the SL.CURRENCY</p>
+        </desc>
+</t>
+<t>
+<field>COMP.METHOD</field>
+<desc>
+            <p>  This field has been introduced to calculate the compounding accruals on the Loan amount for 252/252 Basis Brazil method</p>
+            <p>  Allowed Values are YIELD and NULL. If YIELD, system will perform compounding accruals for the corresponding frequency defined in COMP.FQY</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Always allowed along with the COMP.FQY</p>
+            <p>  Optional input. System defaults NULL</p>
+        </desc>
+</t>
+<t>
+<field>MSG.TYPE</field>
+<desc>
+            <p>The type of the message produced for this activity is system written in this field. Forms a part of the multi-value set of delivery related fields.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  System Written</p>
+            <p>  Will be a valid record in the DE.MESSAGE file.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONTRACT.GRP</field>
+<desc>
+            <p>Reserved for future use</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Rule 1</p>
+            <p>  Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>CATEGORY</field>
+<desc>
+            <p>Contains the category code to which the transaction is to be assigned.</p>
+            <p>  The category code should be within range 20000 - 49999</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-5 numeric charaters</p>
+            <p>  Optional input. System defaults the category code of the facility</p>
+            <p>  Must be a valid record on CATEGORY table</p>
+        </desc>
+</t>
+<t>
+<field>MATURITY.DATE</field>
+<desc>
+            <p>The date when the contract is to mature.</p>
+            <p>  This field represents the date on which principal amount (or the final installment) is due.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-9 type A alphanumeric characters</p>
+            <p>  Mandatory input</p>
+        </desc>
+</t>
+<t>
+<field>EFF.RATE</field>
+<desc>
+            <p>Effective interest rate on the contract. For fixed rate contracts it is the rate in the interest rate field and for floating rates this includes the rate for the key plus the spread applied. Stored for information purposes.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  System written. No input allowed</p>
+        </desc>
+</t>
+<t>
+<field>IAS.SUBTYPE</field>
+<desc>
+            <p>This field holds the Sub type  for the corresponding classification defined in IAS.CLASSIFICATION field </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a valid sub type for the corresponding classification defined in IAS.CLASSIFICATION file.</p>
+            <p>This field cannot be amended after authorization</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>COMP.FQY</field>
+<desc>
+            <p>  This field determines the frequency with which the compounding accruals on the Loan amount for 252/252 Basis Brazil method</p>
+            <p>  Allowed Values are DAILY,MONTHLY,YEARLY,TWMTH.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Always allowed along with the COMP.METHOD</p>
+            <p>  Optional input. System defaults NULL</p>
+        </desc>
+</t>
+<t>
+<field>CONSOL.KEY</field>
+<desc>
+            <p>Identifies the ID of the consolidation record on the CONSOLIDATE.ASST.LIAB (CAL) file into which this contract is to be consolidated for financial reporting.</p>
+            <p>  Outstanding balance for each contract is recorded in the CAL file so that they could be included in the financial reports produced via the reporting module. This field identifies the CAL record into which balance details for the contract is consolidated.</p>
+            <p>  The criteria for the consolidation are defined in CONSOLIDATE.COND table.</p>
+            <p>  This field is maintained by the system during end of day batch processing. Whenever this field is updated by the system, a history record would be written for audit trail purposes.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Alphanumeric as specified on the CONSOLIDATE.COND table</p>
+            <p>  System maintained field. No input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>OVR.CARRIER</field>
+<desc>
+            <p>An integral part of the 'Delivery' multi-value set, this field enables the user to override the defaulted carrier for a particular message type and select a new carrier.</p>
+            <p>  For example : If a specific message is generated by SWIFT, the user is able to override this by choosing other available options from the CARRIER table, eg TELEX or PRINT.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Must be a valid record in the DE.CARRIER application.</p>
+        </desc>
+</t>
+<t>
+<field>BNK.OP.CODE</field>
+<desc>
+            <p>This field is mapped to field 23-B Operation Code of MT103.</p>
+            <p />
+            <p />
+            <p>  Presently  CRED is the only value allowed in this field.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>MIS.INT.RATE</field>
+<desc>
+            <p>Represents the financing rate for the funds. It will be used to determine the MIS account profitability analysis.</p>
+            <p>  When a rate is entered, it would be construed as fixed type</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-10 numeric characters plus decimal point</p>
+            <p>  Input allowed only if MIS.INT.KEY is blank</p>
+            <p>  Optional input</p>
+        </desc>
+</t>
+<t>
+<field>PART.AMT</field>
+<desc>
+            <p>Share of the participant in the loan expressed in deal currency. System would default the name share and amount in base currency once Deal.Currency and Amount fields are filled up.</p>
+            <p>  If Deal.Currency and Base.Ccy.Amt is input, share of participants in facility currency (in field Part.Amt.B.Ccy field) would be defaulted.</p>
+            <p>  The user may however, modify the share provided none of the participant's portion is overdrawn.</p>
+            <p>  Amount expressed in this field is in deal currency.</p>
+            <p>  During a Principal movement;</p>
+            <p>  The redistribution of the participant's share would be done at the ratio at which the Loan is currently held. This can however be changed by the User. In the event of such a change, for a Principal Increase the redistributed share for any participant cannot be less than what was already outstanding. Likewise for a Principal Decrease, the redistributed share cannot be greater than what was already outstanding.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-14 numeric character plus decimal point</p>
+            <p>  System defaulted amount. Modifiable by user.</p>
+        </desc>
+</t>
+<t>
+<field>ONLINE.PAY.DATE</field>
+<desc>
+            <p>Field to indicate the effective date of online payment. This can be backdated or TODAY(ie bank date).</p>
+            <p>Backdate is allowed only after last repayment date / last capitalisation date. Forward date is not allowed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p> Standard date format.</p>
+            <p>Default is current Business date.</p>
+        </desc>
+</t>
+<t>
+<field>SPECIAL.SPREAD</field>
+<desc>
+            <p>The value will be defaulted from FACILITY.This field associated multi-value field to hold special spread. Special spread can be split into cash and cap spreads.</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.REPAY.RATE</field>
+<desc>
+            <p>Reserved for future use</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Rule 1</p>
+            <p>  Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>BS.CONSIDERATION</field>
+<desc>
+            <p>Field to capture the consideration when a mere participant enters the syndicate buying a portion of the non-contingent share (loan) from one of the existing participants.</p>
+            <p>  A bank that acts as a mere participant could enter the syndicate right at the beginning or during the life of the syndicate by buying the share (or a portion of it) from an existing participant. For the later type, the transaction could involve a premium/discount paid/received by the buying bank.</p>
+            <p>  This field is used to capture the consideration for the transaction. The premium or discount could be either written directly to P&amp;L or amortised over the life of the Loan. The account from which the consideration is paid out is provided in Bs.Settle.Account.</p>
+            <p>  For example - T24 bank enters the syndicate buying a non-contingent portion of 1,000,000 from bank A for a premium of 10,000. In such case field AMOUNT would show 1,000,000 and value to be input in Bs.Consideration field is 1,010,000. The decision to amortise or not is provided in Bs.Amortisation field. The accounting entries that would be raised are</p>
+            <p>  Dr LIVEDB asset type                                    1,000,000</p>
+            <p>  Dr Amortisation asset type / P&amp;L category *        10,000</p>
+            <p>  Cr Account in Bs.Settle.Account                      1,010,000</p>
+            <p>  * Category defined in SL.PARAMETER based on decision to amortise.</p>
+            <p>  In the above instance if the buy happens at a discount of 10,000 the value to be input in Bs.Consideration is (1,000,000 - 10,000) = 990,000</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-14 numeric characters plus decimal point</p>
+            <p>  Negative values not allowed</p>
+            <p>  Input permitted only for Only participant Facility and only during first     input</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>PIK.REFERENCE</field>
+<desc>
+            <p>The value will be defaulted from FACILITY.This field holds the reference that specifies the participant, whom the PIK will be capitalised on the corresponding rates.</p>
+        </desc>
+</t>
+<t>
+<field>BS.INT.SETTLE.AMT</field>
+<desc>
+            <p>Holds the buy-sell interest settlement amount.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>NOINPUT amount type field</p>
+        </desc>
+</t>
+<t>
+<field>INT.PYMT.METHOD</field>
+<desc>
+            <p>Indicates if the interest has to be paid in advance or in arrears.</p>
+            <p>  On an interest bearing contract the income accrues on the face value of the contract.</p>
+            <p>  On a discounted deal the interest income is taken at the start of the transaction and is amortised during the life of the loan.</p>
+            <p>  The following values will be allowed;</p>
+            <p>  1 = Interest bearing contracts</p>
+            <p>  2 = Discounted contracts</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Only allowed values are 1 and  2</p>
+            <p>  Optional input. Default value is 1</p>
+        </desc>
+</t>
+<t>
+<field>PROCESS.AT.SOD</field>
+<desc>This field decides whether the event should be processed during the start of day of the event date or not</desc>
+</t>
+<t>
+<field>PRIOR.DAYS</field>
+<desc>
+            <p>Reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Rule 1</p>
+            <p>  Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>DRAW.CURRENCY</field>
+<desc>
+            <p>Currency in which the loans is drawn. Currently only allowed value is DEAL.CURRENCY</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  3 alpha currency mnemonic or 1-3 character currency code</p>
+            <p>  Optional input. System defaults DEAL.CURRENCY</p>
+            <p>  Currently only allowed value is DEAL.CURRENCY</p>
+        </desc>
+</t>
+<t>
+<field>OWN.AMOUNT</field>
+<desc>
+            <p>Represents the share of T24 Bank in the loan/drawing. Only this amount would be treated as a Loan Asset for T24 Bank.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  System written.</p>
+            <p>  No input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>EXPIRY.DATE</field>
+<desc>
+            <p>Loan could be drawn for a shorter period in order to take benefit of interest rate movements. The borrower may take the loan for a shorter period (and then roll it over without actually repaying it) if it expects that the interest rate could fall in future.</p>
+            <p>  In this case the period for which the loan is availed (rollover date) is input in maturity date and the actual expiry date (final maturity date) is defined in this field.</p>
+            <p>  This field is used only for information</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  9 type A alphanumeric date field</p>
+            <p>  Must be less than or equal to Maturity date of the facility</p>
+            <p>  Optional input</p>
+            <p>  Information field. Not used in processing</p>
+            <p>  Must be greater than or equal to maturity date of loan</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.BEN.BANK</field>
+<desc>
+            <p>Reserved for future use</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Rule 1</p>
+            <p>  Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>R.SCHED.DT</field>
+<desc>
+            <p>Holds the rate revision scheudle freqeuncy</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Standard frequency field. Applicable for Periodic automatic contracts</p>
+            <p>  Cannot be backdated</p>
+            <p> Should be greater than value date and lesser than Maturity date</p>
+        </desc>
+</t>
+<t>
+<field>PART.PIK.CAP</field>
+<desc>
+            <p>This field holds the total PIK capitalised amount for the loan contract for each participant in participant’s multi value set.</p>
+        </desc>
+</t>
+<t>
+<field>BK.TO.BK.INFO</field>
+<desc>
+            <p>Free text field to record bank to bank info</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  3-35 character free text field</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>ROLLOVER.AMT</field>
+<desc>
+            <p>Aggregate value that was rolled over using SL.ROLLOVER.</p>
+            <p>  Ex - An existing loan for 100,000 was rolled over for 75,000. Then this field would display 75,000</p>
+            <p>  Ex - A loan for 100,000 was split into two loans for 35,000 and 50,000 (principal decrease of 15,000). this field would show the aggregate value considered for rollover ie 85,000</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  System written. No input allowed.</p>
+            <p>  If there is a value in this field, no input is allowed on the SL.LOAN       and only SEE function is permitted.</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER</field>
+<desc>
+            <p>The ID of the borrower. This is the identification number or mnemonic assigned to the customer. System will use this number to identify the counter-party of the transaction.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  The ID should be a valid record in CUSTOMER table.</p>
+            <p>  The ID of either the customer of the facility (if no ALLOWED.CUST is       defined in the facility) or any of the ALLOWED.CUST under the tranche may only be input.       Note that if ALLOWED.CUST is input only those customers would be allowed       to draw under the facility and the Facility customer also should be       included in this field in order be eligible to draw</p>
+            <p>  Mandatory input</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT</field>
+<desc>
+            <p>The amount of the loan drawn under the facility denominated in the deal currency. In order to facilitate efficient entry of the amount, input feature has been provided which allows for the suppression of trailing zeros.</p>
+            <p>  Example</p>
+            <p>  Input                Value</p>
+            <p>  1T                    1,000.00</p>
+            <p>  2M                   2,000,000.00</p>
+            <p>  4.5B                 4,500,000,000.00</p>
+            <p>  The user may also input commas to assist in the entry of large amounts. The system will ignore their use and implement the amount based on numeric input.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-14 numeric characters plus a decimal point and commas.</p>
+            <p>  Value must be greater than Zero.</p>
+            <p>  The amount expressed in base currency / facility currency cannot exceed       the commitment available amount under the tranche/facility.</p>
+            <p>  If only the base currency amount is input the deal currency amount would       be defaulted by the system using the Base Ccy Conversion rate.</p>
+            <p>  Input not allowed if Base Ccy Amount is input.</p>
+            <p>  Once the contract has been authorised this field cannot be modified.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p> holds the override messages raised from this application that are confirmed</p>
+            <p>NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>OVERDUE.STATUS</field>
+<desc>
+            <p>Reserved for future use</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  Rule 1</p>
+            <p>  Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>INT.BASE.DATE</field>
+<desc>
+            <p />
+            <p>  Options of BASE, PREV and NAM to determine how dates are to be cycled while processing interest schedules</p>
+            <p />
+            <p />
+            <p>  This field provides the user with the option to specify the basis under which subsequent event dates will be derived.</p>
+            <p />
+            <p />
+            <p>  BASE  System would use the first scheduled date entered to compute the subsequent event date.</p>
+            <p>  PREV  System will use the last computed scheduled date to compute subsequent event date</p>
+            <p />
+            <p />
+            <p>  NAM - Not automatic. Actual dates derived would be used.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  One of the values BASE, PREV or NAM may be input.</p>
+            <p>  Optional input. Default value is BASE</p>
+        </desc>
+</t>
+<t>
+<field>PART.AMT.B.CCY</field>
+<desc>
+            <p>Share of the participant in the loan expressed in Facility currency. System would default the name, share and amount in base currency once Deal.Currency and Base.Ccy.Amt fields are filled up.</p>
+            <p>  The user may however, modify the share provided none of the participant's portion is overdrawn.</p>
+            <p>  Amount expressed in this field is in facility currency</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  1-14 numeric character plus decimal point</p>
+            <p>  System defaulted amount. Modifiable by user.</p>
+        </desc>
+</t>
+<t>
+<field>ACCRUAL.ID</field>
+<desc>
+            <p>Key to EB.ACCRUAL.PARAM record which could be used  when it needs to be referred.
+</p>
+        </desc>
+</t>
+<t>
+<field>ACTIVITY.CODE</field>
+<desc>
+            <p>System written field.  Forms part of the multi-value set of delivery related fields.</p>
+            <p>  This field holds the 4 digit activity code generated by the system and written in the form SL-....</p>
+            <p>  Each of the 4 digits are arrived at as below :</p>
+            <p>  The first digit indicates the application for which the activity has been generated. Presently it has three values  viz. 1 -  PRE    2 - FACILITY and  3 - SL.LOAN</p>
+            <p>  The second digit indicates the operation done under each application.  Presently it has six values viz.       0 - OTHERS     1 - INPUT     2 - AMENDMENT     3 - NOTICE      4 - CONFIRMATION           5 - REVERSAL</p>
+            <p>  The third digit indicates the component for which the message is being generated viz. Principal or Interest or commitment fee etc.  Presently it has five values viz.   0 - OTHERS   1 - PRINCIPAL                         2 - COMMITMENT FEE     3 - INTEREST     4 - CHARGES</p>
+            <p>  The fourth digit indicates to whom the message is being generated, whether to the participant or to the borrower  or  to both.  Presently it has three values viz.  1 -  PARTICIPANT ONLY                             2 - PARTICIPANT AND BORROWER    3 - BORROWER ONLY</p>
+            <p>  For example when a new loan is drawn down and message to be sent to borrower,  the activity generated would be SL-3103 meaning 3-LOAN, 1-INPUT, 0-OTHERS(since it involves all components) and 3-BORROWER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  System generated</p>
+            <p>  Four digits will be prefixed by SL-</p>
+        </desc>
+</t>
+<t>
+<field>ACTIVITY.DATE</field>
+<desc>
+            <p>The date on which the activity is generated is system written in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  System Written.</p>
+        </desc>
+</t>
+<t>
+<field>ALLOW.SKIMMING</field>
+<desc>
+            <p>This field determines whether skimming is allowed or not</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>  allowed value is NO. Nochange field</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

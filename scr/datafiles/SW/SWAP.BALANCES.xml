@@ -1,0 +1,808 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SW</product>
+<table>SWAP.BALANCES</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The SWAP.BALANCES file records all financial movements and balance details of a particular Swap contract (including all balance information, principal outstanding, accruals, interest paid/received, rate changes, etc.).</p>
+            <p>Both current and historical details are maintained providing a means by which the system can control and record all financial transactions.</p>
+            <p>This file also provides a valuable source of information for enquiry and reporting purposes for both bank and customer requirements.</p>
+            <p>The file is keyed by contract number and leg identifier (asset or liability).</p>
+            <p>Two SWAP.BALANCES records, Asset and Liability, are created whenever a Swap contract is entered into the system and remain there as long as the contract remains "Live". Eg. SW9503000001.A and SW9503000001.L</p>
+            <p>The file is updated automatically by any Swap routines which modify any balance details.  There is no facility for direct input to this file.  The only functions that users are allowed to perform are "L"ist, "S"ee, and "P"rint.</p>
+            <p>A corresponding save file and history file exist, namely SWAP.BALANCES.SAVE and SWAP.BALANCES.HIST, which will be a copy of the data held in the SWAP.BALANCES file. The save file stores the last authorised version of the balances record whereas the history file stores the reversed version.</p>
+            <p>Whenever a Swap schedule is processed on the Swap contract, it is removed from the contract and it's details held on the relevant SWAP.BALANCES record.</p>
+            <p>The following associated information is held on this file :</p>
+            <p>o  Currency of the leg.   o  Indication as to whether the principal is NOTIONAL or not.   o  Outstanding principal details.   o  Effective and historical interest rates.   o  Interest amounts and accrual details.   o  Amortisation details.   o  Schedules processed details.   o  Corresponding CRB details.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>LCL.AMOUNT</field>
+<desc>
+            <p>Identifies the schedule local currency amount posted for the multivalue schedules past group in question.</p>
+            <p>The set of fields SCHEDULE.TYPE to VALUE.DATE form the multivalue set of Swap schedules past fields.  These fields record all details of schedules that have been processed on the Swap leg.  A new group is created each time a schedule is processed on the Swap contract.</p>
+            <p>This field records the schedule local currency amounts posted.  If the Swap leg is not in local currency, then its' currency equivalent is held in the associated field CCY.AMOUNT.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent schedule processed details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 Numeric character (standard amount field). Multivalued field associated with fields SCHEDULE.TYPE to VALUE.DATE. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>EFFECTIVE.DATE</field>
+<desc>
+            <p>Stores the dates on which the interest rates in the INTEREST.RATE field became effective.</p>
+            <p>Whenever the interest rate on associated Swap leg changes, the new rate is recorded in the associated INTEREST.RATE field. The EFFECTIVE.DATE field records the date on which each of these rates became effective.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent effective date will always be found in the first multivalue.</p>
+            <p>This field is a no-input field and is updated automatically by the Swaps system.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 Character standard date field. Multivalued field associated with fields INTEREST.KEY and INTEREST.RATE and MKT.INT.RATE. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT.DIFF</field>
+<desc>
+            <p>Identifies the currency amount difference in the 'IS' and 'AP' schedules.  For 'IS' schedule, the difference is between the original principal and the issue price whereas for 'AP' schedule the difference is between the repayment amount and the interest amount.</p>
+            <p>The set of fields SCHEDULE.TYPE to VALUE.DATE form the multivalue set of Swap schedules past fields.  These fields record all details of schedules that have been processed on the Swap leg.  A new group is created each time a schedule is processed on the Swap contract.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent schedule processed details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 Numeric character (standard amount field). Multivalued field associated with fields SCHEDULE.TYPE to VALUE.DATE. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>CRB.VALUE.DATE</field>
+<desc>
+            <p>Identifies the CRB recorded value date for the contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 Character field (standard date format). (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>NPV.BEF.ACC.ADJ</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>END.INT.PERIOD</field>
+<desc>
+            <p>Identifies the end date of current interest period.</p>
+            <p>This field defines the date on which the interest accrued in the current interest period is to be settled.  Accruals for the current interest period commence on the date held in the START.INT.PERIOD field.</p>
+            <p>The date in this field will be cycled automatically by the end of day batch process whenever an interest payment is made.  It is updated with the next interest payment date as defined on the Swap contract.  The old date from this field then becomes the START.INT.PERIOD date for the coming period.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 Numeric Character field (standard date format). (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>MKT.INT.RATE</field>
+<desc>
+            <p>It contains the Market Exchange Rate of a Leg. Which is difference of Current.rate and the Trsy.Rate</p>
+            <p />
+            <p>1 to 11 Numeric character rate field. Multivalued field associated with fields EFFECTIVE.DATE and INTEREST.KEY and INTEREST.RATE.</p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p>Fields EFFECTIVE.DATE to MKT.INT.RATE form a related multi value set.</p>
+            <p>Standard T24 rate field.</p>
+            <p>A maximum of 11 characters may be entered.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AMORT.START</field>
+<desc>
+            <p>Identifies the start date of the Amortisation period.</p>
+            <p>This field is updated only for PM  or RV schedules.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(1) 11 Character standard date field.</p>
+            <p>Multivalue field associated with field AMORT.SCHEDULE.</p>
+            <p>(No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>TOT.INT.AMT</field>
+<desc>
+            <p>This represents the Total Interest Amount Payable/Receivable on the Asset/Liability Leg of the SWAP Contract from value date till maturity date. This is different from the field Interest.Amount of the SWAP.BALANCES which holds the interest amount for the current period only.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 Numeric characters (type AMT).</p>
+        </desc>
+</t>
+<t>
+<field>SCHEDULE.TYPE</field>
+<desc>
+            <p>Identifies the schedule type for the multivalue schedules past group in question.</p>
+            <p>The set of fields SCHEDULE.TYPE to VALUE.DATE form the multivalue set of Swap schedules past fields.  These fields record all details of schedules that have been processed on the Swap leg.  A new group is created each time a schedule is processed on the Swap contract.</p>
+            <p>This field records the types of schedules processed.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent schedule processed details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 12 Alphanumeric characters. Multivalued field associated with fields SCHEDULE.TYPE to VALUE.DATE. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.RATE</field>
+<desc>
+            <p>Records the interest rates applied to the portion of the outstanding principal specified in the field PRINCIPAL.</p>
+            <p>Each time the interest rate changes on the Swap leg it will be recorded in a new multivalue in this field.</p>
+            <p>This field therefore consists of a number of multivalues, each recording the interest rate applicable to the associated leg at various times throughout the life of the contract.  The date on which each rate was effective is stored in the associated multivalue of the EFFECTIVE.DATE field.</p>
+            <p>Information is stored in this field in reverse chronological order, ie. the current interest rate will always be found in the first multivalue.</p>
+            <p>The is a no-input field and is updated automatically by the Swaps system.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 11 Numeric character rate field. Multivalued field associated with fields EFFECTIVE.DATE, INTEREST.KEY and MKT.INT.RATE. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.RATE</field>
+<desc>
+            <p>Identifies the effective interest rate during the accrual period for the multivalue accrual group in question.</p>
+            <p>The set of fields ACCR.FROM.DATE to MKT.ACT.AMT form the multivalue set of interest accrual fields.  These fields record all details of interest accrued on the Swap leg.</p>
+            <p>This field records the interest rates which have been applied for each of the accrual groups.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent accrual details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 11 Numeric characters. Multivalue field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>SCHED.EFF.DATE</field>
+<desc>
+            <p>Identifies the interest effective date of the schedule processed for the multivalue schedules past group in question.</p>
+            <p>The set of fields SCHEDULE.TYPE to VALUE.DATE form the multivalue set of Swap schedules past fields.  These fields record all details of schedules that have been processed on the Swap leg.  A new group is created each time a schedule is processed on the Swap contract.</p>
+            <p>This field records the dates that the schedules were effective for interest accruals.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent schedule processed details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 Character standard date field. Multivalued field associated with fields SCHEDULE.TYPE to VALUE.DATE. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.AMOUNT</field>
+<desc>
+            <p>This field records the total amount of unpaid interest due (accrued) for the current interest period.</p>
+            <p>As interest is accrued, the details of each accrual are stored in the multivalue accrual fields (ACCR.FROM.DATE - ACCR.ACT.AMT). This field contains the total of accrued interest in the current period.  This is equal to the sum of the multivalues in the ACCR.AMT field whose corresponding ACCR.FROM.DATE is greater than or equal to the START.INT.PERIOD date.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 Numeric characters (type AMT). (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>NPV.LCY</field>
+<desc>
+            <p>The Net Present Value local equivalent of this leg.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 Type AMT numeric characters</p>
+        </desc>
+</t>
+<t>
+<field>POSITION.DATE</field>
+<desc>
+            <p>Fields POSITION.DATE to  form a related multi value set. Standard T24 date field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 11 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.MKT.INT.AMT</field>
+<desc>
+            <p>This field contains the Total Interest Amount(Net interest) of the Market Exchange.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 Numeric characters (type AMT).</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.TO.DATE</field>
+<desc>
+            <p>Identifies the end date upto which interest is accrued for the multivalue accrual group in question.  Ie. The end of accrual period.</p>
+            <p>The set of fields ACCR.FROM.DATE to MKT.ACT.AMT form the multivalue set of interest accrual fields.  These fields record all details of the interest accrued on the associated swap leg.</p>
+            <p>This field records the dates upto which interest accruals end for each of the accrual groups.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent accrual details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 Numeric characters (Standard date format). Multivalue field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>MKT.ACCR.AMT</field>
+<desc>
+            <p>It contains the Market Exchange Accrual amount for a period.</p>
+            <p />
+            <p>The set of fields ACCR.FROM.DATE to MKT.ACT.AMT form the multivalue set of interest accrual fields. These fields record all details of market exchange interest accrued on the swap leg.</p>
+            <p />
+            <p>This amount is accumulated for each interest period and recorded in the MKT.INT.AMOUNT field which then determines the amount of interest to be paid/received at the end of the interest period.</p>
+            <p />
+            <p>The un-rounded amounts are held in the associated MKT.ACT.AMT field.</p>
+            <p />
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent accrual details will always be found in the first multivalue of each field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1 to 19 Numeric character Amount field.</p>
+            <p>Multivalue field associated with fields ACCR.FROM.DATE to MKT.ACT.AMT. (No-input field).</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>NPV.INC.TDY.IP</field>
+<desc>
+            <p>This field contains a value only if SPL.NPV.PROCESS in SWAP.REVAL.PARAMETER is set to Yes</p>
+            <p />
+            <p>Indicates the Net Present value of this leg , in the same currency, including the Interest Payment amount due on the date of revaluation. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 Type AMT numeric characters.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CCY.REVAL.FCY</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>AMORT.SCHEDULE</field>
+<desc>
+            <p>Identifies the schedule type</p>
+            <p>Updated only for the schedules PM and RV.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(1) 1 to 12 Alphanumeric characters.</p>
+            <p>Multivalued field associated with fields AMORT.SCHEDULE to AMORT.TO.DATE.</p>
+            <p>(No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.END</field>
+<desc>
+            <p>Identifies the interest period end date of the schedule processed for the multivalue schedules past group in question.</p>
+            <p>The set of fields SCHEDULE.TYPE to VALUE.DATE form the multivalue set of Swap schedules past fields.  These fields record all details of schedules that have been processed on the Swap leg.  A new group is created each time a schedule is processed on the Swap contract.</p>
+            <p>This field records the interest period end dates of the schedules processed.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent schedule processed details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 Character standard date field. Multivalued field associated with fields SCHEDULE.TYPE to VALUE.DATE. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>AMORT.END</field>
+<desc>
+            <p>Identifies the end date of the Amortisation period as inputted in SWAP contract field </p>
+            <p>LB/AS.AMORT.DATE for the corresponding leg.</p>
+            <p>This field is updated only for PM or RV schedules.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(1) 11 Character standard date field.</p>
+            <p>Multivalue field associated with field AMORT.SCHEDULE.</p>
+            <p>(No-input field)</p>
+        </desc>
+</t>
+<t>
+<field>OUTS.PRIN.LCY</field>
+<desc>
+            <p>It holds the principal outstanding in local currency.</p>
+            <p>All principal movements will update this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 type AMT (standard amount format) characters plus a decimal point.</p>
+        </desc>
+</t>
+<t>
+<field>CRB.MATURITY.DATE</field>
+<desc>
+            <p>Identifies the CRB recorded maturity date of the contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 Character field (standard date format). (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>OLD.OUTS.PRIN.LCY</field>
+<desc>
+            <p>It holds the principal outstanding in local currency as on the previous day.</p>
+            <p>Value available in the field OUTS.PRIN.LCY is moved to this field before SWAP Currency Revaluation is done.</p>
+            <p>Used for reports.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 type AMT (standard amount format) characters plus a decimal point.</p>
+        </desc>
+</t>
+<t>
+<field>CONSOL.KEY</field>
+<desc>
+            <p>Identifies the associated CRB consol key.</p>
+            <p>This key is the reference to the CONSOLIDATE.ASST.LIAB file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 16 Alpha-numeric characters. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.CODE</field>
+<desc>
+            <p>Identifies the charge code for the multivalue schedules past group in question.</p>
+            <p>The set of fields SCHEDULE.TYPE to VALUE.DATE form the multivalue set of Swap schedules past fields.  These fields record all details of schedules that have been processed on the Swap leg.  A new group is created each time a schedule is processed on the Swap contract.</p>
+            <p>This field records the charge codes of schedules processed.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent schedule processed details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 12 Alphanumeric characters. Multivalued field associated with fields SCHEDULE.TYPE to VALUE.DATE. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>INITIAL.XRATE</field>
+<desc>
+            <p>This field is populated when a 'PX' schedule is processed and the contract must be OFF balance sheet. It will hold the exchange rate between the leg currency and the local currency and is used to derive the local currency equivalent of the base currency of the swap contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 rate field.</p>
+        </desc>
+</t>
+<t>
+<field>NOTIONAL</field>
+<desc>
+            <p>This field indicates whether the outstanding principal is notional or real.</p>
+            <p>o  "Y"   signifies a Notional principal amount.   o  "NO"  signifies a Real principal amount.</p>
+            <p>The principal amount will remain notional until a PX (Principal Exchange) schedule has been processed on the Swap leg.</p>
+            <p>This field is automatically updated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 Alphanumric characters. (No-input field.  Valid types : "Y"_"NO").</p>
+        </desc>
+</t>
+<t>
+<field>PROCESS.DATE</field>
+<desc>
+            <p>Identifies the date that the schedule was actually processed for the multivalue schedules past group in question.</p>
+            <p>The set of fields SCHEDULE.TYPE to VALUE.DATE form the multivalue set of Swap schedules past fields.  These fields record all details of schedules that have been processed on the Swap leg.  A new group is created each time a schedule is processed on the Swap contract.</p>
+            <p>This field records the process dates of the schedules processed.  The associated schedule dates are held in the field SCHEDULE.DATE.</p>
+            <p>Information is stored in these fieldsin reverse chronological order, ie. the most recent schedule processed details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 Character standard date format. Multivalued field assocaited with fields SCHEDULE.TYPE to VALUE.DATE. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>This field denotes the currency code of the associated Swap leg.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 Alpha-numeric currency code (type CCY). (No-input field.  Automatically updated).</p>
+            <p>Must be a valid CURRENCY code.</p>
+        </desc>
+</t>
+<t>
+<field>NPV.BEF.ADJ.LCY</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>PRINCIPAL</field>
+<desc>
+            <p>Defines the principal amount outstanding by date (PRIN.DATE) for the associated Swap leg.</p>
+            <p>Records the principal balance of the leg at each stage throughout the contract life.</p>
+            <p>Each time the principal balance changes on the leg, it will be recorded in a new multivalue in this field.</p>
+            <p>This field therefore consists of a number of multivalues, each recording the principal balance on the leg at various times throughout its life.  The date on which each amount became effective is stored in the associated multivalue of the PRIN.DATE field.</p>
+            <p>Information is stored in this field in reverse chronological order, ie. the current principal balance will always be found in the first multivalue.</p>
+            <p>This field is a no-input field and is automatically updated by the Swaps system.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 Numeric characters (Type AMT). Multivalue field associated with field PRIN.DATE. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>MKT.INT.AMOUNT</field>
+<desc>
+            <p>It contains the Interest Amount of the Market Exchange for the current period</p>
+            <p>As interest is accrued, the details of each accrual are stored in the multivalue accrual fields (ACCR.FROM.DATE - MKT.ACT.AMT). This field contains the total of accrued interest in the current period. This is equal to the sum of the multivalues in the MKT.ACCR.AMT field whose corresponding ACCR.FROM.DATE is greater than or equal to the START.INT.PERIOD date.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 Numeric characters (type AMT).</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>Identifies the value date of the schedule entry processed for the multivalue schedules past group in question.</p>
+            <p>The set of fields SCHEDULE.TYPE to VALUE.DATE form the multivalue set of Swap schedules past fields.  These fields record all details of schedules that have been processed on the Swap leg.  A new group is created each time a schedule is processed on the Swap contract.</p>
+            <p>This field records the schedule value dates of the schedules processed.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent schedule processed details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 Character standard date field. Multivalued field associated with fields SCHEDULE.TYPE to VALUE.DATE. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>AMORT.AMOUNT</field>
+<desc>
+            <p>Contains the original premium/discount amount for the corresponding leg as inputted in SWAP.</p>
+            <p>This field is updated only when SWAP contains a PM or RV schedule.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(1) 1 to 19 Numeric character (standard amount field).</p>
+            <p>Multivalued field associated with field AMORT.SCHEDULE.</p>
+            <p>(No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>AMORT.TO.DATE</field>
+<desc>
+            <p>This field contains the amount that has been amortised so far.</p>
+            <p>This field is updated only for PM or RV schedules.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(1) 1 to 19 Numeric character (standard amount field).</p>
+            <p>Multivalued field associated with field AMORT.SCHEDULE.</p>
+            <p>(No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>POSITION.LCY</field>
+<desc>
+            <p>Fields POSITION.DATE to  form a related multi value set.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 19 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.PRIN</field>
+<desc>
+            <p>Identifies the principal amount effective during the accrual for the multivalue accrual group in question.</p>
+            <p>The set of fields ACCR.FROM.DATE to MKT.ACT.AMT form the multivalue set of interest accrual fields.  These fields record all details of interest accrued on the Swap contract leg.</p>
+            <p>This field records the outstanding leg principal on which interest was accrued for each of the accrual groups.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent accrual details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 Numeric character amount field. Multivalue field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.ACT.AMT</field>
+<desc>
+            <p>This field contains the amount of interest accrued, unrounded, for the multivalue accrual group in question.</p>
+            <p>The set of fields ACCR.FROM.DATE to MKT.ACT.AMT form the multivalue set of interest accrual fields.  These fields record all details of interest accrued on the swap leg.</p>
+            <p>This field records the amount of interest accrued for each of the multivalue accrual groups.  This amount is unrounded.  The rounded accrued amount is held in the associated field ACCR.AMT.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent accrual details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 Numeric character Amount field. Multivalue field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.AMT</field>
+<desc>
+            <p>This field contains the amount of interest accrued for the multivalue accrual group in question, rounded to the number of decimal places of the currency of the leg.</p>
+            <p>The set of fields ACCR.FROM.DATE to MKT.ACT.AMT form the multivalue set of interest accrual fields.  These fields record all details of interest accrued on the swap leg.</p>
+            <p>This amount is accumulated for each interest period and recorded in the INTEREST.AMOUNT field which then determines the amount of interest to be paid/received at the end of the interest period.</p>
+            <p>The un-rounded amounts are held in the associated ACCR.ACT.AMT field.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent accrual details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 Numeric character Amount field. Multivalue field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.DAYS</field>
+<desc>
+            <p>Identifies the number of days that interest has been accrued in the interest period for the multivalue accrual group in question.</p>
+            <p>The set of fields ACCR.FROM.DATE to MKT.ACT.AMT form the multivalue set of interest accrual fields.  These fields record all details of the interest accrued on the Swap leg.</p>
+            <p>This field records the number of days that interest has been accrued for each of the accrual groups.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent accrual details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 4 Numeric characters. Multivalue field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>ACCR.FROM.DATE</field>
+<desc>
+            <p>Identifies the date from which interest is accrued for the multivalue accrual group in question.  Ie. the start of the accrual period.</p>
+            <p>The set of fields ACCR.FROM.DATE to MKT.ACT.AMT form the multivalue set of interest accrual fields.  These fields record all details of interest accrued on the swap leg.  A new group is created each time one of the accrual parameters, ie. outstanding principal or interest rate changes or a month end has been reached.</p>
+            <p>This field records the dates from which interest accruals commence for each of the accrual groups.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent accrual details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 Numeric characters (standard date format). Multivalued field associated with fields ACCR.FROM.DATE to ACCR.ACT.AMT. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.START</field>
+<desc>
+            <p>Identifies the interest period start date of the schedule processed for the multivalue schedules past group in question.</p>
+            <p>The set of fields SCHEDULE.TYPE to VALUE.DATE form the multivalue set of Swap schedules past fields.  These fields record all details of schedules that have been processed on the Swap leg.  A new group is created each time a schedule is processed on the Swap contract.</p>
+            <p>This field records the interest period start dates of the schedules processed.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent schedule processed details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 Character standard date field. Multivalued field associated with fields SCHEDULE.TYPE to VALUE.DATE. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>MKT.CCY.AMT</field>
+<desc>
+            <p>Identifies the schedule currency amount for market exchange, posted for the multivalue schedules past group in question.</p>
+            <p />
+            <p>This field records the schedule amounts posted for market exchange.</p>
+            <p />
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent schedule processed details will always be found in the first multivalue of each field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1 to 19 Numeric character (standard amount field).</p>
+            <p>Multivalued field associated with fields SCHEDULE.TYPE to VALUE.DATE. (No-input field).</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONTRACT.FILE</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>START.INT.PERIOD</field>
+<desc>
+            <p>Identifies the start date of the current interest period.</p>
+            <p>This field records the date from which interest will be accrued for the current interest period.  The end of this period is defined in theEND.INT.PERIOD field.</p>
+            <p>This field is cycled automatically by the end of day batch processing whenever an interest payment is made.  The START.INT.PERDIO date will then become equal to the END.INT.PERIOD date of the period processed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 Numeric Character field (standard date format). (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.NUMBER</field>
+<desc>
+            <p>This field uniquely identifies each record on the SWAP.BALANCES file.</p>
+            <p>The Id is keyed by the associated Swap contract number and leg identifier (asset or liability).</p>
+            <p>Eg.  SW950300001.A or SW950300001.L.</p>
+            <p>The Id has the following format SWyydddnnnnn.X, where :</p>
+            <p>o  SW     Application indicator for the Swaps application.   o  yy     Last two digits of the year when the transaction             was processed.   o  ddd    Julian date number within the year when the Swap             transaction was processed.   o  nnnnn  Five digit sequential number.   o  .X     Leg identifier ".A" asset or ".L" liability.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>30 Alpha-numeric characters. (No-input).</p>
+            <p>The Id is automatically generated when a Swap contract is input (two Swap balances records are created for one Swap contract).</p>
+        </desc>
+</t>
+<t>
+<field>CCY.AMOUNT</field>
+<desc>
+            <p>Identifies the schedule currency amount posted for the multivalue schedules past group in question.</p>
+            <p>The set of fields SCHEDULE.TYPE to VALUE.DATE form the multivalue set of Swap schedules past fields.  These fields record all details of schedules that have been processed on the Swap leg.  A new group is created each time a schedule is processed on the Swap contract.</p>
+            <p>This field records the schedule amounts posted.  If the amount is not of local currency, then its' local equivalent is held in the associated field LCL.AMOUNT.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent schedule processed details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 Numeric character (standard amount field). Multivalued field associated with fields SCHEDULE.TYPE to VALUE.DATE. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>CCY.REVAL.PL</field>
+<desc>
+            <p>This field holds the net amount which has been posted as unrealised P&amp;L in local currency.</p>
+            <p>The amount is derived by the formula:- Principal outstanding * (current.xrate - initial.xrate)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 type AMT (standard amount format) characters plus a decimal point.</p>
+        </desc>
+</t>
+<t>
+<field>RESET.RATE</field>
+<desc>
+            <p>Identifies the rate of the RR schedule processed for the multivalue schedules past group in question.</p>
+            <p>The set of fields SCHEDULE.TYPE to VALUE.DATE form the multivalue set of Swap schedules past fields.  These fields record all details of schedules that have been processed on the Swap leg.  A new group is created each time a schedule is processed on the Swap contract.</p>
+            <p>This field records the rates of the RR schedules processed.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent schedule processed details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 Numeric character standard rate field. Multivalued field associated with fields SCHEDULE.TYPE to VALUE.DATE. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>MKT.ACCR.RATE</field>
+<desc>
+            <p>Identifies the effective interest rate for market exchange during the accrual period for the multivalue accrual group in question.</p>
+            <p />
+            <p>The set of fields ACCR.FROM.DATE to MKT.ACT.AMT form the multivalue set of interest accrual fields. These fields record all details of interest accrued for market exchange on the Swap leg.</p>
+            <p />
+            <p>This field records the interest rates which have been applied for each of the accrual groups.</p>
+            <p />
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent accrual details will always be found in the first multivalue of each field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1 - 11 Numeric characters. Multivalue field associated with fields ACCR.FROM.DATE to MKT.ACT.AMT. (No-input field).</p>
+            <p>Fields ACCR.FROM.DATE to MKT.ACT.AMT form a related multi value set.</p>
+            <p>A maximum of 19 characters may be entered.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>NPV.INC.TDY.IPLCY</field>
+<desc>
+            <p>Indicates the Net Present Value of this leg in  local equivalent including the Interest Payment amount due on the date of revaluation.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 Type AMT numeric characters.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONF.SENT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>MKT.ACT.AMT</field>
+<desc>
+            <p>This field contains the amount of interest for market exchange accrued, unrounded, for the multivalue accrual group in question.</p>
+            <p />
+            <p>The set of fields ACCR.FROM.DATE to MKT.ACT.AMT form the multivalue set of interest accrual fields. These fields record all details of interest accrued on the swap leg.</p>
+            <p />
+            <p>This field records the market exchange amount of interest accrued for each of the multivalue accrual groups. This amount is unrounded. The rounded accrued amount is held in the associated field MKT.ACCR.AMT.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1 to 19 Numeric character Amount field.</p>
+            <p>Multivalue field associated with fields ACCR.FROM.DATE to MKT.ACT.AMT. (No-input field).</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRIN.DATE</field>
+<desc>
+            <p>Stores the dates on which the principal balance amounts in the field PRINCIPAL became effective.</p>
+            <p>Whenever the principal balance for the leg on the contract changes, the new balance is recorded in the associated PRINCIPAL field.  The PRIN.DATE field records the date on which each of these balances became effective.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent effective date will always be found in the first multivalue.</p>
+            <p>This field is a no-input field and is automatically updated by the Swaps system.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 Character standard date field. Multivalue field associated with field PRINCIPAL. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>POSITION.FCY</field>
+<desc>
+            <p>Fields POSITION.DATE to  form a related multi value set.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 19 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.KEY</field>
+<desc>
+            <p>Records the interest rate keys used on the associated effective dates (EFFECTIVE.DATE).</p>
+            <p>Each time the interest key changes on the Swap leg it will be recorded in a new multivalue in this field.</p>
+            <p>This field therefore consists of a number of multivalues, each recording the interest key applicable to the associated leg at various times throughout the life of the contract.  The date on which each interest key was effective is stored in the associated multivalue of the EFFECTIVE.DATE field.</p>
+            <p>Information is stored in this field in reverse chronological order, ie. the current interest rate key will always be found in the first multivalue.</p>
+            <p>This key is linked to the file MARKET.RATE.TEXT.</p>
+            <p>This field is a no-input field and is automatically updated by the Swaps system.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 4 Numeric characters. Multivalued field associated with fields EFFECTIVE.DATE, MKT.INT.RATE and INTEREST.RATE. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>CRB.INTEREST.DATE</field>
+<desc>
+            <p>Identifies the CRB recorded next interest date of the contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 Character field (standard date format). (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>SCHEDULE.DATE</field>
+<desc>
+            <p>Identifies the schedule date of the schedule processed for the multivalue schedules past group in question.</p>
+            <p>The set of fields SCHEDULE.TYPE to VALUE.DATE form the multivalue set of Swap schedules past fields.  These fields record all details of schedules that have been processed on the Swap leg.  A new group is created each time a schedule is processed on the Swap contract.</p>
+            <p>This field records the schedule dates of the schedules processed.  These are not the dates that the schedules were actual processed.  This information in held in the associated field PROCESS.DATE.</p>
+            <p>Information is stored in these fields in reverse chronological order, ie. the most recent schedule processed details will always be found in the first multivalue of each field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 Character standard date field. Multivalued field associated with fields SCHEDULE.TYPE to VALUE.DATE. (No-input field).</p>
+        </desc>
+</t>
+<t>
+<field>NPV</field>
+<desc>
+            <p>The Net Present Value of this leg.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 Type AMT numeric characters</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

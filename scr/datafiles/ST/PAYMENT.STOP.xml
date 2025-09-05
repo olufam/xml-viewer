@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>PAYMENT.STOP</table>
+</header>
+<overview>
+<ovdesc>
+<p>The Payment Stop table allows all Payment Stop instructions to be recorded. These are input according to the Account to which they relate. All stop instructions for one Account number are maintained on the same record.</p><p> Stop Payments can be input for a specific cheque number, for a range of cheque numbers, for an exact amount, for a range of amounts or for a combination of cheque numbers and amounts. When payment stop is marked for an account, then during  FT/DC/TT processing system will raise an override.</p><p> Stop payment validation is based on the Cheque.Register value in ACCOUNT.PARAMETER.</p><p> Stop payment validates the cheque no irrespective of the cheque type given in the payment stop,  if the Cheque.Register is set as "No" or Null in ACCOUNT.PARAMETER.</p><p> If the Cheque.Register is set as "Yes", then validation will be done for the cheque no along with cheque type.</p><p> For example: Cheque No 12345 with cheque type "EC" is stopped for account 19000 then</p><p> If the Cheque.Register is set as "No" or Null in ACCOUNT.PARAMETER,</p><p> System will raise override during FT/DC/TT processing when the cheque no is  entered as 12345 irrespective of cheque type</p><p> If the Cheque.Register is set as "Yes",</p><p> System will raise override during FT/DC/TT processing only when cheque no 12345 and cheque type is entered as "EC".</p><p> Incase the range of cheque number given for stop payment is not issued to that account- a record with the Cheque.type and Account no will be added to CHEQUES.STOPPED file.</p><p> The Payment Stop Type and Cheque Type tables must be defined before input can be made to the Payment Stop table.</p><p> There is now the facility to produce SWIFT MT112 (Status of a request for Stop Payment of a Cheque) messages from the PAYMENT.STOP application, via Soft Delivery.</p><p> This message is used to indicate what actions have been taken in attempting to stop payment of the cheque referred to in the message.</p><p> MT112s can only be requested when the RAISE.ACTIVITY field in PAYMENT.STOP Application is set to "Yes", and only one message can be raised at a time.</p><p /><p /><p> From R5 onwards, Once PAYMENT.STOP for an account is authorised and then it is reopened in Input mode again, then the informations  in the associated set of fields from  PAYM.STOP.TYPE to RESERVED.3 will be cleared. This is made to ensure that PAYMENT.STOP$HIS contains informations of these fields which can be used for audit purposes. Hence when any new stop instructions has to be input ,  any existing multivalue should not be amended and only new multivalue has to be opened at the end for new intrsuctions</p><p /></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>AMOUNT.FROM</field>
+<desc><p>Specifies the Amount From which the Payment Stop is effective.</p><p> This field is used, to specify the amount of the cheque(s) which are to be stopped. If AMOUNT TO (Field 9) is also input, then all cheques with amounts between or equal to the two values will be warned on-line as suspect stopped cheques and will request an override message.</p><p /><p /><p><p>Validation Rules:</p></p><p> Up to 12 type AMT (Standard Amount Format) characters plus a decimal point. Multivalue Field associated with Fields 2 to 24.</p><p> Mandatory input if:</p><p /><p /><p> CHEQUE.NO (Field 3) is not defined or</p><p> RAISE.ACTIVITY field is set to "Yes".</p><p> Otherwise optional input. No Default Value.</p></desc>
+</t>
+<t>
+<field>MT112.AMOUNT</field>
+<desc><p>Specifies the Amount for the Cheque, which is being stopped.</p><p> This relates to SWIFT Tag 32A in Swift Message MT112.</p><p> This field is defaulted from the AMOUNT.FROM field for the set of Multi-Values for which RAISE.ACTIVITY has been set to "Yes".</p><p><p>Validation Rules:</p></p><p> Automatically generated field. No input possible.</p></desc>
+</t>
+<t>
+<field>DRAWER.ACC</field>
+<desc><p>DRAWER.ACC:</p><p> This field identifies the Account Number of the Drawer Bank when other than the Receiver.</p><p> This field will be used when the drawer bank is a branch of the Receiver or a bank other than the Receiver of the message.</p><p> The information in this field will be used as the Party Identifier in SWIFT Tag 52.</p><p> This field is valid only if MESSAGE.REC is not blank.</p><p><p>Validation Rules:</p></p><p /><p /><p /><p /><p> Standard numeric Account number or 3-10 character Account Mnemonic (uppercase alpha, numeric)</p></desc>
+</t>
+<t>
+<field>DRAWER.BANK</field>
+<desc><p>This field identifies the Drawer Bank when other than the Sender.</p><p> This field will be used when the drawer bank is a branch of the Receiver or a bank other than the Receiver of the message.</p><p> Specifies the name or name and address of the financial institution.</p><p><p>Validation Rules:</p></p><p /><p /><p /><p /><p> Up to 35 type S (SWIFT) characters.</p><p> Up to 4 Multi Values are permitted.</p><p /><p /><p /><p /></desc>
+</t>
+<t>
+<field>IN.PROCESS.ERR</field>
+<desc><p>Identifies any process errors that may have occurred during the Swift Inward message processing using OFS.GLOBUS.MANAGER.</p><p /><p /><p> The process error may be due to Non mapping of Incoming message tag details in payment .stop Application or Errors encountered in payment stop application during Inward Message processing.</p><p /><p /><p> When Inward processing encounter any error related to this application, the Payment.stop records will be built as normal, except they will have a Record Status of 'IHLD'. The actual Error details will be held in this field.</p><p /><p /><p> But when it encounter non mapping of Tags in payment stop, PS will not be put on Hold but stores tag details for information</p><p /><p /><p><p>Validation Rules:</p></p><p /><p /><p /><p /><p> No       Input - Internal multivalued field.</p></desc>
+</t>
+<t>
+<field>SEND.NOTICE</field>
+<desc><p>MSG.CLASS field specifies the classifications of the associated message type. E.g. CONFIRMATION, ADVICE, PAYMENT.</p><p /><p /><p><p>Validation Rules:</p></p><p /><p /><p /><p /><p> YES or NO</p></desc>
+</t>
+<t>
+<field>CHARGE.CODE</field>
+<desc><p>Any valid FT.CHARGE.TYPE or FT.COMMISSION.TYPE codes with flat amounts can be input . If populated then charges as per this charge code/codes will be calculated and the charge code/codes attached to the PAYMENT.STOP.TYPE will be ignored, provided WAIVE.CHARGE field is set to 'NO'.</p><p><p>Validation Rules:</p></p><p /><p> Alphanumeric -maximum of 15 characters. Multi value field. Associated to fields 2 to 24.</p></desc>
+</t>
+<t>
+<field>REV.AUTH.DATE</field>
+<desc><p>Holds the date on which stopped cheque is revoked.This is a no input field.</p></desc>
+</t>
+<t>
+<field>TAX.CCY</field>
+<desc><p>This is a no input field . This is the currency in which the tax is booked .</p><p><p>Validation Rules:</p></p><p /><p /><p> No input field. Multi value field associated to fields 2 to 24.</p></desc>
+</t>
+<t>
+<field>IN.DELIVERY.REF</field>
+<desc><p>Identifies the reference number allocated by Delivery for incoming SWIFT message received direct from Delivery.</p><p /><p /><p> This will enable enquiries to be made on the original SWIFT message received.</p><p><p>Validation Rules:</p></p><p /><p /><p /><p /><p> No     Input - Internal field.</p><p /><p /><p /><p /></desc>
+</t>
+<t>
+<field>CHG.CURRENCY</field>
+<desc><p>This is a no input field . It gets defaulted to the currency of the CHARGE ACCOUNT.</p><p><p>Validation Rules:</p></p><p /><p> No input field. Default to the currency of the charge account. Multivalue field. Associated to fields 2 to 24.</p><p> Must be a valid currency code on the currency file . Maximum of 6 characters.</p></desc>
+</t>
+<t>
+<field>MOD.PS.DATE</field>
+<desc><p>The date entered here is the date from which the payment stop instructions stands withdrawn.</p><p /><p /><p> When a future date is given here, the stop payment instruction is revoked only on that date. For this purpose PS.STOP-live file is updated and same is referred during SOD batch processing for revocation of payment stop.</p><p /><p /><p> The cheque number and the type of cheque is stated in the MOD. PS. CHQ. NO and MOD. CHQ. TYPE</p><p /><p /><p> Validation rules</p><p /><p /><p /><p /><p> Valid date format</p><p /><p /><p> Should be a date equal or greater than the     System date.</p></desc>
+</t>
+<t>
+<field>DATE.OF.ISSUE</field>
+<desc><p>This field contains the date on which the cheque (FIRST.CHEQUE.NO) was issued.</p><p> This field is Inputtable only if RAISE.ACTIVITY is set to Yes.</p><p> Mandatory Field (when RAISE.ACTIVITY is set to Yes).</p><p> Note:</p><p /><p /><p> This field must less than STOP.DATE and ACTION.DATE.</p><p /><p /><p> This field does not accept forward dates.</p><p /><p /><p><p>Validation Rules:</p></p><p> Up to 9 type D date characters (Date format in range 1950 to 2049).</p></desc>
+</t>
+<t>
+<field>OUR.REFERENCE</field>
+<desc><p>This field identifies the reference assigned by the sender to unambiguously identify the message.</p><p> This field is Imputable only if RAISE.ACTIVITY is set to Yes.</p><p> Mandatory Field (when RAISE.ACTIVITY is set to Yes).</p><p><p>Validation Rules:</p></p><p /><p /><p /><p /><p> Up to 16 type A (Alphanumeric) characters.</p><p> This field must not start or end with a / and must not contain two consecutive slashes // (SWIFT Error Code T26)</p></desc>
+</t>
+<t>
+<field>STOP.ACTIVE</field>
+<desc><p>This is a no input field . When a stop payment is input and authorized this field is set to 'YES' so that the details of the authorized stop payment may not be changed and the charges do not get defaulted again for this multivalue set .</p><p><p>Validation Rules:</p></p><p /><p /><p> No input field. Multi value field associated with fields 2 to 24.</p><p> A value of 'YES' is defaulted when record is authorized.</p></desc>
+</t>
+<t>
+<field>CUSTOMER.NO</field>
+<desc><p>Identifies the Customer to whom the Cheque/Account belongs.  When the field MESSAGE.REC is Blank the SWIFT Message is sent to the SWIFT address of this customer on the DE.ADDRESS File.</p><p> This field is Inputtable only if RAISE.ACTIVITY is set to Yes.</p><p> Mandatory Field (when RAISE.ACTIVITY is set to Yes).</p><p><p>Validation Rules:</p></p><p> 1-10 numeric character Customer Code or 3-10 type MNE (uppercase alpha or numeric or '.') character Customer Mnemonic.</p></desc>
+</t>
+<t>
+<field>INWARD.MSG.TYPE</field>
+<desc><p>Identifies the incoming SWIFT message</p><p /><p /><p /><p><p>Validation Rules:</p></p><p /><p> No Input - Internal field.</p><p /><p /></desc>
+</t>
+<t>
+<field>MT112.CHEQUE.NO</field>
+<desc><p>Identifies the Cheque Number, which is being stopped.</p><p> This relates to SWIFT Tag 21 in Swift Message MT112.</p><p> This field is defaulted from the FIRST.CHEQUE.NO field for the set of Multi-Values for which RAISE.ACTIVITY has been set to "Yes".</p><p><p>Validation Rules:</p></p><p> Automatically generated field. No input possible.</p></desc>
+</t>
+<t>
+<field>APPLY.DATE</field>
+<desc><p>Specify the future date up to which the inputted stop payment instruction is valid.</p><p> When date is inputted here, live file PS.STOP is updated with the related payment stop instruction and for revoking the instruction on the future value date, this application is referred during SOD batch process.</p><p>when any new stop instructions has to be input , any existing multivalue should not be amended and only new multivalue has to be opened at the end for new intrsuctions</p><p><p>Validation Rules:</p></p><p /><p /><p> date inputted should be greater than the system date-Allowed only when       Payment.Stop.Type isinputted</p><p> Multi value field associated with fields 2 to 24.</p><p> Standard date format - MMDDYY.</p></desc>
+</t>
+<t>
+<field>TAX.AMT</field>
+<desc><p>This is a no input field . The tax amount associated with the tax code will get defaulted .</p><p><p>Validation Rules:</p></p><p /><p /><p> No input field. Multi value field associated with fields 2 to 24.</p></desc>
+</t>
+<t>
+<field>CHG.ACCOUNT</field>
+<desc><p>The charges are booked into the account no. specified here . If no account no. is given then the customer account gets defaulted . The charge account need not be in the same currency as the customer account .</p><p><p>Validation Rules:</p></p><p /><p /><p> Account number. Optional. Default to customer account. Multi value       field. Associated to fields 2 to 24.</p><p> Maximum of 16 .</p></desc>
+</t>
+<t>
+<field>MESSAGE.REC</field>
+<desc><p>MESSAGE.REC:</p><p> This field identifies an alternative delivery address other than the Drawer Bank (Customer)</p><p> If an entry of a SWIFT address is made to MESSAGE.REC, then AC.PAYMENT.STOP.DELIVERY will route the message direct to the address entered, using the OVERRIDE CARRIER and OVERRIDE DELIVERY ADDRESS for delivery.</p><p> Identifies the Company or Customer, carrier and address version number whose address is held in the DE.ADDRESS File.</p><p /><p /><p /><p /><p /><p /><p><p>Validation Rules:</p></p><p /><p /><p /><p /><p> 12 type S (SWIFT) characters. OR</p><p> 1-10 numeric character Customer Code or 3-10 type MNE (uppercase alpha or numeric or '.') character Customer Mnemonic.</p><p> Acceptable Inputs are either a Customer Number (whose address is held in the DE.ADDRESS File) or a valid SWIFT Address preceded by SW- e.g. SW-PDOUUS23</p><p> No Multi Values Allowed.</p><p /><p /><p /><p /><p /><p /><p /><p /></desc>
+</t>
+<t>
+<field>DELIVERY.REF</field>
+<desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc>
+</t>
+<t>
+<field>LAST.CHEQUE.NO</field>
+<desc><p>Identifies the Last Cheque Number in a range to be stopped.</p><p> This field in conjunction with FIRST CHEQUE NUMBER (Field 3) is used to define a range of cheques to be stopped. When a cheque number input in DATA.CAPTURE, FUNDS.TRANSFER or TELLER matches a cheque number defined in this table, an override will be given stating that there is a stop on either the cheque number or amount.  You have the option to confirm these overrides to continue processing.</p><p><p>Validation Rules:</p></p><p /><p /><p> Up to 16 numeric characters. Multivalue Field associated with Fields 2 to   24. [Optional input when FIRST CHEQUE NO (Field 3) has been input. Otherwise no input is allowed. No default value.] LAST CHEQUE NO must exceed FIRST CHEQUE NO (Field   3).</p><p> This field should be left Blank if the RAISE.ACTIVITY field is to be set to "Yes" i.e. if a SWIFT Message (MT112) is to be raised.</p><p> SWIFT MT112 can only be raised for a Single Cheque.</p><p /><p /><p /><p /></desc>
+</t>
+<t>
+<field>REMARKS</field>
+<desc><p>Allows remarks concerning the Payment Stop record to be recorded.</p><p><p>Validation Rules:</p></p><p /><p /><p> Up to 35 type A (alphanumeric) characters. Multi value Field. (Optional input.  No default value.)   Associated with fields 2 to 24.</p></desc>
+</t>
+<t>
+<field>DD.STOP.TYPE</field>
+<desc><p>Holds the reason for issuing stop payment for direct debit requests</p><p><p>Validation Rules:</p></p><p /><p /><p> Should be a valid PAYMENT.STOP.TYPE record with No charges defined</p><p> Valid only when 'DD' product is installed</p><p /><p /><p /><p /></desc>
+</t>
+<t>
+<field>NO.OF.LEAVES</field>
+<desc><p>This is a no input field and holds the exact no. of cheque leaves to be stopped .</p><p><p>Validation Rules:</p></p><p /><p /><p> No input field. Multi value field associated with fields 2 to 24.</p><p /><p /></desc>
+</t>
+<t>
+<field>STOP.END.FLAG</field>
+<desc><p>Input allowed only for authorized stop payments. An input of 'YES' indicates that the stop payment is to be revoked . The details of the stop payment which has been revoked are moved to a live file PAYMENT.STOP.HIST.</p><p> Use MOD.PS.CHQ.NO to MOD.PS.DATE to revoke the authorised stop payment for a cheque that are stopped based on cheque numbers. Forrevoking of cheques that are stopped on the basis of Amount instructions without FIRST.CHQ.NO, use STOP.END.FLAG field. </p><p><p>Validation Rules:</p></p><p /><p /><p> Alphanumeric - maximum of 3 characters .</p><p> 'YES' is the only valid input allowed .</p><p> Multi value field associated with fields 2 to 24.</p></desc>
+</t>
+<t>
+<field>IN.DRAWER.BANK</field>
+<desc><p>Contains the inward Drawer bank</p><p /><p /><p /><p><p>Validation Rules:</p></p><p /><p> This is a NOINPUT field.</p></desc>
+</t>
+<t>
+<field>MOD.CHQ.TYPE</field>
+<desc><p>PAYMENT. STOP</p><p /><p /><p> MOD. CHQ. TYPE</p><p /><p /><p> The CHEQUE. TYPE to which the cheque number entered in the field MOD. PS . CHQ. NO belongs to is input here.</p><p /><p /><p> validation rules</p><p /><p /><p> (1) The type  input here should have existed  in CHEQUE. TYPE</p><p /><p /><p /><p /><p /><p /></desc>
+</t>
+<t>
+<field>STOP.DATE</field>
+<desc><p>Specifies the date on which the Payment Stop is placed.</p><p> Note:</p><p /><p /><p> It is important to note that, whichever date is input in this field the stop payment will always be 'effective' as soon as it has been input and authorised.</p><p> This field must be after DATE.OF.ISSUE and before ACTION.DATE.</p><p> This field does not accept forward dates.</p><p /><p /><p><p>Validation Rules:</p></p><p> Up to 9 type D date characters (Date format in range 1950 to 2049). Multivalue Field associated with Fields 2 to 24. (Optional input. Default to System Date.)</p></desc>
+</t>
+<t>
+<field>IN.DRAWER.BK.ACCT</field>
+<desc><p>Contains the inward Drawer bank Account No in the same format as received from delivery or the clearing system.</p><p><p>Validation Rules:</p></p><p /><p /><p /><p /><p> This is a NOINPUT field.</p></desc>
+</t>
+<t>
+<field>BENEFICIARY</field>
+<desc><p>Imputable field . Normally refers to the payee.</p><p><p>Validation Rules:</p></p><p /><p /><p> Alphanumeric - 36 characters only. Multi value field associated with       fields 2 to 24.</p><p /><p /><p /><p /></desc>
+</t>
+<t>
+<field>DD.BC.SORT.CODE</field>
+<desc><p>Holds the Bank sort code for which payment for Incoming direct debits has to be refused </p><p><p>Validation Rules:</p></p><p /><p /><p> Should be a valid Bank sort code </p><p> Valid only when 'DD' product is installed </p><p /><p /><p /><p /></desc>
+</t>
+<t>
+<field>MAPPING.KEY</field>
+<desc><p>Holds the ID of related DE.MAPPING record when delivery message is raised from this application.</p></desc>
+</t>
+<t>
+<field>CHEQUE.TYPE</field>
+<desc><p>Identifies the type of cheques which are to be stopped.</p><p> Examples are EC for Eurocheques, SC for Standard Cheques, CC for Customised Cheques etc.</p><p><p>Validation Rules:</p></p><p /><p /><p> Up to 2 type A (Alphanumeric) character Cheque Type code.</p><p> Multivalue Field associated with Fields 2 to 24.</p><p> If cheque type  is exists in CHEQUE.TYPE.ACCOUNT for the account,     then cheque type will be defaulted based on the Cheque No.</p><p> Mandatory input if FIRST CHEQUE NO (Field 3) is defined and     Cheque.Register is set as "YES" in ACCOUNT.PARAMETER</p><p> Otherwise optional input</p><p> If entered must be a existing code on the CHEQUE.TYPE table</p></desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc><p>Identifies the Currency of the Account to which this Payment Stop record refers.</p><p> The amounts input to the AMOUNT FROM (Field 6) and AMOUNT TO (Field 7) must be in the Currency indicated by this field.</p><p><p>Validation Rules:</p></p><p> Automatically generated field.  No input possible.</p></desc>
+</t>
+<t>
+<field>TAX.TYPE</field>
+<desc><p>This is a no input field. Tax type, if any, attached to CHARGE. CODE will be defaulted.</p><p><p>Validation Rules:</p></p><p /><p /><p> No input field. Multi value field associated to fields 2 to 24.</p></desc>
+</t>
+<t>
+<field>TAX.DATE</field>
+<desc><p>This is a no input field . This is the date on which the tax on the charges gets booked to an internal account.</p><p><p>Validation Rules:</p></p><p /><p /><p> No input field. Multi value field associated to fields 2 to 24.</p></desc>
+</t>
+<t>
+<field>WAIVE.CHARGE</field>
+<desc><p>Input of 'NO' indicates that charges are collected on this PAYMENT.STOP.TYPE and an input of 'YES' indicates that charges are to be waived for this particular stop payment. If there is no input defaults to 'NO'.</p><p><p>Validation Rules:</p></p><p /><p /><p> Optional input. Valid input 'YES' or 'NO'. Defaults to 'NO'.Multi value       field associated with fields 2 to 24.</p><p> Alphanumeric - Maximum of 3 characters</p></desc>
+</t>
+<t>
+<field>CHG.AMOUNT</field>
+<desc><p>The charge amount, as per either the charge code attached to the PAYM.STOP.TYPE (field no 2.1) or as given in CHARGE .CODE (field no 17.1) multiplied by NO.OF.LEAVES (field no 5.1) is defaulted here. Facility to define any amount other than the defaulted charge amount is also available.</p><p><p>Validation Rules:</p></p><p /><p /><p> Multi value field associated with fields 2 to 24.</p></desc>
+</t>
+<t>
+<field>RAISE.ACTIVITY</field>
+<desc><p>This field will denote if a Delivery Activity (SWIFT Message MT112) is to be raised.</p><p> Only one of the Multi-value fields for RAISE.ACTIVITY can be set to "Yes".</p><p> This field is not applicable to Multi-Value Cheques, and the fields LAST.CHEQUE &amp; AMOUNT.TO; i.e. an Activity can only be raised for a Single Cheque and a single amount.</p><p><p>Validation Rules:</p></p><p> Valid input is 'Yes' or 'Null' (Optional input)</p><p> Default is 'Null' (=No), and following fields are set as NOINPUT, until RAISE.ACTIVITY field is set to "Yes":</p><p /><p /><p /><p /><p> DATE.OF.ISSUE</p><p> ACTION.DATE</p><p> OUR.REFERENCE</p><p> MESSAGE.REC</p><p> PAYEE</p><p> ANSWERS</p><p> When an existing PAYMENT.STOP record is amended, the RAISE.ACTIVITY field automatically defaults back to "Null".</p></desc>
+</t>
+<t>
+<field>MOD.PS.CHQ.NO</field>
+<desc><p>In this field the cheque number is entered - for which the payment stop instructions are to be REVOKED.</p><p /><p /><p> Individual Cheque Number alone can be given here to revoke single payment stop instruction or  to revoke for a range of cheques - specify  the start and end range of cheque Numbers (ie to revoke stop payment for cheque no 1001 to 1010 - specify here 1001-1010)</p><p><p>Validation Rules:</p></p><p /><p /><p /><p /><p> The cheque number already instructed for       stop payment can only be input here.</p></desc>
+</t>
+<t>
+<field>DRAWER.CUS</field>
+<desc><p>This field identifies the Customer Number of the Drawer Bank when other than the Receiver.</p><p> This field will be used when the drawer bank is a branch of the Receiver or a bank other than the Receiver of the message.</p><p> The information in this field will be used in Options B&amp;D of SWIFT Tag 52.</p><p> This field is valid only if MESSAGE.REC is not blank.</p><p /><p /><p><p>Validation Rules:</p></p><p> 1-10 numeric character Customer Code or 3-10 type MNE (uppercase alpha or numeric or '.') character Customer Mnemonic.</p></desc>
+</t>
+<t>
+<field>IN.SWIFT.MSG</field>
+<desc><p>Incoming Swift message detail, which created the Payment stop record, is held here.</p><p /><p /><p> It contains full information along with tag, which is available in the Block 4 of Incoming Swift message.</p><p /><p /><p> The information stored here is as it is received.</p><p><p>Validation Rules:</p></p><p /><p /><p /><p /><p> No       Input - Internal field.</p></desc>
+</t>
+<t>
+<field>STMT.NOS</field>
+<desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc>
+</t>
+<t>
+<field>DD.MANDATE.REF</field>
+<desc><p>Holds the Inward mandate for which incoming direct debits has to be refused and hence payment should not be made. If the field is blank, then all the incoming direct debits with DD.BC.SORT.CODE will be dishonoured</p><p><p>Validation Rules:</p></p><p /><p /><p> Should be a valid DD.DDI record</p><p> Valid only when 'DD' product is installed</p><p /><p /><p /><p /></desc>
+</t>
+<t>
+<field>ANSWERS</field>
+<desc><p>This field includes information as to whether or not the stop payment has been effected.</p><p> In addition, a response is also given to any request for reimbursement authorisation.</p><p> Contains an Enquiry called - List of DE.TRANSLATION Answer Codes.</p><p> This field is Inputtable only if RAISE.ACTIVITY is set to Yes.</p><p> Mandatory Field (when RAISE.ACTIVITY is set to Yes).</p><p /><p /><p><p>Validation Rules:</p></p><p /><p /><p /><p /><p> A maximum of 6 multi-values allowed.</p><p> Up to 35 type S (SWIFT) characters.</p></desc>
+</t>
+<t>
+<field>AMOUNT.TO</field>
+<desc><p>Specifies the Amount up To which the Payment Stop is effective.</p><p> This Field is used, in conjunction with AMOUNT FROM (Field 8) to specify the amount of the cheque(s) which are to be stopped. All cheques with amounts between or equal to the two values will be warned on-line as suspect stopped cheques and will request an override message.</p><p><p>Validation Rules:</p></p><p /><p /><p> Up to 12 type AMT (Standard Amount Format) characters plus a decimal point. Multivalue Field associated with Fields 2 to   24. [Optional input when AMOUNT FROM (Field 8) entered, otherwise not allowed. No default value.] It Must be greater than AMOUNT FROM (Field   8).</p><p> This field should be left Blank if the RAISE.ACTIVITY field is to be set to "Yes" i.e. if a SWIFT Message (MT112) is to be raised.</p><p> SWIFT MT112 can only be raised for a Single Amount.</p></desc>
+</t>
+<t>
+<field>PAYEE</field>
+<desc><p>This field identifies the beneficiary of the cheque.</p><p><p>Validation Rules:</p></p><p> Account must not be used.</p><p> Up to 35 type S (SWIFT) characters.</p></desc>
+</t>
+<t>
+<field>PAYM.STOP.TYPE</field>
+<desc><p>Specifies the reason why a Payment Stop is requested.</p><p> When an inward MT111 generates a payment stop record, payment stop type 99 is used.</p><p><p>Validation Rules:</p></p><p /><p /><p> 1 or 2 numeric character Payment Stop Type code. Multivalue Field associated with Fields 2 to   24. (Mandatory input) It must be a valid code on the PAYMENT.STOP.TYPE table.</p></desc>
+</t>
+<t>
+<field>DRAW.BANK.TYPE</field>
+<desc><p>This field determines the option (A, B or D) for field DRAWER.BANK (i.e. Tag 52 in SWIFT Message MT112).</p><p> BIC:</p><p> This option (Option A) specifies the ISO Bank Identifier Code (BIC), and optionally the account or clearing code of the financial institution, initiating the transaction on behalf of itself or the ordering customer.</p><p> LOCATION:</p><p> This option (Option B) specifies the branch and optionally the account or clearing code of the financial institution, initiating the transaction on behalf of itself or the ordering customer.</p><p> ADDRESS:</p><p> This option (Option D) specifies the name and address and optionally the account or clearing code of the financial institution, initiating the transaction on behalf of itself or the ordering customer.</p><p /><p /><p><p>Validation Rules:</p></p><p /><p /><p /><p /><p> BIC, LOCATION or ADDRESS.</p></desc>
+</t>
+<t>
+<field>FIRST.CHEQUE.NO</field>
+<desc><p>Identifies the first in a range or, if LAST CHEQUE NO (Field 4) is not entered, the only Cheque Number which is being stopped.</p><p> This field is used to specify the number of the cheque to be stopped. It can also be used in conjunction with LAST CHEQUE NUMBER (Field 4) to define a range of cheques to be stopped. When a cheque number input in DATA.CAPTURE, FUNDS.TRANSFER or TELLER matches a cheque number defined in this table, an override will be given stating that there is a stop on either the cheque number or amount.  You have the option to confirm these overrides to continue processing.</p><p /><p /><p><p>Validation Rules:</p></p><p> Up to 16 numeric characters. Multivalue Field associated with Fields 2 to 24. (Optional input. No default value.)</p><p> This field must not start or end with a / and must not contain two consecutive slashes // (SWIFT Error Code T26).</p><p> Mandatory input if RAISE.ACTIVITY field is set to "Yes", otherwise optional input.</p></desc>
+</t>
+<t>
+<field>ACCOUNT.NUMBER</field>
+<desc><p>Identifies the Account for which the Payment Stop details are recorded.</p><p><p>Validation Rules:</p></p><p> Standard numeric Account number, or    3-10 type MNE (uppercase alpha or numeric) character Account Mnemonic. (Mandatory input)</p></desc>
+</t>
+<t>
+<field>ACTION.DATE</field>
+<desc><p>Identifies the Value Date when the Drawer Bank has previously credited the Drawee Bank with the cheque amount.</p><p> Note:</p><p /><p /><p /><p /><p> This field should not be less than STOP.DATE and DATE.OF.ISSUE.</p><p> This field is Inputtable only if RAISE.ACTIVITY is set to Yes.</p><p> This field does not accept forward dates.</p><p /><p /><p /><p /><p /><p /><p><p>Validation Rules:</p></p><p> Up to 9 type D date characters (Date format in range 1950 to 2049)  Type D.</p></desc>
+</t>
+<t>
+<field>ACTIVITY.CODE</field>
+<desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc>
+</t>
+<t>
+<field>ACTIVITY.DATE</field>
+<desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc>
+</t>
+</menu>
+</t24help>
+

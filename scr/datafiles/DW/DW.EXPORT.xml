@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>DW</product>
+        <title>DW.EXPORT</title>
+        <table>DW.EXPORT</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>The DW.EXPORT application is part of the DW product and is used to export information out of T24 tables. The utility transforms the extracted information as CSV files. The application contains configuration to extract information for TEMENOS Insight and T-Risk products. The entire data extraction process can be done either as part of COB or an online service.</p>
+        </ovdesc>
+    </overview>
+    <menu>
+        <t>
+            <field>OL.TARGET.DATABASE</field>
+            <desc>
+                <p>This field will be used when the TAKEOVER field is specified as &apos;ONLINE&apos;</p>
+                <p>The value in this field is the database that will be updated when a record of the current DW.EXPORT record is modified or created. The table information will be obtained from the OL.TARGET.TABLE field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>OL.TARGET.TABLE</field>
+            <desc>
+                <p>This field will be used when the TAKEOVER field is specified as &apos;ONLINE&apos;</p>
+                <p>The value in this field is the table that will be updated when a record of the current DW.EXPORT record is modified or created.The database information will be obtained from the OL.TARGET.DATABASE field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PROCESS.RTN</field>
+            <desc>
+                <p>A routine can be attached in this field.</p>
+                <p>When a routine is attached in this field, the routine will control the data that will be extracted.</p>
+                <p>When the field SYSTEM.FIELD is NULL then this routine will control the fields that are to be extracted.</p>
+		<p>This routine should have a valid entry in EB.API, with SOURCE.TYPE as BASIC</p>
+                <p>A sample routine DW.SAMPLE.PROCESS.API is provided by Temenos.</p>
+            </desc>
+        </t>
+        <t>
+            <field>SELECTION.RTN</field>
+            <desc>
+                <p>A routine can be attached in this field.</p>
+                <p>In cases where not all the records are necessary for processing, this routine can be used for selecting records that are needed for the extract.</p>
+		<p>This routine should have a valid entry in EB.API, with SOURCE.TYPE as BASIC</p>
+                <p>A sample routine DW.SAMPLE.SELECT.API is provided by Temenos.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TAKEOVER</field>
+            <desc>
+                <p>This field will control how the data for a DW.EXPORT record will be extracted.</p>
+                <p>This field has the following options:</p>
+                <p>BULK, INCREMENTAL, DAILY, ONLINE</p>
+                <p/>
+                <p>BULK: This option will extract all the records.</p>
+                <p/>
+                <p>INCREMENTAL: This option will extract only those records that were updated or created newly.</p>
+                <p/>
+                <p>DAILY: This option is to be used only when a value is specified in the field EXTRACT.FILE. This will extract data from the file specified in the field EXTRACT.FILE</p>
+                <p/>
+                <p>ONLINE: This will not extract any CSV file, it will update the Insight database directly as and when a record in this DW.EXPORT file is modified or created.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TRANSFORM.RTN</field>
+            <desc>
+                <p>A routine can be attached in this field.</p>
+                <p>In cases where the user wants additional data in the extract, this routine can be used to add new header and new data.</p>
+            </desc>
+        </t>
+<t>
+            <field>YEAR.MONTH</field>
+            <desc>
+                <p>This field will be used for files like CATEG.ENTRY and ACCT.ACTIVITY.</p>
+                <p>For the very first extract historical data is needed for CATEG.ENTRY and ACCT.ACTIVITY, this field will allow the user to specify the YEAR and MONTH from which these files will be extracted.</p>
+            </desc>
+        </t>
+<t>
+            <field>EXCLUDE.RECON</field>
+            <desc>
+                <p>This field is used to exclude from DW.EXPORT Reconciliation process</p>
+                <p>This field will accept only YES or NO or Null(" "),Both NULL and NO are same and default value is NULL.</p>
+            </desc>
+        </t>
+        <t>
+            <field>DESCRIPTION</field>
+            <desc>
+                <p>A description about the T24 file that is going to be extracted</p>
+            </desc>
+        </t>
+        <t>
+            <field>DW.FILE.NAME</field>
+            <desc>
+                <p>This is the ID of the DW.EXPORT record. The ID should be a valid T24 file and should have a FILE.CONTROL record.</p>
+            </desc>
+        </t>
+        <t>
+            <field>EXTRACT.FILE</field>
+            <desc>
+                <p>This field is used in cases where the T24 file specified in the record ID need not be processed and a different file is to be processed instead of it.</p>
+                <p>e.g. CATEG.ENTRY</p>
+                <p>CATEG.ENTRY is a file that grows always and doing a select on it is not recommended, instead the file CATEG.ENT.LWORK.DAY can be selected. This file has all the CATEG.ENTRY records created on the previous day.</p>
+                <p/>
+                <p>If this field has a value then the TAKEOVER field for that DW.EXPORT record should be &apos;DAILY&apos;</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.NAME</field>
+            <desc>
+                <p>This field for some T24 files when released  will have &apos;SYSTEM FIELD&apos; as its value, and on committing the record it will get all the fields in that application and will update this field. </p>
+                <p>These fields are the one&apos;s that will be extracted.</p>
+                <p>For some DW.EXPORT records this field will be left NULL, in those cases a routine will be defined in PROCESS.RTN field, which will control the fields that will be extracted for this file.</p>
+            </desc>
+        </t>
+<t>
+            <field>INCR.KEY.FIELD</field>
+            <desc>
+                <p>This will be used when the TAKEOVER field is specified as &apos;INCREMENTAL&apos;.</p>
+                <p>The field defined in this field will be used to update the particular row in the Insight Database.</p>
+            </desc>
+        </t>
+        <t>
+            <field>OL.FILTER.CRITERIA</field>
+            <desc>
+                <p>This field will be used when the TAKEOVER field is specified as &apos;ONLINE&apos;</p>
+                <p>A routine can be attached to this field, the routine will have the logic to filter out records that is not required in the extract.</p>
+            </desc>
+        </t>
+    <t>
+		<field>HASH.TOT.FLD</field>
+		<desc>
+      <p>This will hold the field name of type numeric, normally ID of the respective application.</p>
+      <p>This is used for the reconcilation purpose once the extraction is done using, the total of IDs/value given in this field that is being extracted for this application.</p>
+		</desc>
+	</t>
+		<t>
+			<field>PRODUCT</field>
+			<desc>
+				<p> This field specifies for which product the extraction is going to be happen. </p>
+				<p> Available Products: Insight ,Insight-Risk,Insight-Oi .</p>
+			</desc></t><t><field>FILTER.RTN</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

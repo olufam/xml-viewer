@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>RE</product>
+<table>RE.STAT.OUTPUT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The CRF reporting module allows the output of details to a sequential disk file as well as, or in place of, the standard printed output. </p>
+            <p>The content and layout of records on this file can be specified by RE STAT OUTPUT. </p>
+            <p>CRF report output is re-directed to a disk file by specifying the name of a record belonging to RE STAT OUTPUT in field 5 (OUTPUT MODE) on the CRF report request file (RE STAT REQUEST). </p>
+            <p>Printed reports and extract files may share the same basic report definition (ie. that on the files RE STAT REPORT HEAD, RE STAT REP LINE etc). The RE STAT OUTPUT record defines the structure of data extracted from the basic report in terms of: </p>
+            <p>-         the type of report lines to be extracted, and, per type           of line, </p>
+            <p>-         the data content to be extracted and its position within           the ouput record. </p>
+            <p>The types of report line available for printing or data extraction are: </p>
+            <p>-         'HEADING' lines, which describe the contents of their           following </p>
+            <p>-         'DETAIL' or 'LINK' lines, in which line details and           amounts are printed, and </p>
+            <p>-         'TOTAL' lines which are used to print running totals,           sub-totals or grand totals of the preceding lines. </p>
+            <p>Each occurence of a LINE TYPE on the output format record corresponds to a seperate record or line on the output file. </p>
+            <p>Within each occurence of a line type, the associated sub-valued fields are used to specify the content of the sequential record and its format. </p>
+            <p>The output defined by a record on this file is written to a sequential file under the directory RE CRF EXTRACT, with a key of (a) report name, (b) RE STAT OUTPUT record id and (c) date stamp (the three elements seperated by full-stops). </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>TOTAL.NO</field>
+<desc>
+            <p>The total accumulator for which output is required. </p>
+            <p>Identifies which total or sub-total field from the report is required as output. </p>
+            <p>The CRF report definition permits the relationships between various running totals, sub-totals and grand totals to be defined. </p>
+            <p>The value in this field corresponds to the value in field 3 (TOTAL PRINT) on the file F.RE.STAT.REP.LINE and identifies to which of the report totals the output record relates. </p>
+            <p>In other words, when LINE TYPE is 'TOTAL', only those total lines for which field 3 (TOTAL PRINT) is the same as the value in this field are processed. </p>
+            <p>If no input is made, the default value of 1 is taken. </p>
+            <p>Multivalued field in association with fields 2 to 6. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-digit numeric. (Mandatory input when LINE TYPE is 'TOTAL', otherwise not allowed) Multivalue field.</p>
+            <p>Input is only allowed when LINE TYPE is 'TOTAL'.</p>
+        </desc>
+</t>
+<t>
+<field>ITEM.SOURCE</field>
+<desc>
+            <p>The source from which output is to be extracted. </p>
+            <p>For each part of the output record for a line, the content is derived from the the source identified in this field. </p>
+            <p>Multiple sources may be defined. The content of an output record may be any mixture of text, column (ie. amount) details or fields extracted from the report header or line record. </p>
+            <p>Multivalued field in association with fields 2 to 6, subvalued in association with fields 5 &amp; 6. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>'HEADER', 'LINE', 'COLUMN', 'TEXT', or 'CCY'. (Mandatory         input) Subvalue field.</p>
+            <p>Input of 'COLUMN' is not permitted when LINE TYPE is         'HEADING'.</p>
+            <p>Input to FLD.COL.TXT is not permitted when ITEM.SOURCE is         'CCY'</p>
+        </desc>
+</t>
+<t>
+<field>SEPARATOR</field>
+<desc>
+            <p>This field is used to separate data values in the output record. </p>
+            <p>If the user wants the output data separated by a specific character, (typically this would be done if the user wants to load this data into a spreadsheet using the HOST.TO.DOS application), then this is where that value should be entered. Non printable ASCII characters may be input using their three digit ASCII ordinal value (e.g 000=NULL, 009 = TAB etc.) printable characters may be entered literally. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>0 to 3-digit Alphanumeric. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>LINE.TYPE</field>
+<desc>
+            <p>The report line type for which output is to be processed. </p>
+            <p>Identifies the type of line for which an output record is to be generated. </p>
+            <p>More than one type of line, per report, may be specified. For example, total lines may be output as well as detail lines. </p>
+            <p>A single output record is generated for each occurence, on the report, of a line whose type is specified in this field. </p>
+            <p>The lines are processed in the same sequence as they occur according to the report definition. </p>
+            <p>Different contents may be specified for each type of line in the subvalues fields 4 to 6 (ITEM SOURCE to FORMAT). </p>
+            <p>Furthermore, the same line type may be specified in this field more than once, in which case more than one output record is generated for the line. </p>
+            <p>For example, the type 'DETAIL' may be specified once for each column of the report for which output is required. In this case, a seperate output record is generated for each column belonging to the line, with its own content definition. </p>
+            <p>Multivalued field in association with fields 3 to 6. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'HEADING', 'TOTAL', 'DETAIL' or 'LINK'. (Mandatory input) Multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Free text field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 type 'A' (alphanumeric characters). (Optional input) Multi-language field.</p>
+        </desc>
+</t>
+<t>
+<field>FLD.COL.TXT</field>
+<desc>
+            <p>Details of the output required from the corresponding ITEM SOURCE. </p>
+            <p>The value of this field takes a different format, and meaning, depending on the corresponding value of ITEM SOURCE in field 4. </p>
+            <p>If the corresponding ITEM SOURCE is 'TEXT', then this field may be used to specify a fixed item of text which is to be placed on the output record. </p>
+            <p>In this case, the format (a) applies. </p>
+            <p>If the corresponding ITEM SOURCE is 'COLUMN' then this field is used to specify from which column of the report the amount is to be taken. </p>
+            <p>In this case, the format (b) applies. </p>
+            <p>If the corresponding ITEM SOURCE is 'HEADER' or 'LINE' then this field is used to specify which field from the report definition files is to be extracted. </p>
+            <p>In the case of 'HEADER' items, the number relates to a field on the RE STAT REPORT HEAD record and in the case of 'LINE' to a field on the RE STAT REP LINE record. </p>
+            <p>In both cases, the format (c) applies, where the appropriate field number and multi- or sub-value definitions must be specified. </p>
+            <p>Field 0 can be specified, in which case the item-id (record key) to the corresponding record is to be extracted. In the case of 'LINE' items, the first part of the key (the report id) is dropped and only the second part (line number) used. </p>
+            <p>Multivalued field in association with fields 2 to 6, subvalued in association with fields 4 to 6. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>(a) Up to 35 type 'A' (alphanumeric characters), OR (b)         1-digit numeric, OR (c) 1 to 3-digit numeric field         number; optional 1 to 2-digit numeric value number ;         optional 1 to 2-digit subvalue number, separated by         full-stops. (Optional input when ITEM SOURCE is 'TEXT',         otherwise mandatory) Subvalue field.</p>
+            <p>The field number, in the case of 'HEADER' or 'LINE'         items, must be within a range defined by the file layout         (in the case of RE STAT REPORT HEAD, up to 28; in the         case of RE STAT REP LINE, up to 88).</p>
+            <p>The value and sub-value numbers, in the case of 'HEADER'         or 'LINE' items, must be in accordance with the         corresponding file layouts. Value numbers cannot be         specified for single valued fields and sub-value numbers         can only be specified for fields which are sub-valued.</p>
+            <p>This is a No Input field when Field ITEM.SOURCE is 'CCY'.</p>
+        </desc>
+</t>
+<t>
+<field>FORMAT</field>
+<desc>
+            <p>The output format of the item. </p>
+            <p>For each component of the output record, the number of characters occupied and the justification (left or right) of the data content is specified in this field. </p>
+            <p>When the corresponding ITEM SOURCE is 'TEXT', the value in this field will default to the length of the specified text, with left justification. </p>
+            <p>Multivalued field in association with fields 2 to 5, subvalued in association with fields 4 &amp; 5. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 5-digit numeric, 'L' or 'R'. (Mandatory input) Subvalue field.</p>
+            <p>When the ITEM SOURCE is 'TEXT', the length of field cannot be less than the length of the specified text.</p>
+        </desc>
+</t>
+<t>
+<field>ID</field>
+<desc>
+            <p>User-defined item-id (record key). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 12 type 'A' (alphanumeric characters).</p>
+            <p>The value 'PRINT' is reserved by the system and cannot be used.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

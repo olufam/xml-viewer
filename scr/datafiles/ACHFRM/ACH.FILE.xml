@@ -1,0 +1,361 @@
+<t24help>
+  <header>
+    <product>ACHFRM</product>
+    <table>ACH.FILE</table>
+  </header>
+  <overview>
+    <ovdesc>
+	<p>The file contains the information that is  carried by the File Header and File trailer type record, that is the one with the file type indicator '1' and '9'. </p>
+	<p>This includes the company name, company number, immediate destination of the entries that are included in the file being processed and also the file control information like the File total, total debits, total credits etc,.</p>
+	<p>For the incoming entries, the table is updated by retreiving details from the incoming file. The same table is updated in case of outward entries and to construct the NACHA compliant output file.</p>
+	</ovdesc>
+    <ovimage>
+    </ovimage>
+  </overview>
+  <menu>
+      <t>
+      <field>ID</field>
+      <desc>
+        <p>The ID of the file will be system generated with the prefix ACH. The key of this application is used to form the keys of the other tables like ACH.BATCH, ACH.ENTRIES which will be followed by the sequence number of the enties pertaining to the particular file processed. </p>
+		<p>For example, if a file  has three batch under it, the IDs will be formed as the &lt; FILE.ID &gt;.1, &lt;FILE.ID&gt;.2, &lt;FILE.ID&gt;.3 and similarly for entries as &lt;FILE.ID&gt;.1.1, &lt;FILE.ID&gt;1.2,&lt;FILE.ID&gt;1.3 etc </p>
+        <p>Validation Rules</p>
+        <p> Upto 16 alphanumeric characters </p>
+       
+      </desc>
+    </t>
+   
+    <t>
+      <field>REC.TYPE.CODE</field>
+      <desc>
+        <p>Identifies the type of the record. As per the NACHA format, the file structure has different types of records which are identified by the codes as given below. </p>
+		<p>1 - File Header Record</p>
+		<p>5 - Batch Header Record</p>
+		<p>6 - Entry Detail Record </p>
+        <p>7 - Entry Detail Addenda Record </p>
+        <p>8- Batch Control Total</p>
+		<p>9 - File Control Total</p>
+		
+        <p>Validation Rules</p>
+        
+        <p>
+		</p>
+        <p>Mandatory field, Maximum of 1 character, as the table carries file header record, the value is always 1.</p>
+     
+      </desc>
+    </t>
+    <t>
+      <field>PRIORITY.CODE</field>
+      <desc>
+        <p>As per the NACHA rules, the priority code has to be 01 and this defaulted to 01. </p>
+        <p>Validation Rules</p>
+        <p> No validation  </p>
+      </desc>
+    </t>
+    <t>
+      <field>IMMD.DESTINATION</field>
+      <desc>
+        <p>The field helps in identifying the immediate party to which the file is sent. The identifying code is the ABA number or the routing number of the bank</p>
+        <p> This value should exists in OUR.RTN.NUMBER in ACH.CLEARING.PARAMETER to identify if the file sent is for the T24 bank</p>
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Mandatory field, Upto 9 characters</p>
+      </desc>
+    </t>
+	<t>
+      <field>IMMD.ORIGIN</field>
+      <desc>
+        <p>The field helps in identifying the immediate sender of the file. </p>
+        <p> The identifying code is the ABA number or the routing number of the ODFI. </p>
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Mandatory field, Upto 10 characters</p>
+      </desc>
+    </t>
+	<t>
+      <field>FILE.CREATION.DATE</field>
+      <desc>
+        <p>Indicates the date on which the file was created by the originator, as indicated in the incoming file/outward file</p>
+        
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Mandatory field, Date format as in YY/MM/DD</p>
+      </desc>
+    </t>
+	<t>
+      <field>FILE.CREATION.TIME</field>
+      <desc>
+        <p>Indicates the time when the file was created or exchangedr, as indicated in the incoming file/outward file</p>
+        
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Time format as in HH:MM</p>
+      </desc>
+    </t>
+	<t>
+      <field>FILE.ID.MODIFIER</field>
+      <desc>
+        <p>Indicates the number of files sent by the RDFI to its ACH operator for any particular day. </p>
+        <p> The first file will be marked with A and subsequently as B,C,D etc. This helps in tracing the files.</p>
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Mandatory field, Upto 1  alphabet</p>
+      </desc>
+    </t>
+	<t>
+      <field>RECORD.SIZE</field>
+      <desc>
+        <p>Indicates the number of characters in each type of record, file, batch, entry, detail and addenda. </p>
+        <p>As this is constantly maintained as 94, the value is updated as 94.</p>
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Mandatory field</p>
+      </desc>
+    </t>
+	<t>
+      <field>BLOCKING.FACTOR</field>
+      <desc>
+        <p>The field defines blocking factor for the file. If the block factor is 10, the number of records within a block should be in multiples of 10.</p>
+        <p> When the number of records in the file is not a multiple of 10, the remainder of the block is filled with '9's.</p>
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Mandatory field</p>
+      </desc>
+    </t>
+	<t>
+      <field>FORMAT.CODE</field>
+      <desc>
+        <p>As per the NACHA rules, the priority code has to be 1 and this defaulted to 1.  </p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Mandatory field</p>
+      </desc>
+    </t>
+	<t>
+      <field>IMMD.DEST.NAME</field>
+      <desc>
+        <p>This field carries the name of the immediate destination to which the file is sent, that is the ACH.OPERATOR or the receiving party to which the file is destined to be sent. </p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Upto 23 characters, Name belongs to the ID given in IMMD.DESTINATION</p>
+      </desc>
+    </t><t>
+      <field>IMMD.ORIGIN.NAME</field>
+      <desc>
+        <p>This field carries the name of the immediate party or the ACH.OPERATOR that sends the file.</p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Upto 23 characters, Name belongs to the ID given in IMMD.ORIGIN</p>
+      </desc>
+    </t>
+	<t>
+      <field>REFERENCE.CODE</field>
+      <desc>
+        <p>This field is reserved for information belonging to the Originator.</p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Upto 23 characters</p>
+      </desc>
+    </t>
+	<t>
+      <field>TR.REC.TYPE.CODE</field>
+      <desc>
+        <p>Denotes the record type code of the file trailer. This is defaulted to '9'.</p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Mandatory field</p>
+      </desc>
+    </t>
+	<t>
+      <field>TR.BATCH.COUNT</field>
+      <desc>
+        <p>Indicates the number of batches processed for the particular incoming file.</p>
+     
+        <p>Validation Rules</p>
+        <p>Mandatory field</p>
+        <p>Upto 6 characters</p>
+      </desc>
+    </t>
+	<t>
+      <field>TR.BLOCK.COUNT</field>
+      <desc>
+        <p>Consists of the total blocks or lines in the file.</p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>No Validation</p>
+      </desc>
+    </t>
+	<t>
+      <field>TR.ADDENDA.COUNT</field>
+      <desc>
+        <p>Consists of the total number of Detail and Addenda records in the file(records prefixed with 6 & 7).</p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>No Validation</p>
+      </desc>
+    </t>
+	<t>
+      <field>TR.ENTRY.HASH</field>
+      <desc>
+        <p>This field gives the total of all positions 4-11 on each 6 record (Detail)</p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>No Validation</p>
+      </desc>
+    </t>
+	<t>
+      <field>TR.TOT.DR.DLLR.AMT</field>
+      <desc>
+        <p>This field gives the total debit amount of all the batches,  as in the control record, belonging to the file being processed in dollars.</p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Standard amount format </p>
+      </desc>
+    </t>
+	<t>
+      <field>TR.TOT.CR.DLLR.AMT</field>
+      <desc>
+        <p>This field gives the total credit amount of all the batches,  as in the control record,belonging to the file being processed in dollars.</p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Standard amount format </p>
+      </desc>
+    </t>
+	<t>
+      <field>TR.RESERVED</field>
+      <desc>
+        <p>Reserved field</p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p></p>
+      </desc>
+    </t>
+	<t>
+      <field>ACH.BATCH</field>
+      <desc>
+        <p>Carries the ID of the ACH.BATCH records, that carry details of the record with file type indicator '5' belonging to the particular file processed. </p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Must be a valid ACH.BATCH record, multi value associated field from ACH.BATCH until BATCH.V.DATE</p>
+      </desc>
+    </t>
+	<t>
+      <field>BATCH.CALC.DR</field>
+      <desc>
+        <p>This field gives the calculated total debit amount of all the entries belonging to the batch mentioned in the field ACH.BATCH. </p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Standard amount format, multi value associated with ACH.BATCH </p>
+      </desc>
+    </t>
+	<t>
+      <field>BATCH.CALC.CR</field>
+      <desc>
+        <p>This field gives the calculated total credit amount of all the entries belonging to the batch mentioned in the field ACH.BATCH.</p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Standard amount format, multi value associated with ACH.BATCH  </p>
+      </desc>
+    </t>
+	<t>
+      <field>BATCH.RECORDS</field>
+      <desc>
+        <p>Reserved for future use </p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p> </p>
+      </desc>
+    </t>
+	<t>
+      <field>BATCH.V.DATE</field>
+      <desc>
+        <p>This field gives the value date of the entries belonging to the batch mentioned in the field ACH.BATCH.  </p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Standard date format, multi value associated with ACH.BATCH  </p>
+      </desc>
+    </t>
+		<t>
+      <field>NO.OF.RECORDS</field>
+      <desc>
+        <p>Reserved for future use. </p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p></p>
+      </desc>
+    </t>
+		<t>
+      <field>FILE.CALC.DR</field>
+      <desc>
+        <p>This field gives the calculated total debit amount of all the batches, belonging to the file being processed. </p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Standard amount format  </p>
+      </desc>
+    </t>
+		<t>
+      <field>FILE.CALC.CR</field>
+      <desc>
+        <p>This field gives the calculated total credit amount of all the batches, belonging to the file being processed. </p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Standard amount format </p>
+      </desc>
+    </t>
+	<t>
+	      <field>TAPE.REF</field>
+      <desc>
+        <p>Holds the name of the file from which the incoming entries were received. This is helpful in tracing the entries in case of an inquiry. </p>
+     
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Upto 65 characters </p>
+      </desc>
+    </t>
+  </menu>
+</t24help>

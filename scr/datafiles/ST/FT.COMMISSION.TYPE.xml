@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>FT.COMMISSION.TYPE</table>
+</header>
+<overview>
+<ovdesc>
+<p>This table defines the conditions relating to all types of Commission used in applications.</p><p>     Each Commission Type can be defined as a Flat Amount or as one which varies according to the amount transferred.  In this latter case different Percentages can be defined for different Bands or Levels of transfer amounts.  Minimum and maximum Commissions can be specified for each Band or Level together with overall minimum or maximum commission charges. </p><p>     Commissions in local currency must be entered and special foreign currency Commissions can also be defined if required. </p><p>     The entire commission can be waived depending on whether the ordering customer is resident or non-resident within certain countries. </p><p>     In addition COMMISSION.TYPES can be linked to allow different commission structures, tax codes etc to be applied depending on the residence of the ordering customer. For example commissions can be defined for EEC and NON-EEC resident customers. </p><p>     The Currency codes specified in this table in association with the percentage or the amount of charges will always refer to the Currency of the transfer, i.e. the debit Currency for the inward payments and the credit Currency for all other types of payment.  As a minimum, the local Currency must be specified and any Currency which has not been defined will then default to these conditions and create the appropriate equivalent amount using the rates held on the Currency file. </p></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>NON.RESIDENCY</field>
+<desc><p>Defines the COUNTRY and/or the COUNTRY.GROUP(s) where if the ordering customer is NOT resident then the commission WILL be applied. </p><p>     This field allows you to relate the commission to customers non-resident in specific countries, or groups of countries. </p><p>     If the ordering customer is resident in one of the countries defined here then this commission will not be applied. </p><p>     If RESIDENCY and NON.RESIDENCY are blank then the commission will be applied. </p><p><p>Validation Rules:</p></p><p>     6 alphanumeric characters.</p><p>     Input must be in the format:        XX   where XX is a valid code on the COUNTRY file.  or       *ZZZZ where ZZZZ is a valid code on the COUNTRY.GROUP file.</p></desc>
+</t>
+<t>
+<field>CALCULATION.BASIS</field>
+<desc><p>Specifies whether the commission amount is to be calculated on a percentage basis, as a unit, or as a rate per lot basis. </p><p>     A unit charge can only be specified when using LEVEL or BAND calculation types. The amount entered in the UNIT.CHARGE field will applied for the corresponding amount in accordance with the BAND/LEVEL calculation type.</p><p>     A rate per lot charge can only be specified when using LOT calculation types. The value entered in the UNIT.CHARGE field will be applied for the corresponding amount per lot. This applies only for Derivatives trades.</p><p><p>Validation Rules:</p></p><p /><p>     PERCENTAGE or UNIT or RATEPERLOT</p><p>     [Mandatory with CALC.TYPE of BAND or LEVEL or LOT, not         allowed if CALC.TYPE is FLAT]</p></desc>
+</t>
+<t>
+<field>CCY.CONV.DEPENDENT</field>
+<desc><p>Determines whether the Commission Type is to be applied only when Foreign Exchange conversion is required. (Currency Conversion Dependent indicator). </p><p>     The presence of this field (only allowed value 'Y' for Yes) indicates that the derived commission amount is only to be applied when the associated transaction entails a FX conversion (i.e. the Debit and Credit Currencies are different). </p><p><p>Validation Rules:</p></p><p>     Y(es) or blank. (Optional input)</p></desc>
+</t>
+<t>
+<field>OVERALL.MIN.PCT</field>
+<desc><p>   Defines the Overall Minimum Percentage or rate to be charged on transfers involving the Currency defined.  This represents the minimum to be charged irrespective of any special conditions which could exist for a Customer or group of Customers except if these have been specified as a Flat amount.   Specifies the rate used to calculate the Commission for an entry as a Percentage of its value.</p><p /><p>     This amount could represent the actual cost to the bank of providing the service, which should never be waived.</p><p /><p>  Available Options for input:</p><p /><p>        (1) Up to 10 type R characters plus a decimal point,         (standard rate format.) but must be less than 100%.</p><p /><p>        (2) Rate input must be positive and less than 100%.</p><p /><p>        (3) Not more than 3 integers may be entered.</p><p /><p>        (4) Not more than 9 decimals may be entered.</p><p /><p><p><p>Validation Rules:</p>:</p></p><p /><p>  (1) It must be less than the Overall Maximum Percentage.</p><p>  (2) If Flat amount entered, then Overall Minimum Percentage will not be allowed.</p><p>  (3) Both Overall minimum percentage and overall minimum amount per currency cannot be entered.</p><p>  (4) The base value used to apply the overall minimum percentage from T24 application which triggers the charge will be the same as used by BAND &amp; LEVEL type calculations.</p><p /></desc>
+</t>
+<t>
+<field>TXN.CODE.CR</field>
+<desc><p>Defines the Transaction code to be used on the credit entry generated by application for this Commission Type. </p><p>     This field defines the Transaction code which will be assigned to the Credit Commission entry, generated (as a result of using this Commission Type) in the Profit and Loss Category code or internal account as specified in Category/Account field. </p><p /><p>     Note : For Commission calculated on Foreign Exchange contracts, this code        is also used in the debit entry. </p>
+<p><p>Validation Rules:</p></p>
+<p>     1-10(Max Value) numeric characters Transaction Code. (Mandatory Input)</p>
+<p>     The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+<p>     Any Transaction code where DATA.CAPTURE has been defined with 'Y' will be refused.</p><p>     Transaction codes with the DEBIT.CREDIT.IND = to 'DEBIT' will not be allowed.</p></desc>
+</t>
+<t>
+<field>LINK</field>
+<desc><p>Contains a list of all commission codes 'linked' to the master commission. </p><p>     See field 0 for more details. </p><p><p>Validation Rules:</p></p><p>     This is a system maintained, NOINPUT field.</p></desc>
+</t>
+<t>
+<field>MAXIMUM.AMT</field>
+<desc><p>Defines the Maximum Amount to be charged on transfers to which this Commission range applies. </p><p>     The Maximum Amount should never be greater than the maximum calculated amount within the range. When there are various ranges within the same Currency, the amount must be equal or greater than the preceding Maximum Amount.  It must also be greater than the associated Minimum Amount. </p><p><p>Validation Rules:</p></p><p>     Up to 14 AMT type characters (standard amount format).  Associated sub-value field.  (Optional input only allowed when Calculation type has been defined as 'LEVEL').</p></desc>
+</t>
+<t>
+<field>UPTO.AMT</field>
+<desc><p>Defines the Maximum Amount to be charged on transfers to which this Commission range applies. </p><p>     The Maximum Amount should never be greater than the maximum calculated amount within the range. When there are various ranges within the same Currency, the amount must be equal or greater than the preceding Maximum Amount.  It must also be greater than the associated Minimum Amount. </p><p><p>Validation Rules:</p></p><p>     Up to 14 AMT type characters (standard amount format).  Associated sub-value field.  (Optional input only allowed when Calculation type has been defined as 'LEVEL').</p></desc>
+</t>
+<t>
+<field>TXN.CODE.DR</field>
+<desc><p>Defines the (optional) transaction code to be used on the debit entry generated by the application for this Commission Type. </p><p>     This field defines the default transaction code which will be assigned to the debit entry to the account bearing the commission. However, the application may assign its own transaction code if for example the transaction is debit plus commissions or the commissions are consolidated before posting. </p>
+<p><p>Validation Rules:</p></p>
+<p>     1-10(Max Value) numeric characters Transaction Code. (Mandatory Input)</p>
+<p>     The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+<p>     Any Transaction code where DATA.CAPTURE has been defined with 'Y' will be refused.</p><p>     Transaction codes with the DEBIT.CREDIT.IND = to 'CREDIT' will not be allowed.</p></desc>
+</t>
+<t>
+<field>FLAT.AMT</field>
+<desc><p>Defines the amount to be charged for this Commission Type in the Currency defined in the preceding field. </p><p>     The User will enter an amount in this field when the Commission being defined is expressed as a Flat Amount, the Calculation Type is 'FLAT' and the charge amount does not vary according to the Transfer amount.  If, however, it does vary according to the transfer amount, this field will be left blank and the User would then define various Percentages with their corresponding ranges if necessary. </p><p><p>Validation Rules:</p></p><p>     Up to 14 AMT type characters (standard amount format).  Associated multivalue field.  (Mandatory input if CALCULATION TYPE states 'FLAT'.)</p></desc>
+</t>
+<t>
+<field>DEFAULT.CCY</field>
+<desc><p>The definition of the currency which is to be used as the default for calculation of the commissions. </p><p><p>Validation Rules:</p></p><p>     3 type SSS (uppercase alpha) character                or 1-3 numeric character Currency code.  Must be defined in the field CURRENCY.  (Mandatory input  if the Local currency is not defined in the CURRENCY field)</p></desc>
+</t>
+<t>
+<field>MTHLY.AMORTISATION</field>
+<desc><p>Specifies whether, depending on the type of contract involved, the charge should be amortised. </p><p>     YES indicates that the commission will be amortised (taken into P&amp;L over the life of the contract), NO indicates that the charge will be treated on a cash basis. </p><p>     Note : This option is only relevant for certain contract types, e.g.        Letters of Credit. </p><p><p>Validation Rules:</p></p><p>     3 alphanumeric characters   YES or NO.  Mandatory input.</p><p>     Once input this field cannot be changed.</p><p>     If MTHLY.AMORTISATION is set to YES, AMORTISN.PERIOD field is mandatory.</p><p>     If MTHLY.AMORTISATION is set to NO and ACCRUE.AMORT field is blank, AMORTISN.PERIOD is not allowed.</p></desc>
+</t>
+<t>
+<field>OVERALL.MAX.PCT</field>
+<desc><p>   Defines the Overall Maximum Percentage or rate to be charged on transfers involving the Currency defined.  This represents the minimum to be charged irrespective of any special conditions which could exist for a Customer or group of Customers except if these have been specified as a Flat amount.Specifies the rate used to calculate the Commission for an entry as a Percentage of its value.</p><p /><p>     This amount could represent the maximum amount the bank would ever conceivably charge a customer for a transfer regardless of the size of the Transfer Amount.</p><p /><p /><p>  Available Options for input:</p><p /><p>        (1) Up to 10 type R characters plus a decimal point,     (standard rate format.) but must be less than 100%.</p><p /><p>        (2) Rate input must be positive and less than 100%.</p><p /><p>        (3) Not more than 3 integers may be entered.</p><p /><p>        (4) Not more than 9 decimals may be entered.</p><p /><p><p><p>Validation Rules:</p>:</p></p><p /><p>  (1) It must be greater than the Overall Minimum Percentage.</p><p>  (2) If Flat amount entered, then Overall Maximum Percentage will not be allowed.</p><p>  (3) Both Overall maximum percentage and overall maximum amount per currency cannot be entered.</p><p>  (4) The base value used to apply the overall maximum percentage from T24 application which triggers the charge will be the same as used by BAND &amp; LEVEL type calculations.</p><p /></desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc><p>This field is reserved for future use. </p><p><p>Validation Rules:</p></p><p>     Up to 35 type A (alphanumeric) characters. Multivalue field. (Internal field.)</p></desc>
+</t>
+<t>
+<field>CALC.TYPE</field>
+<desc><p>The method of calculation to be used for the associated currency. </p><p>     This field specifies whether separate calculations are to be made for each band of the base amount, whether only one is calculated which is dependent on the level of the base amount, or whether a Flat amount is to be applied. </p><p>     Example for FLAT, LEVEL and BAND: </p><p>     Assume a deal of Principal 100,000 USD where commission is calculated based on the Principal. The commission type record specifies an applicable rate of 2 per cent up to 10,000 and 1.5 percent over 10,000. </p><p>     If Band is specified for all sub value groups, 2 calculations will be performed, i.e. 2% on 10,000 1.5% on 90,000 </p><p>     If Level is specified for all sub value groups, 1 calculation will be performed, ie. 1.5% on 100,000 </p><p>     If Flat is specified, the basic Flat Amount will be applied.</p><p>     For LOT: </p><p>     To be used with derivatives trades which perform charge calculations on per lot basis.</p><p>     If Lot is specified, the Unit Charge will be applied per lot traded</p><p><p>Validation Rules:</p></p><p /><p>     FLAT, LEVEL, BAND or LOT or any abbreviation thereof.         (Mandatory Input)</p></desc>
+</t>
+<t>
+<field>CHARGE.PERIOD</field>
+<desc><p>Defines the number of months that comprise a charging period. </p><p>     A charge may be made periodically, e.g monthly, quarterly, etc. This field determines he length of time for which the commission type record applies. </p><p>     The period of the contract will be split in the number of periods defined in this field to calculate the total commission amount, for example a contract lasting one year, with CHARGE.PERIOD set to 3, would incur 4 times the defined commission amount, since the period has been defined as quarterly. </p><p>     The corresponding field MINIMUM.PERIOD can be used to specify the minimum number of periods to be considered. </p><p>     Note that this is currently utilised only by the Trade Finance system. </p><p><p>Validation Rules:</p></p><p>     1, 3, 6, 9, 12 or 24</p><p>     Optional Input</p></desc>
+</t>
+<t>
+<field>K.PERCENTAGE</field>
+<desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc>
+</t>
+<t>
+<field>ROUND.TYPE</field>
+<desc><p>Rounding of rules can be defined in this field. Rounding of type can be selected from Higher/Lower/Natural</p><p /><p>     Higher </p><p>     Always rounded of to the next highest rounding unit</p><p>     Eg. If rounding unit is 10 and commission calculated is 246 then commission is rounded of to 250</p><p>     Lower</p><p>     Always rounded of to the next lowest rounding unit</p><p>     Eg. If rounding unit is 10 and commission calculated is 246 then commission is rounded of to 240</p><p>     Natural </p><p>     Natural-rounding rules will be applied depending upon the rounding unit</p><p>     Eg. If rounding unit is 10 and commission calculated is 246 then commission is rounded of to 250</p><p /><p><p>Validation Rules:</p></p><p /><p /><p>     HIGHER, LOWER or NATURAL or any abbreviation thereof. </p><p>     Optional input</p></desc>
+</t>
+<t>
+<field>UNIT.CHARGE</field>
+<desc><p>Defines the amount to be charged as a unit on the corresponding UPTO.AMT field using the assocaited CALC.TYPE method. </p><p><p>Validation Rules:</p></p><p>     Up to 18 AMT type characters (standard amount format).  Associated sub-value field.  (Optional input.  Mandatory if the Calculation Type has been defined as 'LEVEL' or 'BAND').</p></desc>
+</t>
+<t>
+<field>MINIMUM.PERIOD</field>
+<desc><p>Defines the minimum number of months which comprise the smallest allowable charging period, used in conjunction with the CHARGE.PERIOD defined. </p><p>     The minimum period may be defined as monthly, quarterly, half-yearly, nine-monthly, annually, or bi-annually. The contract period will be divided into a number of charging periods as defined in CHARGE.PERIOD. This will then be compared against the MINIMUM.PERIOD, if the the minimum period yields a large value, this will be used to calculate the final chargeable amount. </p><p>     Currently only used in the Trade Finance module. </p><p><p>Validation Rules:</p></p><p>     1, 3, 6, 9, 12 or 24 months.</p><p>     Optional input.</p></desc>
+</t>
+<t>
+<field>TAX.CODE</field>
+<desc><p>Identifies the Tax record, or the TAX.TYPE.CONDITION record which specifies the tax calculation and processing applicable to the Commission Type. </p><p>     This Tax Code, or Tax Type grouping would be applicable to countries where banking services are subject to local taxes (e.g. VAT).  The Application will then calculate taxes on the Charge according to the Tax Rate defined in the Tax table. </p><p>     The Tax Code used in this field is passed to Delivery as a suffix to the tax code TAX.  This combined code will be used within Delivery to provide meaningful text for credit/debit advices. </p><p>     Note : The entry in the Tax table should only contain one rate because        multiple tax rate codes will not be allowed within the Funds        Transfer main program when the User processes a transaction. </p><p>     If a Tax Type Condition Identifier is specified, the system will derive the applicable TAX.CODE from the TAX.TYPE.CONDITION based on the customer grouping. </p><p><p>Validation Rules:</p></p><p>     Tax Code must be a valid code on the Tax table.</p></desc>
+</t>
+<t>
+<field>CATEGORY.ACCOUNT</field>
+<desc><p>Defines the Profit and Loss Category or internal Accounts to which the Commission should be credited. </p><p>     Normally the Commission being collected from the Customer is always in favour of the Bank and consequently a valid Profit and Loss category code should be entered.  However, if for any reason, the bank is also acting as a collecting agent for a third party (e.g. Government), then an internal Account should instead be entered. </p><p><p>Validation Rules:</p></p><p>     4-5 numeric character Category code                       or  6-12 type SS (uppercase alpha or numeric, first character alpha)      character local currency internal Account number     or  3-10 type MNE (uppercase alpha or numeric or ".") character Account      Mnemonic.  (Mandatory input.)</p></desc>
+</t>
+<t>
+<field>CHARGE.ROUTINE</field>
+<desc><p /><p>     A valid info basic routine can be specified in this field to define the charging mechanism.</p><p>     When charge routine is present , any other charging mechanism defined in the record is ignored.</p><p>     The routine has eleven parameters - ten input parameters and one output parameters .</p><p>     The ten input parameters are same as that of CALCULATE.CHARGE ( see user guide for details)</p><p>     The output parameter is the CHARGE.AMOUNT. The charge amount is in account currency . The fields 37 to 47 in T.DATA , can be used by the charge calculation routine to return values to the calling apllication.</p><p><p>Validation Rules:</p></p><p /><p>     The info basic routine should be prefixed with '@' .</p></desc>
+</t>
+<t>
+<field>RESIDENCY</field>
+<desc><p>Defines the COUNTRY and/or the COUNTRY.GROUP(s) where if the ordering customer is resident then the commission WILL be applied. </p><p>     This field allows you to relate the commission to customers resident in specific countries, or groups of countries. If the ordering customer is not resident in a country defined here then this commission will not be applied. </p><p>     If RESIDENCY and NON.RESIDENCY are blank then the commission will be applied. </p><p><p>Validation Rules:</p></p><p>     6 alphanumeric characters.</p><p>     Input must be in the format:        XX   where XX is a valid code on the COUNTRY file. or       *ZZZZ where ZZZZ is a valid code on the COUNTRY.GROUP file.</p></desc>
+</t>
+<t>
+<field>SHORT.DESCR</field>
+<desc><p>Describes the Commission Type in an abbreviated format which can be used for reporting where space is limited. </p><p>     This field can be expanded to allow the User to enter a Short Description for the Commission Type code in various languages. Each expansion will correspond to a new Language as defined in the Language Table and will indicate to the User the Language in which this Short Description must be entered. </p><p><p>Validation Rules:</p></p><p>     3-15 type AA (alphanumeric, first character alpha) characters.  Multilanguage field. (Mandatory input.)</p></desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc><p>Defines the Currency of any amounts input in the associated fields. </p><p>     Commissions must be specified in default or local currency and if special Commissions are to be applicable to different Currencies (e.g. different percentages/minimums/maximums) then Commissions must also be specified for each applicable Currency. </p><p>     The rules which determine which Currency (Credit or Debit) is initially used to identify the Commission Currency, are as follows:- </p><p>     For inward payments - Currency of the Debit. </p><p>     For all other payments - Currency of the Credit. </p><p>     If a specific Currency is not represented within the multivalue set, the System will default to the details associated to the default currency. If default currency is not defined then the local currency details will be used.  The Currency equivalent amount will be derived at the currency table middle rate. </p><p>     If a default currency is defined then the default currency commission definition is mandatory, otherwise the local currency definition is mandatory. </p><p><p>Validation Rules:</p></p><p>     3 type SSS (uppercase alpha) character                or 1-3 numeric character Currency code.  Associated multivalue field.  (Mandatory input for default currency  if present, otherwise mandatory for local currency.)</p></desc>
+</t>
+<t>
+<field>ACCRUAL.FQU</field>
+<desc><p>Indicates the frequuency of an accrued or amotised charge. Optional input D indicates daily accrual, M indicates monthly accrual. If this field is input then the ACCRUE.AMORT field must also be input and vice versa.</p></desc>
+</t>
+<t>
+<field>ACCRUAL.MIN.AMT</field>
+<desc><p>Indicates for a charge subject to accrual or amortisation a minimum amount below which the calculated charge is simply booked. </p></desc>
+</t>
+<t>
+<field>ACCRUE.AMORT</field>
+<desc><p>Indicates whether the calculated charge is to be accrued or amortised. A indicates accrual, M indicates amortisation. Optional input.If this field is input then the ACCRUAL.FQU field must also be input and vice versa.</p><p>      When the field is set, AMORTISN.PERIOD is mandatory. </p><p /></desc>
+</t>
+<t>
+<field>AMORTISN.PERIOD</field>
+<desc><p>This field specifies the period over which the charge should be amortised. </p><p>     The following examples show the format of the amortisation period: </p><p>                1M to 11M    range = 1 to 11 months            1A to 99A    range = 1 to 99 years </p><p>                C is for Till end of contract or R is for Till next rollover (R) schedule</p><p><p>Validation Rules:</p></p><p>     1-3 alphanumeric characters.</p><p>     Once input this field cannot be changed.</p><p>     Mandatory when MTHLY.AMORTISATION is set to YES.</p><p>     Not allowed when MTHLY.AMORTISATION is set to NO and ACCRUE.AMORT is blank.</p></desc>
+</t>
+<t>
+<field>NEXT.DATE</field>
+<desc><p>This system updated field will hold all future dated entered records for this COMMISSION type that are presently on file. </p><p><p>Validation Rules:</p></p><p>     This is a NOINPUT field.</p></desc>
+</t>
+<t>
+<field>OVERALL.MIN.AMT</field>
+<desc><p>Defines the Overall Minimum Amount to be charged on transfers involving the Currency defined.  This represents the minimum to be charged irrespective of any special conditions which could exist for a Customer or group of Customers except if these have been specified as a Flat amount. </p><p>     This amount could represent the actual cost to the bank of providing the service, which should never be waived. </p><p><p>Validation Rules:</p></p><p>     Up to 14 AMT type characters (standard amount format).  Associated multivalue field. (Optional input.)</p><p>     It must be less than the Overall Maximum Amount.</p><p>     It must be less than or equal to the first Minimum Amount specified within a range for the currency.</p><p>     If Flat amount entered, then Overall Minimum Amount must not be greater than this value.</p></desc>
+</t>
+<t>
+<field>COMMISSION.TYPE</field>
+<desc><p>Identifies this Commission Type. </p><p>     When defining the Commission ID by means of an alpha key, the User must try to use meaningful codes to facilitate easy identification of the Commission Type.  Examples could be: </p><p>                PM = Payment Commission            EX = Exchange Commission </p><p>     The codes defined in this field are passed to Delivery as a suffix to the Commission code FTCOM.  The combined code will be used within Delivery to provide meaningful text for credit/debit advices. </p><p>     Commissions can be linked together by using an ID in the format XXXXX.YYYYY. All codes with the prefix XXXXXX will be 'linked'. Consequently when ANY commission code with the prefix XXXXX is used all linked records will also be processed. This is primarily used for defining different commissions for resident and non-resident customers. </p><p>     e.g. </p><p>     Codes      Amounts      Residence/Non residence HC         5.00         resident *EEC HC.NEEC    10.00        non-resident *EEC </p><p>     When either HC or HC.NEEC is used both will be examined and the correct commission calculated based on the residence of the ordering customer. NOTE : A linked record cannot be input without a corresponding master        record, i.e. XXXXX.YYYYY cannot exist without commission code        XXXXX. </p><p>     Commissions can be entered for future dates by using an ID in the format XXXXX.YYYYY-YYYYMMDD.  All codes with a suffix in the above date format separated by the delimiter '-' are for future commission changes. Only future dated existing commission types can be entered in the above format. </p><p><p>Validation Rules:</p></p><p>     11 type A (alphanumeric) characters. (Mandatory input.)</p></desc>
+</t>
+<t>
+<field>PERCENTAGE</field>
+<desc><p>Specifies the rate used to calculate the Commission for an entry as a Percentage of its value. </p><p><p>Validation Rules:</p></p><p>     Up to 10 type R characters plus a decimal point, (standard rate format.) but must be less than 100%. Associated sub-value field. [Mandatory input if the Calculation Type is either LEVEL or BAND, and CALC.BASIS is set to PERCENTAGE otherwise not allowed.]</p><p>     Rate input must be positive and less than 100%.</p><p>     Not more than 3 integers may be entered.</p><p>     Not more than 9 decimals may be entered.</p></desc>
+</t>
+<t>
+<field>MINIMUM.AMT</field>
+<desc><p>Defines the Minimum Amount to be charged on transfers which attract this Commission range. </p><p>     When there are various ranges within the same Currency, the Minimum Amount must be equal or greater than the preceding Minimum Amount.  It must also be less than the associated Maximum Amount. </p><p><p>Validation Rules:</p></p><p>     Up to 14 AMT type characters (standard amount format).  Associated sub-value field.  (Optional input.  Only allowed if the Calculation Type has been defined as 'LEVEL').</p></desc>
+</t>
+<t>
+<field>ROUND.UNIT</field>
+<desc><p>Rounding unit can be defined. If no rounding type is selected then natural rounding type will be applied in combination with rounding unit.</p><p>     Eg. </p><p>     Rounding Type  Higher</p><p>     Rounding Unit - 10 </p><p><p>Validation Rules:</p></p><p /><p /><p>     Optional Input </p><p>     Valid numerals allowed for input maximum of 12 digits allowed including 4 decimals</p></desc>
+</t>
+<t>
+<field>OVERALL.MAX.AMT</field>
+<desc><p>Defines the Overall Maximum Amount to be charged on transfers involving the Currency defined.  This amount represents the maximum to be charged irrespective of any special conditions which could exist for a Customer or group of Customers except if these have been specified as a Flat amount. </p><p>     This amount could represent the maximum amount the bank would ever conceivably charge a customer for a transfer regardless of the size of the Transfer Amount. </p><p /><p>     Example : Let us suppose that "Wonder Bank" based in London applies the           following payment commissions on incoming and outgoing funds           transfers: </p><p>               1) For any transfer in US Dollars (received or paid):              - 2% for any amount up to USD 20,000.00 with a minimum of                $50.00 and a maximum of $400.00.              - 1% for any amount above USD 20,000.00 with a minimum of                $400.00 and a maximum of $2,000.00.              - An overall minimum of $50.00 and overall maximum of                $2,000.00. </p><p>               2) For transfers in any other currencies:              - 1% for any amount up to GBP 10,000.00 equivalent with a                minimum of  20.00 and a maximum of  100.00              - 1/4% for any amount above GBP 10,000.00 with a minimum of                100.00 and a maximum of 500.00.              - An overall minimum of 20.00 and overall maximum of 500.00. </p><p>     The following input will then be made in this table. </p><p>                Field Name              Field Input </p><p>                Common CALC TYPE        Band            Currency                GBP            Flat Amount            Percentage              1%            UPTO Amount             10,000.00            Minimum Amount              20.00            Maximum Amount             100.00            Percentage              1/4%            Upto Amount            Minimum Amount             100.00            Maximum Amount             500.00            Overall Minimum Amount      20.00            Overall Maximum Amount     500.00            Currency                USD            Flat Amount            Percentage              2%            Upto Amount             20,000.00            Minimum Amount              50.00            Maximum Amount             400.00            Percentage              1%            Upto Amount            Minimum Amount             400.00            Maximum Amount           2,000.00            Overall Minimum Amount      50.00            Overall Maximum Amount   2,000.00 </p><p><p>Validation Rules:</p></p><p>     Up to 14 AMT type characters (standard amount format).  Associated multivalue field.  (Optional input.)</p><p>     It must be greater than the Overall Minimum Amount.</p><p>     It must be greater or equal to the last Maximum Amount specified within a range for the Currency.</p></desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc><p>Describes the Commission Type. </p><p>     This field provides a Description of the Commission Type and is used for the enrichment, in applications that uses this commission type </p><p>     It can be expanded to allow the User to enter the Description of the Commission Type in various languages.  Each expansion will correspond to a new Language as defined in the Language table, and will indicate to the User the Language in which the Description must be entered. </p><p><p>Validation Rules:</p></p><p>     3 to 35 type A (alphanumeric) characters.  Multilanguage field. (Mandatory input.)</p></desc>
+</t>
+<t>
+<field>SWIFT.NARR</field>
+<desc><p>Swift Narrative only used for Letters of Credit (Trade Finance) </p></desc>
+</t>
+<t>
+<field>EXCLUDE.FROM.EIR</field>
+<desc><p>Specifies whether this commission amount must be included for EIR calculation.</p><p>Validation Rules:</p><p>     Yes or No. (Optional input)</p></desc></t>
+</menu>
+</t24help>
+

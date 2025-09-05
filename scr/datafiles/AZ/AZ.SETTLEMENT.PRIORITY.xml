@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>AZ</product>
+<table>AZ.SETTLEMENT.PRIORITY</table>
+</header>
+<overview>
+<ovdesc></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>SETTLE.SUBRTN</field>
+<desc>
+            <p>Specifies any local routine that can be attached to the Settlement Priority application. The purpose of the local routine is to have external control while appropriating using Settlement Priority. This field is inputtable only for 'SYSTEM' record of ASP application.</p>
+            <p />
+            <p>Validation:</p>
+            <p>Input allowed only for 'SYSTEM' record of ASP.</p>
+            <p>Accept any valid sub routine.</p>
+            <p />
+            <p>Field Properties:</p>
+            <p>Standard T24 alphanumeric field.</p>
+            <p>A maximum of 30 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p> Contains all the override messages which the user has confirmed </p>
+            <p />
+            <p>Validation:</p>
+            <p>NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>REPAY.ORDER</field>
+<desc>
+            <p>Specifies the Repayment order corresponding to the Repayment Method for Settlement Priority rules. The values in this field will be validated based on the value in REPAY.METHOD field.</p>
+            <p />
+            <p>Validation:</p>
+            <p>If Repay Method is AZ.AMOUNT.TYPE then allowed values are PR, IN, OD.PR, OD.IN, OD.CH, PE, PS.</p>
+            <p>If Repay Method is AZ.PRODUCT.PARAMETER then only valid Loan type APP id's where LOAN.REPAY transaction code defined are allowed.</p>
+            <p>If Repay Method is DATE then input in this field is not allowed.</p>
+            <p>Input allowed only if REPAY.METHOD field is defined.</p>
+            <p>Input not allowed when LINK.TO.SETT.PRIOR is defined.</p>
+            <p>Mandatory input other than DATE type REPAY.METHOD.</p>
+            <p />
+            <p>Field Properties:</p>
+            <p>Standard T24 alphanumeric field.</p>
+            <p>A maximum of 20 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>LINK.TO.SETT.PRIOR</field>
+<desc>
+            <p>Specifies whether Settlement Priority rules should be followed for appropriation or the Settlement Priority rules of another record id should be followed.</p>
+            <p />
+            <p>Validation:</p>
+            <p>Input must be either 'NONE' or id of an existing AZ Settlement Priority application.</p>
+            <p>NOINPUT for SYSTEM record.</p>
+            <p>Linked settlement priority record should not have 'NONE' in its LINK.TO.SETT.PRIOR field.</p>
+            <p>Account based settlement priority record ids(id starts with 'A') only be linked to another account id record.</p>
+            <p>SYSTEM id cannot be linked to customer id records.</p>
+            <p>Product based settlement priority ids can only be linked to another product id record.</p>
+            <p>Input on other fields not allowed when this field is defined.</p>
+            <p>Reversal of the record allowed only after reversing the linked record.</p>
+            <p>When no values are inputted in any fields, this field will be defaulted to 'NONE'</p>
+            <p />
+            <p>Field Properties:</p>
+            <p>Standard T24 alphanumeric field.</p>
+            <p>A maximum of 20 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.BY.APP</field>
+<desc>
+            <p>The APP ids defined in this field can only be allowed to input as record ids of AZ Settlement Priority application. While building the Product Id array the accounts should be sorted based on the order of this field.</p>
+            <p />
+            <p>Validation:</p>
+            <p>Input allowed only for 'SYSTEM' record of  AZ Settlement Priority application.</p>
+            <p>Valid Loan type APP id's where LOAN.REPAY transaction code is defined only allowed.</p>
+            <p>APP ids already defined in REPAY.ORDER field of 'SYSTEM' record will not be allowed.</p>
+            <p>APP id in this field cannot be deleted when that id is defined as record id of settlement priority application.</p>
+            <p>Only after deleting this field, the actual APP record can be allowed to be reversed.</p>
+        </desc>
+</t>
+<t>
+<field>REPAY.METHOD</field>
+<desc>
+            <p>Specifies the Repayment method for Settlement Priority rules. The values allowed in this field are AZ.AMOUNT.TYPE, AZ.PRODUCT.PARAMETER and DATE</p>
+            <p />
+            <p>Validation:</p>
+            <p>Input must be either AZ.AMOUNT.TYPE, AZ.PRODUCT.PARAMETER or DATE.</p>
+            <p>If id of AZ Settlement Priority is AZ account or APP id then this field  will not accept AZ.PRODUCT.PARAMETER option.</p>
+            <p>AZ.AMOUNT.TYPE is Mandatory option.</p>
+            <p>Input not allowed when LINK.TO.SETT.PRIOR is defined.</p>
+            <p />
+            <p>Field Properties:</p>
+            <p>A maximum of 20 characters may be entered.</p>
+            <p>The following values are permitted:</p>
+            <p>AZ.AMOUNT.TYPE</p>
+            <p>DATE</p>
+            <p>AZ.PRODUCT.PARAMETER</p>
+        </desc>
+</t>
+<t>
+<field>WITHDRAW.CHARGE</field>
+<desc>
+            <p>Input allowed only for 'SYSTEM' record of AZ.SETTLEMENT.PRIORITY application.</p>
+            <p>Used in CREDIT CARD type of products</p>
+        </desc>
+</t>
+<t>
+<field>AZ.SETTLE.ID</field>
+<desc>
+            <p>The ID can be an AZ account Id, Customer Id, APP Id and SYSTEM.  This field should accept any valid AZ.ACCOUNT ID, CUSTOMER  ID, APP ID and  SYSTEM. This first record id in this application should always be SYSTEM.</p>
+            <p />
+            <p>To distinguish between the record ids of AZ account, Customer and APP, prefix the Account record id with 'A-' and Customer record id with 'C-'. When there is no prefix then it means APP record id.</p>
+            <p />
+            <p>The System will accept APP Id as the record id of AZ Settlement Priority, only if the APP id is already defined in ORDER.BY.APP field in "SYSTEM" record.</p>
+        </desc>
+</t>
+<t>
+<field>COB.ASP</field>
+<desc>
+            <p>Valid values are 'Y' and null</p>
+            <p />
+            <p>Value 'Y':</p>
+            <p>Settlement priority rules defined are considered during both ONLINE &amp;  COB schedule processing in AZ.</p>
+            <p />
+            <p>Value '':</p>
+            <p>Settlement priority rules defined are considered during ONLINE repayments only.</p>
+            <p />
+            <p>This field is not applicable for Credit Card repayment type of loans.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>COB.REPAY.TXN.CODE</field>
+<desc>
+            <p>Specifies the credit txn code that will be used in the entry that is raised in COB to credit the repay account if COB.ASP is 'Y'</p>
+            <p />
+            <p>Must be a valid "ID" in transaction application</p>
+            <p>Mandatory input if the COB.ASP = 'Y'</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>HANDLING.COMSN</field>
+<desc>
+            <p>Input allowed only for 'SYSTEM' record of AZ.SETTLEMENT.PRIORITY application.</p>
+            <p>Used in CREDIT CARD type of products</p>
+        </desc>
+</t>
+<t><field>NS.INCL.BAL.TYPE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

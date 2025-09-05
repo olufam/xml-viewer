@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>LI</product>
+<table>LIMIT.CHANGE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This Application is used when the user wishes to change the Liability number of a Customer, the currency of a limit record and/or the percentage attached to a limit reference. During the on-line session, the user may call this facility to specify any of the following: </p>
+            <p>i)         Customers and their new liability numbers ii)        Limit records and their new currency codes iii)       Limit records and their CHECK.LIMIT values. iv)        Limit references with their old and new percentages            where percentage is to be changed. </p>
+            <p>During the End of Day process of the LIMIT Application, the program LIMIT.REP.LIAB.MOVE will then execute: </p>
+            <p>i)         The transfer of the various corresponding LIMIT            records between the previous and new liability            numbers. </p>
+            <p>ii)        The 'revaluation' of limits and outstanding amounts on            the LIMIT and LIMIT.DAILY.OS files. </p>
+            <p>iii)       Change the value of CHECK.LIMIT on the limit records            in a given limit structure. </p>
+            <p>iv)        Update the limit reference file with the new percentage            and updated outstanding amounts on the LIMIT,            LIMIT.DAILY.OS and LIMIT.TXNS files for those            records associated with a percentage charge. </p>
+            <p>It is important to note that this program will ignore liability number change for Customers who have pending sub allocations on their limit record(s). </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+            <p>This is a multi valued field. Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 35 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED1</field>
+<desc>
+            <p>Reserved for future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field, no input.</p>
+        </desc>
+</t>
+<t>
+<field>PERC.CALC.BASIS</field>
+<desc>
+            <p>Determines how the percentage amount will be derived from the MATURITY.PERIOD and MAT.PERIOD.PERC fields. </p>
+            <p>This field can contain one of three values. </p>
+            <p>The keyword PRORATA in this field indicates that the calculation will be pro rata according to the time remaining to maturity or the length of a MATURITY.PERIOD.BAND. </p>
+            <p>For pro rata the calculation will be; </p>
+            <p>               % x days to maturity                    ----------------                          365 </p>
+            <p>with the annual period always in days. </p>
+            <p>The keyword PERIOD indicates that the calculation will be prorata according to the time remaining to maturity or the length of a MATURITY.PERIOD.BAND. </p>
+            <p>The pro rata calculation for the PERIOD setting will be: </p>
+            <p>               % x period to maturity                    ------------------                          period </p>
+            <p>where period is set according to the MATURITY.BAND.DEFINITION i.e in Days  (D)        Weeks (W)        Months(M)        Years (Y) Where a period is a fraction of a band this will be rounded up. </p>
+            <p>When the word FIXED is indicated the calculation will not be pro rata and is calculated as a simple percentage. </p>
+            <p>When PRORATA or PERIOD is used with LEVEL structure, the relevant percentage derived for the remaining contract period will be applied. </p>
+            <p>When PRORATA or PERIOD is used with a BANDED structure, each percentage band falling within the remaining contract period will be applied for the period of the that band. </p>
+            <p>A PRORATA/PERIOD method can result in a total percentage taken which is in excess of 100% of the transaction value. This can be limited by use of the PERCENTAGE.CAP field. </p>
+            <p>Example: </p>
+            <p>The following percentage structure may be defined: </p>
+            <p>Transactions maturing in up to  6 months are recorded  at  5% Transactions maturing in up to 12 months are recorded  at  6% Transactions maturing in up to 24 months are recorded  at  7% Transactions maturing more than 24 months are recorded at 10% </p>
+            <p>This is entered as: </p>
+            <p>MATURITY.PERIOD   6M     12M     24M     R MAT.PERIOD.PERC   5%      6%      7%    10% </p>
+            <p>The risk on a 1 million USD loan with a 36 month initial period would be calculcaled as: </p>
+            <p>At input: </p>
+            <p>LIMIT.BAND.LEVEL = LEVEL PERC.CALC.BASIS  = FIXED </p>
+            <p>10% of the value (36 months remaining falls in the rest period) </p>
+            <p>Amount = 10% * 1,000,000 = 100,000 USD </p>
+            <p>LIMIT.BAND.LEVEL = LEVEL PERC.CALC.BASIS  = PRORATA </p>
+            <p>10% of the value (36 months remaining falls in the rest period) </p>
+            <p>Amount = 10% * 1,000,000 * (3 * 365 / 365) = 300,000 USD </p>
+            <p>LIMIT.BAND.LEVEL = BAND PERC.CALC.BASIS  = FIXED </p>
+            <p>5% of the value (the loan falls in the 0 - 6 month band) </p>
+            <p>Amount = 5% * 1,000,000 = 50,000 USD </p>
+            <p>6% of the value (the loan falls in the 6 - 12 month band) </p>
+            <p>Amount = 6% * 1,000,000 = 60,000 USD </p>
+            <p>7% of the value (the loan falls in the 12 -24 month band) </p>
+            <p>Amount = 7% * 1,000,000 = 70,000 USD </p>
+            <p>10% of the value (the loan falls in the Rest band) </p>
+            <p>Amount = 10% * 1,000,000 = 100,000 USD </p>
+            <p>Total 28%   = 280,000 USD </p>
+            <p>LIMIT.BAND.LEVEL = BAND PERC.CALC.BASIS  = PRORATA Note the number of days in the bands may vary according to the exact dates invloved. </p>
+            <p>5% of the value for 6 months (the loan falls in the 0 - 6 month band) </p>
+            <p>Amount = 5% * 1,000,000 * (182 / 365) = 24,931.51 USD </p>
+            <p>6% of the value for 6 months (the loan falls in the 6 - 12 month band) </p>
+            <p />
+            <p>Amount = 6% * 1,000,000 * (183 / 365) = 30,082.19 USD </p>
+            <p>7% of the value for 12 months (the loan falls in the 12 -24 month band) </p>
+            <p />
+            <p>Amount = 7% * 1,000,000 * (365/365) = 70,000 USD </p>
+            <p>10% of the value for 12 months (the loan falls in the Rest band) </p>
+            <p>Amount = 10% * 1,000,000 * (365/365) = 100,000 USD </p>
+            <p>Total = 225,013.70 USD </p>
+            <p>With  18 months remaining to maturity: </p>
+            <p>LIMIT.BAND.LEVEL = LEVEL PERC.CALC.BASIS  = FIXED </p>
+            <p>7% of the value (18 months remaining falls in the 12 - 24 month period) </p>
+            <p />
+            <p>Amount = 7% * 1,000,000 = 70,000 USD </p>
+            <p>LIMIT.BAND.LEVEL = LEVEL PERC.CALC.BASIS  = PRORATA </p>
+            <p>7% of the value (18 months remaining falls in the 12 - 24 month period) </p>
+            <p>Amount = 7% * 1,000,000 * (547 / 365) = 104,904.11 USD </p>
+            <p>LIMIT.BAND.LEVEL = BAND PERC.CALC.BASIS  = FIXED </p>
+            <p>5% of the value (the loan falls in the 0 - 6 month band) </p>
+            <p>Amount = 5% * 1,000,000 = 50,000 USD </p>
+            <p>6% of the value (the loan falls in the 6 - 12 month band) </p>
+            <p>Amount = 6% * 1,000,000 = 60,000 USD </p>
+            <p>7% of the value (the loan falls in the 12 -24 month band) </p>
+            <p>Amount = 7% * 1,000,000 = 70,000 USD </p>
+            <p>Total 18%   = 180,000 USD </p>
+            <p>LIMIT.BAND.LEVEL = BAND PERC.CALC.BASIS  = PRORATA Note the number of days in the bands may vary according to the exact dates invloved. </p>
+            <p>5% of the value for 6 months (the loan falls in the 0 - 6 month band) </p>
+            <p>Amount = 5% * 1,000,000 * (182 / 365) = 24,931.51 USD </p>
+            <p>6% of the value for 6 months (the loan falls in the 6 - 12 month band) </p>
+            <p />
+            <p>Amount = 6% * 1,000,000 * (183 / 365) = 30,082.19 USD </p>
+            <p>7% of the value for 6 months (the loan falls in the 12 -24 month band) </p>
+            <p>Amount = 7% * 1,000,000 * (182/365) = 34,904.11 USD </p>
+            <p>Total = 89,917.81 USD </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The following values will be accepted: FIXED, PRORATA, PERIOD. (No change)</p>
+            <p>Default: FIXED.</p>
+            <p>Input in this field will only be retained when the fields MATURITY.PERIOD and PERCENTAGE have been given.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED3</field>
+<desc>
+            <p>Reserved for future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field, no input.</p>
+        </desc>
+</t>
+<t>
+<field>OLD.PERCENTAGE</field>
+<desc>
+            <p>Identifies the current percentage to be applied to transaction amounts to calculate the amount to be checked against the limit amounts. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric characters in the range 1-100. Multivalue field associated with fields 5.1 and 7.1 Mandatory input if field 5.1 is input otherwise not allowed.</p>
+            <p>Input only allowed when LIMIT.REFERENCE (field 6.1) has been entered.</p>
+            <p>No input allowed if LIMIT.REFERENCE (field 6.1) has not been entered.</p>
+            <p>Input must be equal to that on the limit reference record.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED5</field>
+<desc>
+            <p>Reserved for future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field, no input.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED4</field>
+<desc>
+            <p>Reserved for future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field, no input.</p>
+        </desc>
+</t>
+<t>
+<field>PERCENTAGE.CAP</field>
+<desc>
+            <p>Identifies the new agreed maximum percentage when deriving the limit percentage. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 Numeric characters (1-6 decimals) percentage must be less than or equal to 100%.</p>
+            <p>Capped percentage must be greater than the floor percentage.</p>
+        </desc>
+</t>
+<t>
+<field>LIM.BAND.LEVEL</field>
+<desc>
+            <p>Specifies the new value used to determine the percentage amount. </p>
+            <p>This field can contain one of two values. </p>
+            <p>The word BAND in this field indicates that the percentages from more than one band (See MATURITY.PERIOD and PERCENTAGE) will be elected and summed to determine the working percentage. </p>
+            <p>The word LEVEL in this field indicates that a single band will be elected as the working percentage. </p>
+            <p>In both cases the bands used will be resolved on the time left before contract maturity. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The following values will be accepted: BAND or LEVEL.</p>
+            <p>Default: LEVEL.</p>
+            <p>Input in this field will only be retained when the fields MATURITY.PERIOD and PERCENTAGE have been given.</p>
+        </desc>
+</t>
+<t>
+<field>PERCENTAGE.FLR</field>
+<desc>
+            <p>Identifies the new agreed minimum percentage when deriving the limit percentage. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 Numeric characters (1-6 decimals) percentage must be less than or equal to 100%.</p>
+            <p>Capped percentage must be greater than the floor percentage.</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.SUBR</field>
+<desc>
+            <p>Identifies the new subroutine which will be called to return the limit amount. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 27 Alphanumeric characters.</p>
+            <p>Subroutine must be identified as a record in the application PGM.FILE with the type equal to 'S' for subroutine.</p>
+            <p>The routine must be compiled and cataloged with an entry in the T24 account VOC file.</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.REFERENCE</field>
+<desc>
+            <p>Identifies the product or sub-product limit reference record whose percentage field is to be changed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-4 numeric characters. Multivalue field associated with fields 6.1 and 7.1. Optional input.</p>
+            <p>Input must correspond to a valid ID on the limit reference file.</p>
+            <p>Duplications will not be allowed.</p>
+            <p>The limit reference record must be either a sub-product record or a product record without any associated sub-products.</p>
+            <p>Input cannot be the limit reference for fiduciaries and/or deposits. Ie. Reference numbers 9700, 9800 and 9900 are not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.PRIORITY</field>
+<desc>
+            <p>"MANUAL" or "NONE".</p>
+            <p>Allows or disallows manually setting allocation priorities in Collateral Right records. The corresponding field will be set to this value in each of the COLLATERAL.PARAMETER records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>"MANUAL" or "NONE". </p>
+        </desc>
+</t>
+<t>
+<field>NEW.CURRENCY</field>
+<desc>
+            <p>Identifies the new currency in which all amount fields specified as part of the limit will be denominated. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric character Currency code or     3 character SWIFT Currency code Multivalue field associated with field 3.1 Optional input when CREDIT.LINE.NO (field 3.1) input, otherwise not allowed.</p>
+            <p>Input must correspond to a valid ID in the Currency file.</p>
+            <p>Input only allowed when CREDIT.LINE.NO (field 3.1) has been entered.</p>
+            <p>No input allowed if CREDIT.LINE.NO (field 3.1) has not been entered.</p>
+            <p>Input must be different to the current Currency on the limit record.</p>
+        </desc>
+</t>
+<t>
+<field>NEW.PERCENTAGE</field>
+<desc>
+            <p>Identifies the new percentage to be applied to transaction amounts to calculate the amount to be checked against the limit amounts. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric characters in the range 1-100. Multivalue field associated with fields 6.1 and 7.1 Mandatory input if field 6.1 is input otherwise not allowed.</p>
+            <p>Input only allowed when LIMIT.REFERENCE (field 6.1) has been entered.</p>
+            <p>No input allowed if LIMIT.REFERENCE (field 6.1) has not been entered.</p>
+            <p>Input can not be equal to that in OLD.PERCENTAGE (field 7.1).</p>
+        </desc>
+</t>
+<t>
+<field>NEW.PERC</field>
+<desc>
+            <p />
+            <p>Supply the new percentage to be used in deriving a final limit percentage. The resulting percentage amount of each transaction movement will be monitored against the limit amount. </p>
+            <p>See LIMIT.BAND.LEVEL. </p>
+            <p>Associated with MATURITY.PERIOD. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 Numeric characters (1-6 decimals) percentage must be less than or equal to 100%.</p>
+            <p>Input is not allowed in this field for Fiduciary and Deposit Limit Reference records.</p>
+        </desc>
+</t>
+<t>
+<field>LIABILITY.NO</field>
+<desc>
+            <p>Identifies the new Liability number for the Customer specified in the previous field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 6 numeric characters CUSTOMER code or 3 to 10 Mnemonic characters. Multivalue field associated with Field 1.1. Optional input when Customer number entered; otherwise not allowed.</p>
+            <p>Input must correspond to a valid ID on the CUSTOMER file.</p>
+            <p>Input only allowed when CUSTOMER NO (Field 1.1) has been entered.</p>
+            <p>This field must be left blank when the user wants to define that the Liability number is no more requested for the Customer defined in the previous field.</p>
+            <p>Input must be different from existing CUSTOMER LIABILITY field on the CUSTOMER record existing for the Customer defined in the previous field.</p>
+            <p>Duplicates are allowed but all the Customer numbers entered in the previous field must be different.  The CUSTOMER NO and LIABILITY NO may be the same when the user wants to specify that a Customer no longer belongs to another Liability number.</p>
+            <p>The number input in this field cannot belong to another Liability.</p>
+        </desc>
+</t>
+<t>
+<field>NET.OUTSTANDING</field>
+<desc>
+            <p>Used to change the status of the NET.OUTSTANDING flag on the SYSTEM record of LIMIT.PARAMETER. </p>
+            <p>The actual change will take place at the beginning of the next limits batch processing. </p>
+            <p>This field will be reset to null during the Limits end of day processing. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input.  Values can be "Y", "N" or blank.  The value entered depends on the contents of the field NET.OUTSTANDING on the LIMIT.PARAMETER record called SYSTEM.  A value of "Y" is acceptable if the LIMIT.PARAMETER is set to "N".  A value of "N" is acceptable if the LIMIT.PARAMETER is set to "Y".</p>
+        </desc>
+</t>
+<t>
+<field>MATUR.PERIOD</field>
+<desc>
+            <p>Indicates the new period to which a percetage will be applied. </p>
+            <p>Associated with MAT.PERIOD.PERC. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>nnA where nnn - Number of A where: A = Y for years     M for months     W for weeks or  D for days e.g. a 12 month period could ne input as 12M or 1Y.</p>
+            <p>The numbers of days, weeks, months or years must be entered in a logical order i.e. in ascending sequence.</p>
+            <p>When more than one period is defined an consistent unit must be used.</p>
+        </desc>
+</t>
+<t>
+<field>NEW.CHECK.LIMIT</field>
+<desc>
+            <p>New value of the field CHECK.LIMIT for the specified limit structure. </p>
+            <p>This field will be used to change the  current value of the CHECK.LIMIT field on each LIMIT record in the LIMIT structure which the CREDIT.LINE.NO is the top of. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Y or N Multi value field associated with 3.1 and 4.1. Optional input when  CREDIT.LINE.NO (field 3.1) input, otherwise not allowed.</p>
+            <p>The associated CREDIT.LINE.NO must be the top of the LIMIT structure, ie must be a key to the LIMIT.LINES file.</p>
+            <p>The value entered must not be the same as that on the LIMIT record of the CREDIT.LINE.NO.</p>
+            <p>Input only allowed when CREDIT.LINE.NO has been entered.</p>
+        </desc>
+</t>
+<t>
+<field>GROUP.CUSTOMER</field>
+<desc>
+        <p>Indicates the Customer id for which the existing limit priority needs to be changed.</p>
+        <p>Validations:</p>
+        <p>
+            <p value="1">Valid key from LI.LIMIT.DEFINE.PRIORITY record</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>NEW.CUS.PRIORITY</field>
+<desc>
+        <p>This field is used to change the existing Customer priority, which is used for determining the order of allocation of limits during Group limits reallocation. </p>
+        <p> 
+Validations:
+</p>
+        <p>
+            <p value="1">Any numeric Value up to three digits.
+</p>
+            <p value="2">When left blank, existing customer priority in LI.LIMIT.DEFINE.PRIORITY will get removed
+</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>NEW.GROUP.ORDER</field>
+<desc>
+        <p>This field is used to define the new order in which limits has to be utilised when there is any transaction for the customer.</p>
+        <p>Validations:</p>
+        <p>
+            <p value="1">Valid reference from LIMIT.SHARING.GROUP in which customer is a part or the keyword “OWN” is accepted</p>
+            <p value="2">The keyword “OWN” is to indicate that the individual Limit is not prioritised first as default; it will be used based on the priority specified here.</p>
+            <p value="3">Duplication not allowed.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>REMOVE.CUSTOMER</field>
+<desc>
+        <p>This field is used to enter the Customer id which needs to be removed from the associated limit sharing group.</p>
+        <p>Validations:</p>
+        <p>
+            <p value="1">This field will accept a valid customer id.</p>
+            <p value="2">Customer id entered must exist in the associated limit sharing group</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>REMOVED.PRODUCT</field>
+<desc>
+        <p>This field is used to enter the limit product which needs to be removed from the associated limit sharing group.</p>
+        <p>Validations:</p>
+        <p>
+            <p value="1">Valid Limit reference key which should be exist in the associated limit sharing group.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>SHARING.GROUP.KEY</field>
+<desc>
+        <p>Indicates Limit sharing Group key from which the customer or limit product has to be removed.</p>
+        <p>Validations:</p>
+        <p>
+            <p value="1">Only a valid LIMIT.SHARING.GROUP key is accepted.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>CREDIT.LINE.NO</field>
+<desc>
+            <p>Identifies the limit record for which the currency and/or value of CHECK.LIMIT is to be changed. </p>
+            <p>The limit records for which the limit currency is to be changed are to be entered individually. The old currency is shown as part of the field enrichment. The top level limit for which the CHECK.LIMIT value is to be changed should be entered. All limits under this will be changed to the new value. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input as follows: a) 1-6 numeric characters Liability Number or 3-10 Customer Mnemonic code b) 3-7 numeric character Limit Reference code c) 2 numeric character Limit Serial number d) 1-6 numeric character Customer Number or 3-10 Customer Mnemonic code If data is to be input in this field: a), b), c) and d) must be separated by '.';a) and b) are Mandatory; c) defaults to '01'; d) is Optional, only used to specify Customer sub-limit. Multivalue field associated with field 4.1. Optional Input</p>
+            <p>Input must correspond to a valid ID on the limit file.</p>
+            <p>Duplications will not be allowed.</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.NO</field>
+<desc>
+            <p>Identifies the CUSTOMER NO for whom the user wants to specify a Liability number change. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 6 numeric characters CUSTOMER CODE or 3 to 10 Mnemonic character. Multivalue field associated with field 2.1. Optional input;  Default Value = Nil.</p>
+            <p>Input must correspond to a valid ID on the CUSTOMER file.</p>
+            <p>Duplicates will not be allowed.</p>
+            <p>Input of a Customer number already used as a liability number for other Customers will not be allowed.  For this reason, to reverse the relation 2 (CUSTOMER) to 1 (LIABILITY) requires 2 steps.  The first day the user must set the Liability no of Customer 2 of 2 and the second day, he must set the Liability number of Customer 1 to 2.</p>
+            <p>Input of a Customer number which has pending suballocation(s) or commitment(s) in its LIMIT record is not allowed.  If suballocation(s) or commitment(s) are entered later during the on-line session for this customer, the End of Day program LIMIT.REP.LIAB.MOVE will not process the change and instead will write an error message.</p>
+        </desc>
+</t>
+<t>
+<field>KEY</field>
+<desc>
+            <p>Identifies the unique key of this file (i.e. SYSTEM). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The only valid input in this field is 'SYSTEM'.</p>
+        </desc>
+</t>
+<t>
+<field>ALLOCATION.KEY</field>
+<desc>
+            <p>Identifies the unique key of this file (i.e. SYSTEM). </p>
+            <p>
+                <p>Validation Rules:</p>
+                <p>Only a valid CO.ALLOCATION.PARAMETER key is accepted.</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>NEW.COVER.LIABILITY</field>
+<desc>
+            <p>Field to define the Giving Priority. Based on this setup Limits covered by a collateral right will be sorted during collateral allocation.  </p>
+            <p>
+                <p>Validation Rules:</p>
+	            <p> 1 - Own liabilities are covered first and allocations are sorted in ascending order.</p>
+            	<p> 2 - Own liabilities are covered first and allocations are sorted in descending order.</p>
+            	<p> null </p>             
+            </p>            
+        </desc>
+</t>
+<t>
+<field>NEW.USE.COLLATERAL</field>
+<desc>
+            <p>Receiving priority order, Based on this setup collateral rights used to cover a liability will be sorted and utilised based on the sorted order. </p>
+            <p>
+                <p>Validation Rules:</p>
+            	<p> 1 - Own liabilities are covered first and allocations are sorted in ascending order.</p>
+            	<p> 2 - Own liabilities are covered first and allocations are sorted in descending order.</p>
+            	<p> null </p>
+            </p>            
+        </desc>
+</t>
+<t>
+<field>NEW.PRIORITY.RECEIVE</field>
+<desc>
+            <p>This field is used to specify the order by  which collateral should be sorted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1 – ASSET TYPE -  COLLATERAL.RIGHT received will be sorted by Asset first. </p>
+            <p> When more than one asset of same type from different customers, then it will be further sorted by Customer key. </p>
+            <p> The sorting can be set to sort largest to smallest or vice versa. </p>
+            <p> 2 – CUSTOMER -  COLLATERAL.RIGHT received will be sorted by Customer first. </p>
+            <p> When there are multiple Assets for the same customer then they will be further sorted by Asset. The sorting can be set to sort largest to smallest or vice versa. </p>
+            <p> Null – System default (ASSET TYPE). </p>            
+        </desc>
+</t>
+<t>
+<field>NEW.ASSET.ORDER</field>
+<desc>
+            <p> Using this field User can define their own  ASSET TYPE order in which the COLLATERAL RIGHTS of a liability will be utilized. </p>
+            <p> This will overwrite the order (ASCENDING/DESCENDING) specified in the field USE.COLLATERAL. COLLATERAL.RIGHTS with COLLATERAL.CODE </p> 
+            <p> which are not specified in this field will be sorted in the order specified in USE.COLLATERAL field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Must be a valid COLLATERAL.CODE record id. </p>
+            <p> Input is allowed only when the PRIORITY.RECEIVE is set as ASSET.TYPE. </p>
+            <p> NULL – Order mentioned in USE.COLLATERAL field otherwise system default. </p>
+</desc>
+</t>
+<t>
+<field>ALLOC.RESERVED10</field>
+<desc>
+            <p>Reserved fields related to CO.ALLOCATION.PARAMETER for future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        </desc>
+</t>
+<t><field>REMOVE.PRODUCT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>ALLOC.RESERVED9</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>ALLOC.RESERVED8</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>ALLOC.RESERVED7</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>ALLOC.RESERVED6</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>ALLOC.RESERVED5</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>ALLOC.RESERVED4</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>ALLOC.RESERVED3</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>ALLOC.RESERVED2</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>ALLOC.RESERVED1</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

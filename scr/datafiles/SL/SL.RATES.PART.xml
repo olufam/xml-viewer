@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SL</product>
+<table>SL.RATES.PART</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This application is used to record interest and commitment fee rates for different participants in the facility. The various situations and its impact is discussed below;</p>
+            <p> Same     interest rate is applicable for the borrower and all participants</p>
+            <p>  SL.RATES.PART is not defined at all.</p>
+            <p>  Interest rate (or spread) in the Facility is defaulted at the SLL. The user would be allowed to change this rate with an override. The user can also blank out this field and provide a holding rate alone. Both holding rate and interest rate (or spread if floating) may not be defined in SLL at the same time.</p>
+            <p> If holding rate is provided initially and then an actual rate is given, holding rate will be blanked off and record committed. Accounting entries for accrual-adjust will be raised online for the difference between holding and actual interest rates. The rate so given should be equal to the interest rate (or spread) in FACILITY or else override will be produced. Once a holding rate is given it cannot be modified.</p>
+            <p />
+            <p> Interest     rate applicable is different among participants and the borrower pays the     weighted average rate</p>
+            <p> In this case SL.PART.RATES is defined with appropriate rates for each participant. The weighted average rate is manually calculated and provided in FACILITY, which will be defaulted to SL.LOAN record.</p>
+            <p> Interest     rate applicable is different among the participants and the borrower. The     Agent skims the difference</p>
+            <p> In this scenario, the difference between the borrower interest and participants interest is accounted in the internal account category provided in SL.PARAMETER. For example if the total interest charged to the borrower is 100 and the share of other participants is 60 and Agents share is 30. Accounting is as follows if liquidation mode is AUTOMATIC </p>
+            <p>  Dr </p>
+            <p> Nostro/customer a/c 100</p>
+            <p> Amount paid by borrower </p>
+            <p> Cr</p>
+            <p> Accrual Asset Type</p>
+            <p> 30</p>
+            <p> Agents share</p>
+            <p> Cr</p>
+            <p> Nostro </p>
+            <p />
+            <p />
+            <p> 60</p>
+            <p> Other participants share (as many entries) Cr</p>
+            <p> Internal Account</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p> If liquidation mode is Internal, only T24 banks portion is accounted and SL.OD.DUES files are built. The skim profit or loss is accounted only when SL.ROUND.ADJ is used.</p>
+            <p> New     rates defined and  Apply Curr Loans</p>
+            <p> In SL.RATES.PART it would be possible to define the new interest rate / spread applicable for any/all participants with an effective date. Such effective date may be GE process date and not backdated. On the effective date, the new interest is applied on the respective participants share in the loan (for SLL) or commitment available amount (for Commitment fee) and balance files are to be updated with revised amount. If change is made to ALL or for OWN.CUST.REF, accruals will be performed for the new rates from the given effective date. At any point in time only one forward interest rate change can be recorded. </p>
+            <p />
+            <p />
+            <p> Ability to apply the new interest rate for all existing drawings under the facility is available by flagging APPLY.CURR.LOANS field.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>SEND.MSG</field>
+<desc>
+            <p>Please refer help text section of SL.LOANS</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CMT.EFF.DT.UAVL</field>
+<desc>
+            <p>This field holds the effective date of processing  the participant commitment fee on the unavailable amount</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Standard date type field</p>
+        </desc>
+</t>
+<t>
+<field>MSG.TYPE</field>
+<desc>
+            <p>Please refer help text section of SL.LOANS</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PART.INT.RTE</field>
+<desc>
+            <p>Rate (if fixed type) that is applicable effective the date given in Eff.Date</p>
+            <p> Input allowed only if INT.RATE.TYPE in the facility is 1=FIXED</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10 numeric characters plus decimal point</p>
+            <p> Input should be greater than zero</p>
+            <p> Input prohibited if INT.RATE.TYPE is 2 </p>
+        </desc>
+</t>
+<t>
+<field>SEND.RECE.INFO</field>
+<desc>
+            <p>This field may be used to specify additional information to the Receiver, catering to Tag 72.</p>
+            <p>  Permits input up to 6 lines of 35 characters.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional Input.</p>
+        </desc>
+</t>
+<t>
+<field>ID</field>
+<desc>
+            <p>ID of this file is the FACILITY ID concatenated with the 3 alpha currency mnemonic and the ID of the participant.</p>
+            <p> Ex - SL010810001101-USD-100067 where SL010810001101 is the ID of the facility (with sequence number) USD a valid currency code and 100067 a valid participant under the facility.</p>
+            <p> In order to facilitate easy definition, value ALL may be substituted in place of the participant ID. In the event that the new rate is effective for all participants under the facility the value ALL may be used instead of defining SL.RATES.PART for each participant.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> The validation of the ID is handled in three parts </p>
+            <p>             (a) The SL reference should be a authorised record on FACILITY table</p>
+            <p>             (b) The currency code must be a valid value on the CURRENCY table and </p>
+            <p>             (c) The ID of the customer a valid participant of the Facility or value ALL</p>
+            <p> The hyphen used in the ID is only for display purposes. User should       input the data without any hyphen</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED2</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>OVR.CARRIER</field>
+<desc>
+            <p>Please refer help text section of SL.LOANS</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PART.INT.SPR</field>
+<desc>
+            <p>Indicates the spread or margin applicable from the Eff.date</p>
+            <p> Input allowed only if INT.RATE.TYPE in the FACILITY is 2=Floating</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-9 numeric characters plus decimal point</p>
+            <p> Negative values allowed.</p>
+            <p> Input should be in the range -100 to +100</p>
+        </desc>
+</t>
+<t>
+<field>PRIOR.DAYS</field>
+<desc>
+            <p>Please refer help text section of SL.LOANS</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EFF.DT</field>
+<desc>
+            <p>Indicates the date from which the change in rate (or spread) is effective. </p>
+            <p> Accruals of interest for this participant (or for all if ID contains ALL as suffix) would be handled at the revised rate.</p>
+            <p> Only one forward dated definition at one point is possible.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Upto 9 type A alphanumeric date field  </p>
+            <p> Back value dates are not allowed</p>
+        </desc>
+</t>
+<t>
+<field>DELIVERY.CUST</field>
+<desc>
+            <p>Please refer help text section of SL.LOANS</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PART.CMT.FEE.UAVL</field>
+<desc>
+            <p>Holds the  participant commitment fee on the unavailable amount </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Standard amount type field</p>
+        </desc>
+</t>
+<t>
+<field>PART.CMT.FEE</field>
+<desc>
+            <p>The revised commitment fee that is effective the date provided in Cmt.Eff.Date.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10 numeric characters plus decimal point</p>
+            <p> Negative values not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>PART.CMT.MARGIN</field>
+<desc>
+            <p>Holds the margin rate applicable for BAND/LEVEL type of fee calculation of FACILITY</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Maximum of 11 characters allowed</p>
+            <p> Negative values allowed.</p>
+        </desc>
+</t>
+<t>
+<field>MSG.CLASS</field>
+<desc>
+            <p>Please refer help text section of SL.LOANS</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RESERVED3</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>DELIVERY.REF</field>
+<desc>
+            <p>Please refer help text section of SL.LOANS</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MSG.DATE</field>
+<desc>
+            <p>Please refer help text section of SL.LOANS</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ACTIVITY.CODE</field>
+<desc>
+            <p>Please refer help text section of SL.LOANS</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ACTIVITY.DATE</field>
+<desc>
+            <p>Please refer help text section of SL.LOANS</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>APPL.CURR.LOAN</field>
+<desc>
+            <p>Indicator to effect the rate/spread change to existing loans (that have already been drawn) or not.</p>
+            <p> Value NO in this field means that the rate/spread change would be applicable from the effective date only for fresh drawing and existing drawings would continue to accrue at the old rate.</p>
+            <p> Value YES means that the change is applicable for fresh as well as existing loans under the facility from the effective date provided.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Only allowed values are YES and  NO</p>
+            <p> Optional input</p>
+            <p> Default value is NO</p>
+        </desc>
+</t>
+<t>
+<field>CMT.EFF.DT</field>
+<desc>
+            <p>Effective date from which the new commitment fee defined in Part.Cmt.Fee is applicable. </p>
+            <p> Accruals of commitment fee for this participant (or for all if ID contains ALL as suffix) would be handled at the revised rate.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Upto 9 type A alphanumeric character date field.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

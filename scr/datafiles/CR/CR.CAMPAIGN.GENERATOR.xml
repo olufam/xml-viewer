@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>CR</product>
+<table>CR.CAMPAIGN.GENERATOR</table>
+</header>
+<overview>
+<ovdesc>
+
+ 
+ CR
+ CR.CAMPAIGN.GENERATOR
+ CR.CAMPAIGN.GENERATOR
+ 
+ 
+ 
+ Opportunities for a campaign will be produced by Campaign Generator. A campaign generator will be run online, by verifying the record and a service takes care of producing the opportunity records for the customers.
+ 
+ As with the Opportunity Generator, this table contains a multivalue set which defines the 'Primary Context', so the system knows which set of records to test with the rule to find out if they are eligible for the campaign. There is also linked records, which use a field from the Primary Context to point to another application, for example the Customer field is linked from the Mortgages application.
+ 
+ 
+ 
+</ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>OPPOR.DEF</field>
+<desc>
+        <p>
+ Opportunity Definition that is to be run against the customers selected in Customer Selection for this campaign. Becomes noinput – cannot be changed after first iteration of campaign.
+ </p>
+        <p>Validation Rules</p>
+        <p> : 
+ Must be a valid record on CR.OPPORTUNITY.DEFINITION, with DIRECTION flag set to Outbound.
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>PRIM.CTX.TBL</field>
+<desc>
+        <p>
+ Selects the table to be used to provide the primary context – so if the campaign is targeted at mortgage owners, the table would be mortgage – if it is targeted solely at a particular type of customer, it would be Customer.
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ Mandatory Input.
+ Must be a record on Standard Selection.
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>SHORT.DESC</field>
+<desc>
+        <p>
+ Short Description of the campaign being launched
+ </p>
+        <p>Validation Rules</p>
+        <p> : 
+ 1. Mandatory field. 
+ 2. Any alphanumeric, 
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>ITER.STATUS</field>
+<desc>
+        <p>
+ Indicates whether the generator is currently running (and therefore the record is no input) or is waiting to be used.
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 1. System populated field.
+ 2. Can take the following status
+ a. NULL - When a new record is input
+ b. Pending - When the Generator has been verified.
+ c. Running - When the service has picked up the Generator record for Opportunity records creation
+ d. Generated - When the service has run and Opportunity records have been produced for that Campaign
+ 
+
+</p>
+    </desc>
+</t>
+<t>
+<field>PRIM.CTX.FLD</field>
+<desc>
+        <p>
+ This field is used when specifying a pre-selection of records from the primary context table.
+ So, for example, if we wished to run a campaign for customers who had mortgages worth more than $1,000,000 – we would specify the USD.Amount field here, the operand GT in the Context Operand (below) and 1,000,000 in the Criteria field.
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ 1. Optional Input
+ 2. Must be a field on the Primary Context Table (defined above)
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>CR.CAMP.GEN</field>
+<desc>
+
+ @ID field of this Template
+ 
+</desc>
+</t>
+<t>
+<field>SAMPLE.SIZE</field>
+<desc>
+
+ The bank may choose to limit the number of customers sampled to a specific number. When this number of customers has been reached, no further opportunities will be generated. Note that additional functionality may be required to ensure that the same sample is not always selected for a campaign, and this sample is sufficiently random. If no limit is set, the bank will run the campaign against all customers within the pre-selection group (if that is specified – otherwise it will be against all customers) until the target size is reached.
+ 
+ Validation:
+ 1. Optional input.
+ 2. Valid numeric value
+ 
+</desc>
+</t>
+<t>
+<field>PRIM.CTX.CRIT</field>
+<desc>
+        <p>
+ Criteria to be used in conjunction with Primary Context Field and Operand. 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ Must be a valid data type entry for Primary Context Field.
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>LINKED.CTX</field>
+<desc>
+        <p>
+ This multivalue set will be automatically populated when the OPPOR.DEF field is populated, as the Opportunity Definition will specify the EB.RULES that are required to be run for this campaign, and the EB.RULES.VERSION store the contexts that are required to run the rules.
+ All contexts required by all rules required by the opportunity definition must be given a source id – an id from which the relevant data can be derived. Therefore, every Linked Context multivalue set must be told which field contains the value which can be used as an Id for this context.
+ For example, if we have a rule which is based on Mortgage, but which will only apply to a particular type of customer who has that mortgage, we need both the Mortgage context (a mortgage Id needs to be passed to the Rules Interface) and the Customer context (a Customer Id needs to be passed to the Rules Interface). We cannot pass just the Customer Id or the Mortgage Id however – we need to pair each context with an id and pass this, so the rules engine knows which piece of data fits with which context.
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ 1. Must relate to a context used by one of the rules which is used by an opportunity definition. This multivalue set should be automatically generated by the system when the Opportunity definition is entered (above). Cannot remove or add new multivalue sets.
+ Obviously, if two rules or two contexts use the same table, the same table does not need to be specified twice – the context id would only need to be passed over once.
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>CUST.CTX.FLD</field>
+<desc>
+        <p>
+ Regardless of the opportunity context, it is mandatory that the customer field is identified to the system, as this will be used on the opportunity record, and will also be needed to find the customer history file to validate that the opportunity doesn’t already exist. Therefore, on this field the user should specify which field on the Primary Context Table holds the Customer Id.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 
+ Should be a valid field in the application mentioned in the PRIM.CTX.FLD
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>TARGET.SIZE</field>
+<desc>
+        <p>
+ Instead of or as well as the sample size, the bank may choose to limit the number of opportunities generated – the system will continue to test customers against templates until this target size is reached, or the sample number of customers has been reached. If left blank, the system will generate opportunities against all customers, or the sample size if a limit was set.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 1. Optional input.
+ 2. If specified along with the Sample size then should be less than Sample size
+ 3. Valid Numeric value
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+        <p>
+ Long description of campaign being launched, with all related information for the campaign
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 1. Mandatory input.
+ 2. Meaningful description of the Campaign
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>RUN.DATE</field>
+<desc>
+        <p>
+ Linked to the iteration number, this field will be populated by the system to store when this particular iteration was run.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ System populated value
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>ITER.NUMBER</field>
+<desc>
+        <p>
+ Unlike a propensity or an event, a campaign may go through a number of iterations during its lifecycle. It is important that when an opportunity is generated, it has the iteration of the campaign which caused the opportunity to be generated. Each time the campaign generator is run, the system will automatically increase this iteration code.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 1. System populated field.
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>ACTUAL.RESULT</field>
+<desc>
+        <p>
+ Will store the actual number of opportunities generated by this iteration of the campaign – at most will be the target size, or will be the number reached when the sample size/customer preselection limit was reached.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ System populated field.
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>ACTUAL.SAMPLE</field>
+<desc>
+        <p>
+ When the generation has been run, this field will specify the actual number of customers that were tested against in order to produce the target number of opportunities. 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ System populated field.
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>CAMP.END.DATE</field>
+<desc>
+        <p>
+ A campaign is likely to have an end date. Specifying that here would ensure that this appears on any opportunity records generated by the campaign.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ 1. Shoould be a valid data and greater than or equal to TODAY.
+ 2. Should not be less than CAMP.START.DATE
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>CAMP.START.DATE</field>
+<desc>
+        <p>
+ A campaign must have a start date, and is also more likely to have a fixed end date.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 
+ 1. Should not be less than TODAY
+ 2. Should be less than CAMP.END.DATE
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>LINKED.CTX.FLD</field>
+<desc>
+        <p>
+ This field will tell the system which field in the Primary Context table contains the value which can be used as an Id for the linked context.
+ For example, if the main context is Mortgage, but we have a linked context of Customer, we need to specify which field on Mortgage gives the correct Customer Id, so this can be passed across to the Rules Interface
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ 1. Must be a valid single-value field on Primary Context Table. 
+ 2. Mandatory field.
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>PRIM.CTX.OPER</field>
+<desc>
+        <p>
+ Operand to be used in conjunction with Primary Context Field (above) and Criteria (below). 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ Standard Enquiry Selection operands :
+ EQ, NE, GT, LT, GE, LE, LK, UL, RG, NR
+ 
+ 
+</p>
+    </desc>
+</t>
+</menu>
+</t24help>
+

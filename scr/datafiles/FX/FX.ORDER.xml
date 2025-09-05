@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FX</product>
+<table>FX.ORDER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>When an FX.BULK.ORDER is authorised, T24 creates a FX.ORDER.</p>
+            <p>This allows the treasury department and back office to complete the details required to create FX transactions for the bank and the clients.</p>
+            <p>The treasury department must input the rates and the covering counterparty.</p>
+            <p>The back office must input the pay and receive settlement instructions.</p>
+            <p>When the FX.ORDER is authorised, if CREATE.RECORDS is set to Y, </p>
+            <p>T24 creates FX transactions in OFS format. One deal is created for the bank side. When this deal is authorised, T24 creates a deal for each customer who has specified an amount on the FX.BULK.ORDER</p>
+            <p>Limits are checked. </p>
+            <p>Note that the EB.PHANTOM record FX.BULK.OFS must be running.</p>
+            <p> To start the phantom, use the application EB.PHANTOM with function "Verify" on the record named FX.BULK.OFS</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>DEAL.TYPE</field>
+<desc>
+            <p />
+            <p>Deal type under which the Bulk booking of FX has to be performed. either Spot or Forward</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Valid       inputs are SP and FW</p>
+        </desc>
+</t>
+<t>
+<field>CUST.SPREAD</field>
+<desc>
+            <p>This is the customer spread amount, which is added to the treasury.rate and forward points to give the customer rate (</p>
+            <p>CUST.RATE</p>).  <p>The default value comes from </p><p>FX.COMM.GROUP</p>. The <p>SEC.ACC.NO</p> field identifies the <p>SEC.ACC.MASTER</p> record (the customer's portfolio). The <p>COMM.GROUP.ID</p> field on the <p>SEC.ACC.MASTER</p> record identifies the <p>FX.COMM.GROUP</p> for the portfolio. The <p>FX.COMM.GROUP</p> specifies the fee schedule. Forex spread is expressed as a percentage depending on the amount of the transaction.  <p>For example:</p><p /><p>On an </p><p>FX.ORDER</p>, the amount is 300,000 USD,     the <p>TREASURY.RATE</p> is 1.5 and the <p>SEC.ACC.NO</p> is 50013-1.   <p>On </p><p>SEC.ACC.MASTER</p><p>50013-1</p>, the <p>COM.GROUP.ID</p> is 1 (Group A, managed)   <p /><p>FX.COMM.GROUP</p><p>1</p> specifies     that the <p>SPREAD</p> for amounts     greater than 200,000 USD is 0.3.   <p>0.3% of 1.5 is 0.0045.</p><p>Therefore the </p><p>CUST.SPREAD</p> is 0.0045.  <p><p>Validation Rules:</p></p><p /><p>1-16 characters including a decimal point</p></desc>
+</t>
+<t>
+<field>CONTRA.CCY</field>
+<desc>
+            <p>One of the </p>
+            <p>CURRENCY.BOUGHT</p> and the <p>CURRENCY.SOLD</p> from the <p>FX.BULK.ORDER</p> is the <p>BASE.CCY</p> and the other is the <p>CONTRA.CCY</p>. See <p>BASE.CCY</p> for more information.  <p><p>Validation Rules:</p></p><p /><p>NOINPUT</p></desc>
+</t>
+<t>
+<field>COUNTERPARTY</field>
+<desc>
+            <p>The covering counterparty. </p>
+            <p>If the client deals will be covered by another deal with a customer, input a counterparty here. The </p>
+            <p>DEAL.SUB.TYPE</p> defaults to blank.  <p><p>Validation Rules:</p></p><p /><p>1-6 numeric character </p><p>CUSTOMER</p> Number or 3-10     character customer mnemonic (uppercase alphanumeric or '.')  </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>The transaction value datespecified on the </p>
+            <p>FX.BULK.ORDER</p> record.  <p><p>Validation Rules:</p></p><p /><p>NOINPUT</p></desc>
+</t>
+<t>
+<field>OUR.ACCOUNT.REC</field>
+<desc>
+            <p>Identifies the account through which the currency bought is to be settled. Forms part of a set of associated fields. </p>
+            <p>After a deal has been struck, the two parties must decide where the currency bought is to be received. This field is used to identify which account will be debited. </p>
+            <p>If this field is left blank, the system will default to the following in turn: </p>
+            <p>1) the vostro account defined on the agency table for the counterparty and the bought currency, if there is one</p>
+            <p>2) the account defined on </p>
+            <p>CUSTOMER.CCY.ACCT</p> for the counterparty and the bought currency, if there is one  <p>3) the first </p><p>NOSTRO.ACCOUNT</p> listed for the bought currency, if there is one  <p>If the system cannot provide a default in this way, the user will need to enter an account number which can be:</p><p /><p>an internal account from the </p><p>FX.TEXT</p> table,     in the format '1' for the first account, '2' for the second and so on   <p>a nostro account from the </p><p>NOSTRO.ACCOUNT</p>     table, in the format 'A' for the first account, 'B' for the second and so on   <p>a customer account in the standard format or a mnemonic.</p><p><p>Validation Rules:</p></p><p /><p>Standard numeric account number or 3-10 character mnemonic</p><p>6-12 character internal account number</p><p>1 numeric character identifying a text number on the </p><p>FX.TEXT</p>     table   <p>1 alphabetic character identifying a nostro account</p><p>Optional input</p></desc>
+</t>
+<t>
+<field>OUR.ACCOUNT.PAY</field>
+<desc>
+            <p>Identifies the account through which the currency sold is to be settled. Forms part of a set of associated fields. </p>
+            <p>After a deal has been struck, the two parties must decide where the currency sold is to be paid. This field is used to identify which account will be credited.</p>
+            <p>If this field is left blank, the system will default to the following in turn: </p>
+            <p>1) the specific instructions defined on the agency table for the counterparty and the sold currency, if there are any</p>
+            <p>2) the account defined on </p>
+            <p>CUSTOMER.CCY.ACCT</p> for the counterparty and the sold currency, if there is one  <p>3) the first </p><p>NOSTRO.ACCOUNT</p> listed for the sold currency, if there is one  <p>If the system cannot provide a default in this way, the user will need to enter an account number which can be:</p><p /><p>an internal account from the </p><p>FX.TEXT</p> table,     in the format '1' for the first account, '2' for the second and so on   <p>a nostro account from the </p><p>NOSTRO.ACCOUNT</p>     table, in the format 'A' for the first account, 'B' for the second and so on   <p>a customer account in the standard format or a mnemonic.</p><p><p>Validation Rules:</p></p><p /><p>Standard numeric account number or 3-10 character mnemonic</p><p>6-12 character internal account number</p><p>1 numeric character identifying a text number on the </p><p>FX.TEXT</p>     table   <p>1 alphabetic character identifying a nostro account</p><p>Optional input</p></desc>
+</t>
+<t>
+<field>SEC.ACC.NO</field>
+<desc>
+            <p>Defaults to the portfolio specified on the </p>
+            <p>FX.BULK.ORDER</p> record.  <p>Identifies the key to the </p><p>SEC.ACC.MASTER</p> record (a customer's security account or portfolio). Made up of customer number + '-' + a unique number for each client portfolio. One Client may have several security accounts.   <p>Example: 123456-1, 123456-12 etc. </p><p>Usually the customer part would be the customer input in </p><p>CUSTOMER.ID</p> above. If you do not input a <p>SEC.ACC.NO</p> there will be no default <p>CUST.SPREAD</p>.  <p><p>Validation Rules:</p></p><p /><p>1 - 10 numeric characters followed by '-' followed by 1-3 numeric characters</p><p>Must be the key to a valid entry on the </p><p>SEC.ACC.MASTER</p>     file   <p>There must be an </p><p>ACCOUNT.NOS</p>     multi-value set in the <p>SEC.ACC.MASTER</p> record     for the currency being bought or sold.  </desc>
+</t>
+<t>
+<field>CPY.CORR.ADD</field>
+<desc>
+            <p>Identifies the bank to which the counterparty wishes the amount sold to be paid. This will either be the bank of the counterparty or the bank of their nominated beneficiary. </p>
+            <p>If the bank is known to us (i.e. a customer record exists), details should be entered in the </p>
+            <p>CPARTY.CORR.NO</p> field. If not, the should be entered in this multi-valued field.   <p><p>Validation Rules:</p></p><p /><p>Up to 36 characters</p></desc>
+</t>
+<t>
+<field>CUSTOMER.ID</field>
+<desc>
+            <p>Defaults to the customer specified on the </p>
+            <p>FX.BULK.ORDER</p> record.  <p>This field contains a counterparty with whom a transaction will be made. Any counterparty existing on the Customer file will be accepted. The customer can be entered as a number or mnemonic. The liability number assigned to this counterparty in the customer file will be used for the limit checking. </p><p><p>Validation Rules:</p></p><p /><p /><p>1-6 numeric characters (customer number) or 3-10 uppercase     alphanumeric characters (customer mnemonic)</p><p /><p>Input in this field is mandatory</p><p /><p>Must be the key to a valid entry on the </p><p>CUSTOMER</p>     file      <p /><p>Subvalue field.</p></desc>
+</t>
+<t>
+<field>SELL.RATE</field>
+<desc>
+            <p>Indicates the Market Sell Rate. It is used to calculate the </p>
+            <p>TOTAL.BASE.AMT</p>
+            <p> and </p>
+            <p>TOTAL.CONTRA.AMT</p>
+            <p>.</p>
+            <p>Note that this is the Sell rate from the client's point of view and therefore  is lower than the Buy rate.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-14 characters (up to 8 integer, decimal point and up 7 decimal).</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.CONTRA.AMT</field>
+<desc>
+            <p>The total amount of the </p>
+            <p>CONTRA.CCY</p>. This is the <p>TOTAL.BASE.AMT</p> converted at the <p>BUY.RATE</p> or <p>SELL.RATE</p>. The <p>BUY.RATE</p> is used if <p>FX.BULK.ORDER</p><p>BOUGHT.CURRENCY</p> = <p>FX.ORDER</p><p>BASE.CCY</p>, otherwise the <p>SELL.RATE</p> is used.  <p>For example:</p><p /><p>Base currency EUR, Contra currency USD</p><p /><p>TOTAL.BASE.AMT</p> = 3,565 EUR   <p /><p>SELL.RATE</p> = 0.8864  <p /><p>so </p><p>TOTAL.CONTRA.AMT</p> = 3,160 USD  <p><p>Validation Rules:</p></p><p /><p>Standard </p><p>T24 </p>amount validation.  </desc>
+</t>
+<t>
+<field>CONTRA.AMT</field>
+<desc>
+            <p>Contains the amount of the CONTRA.CURRENCY being bought or sold.</p>
+            <p>The AMOUNT.BASIS shows whether is buy or sell.</p>
+            <p>If the CONTRA.CURRENCY is the FX.BULK.ORDER CURRENCY.BOUGHT, this defaults to </p>
+            <p>the AMOUNT.BOUGHT from the bulk order. If the base.currency is the CURRENCY.SOLD, this defaults to the AMOUNT.SOLD.</p>
+            <p>If the default is blank (because it defaulted to AMOUNT.BOUGHT  on a Sell transaction or vice versa), the amount is the BASE.AMOUNT converted at the CUST.RATE</p>
+            <p>You can input T for Thousand and M for Million. For example, 10T for 10,000.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard </p>
+            <p>T24 </p>amount validation. The actual format will     depend on the number of decimal places in the currency being traded.    <p>The amount must be in an acceptable format for the currency (e.g. USD 1,000.123 would     not be acceptable if </p><p>CURRENCY</p><p>USD</p> is defined with two decimal places).  </desc>
+</t>
+<t>
+<field>DEAL.DATE</field>
+<desc>
+            <p>The deal date specified on the </p>
+            <p>FX.BULK.ORDER</p> record.  <p><p>Validation Rules:</p></p><p /><p>NOINPUT</p></desc>
+</t>
+<t>
+<field>CREATE.RECORDS</field>
+<desc>
+            <p>When the </p>
+            <p>FX.ORDER</p> is authorised, if <p>CREATE.RECORDS</p> is set to Y, <p>T24</p> creates FX transactions in OFS format. One deal is created for the bank side. When this deal is authorised, <p>T24 </p>creates a deal for each customer who has specified an amount on the <p>FX.BULK.ORDER</p>. Limits are checked.  <p>If you leave this field set to N, you can store the </p><p>FX.ORDER</p> until all details are finalised.  <p><p>Validation Rules:</p></p><p /><p>Yes or No</p></desc>
+</t>
+<t>
+<field>BUY.RATE</field>
+<desc>
+            <p>Indicates the Market Buy Rate. It is used to calculate the TOTAL.BASE.AMT</p>
+            <p> and TOTAL.CONTRA.AMT</p>
+            <p>Note that this is the Buy rate from the client's point of view and therefore  is higher than the Sell rate.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-14 characters (up to 8 integer, decimal point and up 7 decimal)</p>
+        </desc>
+</t>
+<t>
+<field>PAYMENT.SENT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>DEALER.DESK</field>
+<desc>
+            <p>The covering desk.</p>
+            <p>If the client deals will be covered internally, input a desk here. The </p>
+            <p>DEAL.SUB.TYPE</p> defaults to IN.  <p><p>Validation Rules:</p></p><p /><p>1-2 numeric character </p><p>DEALER.DESK</p><p>Must be different to </p><p>FX.BULK.ORDER</p><p>DEALER.DESK</p></desc>
+</t>
+<t>
+<field>BULK.ORDER.ID</field>
+<desc>
+            <p>Identifies the FX.BULK.ORDER record that this FX.ORDER was created for.</p>
+            <p>The reference number has the following format FXTYYDDDNNNNN where: </p>
+            <p />
+            <p>FXT = Application indicator </p>
+            <p>YY = The last two digits of the year when the transaction is input </p>
+            <p>DDD = Julian day number within year when the transaction is input </p>
+            <p>NNNNN = Five digit sequential number</p>
+            <p>So FXT0205300010 is the 10th FX Bulk Order of the 22nd of February 2002.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>10 numeric characters, prefixed by FXT: FXTyydddnnnnn (see details)</p>
+            <p>Multivalue Field</p>
+        </desc>
+</t>
+<t>
+<field>FORWARD.POINTS</field>
+<desc>
+            <p>Only available on forward deals. The points are added to the </p>
+            <p>TREASURY.RATE</p> to give the <p>CUST.RATE</p>.  <p><p>Validation Rules:</p></p><p /><p /><p>NOINPUT on Spot deals</p><p /><p>Up to 13 numbers on Forward deals</p><p /><p>Entered in the same units as the Treasury rate</p></desc>
+</t>
+<t>
+<field>BASE.CCY</field>
+<desc>
+            <p />
+            <p>T24 looks at the CURRENCY.BOUGHT and the CURRENCY.SOLD from the FX.BULK.ORDER </p>
+            <p>and decides which currency should be the base currency, using the base currency rank configured in CURRENCY.PARAM and displayed in RANK.BASE.CURRENCY</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>NOINPUT</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.ID</field>
+<desc>
+            <p>Identifies the </p>
+            <p>FX.ORDER</p> record.  <p>The reference number has the following format FXOYYDDDNNNNN where: </p><p /><p>FXO = Application indicator </p><p>YY = The last two digits of the year when the transaction is input </p><p>DDD = Julian day number within year when the transaction is input </p><p>NNNNN = Five digit sequential number</p><p>So FXO0205300010 is the 10th FX Order of the 22nd of February 2002.</p><p><p>Validation Rules:</p></p><p /><p /><p>10 numeric characters, prefixed by FXO: FXOyydddnnnnn (see details)</p><p /><p>Mandatory input</p><p>If the Reference Number is entered manually during initial input, it will be validated     for uniqueness. When input, this field will only be allowed in the format specified above.     This field can never be changed.</p></desc>
+</t>
+<t>
+<field>CUST.RATE</field>
+<desc>
+            <p>Identifies the transaction exchange rate between the </p>
+            <p>BASE.AMOUNT</p> and the <p>CONTRA.AMOUNT</p>. The system will calculate the rate from <p>TREASURY.RATE</p> + <p>FORWARD.POINTS</p> + <p>CUST.SPREAD</p>.  <p>When the FX deals are created, the spot rate will be the </p><p>CUST.RATE</p>.  <p><p>Validation Rules:</p></p><p /><p>NOINPUT</p></desc>
+</t>
+<t>
+<field>TREASURY.RATE</field>
+<desc>
+            <p>The Treasury Rate is used to calculate the </p>
+            <p>CUST.RATE</p>. It defaults to the <p>CURRENCY</p><p>MID.REVAL.RATE</p> for the <p>BASE.CCY</p>.  <p><p>Validation Rules:</p></p><p /><p>1-14 characters (up to 8 integer, decimal point and up 7 decimal). </p></desc>
+</t>
+<t>
+<field>DEAL.SUB.TYPE</field>
+<desc>
+            <p>Defines if a deal is internal or non-standard. It automatically defaults to: </p>
+            <p />
+            <p>blank - if a </p>
+            <p>CUSTOMER</p> is input in the <p>COUNTERPARTY</p> field   <p>IN - if a </p><p>DEALER.DESK</p> is input in the <p>DEALER.DESK</p> field. This is an internal     deal. The desk takes the position from the deals arising from the bulk order.   <p><p>Validation Rules:</p></p><p /><p /><p>1 or 2 alpha characters</p><p /><p>Null or IN</p></desc>
+</t>
+<t>
+<field>CONFIRM.SENT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.BASE.AMT</field>
+<desc>
+            <p>The total amount of the </p>
+            <p>BASE.CCY</p>. This is the sum of the amounts bought or sold in the <p>BASE.CCY</p>, plus the sum of the amounts bought or sold in the <p>CONTRA.CCY</p> converted to the <p>BASE.CCY</p> at the <p>BUY.RATE</p> or <p>SELL.RATE</p>. For example:  <p /><p>Base currency EUR, Contra currency USD</p><p>buy 1,000 EUR</p><p>buy 2,000 EUR</p><p>sell 300 USD, customer rate 0.8823 = 340 EUR</p><p>sell 200 USD, customer rate 0.8889 = 225 EUR</p><p>so </p><p>TOTAL.BASE.AMT</p> = 3,565 EUR  <p>The </p><p>BUY.RATE</p> is used if <p>FX.BULK.ORDER</p><p>BOUGHT.CURRENCY</p> = <p>FX.ORDER</p><p>BASE.CCY</p>, otherwise the <p>SELL.RATE</p> is used.  <p><p>Validation Rules:</p></p><p /><p>Standard </p><p>T24 </p>amount validation.  </desc>
+</t>
+<t>
+<field>CPARTY.CORR.NO</field>
+<desc>
+            <p>Identifies the bank to which the counterparty wishes the amount sold to be paid. This will either be the bank of the counterparty or the bank of their nominated beneficiary. </p>
+            <p>If the bank is known to us (i.e. a customer record exists), the customer number of the bank will be entered in this field. If not, the details should be entered in the </p>
+            <p>CPY.CORR.ADD</p> field.   <p>The counterparty may ask us to pay the amount sold in a number of ways: </p><p /><p>To an account with us: we may pay the funds directly into an account provided it is in     the same currency as that being sold. To make payment directly to a counterparty's     internal account the relevant account number should be entered in the </p><p>OUR.ACCOUNT.PAY</p> field and no other     input will be necessary in this field.    <p /><p>To an account at another bank overseas: to pay money to another bank overseas we would     have to advise our agent, in the country concerned, to pay to the counterparty's bank. In     this case, the Nostro account number of our agent should be entered in the </p><p>OUR.ACCOUNT.PAY</p> field. If the     counterparty's bank is known to us (i.e. there is a customer record), then the bank's     number should be entered in <p>CPARTY.CORR.NO</p>     if these have not yet been defined on the Agency file. If the bank is not known to us,     (i.e. there is no customer record) the bank's name and address should be entered in the     multi-valued field <p>CPY.CORR.ADD</p>.     When known, the counterparty's account number at his bank should be entered in the field <p>CPARTY.BANK.ACC</p>.    <p /><p>To an account at another bank locally: where payment is to be effected locally,     settlement can be through a number of different methods. The most common are Banker's     Payments, CHIPS, or CHAPS. In all cases, the number of our internal clearing account, or     our clearing agent should be entered in </p><p>OUR.ACCOUNT.PAY</p>.     Details of the counterparty's bank account should be completed as detailed above.    <p /><p>To a beneficiary of the counterparty: the counterparty may nominate a third party     beneficiary of the funds. If the beneficiary is to be paid by crediting an account with     us, the account number should be entered in </p><p>OUR.ACCOUNT.PAY</p>. If the beneficiary does not have an account with     us, the internal clearing number or Nostro account of our agent should be entered in <p>OUR.ACCOUNT.PAY</p>. Where we are paying to     another bank but the beneficiary is known to us (i.e. there is a customer record), the     customer number of the beneficiary will be entered in the field <p>BENEFICIARY.NO</p>. Where no relationship exists, the payment     details will be entered in the multi-valued field <p>BENFCY.ADD</p>.    <p /><p>Payment via an intermediary bank: occasionally the counterparty may ask for payment to     be made through an intermediary bank. This occurs where the counterparty or beneficiary's     correspondent is not in the country of the currency involved. As an example, let us say     that the Bank ABC in Hong Kong uses Bank 'XYZ' in Hong Kong as their dollar agent. When a     dollar payment is to be made we would pay American Bank in New York (the Intermediary) for     Bank 'XYZ' in (the counterparty correspondent), account Bank 'ABC' (the counterparty or     Beneficiary). The Intermediary can be entered as a number in the </p><p>INTERMED.BK.NO</p> field if a customer relationship exists     (i.e. there is a customer number) or as narrative in the <p>INTERMED.ADD</p> field.    <p><p>Validation Rules:</p></p><p /><p>1-6 numeric character Customer Number or 3-10 character customer mnemonic (uppercase     alphanumeric or '.')</p><p>Input in this field is optional</p></desc>
+</t>
+<t>
+<field>ACCOUNT.OFFICER</field>
+<desc>
+            <p>The account officer specified on the FX.BULK.ORDER record.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>NOINPUT</p>
+        </desc>
+</t>
+<t>
+<field>ADVICE.SENT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT.BASIS</field>
+<desc>
+            <p>Shows whether this multi-value set is:</p>
+            <p />
+            <p>CONTRA-BUY: buying the contra currency (the CONTRA.CURRENCY is the </p>
+            <p>FX.BULK.ORDER CURRENCY.BOUGHT, and this multi-value set was a Buy transaction on the bulk order)</p>
+            <p>CONTRA-SELL: selling the contra currency (the CONTRA.CURRENCY is the CURRENCY.SOLD, and this was a Sell transaction on the bulk order)</p>
+            <p>BASE-BUY: buying the base currency (the BASE.CURRENCY is the CURRENCY.BOUGHT, and this was a Buy transaction on the bulk order)</p>
+            <p>BASE-SELL: selling the base currency (the BASE.CURRENCY is the CURRENCY.SOLD, and this was a Sell transaction on the bulk order).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>NOINPUT</p>
+        </desc>
+</t>
+<t>
+<field>BASE.AMT</field>
+<desc>
+            <p>Contains the amount of the BASE.CURRENCY being bought or sold. The AMOUNT.BASIS shows whether it is buy or sell.</p>
+            <p>If the BASE.CURRENCY is the FX.BULK.ORDER CURRENCY.BOUGHT, this defaults to the AMOUNT.BOUGHT from the bulk order.</p>
+            <p>If the base.currency is the CURRENCY.SOLD, this defaults to the AMOUNT.SOLD.</p>
+            <p>If the default is blank (because it defaulted to AMOUNT.BOUGHT on a Sell transaction or vice versa), the amount is the CONTRA.AMOUNT converted at the CUST.RATE</p>
+            <p>You can input T for Thousand and M for Million. For example, 10T for 10,000.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard T24 amount validation.</p>
+            <p>The actual format will depend on the number of decimal places in the currency being traded.</p>
+            <p>The amount must be in an acceptable format for the currency (e.g. USD 1,000.123 would     not be acceptable if CURRENCY USD  is defined with two decimal places).</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

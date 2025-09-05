@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>MG</product>
+<table>MG.PAYMENT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The MG.PAYMENT application allows for the input of manual principal redemptions or early contract closure. The following is a brief summary of some of the functions and features of this application. </p>
+            <p>1. Payment amount and closures. </p>
+            <p>   This routine only allows for the repayment of principal. It is not    possible to specify an amount of interest or any additional payment    elements to be paid. </p>
+            <p>   The payment amount is entered on the payment record, although if a transaction type of "closure" is specified this will be done    automatically. If the contract is being closed, ie. the total    outstanding principal is being repaid, then any outstanding interest    on the contract will also be paid. </p>
+            <p>   The payment amount will be debited to an account specified on the payment record which is where the client is expected to deliver (credit) the funds. This account need not belong to the client but may belong to a third party, i.e. a solicitor, or be an internal account. </p>
+            <p>2. Value dates and reversal. </p>
+            <p>   Any payment entered via this application must be made with a value    date equal to or less than the current system date. It is not possible   to enter a forward dated payment. </p>
+            <p>   However, it is possible to back value a payment into a previous    interest/repayment period. In this case any existing repayments, with a    value date after that of the payment being entered, will be adjusted.   This effectively results in these repayments being reversed and then  reprocessed taking into account any changes in principal balance and accrued interest resulting from the input of this payment. </p>
+            <p>   Similarly an old payment entered via this routine may be reversed at   any time. If subsequent repayments have been made then these will be adjusted in the same way as described above. </p>
+            <p>   It is not possible to reverse a payment which results in the closure    of the contract, i.e. the principal has been reduced to zero. </p>
+            <p>3. Recalculation of future repayment amounts. </p>
+            <p>   In the case of redemption type contracts, ie. ANNUITY and LINEAR types,    the reduction in the outstanding principal will have an effect on the   future repayment scheme. If scheduled repayments are maintained at their old value the contract will be repaid earlier. </p>
+            <p>   It is possible when entering a payment to request that the system    recalculate, the repayment amount in order to maintain the original    term of the contract. An effective date for this new amount is also    calculated. Both will be transferred to the contract record after    authorisation and will come into effect on the calculated date. </p>
+            <p>   The calculated amount and effective date may be overridden if    required or the original repayment amount may be retained and the    contract repaid early. </p>
+            <p>4. Charges. </p>
+            <p>   If required, it is possible to levy a number of charges in respect of    the payment via this routine. This feature makes use of the standard   charge codes and default amounts on the FT.CHARGE.TYPE table. Charge  amounts are debited to an account specified by user or to the account specified for receipt of the payment amount. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CHARGE.AMT.LCY</field>
+<desc>
+            <p>Identifies the amount(local equivalent) to be charged defined in the charge code entered in the associated value of the CHARGE.CODE field.This amount will be defaulted, dependent on the charge code entered</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Field associated with the fields from CHARGE.DATE to CHARGE.TAX.CODE</p>
+            <p>Defaulted from FT.CHARGE.TYPE file.</p>
+        </desc>
+</t>
+<t>
+<field>WAIVE.TAX</field>
+<desc>
+            <p>This field is used whenever there is a tax specified on principal in the main MG contract. If set to 'NO', the system will appropriate tax whenever there is an MG payment made.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Input can either be NULL or NO</p>
+            <p>Allowed only for ADJUSTMENT and REDEMPTION transaction types</p>
+        </desc>
+</t>
+<t>
+<field>NEW.REPAY.AMT</field>
+<desc>
+            <p>Identifies any new repayment amount requested on a redemption type contract as a result of the reduced outstanding principal on the contract. </p>
+            <p>This field is used to change the repayment amount on a redemption type contract. For these contract types the change in the outstanding balance of the contract, brought about by the input of this payment, will have an effect on future repayments and the final maturity of the contract. The customer may wish to see the periodic repayments on the loan reduced as a result of this redemption; alternatively they may be left at the same level in which case the loan will be repaid earlier. </p>
+            <p>If the repayment amount is to be changed then the new desired amount may be entered here. The date on which this new amount becomes effective is entered in the NEW.REPAY.DATE field. If an automatic recalculation of the repayment amount has been requested via the RECALC.REPAYMENT field then the first possible date on which the new repayment amount may come into effect will have already been defaulted into the NEW.REPAY.DATE field. </p>
+            <p>Whenever a new repayment amount is requested, either via input to this field or the RECALC.REPAYMENT field, the system will automatically calculate a new theoretical repayment amount. This amount represents the minimum repayment amount required to repay the loan based on the contract parameters on the NEW.REPAY.DATE. This theoretical amount will be inserted in the NEW.THEORETICAL field and used to validate this field. </p>
+            <p>A number of new amounts and dates may be entered if required. These amounts are validated in such a way that the contract will always be repaid within the term. If multiple new amounts are present then the intermediate actual amounts may be less than their associated theoretical amounts, however, the final repayment amount must be at least as great as the final theoretical amount. </p>
+            <p>It should be noted that this multivalue set of fields, NEW.REPAY.AMT to NEW.THEORETICAL, have equivalent fields on the contract record on the MG.MORTGAGE file. If any new repayment details are present on the contract record at the time of input of a payment then these will be automatically entered on the payment record prior to any user input to that record. </p>
+            <p>After authorisation of the payment these fields will be transferred to their equivalents on the contract record on the MG.MORTGAGE file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters. Multi value field associated with fields NEW.REPAY.AMT and NEW.REPAY.DATE (optional input for redemption type contracts - NOINPUT for nonredemption contracts)</p>
+            <p>Input not allowed for SAVING and NONREDEM contracts.</p>
+            <p>Input must be positive.</p>
+            <p>Input not allowed without an associated date in the NEW.REPAY.DATE field.</p>
+            <p>Each repayment amount must be sufficient to repay the accrued interest from the repayment period(s) to which it applies.</p>
+            <p>The last multivalue of this field must be at least equal to the last multivalue of the associated NEW.THEORETICAL field.</p>
+            <p>An override will be required for any new repayment amount that differs from the associated theoretical amount.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>Identifies the value date of the payment for accounting purposes. </p>
+            <p>The date entered in this field is the value date of the payment. The payment amount will be debited to the account entered in the PAYMENT.ACCOUNT field with a value date of the date entered here. </p>
+            <p>If interest has already been accrued on the contract beyond this date, then the accrual will be adjusted. Similarly, if this date is prior to that of an earlier payment or scheduled repayment, then these repayment amounts will be adjusted and re-posted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format (mandatory input)</p>
+            <p>Can only be a future date for Annuity contracts.  Otherwise it cannot.</p>
+            <p>The date entered must be greater than that in the RECORD.START.DATE field on the MG.BALANCES file for the contract.</p>
+            <p>If the TRANSACTION.TYPE is CLOSURE this date cannot be prior to the last repayment date.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.TIME</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Contains all the Override messages which the user agreed to during Input. </p>
+            <p>During the validation of a payment the system may provide the user with a series of screen override messages to indicate an anomaly; for instance, if the value date of the payment entered is not a working day. </p>
+            <p>In the event the user confirming the Override, the full text of the actual Override Message will be stored for reference purposes only in this multivalue field. </p>
+            <p>In the example given above when the deal is validated a warning bell will sound and a message will appear, at the foot of the screen, which reads: </p>
+            <p>     'VALUE DATE IS NOT A WORKING DAY' </p>
+            <p>This will draw the user's attention to the amount entered, which may be a mistake and can then be corrected, or, on the other hand, it may be correct and can be confirmed as so. </p>
+            <p>A second example might be where the payment amount debiting the payment account causes this account to be overdrawn. In this case, when the deal is validated, a warning bell will sound and a message will appear, at the foot of the screen, which reads: </p>
+            <p>           'ACCOUNT 0221000178 - UNAUTHORISED OVERDRAFT' </p>
+            <p>Once again the user's attention is drawn to the situation and either corrected or confirmed via a positive response to the Override Message. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field. Multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>CURR.NO</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>INT.AT.PAYMENT</field>
+<desc>
+            <p>Specifies the amount of interest to be paid at closure when a forward closure of an annuity is entered. </p>
+            <p>When a forward closure of an annuity is entered the system will calculate the amount of interest to be paid at the closure date and store it in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters.</p>
+            <p>This is a NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>RECORD.STATUS</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>DELIVERY.REF</field>
+<desc>
+            <p>DELIVERY.REF </p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.CCY</field>
+<desc>
+            <p>Identifies the currency that charges are to be levied in.  This can be different from the mortgage currency. </p>
+            <p>Charges can be levied in any currency, and seperate charges within the multivalue set can be in different currencies. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>CCY (Currency code) Multivalue field associated with fields CHARGE.CODE to CHARGE.ACCOUNT. Defaults to the currency of the mortgage.</p>
+            <p>Must be a valid currency on the CURRENCY file.</p>
+        </desc>
+</t>
+<t>
+<field>PAYMENT.ACCOUNT</field>
+<desc>
+            <p>Identifies the account at which the payment is to be received and therefore the account which is to be debited by this payment. </p>
+            <p>This field identifies the account where the customer will make the payment. This account is debited by the system for the amount of the principal repayment entered in the PAYMENT.AMOUNT field. In the case of CLOSURE transaction this account will also be debited for any outstanding interest on the contract. </p>
+            <p>If a nul is entered in this field it will default to the normal contract repayment account held in the MORTGAGE.ACCOUNT field on the MG.MORTGAGE file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard account number format or   3 - 10 alphanumeric account mnemonic. (mandatory input)</p>
+            <p>Must be a valid account on the ACCOUNT file of the same currency as the loan.</p>
+        </desc>
+</t>
+<t>
+<field>TRANSACTION.DATE</field>
+<desc>
+            <p>Identifies the date on which the transaction instructions were received. </p>
+            <p>In some cases the date on which the bank recieved the payment instructions may not be the value date of the payment. This field is used to record this date. </p>
+            <p>The default value for this field is the date of input of the transaction. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format (mandatory input - default the current date)</p>
+            <p>Must be greater then the VALUE.DATE of the contract.</p>
+        </desc>
+</t>
+<t>
+<field>NEW.THEORETICAL</field>
+<desc>
+            <p>Defines the minimum repayment amount required for each of the multivalued NEW.REPAY.DATES to ensure that the loan is paid in full within the term of the contract. This field is used by non redemption type contracts only. </p>
+            <p>For redemption type contracts the change in the outstanding balance of the contract, brought about by the payment entered, may lead to a recalculation of the repayment amount being requested. If this is the case then the minimum repayment amount required to repay the loan within the term will be calculated during </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters. Multivalue field associated with fields NEW.REPAY.AMT and NEW.REPAY.DATE.  Several new repayment dates and amounts may have been entered in which case a new theoretical amount is calculated for each new date. If the contract type is ANNUITY there may be cases where it is not possible to recalculate the repayment. These arise when there is a change in the principal balance or interest rate of the contract in the middle of a repayment period during which a new  repayment amount has been requested. In this case the theoretical amount will be left blank but an override message will be displayed to inform the user of the problem. It should be noted that this multivalue set of fields, NEW.REPAY.AMT to NEW.THEORETICAL, have equivalent fields on the contract record on the MG.MORTGAGE file. If any new repayment details are present on the contract record at the time of input of the payment then these will be automatically entered on the payment record prior to any user input. After authorisation of the payment these fields will be transferred to their equivalents on the contract record on the MG.MORTGAGE file.</p>
+            <p>This is a NOINPUT field.</p>
+            <p>An override will be required for ANNUITY contracts in cases where the annuity amount cannot be recalculated.</p>
+        </desc>
+</t>
+<t>
+<field>INPUTTER</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>PENALTY.AMOUNT</field>
+<desc>
+            <p>Specifies the penalty to be charged for forward closure of Annuity Mortgages. </p>
+            <p>When entering a forward valued closure of an Annuity Mortgage, this field can be used to enter the amount of penalty to be charged to the customer for the early closure. </p>
+            <p>When this amount is entered a forward movement with a value date of the closure is generated. </p>
+            <p>On the closure date an account movement and a PL movement will be generated.  The category used on the PL movement is the Penalty Interest category on the MG.PARAMETER file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters. (Optional input)</p>
+            <p>Input only allowed when entering a forward valued closure for an annuity mortgage.</p>
+            <p>Cannot be greater than the outstanding amount on the Mortgage.</p>
+        </desc>
+</t>
+<t>
+<field>OUR.REMARKS</field>
+<desc>
+            <p>Free format narrative field for additional user information. The contents of this field may appear on the clients statement. </p>
+            <p>This is a free format field which may be used for any notes or other information relating to the contract. </p>
+            <p>If the account entered in the PAYMENT.ACCOUNT field is set up for descriptive statements then the contents of this field will be printed on that account statement. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 35 alphanumeric characters. Multivalue field (optional input)</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+            <p>Identifies any additional element which has been defined locally to meet a particular requirement. </p>
+            <p>As in other T24 applications, up to 999 Local Elements may be defined, in addition to the standard fields previously specified for this application.  These local elements should be defined by the User where deemed necessary according to local practice. </p>
+            <p>The name(s) of the new element(s), as well as the Format and </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 characters as defined in the local table definition for this local reference field. Multivalued field. (Optional or Mandatory input according to definition in LOCAL.TABLE (Ref: Utilities) for this Local Reference element.) creation of any Mortgage contracts. For more information regarding the use of Local reference fields refer to the LOCAL.TABLE Helptext.</p>
+            <p>As defined by the User within the individual Local Tables.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.TAX.CODE</field>
+<desc>
+            <p>Specifies the TAX.CODE applicable on the charges on the contract. The Tax codes defined on this field will be defaulted by the system depending on the charge codes entered on the contract.The Tax codes are held on the FT.CHARGE.TYPE or the FT.COMMISSION.TYPE file.for the charge code applicable.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System Generated, No Input field.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.CODE</field>
+<desc>
+            <p>Identifies the type of charge(s) to be levied as defined on the FT.CHARGE.TYPE table. </p>
+            <p>This field identifies the charge types to be levied in respect of this payment. </p>
+            <p>This code identifies a charge type defined on the FT.CHARGE.TYPE table. This table contains a record for each charge type available. Each record contains a description, a default charge amount and the P&amp;L category which is to be credited whenever the charge is levied. </p>
+            <p>The description from the FT.CHARGE.TYPE will be displayed as an enrichment to this field and the default amount from the FLAT.AMOUNT field will be used if nothing is entered in the associated CHARGE.AMOUNT field. </p>
+            <p>Whenever a charge is processed the account entered in the associated CHARGE.ACCOUNT field will be debited. </p>
+            <p>The P&amp;L category defined on the FT.CHARGE.TYPE record for the charge code will be credited. The value date of charge entries is the same as that of the payment. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 2 alphanumeric characters. Multivalue field associated with fields CHARGE.CODE to CHARGE.ACCOUNT. (optional input)</p>
+            <p>Must be a valid charge code on the FT.CHARGE.TYPE table.</p>
+            <p>The same combination of charge code and charge date cannot be duplicated in this set of fields.</p>
+        </desc>
+</t>
+<t>
+<field>TERM</field>
+<desc>
+            <p>Refer helptext of TERM of MG.MORTGAGE Application</p>
+        </desc>
+</t>
+<t>
+<field>TAX.PAYMENT</field>
+<desc>
+            <p>This field is used for populating the Tax amount due to be paid when
+ the contract is pre matured and if the contract is taxable</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System Generated, No Input field.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.TAX.LCY</field>
+<desc>
+            <p>This field identifies the local currency equivalent of the Tax 
+on Charge if any. This is a Noinput field</p>
+        </desc>
+</t>
+<t>
+<field>PAYMENT.NO</field>
+<desc>
+            <p>Uniquely identifies the payment and the contract to which it relates. </p>
+            <p>Any number of manual payments may be entered for a single contract, however, each has its own unique ID. This consists of the contract number and a sequential payment number which uniquely identifies individual payments. The contract to which the payment relates must be manually entered but the payment number will automatically default from the MG.PAYMENT.CONTROL file. The way in which this is done depends on the function required as follows: </p>
+            <p>(I)nput </p>
+            <p>If an unauthorised payment record exists then the number of this will be defaulted, if not, the next sequence number available will be taken. For example, if two payment records have already been entered for this contract (nos. 1 and 2) then the payment number will default to 3. </p>
+            <p>(D)elete and (A)uthorise </p>
+            <p>The payment number of any unauthorised payment will default. </p>
+            <p>Note:      For the above functions it is not possible to enter any            payment other than the one that will default. </p>
+            <p>(R)everse </p>
+            <p>The most recent payment entered, ie the highest payment number, will default. If the reversal of an earlier payment is required then the payment number must be entered manually. </p>
+            <p>(S)ee and (P)rint </p>
+            <p>If an unauthorised payment exists this will default, otherwise the most recent payment number, ie the highest, will be taken. If a prior payment record is required then the payment number must be entered manually. </p>
+            <p>The contract number portion of the ID may also be entered in shorthand format. It is not necessary to enter the "MG" module prefix or any leading zeroes in the sequence number portion of the contract number. For more details on the structure of the contract ID and the shorthand method of input, refer to the MG.MORTGAGE helptext. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This field has two components as follows: a)   A valid contract ID, 10 numeric characters prefixed by "MG"      with an optional 1 alpha suffix. b)   "." c)   1 - 3 alpha character payment number. MGYYDDDNNNNNA.NNN (mandatory input - payment no will default from MG.PAYMENT.CONTROL file)</p>
+            <p>Must reference an existing contract record with a contract status of CUR.</p>
+            <p>Only one unauthorised payment record for a contract is permitted at any given time.</p>
+            <p>Manually entered payment numbers for the input function must use the next payment as defined by the MG.PAYMENT.CONTROL record.</p>
+            <p>(R)eversals must reference an existing authorised payment and are not allowed if an unauthorised record exists.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.TAX.AMT</field>
+<desc>
+            <p>Identifies the amount to be taxed against the Charge amount.This amount is defaulted at the time of validation of the contract. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>This is a noinput field.</p>
+            <p>This field is associated with the fields from CHARGE.DATE to CHARGE.TAX.CODE</p>
+        </desc>
+</t>
+<t>
+<field>RESERVE3</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+        </desc>
+</t>
+<t>
+<field>PAYMENT.AMOUNT</field>
+<desc>
+            <p>Specifies the amount of principal being repaid by this payment. </p>
+            <p>The amount of principal being repaid by this payment is entered in this field. It may be defaulted if the transaction is fully repaying the loan. </p>
+            <p>A complete redemption is indicated by entering CLOSURE in the TRANSACTION.TYPE field, in which case the outstanding principal amount on the loan will be defaulted into this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 19 numeric characters (mandatory input, unless TRANSACTION.TYPE is CLOSURE)</p>
+            <p>Input must be a positive amount.</p>
+            <p>Input cannot be greater than the outstanding principal balance on the contract.</p>
+            <p>If the TRANSACTION.TYPE is CLOSURE this field must contain the outstanding principal balance of the contract.</p>
+        </desc>
+</t>
+<t>
+<field>STMT.NO</field>
+<desc>
+            <p>A number generated automatically by the system which identifies either a statement entry or a category entry in respect of a contract. </p>
+            <p>Whenever a payment is entered via this application a number of accounting entries will be raised. This field will record the IDs of the entries generated. The IDs to accounting entries, both STMT.ENTRYs and CATEG.ENTRYs, consist of a date-time stamp and a sequence number. All entries raised by a particular input/transaction will have the same date-time stamp but different sequence numbers. </p>
+            <p>This field has three multivalues, the first contains the base date-time stamp which is common to all entries. The second contains the sequence numbers of the STMT.ENTRYs raised and the third the sequence numbers of any CATEG.ENTRYs. </p>
+            <p>The examples on the following pages illustrate the use of this field more clearly. </p>
+            <p>Example 1: </p>
+            <p>When a payment record is authorised a debit entry for the payment amount will be posted to the account entered PAYMENT.ACCOUNT field. The system will generate a statement entry and record the ID of the entry in this field as follows: </p>
+            <p>           22.1  STMT.NO ............ 673732684.48            22.2  STMT.NO ............ 1 </p>
+            <p>The number automatically generated in Field 22.1 is unique to the payment in question and is built up in the following way: </p>
+            <p>1.         The first four digits '6737' indicate the number of days            since the 1st of January 1968.  In our example it corresponds          to the 11th of June 1986. </p>
+            <p>2.         The next five digits '32684' indicate the number of seconds           since midnight.  In our example it corresponds to an entry      generated on line at 09:04:44 AM. </p>
+            <p>3.         The last two digits '48' indicate the number of hundreds of        seconds. </p>
+            <p>The value assigned to Field 22.2 identifies the number in 22.1 as a statement entry number. This entry can be seen via the STMT.ENTRY Application using the the ID: </p>
+            <p>           673732684.480001 </p>
+            <p>where the suffix '0001' identifies it as the first statement entry (there may be more than one as the next example will illustrate). </p>
+            <p>Example 2: </p>
+            <p>A second example might be that of a payment where two separate charges have been levied. The payment itself will generate a debit statement entry as in the previous example. However, the addition of charges will generate a further two statement entries debiting the charge account for the amount of each charge, as well as a category entry crediting the relevant P&amp;L category code(s). The IDs of the entries generated will be recorded as follows: </p>
+            <p>           22.1  STMT.NO ............ 673732684.48            22.2  STMT.NO ............ 1 - 3            22.3  STMT.NO ............ 1 - 2 </p>
+            <p>Once again the standard date-time stamp is generated and inserted in Field 22.1. </p>
+            <p>Now, however, both fields 22.2 and 22.3 contain a value. The value in field 22.2 now indicates that three statement entries have been raised and in field 22.3 that two category entries have also been raised. To view these entries the STMT.ENTRY and now the CATEG.ENTRY application should be used. In this case the IDs required for each application are: </p>
+            <p>           STMT.ENTRY         673732684.480001                               673732684.480002                               673732684.480003 </p>
+            <p>           CATEG.ENTRY        673732684.480001                               673732684.480001 </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>MORTGAGE.CCY</field>
+<desc>
+            <p>This is  the currency of the Mortgage specified in field PAYMENT.NO.  It is the currency of all the amounts on this record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 uppercase alpha characters Currency code. (Internal field, No input).</p>
+        </desc>
+</t>
+<t>
+<field>RECALC.REPAYMENT</field>
+<desc>
+            <p>Requests a recalculation of the repayment amount to reflect the reduction in the outstanding principal amount. Used for redemption type contracts only. </p>
+            <p>For redemption type contracts the change in the outstanding balance of the contract, which is brought about by the input of this payment, will have an effect on future repayments and the final maturity of the contract. The customer may wish to see the periodic repayments on the loan reduced as a result of this redemption; alternatively they may be left at the same level in which case the loan will be repaid earlier. This field is used to indicate whether or not the repayment amount is to be automatically recalculated. </p>
+            <p>The new repayment amount will become effective on the next repayment date after which the principal amount, and in the case of annuity loans the interest rate, have remained unchanged for a full repayment period. If a "Y" is entered in this field and a date is present in the VALUE.DATE field, then the effective date of any new repayment amount will be defaulted into the NEW.REPAY.DATE field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 alpha character - only (Y)es allowed. (optional input)</p>
+            <p>Input not allowed for SAVING and NONREDEM contracts.</p>
+            <p>The only allowable input is "Y".</p>
+        </desc>
+</t>
+<t>
+<field>NEW.REPAY.DATE</field>
+<desc>
+            <p>Specifies the effective date of any new repayment amounts entered in the NEW.REPAY.AMT field. </p>
+            <p>For redemption type contracts the change in the outstanding principal balance on the contract will effect the future repayments on that contract and the date of final maturity. The customer of the loan may wish to see the periodic repayment amount of the loan reduced to reflect the lower outstanding balance. Alternatively, he may wish this amount to remain the same thereby bringing forward the maturity date. </p>
+            <p>If the repayment amount is to be changed then this field is used to define the date on which the new repayment amount becomes effective. This date may be input manually or defaulted by the system. </p>
+            <p>Defaulting of this field is achieved by requesting a recalculation of the repayment amount via the RECALC.REPAYMENT field. In this case the next repayment date after which the principal amount, and in the case of annuity loans the interest rate, have remained unchanged for a full repayment period will be defaulted. </p>
+            <p>It should be noted that this multivalue set of fields, NEW.REPAY.AMT to NEW.THEORETICAL, have equivalent fields on the contract record on the MG.MORTGAGE file. If any new repayment details are present on the contract record at the time of input of the payment then these will be automatically entered on the payment record prior to any user input to that record. </p>
+            <p>After authorisation of the payment these fields will be transferred to their equivalents on the contract record on the MG.MORTGAGE file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format. Multivalue field associated with fields RECALC.PAYMENT and NEW.REPAY.DATE. (optional input for redemption type contracts - NOINPUT for non redemption contracts)</p>
+            <p>Input not allowed for SAVING and NONREDEM contracts.</p>
+            <p>Dates input must be valid future repayment dates.</p>
+            <p>Dates must be in ascending order.</p>
+        </desc>
+</t>
+<t>
+<field>TRANSACTION.TYPE</field>
+<desc>
+            <p>Defines the type of transaction being entered. </p>
+            <p>The value entered in this field determines the type of transaction being processed. This will determine the transaction codes used and therefore the narrative appearing on the customers's statement. The following types are available: </p>
+            <p>1. REDEMPTION </p>
+            <p>   This type should be used for the input of partial redemption    transactions, where an amount of principal less than the outstanding    balance of the loan is being repaid. The value date for this type of    transaction can be any date prior to the current date and may be    prior to a previous repayment date if required. The transaction code    used for this type is 810. Any adjustments to existing payments    caused by this transaction being backdated prior to a previous    repayment, will raise entries using the transaction codes 814 and 816    for principal and interest respectively. </p>
+            <p>2. CLOSURE </p>
+            <p>   This type of transaction can only be used to close or fully repay a    contract. It is not necessary to enter the PAYMENT.AMOUNT as this    will automatically default to the outstanding principal on the    contract. Interest will be accrued up to the payment date in the    VALUE.DATE field and this and any other outstanding interest will    also be repaid, however this amount is not included in that shown    in the PAYMENT.AMOUNT field. The transaction codes used for the    accounting entries raised are 810 and 804 for principal and interest    respectively. </p>
+            <p>   CLOSURE type transactions cannot be reversed. </p>
+            <p>3. ADJUSTMENT </p>
+            <p>   This type is similar to REDEMPTION except that the transaction code    used for the debit entry of the PAYMENT.AMOUNT is 814. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 12 alpha character. Must be either (R)EDEMPTION, (C)LOSURE or (A)DJUSTMENT. (mandatory input)</p>
+            <p>Must be CLOSURE if the PAYMENT.AMOUNT field contains the outstanding principal balance of the contract.</p>
+            <p>CLOSURE only allowed if the amount entered in the PAYMENT.AMOUNT field is the outstanding principal balance of the contract.</p>
+        </desc>
+</t>
+<t>
+<field></field>
+<desc>
+        <p>ADVICE.TYP.</p>
+        <p>CHARGE.ACCOUNT</p>
+        <p>Identifies the account to which the charge amount entered in the associated CHARGE.AMOUNT field is to be debited. For each charge code entered, an account to which the charge amount is to be debited must also be entered. This can be done manually or defaulted by the system. If no account is entered then the account from the PAYMENT.ACCOUNT field will be defaulted. </p>
+        <p>Validation Rules</p>
+        <p> Standard account number format. or 3 - 10 alphanumeric account mnemonic. Multivalue field associated with fields CHARGE.CODE to CHARGE.ACCOUNT. (mandatory input if CHARGE.CODE entered - default from PAYMENT.ACCOUNT) Must be a valid account on the ACCOUNT file. An override will be required if the customer of the account entered is not that of the contract.</p>
+        <p>CHARGE.AMOUNT</p>
+        <p>Identifies the amount to be charged against the charge code entered in the associated value of the CHARGE.CODE field. The amount entered in this field represents the charge amount to be levied for the associated charge code. This amount may be defaulted, dependent on the charge code entered, from the FT.CHARGE.TYPE table. In this case the amount defined in the FLAT.AMOUNT field for the currency of the loan will be taken as the default. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 11 numeric characters. Multivalue field associated with fields CHARGE.CODE to CHARGE.ACCOUNT. (mandatory input if CHARGE.CODE entered - default from FT.CHARGE.TYPE table) Input mandatory if no default available from the FT.CHARGE.TYPE table. Amount must be positive.</p>
+        <p>CHARGE.CCY</p>
+        <p>Identifies the currency that charges are to be levied in. This can be different from the mortgage currency. Charges can be levied in any currency, and seperate charges within the multivalue set can be in different currencies. </p>
+        <p>Validation Rules</p>
+        <p> CCY (Currency code) Multivalue field associated with fields CHARGE.CODE to CHARGE.ACCOUNT. Defaults to the currency of the mortgage. Must be a valid currency on the CURRENCY file.</p>
+        <p>CHARGE.CODE</p>
+        <p>Identifies the type of charge(s) to be levied as defined on the FT.CHARGE.TYPE table. This field identifies the charge types to be levied in respect of this payment. This code identifies a charge type defined on the FT.CHARGE.TYPE table. This table contains a record for each charge type available. Each record contains a description, a default charge amount and the P&amp;L category which is to be credited whenever the charge is levied. The description from the FT.CHARGE.TYPE will be displayed as an enrichment to this field and the default amount from the FLAT.AMOUNT field will be used if nothing is entered in the associated CHARGE.AMOUNT field. Whenever a charge is processed the account entered in the associated CHARGE.ACCOUNT field will be debited. The P&amp;L category defined on the FT.CHARGE.TYPE record for the charge code will be credited. The value date of charge entries is the same as that of the payment. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 2 alphanumeric characters. Multivalue field associated with fields CHARGE.CODE to CHARGE.ACCOUNT. (optional input) Must be a valid charge code on the FT.CHARGE.TYPE table. The same combination of charge code and charge date cannot be duplicated in this set of fields.</p>
+        <p>CURR.NO</p>
+        <p>DATE.TIME</p>
+        <p>DELIVERY.REF</p>
+        <p>DELIVERY.RE.</p>
+        <p>INPUTTER</p>
+        <p>INT.AT.PAYMENT</p>
+        <p>Specifies the amount of interest to be paid at closure when a forward closure of an annuity is entered. When a forward closure of an annuity is entered the system will calculate the amount of interest to be paid at the closure date and store it in this field. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 19 numeric characters. This is a NOINPUT fiel.</p>
+        <p>LOCAL.REF</p>
+        <p>Identifies any additional element which has been defined locally to meet a particular requirement. As in other T24 applications, up to 999 Local Elements may be defined, in addition to the standard fields previously specified for this application. These local elements should be defined by the User where deemed necessary according to local practice. The name(s) of the new element(s), as well as the Format and </p>
+        <p>Validation Rules</p>
+        <p> Up to 35 characters as defined in the local table definition for this local reference field. Multivalued field. (Optional or Mandatory input according to definition in LOCAL.TABLE (Ref: Utilities) for this Local Reference element.) creation of any Mortgage contracts. For more information regarding the use of Local reference fields refer to the LOCAL.TABLE Helptext. As defined by the User within the individual Local Tables.</p>
+        <p>MORTGAGE.CCY</p>
+        <p>This is the currency of the Mortgage specified in field PAYMENT.NO. It is the currency of all the amounts on this record. </p>
+        <p>Validation Rules</p>
+        <p> 3 uppercase alpha characters Currency code. (Internal field, No input).</p>
+        <p>NEW.REPAY.AMT</p>
+        <p>Identifies any new repayment amount requested on a redemption type contract as a result of the reduced outstanding principal on the contract. This field is used to change the repayment amount on a redemption type contract. For these contract types the change in the outstanding balance of the contract, brought about by the input of this payment, will have an effect on future repayments and the final maturity of the contract. The customer may wish to see the periodic repayments on the loan reduced as a result of this redemption; alternatively they may be left at the same level in which case the loan will be repaid earlier. If the repayment amount is to be changed then the new desired amount may be entered here. The date on which this new amount becomes effective is entered in the NEW.REPAY.DATE field. If an automatic recalculation of the repayment amount has been requested via the RECALC.REPAYMENT field then the first possible date on which the new repayment amount may come into effect will have already been defaulted into the NEW.REPAY.DATE field. Whenever a new repayment amount is requested, either via input to this field or the RECALC.REPAYMENT field, the system will automatically calculate a new theoretical repayment amount. This amount represents the minimum repayment amount required to repay the loan based on the contract parameters on the NEW.REPAY.DATE. This theoretical amount will be inserted in the NEW.THEORETICAL field and used to validate this field. A number of new amounts and dates may be entered if required. These amounts are validated in such a way that the contract will always be repaid within the term. If multiple new amounts are present then the intermediate actual amounts may be less than their associated theoretical amounts, however, the final repayment amount must be at least as great as the final theoretical amount. It should be noted that this multivalue set of fields, NEW.REPAY.AMT to NEW.THEORETICAL, have equivalent fields on the contract record on the MG.MORTGAGE file. If any new repayment details are present on the contract record at the time of input of a payment then these will be automatically entered on the payment record prior to any user input to that record. After authorisation of the payment these fields will be transferred to their equivalents on the contract record on the MG.MORTGAGE file. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 19 numeric characters. Multi value field associated with fields NEW.REPAY.AMT and NEW.REPAY.DATE (optional input for redemption type contracts - NOINPUT for nonredemption contracts) Input not allowed for SAVING and NONREDEM contracts. Input must be positive. Input not allowed without an associated date in the NEW.REPAY.DATE field. Each repayment amount must be sufficient to repay the accrued interest from the repayment period(s) to which it applies. The last multivalue of this field must be at least equal to the last multivalue of the associated NEW.THEORETICAL field. An override will be required for any new repayment amount that differs from the associated theoretical amount.</p>
+        <p>NEW.REPAY.DATE</p>
+        <p>Specifies the effective date of any new repayment amounts entered in the NEW.REPAY.AMT field. For redemption type contracts the change in the outstanding principal balance on the contract will effect the future repayments on that contract and the date of final maturity. The customer of the loan may wish to see the periodic repayment amount of the loan reduced to reflect the lower outstanding balance. Alternatively, he may wish this amount to remain the same thereby bringing forward the maturity date. If the repayment amount is to be changed then this field is used to define the date on which the new repayment amount becomes effective. This date may be input manually or defaulted by the system. Defaulting of this field is achieved by requesting a recalculation of the repayment amount via the RECALC.REPAYMENT field. In this case the next repayment date after which the principal amount, and in the case of annuity loans the interest rate, have remained unchanged for a full repayment period will be defaulted. It should be noted that this multivalue set of fields, NEW.REPAY.AMT to NEW.THEORETICAL, have equivalent fields on the contract record on the MG.MORTGAGE file. If any new repayment details are present on the contract record at the time of input of the payment then these will be automatically entered on the payment record prior to any user input to that record. After authorisation of the payment these fields will be transferred to their equivalents on the contract record on the MG.MORTGAGE file. </p>
+        <p>Validation Rules</p>
+        <p> Standard date format. Multivalue field associated with fields RECALC.PAYMENT and NEW.REPAY.DATE. (optional input for redemption type contracts - NOINPUT for non redemption contracts) Input not allowed for SAVING and NONREDEM contracts. Dates input must be valid future repayment dates. Dates must be in ascending order.</p>
+        <p>NEW.THEORETICAL</p>
+        <p>Defines the minimum repayment amount required for each of the multivalued NEW.REPAY.DATES to ensure that the loan is paid in full within the term of the contract. This field is used by non redemption type contracts only. For redemption type contracts the change in the outstanding balance of the contract, brought about by the payment entered, may lead to a recalculation of the repayment amount being requested. If this is the case then the minimum repayment amount required to repay the loan within the term will be calculated during </p>
+        <p>Validation Rules</p>
+        <p> 1 - 19 numeric characters. Multivalue field associated with fields NEW.REPAY.AMT and NEW.REPAY.DATE. Several new repayment dates and amounts may have been entered in which case a new theoretical amount is calculated for each new date. If the contract type is ANNUITY there may be cases where it is not possible to recalculate the repayment. These arise when there is a change in the principal balance or interest rate of the contract in the middle of a repayment period during which a new repayment amount has been requested. In this case the theoretical amount will be left blank but an override message will be displayed to inform the user of the problem. It should be noted that this multivalue set of fields, NEW.REPAY.AMT to NEW.THEORETICAL, have equivalent fields on the contract record on the MG.MORTGAGE file. If any new repayment details are present on the contract record at the time of input of the payment then these will be automatically entered on the payment record prior to any user input. After authorisation of the payment these fields will be transferred to their equivalents on the contract record on the MG.MORTGAGE file. This is a NOINPUT field. An override will be required for ANNUITY contracts in cases where the annuity amount cannot be recalculated.</p>
+        <p>OUR.REMARKS</p>
+        <p>Free format narrative field for additional user information. The contents of this field may appear on the clients statement. This is a free format field which may be used for any notes or other information relating to the contract. If the account entered in the PAYMENT.ACCOUNT field is set up for descriptive statements then the contents of this field will be printed on that account statement. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 35 alphanumeric characters. Multivalue field (optional input.</p>
+        <p>OVERRIDE</p>
+        <p>Contains all the Override messages which the user agreed to during Input. During the validation of a payment the system may provide the user with a series of screen override messages to indicate an anomaly; for instance, if the value date of the payment entered is not a working day. In the event the user confirming the Override, the full text of the actual Override Message will be stored for reference purposes only in this multivalue field. In the example given above when the deal is validated a warning bell will sound and a message will appear, at the foot of the screen, which reads: 'VALUE DATE IS NOT A WORKING DAY' This will draw the user's attention to the amount entered, which may be a mistake and can then be corrected, or, on the other hand, it may be correct and can be confirmed as so. A second example might be where the payment amount debiting the payment account causes this account to be overdrawn. In this case, when the deal is validated, a warning bell will sound and a message will appear, at the foot of the screen, which reads: 'ACCOUNT 0221000178 - UNAUTHORISED OVERDRAFT' Once again the user's attention is drawn to the situation and either corrected or confirmed via a positive response to the Override Message. </p>
+        <p>Validation Rules</p>
+        <p> Internal field. Multivalue field.</p>
+        <p>PAYMENT.ACCOUNT</p>
+        <p>Identifies the account at which the payment is to be received and therefore the account which is to be debited by this payment. This field identifies the account where the customer will make the payment. This account is debited by the system for the amount of the principal repayment entered in the PAYMENT.AMOUNT field. In the case of CLOSURE transaction this account will also be debited for any outstanding interest on the contract. If a nul is entered in this field it will default to the normal contract repayment account held in the MORTGAGE.ACCOUNT field on the MG.MORTGAGE file. </p>
+        <p>Validation Rules</p>
+        <p> Standard account number format or 3 - 10 alphanumeric account mnemonic. (mandatory input) Must be a valid account on the ACCOUNT file of the same currency as the loan.</p>
+        <p>PAYMENT.AMOUNT</p>
+        <p>Specifies the amount of principal being repaid by this payment. The amount of principal being repaid by this payment is entered in this field. It may be defaulted if the transaction is fully repaying the loan. A complete redemption is indicated by entering CLOSURE in the TRANSACTION.TYPE field, in which case the outstanding principal amount on the loan will be defaulted into this field. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 19 numeric characters (mandatory input, unless TRANSACTION.TYPE is CLOSURE) Input must be a positive amount. Input cannot be greater than the outstanding principal balance on the contract. If the TRANSACTION.TYPE is CLOSURE this field must contain the outstanding principal balance of the contract.</p>
+        <p>PAYMENT.NO</p>
+        <p>Uniquely identifies the payment and the contract to which it relates. Any number of manual payments may be entered for a single contract, however, each has its own unique ID. This consists of the contract number and a sequential payment number which uniquely identifies individual payments. The contract to which the payment relates must be manually entered but the payment number will automatically default from the MG.PAYMENT.CONTROL file. The way in which this is done depends on the function required as follows: (I)nput If an unauthorised payment record exists then the number of this will be defaulted, if not, the next sequence number available will be taken. For example, if two payment records have already been entered for this contract (nos. 1 and 2) then the payment number will default to 3. (D)elete and (A)uthorise The payment number of any unauthorised payment will default. Note: For the above functions it is not possible to enter any payment other than the one that will default. (R)everse The most recent payment entered, ie the highest payment number, will default. If the reversal of an earlier payment is required then the payment number must be entered manually. (S)ee and (P)rint If an unauthorised payment exists this will default, otherwise the most recent payment number, ie the highest, will be taken. If a prior payment record is required then the payment number must be entered manually. The contract number portion of the ID may also be entered in shorthand format. It is not necessary to enter the "MG" module prefix or any leading zeroes in the sequence number portion of the contract number. For more details on the structure of the contract ID and the shorthand method of input, refer to the MG.MORTGAGE helptext. </p>
+        <p>Validation Rules</p>
+        <p> This field has two components as follows: a) A valid contract ID, 10 numeric characters prefixed by "MG" with an optional 1 alpha suffix. b) "." c) 1 - 3 alpha character payment number. MGYYDDDNNNNNA.NNN (mandatory input - payment no will default from MG.PAYMENT.CONTROL file) Must reference an existing contract record with a contract status of CUR. Only one unauthorised payment record for a contract is permitted at any given time. Manually entered payment numbers for the input function must use the next payment as defined by the MG.PAYMENT.CONTROL record. (R)eversals must reference an existing authorised payment and are not allowed if an unauthorised record exists.</p>
+        <p>PENALTY.AMOUNT</p>
+        <p>Specifies the penalty to be charged for forward closure of Annuity Mortgages. When entering a forward valued closure of an Annuity Mortgage, this field can be used to enter the amount of penalty to be charged to the customer for the early closure. When this amount is entered a forward movement with a value date of the closure is generated. On the closure date an account movement and a PL movement will be generated. The category used on the PL movement is the Penalty Interest category on the MG.PARAMETER file. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 19 numeric characters. (Optional input) Input only allowed when entering a forward valued closure for an annuity mortgage. Cannot be greater than the outstanding amount on the Mortgage.</p>
+        <p>RECALC.REPAYMENT</p>
+        <p>Requests a recalculation of the repayment amount to reflect the reduction in the outstanding principal amount. Used for redemption type contracts only. For redemption type contracts the change in the outstanding balance of the contract, which is brought about by the input of this payment, will have an effect on future repayments and the final maturity of the contract. The customer may wish to see the periodic repayments on the loan reduced as a result of this redemption; alternatively they may be left at the same level in which case the loan will be repaid earlier. This field is used to indicate whether or not the repayment amount is to be automatically recalculated. The new repayment amount will become effective on the next repayment date after which the principal amount, and in the case of annuity loans the interest rate, have remained unchanged for a full repayment period. If a "Y" is entered in this field and a date is present in the VALUE.DATE field, then the effective date of any new repayment amount will be defaulted into the NEW.REPAY.DATE field. </p>
+        <p>Validation Rules</p>
+        <p> 1 alpha character - only (Y)es allowed. (optional input) Input not allowed for SAVING and NONREDEM contracts. The only allowable input is "Y".</p>
+        <p>RECORD.STATUS</p>
+        <p>RESERVE3</p>
+        <p>This field is reserved for future expansion.</p>
+        <p>STMT.NO</p>
+        <p>A number generated automatically by the system which identifies either a statement entry or a category entry in respect of a contract. Whenever a payment is entered via this application a number of accounting entries will be raised. This field will record the IDs of the entries generated. The IDs to accounting entries, both STMT.ENTRYs and CATEG.ENTRYs, consist of a date-time stamp and a sequence number. All entries raised by a particular input/transaction will have the same date-time stamp but different sequence numbers. This field has three multivalues, the first contains the base date-time stamp which is common to all entries. The second contains the sequence numbers of the STMT.ENTRYs raised and the third the sequence numbers of any CATEG.ENTRYs. The examples on the following pages illustrate the use of this field more clearly. Example 1: When a payment record is authorised a debit entry for the payment amount will be posted to the account entered PAYMENT.ACCOUNT field. The system will generate a statement entry and record the ID of the entry in this field as follows: 22.1 STMT.NO ............ 673732684.48 22.2 STMT.NO ............ 1 The number automatically generated in Field 22.1 is unique to the payment in question and is built up in the following way: 1. The first four digits '6737' indicate the number of days since the 1st of January 1968. In our example it corresponds to the 11th of June 1986. 2. The next five digits '32684' indicate the number of seconds since midnight. In our example it corresponds to an entry generated on line at 09:04:44 AM. 3. The last two digits '48' indicate the number of hundreds of seconds. The value assigned to Field 22.2 identifies the number in 22.1 as a statement entry number. This entry can be seen via the STMT.ENTRY Application using the the ID: 673732684.480001 where the suffix '0001' identifies it as the first statement entry (there may be more than one as the next example will illustrate). Example 2: A second example might be that of a payment where two separate charges have been levied. The payment itself will generate a debit statement entry as in the previous example. However, the addition of charges will generate a further two statement entries debiting the charge account for the amount of each charge, as well as a category entry crediting the relevant P&amp;L category code(s). The IDs of the entries generated will be recorded as follows: 22.1 STMT.NO ............ 673732684.48 22.2 STMT.NO ............ 1 - 3 22.3 STMT.NO ............ 1 - 2 Once again the standard date-time stamp is generated and inserted in Field 22.1. Now, however, both fields 22.2 and 22.3 contain a value. The value in field 22.2 now indicates that three statement entries have been raised and in field 22.3 that two category entries have also been raised. To view these entries the STMT.ENTRY and now the CATEG.ENTRY application should be used. In this case the IDs required for each application are: STMT.ENTRY 673732684.480001 673732684.480002 673732684.480003 CATEG.ENTRY 673732684.480001 673732684.480001 </p>
+        <p>Validation Rules</p>
+        <p> Internal multivalue field.</p>
+        <p>TRANSACTION.DATE</p>
+        <p>Identifies the date on which the transaction instructions were received. In some cases the date on which the bank recieved the payment instructions may not be the value date of the payment. This field is used to record this date. The default value for this field is the date of input of the transaction. </p>
+        <p>Validation Rules</p>
+        <p> Standard date format (mandatory input - default the current date) Must be greater then the VALUE.DATE of the contract.</p>
+        <p>TRANSACTION.TYPE</p>
+        <p>Defines the type of transaction being entered. The value entered in this field determines the type of transaction being processed. This will determine the transaction codes used and therefore the narrative appearing on the customers's statement. The following types are available: 1. REDEMPTION This type should be used for the input of partial redemption transactions, where an amount of principal less than the outstanding balance of the loan is being repaid. The value date for this type of transaction can be any date prior to the current date and may be prior to a previous repayment date if required. The transaction code used for this type is 810. Any adjustments to existing payments caused by this transaction being backdated prior to a previous repayment, will raise entries using the transaction codes 814 and 816 for principal and interest respectively. 2. CLOSURE This type of transaction can only be used to close or fully repay a contract. It is not necessary to enter the PAYMENT.AMOUNT as this will automatically default to the outstanding principal on the contract. Interest will be accrued up to the payment date in the VALUE.DATE field and this and any other outstanding interest will also be repaid, however this amount is not included in that shown in the PAYMENT.AMOUNT field. The transaction codes used for the accounting entries raised are 810 and 804 for principal and interest respectively. CLOSURE type transactions cannot be reversed. 3. ADJUSTMENT This type is similar to REDEMPTION except that the transaction code used for the debit entry of the PAYMENT.AMOUNT is 814. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 12 alpha character. Must be either (R)EDEMPTION, (C)LOSURE or (A)DJUSTMENT. (mandatory input) Must be CLOSURE if the PAYMENT.AMOUNT field contains the outstanding principal balance of the contract. CLOSURE only allowed if the amount entered in the PAYMENT.AMOUNT field is the outstanding principal balance of the contract.</p>
+        <p>VALUE.DATE</p>
+        <p>Identifies the value date of the payment for accounting purposes. The date entered in this field is the value date of the payment. The payment amount will be debited to the account entered in the PAYMENT.ACCOUNT field with a value date of the date entered here. If interest has already been accrued on the contract beyond this date, then the accrual will be adjusted. Similarly, if this date is prior to that of an earlier payment or scheduled repayment, then these repayment amounts will be adjusted and re-posted. </p>
+        <p>Validation Rules</p>
+        <p> Standard date format (mandatory input) Can only be a future date for Annuity contracts. Otherwise it cannot. The date entered must be greater than that in the RECORD.START.DATE field on the MG.BALANCES file for the contract. If the TRANSACTION.TYPE is CLOSURE this date cannot be prior to the last repayment date.</p>
+        <p>WAIVE.TAX</p>
+        <p>This field is used whenever there is a tax specified on principal in the main MG contract. If set to 'NO', the system will appropriate tax whenever there is an MG payment made. </p>
+        <p>Validation Rules</p>
+        <p> Input can either be NULL or NO Allowed only for ADJUSTMENT and REDEMPTION transaction type.</p>
+        <p>CHARGE.AMT.LCY</p>
+        <p>Identifies the amount(local equivalent) to be charged defined in the charge code entered in the associated value of the CHARGE.CODE field.This amount will be defaulted, dependent on the charge code entered </p>
+        <p>Validation Rules</p>
+        <p>								Field associated with the fields from CHARGE.DATE to CHARGE.TAX.CODE				Defaulted from FT.CHARGE.TYPE file.</p>
+        <p>CHARGE.TAX.AMT</p>
+        <p>Identifies the amount to be taxed against the Charge amount.This amount is defaulted at the time of validation of the contract. 				</p>
+        <p>Validation Rules</p>
+        <p>								This is a noinput field.				This field is associated with the fields from CHARGE.DATE to CHARGE.TAX.COD.</p>
+        <p>CHARGE.TAX.LCY</p>
+        <p>This field identifies the local currency equivalent of the Tax on Charge if any. This is a Noinput fiel.</p>
+        <p>CHARGE.TAX.CODE</p>
+        <p>Specifies the TAX.CODE applicable on the charges on the contract. The Tax codes defined on this field will be defaulted by the system depending on the charge codes entered on the contract.The Tax codes are held on the FT.CHARGE.TYPE or the FT.COMMISSION.TYPE file.for the charge code applicable.				</p>
+        <p>Validation Rules</p>
+        <p>								System Generated, No Input field.			.</p>
+        <p>TAX.PAYMENT</p>
+        <p>This field is used for populating the Tax amount due to be paid when the contract is pre matured and if the contract is taxable </p>
+        <p>Validation Rules</p>
+        <p>								System Generated, No Input field.</p>
+        <p>TERM</p>
+        <p>Refer helptext of TERM of MG.MORTGAGE Application</p>
+    </desc>
+</t>
+<t>
+<field>ADVICE.TYPE</field>
+<desc>
+            <p>ADVICE.TYPE </p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.ACCOUNT</field>
+<desc>
+            <p>Identifies the account to which the charge amount entered in the associated CHARGE.AMOUNT field is to be debited. </p>
+            <p>For each charge code entered, an account to which the charge amount is to be debited must also be entered. This can be done manually or defaulted by the system. </p>
+            <p>If no account is entered then the account from the PAYMENT.ACCOUNT field will be defaulted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard account number format. or   3 - 10 alphanumeric account mnemonic. Multivalue field associated with fields CHARGE.CODE to CHARGE.ACCOUNT. (mandatory input if CHARGE.CODE entered - default from PAYMENT.ACCOUNT)</p>
+            <p>Must be a valid account on the ACCOUNT file.</p>
+            <p>An override will be required if the customer of the account entered is not that of the contract.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.AMOUNT</field>
+<desc>
+            <p>Identifies the amount to be charged against the charge code entered in the associated value of the CHARGE.CODE field. </p>
+            <p>The amount entered in this field represents the charge amount to be levied for the associated charge code. </p>
+            <p>This amount may be defaulted, dependent on the charge code entered, from the FT.CHARGE.TYPE table. In this case the amount defined in the FLAT.AMOUNT field for the currency of the loan will be taken as the default. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 11 numeric characters. Multivalue field associated with fields CHARGE.CODE to CHARGE.ACCOUNT. (mandatory input if CHARGE.CODE entered - default from FT.CHARGE.TYPE table)</p>
+            <p>Input mandatory if no default available from the FT.CHARGE.TYPE table.</p>
+            <p>Amount must be positive.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

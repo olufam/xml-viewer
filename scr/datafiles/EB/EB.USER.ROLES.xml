@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>EB.USER.ROLES</table>
+</header>
+<overview>
+<ovdesc>
+
+        <p> Security Management System uses the <b>EB.USER.PROFILE</b>application, to control T24 access and information and facilities by grouping together various T24 Applications.</p>
+        <p>Enables the creation of logical group and specifies the group directly in a user profile, to avoid repetition of related applications, in different user profiles.</p>
+        <p> Every user record existing in T24 must have a role defined for them.</p>
+        <p>Specific Role needs to be defined for each company. </p>
+        <p>A user is allowed to have multiple roles in a same company. But while logging in, the user has to select a role, if merging is disabled.</p>
+        <p>For each roles defined, Permitted Activity is determined by specifying restriction at 3 levels: </p>
+        <p>
+            <p value="1">APPLICATION (and VERSION)</p>
+            <p value="2">FUNCTION</p>
+            <p value="3">FIELD </p>
+        </p>
+        <p>so that it is possible to specify precisely, which record can be accessed.</p>
+        <b>Validations:</b>
+        <p>
+            <p value="1"> Up to 999 combinations of Company, Application, Function and Field are allowed.</p>
+        </p>
+    </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>DISPO.RIGHTS</field>
+<desc>
+        <p>Allows a user to access and update DISPO items, with the approval of the other dispo officers. This facilitates a higher-ranking officer to take over the duty of a lower level officer, as and when required.</p>
+        <p> Validations:</p>
+        <p>
+            <p value="1"> Multi-valued field (Optional      input)</p>
+            <p value="2"> Must be a valid dispo officer      as defined in the <b>DISPO.OFFICER</b> file.</p>
+            <p value="3"> The <b>DISPO.RIGHTS</b> must not be      the same as the <b>DISPO.OFFICER</b>.</p>
+            <p value="4"> Duplicates not allowed.</p>
+            <p value="5"> <![CDATA[ ]]><b>DISPO.RIGHTS</b> cannot be      entered when <b>DISPO.OFFICER</b> is empty.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>OVERRIDE.CLASS</field>
+<desc>
+        <p>Specifies the override class the user is allowed to approve.</p>
+        <p>Validations:</p>
+        <p>
+            <p value="1"> Format; 4 type A (alphanumeric) characters.</p>
+            <p value="2"> Multi-valued field. (Optional input; default value = none.)</p>
+            <p value="3"> T24 override messages can be classified by means of the <b>OVERRIDE.CLASS</b> table. </p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>FUNCTION</field>
+<desc>
+        <p>Specifies the functions, which are used to access the records of the Application, entered in the corresponding Field 2.</p>
+        <p> This field is used, together with the associated Fields 2-3 and 5-8 to specify precisely, which function, the user uses to access which record and in which Application.</p>
+        <p>Valid function codes are:           A 2 C D E H I L P Q R S V</p>
+        <p> If NOT is entered, plus one or more Function codes, the system converts the code into a list of all the Functions which are allowed.  (See Fields 2, 3 and 5 for examples.)</p>
+        <p><![CDATA[ ]]><b>Note:</b>During an input function, even if the function C (copy) is not allowed, the user           can transfer the ID (together with its           enrichment) of a selected record using the !           facility.</p>
+        <p> Validations:</p>
+        <p>
+            <p value="1"> 0-29 type S (uppercase alpha or numeric) characters.</p>
+            <p value="2">Function codes separated by spaces.   </p>
+            <p value="3">   NOT + one or more Function codes.</p>
+            <p value="4">      N (No Functions allowed).   </p>
+            <p value="5">   ALL (All Functions allowed). </p>
+            <p value="6">Multi-valued field associated with Fields 2-3, 5-8. </p>
+            <p value="7">Mandatory input except if a <b>USER.SMS.GROUP</b> is defined in field 2.1, the input will not be allowed. </p>
+            <p value="8">No Default Value. </p>
+            <p value="9">If Function 2 (2nd Authorization) is allowed, but not A (1st Authorization), the User is allowed to enter Function Code A - a Security Violation is generated if the record requested is not ready for 2nd Authorization.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>FIELD.NO</field>
+<desc>
+        <p>Specifies (when used together with Fields 6.1 - 8.1) precisely, which record can be accessed, that are specified in the corresponding <b>APPLICATION</b> (Field 2.)  </p>
+        <p>A record can be accessed, only if the field indicated, has a value allowed in the corresponding Fields 6 - 8</p>
+        <p> 0-3 numeric characters.</p>
+        <p> Or Up to 55 characters (type ANY) formatted in the following way:</p>
+        <p style="list-style-type: lower-roman;">
+            <p value="1">Up to 30 characters (type ANY) must be a valid entry on the <b>FILE.CONTROL</b> file, followed by,</p>
+            <p value="2"> A gt (greater than) sign, followed by,</p>
+            <p value="3">Up to 2 characters (type A) must be a valid entry in the multi-value field <b>SYS.FIELD.NAME</b> or <b>USER.FIELD.NAME</b> on the <b>STANDARD.SELECTION</b> record for the file specified in (i).</p>
+        </p>
+        <p> E.g. FOREX COUNTERPARTY</p>
+        <p> It is recommended that field names and not field numbers are specified. If field numbers are specified, then when a file layout changes all the user profiles affected will be manually changed.</p>
+        <p> E.g. 1: </p>
+        <p>To allow a User to See and List all Accounts records, but only Input (or change), Copy or Delete Accounts in pounds sterling.</p>
+        <p>
+            <p value="1">Field 2.1(APPLICATION) ACCOUNT</p>
+            <p value="2"> Field 4.1(FUNCTION) L S</p>
+            <p value="3"> Field 2.2(APPLICATION) ACCOUNT</p>
+            <p value="4"> Field 4.2(FUNCTION) I C D</p>
+            <p value="5"> Field 5.2(FIELD NO.) ACCOUNT&gt;CURRENCY (currency)</p>
+            <p value="6"> Field 6.2(DATA COMPARISON) EQ (equal)</p>
+            <p value="7"> Field 7.2(DATA FROM) GBP</p>
+        </p>
+        <p> E.g. 2:</p>
+        <p> To allow a User to access Account records, only if they have Currency equal GBP and Category not in the range 01-001 to 01-099.</p>
+        <p>
+            <p value="1"> Field 2.1(APPLICATION) ACCOUNT</p>
+            <p value="2"> Field 4.1(FUNCTION) ALL</p>
+            <p value="3">Field 5.1(FIELD.NO) ACCOUNT&gt;CURRENCY (Currency)</p>
+            <p value="4"> Field 6.1(DATA.COMPARISON) EQ (equal)</p>
+            <p value="5"> Field 7.1(DATA.FROM) GBP</p>
+            <p value="6"> Field 2.2(APPLICATION) ACCOUNT</p>
+            <p value="7"> Field 4.2(FUNCTION) ALL</p>
+            <p value="8"> Field 5.2(FIELD.NO) ACCOUNT&gt;CATEGORY (Category)</p>
+            <p value="9"> Field 6.2(DATA.COMPARISON) NE (not equal)</p>
+            <p value="10"> Field 7.2(DATA.FROM) 01-001</p>
+            <p value="11"> Field 8.2(DATA.TO) 01-099</p>
+        </p>
+        <p> E.g. 3:</p>
+        <p> To allow a User to Authorise Data Capture records, but only if they do not contain an override.</p>
+        <p>
+            <p value="1"> Field 2.1(APPLICATION) DATA.CAPTURE</p>
+            <p value="2"> Field 4.1(FUNCTION) A</p>
+            <p value="3"> Field 5.1(FIELD.NO) DATA.CAPTURE&gt;OVERRIDE (Override)</p>
+            <p value="4"> Field 6.1(DATA COMPARISON) LT (Less Than)</p>
+            <p value="5"> Field 7.1(DATA.FROM) (lowest possible value)</p>
+        </p>
+        <p><![CDATA[ ]]><b>Note:</b> It is not possible to prevent a user from entering on override during input, but Authorization can be restricted, as above, to ensure that any overrides are checked by a more senior person is the lowest value a field can have, so specifying LT (Less Than) ensures that no override may be present.</p>
+        <p>E.g. 4:</p>
+        <p> Restricting FOREX transaction to counterparties, that belong to a specific account officer.</p>
+        <p>
+            <p value="1"> Field 2.1(APPLICATION) FOREX</p>
+            <p value="2"> Field 4.1(FUNCTION) I</p>
+            <p value="3"> Field 5.1(FIELD.NO) CUSTOMER&gt;ACCOUNT.OFFICER</p>
+            <p value="4"> Field 6.1(DATA COMPARISON) EQ</p>
+            <p value="5"> Field 7.1(DATA.FROM) 100</p>
+        </p>
+        <p><![CDATA[ ]]><b>Note:</b> The field specified does not have to belong to the application. If the system can link the APPLICATION to the field, then the SMS restriction will be applied. </p>
+        <p>In this example the COUNTERPARTY field on the FOREX file provides the link to the CUSTOMER file. Hence when the transaction is input, T24 reads the CUSTOMER file using the COUNTERPARTY as the key and checks that the ACCOUNT.OFFICER is 100. You do not have to define COUNTERPARTY as the key to CUSTOMER file. It is done automatically based on the RELATED.FILE stored in the STANDARD.SELECTION record for FOREX.</p>
+        <p><![CDATA[ ]]><b>Note:</b> If the user wants to test a value in a related file, a consderable process load can be incurred, when the user lists the file. This can be relieved by defining the related field as a J-descriptor user field on the STANDARD.SELECTION record.</p>
+        <p>Thus in the example above, define CUST.OFFICER as type J, CUSTOMER,ACCOUNT.OFFICER and then specify the FIELD.NO as FOREXCUST.OFFICER.</p>
+        <p> Validations:</p>
+        <p>
+            <p value="1">See Details for format.</p>
+            <p value="2"> It must not be higher than the number of fields specified in APPLICATION         (Field 2.)</p>
+            <p value="3"> Input in this field will not be allowed when N has been         input in FUNCTION (Field 4.1).</p>
+            <p value="4">
+                <p> Multi-valued field associated with Fields 2-4 and 6-8.</p>
+            </p>
+            <p value="5">
+                <p> (Optional input. No input means all records may be accessed, regardless of contents.)</p>
+            </p>
+            <p value="6">
+                <p> For multi-valued fields, only the field number may be specified, not the entry number, e.g. 5, not 5.1, all entries in the multi-value field will be checked. The system displays the name of the field indicated.</p>
+            </p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>VERSION</field>
+<desc>
+        <p>Specifies a Version, which is used to access the records, that are entered in the corresponding <b>APPLICATION</b> (Field 2.1).</p>
+        <p> This field is used, together with the associated Fields 2-8, to specify precisely, is accessed by the user and in which Application , using which Versions and Functions.  </p>
+        <p>
+            <p value="1"> *  and  ?  - specifies more than one Version. They act as wild card characters.</p>
+            <p value="2"> * - replaces any number of characters including null, numbers, alphabets etc. </p>
+            <p value="3"> ? - replaces one character including null, numbers, alphabets etc.</p>
+        </p>
+        <p>The version field can have the values for e.g. <b>,SAVE*</b> - which allows the user to access Versions of <b>ACCOUNT</b> applications for e.g. :<b>ACCOUNT,SAVESTUDENT, ACCOUNT,SAVERESIDENT, ACCOUNT,SAVESALARIED</b>, etc </p>
+        <p>The version field can have the values for e.g.: <b>,SAVE1000?00</b>- which allows the user to access versions of <b>ACCOUNT</b> application for e.g. <b>SAVE1000100, SAVE1000200, SAVE1000300</b> , etc</p>
+        <p><![CDATA[  ]]><b>Note:</b> Versions of Application, changes the screen layout or the rules for Input, Validation and Authorization. </p>
+        <p> E.g. 1</p>
+        <p> To allow a User to List and See all Accounts except for those with Account Officer = 24 using the standard version of Account, and to List and See all Accounts for Account Officer = 24 only, using a special Version Account,99:</p>
+        <p>
+            <p value="1"> Field 2.1(APPLICATION) ACCOUNT</p>
+            <p value="2">Field  3.1(VERSION) </p>
+            <p value="3">Field 0 4.1(FUNCTION)</p>
+            <p value="4">Field  L S 5.1(FIELD NO) </p>
+            <p value="5">Field 9 6.1(DATA COMPARISON) NE </p>
+            <p value="6">Field 7.1(DATA FROM) 24 </p>
+            <p value="7">Field 2.2(APPLICATION) ACCOUNT </p>
+            <p value="8">Field 3.2(VERSION) </p>
+            <p value="9">Field 99 4.2(FUNCTION) L S </p>
+            <p value="10">Field 5.2(FIELD NO) 9 </p>
+            <p value="11">Field 6.2(DATA COMPARISON) EQ </p>
+            <p value="12">Field 7.2(DATA FROM) 24</p>
+        </p>
+        <p> E.g. 2</p>
+        <p>  To allow a User to Input and See all Account version, with name starting with SAVINGS followed by any character:</p>
+        <p>
+            <p value="1"> Field 2.1(APPLICATION) ACCOUNT </p>
+            <p value="2">Field 3.1(VERSION) ,SAVINGS* </p>
+            <p value="3">Field 4.1(FUNCTION) I S</p>
+        </p>
+        <p>For more examples of Fields 2-8 see Fields 2 and 5.</p>
+        <p> Validations:</p>
+        <p>
+            <p value="1"> 0-50 type A (alphanumeric) characters beginning with , or </p>
+            <p value="2">0 to allow only the standard version. or </p>
+            <p value="3">No input to allow all Versions. </p>
+            <p value="4">Multi-valued field associated with Fields 2, 2 and 4-8. </p>
+            <p value="5">Optional input, except if a <b>USER.SMS.GROUP</b> is defined in field 2.1, in which case the input is not allowed. If not entered, access to all Versions is allowed.</p>
+        </p>
+        <p data-mc-continue="true">
+            <p value="6"> Special character  *  will replace any number of characters and  ?  replaces one character. </p>
+            <p value="7">Also  ?  after  *  and two occurrences of  *  are not allowed.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>DISPO.OFFICER</field>
+<desc>
+        <p> Specifies the <b>DISPO.OFFICER</b>  Id that is assigned to the user, if  they have authorisation to approve the dispo items.</p>
+        <p> Validations</p>
+        <p>
+            <p value="1"> Must be a valid dispo officer as defined in the <b>DISPO.OFFICER</b> file.</p>
+            <p value="2">Optional.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>APPLICATION</field>
+<desc>
+        <p>Specifies the name of an existing Application to be included in <b>EB.USER.ROLES</b> record.</p>
+        <p>
+            <p style="color: #000000;" value="1">E.g. the name of an existing application <b>USER.SMS.GROUP</b> preceded by '@' sign, </p>
+            <p style="color: #000000;" value="2">ALL.PG which allows access to all Applications or </p>
+            <p style="color: #000000;" value="3">ALL.PG.(program type) which allows access to all Applications for a certain type (see below).</p>
+        </p>
+        <p>The following program types can be used in conjunction with ALL.PG (e.g. ALL.PG.H) to give access to a particular type of program:</p>
+        <p>
+            <p value="1"> Program Type Meaning</p>
+            <p value="2"> <![CDATA[  ]]><b>H Program</b> - 3 standard files exist - Live, Unauthorised and History, e.g. CUSTOMER.</p>
+            <p value="3"> <![CDATA[  ]]><b>U Program</b> - Live and Unauthorised files exist, but no History, e.g. VERSION.</p>
+            <p value="4"> <![CDATA[  ]]><b>L Program</b> - only a Live file exists (updated automatically by the system) e.g. STMT.ENTRY (only L, S and P functions can be used with this type of program).</p>
+            <p value="5"> <![CDATA[  ]]><b>M Program</b> - designed to do other than processing the standard T24 functions using a specific file e.g. PASSWORD.ENABLE, End Of Day Batch programs.</p>
+            <p value="6"> <![CDATA[  ]]><b>T Program</b> - handles automatically updated CONCAT files, e.g. CUSTOMER.ACCOUNT (only L, S and P functions can be used with this type of program). </p>
+        </p>
+        <p><b>Note:</b> The following 3 type M programs are available to all users and cannot be restricted: <b>SIGN.ON SIGN.OFF PASSWORD</b></p>
+        <p> E.g. 1</p>
+        <p> To define a role which  give a User access to all the records for the Company this role is defined for, using all Functions (except auditor review) and all Versions of all Applications.</p>
+        <p>Enter the following:</p>
+        <p>
+            <p value="1"> Field 2.1(APPLICATION) ALL.PG</p>
+            <p value="2"> Field 3.1(VERSION)</p>
+            <p value="3"> Field 4.1(FUNCTION) ALL</p>
+        </p>
+        <p><![CDATA[ ]]><b>Note:</b> Fields 5-8 are used to specify particular records or types of records which may be accessed within an Application. See FIELD NO (Field 5) for examples.</p>
+        <p> E.g. 2</p>
+        <p> To give a User access to List Display, Input and Copy Customer records and to List and Display records for all other Applications.</p>
+        <p>Enter the following:</p>
+        <p>
+            <p value="1"> Field 2.1(APPLICATION) ALL.PG</p>
+            <p value="2"> Field 4.1(FUNCTION) L S</p>
+            <p value="3"> Field 2.2(APPLICATION) CUSTOMER</p>
+            <p value="4"> Field 4.2(FUNCTION) L S I C</p>
+        </p>
+        <p> E.g. 3</p>
+        <p> To prevent a USER from using any type M Applications, but allow him to List and Display records in any other Applications.</p>
+        <p>Enter the following:</p>
+        <p>
+            <p value="1"> Field 2.1(APPLICATION) ALL.PG.H</p>
+            <p value="2"> Field 4.1(FUNCTION) L S</p>
+            <p value="3"> Field 2.2(APPLICATION) ALL.PG.U</p>
+            <p value="4"> Field 4.2(FUNCTION) L S</p>
+            <p value="5"> Field 2.3(APPLICATION) ALL.PG.L</p>
+            <p value="6"> Field 4.3(FUNCTION) L S</p>
+            <p value="7"> Field 2.4(APPLICATION) ALL.PG.T</p>
+            <p value="8"> Field 4.4(FUNCTION) L S</p>
+        </p>
+        <p> Validations:</p>
+        <p>
+            <p value="1"> 1-30 type SSS (uppercase alpha) characters, Application name.</p>
+            <p value="2"> ALL.PG to allow all Applications.</p>
+            <p value="3"> ALL.PG (program type) see details.</p>
+            <p value="4"> @ sign followed by a valid USER.SMS.GROUP</p>
+            <p value="5"> Multi-valued field associated with Fields 2-8. (Mandatory input in each set of Fields 2-8.)</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>DATA.COMPARISON</field>
+<desc>
+        <p>Specifies the type of comparison, made between the contents of the field FIELD NO (Field 5) and  Fields 7 and 8.</p>
+        <p> The meanings of the Inputs are as follows:           </p>
+        <p>
+            <p value="1">EQ   Equal to           GE   Greater than or </p>
+            <p value="2">Equal to           GT   Greater Than           LE   Less than or </p>
+            <p value="3">Equal to           LT   Less Than           NE   Not Equal to           LK   Like           UL   Unlike</p>
+        </p>
+        <p> User can access only the records, indicated in FIELD NO (Field 5) and which satisfies the conditions specified in Fields 6-8. </p>
+        <p>For example see FIELD NO (Field 5).</p>
+        <p> Validations:</p>
+        <p>
+            <p value="1"> EQ, GE, GT, LE, LT, NE, LK, UL or no input. </p>
+            <p value="2">Multi-valued field associated with Fields 2-5, 7 and 8. </p>
+            <p value="3">Mandatory input if FIELD NO (Field 5) is entered, otherwise input is not allowed.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>DATA.FROM</field>
+<desc>
+        <p>Specifies a value, or start of a range of values, with which the contents in FIELD NO (Field 21) are  compared.</p>
+        <p> 1-35 type A (alphanumeric) characters.</p>
+        <p> OR Up to 55 characters (type ANY) formatted in the following way:</p>
+        <p style="list-style-type: lower-roman;">
+            <p value="1"> up to 30 characters (type ANY), must be a valid entry on the <b>FILE.CONTROL</b> file, followed by,</p>
+            <p value="2"> a gt (greater than) sign, followed by,</p>
+            <p value="3">up to 2 characters (type A), must be a valid entry in the multi-value field <b>SYS.FIELD.NAME</b> on the <b>STANDARD.SELECTION</b> record for a file specified in (i).</p>
+        </p>
+        <p><![CDATA[ ]]><b>Note:</b> The values input in this field and the next field must be in agreement with the Format rules of the element specified in Field 21.1. </p>
+        <p>E.g., the input in Field 21 corresponds to a Customer Mnemonic - a minimum input of 3 characters is required in this field.</p>
+        <p> When defining the enquires a user can run, and also turn off all SMS checks for a particular enquiry. This is useful when the enquiry presents non sensitive information from sensitive files. </p>
+        <p>i.e. you may wish to show customer and account static information (address, account titles etc ) but not the balances. </p>
+        <p>As the enquiry by itself controls the presentation, there may be no need for any additional security. To suppress SMS you must append *NOSMS to the name of the enquiry. </p>
+        <p>E.g.</p>
+        <p>
+            <p value="1"> Field 2.1 (APPLICATION) ENQUIRY.SELECT</p>
+            <p value="2"> Field 4.1(FUNCTION) I</p>
+            <p value="3"> Field 5.1(FIELD.NO) 0</p>
+            <p value="4"> Field 6.1(DATA.COMPARISON) EQ</p>
+            <p value="5"> Field 7.1(DATA.FROM) CUSTOMER.STATIC*NOSMS</p>
+        </p>
+        <p> This mechanism works only with ENQUIRY.SELECT and must be entered in the format detailed above.</p>
+        <p> Validations:</p>
+        <p>
+            <p value="1"> See Details for format.</p>
+            <p value="2"> Input must begin and/or end with 3 dots when         DATA.COMPARISON = LK or UL</p>
+            <p value="3">
+                <p> Multi-valued field associated with Fields 2-6 and 8.</p>
+            </p>
+            <p value="4">
+                <p> Mandatory input if FIELD NO is entered, otherwise input is not allowed.</p>
+            </p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>DATA.TO</field>
+<desc>
+        <p>Specifies the end-range of values, with which the contents indicated in FIELD NO (Field 5) are compared.</p>
+        <p> 0-35 type A (alphanumeric) characters.</p>
+        <p> OR        Up to 55 characters (type ANY) formatted in the           following way:</p>
+        <p style="list-style-type: lower-roman;">
+            <p value="1">      Up to 30 characters (type ANY) must be a valid           entry on the <b>FILE.CONTROL</b> file, followed by,</p>
+            <p value="2">      A (greater than) sign, followed by,</p>
+            <p value="3">    Up to 2 characters (type A) must be a valid           entry on the multi-value field <b>SYS.FIELD.NAME</b> on the           <b>STANDARD.SELECTION</b> record for the file specified in           (i).</p>
+        </p>
+        <p><![CDATA[ ]]><b>Note:</b>     The values input in this field and the previous field           must be in agreement with the Format rules of the           element specified in Field 5.1. </p>
+        <p>E.g., the           input in Field 5 corresponds to a Customer Mnemonic,           a minimum input of 10 characters will be required in           this field.</p>
+        <p> Validations:</p>
+        <p>
+            <p value="1"> See Details for format.</p>
+            <p value="2"> It may only be input if corresponding DATA COMPARISON (Field 6) contains EQ (Equal To) or NE (Not Equal To).</p>
+            <p value="3"> Must not be less than DATA FROM (Field 7)</p>
+            <p value="4">
+                <p>Multi-valued field associated with Fields 2-7.</p>
+            </p>
+            <p value="5">
+                <p> (Optional input if Field 6 contains EQ or NE, otherwise not allowed.)</p>
+            </p>
+        </p>
+    </desc>
+</t>
+<t><field>EB.USER.ROLES.ID</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>DESCRIPTION</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

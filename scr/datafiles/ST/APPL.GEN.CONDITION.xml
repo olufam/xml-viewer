@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>APPL.GEN.CONDITION</table>
+</header>
+<overview>
+<ovdesc>
+<p>This application can be used to allocate group codes based on a number of defined conditions and/or local routines for any T24 application with a STANDARD.SELECTION record. </p><p>A T24 subroutine APPL.GRP.CONDITION can be called to evaluate the current contract record using relevant APPL.GEN.CONDITON. It will return the first group code where all decision checks evaluate to true. </p><p>The MM.MONEY.MARKET and LD.LOANS.AND.DEPOSIT applications call the evaluation routine automatically. Other applications can call the evaluation routine from VERSION routines to update local reference fields with the relevant group code. </p></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>LOCAL.REF</field>
+<desc><p>Identifies any additional element which has been defined locally to meet a particular requirement. </p><p>Upto 999 Local reference fields can be defined to meet local requirements. </p><p><p>Validation Rules:</p></p><p>Up to 35 characters as defined in the Local Table definition for this Local Reference field.  Multivalue field.  Optional or Mandatory as defined in the LOCAL.TABLE for this Local Reference element.</p></desc>
+</t>
+<t>
+<field>DECISION</field>
+<desc><p>The condition to be evaluated. Mandatory input if the DECIS.FIELD is not set to call a subroutine (where first character is @) in which case input is not allowed. </p><p>Must be one of the following: </p><p>EQ   EQual to GE   Greater than or Equal to GT   Greater Than LE   Less than or Equal to LK   LiKe LT   Less Than NE   Not Equal NR   Not in Range RG   in RanGe UL   UnLike </p><p><p>Validation Rules:</p></p><p>2 alpha characters. Must be in the following list: EQ GE GT LE LK LT NE UL</p></desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc><p>This field can be expanded to allow the User to enter the description of this record in various languages.  Each expansion of the field will correspond to a new Language as defined in the LANGUAGE table (Ref: GENERAL TABLES), and will indicate to the User the Language in which the Description must be entered. </p><p><p>Validation Rules:</p></p><p>3-35 type A (alphanumeric) characters. Multilanguage field. Multivalue field. (Mandatory input)</p></desc>
+</t>
+<t>
+<field>DECISION.TO</field>
+<desc><p>The upper value used for field value comparisons based on ranges where the DECISION field is defined as NR (Not in Range) or RG ( in RanGe). </p><p><p>Validation Rules:</p></p><p>Up to 35 alphanumeric characters.  Input not allowed if the decision field is not set to RG or NR.  Input not allowed if a local subroutine is defined in DECIS.FIELD.</p></desc>
+</t>
+<t>
+<field>APPLICATION</field>
+<desc><p>The name of the application for which group conditions are to be set up. The application must be defined on STANDARD.SELECTION. </p><p><p>Validation Rules:</p></p><p>Up to 35 characters. Must be defined on STANDARD.SELECTION.</p></desc>
+</t>
+<t>
+<field>CONTRACT.GRP</field>
+<desc><p>Identifies the contract group based on the conditions defined in the fields from DECIS.FIELD to DECISION.TO. Each contract group can be based on multiple decision checks. All decision checks must evaluate to true for the group code to be allocated. The first group to pass all decision checks will be allocated, and no further processing will take place, so the order in which groups are defined is critical. If a decision check evaluates to false then the next decision group will be evaluated. </p><p>Each decision check is performed by either: Calling a locally developed subroutine to perform complex evaluation tasks. </p><p>or: Evaluating the variable returned from the DECIS.FIELD value using the comparison defined in the DECISION field against the values defined in the DECSION.FR and DECSION.TO fields. The variable returned from the DECIS.FIELD value can be one of 3 types as follows and must be defined on the STANDARD.SELCTION record for the application. </p><p>DATA ITEM The contents of a data field in the application record being processed. </p><p>LINKED DATA ITEM The contents of a linked record field as defined in the STANDARD.SELECTION record for the application. For example in MM.MONEY.MARKET: </p><p>1. 5 SYS.FIELD.NAME. CUST.TAX.GROUP 2. 5 SYS.TYPE....... J 3. 5. 1 SYS.FIELD.NO CUSTOMER.ID&gt;CUSTOMER.CHARGE&gt;TAX.ACT.GROUP </p><p>Where the customers tax group is derived from the customer charge record. </p><p>IDESCRIPTOR FIELD Where the result of a subroutine can be allocated to a field name. For example in MM.MONEY.MARKET </p><p>1.140 SYS.FIELD.NAME. PRINCIPAL.EQUIV 2.140 SYS.TYPE....... I 3.140. 1 SYS.FIELD.NO SUBR("PCONV",PRINCIPAL,CURRENCY,"GBP") </p><p>A subroutine PCONV is called which converts the PRINCIPAL in the CURRENCY of the contract to GBP. GBP is passed to the subroutine as a constant, it would be equally possible to use a LOCAL.REFERENCE field value for the "to" currency. </p><p><p>Validation Rules:</p></p><p>5 alphanumeric characters.</p></desc>
+</t>
+<t>
+<field>DECIS.FIELD</field>
+<desc><p>Can be either a local subroutine name or a field defined on the STANDARD.SELECTION record for the application (identified by application key field). </p><p>If a local subroutine is defined then the subroutine must be prefixed with the @ character. </p><p>Input for a field defined on STANDARD.SELECTION can be either the field number or the field name. </p><p /><p>LOCAL SUBROUTINE (TECHNICAL DETAILS) The local subroutine must be defined on the PGM.FILE as a type S or type V program. The local subroutine is called from the T24 subroutine APPL.GRP.CONDITION which evaluates the conditons defined by this application and returns the relevant group (if any) in the CONTRACT.GRP argument. </p><p>The local subroutine must be defined to accept four arguments as follows APPL            - the current application name ID.APPL         - the current application record @ID R.APPL          - the current alpplication record CONDITION.OK    - the result of the local subroutines checks                   0 = false 1 = true </p><p>It is possible to develop and define version subroutines which can call APPL.GRP.CONDITION to update local reference fields with the derived contract group value. APPL.GRP.CONDITION accepts four arguments as follows APPL            - current application name if null default is APPLICATION ID.APPL         - current application record @ID if null default ID.NEW R.APPL          - current alpplication record if null default R.NEW CONTRACT.GRP    - the first CONTRACT.GRP value to pass all decision                   checks, or null if there is no relevant group. The above default values are T24 common variables. </p><p><p>Validation Rules:</p></p><p>Up to 35 alphanumeric characters.</p></desc>
+</t>
+<t>
+<field>DECISION.FR</field>
+<desc><p>The constant which the value derived from the DECIS.FIELD is compared to. Input is mandatory if the DECISION field is set. Input is not allowed if the DECIS.FIELD is set to call a subroutine. (First character is @). </p><p><p>Validation Rules:</p></p><p /><p>Up to 35 alphanumeric characters.</p></desc>
+</t>
+</menu>
+</t24help>
+

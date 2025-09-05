@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>IS</product>
+        <table>IS.PAYMENT</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>IS.PAYMENT is the application to capture the payments of an asset or a cost to the Vendor or Cost Counterparty respectively. </p>
+        </ovdesc>
+    </overview>
+    <menu>
+        <t>
+            <field>OVERRIDE</field>
+            <desc>
+                <p>Contains all the override messages which the user has confirmed during input.</p>
+                <p>During Commit, the system may generate a series of screen override messages waiting for User Approval. If the record is subsequently displayed or printed, all override messages are shown in this field.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>System generated. Multi-value field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PAYMENT.AMT</field>
+            <desc>
+                <p>The Amount that is actually paid to the Vendor from the specified BILL.AMT as on the date given in the field BILL.DATE.</p>
+                <p/>
+                <p>Associated Sub-value set from BILL.DATE-RETENTION.AMT.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. In case user overwrites the defaulted Retention amount, this field could be nullified. Then, the system defaults the Payment amount so that the sum of Payment amount and Retention amount matches the Bill Amount.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PAYMENT.METHOD</field>
+            <desc>
+                <p>The Payment Method to be executed for the payment. The following are the options:</p>
+                <p>1. ADHOC - FT Payment raised on authorization of the IS.PAYMENT record.</p>
+                <p>2. DD - Teller Payment done will be raised and the same transaction is recorded in IS.PAYMENT.</p>
+                <p>3. CASH - FT Payment done will be raised from the FT application and the same transaction is recorded in IS.PAYMENT.</p>
+                <p>4. SCHEDULE - FT Payment is recorded in the field IS.AUTO.PAY.SCHEDULES as defined in the schedule.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Mandatory Input.</p>
+                <p>2. Valid Values are ADHOC, DD, CASH and SCHEDULE</p>
+            </desc>
+        </t>
+        <t>
+            <field>PAYMENT.TYPE</field>
+            <desc>
+                <p>The type of payment - Vendor or Cost. The option "Vendor" is chosen for Asset Payments and the option "Cost" is chosen for Cost Payments.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Mandatory Input</p>
+                <p>2. Valid values are Vendor and Cost</p>
+            </desc>
+        </t>
+        <t>
+            <field>PURCHASE.REF</field>
+            <desc>
+                <p>The Purchase contract for which the Vendor payment is made.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Mandatory Input</p>
+            </desc>
+        </t>
+        <t>
+            <field>RETENTION.ACCT</field>
+            <desc>
+                <p>The retention amount will be withheld in this account. This is formed from the category defined in RETENTION.CAT field of the IS.PARAMETER for the Purchase Currency.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Field No-Input.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>RETENTION.AMT</field>
+            <desc>
+                <p>The Amount that has to be withheld from payment to the Vendor. This is accumulated in the Retention Account and should be later paid through FT application.</p>
+                <p/>
+                <p>Associated Sub-value set from BILL.DATE-RETENTION.AMT.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Calculated based on the Retention percentage and the Bill Amount.</p>
+                <p>2. User can overwrite the defaulted value but care should be taken that Bill Amount is equal to the sum of Payment amount and Retention amount.</p>
+            </desc>
+        </t>
+        <t>
+            <field>RETENTION.PCT</field>
+            <desc>
+                <p>The percentage of the Vendor payment to be retained from paying.</p>
+                <p>Associated Sub-value set from BILL.DATE-RETENTION.AMT.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Valid percentage (less than 100).</p>
+            </desc>
+        </t>
+        <t>
+            <field>TOTAL.BILL.AMT</field>
+            <desc>
+                <p>Sum of the Bill Amounts defined for an individual Payment Method multi-value set.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Field No-Input.</p>
+                <p>2. Should not exceed the Amount Due from Payment Balances.</p>
+            </desc>
+        </t>
+        <t>
+            <field>VALUE.DATE</field>
+            <desc>
+                <p>The Value date of the payment. If no date is given, system defaults the date to TODAY.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Standard T24 Date field</p>
+            </desc>
+        </t>
+        <t>
+            <field>ASSET.REF</field>
+            <desc>
+                <p>Asset is a valid asset that has been captured in the Purchase contract as requested by the Customer.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Field Mandatory for Vendor payment</p>
+                <p>2. Not allowed for Cost payment</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>VENDOR</field>
+            <desc>
+                <p>The Vendor of the Purchase contract. The Payment is made to the vendor through this application</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Must be a valid record from the table IS.VENDOR.</p>
+                <p>2. Mandatory Input</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>VENDOR.ACCT</field>
+            <desc>
+                <p>The Vendor account to which the vendor payment of the contract is credited. </p>
+                <p>This is defaulted from the IS.VENDOR table w.r.t to the Company and Currency. If no account configured for the company and specified vendor currency, no value is defaulted.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Must be a valid record in the table ACCOUNT.</p>
+                <p>2. Either Vendor Account or Beneficiary should be specified.</p>
+            </desc>
+        </t>
+        <t>
+            <field>VENDOR.CURRENCY</field>
+            <desc>
+                <p>Currency in which the payment is made to the Vendor.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Must a valid record from CURRENCY table.</p>
+                <p>2. Mandatory Input</p>
+            </desc>
+        </t>
+        <t>
+            <field>BEN.CUST</field>
+            <desc>
+                <p>The Beneficiary Customer related to the vendor. The value in this field is the beneficiary of the NOSTRO Payment made. This is defaulted from the BENEFICIARY record.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>BENEFICIARY</field>
+            <desc>
+                <p>The Beneficiary Reference defaulted from the IS.VENDOR table w.r.t to the Company and Currency. </p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Must be a valid record in the table BENEFICIARY.</p>
+                <p>2. Either Vendor Account or Beneficiary should be specified.</p>
+            </desc>
+        </t>
+        <t>
+            <field>BILL.AMT</field>
+            <desc>
+                <p>Amount that has to be billed for the given BILL.DATE. This amount can entirely be paid to the vendor or a part of it can be retained.</p>
+                <p/>
+                <p>Associated Sub-value set from BILL.DATE-RETENTION.AMT.For the payment method "SCHEDULE", this field can be sub-valued.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Mandatory Input</p>
+                <p>2. Value given should be equal to the sum of Payment amount and Retention amount.</p>
+            </desc>
+        </t>
+        <t>
+            <field>BILL.DATE</field>
+            <desc>
+                <p>Date on which the payments will be made to the vendor for the corresponding purchase contract.</p>
+                <p>Associated Sub-value set from BILL.DATE-RETENTION.AMT.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Mandatory Input</p>
+            </desc>
+        </t>
+        <t>
+            <field>COMMODITY</field>
+            <desc>
+                <p>Commodity is a valid commodity that has been captured in the Purchase contract as requested by the Customer. This type of payment is for Quantified Assets.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Valid record from the table IS.COMMODITY.</p>
+                <p>2. No-input field currently. Will be opened for user-input in future.</p>
+            </desc>
+        </t>
+        <t>
+            <field>COST.REF</field>
+            <desc>
+                <p>The Cost type for which the Payment is done. The Additional cost captured in the Purchase contract and flagged for Vendor Payment can be paid through this application.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Mandatory Input for Cost payment.</p>
+                <p>2. Not allowed for Vendor payment.</p>
+                <p>3. Valid record from the table IS.COST.TYPE</p>
+            </desc>
+        </t>
+        <t>
+            <field>IS.PAYMENT.ID</field>
+            <desc>
+                <p>The ID of the application IS.PAYMENT is a system-generated ID.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ORDERING.CUST</field>
+            <desc>
+                <p>The Ordering Customer of the payment. This is defined in order to facilitate external FT payments.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Field Mandatory for NOSTRO payments using BENEFICIARY.</p>
+            </desc>
+        </t>
+    </menu>
+</t24help>

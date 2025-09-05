@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>EB.EXTRACT.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This application is used to define files from which records are to be extracted for external processing either when they are updated online or by the periodic extract which extracts all records in the file(s). </p>
+            <p>A prime example of this is for OFAC (USA Office of Foreign Assets Control) checking for name organisations or individuals subject to sanctions. The data extracted is subject to text scans by other computer systems looking for matches against official lists and producing reports of any matches found. </p>
+            <p>The extracted data is stored in the UNIVERSE file F.EB.EXTRACT (Type 19) which is equivalent to a Unix directory. </p>
+            <p>An associated ENQUIRY, EB.EXTRACT.VIEW can be used to examine the extracted records. </p>
+            <p>For online transactions it is possible for data to be stored from several files in the same extract record, data generated from each file update will be stored on a separate line. </p>
+            <p>All extracted file records will in addition have all I-descriptor and J fields processed and added to the extracted file record data. </p>
+            <p>It is possible by defining Joins and I-descriptors in the STANDARD.SELECTION application for the defined extract files to obtain data from related files which will be added to the extracted file record. </p>
+            <p>Example : </p>
+            <p>A typical example would be to add customer names and adresses for all customer numbers entered into a FUNDS TRANSFER record. </p>
+            <p>This is set up in the following way: </p>
+            <p>The customer record on STANDARD.SELECTION is amended to include an I-descriptor field for NAME.ADDRESS which concatenates the name and address information separated by spaces, e.g. </p>
+            <p>USR.FIELD.NAME. NAME.ADDRESS USR.TYPE....... I USR.FIELD.NO SHORT.NAME:' ':NAME.1:' ':NAME.2:' ':STREET:' ' USR.FIELD.NO :TOWN.COUNTRY </p>
+            <p>The FUNDS.TRANSFER record is modified to add join fields for customer name and address information for all the customer number fields (the same approach can be used for account numbers). </p>
+            <p>e.g ORDERING.CUST </p>
+            <p>USR.FIELD.NAME. ORD.CUST.NAME USR.TYPE....... J USR.FIELD.NO ORDERING.CUST&gt;CUSTOMER&gt;NAME.ADDRESS </p>
+            <p>When the funds transfer record is extracted the name and address of the ordering customer will be added to the funds transfer data record. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>RESERVED.2</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.NAME</field>
+<desc>
+            <p>Identifies fields, for which changes will trigger the extract when comparing the unauthorised file field with the current live (authorised) file field. </p>
+            <p>If more than one field is defined then a change to any of the fields will result in the record being extracted. </p>
+            <p>The field defined must be defined as a SYS.FIELD.NAME or USR.FIELD.NAME on the STANDARD.SELECTION record for the associated file. This includes Join fields and I descriptor fields. </p>
+            <p>If no fields are defined then records will always be extracted from the associated file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input.</p>
+            <p>Sub valued field associated with FILE.NAME.</p>
+            <p>Must be defined as a SYS.FIELD.NAME or USR.FIELD.NAME on the STANDARD.SELECTION record for the associated FILE.NAME value.</p>
+            <p>Only valid for unauthorised file updates. i.e the associated FILE.SUFFIX is NAU</p>
+        </desc>
+</t>
+<t>
+<field>FILE.NAME</field>
+<desc>
+            <p>Identifies the file from which records are to be extracted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid T24 file name i.e. present on FILE.CONTROL.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.5</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.4</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.3</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>DELIMITER</field>
+<desc>
+            <p>Defines an ASCII value for a delimiter character which is used to replace the standard UNIVERSE delimiters of field mark and text mark. </p>
+            <p>The default value is ASCII value 32, i.e. the space character. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional input.  Default value is 32 ( space character ).  Must be any value between 0 and 255.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Text which describes the record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Multi valued language field, up to 35 characters per line.</p>
+        </desc>
+</t>
+<t>
+<field>EXTRACT.RTN</field>
+<desc>
+            <p />
+            <p>EXTRACT.RTN</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>A local routine to process and write transactional records to a centralized file for all companies can be attached here. This is a user exit field and if a routine is attached in this field, this routine will be called instead of EB.EXTRACT.ONLINE to extract the records. </p>
+            <p />
+            <p />
+            <p>A local routine can be specified for each FILE.NAME. This user exit is available only for ONLINE record. Even if journaling is switched off, the local routine is called. The routine must have two arguments, txn id and the txn record (R.JOURNAL)</p>
+            <p />
+            <p />
+            <p>If local routine is to be attached it should be specified for every FILE.NAME in the record.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>The routine name must     be prefixed with an @ symbol</p>
+            <p />
+            <p>The routine must have     a record in PGM.FILE with PGM.TYPE set to 'S' and APPL.FOR.SUBR set to     EB.EXTRACT.PARAMETER</p>
+        </desc>
+</t>
+<t>
+<field>EXTRACT.TYPE</field>
+<desc>
+            <p>There are two records allowed for this application: </p>
+            <p>ONLINE identifies files for which records are to be extracted when updates        occur online. </p>
+            <p>PERIODIC identifies files for which all records are to be extracted (from          the live file only). </p>
+            <p>It is envisaged that the files defined in the periodic record will be processed during the T24 batch on an ad hoc basis. </p>
+            <p>N.B.  It is possible to perform the periodic extraction online by changing       the PGM.FILE record EB.EXTRACT.PERIODIC, TYPE field to M. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be either ONLINE or PERIODIC.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.1</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>FILE.SUFFIX</field>
+<desc>
+            <p>Identifies for ONLINE updates the type of file (identified in FILE.NAME) for which record updates are to be extracted. </p>
+            <p>There are three types of T24 file from which records can be extracted, unauthorised, authorised and history. </p>
+            <p>NAU indicates that extracts are required from the Unauthorised file. </p>
+            <p>HIS indicates that extracts are required from the History file </p>
+            <p>LVE indicates that extracts are required from the Live file </p>
+            <p>If no input is entered then the default will be the Live file. </p>
+            <p>Input is not allowed for the PERIODIC record. </p>
+            <p>For the purpose of OFAC extracts the unauthorised file would normally be defined so that checking can be made before authorisation takes place. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Multi valued field of 3 characters.</p>
+            <p>Input is only allowed for the ONLINE record.</p>
+            <p>Must be one or more of the following, if no input is made then LVE will be defaulted:        NAU   -   for unauthorised records       LVE   -   for authorised records       HIS   -   for history records</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

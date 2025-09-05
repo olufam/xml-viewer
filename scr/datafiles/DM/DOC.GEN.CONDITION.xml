@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DM</product>
+<table>DOC.GEN.CONDITION</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p />
+            <p>This application is used to  define   the conditions  for  grouping Documents  for any</p>
+            <p />T24 <p />application,  for which documents need to be tracked. Such applications should be first defined in another application   DM.APPLICATION.INFO. The documents that need to be tracked for the groups defined in this application could be defined in another application DOCUMENT.REQUIRED. <p /><p>The conditions might be specified for each Customer Type in an Application or at Application level, which would be used as a default grouping for Customer Types with out their own record here.</p><p /><p>This is a Company specific application and records of this application could</p><p />be reversed.  </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>DOC.GROUP</field>
+<desc>
+            <p>Specifies  a  unique reference for the Application's  Document Group determined by the rules defined in the fields from DECISN.FIELD to DECISN.TO. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Mandatory     field. </p>
+            <p />
+            <p> Multi value field with associated sub value fields from DECISN.FIELD to DECISN.TO.</p>
+            <p />
+            <p>Duplicate     values not allowed within the record and also between other records for the     same application.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DECISION</field>
+<desc>
+            <p>The comparison operator for the condition to be evaluated. </p>
+            <p>If  a local sub-routine is attached to  DECISN.FIELD, this value would be passed to it as a  parameter. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Mandatory     if  DECISN.FIELD</p> is not null.    <p>Two alpha characters. Allowed values EQ (equal to), GE (greater than or     equal to), GT (greater than), LE     (less than or equal to), LK (like), LT (less than), NE (not equal), NR (not in range), RG     (in     range), UL (unlike).</p></desc>
+</t>
+<t>
+<field>DECISN.TO</field>
+<desc>
+            <p>The upper value used for field value comparisons based on ranges where the DECISION field is defined as NR (Not in Range) or RG ( in Range).</p>
+            <p>If  a local sub-routine is attached to  DECISN.FIELD, this value would be passed to it as a  parameter. </p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Upto     35 alphanumeric characters.</p>
+            <p />
+            <p>Input     not allowed if  the field DECISION is not set to NR or RG. </p>
+            <p />
+            <p>Input     mandatory if the field DECISION holds the values NR or RG.</p>
+        </desc>
+</t>
+<t>
+<field>DOC.GEN.COND.ID</field>
+<desc>
+            <p>This file defines  the conditions  for Document Groups for a T24 application defined in the file DM.APPLICATION.INFO. </p>
+            <p>The Document groups could be separately defined for each Customer field in an  application; it is also possible to define default  document groups at application level which could be used  for any Customer field, if document groups are not separately defined for it.  </p>
+            <p>The format of the ID will  be "Application Mnemonic*Customer Field Name", where the first part  will be the Mnemonic defined for an application and second part will be a customer field name defined for that application  in  DM.APPLICATION.INFO.  Second part of the ID is optional.</p>
+            <p>Example:</p>
+            <p>Application:  FUNDS.TRANSFER </p>
+            <p>Application Mnemonic in DM.APPLICATION.INFO: FT</p>
+            <p>CUST.FIELD.NAME in DM.APPLICATION.INFO: DEBIT.CUSTOMER and CREDIT.CUSTOMER</p>
+            <p>IDs that could be defined in DOC.GEN.CONDITION (DGC):</p>
+            <p>1.FT*DEBIT.CUSTOMER</p>
+            <p>2.FT*CREDIT.CUSTOMER</p>
+            <p>3.FT</p>
+            <p>While tracking the documents for the Customer whose ID is equal to the value of the field DEBIT.CUSTOMER in FT, T24 would first look for a  record in DGC with ID equal to FT*DEBIT.CUSTOMER, for determining the document groups. </p>
+            <p>If the record is not found, T24  would look for a  record in DGC with ID equal to FT (default record for the application). If both records are not found, then no tracking would be done for the Customer. Similar conditions would be applicable for the Customer whose ID is equal to the value of the field CREDIT.CUSTOMER.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>First     part should be the value of the field APPLN.MNEMONIC defined for any      application  in      DM.APPLICATION.INFO.</p>
+            <p />
+            <p>Second     part is optional.</p>
+            <p />
+            <p>If     second part is defined, it  should be a  value of  the field     CUST.FIELD.NAME (in DM.APPLICATION.INFO) defined for the application     specified  in the first part. </p>
+            <p />
+            <p>Records     of this application  could be reversed.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>SCAN.ALL.GROUP</field>
+<desc>
+            <p>While tracking documents for a Customer during an  application record input, T24 would determine the document group for the application and customer combination in DOC.GEN.CONDITION. </p>
+            <p>This field specifies whether T24 should stop with the first matched group (Value of NO) or scan all defined groups to determine all matched groups (Value of YES). </p>
+            <p>If YES document requirements for all the matched groups would be determined and tracked. If No document requirement of only the first matched group would be determined and tracked.</p>
+            <p>Specification of YES might degrade the response time and it could  be possible to specify a value of NO (stop at first match) by appropriately defining the conditions for the hierarchy of groups. </p>
+            <p>If none of the specified  groups  matches the input values, then no group would be assigned and hence there would be no document tracking for the customer. To avoid this,  a default group with all null values for the fields from  DECISN.FIELD to DECISN.TO could be specified as the last group.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Mandatory     field.</p>
+            <p />
+            <p>Allowed     values YES/NO.</p>
+            <p />
+            <p>Default     will be NO (Stop with the first matched  group)</p>
+        </desc>
+</t>
+<t>
+<field>DECISION.TO</field>
+<desc>
+            <p>DOC.GEN.CONDITION</p>
+            <p>DECISION.TO</p>
+            <p>The upper value used for field value comparisons based on ranges where the DECISION field is defined as NR (Not in Range) or RG ( in Range).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 35 alphanumeric characters. Input not allowed if the decision field     is not set to RG or NR. Input not allowed if a local subroutine is defined     in DECISION.FIELD.</p>
+            <p>Field associated with Sub value field DECISION.FROM and Multi Value field     DOC.GROUP.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>KEY</field>
+<desc>
+            <p />
+            <p>                            The name of the application for which group conditions are to be set up. The application must be found in the current company and must have a STANDARD.SELECTION record defined.</p>
+            <p>For ex: ID can be AC or ACCOUNT. Standard abbreviations of applications are also allowed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1 to 35 Alphanumeric characters.</p>
+            <p>Standard T24 application.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DECISN.FROM</field>
+<desc>
+            <p>The constant which the value derived from the DECISN.FIELD is compared to. </p>
+            <p>If  a local sub-routine is attached to  DECISN.FIELD, this value would be passed to it as a  parameter. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Mandatory     if  DECISN.FIELD</p> is not null.    <p /><p>Upto     35 alphanumeric characters.</p></desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Description of the associated DOC.GROUP</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>35 Alpha numeric characters</p>
+        </desc>
+</t>
+<t>
+<field>APPLN.MNEMONIC</field>
+<desc>
+            <p>A mnemonic can be defined for the application given as the ID.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-10 Mnemonic characters.</p>
+            <p>Mandatory Field.</p>
+            <p>Once input can not be changed.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>ASC.CUS.FLD</field>
+<desc>
+            <p>Name of the Customer field in the application, associated with the decision field (DECISN.FIELD).</p>
+            <p>Example: In DOC.GEN.CONDITION for SEC.TRADE, if the DECISN.FIELD is CUSTOMER.RESIDENCE which is a multi-valued field returning one value for each Customer in the transaction, then the value of ASC.CUS.FLD  could be set to CUSTOMER.NO. When Documents are tracked for each Customer (CUSTOMER.NO), then the value of CUSTOMER.RESIDENCE corresponding </p>
+            <p />to that Customer would be used for comparison purposes. <p><p>Validation Rules:</p></p><p /><p>Input not allowed when the     field DECISN.FIELD in the set is Single-Valued.</p><p>Input optional</p><p />when the field DECISN.FIELD in the set is Multi-Valued.   <p>If the DECISN.FIELD is     multi-valued and no ASC.CUS.FLD value</p><p />is     specified, then the first multi-value of the DECISN.FIELD would be used for     comparison purposes.   <p>The field specified here     should be Multi-Valued.</p></desc>
+</t>
+<t>
+<field>DECISION.FIELD</field>
+<desc>
+            <p>                    Can be either a local subroutine name or a field defined on the STANDARD.SELECTION record for the application (identified by application key field).</p>
+            <p>      If a local subroutine is defined then the subroutine must be prefixed with the @ character.</p>
+            <p>      Input for a field defined on STANDARD.SELECTION can be either the field number or the field name.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-35 Alpha characters.</p>
+            <p>Sub value field associated with field DOC.GROUP</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DECISION.FROM</field>
+<desc>
+            <p />
+            <p>                                The value derived from DECISION.FIELD is compared to the constant in this field. Input is mandatory if the DECISION field is set. Input is not allowed if the DECISION.FIELD is set to call a subroutine. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 35 alphanumeric characters.</p>
+            <p>Sub value field associated with field Multi value Field DOC.GROUP</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DECISN.FIELD</field>
+<desc>
+            <p />
+            <p>Can be either a local subroutine name or a field defined in  the STANDARD.SELECTION record for the application (identified by the first part of the key field). </p>
+            <p />
+            <p>If a local subroutine is defined then the subroutine must be prefixed with the @ character.</p>
+            <p />
+            <p>Input for a field defined on STANDARD.SELECTION can be either the field number or the field name.</p>
+            <p />
+            <p>LOCAL SUBROUTINE (Technical Details): </p>
+            <p />
+            <p>The local subroutine must be defined on the PGM.FILE as a V type program. </p>
+            <p />
+            <p />
+            <p>Example: </p>
+            <p />
+            <p />PROGRAM FILE SEE <p /><p /><p /><p /><p />PROGRAM<p />DM.TEST.ROUTINE <p /><p /><p />----------------------------------------------------------------------<p /><p /><p /><p /><p /><p />1 TYPE.............. V <p /><p /><p />2. 1 GB SCREEN.TITLE DM.TEST.ROUTINE <p /><p /><p />3 ADDITIONAL.INFO... .PAR() <p /><p /><p />5 PRODUCT........... DM <p /><p>The local subroutine is called from the T24 subroutine DM.GRP.CONDITION which</p><p />would  determine the relevant group(s)  the contract falls (if any). <p /><p /><p>The local subroutine must be defined to accept  the following arguments:</p><p /><p /><p /><p>APPLN:        </p><p>Name of the application</p><p /><p>ID.APPLN:     </p><p>ID of the application record for</p><p />which documents are tracked <p /><p>R.APPLN:</p><p /><p>The application record itself</p><p /><p>FIELD.VALUE:  </p><p>Value</p><p />of the field specified as parameter in the routine attached to DOC.GEN.CONDITION. If the parameter specified is multi-valued field and a value is also specified for ASC.CUS.FLD, then this value would be the value of the parameter field corresponding to the value of ASC.CUS.FLD.  <p /><p>COMPARISON:   </p><p>Value of DECISION in DOC.GEN.CONDITION</p><p /><p>DATA.FROM:    </p><p>Value of DECISN.FROM</p><p />in DOC.GEN.CONDITION <p /><p>DATA.TO:      </p><p>Value of DECISN.TO in DOC.GEN.CONDITION</p><p /><p>CONDITION.OK: </p><p>Value returned should be  null or 0 for False or any other value for True.</p><p /><p>Sample routine to test OR condition when the values in DECISN.FROM are separated by Spaces:</p><p /><p /><p>0001:</p><p />SUBROUTINE DM.TEST.ROUTINE(APPLN,ID.APPLN,R.APPLN,FIELD.VALUE,COMPA <p /><p /><p />RISON,DATA.FROM,DATA.TO,CONDITION.OK) <p /><p>0002:</p><p /><p>0003: $INSERT I_COMMON</p><p /><p>0004: $INSERT I_EQUATE</p><p /><p>0005:</p><p /><p>0006:</p><p />IF COMPARISON EQ "EQ" THEN <p /><p>0007:</p><p />DECS.FROM = DATA.FROM <p /><p>0008:</p><p />CONVERT " " TO FM IN DECS.FROM <p /><p>0009:</p><p />LOCATE FIELD.VALUE IN DECS.FROM&lt;1&gt; SETTING CONDITION.OK ELSE CON <p /><p /><p />DITION.OK = 0 <p /><p>0010:</p><p />END <p /><p>0011:</p><p />RETURN <p /><p>0012:</p><p /><p>0013:</p><p />END <p /><p /><p>When the routine is specified as a DECISN.FIELD in DOC.GEN.CONDITION, any field name in the Application specified in the ID of the DOC.GEN.CONDITION could be specified as its parameter. </p><p /><p /><p>Example of a DOC.GEN.CONDITION record for FT, where the above ref. sample routine is attached to test the OR condition for the DEBIT.ACCT.NO field. The values to be tested are specified in DECISN.FROM separated by spaces. </p><p /><p /><p /><p /><p />DOC.GEN.CONDITION <p /><p /><p /><p /><p />DOC.GEN.COND.ID... FT <p /><p /><p />------------------------------------------------------------------------------ <p /><p /><p />1 SCAN.ALL.GROUP.... NO <p /><p /><p />2. 1 DOC.GROUP...... 1 <p /><p /><p /><p>3. 1. 1 DECISN.FIELD @DM.TEST.ROUTINE(DEBIT.ACCT.NO)</p><p /><p /><p />4. 1. 1 DECISION.... EQ <p /><p /><p />5. 1. 1 DECISN.FROM. 19038 19108 <p /><p /><p><p>Validation Rules:</p></p><p /><p>Optional input.</p><p>Could be either a valid field     name specified in the STANDARD.SELECTION of the application defined in the     ID of the record or a local sub-routine name pre-fixed with @.</p><p>@ID cannot be given as a     Decision Field.</p><p>If a routine is attached, it     should be specified as a V type program in PGM.FILE.</p><p>The parameter of the attached     routine should be a valid field name specified in the STANDARD.SELECTION of     the application defined in the ID of the record.</p><p /><p /><p /></desc>
+</t>
+</menu>
+</t24help>
+

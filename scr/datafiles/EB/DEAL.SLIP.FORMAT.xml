@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>DEAL.SLIP.FORMAT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The DEAL.SLIP.FORMAT file allows you to define the layout and content of deal slips printed within the T24 system. A deal slip, in this context, is any printed output which can be produced at the input stage of a contract. It is not a customer advice or confirmation, produced via the DELIVERY system. These are produced at a specific event, e.g. Change of interest rate etc., whereas deal slips are normally produced when the contract is first input. </p>
+            <p>The deal slip can be printed either via the Report Control system, i.e. spooled to a specific printer, or printed directly onto a slave or local printer attached directly to the user terminal. The latter is only possible if the terminal has the LOCAL.PRINT.ON &amp; OFF fields defined on the TERMINAL record selected at signon. The deal slip is produced only when the user depresses the </p>
+            <p> key, normally function key 10, providing a PRT.HOT.KEY is defined on the TERMINAL record. Consequently, the deal slip can be produced at any stage of the contract input and can be produced any number of times. </p>
+            <p>The definition of the layout is divided into two sections defining, A) the files, and the keys to those files, where data will be extracted from and B) which fields to extract and where on the deal slip they should be printed. </p>
+            <p>The main extract file/record will be the current application although any file can be specified providing the key to it is a field on another file. The current application field enrichments, free format text and totals can also be specified. Note: The deal slip format is intended for single page output only. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>ID</field>
+<desc>
+            <p>The field name which holds the key to the FILE. </p>
+            <p>The ID to the related file should be a field on the main contract. E.g. To access the customer record within the FOREX application then this should be entered as FOREX&gt;COUNTERPARTY. </p>
+            <p>ID can be entered in the following formats: -1&gt;4                File 1, Field 4 5                   File 1, Field 5 ACCOUNT&gt;8           Account file field 8 ACCOUNT&gt;CURRENCY    Account file currency field "text"              Constant eq "SYSTEM" </p>
+            <p>The file number is the multivalue number of the FILE definition. If file or field numbers are entered they are immediately translated to their correct names. If the file number is 1, the default, then just the field name is returned. </p>
+            <p>Eg. Producing a deal slip from the FOREX application requires data from FOREX itself, CUSTOMER, CURRENCY and the DEPT.ACCT.OFFICER files. The FILE &amp; ID specifications would look like this: </p>
+            <p>FILE                       ID 3.1 FOREX              4.1 @ID 3.2 CUSTOMER           4.2 FOREX&gt;COUNTERPARTY 3.3 CURRENCY           4.3 FOREX&gt;CURRENCY.BOUGHT 3.4 DEPT.ACCT.OFFICER  4.4 CUSTOMER&gt;ACCOUNT.OFFICER </p>
+            <p>Note : The id to the DEPT.ACCT.OFFICER record is a field on the        CUSTOMER file which is in turn read using the COUNTERPARTY field        of the FOREX contract. When defining this type of linkage make sure        you enter the FILEs in their logical read sequence. </p>
+            <p>When defining the ID for the application always use @ID. This will not actually be read when producing the deal slip but is instead taken from the details present on the screen. </p>
+            <p>           FIELD5.1 FIELD </p>
+            <p>The name of the field to be printed. </p>
+            <p>The name of the field (and from which file) or free format text can be entered. The format of the field specification is: </p>
+            <p>1&gt;4                 File 1, Field 4 5                   File 1, Field 5 ACCOUNT&gt;8           Account file field 8 ACCOUNT&gt;CURRENCY    Account file currency field "text"              Constant eq "SYSTEM" !TOTAL.1            Total number 1 to be printed "SYSTEM.DATE"       The current computer date </p>
+            <p>Where file number is the multivalue number of the FILE definition. If file or field numbers are entered they are immediately translated to their correct names. If the file number is 1, the default, then just the field name is returned. </p>
+            <p>A total can be printed instead of a field - see FORMAT for defining totals. </p>
+            <p>When entering a field from the application then you can specify that the enrichment is printed rather than the field itself. This is entered as </p>
+            <p>COUNTERPARTY ENRICHMENT             or 4 E </p>
+            <p>In this case the 4 E will be immediately translated to COUNTERPARTY ENRICHMENT. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-32 any characters  FILE&gt; FIELD or FIELD or "text"  1-40 Any Characters FILE&gt; FIELD, FIELD or "text" or !TOTAL.nn</p>
+        </desc>
+</t>
+<t>
+<field>K.PROMPT</field>
+<desc>
+            <p>This field name has been amended to PROMPT. Kindly refer the HelpText for PROMPT.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Multi-language description of the deal slip format record. The REPORT.CONTROL id to be used if the deal slip is spooled rather than printed directly from the terminal. </p>
+            <p>If the terminal does not support an attached printer, i.e. the LOCAL.PRINT fields are not defined in the TERMINAL record, then the deal slip will be spooled via REPORT.CONTROL. This field is the REPORT.CONTROL key to use and will ultimately define the report environment, destination printer, attributes etc. </p>
+            <p>If this field is left blank and the deal slip is spooled then the key "P.FUNCTION" is used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-35 type A (alphanumeric) characters.</p>
+        </desc>
+</t>
+<t>
+<field>FORMAT</field>
+<desc>
+            <p>The format mask to be used when printing FIELD. </p>
+            <p>Any valid Universe info basic FMT mask. The more common values used are: </p>
+            <p>10L           10 characters left justified 20R           20 characters right justified 11R2,         With two decimal places &amp; commas D2/E          European date eg 30/05/91 </p>
+            <p>There are additional formats which can be used: </p>
+            <p>WORDS         Convert an amount into words WORDSCCY*xxxx Convert amount into words and translate currency as               specified in field xxxxxx 11R/nnn/,     Replaces /nnn/ with number of decimals defined for the               currency held in field nnn of this FIELD's file. 24C           Centre data in length of 24 D2.E+nn       Add nn years to date and print 30.05.95 </p>
+            <p>You can also accumulate the data in a total - to be printed later: </p>
+            <p>10R, !TOTAL.1   10 chars right justified with commas and accumulate amount                 into total number 1. </p>
+            <p>The format is defaulted automatically for you from the STANDARD.SELECTION file. </p>
+            <p>A User written Subroutine can be called to do the Formatting for this field. This Subroutine can be defined in this field with the name preceded by the '@' character. The Subroutine should have ONE argument which will contain the value of the Data or Text to be printed and can be changed by the User written Subroutine. Any errors can be flagged by setting the common variable ETEXT. This Subroutine must be defined on the PGM.FILE with a PGM.TYPE of 'S' i.e. Subroutine </p>
+            <p>HEADER: Any data or text can be specified to be printed as part of the         Heading while printing the Deal Slip by defining HEADER in this         field. If a field is defined as a HEADER type field, the COLUMN         for the associated Multivalue MUST contain a Line Number i.e. in         the format CC,LL and not as CC or CC,+LL. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>0-40 any characters  Subvalued to allow more than one Format specification for this data item. The Format commands will be executed in the order in which they are defined in this field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVE.4</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVE.1</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>REPORT.CONTROL.ID</field>
+<desc>
+            <p>The REPORT.CONTROL id to be used if the deal slip is spooled rather than printed directly from the terminal. </p>
+            <p>If the terminal does not support an attached printer, i.e. the LOCAL.PRINT fields are not defined in the TERMINAL record, then the deal slip will be spooled via REPORT.CONTROL. This field is the REPORT.CONTROL key to use and will ultimately define the report environment, destination printer, attributes etc. </p>
+            <p>If this field is left blank and the deal slip is spooled then the key "P.FUNCTION" is used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>0-30 alphanumeric characters. (1)   Must be blank or a valid entry on the REPORT.CONTROL file.</p>
+        </desc>
+</t>
+<t>
+<field>FIELD</field>
+<desc>
+            <p>The name of the field to be printed. </p>
+            <p>The name of the field (and from which file) or free format text can be entered. The format of the field specification is: </p>
+            <p>1&gt;4                   File 1, Field 4 5                     File 1, Field 5 ACCOUNT&gt;8             Account file field 8 ACCOUNT&gt;CURRENCY      Account file currency field "text"                Constant eq "SYSTEM" !TOTAL.1              Total number 1 to be printed "SYSTEM.DATE"         The current computer date </p>
+            <p>Where file number is the multivalue number of the FILE definition. If file or field numbers are entered they are immediately translated to their correct names. If the file number is 1, the default, then just the field name is returned. </p>
+            <p>A total can be printed instead of a field - see FORMAT for defining totals. </p>
+            <p>When entering a field from the application then you can specify that the enrichment is printed rather than the field itself. This is entered as </p>
+            <p>COUNTERPARTY ENRICHMENT or 4 E. </p>
+            <p>In this case the 4 E will be immediately translated to COUNTERPARTY ENRICHMENT. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-40 any characters.  FILE&gt; FIELD, FIELD or "text" or !TOTAL.nn</p>
+        </desc>
+</t>
+<t>
+<field>FILE</field>
+<desc>
+            <p>The name of the file from which data will be extracted. </p>
+            <p>The first file, entered in the multi-value set, will become the 'default' file when specifying the fields to be output, hence, this should be the application name. </p>
+            <p>Any related file can be defined, in subsequent multi-values. The key to the related file must be a field on the main contract (or a field on another related file). </p>
+            <p>All the records from the related FILEs will be read in when the deal slip is being produced. The main contract record is taken directly from the screen. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-24 any characters  (1)  Must be a valid entry on the FILE.CONTROL file and have a      valid STANDARD.SELECTION record.</p>
+        </desc>
+</t>
+<t>
+<field>COLUMN</field>
+<desc>
+            <p>The column and line where the FIELD is to be printed. </p>
+            <p>You can specify the print position in the following formats: </p>
+            <p>CC         Column position on the current line CC,LL      Specific column and line position CC,+NN     Column position on current line +NN lines CC,-NN     Column position on current line -NN lines </p>
+            <p>Note : If the data to be printed is multivalued (or subvalued) then each        value will be printed on the next line at the same column position. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-7 any characters  CC CC,LL CC,+NN CC,-NN</p>
+        </desc>
+</t>
+<t>
+<field>COMPILED.FIELD</field>
+<desc>
+            <p>Holds compiled information on fields to be printed on the deal slip. </p>
+            <p>Holds details of which field to print, in compact form, to speed up formatting process. Consists of the following: </p>
+            <p>File Num-Field Num-Lang-Index-Col-Line-Offset-Enrich </p>
+            <p>File Num   The multivalue index to the FILEs Field Num  The field number to extract Lang       Flag to indicate if field is muli-language Index      The multivalue index to FIELDs Col        The column to print at Line       The line to print on Offset     Print on the current line +/-nn Enrich     Indicates enrichment should be printed </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-50 Any characters</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>COMPILED.FILE</field>
+<desc>
+            <p>Holds 'compiled' information of files used in format process. </p>
+            <p>Used to speed up processing by storing, in compact form, the files to be read and where the keys to those files are held. Consists of the following: </p>
+            <p>File Name-Key File Num-Key Field Num-Text </p>
+            <p>File Name       The name of the file to be read Key File Num    The multivalue index to the key file Key Field Num   The field number in the key file Text            Text if key is a constant </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-50 any characters</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>DEAL.SLIP.FORMAT</field>
+<desc>
+            <p>Identifies the deal slip format. This key would be entered in the application parameter file to link a 'contract' with a specific deal slip format. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-15 any characters</p>
+        </desc>
+</t>
+<t>
+<field>PROMPT</field>
+<desc>
+            <p>For local printing, only, the user can be prompted prior to the deal slip being output to the printer. </p>
+            <p>This is to allow the user to be prompted to insert specific stationery prior to the output. This is only relevant when printing to a printer attached directly to the terminal. It also allows the user to F1 or skip the deal slip print entirely. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>0-40 any characters</p>
+        </desc>
+</t>
+<t>
+<field>RESERVE.2</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>K.FILE</field>
+<desc>
+            <p>This field name has been amended to FILE. Kindly refer the HelpText for FILE.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVE.3</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

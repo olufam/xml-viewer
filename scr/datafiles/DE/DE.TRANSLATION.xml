@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DE</product>
+<table>DE.TRANSLATION</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The DE.TRANSLATION Table is used to convert a code passed in a message into a descriptive text (in various languages). </p>
+            <p>It is also used to contain all the Swift field codes. This serves two purposes: </p>
+            <p> i)    To validate codes entered in DE.FORMAT.SWIFT; </p>
+            <p>ii)    To put a meaningful description against fields in Swift messages if        they need to be displayed for inspection. </p>
+            <p>Codes to be translated by the Formatting modules will have a prefix (defined on the appropriate Format table) inserted before accessing the Translation table.  If a prefix is not specified, SW (the default) will be used.  Field tags use this prefix. </p>
+            <p />
+            <p>Example: </p>
+            <p>SWIFT field tag 50, meaning 'Ordering Customer' will be entered on Delivery Translation with a key of SW50. </p>
+            <p>For Print Formatting where a code is not used for SWIFT, or the SWIFT description is not suitable, a special prefix can be specified in the Conversion field of the Format Print record.  The required text is then placed in the Translation table with the prefix and code as the key.  This technique allows applications to use the same code for different types of data, or to translate the same code differently in various sorts of message. </p>
+            <p />
+            <p>Example: </p>
+            <p>Suppose a value of 1 is used for two different types of code.  We require to print 'Basic rate commission' for commission code 1, and '15% V.A.T.' for tax code 1. </p>
+            <p>DE.FORMAT.PRINT      |  DE.TRANSLATION --------------------------------------------- Field    Conversion  | Code       Description                      | COMMISS  TABLE COM   | COM1       Basic rate commission TAX      TABLE TAX   | TAX1       15% V.A.T. </p>
+            <p />
+            <p>Example: </p>
+            <p>Suppose a field is to be translated differently in different contexts and possibly even put into the same message more than once. </p>
+            <p>DE.FORMAT.PRINT      |  DE.TRANSLATION --------------------------------------------- Field    Conversion  | Code       Description                      | OT       TABLE FT    | FTOT       telex OT       TABLE FTEXT | FTEXTOT    our direct payment to </p>
+            <p>Shorter keys are slightly faster to look up, so, although it is important to use meaningful codes, very long prefixes should be avoided. </p>
+            <p>The translation table will be delivered with various records, which should not be deleted.  In addition, there are records required by formats, which are field dependent and must be added to the translation table after the files have been updated. </p>
+            <p>These records can be copied from the appropriate files to the translation table using DE.MM.SETUP.TRANSLATION.  This must be run for the following files with the associated prefixes. </p>
+            <p>      File name                     Prefix </p>
+            <p>      FT.COMMISSION.TYPE            COM/       FT.CHARGE.TYPE                CHG/       TAX                           TAX/       CATEGORY                      CATG/       TRANSACTION                   TXNL/       TRANSACTION                   TXNS/       LMM.CHARGE.CONDITIONS         CHRG/       LMM.CHARGE.CONDITIONS         MMCHG/       CURRENCY.MARKET               CMK/ </p>
+            <p>NOTE : DE.MM.SETUP.TRANSLATION will always copy the description from the        first field on the file being copied from.  Therefore, for records        copied from the transaction file where a short description is        required (TXNS/), the description must be amended on the        translation file to the required length. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CODE</field>
+<desc>
+            <p>ID composing of a prefix (default SW) and a field. </p>
+            <p>A code requiring translation should be prefixed with 'SW' if it is a SWIFT code.  Otherwise it should be given a meaningful prefix to differentiate it from other codes with the same value, or from other translations required for the same code - such as shorter versions for abbreviated messages. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2-25 type A (alphanumeric) characters.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>The expansion of the code. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 type A (alphanumeric) characters.  Multilanguage field. (Mandatory input)</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

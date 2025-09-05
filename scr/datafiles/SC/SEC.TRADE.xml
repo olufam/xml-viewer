@@ -1,0 +1,2632 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SC</product>
+<table>SEC.TRADE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Within the Securities module the Securities Trade Application is without doubt the most important and versatile of the Transaction processes. It allows for Multi Customer/Broker input and permits the user to transact entries in multi currency Customer accounts where say a transaction may well settle against one particular currency on the Broker side.  Wherever and whenever possible the Securities Trade Input will calculate automatically both the number of days accrued interest and the actual amount of accrued interest.  In addition it will access various Stock Exchange Tables in order to calculate automatically local commissions and charges.</p>
+            <p>    Again wherever possible (and depending on the quality of the Static Information Files) T24 will at Transaction level default to Customer Broker, Depository and Security details.</p>
+            <p>    Financial accounts and Security positions are updated and all commissions, taxes, fees etc. will be entered against category type files in accordance with Standard T24 principles.  All Sales will update positions immediately at validation, whereas purchase transactions only at Authorisation.</p>
+            <p>    At end of day all Unauthorised Transactions will be reversed and placed on HOLD status.</p>
+            <p>    T24 would advise that customers appreciate the impact of all unauthorised transactions on for example FX positions when considering their policy regarding Validation and Authorisation with regards End of Day.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CGT.CODE</field>
+<desc>
+            <p>This field signifies the tax code to be used for the purposes of calculating the capital gains tax amount.</p>
+            <p>    If this field is changed then a recalculation of the tax amount is triggered off.</p>
+            <p>    The tax code will initially be defaulted by the system depending on the default settings.</p>
+            <p>    If the TAX record field LINK.TAX is populated then all linked tax codes will be shown.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Input must be a valid tax code on the TAX file.</p>
+            <p>    Only multi-value 1 can be used for input.</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.DAYS</field>
+<desc>
+            <p>Specifies the number of days interest to be accrued from Last Payment Date (Field 10) to Value Date (Field 6).</p>
+            <p>    The system uses the accrual date as displayed within Field 10 along with the interest rate and the Interest day Basis as per the Security.Master record to calculate both the number of days accrued and the amount of accrued interest payable on any individual bond transaction.</p>
+            <p>    Whilst the number of days and the actual accrued interest amount can be overridden at transaction level the interest rate has to be changed at Security.Master level.</p>
+            <p>    IMPORTANT.</p>
+            <p>    The User must understand any change to the number of days accrued or the calculated amount will merely be recovered by the system at the End of Day processing when dealing with the Banks Own Portfolio Transactions.</p>
+            <p>    For more information about how interest calculations are performed refer to help-text labelled 'INTEREST.BASIS'</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-3 numeric characters. Internally generated field that may be over ridden to allow for securities with non-standard interest calculation methods.</p>
+        </desc>
+</t>
+<t>
+<field>CU.AMOUNT.DUE</field>
+<desc>
+            <p>Calculates the amount due to be debited from (purchase) or credited to (sale) the Customer's Account (Field 22.1), IE. Net Amt Trade Ccy (Field 39.1) multiplied or divided by (dependant on the currencies involved) Cu Ex Rate Acc (Field 41.1).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input required. Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>WHT.TAX.CODE</field>
+<desc>
+            <p>Indicates the Tax code from the TAX.TYPE.CONDITION / TAX file. Defaults from the field SHARE.TAX / BOND.TAX from the file TXN.TAX.CODE.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>    No       input field</p>
+        </desc>
+</t>
+<t>
+<field>ODD.RTS.CGT</field>
+<desc>
+            <p>Field indicating whether the transaction is for rounding of rights relating to a corporate action. This flag is determined by the system.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    NOINPUT</p>
+            <p>    Y or blank</p>
+        </desc>
+</t>
+<t>
+<field>CU.REALLOWANCE</field>
+<desc>
+            <p>Specifies the reallowance rate allowable against the price paid, for New Issue traders.</p>
+            <p>    This field may only be used if the Security the trade is for is a bond, other wise input is not allowed.</p>
+            <p>    If the Security is a bond (i.e. the BOND.SHARE field on the SECURITY.MASTER record is 'B' then the system will allow input of a rate which will be used for calculation of the reallowance amount. which will be fed through to the CU.REALLOW.AMT field</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-10 numeric characters (0-6 integers and 0-9 decimals and '.').</p>
+            <p>    Optional input, no default.</p>
+        </desc>
+</t>
+<t>
+<field>ODD.LOT.TRADE</field>
+<desc>
+            <p>This field indicates if the order is an order of odd lot or not.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>    The values allowed are :</p>
+            <p />
+            <p />
+            <p>    - YES : Odd lot order. No check is done for trading unit. But the order is validated against the 3 SECURITY MASTER fields added for odd lot process : ODD.LOT.TRADE, ODD.LOT.BROKER, ODD.LOT.EXCHANGE</p>
+            <p />
+            <p />
+            <p>    - NO : 'Normal' order. The trading unit will be checked. If the number of shares is not divisible by the trading unit of the security, then the order is rejected.</p>
+            <p />
+            <p />
+            <p>    - BLANK : Default equivalent to NO.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>    when the trade is generated from an order, this field will be automatically updated with field ODD.LOT.ORDER, field from SEC.OPEN.ORDER</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>CU.CAP.INT.AMT</field>
+<desc>
+            <p>This field holds the capitalised interest calculated on this trade for the customer's side.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No Input Field</p>
+        </desc>
+</t>
+<t>
+<field>NET.TRADE</field>
+<desc>
+            <p>The NET.TRADE field enables you to specify whether or not the underlying SEC.TRADE is being entered NET of commissions or with commissions.</p>
+            <p>    The current default is "NO" which will cause the System to locate the various commissions, charges, stamps, duty and taxes relative to your customer, the broker, the security and the stock exchange (should these have been set-up).</p>
+            <p>    If set to "YES" then no commissions will be defaulted at all, although stamp tax and duty, if applicable, will continue to form part of the transaction consideration.</p>
+            <p>    You may also enter "PRORATA" (T24 will recognise "P" on its own), in which case, any broker commission contained on the SEC.TRADE will be pro-rated over the various customers contained in a bulk trade. The allocations are based on simple nominals or numbers of bonds and shares.</p>
+            <p>    NOTE : There is a version, SEC.TRADE,PRORATA which will assist you in        completing a trade in which the broker commission is to be be        pro-rated across all customers contained in that trade.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Y           =     Yes N/NO        =     No P/PRORATA   =     Pro-rating required  (Mandatory input) Default value = NO.</p>
+        </desc>
+</t>
+<t>
+<field>THREAD.KEY</field>
+<desc>
+            <p>The thread key if the SEC.TRADE has been created by a service.</p>
+        </desc>
+</t>
+<t>
+<field>CGT.TAX.RATE</field>
+<desc>
+            <p>This field signifies the tax rate applied to the base amount.</p>
+            <p>    If the TAX record, from the associated field CGT.CODE, field LINK.TAX is populated then all linked tax rates will be shown.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    A NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>CU.COMMISSION</field>
+<desc>
+            <p>Records the Commission amount charged to the Customer for the trade.</p>
+            <p>    The stock exchange determines several events within the Sec.Trade application.</p>
+            <p>    1. Automatic calculation of the Value date depending on the information opened within that Stock.Exchange record</p>
+            <p>    2. Automatic link to the standard stock Exchange commissions and charges as stored within the various Stock.Exchange tables and again determined by the information within that particular Stock.Exchange record.</p>
+            <p>    Each Stock Exchange is linked to a separate Stock.Exchange Calculation table which contains all the local charges, stamps and taxes. Plus it allows the user to store the commission rates that YOU the Bank would normally charge to the client yourselves. Normally when entering a Sec.Trade the User is obliged to enter the Stock Exchange at which the transaction was effected.</p>
+            <p>    The system will then go via the Stock Exchange to the Calculation table and default all the brokerage, stamps taxes etc. according to the rates stored within those tables.</p>
+            <p>    However there are 3 separate options available to the User when entering a Sec.Trade which directly affects the commissions etc being calculated.</p>
+            <p>    1. In Sec.Trade Field 9 there is a GROSS/NET indicator which defaults at the moment to NO i.e. NOT NET.</p>
+            <p>    This means that the trade is Not Net of commission and the default commissions should take affect.</p>
+            <p>    If the flag is set to YES however that tells the system that it is a Net trade and that No commissions whatsoever are to be charged. This then overrides all other default commission rates.</p>
+            <p>    2. Within the Stock.Exchange table there is a link to the Calculation Table at Field 3 which is called "CALC COUNTRY". If input here the country code specifies which if any Calculation table is to be used. It is an optional field and if there is no link to the Calculation Tables then the system will default 0.00s.</p>
+            <p>    3. Stored within the Customer.Security record are Customer and Broker rates which if input will obviously override any general rates as stored within the Stock.Exchange Tables.</p>
+            <p>    The Flow within Sec.Trade is therefore:-</p>
+            <p>    1. Check Net/Gross flag. If "YES" No Automatic calculation. If "NO" System carries on.</p>
+            <p>    2. For Customer and Broker it then checks the Customer.Security record for individual commission tariffs.</p>
+            <p>    If the "Calc.Country" indicator within the Stock.Exchange record is links to the Stock.Exchange calculation tables then the system will use these rates to default all the other fees payable under that Stock Exchange.</p>
+            <p>    If it finds no individual tariffs within Customer.Security for either the Client or Broker then it will use the default rates within the Stock Exchange calculation tables.</p>
+            <p>    If there is NO link between the Stock Exchange Table and the Stock.Exchange Calculation tables and there are No individual tariffs for the Client or Broker then the system will default 0.00s.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-14 numeric characters  "." (number of decimal places dependent on the currency). Where Field 9, Net trade = NO. Mandatory input. Where Field 9, Net Trade = Y(es), Automatic default is to 0.00.</p>
+        </desc>
+</t>
+<t>
+<field>BR.REALLOWANCE</field>
+<desc>
+            <p>Specifies the reallowance rate allowable against the price paid, for New Issue trades.</p>
+            <p>    This field will be used both for Primary and Secondary Market transactions.</p>
+            <p>    The system will validate the transaction code used against the default table for New.Issues and this will determine whether the retrocession is actually posted as a Primary or Secondary market entry.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-10 numeric characters (0-6 integers and 0-9 decimals and '.'). Optional Input.</p>
+        </desc>
+</t>
+<t>
+<field>FACTOR</field>
+<desc>
+            <p>This field will contain the factor that used by the system in the calculation of the consideration for bonds that use factors.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No Input allowed</p>
+            <p>    Automatically updated</p>
+        </desc>
+</t>
+<t>
+<field>BR.CAP.INT.AMT</field>
+<desc>
+            <p>This field contains the capitalised interest amount calculated on this trade for the broker's side.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No Input Field</p>
+        </desc>
+</t>
+<t>
+<field>DEPOSITORY</field>
+<desc>
+            <p>Indicates which Depository the Security traded is to be delivered from/to.</p>
+            <p>    Whereas the default will work for a majority of transactions T24 do not advise that the default value be kept at Security Master level to avoid errors with the  automatic SWIFT CEDEL interface contained within the Securities Module for example.</p>
+            <p>    For the comprehensive description of the rules and validation concerning the usage of this and further fields within the Securities Delivery messages see the seperate Securities manual concerning Delivery.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-10 numeric character Customer ID number. or     3-10 type MNE (uppercase alpha or numeric or ".") character Mnemonic Customer id. (Mandatory input) Default value = the Depository specified on the SECURITY.MASTER file record (Field 35 - Default.Depository).</p>
+            <p>    Must be a valid Customer for whom the Customer.Security file record (Field 1 - CUSTOMER TYPE) equals D (Depository).</p>
+            <p>   Cannot be changed when SERVICE.REF is populated.</p>
+        </desc>
+</t>
+<t>
+<field>CU.TAX.TYPE</field>
+<desc>
+            <p>Tax type for associated customer.</p>
+        </desc>
+</t>
+<t>
+<field>CUST.INTR.AMT</field>
+<desc>
+            <p>Specifies the amount of interest accrued on the Securities (CUST.TOT.NOM) up to the Value Date of the trade.</p>
+            <p>    The calculation used within the Sec.Trade application for accrued interest payable on any Bond Purchase or Sale is:-</p>
+            <p>    Nominal x Rate / No. of days x Interest day basis.</p>
+            <p>    All this information is contained within the Static File SEC.ACC.MASTER.</p>
+            <p>    The amount can be overridden at transaction level however:- As pointed out already the End of Day processing will automatically adjust any daily accruals on transactions done for the Banks own portfolio to agree with the static information and great care should therefore be taken before any manual adjustments are made to this calculated amount.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    1-14 numeric characters (including up to 3 decimal         places, dependant on currency). Multipliers T,M  B         may be used. Multivalue field. (Mandatory input.) Default         value = Interest Amount as calculated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>BR.AMOUNT.DUE</field>
+<desc>
+            <p>Calculates the amount due to be debited from (purchase) or credited to (sale) the Broker Account (Field 52.1). IE. Net Amt Trade Ccy (Field 67.1) multiplied or divided by (dependant on the currencies involved) Br Ex Rate Acc (Field 68.1).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input required. Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>COM.TAX.CODE</field>
+<desc>
+            <p>Customer commissions in SEC.TRADE are defaulted from the CUSTOMER.CHARGE record for the customer using the SC.APPLICATION set of fields. It will use the set of fields linked to SC.TRADING if they are present and default to ALL otherwise. From there the system links to the SCTR.GROUP.CONDITION application and then onto the SCTR.CHARGE.PARAMETER application to get the actual FT.COMMISSION.TYPE record used.  Some commissions have a tax code associated with them which is used to charge tax on the commission.</p>
+            <p>    If Tax is raised on the customer commission then the Tax Code used (from the TAX file) to calculate the tax on the commission is recorded in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input field automatically updated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>TO.CONTRA.REF</field>
+<desc>
+            <p>Field specifying whether the transaction being entered is a contra for an existing sec trade which requires certain modifications/amendments.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>    Must exist as a valid sec trade transaction on     the sec trade file</p>
+        </desc>
+</t>
+<t>
+<field>BROKER.DEPO</field>
+<desc>
+            <p>Records which Depository(ies) the Broker is using.</p>
+            <p>    This field is used to create settlement instructions for the Clearing systems which have been set up within the Securities Module of any Particular Bank.</p>
+            <p>    The User has already input the details of where securities are to be received in the case of a purchase and from where they are to be delivered in the case of a Sale.</p>
+            <p>    As regards the Broker He must now tell the system from where it is being delivered and to where it should be delivered in the instance of a Sale. Field BR.ACC.NO is used in conjunction with this field to store the of the Brokers "Account" Number with the previously defined Depository. Where possible this information will be defaulted from the Customer.Security file. But where not known and where necesssary to format any specific delivery instruction then the System will prompt the User for its inclusion within the transaction details itself.</p>
+            <p>    For a fuller description of the Securities' delivery and settlement proceedures see the relevant guide.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    1-10 numeric character Customer Id. or 3-10 type AAA (uppercase         alpha or numeric or ".") character Mnemonic         Customer Id. or 1-35 type A (alphanumeric) characters,         free format input. Multivalue field Subvalue fields to         record free format text relating to the Brokers'         Depository.</p>
+        </desc>
+</t>
+<t>
+<field>BR.DELIV.KEY</field>
+<desc>
+            <p>The Broker Delivery Key identifies each separate Delivery advice which has been produced by the Delivery module and gives the User a separate means of accesing copies as and when required.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input allowed. Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>CUST.REMARKS</field>
+<desc>
+            <p>Used to record any narrative to appear on any advices to the customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-35 type A (alphanumeric) characters. (Multivalue field.) (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>DEP.DELIV.REF</field>
+<desc>
+            <p>Depository delivery reference.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>BULK.PROCESSING</field>
+<desc>
+            <p>If set to YES then the accounting relating to this transaction will be authorised by the service SC.BULK.PROCESS.</p>
+        </desc>
+</t>
+<t>
+<field>CU.UNF.SEC.GROS</field>
+<desc>
+            <p>Fields CUSTOMER.NO to CU.UNF.SEC.GROS form a related multi value set.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    A maximum of 18 characters may be entered.</p>
+            <p>    This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>BR.BEN.BANK.1</field>
+<desc>
+            <p>Identifies the Beneficiary Bank which is to be used for the Payment or Receipt of the Broker Amount Due in respect of the contract when the Broker has requested external delivery of the proceeds of the transaction.</p>
+            <p>    This field is used when the Broker does not require the funds to be credited to his current account but instead requests an external delivery of the funds to a Bank different to the one where you maintain your Nostro account.</p>
+            <p>    If this Beneficiary Bank does not yet exist on the Database, the user may:</p>
+            <p>    a)     Create a new record in the CUSTOMER and            AGENCY files which will contain the            information necessary to generate            automatically advices, confirmations            etc. for this bank or,</p>
+            <p>    b)     Use the BEN ADDRESS to directly input the            name and address of the Beneficiary Bank            without having to create a customer and/or            an Agent record.  This option is very            useful if the transaction has to be            liquidated in favour of a Bank which is            rarely dealt with.</p>
+            <p>    Note:     Once the contract has been authorised, any            change to this field will only have an            effect on future principal disbursements.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    3 to 10 Character Mnemonic (Uppercase alpha, numeric or ".") - Type MNE.  Input will be checked against the AGENCY file. or     1 to 6 Numeric character Agent code (Optional input; Default = Autorouting instructions defined on the AGENCY file.)</p>
+            <p>    Input in this field will be checked against the AGENCY file.</p>
+            <p>    When used in conjunction with the BEN BANK 2 field, the two Customer references must differ.</p>
+            <p>    Input in this field will not be allowed at the same time with an input in BEN BANK 2 and BEN ADDRESS.</p>
+        </desc>
+</t>
+<t>
+<field>CU.EBV.FEES</field>
+<desc>
+            <p>Records the amount of EBV Fees charged to the Customer for the trade.</p>
+            <p>    Where indicated by the flag set within the Stock Exchange table the system will default the EBV (Effectenboursenverein) fees in accordance with the rules as laid down within that particular Stock Exchange.</p>
+            <p>    The values for which will be found within the Calculation table for that individual Stock Exchange.</p>
+            <p>    Note:      These charges being a LOCAL requirement for the Swiss            Stock Exchange charges.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Automatic default to charge as calculated by the system. or     1-14 numeric characters  "." (number of decimal places dependant on the currency). Where Field 9, Net trade = NO, Mandatory input Where Field 9, Net Trade = Y(es), Automatic default is to 0.00.</p>
+        </desc>
+</t>
+<t>
+<field>BR.PRICE</field>
+<desc>
+            <p>Records the Price at which the Nominal Amount (Field 54.1.1) has been traded.</p>
+            <p>    For each Broker the Total Nominal Amount traded may be split into several Nominal Amounts at different Prices. These will be entered as the Nominal Amount followed by the Price relevant to that Amount. i.e.       54.1.1 = 1st Nominal for Customer.1            55.1.1 = Price relevant to 24.1.1            54.1.2 = 2nd Nominal for Customer.2            55.1.2 = Price relevant to 24.1.2            etc.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-15 numeric characters (0-6 integers  0-9 decimals) plus "." Multivalue field, with associated Subvalue fields. (Mandatory input) Default value = Last.Price as recorded on the SECURITY.MASTER file record of the Security (Field 1).</p>
+            <p>    For any one Broker each Price Subvalue field must be different.</p>
+        </desc>
+</t>
+<t>
+<field>CU.BEN.ACCT</field>
+<desc>
+            <p>Customer beneficary account.</p>
+        </desc>
+</t>
+<t>
+<field>CU.ACCOUNT.CCY</field>
+<desc>
+            <p>Records the currency of the Customer's Account (Field 21.1).</p>
+            <p>    Information purposes only.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input required Automatic default to the ACCOUNT record Field 8 - Currency.</p>
+        </desc>
+</t>
+<t>
+<field>CU.FOREIGN.FEE</field>
+<desc>
+            <p>Records the Foreign Fee amount charged to the Customer for the trade.</p>
+            <p>    As explained within the help text for Field 9 Stock Exchange if the link exists within that Stock Exchange to the Calculation tables then all local commissions and brokerages applicable to that particular Stock Exchange will default according to the rules laid down for that Stock Exchange convention.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Automatic default to charge as calculated by the system. or     1-14 numeric characters  "." (number of decimal places dependant on the currency). Where Field 9, Net trade = NO. Mandatory input. Where Field 9, Net Trade = Y(es). Automatic default is to 0.00.</p>
+        </desc>
+</t>
+<t>
+<field>BR.ACC.NO</field>
+<desc>
+            <p>Identifies the Account over which financial entries relating to the Broker for the trade, are to be passed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    2-14 numeric character Account number or     3-10 type MNE (uppercase alpha or numeric or ".") character Mnemonic Account id. Multivalue field. (Mandatory input.) Default value = the Nostro.Account for the Trade Currency (Field 7).</p>
+            <p>    Must be the Id of a valid Account.</p>
+        </desc>
+</t>
+<t>
+<field>CGT.TAX.AMT</field>
+<desc>
+            <p>This field indicates the capital gains tax amount to be debited from the customer's account.</p>
+            <p>    If the TAX record, from the associated field CGT.CODE, field LINK.TAX is populated then all linked tax amounts will be shown.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    A NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>CU.MESS.CONTROL</field>
+<desc>
+            <p>If entered, it is used to check the format of the override delivery address entered, depending on the value of the carrier from the message control message.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-3 numeric character Message Control Id (Optional input.)</p>
+            <p>    Must be the Id of a valid Message Control record.</p>
+        </desc>
+</t>
+<t>
+<field>EXT.CUSTODIAN</field>
+<desc>
+            <p> Identify the external custodian where position is held.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Mandatory, if TRANS.CODE matches to EXT.CR.TXN or EXT.DR.TXN of SC.PARAMETER. Once it matches and EXT.CUSTODIAN is not set; then it will be defaulted from SC.PARAMETER</p>
+        </desc>
+</t>
+<t>
+<field>CU.WHT.PERC</field>
+<desc>
+            <p>Multi-valued field detailing the percentage</p>
+            <p>    Tax rate in percentage terms. This tax rate will be defaulted from the TAX record associated with</p>
+            <p>    the customer / depository</p>
+            <p>    .</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>    No input field</p>
+        </desc>
+</t>
+<t>
+<field>CU.GROSS.AM.SEC</field>
+<desc>
+            <p>Calculates the Gross value of the trade (in the currency of the Security).</p>
+            <p>    Used for display purposes only.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    NO INPUT. Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>CU.BEN.BANK.2</field>
+<desc>
+            <p>Customer beneficary bank.</p>
+        </desc>
+</t>
+<t>
+<field>PAYMENT.REQD</field>
+<desc>
+            <p>This field specifies whether a customer payment is to be made. The default is set in the ADVICE.DEFAULT field in the SC.PARAMETER file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>    YES/NO</p>
+        </desc>
+</t>
+<t>
+<field>BR.UNF.SEC.GROS</field>
+<desc>
+            <p>Fields BROKER.NO to BR.UNF.SEC.GROS form a related multi value set.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    A maximum of 18 characters may be entered.</p>
+            <p>    This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>CON.VAL.DATE</field>
+<desc>
+            <p>Multi-valued field associated with the previous five fields. Used in the consolidation of forex amounts for the SEC.TRADE transaction.</p>
+            <p>    Input only allowed if the CONSOLIDATE.FX field on the SC.STD.SEC.TRADE file is set to Y and there are accounts used in the SEC.TRADE that have a currency that is different from the trade currency of SEC.TRADE.</p>
+            <p>    Allows input of the value date associated with the forex movement specified in the provious five fields. Will default to the settlement date of the transaction.</p>
+            <p>    There will be one set of values in these six fields for each currency one of more customers are settling in if the settlement currency is different from the trade currency. Automatically updated by the system during input.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Input only allowed if the CONSOLIDATE.FX field on</p>
+            <p>    SC.STD.SEC.TRADE is set to Y.</p>
+        </desc>
+</t>
+<t>
+<field>BR.BEN.ADDR</field>
+<desc>
+            <p>Identifies the full name and address of a Beneficiary Bank, where no Agent details are maintained.</p>
+            <p>    This field provides flexibility during input of transactions where external movement of funds are involved.  When you do not currently maintain a Customer reference for a third or fourth party bank, you can use this field to enter the full details of the name and address of the Beneficiary Bank directly.</p>
+            <p>    However, it is important to note that only one address, as free format, has been included in this module.  This means that in the case of a four party transfer at least one of the two customer's banks involved in the transfer of funds must have a Customer reference and the Agency defined.</p>
+            <p>    for external delivery of Principal ----------             ----------- |  T24  |           |   T24  | CUSTOMER OF |          |==========&gt;|           | NOSTRO ACCOUNT |  BANK    |           |   NOSTRO  | e.g. BROKER |          |           |           | ACCOUNT ----------             ----------- | | | ----------- May be BEN BANK 1 ----&gt;|  INTER-   | or BEN ADDRESS ---&gt;|  MEDIARY  | OPTIONAL |           | |   BANK    | ----------- | | | ----------- May be BEN BANK 1 ----&gt;|  ACCOUNT  | MANDATORY IF or BEN BANK 2 ----&gt;|   WITH    | PAYMENT THRU or BEN ADDRESS ---&gt;|           | NOSTRO and no |   BANK    | Agency details -----------  exist. The following summarises the rules concerning the use of the 3 fields BEN BANK 1, BEN BANK 2 and BEN ADDRESS: (i)        BEN BANK 1 may be an ACCOUNT WITH Bank (i.e. the final destination of the funds) or an INTERMEDIARY Bank which will pass the funds on to a second bank. (ii)       BEN BANK 2 may be an ACCOUNT WITH Bank (ie. the final destination of the funds) but may NOT be an INTERMEDIARY bank. (iii)      BEN ADDRESS may be an ACCOUNT WITH Bank (i.e. the final destination of the funds) or it may be an INTERMEDIARY Bank which will pass the funds on to a second bank.  It is only used if no customer ID is available. At contract loading, if the INTERMEDIARY Bank is identified in BEN BANK 1, then the ACCOUNT WITH Bank must be input either directly at BEN BANK 2 or within BEN ADDRESS in which case the system will automatically apply it to BEN BANK 2. Otherwise, when the INTERMEDIARY Bank is identified within BEN ADDRESS - (and is thus automatically applied to BEN BANK 1) then the ACCOUNT WITH Bank must be identified in BEN BANK 2.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1 to 4 lines of 35 Alpha-numeric characters. - Type AAA. Multivalue field. (Optional input; Default value: None).</p>
+            <p>    Input will not be allowed in this field when BEN BANK 1 and BEN BANK 2 have both been entered.</p>
+            <p>    The BROKER ACCOUNT must be a valid Nostro account.</p>
+        </desc>
+</t>
+<t>
+<field>CU.UNF.GROSS</field>
+<desc>
+            <p>Fields CUSTOMER.NO to CU.UNF.SEC.GROS form a related multi value set.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    A maximum of 18 characters may be entered.</p>
+            <p>    This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>COM.TAX.XRTE</field>
+<desc>
+            <p>Customer commissions in SEC.TRADE are defaulted from the CUSTOMER.CHARGE record for the customer using the SC.APPLICATION set of fields. It will use the set of fields linked to SC.TRADING if they are present and default to ALL otherwise. From there the system links to the SCTR.GROUP.CONDITION application and then onto the SCTR.CHARGE.PARAMETER application to get the actual FT.COMMISSION.TYPE record used. Some commissions have a tax code associated with them which is used to charge tax on the commission.</p>
+            <p>    If Tax is raised on the customer commission then the amount is calculated in the local currency of the system and recorded in the COM.TAX.BCUR field. This field will contain the exchange rate used between the local currency of the system and the trade currency of the SEC.TRADE, used in calculating the amount of tax in the Local currency.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input field automatically updated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>CU.INT.CTR</field>
+<desc>
+            <p>Interest counter for associated customer.</p>
+        </desc>
+</t>
+<t>
+<field>DEP.DELIV.KEY</field>
+<desc>
+            <p>The Depository Delivery Key identifies each separate Delivery produced by the System with regards the Depository used. No input allowed. Internally generated field. (Multivalue field.)</p>
+        </desc>
+</t>
+<t>
+<field>CU.MANTAXLCY</field>
+<desc>
+            <p>Manually entered tax for associated customer in local currency.</p>
+        </desc>
+</t>
+<t>
+<field>STATEMENT.NOS</field>
+<desc>
+            <p>Standard T24 statement number field.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>BR.NARRATIVE</field>
+<desc>
+            <p>This field contains the narrative contained in the Open Order transaction, for those trades generated as a result of executing an open order.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input field. Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>LINK.REFERENCE</field>
+<desc>
+            <p>Standard T24 alphanumeric field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    A maximum of 12 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>SEGMENT</field>
+<desc>
+            <p>Segment, associated with dealer desk.</p>
+        </desc>
+</t>
+<t>
+<field>BR.NO.NOM</field>
+<desc>
+            <p>Specifies the Nominal Amount (ie the face value) of the Security (Field 1) traded.</p>
+            <p>    For each Broker the Total Nominal Amount traded may be split into several Nominal Amounts at different Prices. These will be entered as the Nominal Amount followed by the Price relevant to that Amount.</p>
+            <p>    i.e. 54.1.1 = 1st Nominal for Customer.1 55.1.1 = Price relevant to 24.1.1 54.1.2 = 2nd Nominal for Customer.2 55.1.2 = Price relevant to 24.1.2 etc.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    1-18 numeric characters (including up to 6 decimal places         dependant on the currency).</p>
+            <p>    Multipliers T,M  B may be used.</p>
+            <p>    Multivalue field, with associated Subvalue fields.</p>
+            <p>    Mandatory input.</p>
+            <p>   Cannot be changed when SERVICE.REF is populated.</p>
+        </desc>
+</t>
+<t>
+<field>BR.UNF.GROSS</field>
+<desc>
+            <p>This field will hold the un-factored gross amount on the broker's side.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No Input Allowed</p>
+            <p>    Automatically populated</p>
+        </desc>
+</t>
+<t>
+<field>BR.EX.RATE.ACC</field>
+<desc>
+            <p>Specifies the rate of exchange between the Trade Currency and the Br Account Ccy.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    1-10 numeric characters  "." (1-6 integers and 1-9 decimal places). Default value = rate calculated as per the CURRENCY file records.</p>
+            <p>    Where input manually the rate must fall between the parameters set on the CURRENCY files.</p>
+        </desc>
+</t>
+<t>
+<field>CUST.PRICE</field>
+<desc>
+            <p>Records the Price at which the trade has been dealt.</p>
+            <p>    For each Customer the Total Nominal Amount traded may be split into several Nominal Amounts at different Prices. These will be entered as the Nominal Amount followed by the Price relevant to that Amount.</p>
+            <p>    i.e.       23.1.1 = 1st Nominal for Customer.1            24.1.1 = Price relevant to 24.1.1            23.1.2 = 2nd Nominal for Customer.2            24.1.2 = Price relevant to 24.1.2            etc.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-15 numeric characters (0-6 integers  0-9 decimals) plus "." Multivalue field, with associated Subvalue fields. (Mandatory input.) Default value = Last.Price as recorded on the SECURITY.MASTER file record of the Security (Field 1).</p>
+            <p>    For any one Broker each Price Subvalue field must be different.</p>
+        </desc>
+</t>
+<t>
+<field>BR.REALLOW.AMT</field>
+<desc>
+            <p>Calculated as the value of the reallowance based on the Nominal (field 24) and the reallowance (field 29).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-14 numeric characters including up to 3 decimals. Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>CU.COUP.TAX.AMT</field>
+<desc>
+            <p>Stores the coupon tax amount of the customer side. This field will only be populated if gross up entries are required; i.e. instrument traded net of tax and coupon receivable gross of tax.</p>
+            <p>    This field is used to raise the additional gross up entries.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Standard amount field. (NOINPUT)</p>
+        </desc>
+</t>
+<t>
+<field>CGT.SRC.LCL.TAX</field>
+<desc>
+            <p>A NOINPUT multi-value associated field. This indicates whether the tax is to be deducted by the bank (LOCAL) or the depositor (SOURCE).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    A NOINPUT field</p>
+            <p>    Either SOURCE or LOCAL.</p>
+        </desc>
+</t>
+<t>
+<field>CL.COMMISSION</field>
+<desc>
+            <p>Fields BROKER.NO to BR.UNF.SEC.GROS form a related multi value set.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    A maximum of 018 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.DEAL.DESK</field>
+<desc>
+            <p>Defaulted dealer desk for this trade.</p>
+        </desc>
+</t>
+<t>
+<field>CU.STAMP.TAX</field>
+<desc>
+            <p>Records the Stamp Tax amount charged to the Customer for the trade.</p>
+            <p>    Where indicated by the flag set within the Stock Exchange table the system will default the stamp/tax fee in accordance with the</p>
+            <p>    If TAX.ROUTINE in SC.PARAMETER is null, STAMP.TAX is calculated according to</p>
+            <p>    charge structure defined in STK.EXC.LOCAL only if local country of the company is 'CH'</p>
+            <p>    otherwise the stamp tax is calculated as zero</p>
+            <p />
+            <p>    If the TAX.ROUTINE in SC.PARAMETER is entered with a routine, then the</p>
+            <p>    parameters given in the SC.TAX.PARAMETER will be taken to calcuate stamp</p>
+            <p>    tax.</p>
+            <p />
+            <p>     There are few tax routines in T24 to calculate stamp tax like</p>
+            <p>    SC.CALC.STAMP.TAX, SC.CALC.TAX.CH. If SC.CALC.STAMP.TAX is the tax routine</p>
+            <p>    entered to calculate stamp tax, then SC.TAX.PARAMETER should have a record</p>
+            <p>    with id STAMP.TAX and only if the values set in the STAMP.TAX record</p>
+            <p>    coincide with the transaction entered stamp tax will be calculated.</p>
+            <p>    Similarly if SC.CALC.TAX.CH is the tax routine entered to calcualte stamp</p>
+            <p>    tax, then SC.TAX.PARAMETER should have record like SHARES, BONDS, etc. to</p>
+            <p>    calculate stamp tax.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Automatic default to charge as calculated by the system. or     1-14 numeric characters  "." (number of decimal places dependant on the currency). Where Field 9, Net trade = NO, Mandatory input Where Field 9, Net Trade = Y(es), Automatic default is to 0.00. as laid down within that particular Stock Exchange. The values for which will be found within the Calculation table for that individual Stock Exchange.</p>
+        </desc>
+</t>
+<t>
+<field>BR.DELIV.INSTR</field>
+<desc>
+<p>This field contains the delivery instruction for the broker.</p>
+<p> System indicator which is used to define whether the delivery is to be made free of payment or against payment.</p>
+<p> It is used for two purposes within the securities processing.</p>
+<p> 1) The first is merely to control the delivery/receipt of the securities within the Sec.Del.Control application and the subsequent reports which are provided.</p>
+<p> 2) The second use is within the automatic settlement procedure which will produce, for example Swift messages to Depository. The type of message is determined by the delivery instructions input.i.e is it free of payment or delivery against payment. The clearing systems within the Securities' Module will determine the type of validation within the Sec.Trade.</p>
+<p> For a complete description see the Securities Settlement and Delivery Manual.</p>
+<p>
+<p>Validation Rules:</p>
+</p>
+<p> 1 to 3 alpha code delivery instruction</p>
+
+</desc>
+</t>
+<t>
+<field>MV.RESERVED02</field>
+<desc>
+            <p>Standard T24 reserved field.</p>
+        </desc>
+</t>
+<t>
+<field>BR.TRD.TIME</field>
+<desc>
+            <p>Broker trade time.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CUST.SEC.ACC</field>
+<desc>
+            <p>Identifies the Security Account of the Customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Standard SEC.ACC.MASTER id ; 1-10 numeric character Customer id separated by "-" from 1-3 numeric character   SEC.ACC.MASTER Id. Multivalue field. (Mandatory input). Default value = the Customer's first Security.Acc. ie. nnnnnn-001.</p>
+            <p>    Must be an existing SEC.ACC.MASTER record.</p>
+            <p>    Must be a Security Account of the Customer (CUSTOMER.NO field).</p>
+        </desc>
+</t>
+<t>
+<field>CU.ADVICE.REQD</field>
+<desc>
+            <p>Flag for customer advice, Yes for advice required.</p>
+        </desc>
+</t>
+<t>
+<field>MV.RESERVED01</field>
+<desc>
+            <p>Standard T24 reserved field.</p>
+        </desc>
+</t>
+<t>
+<field>COMM.CODE</field>
+<desc>
+            <p>Customer commissions in SEC.TRADE are defaulted from the CUSTOMER.CHARGE record for the customer using the SC.APPLICATION set of fields. It will use the set of fields linked to SC.TRADING if they are present and default to ALL otherwise. From there the system links to the SCTR.GROUP.CONDITION application and then onto the SCTR.CHARGE.PARAMETER application to get the actual FT.COMMISSION.TYPE record used.</p>
+            <p>    When the customer commissions are worked out the FT.COMMISSION.TYPE code used is put in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input field automatically updated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>MISC.ACT.SUSP.CAT</field>
+<desc>
+            <p>This field is used as a category reference for miscellaneous. The suspense amount of miscellaneous is posted to it.</p>
+            <p>    The value is picked up from the SC.PARAMETER which holds a similar field in it. The value is defaulted from the SC.PARAMETER fields.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    The value in this field should be a valid entry in CATEGORY         file.</p>
+        </desc>
+</t>
+<t>
+<field>BR.AGENT</field>
+<desc>
+            <p>This field was added for depository messages.</p>
+            <p>    Forms associated sub value with BR.AGENT.AC This field is used to determine the agent(DEAG, DEI1, DEI2, REAG,REI1,REI2) in MT540-MT543 messages.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Valid customer number or any description</p>
+            <p>    Only 10 sub values allowed</p>
+        </desc>
+</t>
+<t>
+<field>CONSOL.AMT</field>
+<desc>
+            <p>Multi-valued no input field associated with the previous field and the next four fields.</p>
+            <p>    Used in the consolidation of FOREX amounts in the SEC.TRADE transaction.</p>
+            <p>    Will only be populated if the CONSOLIDATE.FX field on the SC.STD.SEC.TRADE file is set to Y and there are accounts used in the SEC.TRADE that have a currency that is different from the trade currency of SEC.TRADE.</p>
+            <p>    Automatically updated with the consolidated amount in the trade currency of the transaction that will be settled in the currency shown in the associated SETTLE.CURR field.</p>
+            <p>    There will be one set of values for each currency one more customers are settling in if their settlement currency is different from the trade currency.</p>
+            <p>    Automatically updated by the system during input.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input system updated field.</p>
+        </desc>
+</t>
+<t>
+<field>CU.ORDER.NOS</field>
+<desc>
+            <p>Multi value No input field which contains the reference numbers which belong to the open orders belonging to the client which have generated the sec.trade.</p>
+        </desc>
+</t>
+<t>
+<field>CU.DISC.AMT</field>
+<desc>
+            <p>DISCOUNT AMOUNT</p>
+            <p>    Customer discount amount to reduce CU.NET.AM.TRD</p>
+            <p>    Calculated using CU.DISC.PCENT</p>
+        </desc>
+</t>
+<t>
+<field>BR.STAMP.TAX</field>
+<desc>
+            <p>Records the Stamp Tax amount charged on the trade.</p>
+            <p>    Where indicated by the flag set within the Stock Exchange table the system will default the stamp/tax fee in accordance with the</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Automatic default to charge as calculated by the system. or     1-14 numeric characters  "." (number of decimal places dependant on the currency). Where Field 9, Net trade = NO, Mandatory input. Where Field 9, Net Trade = Y(es), Automatic default is to 0.00. as laid down within that particular Stock Exchange. The values for which will be found within the Calculation table for that individual Stock Exchange.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>Records the date on which the trade is to be effected.</p>
+            <p>    The value date for any transaction can vary from 1 day to 1 month depending on the security being traded and the stock exchange at which it is being traded.</p>
+            <p>    A default value date can be defaulted by using the facility within the STOCK.EXCHANGE table.Here the user can define the number of Business or Calendar days between the trade and value date of any particular Stock Exchange.</p>
+            <p>    In STOCK.EXCHANGE table, user can also specify the settlement basis as 'FIXED'. In this case, a calendar (STK.EXCH.CALENDAR) is maintained for the Stock Exchange and for a Year. A settlement day can be defined for a period for a particular Stock Exchange and Year.</p>
+            <p>    N.B Care should be taken when and if using this facility.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Up to 9 type D date characters (Standard Date Format in range 1950-2049). (Mandatory input) Default value = Trade Date (Field 5).</p>
+            <p>    Can not be less than Trade Date (Field 5).</p>
+            <p>   Cannot be changed when SERVICE.REF is populated.</p>
+        </desc>
+</t>
+<t>
+<field>CGT.BAMT.CCY</field>
+<desc>
+            <p>This field will signify the currency code in which the CGT base amount is denominated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>    NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>CU.GROSS.ACCR</field>
+<desc>
+            <p>Contains the sum of the Customer Gross amount in trade currency and the customer interest amount.</p>
+            <p>    This field defaults automatically with the total of the Gross plus accrued interest for the Client as defined and entered within the first set of sub value fields.</p>
+            <p>    All commissions and Brokerage calculations are carried out on the sum total of these two amounts.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No Input field.</p>
+        </desc>
+</t>
+<t>
+<field>CGT.BASE.AMT</field>
+<desc>
+            <p>This field will hold the amount on which the capital gains tax calculation is to be performed.</p>
+            <p>    This field is obtained from the WHT.PL field on the CG.TXN.BASE file.</p>
+            <p>    The amount is maintained in the currency of the account being debited.</p>
+            <p>    If the field is changed a recalculation of the tax amount is triggered off.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>    Populated automatically</p>
+            <p>    Can be changed</p>
+        </desc>
+</t>
+<t>
+<field>STOCK.EXCHANGE</field>
+<desc>
+            <p>Identifies the Stock Exchange that the security is traded on.</p>
+            <p>    The stock exchange determines several events within the Sec.Trade application.</p>
+            <p>    1.         Automatic calculation of the Value date depending on the            information opened within that Stock.Exchange record</p>
+            <p>    2.         Automatic link to the standard stock Exchange            commissions and charges as stored within the various            Stock.Exchange tables and again determined by the            information within that particular Stock.Exchange            record.</p>
+            <p>    Each Stock Exchange is linked to a seperate            Stock.Exchange Calculation table which contains all the            local charges, stamps and taxes. Plus it allows the user            to store the commission rates that YOU the Bank would            normally charge to the client yourselves.</p>
+            <p>    Normally when entering a Sec.Trade the User is obliged            to enter the Stock Exchange at which the transaction was            effected.            The system will then go via the Stock Exchange  to the            Calculation table and default all the brokerage, stamps            taxes etc. accirding to the rates stored within those            tables.            However there are 3 seperate options available to the            User when entering a Sec.Trade which directly affects            the commissions etc being calculated.</p>
+            <p>    1.         In Sec.Trade Field 9 there is a GROSS/NET indicator            which defaults at the moment to NO i.e NOT NET.            This means that the trade is Not Net of commission and            the default commissions should take affect.            If the flag is set to YES however that tells the system that            it is a Net trade and that No commissions whatsoever are            to be charged.            This then overrides all other default commission rates.</p>
+            <p>    2.         Within the Stock.Exchaneg table there is a link to the            Calculation Table at Field 3 which is called "CALC            COUNTRY".            If input here the country code specifies which if any            Calculation table is to be used.It is an optional field and            if there is no link to the Calculation Tables then the            system will default 0.00s.</p>
+            <p>    3.         Stored within the Customer.Security record are Customer            and Broker rates which if input will obviously override            any general rates as stored within the Stock.Exchange            Tables.</p>
+            <p>    The Flow within Sec.Trade is therefore:-</p>
+            <p>    1. Check Net/Groos flag.            If "YES" No Automatic calculation.            If "NO"  System carries on.</p>
+            <p>    2. For Customer and Broker it then checks the            Customer.Security record for individual commission            tarriffs.            If the "Calc.Country" indicator within the            Stock.Exchange record is links to the Stock.Exchange            calculation tables then the syetm will use these rates to            default all the other  fees payable under that Stock            Exchange.            If it finds no individual tarriffs within Customer.Security            for either the Client or Broker then it will use the default            rates within the Stock Exchange calculation tables.</p>
+            <p>    If there is NO link between the Stock Exchange Table and            the Stock.Exchange Calculation tables and there are No            individual tarriffs for the Client or Broker then the            system will default 0.00s.</p>
+            <p />
+            <p />
+            <p>    Note:      ALL CALCULATED COMMISSIONS AND FEES CAN BE            OVERRIDDEN AT SEC.TRADE LEVEL AND THERE ARE            ADDITIONAL FIELDS AVAILABLE FOR            SUNDRY/MISCELLANEOUS FEES.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-5 type S (uppercase alpha or numeric) character Stock Exchange id code. (Mandatory input) Default value = Stock Exchange specified on the SECURITY.MASTER (Field 16 - Stock.Exchange).</p>
+            <p>    Must be a valid Stock.Exchange record id.</p>
+            <p>   Cannot be changed when SERVICE.REF is populated.</p>
+        </desc>
+</t>
+<t>
+<field>CU.EX.RATE.REF</field>
+<desc>
+            <p>Specifies the rate of exchange between the Customer's Reference Currency (Field 44.1) and the Base currency of the system.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-10 numeric characters  "." (1-6 integers and 1-9 decimal places). Default value = rate calculated as per the CURRENCY file records.</p>
+            <p>    Where input manually the rate must fall between the parameters set on the CURRENCY files.</p>
+        </desc>
+</t>
+<t>
+<field>CUM.EX.IND</field>
+<desc>
+            <p>Cum and Ex Indicators for the Security</p>
+            <p>    This field allows entry of Cum and Ex indicators relating to the Security. Where these apply, they will be mapped onto the relevant SWIFT message and are mandatory from a business point of view.</p>
+            <p>    Currently, T24 only supports the following :-</p>
+            <p>    CBNS Cum bonus XBNS Ex bonus CCPN Cum coupon XCPN Ex coupon CDIV Cum dividend XDIV Ex dividend CRTS Cum rights XRTS Ex rights SPCU Special cum dividend SPEX Special ex dividend BTEX Best execution price</p>
+            <p>    NB. These codes are validated against DE.TRANSLATION to ensure that they exist and are prefixed with 'SW' (i.e. SWIFT).</p>
+            <p>    The list of valid codes must also be entered in the application SM.PARAMETER, key SYSTEM.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    10 Type A (alphanumeric) characters.</p>
+        </desc>
+</t>
+<t>
+<field>BR.MESS.CONTROL</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-3 numeric character Message Control Id (Optional input.)</p>
+            <p>    Must be the Id of a valid Message Control record.</p>
+        </desc>
+</t>
+<t>
+<field>TRADE.CCY</field>
+<desc>
+            <p>Specifies the currency in which the trade will be settled.</p>
+            <p>    The Trade currency is the currency in which the transaction has been dealt with the Broker or Counterparty concerned.</p>
+            <p>    The trade currency cannot be changed and the Broker Counterparty account must always be in this currency.</p>
+            <p>    The client on the other hand can be debited or credited in whatever currency he or she wishes.</p>
+            <p>    As mentioned the default value within the Sec.Trade will be the Security currency although this can be changed.</p>
+            <p>    The ONLY time this is not true is when dealing for the Banks Portfolio and in this instance the Trade currency must equal the security currency.</p>
+            <p>    The reasons being the complicated Realised and unrealised P  L calculations involved at the End of Day processing.</p>
+            <p />
+            <p />
+            <p>    Note:      Any change to either the security number, value date or            trade currency within the Sec.Trade will prompt the            system to recalculate all charges commissions and interest            calculations within that particular Sec.Trade.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    3 type CCY (alpha) character currency code. or     1-3 numeric character currency number. (Mandatory input) Default value = Security Currency (Field 5) on SEC.MASTER.</p>
+            <p>    Must exist on Currency file.</p>
+        </desc>
+</t>
+<t>
+<field>CU.NET.AM.TRD</field>
+<desc>
+            <p>Calculates the Net Amount of the trade (in Trade Ccy) for this Customer. IE. Cu Gross Amt Trd (Field 28.1) + Cust Intr Amt (Field 31.1) +/- Charges  Commission (Fields 33.1-38.1).</p>
+            <p>    This will contain the total amount to be debited to a Clients financial account in th instance of a purchase of securities and will constitute the Gross Amount of the Trade Plus all the sundry commissions and charges.</p>
+            <p>    In the case of a Sale it will contain the Net amount payable to the Client minus any charges or commissions.</p>
+            <p>    Note:      This amount is illustrated in the Trade currency and may            well differ from the Clients actual Account CCy which is            calculated and stored within Field 42.1</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input required. Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>CU.BRKR.COMM</field>
+<desc>
+            <p>Specifies the amount of Broker Commission charged to the Customer for the trade.</p>
+            <p>    The stock exchange entered within STOCK.EXCHANGE Field of the transaction determines several events within the Sec.Trade application.</p>
+            <p>    1. Automatic calculation of the Value date depending on the information opened within that Stock.Exchange record</p>
+            <p>    2. Automatic link to the standard stock Exchange commissions and charges as stored within the various Stock.Exchange tables and again determined by the information within that particular Stock.Exchange record.</p>
+            <p>    Each Stock Exchange is linked to a seperate Stock.Exchange Calculation table which contains all the local charges, stamps and taxes. Plus it allows the user to store the commission rates that YOU the Bank would normally charge to the client yourselves.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Automatic default to charge as calculated by the system.         or 1-14 numeric characters  "." (number of         decimal places dependant on the currency). Where Field         NET.TRADE = NO. Mandatory input. Where Field NET.TRADE= Y(es).         Automatic default is to 0.00.</p>
+        </desc>
+</t>
+<t>
+<field>CU.COMM.TAX</field>
+<desc>
+            <p>Fields CUSTOMER.NO to CU.UNF.SEC.GROS form a related multi value set.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    A maximum of 018 characters may be entered.</p>
+            <p>    This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>TRADE.CURR</field>
+<desc>
+            <p>Multi-valued no input field associated with the next five fields. Used in the consolidation of forex amounts for the SEC.TRADE transaction.</p>
+            <p>    Will only be populated if the CONSOLIDATE.FX field on the SC.STD.SEC.TRADE file is set to Y and there are accounts used in the SEC.TRADE that have a currency that is different from the trade currency of SEC.TRADE.</p>
+            <p>    Automatically updated with the trade currency the transaction. There will be one set of values in the next six fields for each currency one of more customers are settling in if the settlement currency is different from the trade currency. Automatically updated by the system during input.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input system updated field.</p>
+        </desc>
+</t>
+<t>
+<field>CUST.ACT.SUSP.CAT</field>
+<desc>
+            <p>This field is used as a category reference for the customer.The suspense amount of the customer is posted to it.</p>
+            <p>    The value is picked up from the SC.PARAMETER which holds a similar field in it. The value is defaulted from the SC.PARAMETER fields.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    The value in this field should be a valid entry in CATEGORY         file.</p>
+        </desc>
+</t>
+<t>
+<field>SETTLE.CURR</field>
+<desc>
+            <p>Multi-valued no input field associated with the previous two fields and the next three fields.</p>
+            <p>    Used in the consolidation of Forex amounts for a SEC.TRADE transaction.</p>
+            <p>    Will only be populated if the CONSOLIDATE.FX field on the SC.STD.SEC.TRADE file is set to Y and there are accounts used in the SEC.TRADE that have a currency that is different from the trade currency of SEC.TRADE.</p>
+            <p>    Automatically updated with the settlement currency that one or customers are settling this SEC.TRADE in. There will be one set of values in these six fields for each currency one of more customers are settling in if their settlement currency is different from the trade currency. Automatically updated by the system during input.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input system updated field.</p>
+        </desc>
+</t>
+<t>
+<field>BR.BEN.ACCT</field>
+<desc>
+            <p>Contains the Account details (number or name) of the Beneficiary to be credited.</p>
+            <p>    This field concerns third party transfers where the customer is requesting an external delivery of funds.  In the case where the customer provides such information, it may then be entered in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1 to 35 Characters - Type SSS. Multivalue field (Maximum of four lines). (Optional input; Default value = Counterpart (i.e. CUSTOMER ID)  himself.</p>
+            <p>    Input in this field will only be allowed when the BROKER ACCOUNT is a Nostro account.</p>
+        </desc>
+</t>
+<t>
+<field>RP.REFERENCE</field>
+<desc>
+            <p>This field arrives the commitment amount and PL amount from the SEC.TRADE nominal and raise accounting entries defined in the fields SRT.CR.CAT and SRT.COL.CAT the PL amount between the category codes defined in the fields SRT.LOSS.CAT or SRT.PR.CAT (depening on loss and profit respectively) and SRT.COM.CAT of the underlying REPO.TYPE record of this REPO contract.</p>
+        </desc>
+</t>
+<t>
+<field>CUST.TRANS.CODE</field>
+<desc>
+            <p>Indicates whether the Customer is buying or selling.</p>
+            <p>    Transaction codes have been created in such a way that any number can be created and used within the Sec.Trade application.</p>
+            <p>    They must exist in pairs however so that the System can identify a Client Purchase and apply sufficient logic to know that even though for the Broker/Counterparty the transaction is a Sale the commissions etc are still to be added.</p>
+            <p>    Where Securities differs from any other Application is that within one transaction e.g. a Purchase of Securites you have the following entries:-</p>
+            <p>    Credit securities to the clients portfolio. Debit Client financial account with total cost of Securities. Credit P  L with entries for commissions, charges etc. Credit Brokers Financial account or Nostro with Total amount payable. Debit P  L with entries representing Brokers charges to you.</p>
+            <p>    To keep the integrity within any particular transaction therefore pairs of Transaction codes have to be used.</p>
+            <p>    These are stored within the File SC.TRANS.TYPE. Here you must specify your Security Debit and Credit codes for any particular transaction and state whether they are financial credits or debits.</p>
+            <p>    The system will NOT ALLOW mismatched transaction codes to be used.</p>
+            <p />
+            <p />
+            <p>    Note:      Proceedure to be followed:-</p>
+            <p>    1. Open TRANSACTION codes.            2. Open SC.TRANS.NAME records.            3. Open SC.TRANS.TYPE records.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-3 type S (uppercase alpha) character Sc.Trans.Name. Multivalue field. (Mandatory input.)</p>
+            <p>    Must be a valid code on the SC.TRANS.NAME file.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRA.BY.REF</field>
+<desc>
+            <p>System updated field.</p>
+            <p />
+            <p />
+            <p>    This field contains the ID of the contra transaction for the sec trade.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>    No Input. System updated.</p>
+        </desc>
+</t>
+<t>
+<field>FUND.ID</field>
+<desc>
+            <p>Mutual fund id.</p>
+        </desc>
+</t>
+<t>
+<field>BR.TRANS.CODE</field>
+<desc>
+            <p>Indicates whether the Broker is buying or selling.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-3 type S (uppercase alpha) character Sc.Trans.Name. Multivalue field. (Mandatory input.)</p>
+            <p>    Must be a valid code on the SC.TRANS.NAME file.</p>
+            <p>   Cannot be changed when SERVICE.REF is populated.</p>
+        </desc>
+</t>
+<t>
+<field>CU.FEES.MISC</field>
+<desc>
+            <p>Records the amount of Miscellaneous Fees charged to the Customer for the trade.</p>
+            <p>    It cannot be automated as its very name suggests, its intended usage would normally cover telex and perhaps postage or cable charges for example.</p>
+            <p>    Within the standard default table SC.STD.SEC.TRADE the User can determine to which PL category code these miscellaneous fees are to be posted.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> For Structure note instruments if ALL.IN.COST.BASIS is set as NO in Security Master. Based on the percentage provided in Security master ALL.IN.COST Field, ALL.IN.COST is calculated on the gross cost of the trade (CU.GROSS.AM.SEC) and the same will be updated in CU.FEES.MISC. </p>
+            <p />
+            <p>    1-14 numeric characters  "." (number of decimal places dependant on the currency). Where Field 9, Net trade = NO, Optional input Where Field 9, Net Trade = Y(es), Automatic default is to 0.00.</p>
+        </desc>
+</t>
+<t>
+<field>BROK.ACT.SUSP.CAT</field>
+<desc>
+            <p>This field is used as a category reference for the broker. The suspense amount of the broker is posted to it.</p>
+            <p>    The value is picked up from the SC.PARAMETER which holds a similar field in it. The value is defaulted from the SC.PARAMETER fields.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    The value in this field should be a valid entry in CATEGORY         file.</p>
+        </desc>
+</t>
+<t>
+<field>BR.FEES.MISC</field>
+<desc>
+            <p>This field can be used for the input of miscellaneous fees which the Broker may decide to pass on to the "Bank". It cannot be automated as its very name suggests, but it will handle possibly if so required telex and delivery charges.</p>
+            <p>    Within the standard default table SC.STD.SEC.TRADE the User can determine to which PL category code these miscellaneous fees are to be posted.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>For Structure note instrument if ALL.IN.COST.ISSUER is set as YES in Security Master. Based on the percentage provided in Security master ALL.IN.COST Field,ALL.IN.COST is calculated on the gross cost of the trade (BR.GROSS.AM.SEC) and the same will be updated in BR.FEES.MISC.</p>
+            <p />
+            <p>    Numeric input required. Default value will be 0.00</p>
+        </desc>
+</t>
+<t>
+<field>REFERENCE.NO</field>
+<desc>
+            <p>Unique reference which identifies the transaction.</p>
+            <p>    Only the sequence number (nnnnn) is required to be input.  The Application will automatically generate the prefix (SECTSC) and the first 5 digits (yyddd) and attach the sequence number. The sequence number may be either User or System generated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    10 Numeric characters, prefixed by SECTSC, ie. SECTSCyydddnnnnn. yy    = year (eg. 85 = 1985), ddd   = julian day (ie. 01/jan = 001, 02/Jan = 002, 01/Feb = 032, etc.), nnnnn = transaction sequence number (in the range, 00001 to 99999.). (Mandatory input.)</p>
+        </desc>
+</t>
+<t>
+<field>BR.ACCOUNT.CCY</field>
+<desc>
+            <p>Records the currency of the Broker Account (Field 52.1).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input required. Automatic default to the ACCOUNT record Field 8 - Currency.</p>
+        </desc>
+</t>
+<t>
+<field>COM.TAX.BCUR</field>
+<desc>
+            <p>Customer commissions in SEC.TRADE are defaulted from the CUSTOMER.CHARGE record for the customer using the SC.APPLICATION set of fields. It will use the set of fields linked to SC.TRADING if they are present and default to ALL otherwise. From there the system links to the SCTR.GROUP.CONDITION application and then onto the SCTR.CHARGE.PARAMETER application to get the actual FT.COMMISSION.TYPE record used. Some commissions have a tax code associated with them which is used to charge tax on the commission.</p>
+            <p>    If Tax is raised on the customer commission then the amount of tax raised in the local currency of the system is recorded in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input field automatically updated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>CU.NAV.TYPE</field>
+<desc>
+            <p>Net asset value type for associated customer.</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.RATE</field>
+<desc>
+            <p>Indicates the Coupon Rate of the Security, ie. the rate at which interest is to be accrued from Last Payment Date (Field 11) to Value Date (Field 6).</p>
+            <p>    The system uses the accrual date as displayed within Field 10 along with the interest rate and the Interest day Basis as per the Security.Master record to calculate both the number of days accrued and the amount of accrued interest payable on any individual bond transaction.</p>
+            <p>    Whilst the number of days and the actual accrued interest amount can be overridden at transaction level the interest rate has to be changed at Security.Master level.</p>
+            <p>    IMPORTANT.</p>
+            <p>    The User must understand any change to the number of days accrued or the calculated amount will merely be recovered by the system at the End of Day processing when dealing with the Banks Own Portfolio Transactions.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input required. Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>BR.AGENT.AC</field>
+<desc>
+            <p>This field was added for depository messages</p>
+            <p>    Forms associated sub value with BR.AGENT This field is used to determine the agent's account in MT540-MT543 messages.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Only 10 sub values allowed</p>
+        </desc>
+</t>
+<t>
+<field>CONSOL.RATE</field>
+<desc>
+            <p>Multi-valued field associated with the previous three fields and the next two fields. Used in the consolidation of forex amounts for the SEC.TRADE transaction.</p>
+            <p>    Input only allowed if the CONSOLIDATE.FX field on the SC.STD.SEC.TRADE file is set to Y and there are accounts used in the SEC.TRADE that have a currency that is different from the trade currency of SEC.TRADE.</p>
+            <p>    Input of an exchange rate to be used between the associated currencies in the TRADE.CURR and SETTLE.CURR field. This exchange rate will be used to calculate the amount to be debited from accounts settling the associated SETTLE.CURR. Input in this field will cause the SETTLE.AMT field to be updated as the equivalent to the amount in the associated CONSOL.AMT field at this exchamge rate.</p>
+            <p>    There will be one set of values in these six fields for each currency one of more customers are settling in if the settlement currency is different from the trade currency. Automatically updated by the system during input.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Mandatory field if the CONSOLIDATE.FX field on</p>
+            <p>    SC.STD.SEC.TRADE is set to Y. Otherwise a no input field.</p>
+        </desc>
+</t>
+<t>
+<field>EXCH.RATE.SEC</field>
+<desc>
+            <p>Specifies the exchange rate applicable between the Security currency (Field 2) and the Local Currency.</p>
+            <p>    For information purposes only</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-10 numeric characters  "." (1-6 integers and 1-9 decimal places). Default value = relevant rate as per the CURRENCY file.</p>
+            <p>    Where input manually the rate must fall between the parameters set on the CURRENCY file.</p>
+        </desc>
+</t>
+<t>
+<field>DISCOUNT.AMOUNT</field>
+<desc>
+            <p>System defined field to store the discount or premium amounts on the Treasury Bill transactions. This field's value is arrived at by calculating the difference between the Redemption Price from the SECURITY.MASTER and the custmer price on the transaction, multiplied by the number of Nominals transacted.</p>
+            <p>
+                <p>Validation Rules:</p> - No input System field</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BR.INTR.AM.TRD</field>
+<desc>
+            <p>Specifies the amount of interest accrued on the Securities (Br Tot Nom - Field 56.1) up to the Value Date of the trade.</p>
+            <p>    The accrued interest is calculated automatically using the information within the Security.Master file.</p>
+            <p>    The System will calculate the number of days accrued from the last payment date to the value date of the transaction.It will then use these days along with the interest rate and interest day basis to calculate how many daysand the amount which must be paid for or received when buying or selling bonds.</p>
+            <p>    This amount can be overriden at transaction level BUT the proper proceedure in the event of a discrepancy would be to check the static information and if necessary make change before rekeying the transaction.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-14 numeric characters (including up to 3 decimal places, dependant on currency). Multipliers T,M  B may be used. Multivalue field. (Mandatory input.) Default value = Interest Amount as calculated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>CPTY.LIMIT.REF</field>
+<desc>
+            <p>The limit reference related to the Counterparty (broker).</p>
+            <p>    Input is only allowed if the following conditions apply:- - at least one customer number relates to a banks own trading book - only one broker is input - the delivery instructions record for the broker indicates that counterparty limit processing applies</p>
+            <p>    If the above conditions apply then on validation a limit reference will be obtained for the broker. If no limit reference can be obtained then an overrride will be generated.</p>
+            <p>    If a limit reference has been obtained then limit checking will take place with overrides generated when relevant.</p>
+            <p>    The amount used to update limits will be the BR.NET.AM.TRD value.</p>
+            <p>    The limits are defined on LIMIT.PARAMETER for the SEC.TRADE application.</p>
+            <p>    It is envisaged that the limit product will be dependant on the delivery instructions and whether the trade is for bonds or shares.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Optional Input. 3 to 7 numeric characters limit reference code.  Input in this field must be a valid limit reference number.  If no limit exists then an override will be generated.</p>
+        </desc>
+</t>
+<t>
+<field>BR.OVE.ADDR</field>
+<desc>
+            <p>Provides the address to where the Broker's Advices relating to this trade are to be sent (where different from the Address entered on the Broker's CUSTOMER record).</p>
+            <p>    If entered, will be used by the delivery system in place of any addresses stored elsewhere in the system.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-35 type A (alphanumeric) characters. Multi value field. Sub-Value fields available to enable input of full address. (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>SERVICE.REF</field>
+<desc>
+            <p>The reference number if the SEC.TRADE has been created by a service.</p>
+        </desc>
+</t>
+<t>
+<field>CU.DELIV.KEY</field>
+<desc>
+            <p>This is a no input field which contains the delivery key for the clients' advice which has been produced within the Delivery Module.</p>
+            <p>    Once the Sec.Trade has been authorised the Delivery Module will automaticaly produce an advice for the client with an unique key.Once this has been generated the ID will be written to the Sec.Trade and stored.This means that all relevant information relating to an individual transaction can be retrieved allowing the user to obtain copies as and when required.</p>
+        </desc>
+</t>
+<t>
+<field>PSET</field>
+<desc>
+            <p>New field added for depository messages</p>
+            <p>    This field is used to determine the place of settlement in MT540-MT543 messages.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Text of up to 15 characters can be entered.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>BR.NET.AM.TRD</field>
+<desc>
+            <p>Calculates the Net Amount of the trade (in Trade Ccy) for this Broker. IE. Br Gross Amt Trd (Field 58.1) + Br Intr Amt (Field 61.1) +/- Charges  Commission (Fields 63.1 - 66.1).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input required. Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>SUB.ACCOUNT</field>
+<desc>
+            <p>Specifies the sub account at depository.</p>
+            <p>    It must be defined in sub account fields of customer security record for the transaction depository.</p>
+            <p>    It will be defaulted from SC.SUB.ACC.ROUTING record defined for the depository if the criteria match.</p>
+            <p>    Optional field</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    1-16 numeric characters</p>
+            <p>    Must be defined in CUSTOMER.SECURITY record for the depository</p>
+        </desc>
+</t>
+<t>
+<field>CONF.BY.BROKER</field>
+<desc>
+            <p>Records the date, time and inputter verifying the confirmation of the transaction as received from the Broker, or may have the value 'ONESIDED' inputted or defaulted by the user.</p>
+            <p>    The Verify function can be used against all "unconfirmed" transactions.  This will automatically update the record as mentioned above and take this particular transaction off the unverified list. However if this field contains the value 'ONESIDED' no confirmation is expected.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Terminal number, Operator, Time and Date. Or the value 'ONESIDED' may be used.</p>
+        </desc>
+</t>
+<t>
+<field>BR.GROSS.AM.TRD</field>
+<desc>
+            <p>Converts the Gross Amount Security Ccy (Field 57.1) into Trade Currency.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    NO INPUT. Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.NO</field>
+<desc>
+            <p>Identifies the Customer(s) with whom the trade is made.</p>
+            <p>    The Customer details for the SEC TRADE application are contained in Fields 19-49.</p>
+            <p>    Multivalue fields available are to enable the processing of trades with more than one customer. These will be entered as complete sets of for each individual customer. i.e.       Fields 18.1 - 44.1 contain all the details for Customer 1.</p>
+            <p>    Fields 18.2 - 44.2 contain all the details for Customer 2,            and will follow Field 49.1.            All further Customer details will follow on as described            above (18.3 - 44.3 then 18.4 - 44.4 etc.).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-10 numeric character Customer ID number or     3-10 type MNE (uppercase alpha or numeric or ".") character Mnemonic Customer id. Multivalue field. (Mandatory input.)</p>
+            <p>    Must be the Id of a valid Customer for whom the CUSTOMER SECURITY file record (Field 1 - Customer.Type) equals C (Customer).</p>
+            <p />
+            <p>  When SERVICE.REF is populated no customer details can be entered or will be present. All customer details are stored in the application SC.SEC.TRADE.CUST.DETAIL.</p>
+        </desc>
+</t>
+<t>
+<field>SECURITY.CURRENCY</field>
+<desc>
+            <p>Specifies the currency of the Security (Field 1).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    NO INPUT. Automatic default is to the Ccy of the Security as per the Security.  Master record (Field 7 - SECURITY CURRENCY).</p>
+        </desc>
+</t>
+<t>
+<field>CU.TAX.TCY</field>
+<desc>
+            <p>Manually entered tax for associated customer in trade currency.</p>
+        </desc>
+</t>
+<t>
+<field>ISSUE.DATE</field>
+<desc>
+            <p>Specifies the Issue Date of the Security (Field 1).</p>
+            <p>    Currently there is no processing involved with this field            it defaults from the Security.Master record and caanot be            changed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Up to 9 type D date characters, (Standard Date format in range 1950-2049). (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>SETT.NARRATIVE</field>
+<desc>
+            <p>Settlement narrative.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CU.WHT.TAX</field>
+<desc>
+            <p>Specifies the amount of Tax on the Securities up to the Value Date of the trade. The calculation is used for Tax payable on any Bond / Share on Sale.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>    The Tax rate to be applied is fetched from the field CU.WHT.PERC. This is automatically calculated by the system based on TXN.TAX.CODE linked to SECURITY.MASTER.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    System updated field.</p>
+        </desc>
+</t>
+<t>
+<field>CGT.TAX.LCL</field>
+<desc>
+            <p>This field signifies the local equivalent of the actual amount of capital gains tax that is to be debited from the customers account.</p>
+            <p>    If the TAX record, from the associated field CGT.CODE, field LINK.TAX is populated then all linked local tax amounts will be shown.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    A NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>MV.RESERVED03</field>
+<desc>
+            <p>Standard T24 reserved field.</p>
+        </desc>
+</t>
+<t>
+<field>MARKET.TYPE</field>
+<desc>
+            <p>Indicates in which market the Trade has been dealt.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Input may be only, S = spot, or     F = forward, or     N = normal. Default value = N.</p>
+        </desc>
+</t>
+<t>
+<field>CU.INCOME.ACC</field>
+<desc>
+        <p>Income account to which charges are to be posted. Associated multi-value with CU.INCOME.CCY</p>
+    </desc>
+</t>
+<t>
+<field>CU.INCOME.CCY</field>
+<desc>
+        <p>Currency of income account.Associated multi-value with CU.INCOME.CCY</p>
+    </desc>
+</t>
+<t>
+<field>INT.CTR</field>
+<desc>
+            <p>Interest counter from security details.</p>
+        </desc>
+</t>
+<t>
+<field>BR.GROSS.ACCR</field>
+<desc>
+            <p>Contains the sum of the Broker gross amount in trade currency and the broker interest amount.</p>
+            <p>    Automatically generated by the System this is a no input field which is used when calculating all commissions and fees apropos the Broker side of any transaction.</p>
+            <p>    Either individual Broker rates or stock exchange conventions will apply but as a basis for their calculation this is the amount which will figure in any calculations.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No Input field.</p>
+        </desc>
+</t>
+<t>
+<field>CU.NOTES</field>
+<desc>
+            <p>Free format field for carrying forward user specified information, if any. Authomatically carried forward from sec open order to trade, if input.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>    1-35 Alphanumeric input (Optional Input)</p>
+        </desc>
+</t>
+<t>
+<field>CU.DELIV.INSTR</field>
+<desc>
+            <p>This field contains the delivery instruction for the client.</p>
+            <p>    System indicator which is used to define whether the delivery is to be made free of payment or against payment.</p>
+            <p>    It is used for two purposes within the securities processing.</p>
+            <p>    1) The first is merely to control the delivery/receipt of the securities within the Sec.Del.Control appliaction and the subsequent reports which are provided.</p>
+            <p>    2) The second use is within the automatic settlement proceedure which will produce, for example Swift messages to Cedel and /or Euroclear. The type of message is determined by the delivery instructions input.i.e is it free of payment or delivery against payment. The clearing systems within the Securities' Module will determine the type of validation within the Sec.Trade.</p>
+            <p>    For a complete description see the Securities Settlement and Delivery Manual.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1 to 3 alpha code delivery instruction</p>
+        </desc>
+</t>
+<t>
+<field>CUST.ACC.NO</field>
+<desc>
+            <p>Identifies the Customer's Account, over which financial entries relating to the trade are to be passed.</p>
+            <p>    Multi-valued Field.</p>
+            <p>    Default is to the Account specified on the Customer's SEC ACC MASTER record, for the Trade currency (TRADE.CCY) or (if no Account in the Trade currency is specified) to the Customer's first account on the SEC.ACC.MASTER record (CUST.SEC.ACC) - ACCOUNT.NOS field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Mandatory Input</p>
+            <p>    1-16 numeric character Account number or 3-10 character Mnemonic Account id (uppercase alpha or numeric or ".").</p>
+            <p>    Default value = the Account specified on the Customer's SEC.ACC.MASTER record.</p>
+            <p>    Must be a valid Account on the ACCOUNT file.</p>
+        </desc>
+</t>
+<t>
+<field>BR.CONF.REF</field>
+<desc>
+            <p>This is a system updated field that holds delivery reference of incoming MT515</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Up to 35 characters in length</p>
+        </desc>
+</t>
+<t>
+<field>CU.MANTAXTCY</field>
+<desc>
+            <p>Manually entered tax for associated customer in account currency.</p>
+        </desc>
+</t>
+<t>
+<field>CU.EX.RATE.ACC</field>
+<desc>
+            <p>Specifies the rate of exchange between the Trade Currency (Field 7) and the Cu.Account.Ccy (Field 42.1).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-10 numeric characters  "." (1-6 integers and 1-9 decimal places). Default value = rate calculated as per the CURRENCY file records.</p>
+            <p>    Where input manually the rate must fall between the parameters set on the CURRENCY files.</p>
+        </desc>
+</t>
+<t>
+<field>CU.GROSS.AM.TRD</field>
+<desc>
+            <p>Calculates the Gross value of the trade (in the Trade Currency).</p>
+            <p>    Whereas Field 26.1 illustrates the Gross amount of the transaction in the Security Currency this Field displays the total in the currency of the trade.i.e the currency to be settled with the Broker concerned.</p>
+            <p>    The Gross amount in security currency is used to calculate commissions etc.which are then calculated back to the trade currency for purposes of enetering the transaction.</p>
+            <p>    All Stock Exchange rates as contained within the Stock Exchange calculation tables will calculate the commissions in the security currency before converting this amount back into the trade currency.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    NO INPUT. Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>PRICE.TYPE</field>
+<desc>
+            <p>Specifies the type of price calculation relevant to the Security (Field 1).</p>
+            <p>    The price type identifies to the system the type of            calculation it is to make in terms of the transaction being            processed.            Within the PRICE.TYPE table there isss information which            enables the User to set up the different price types            necessary for processing equities bonds and option            trades where 1 option may well repressent 100o shares            and the price quoted is per share and NOT by option.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    NO INPUT. Automatic default is to the SECURITY.MASTER file record (Field 11 - PRICE TYPE).</p>
+            <p>    Must exist on the PRICE.TYPE table.</p>
+        </desc>
+</t>
+<t>
+<field>CU.REF.CCY</field>
+<desc>
+            <p>Displays the Customer's Reference Currency, IE. the currency specified in the Customer's SEC ACC MASTER record (Field 2: Reference Currency)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input required. Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>COMM.PERCENT</field>
+<desc>
+            <p>Customer commissions in SEC.TRADE are defaulted from the CUSTOMER.CHARGE record for the customer using the SC.APPLICATION set of fields. It will use the set of fields linked to SC.TRADING if they are present and default to ALL otherwise. From there the system links to the SCTR.GROUP.CONDITION application and then onto the SCTR.CHARGE.PARAMETER application to get the actual FT.COMMISSION.TYPE record used.</p>
+            <p>    When the customer commission is calculated the percentage used to calculate the commission will be recorded in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input field automatically updated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>CGT.PARAM.COND</field>
+<desc>
+            <p>A multi-value NOINPUT field. The condition id allocated to this transaction relating to application CG.PARAM.CONDITION. This will determine the Capital Gains method and tax to be applied</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    A NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>CU.REALLOW.AMT</field>
+<desc>
+            <p>Calculated as the value of the reallowance based on the CUST.TOT.NOM and the CU.REALLOWANCE.</p>
+            <p>    The system will calculate the reallowance amount by multiplying the amount contained within CUST.TOT.NOM by the rate defined in the CU.REALLOWANCE Field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    1-14 numeric characters including up to 3 decimals.         Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>CU.NARRATIVE</field>
+<desc>
+            <p>Multi Value No Input field which is used to store any comments or free format narrative concerning the customer or the transaction.</p>
+            <p>    Additionally, if the SEC.TRADE was produced as a direct result of an executed SECURITY.OPEN.ORDER which contained any narrative, then that narrative is carried over for subsequent display on the SEC.TRADE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Free Format narrative text. Up to 35 maximum characters per line.</p>
+        </desc>
+</t>
+<t>
+<field>ACT.DEAL.DESK</field>
+<desc>
+            <p>Actual dealer desk that actioned the trade.</p>
+        </desc>
+</t>
+<t>
+<field>AUTO.BROK.SETT</field>
+<desc>
+            <p>Enables the automatic settlement of the nominal and cash for Brokers who have contractual agreements with the Bank. This value will be defaulted to YES, if there is an "YES" in AUTO.BROK.SETT field in CUSTOMER.SECURITY file. The automatic settlement can be turned OFF at transaction level, though it has been turned ON in the CUSTOMER.SECURITY. Though it has been turned ON in the CUSTOMER.SECURITY,the same could be turned OFF at the transaction namely SEC.TRADE, SECURITY.TRANSFER, etc.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Allows only Yes, No or Null.  Null is equivalent to NO</p>
+        </desc>
+</t>
+<t>
+<field>AUTO.CUST.SETT</field>
+<desc>
+            <p>Enables the automatic settlement of the nominal and cash for the Customers who have contractual agreements with the Bank.</p>
+            <p>    This facility is available for the Customer side only.</p>
+            <p>    The value is defaulted as 'YES', if it has been set to 'YES' in the AUTO.CUST.SETT field in</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Allows only Yes, No or Null.  Null is equivalent to NO</p>
+        </desc>
+</t>
+<t>
+<field>BND.RND.METH</field>
+<desc>
+            <p>When calculating the accrued interest on a bond, certain rounding parameters can be taken into account in the calculation. If a bond rounding method has been used then the method used will be stored in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>EXCH.RATE.TRD</field>
+<desc>
+            <p>Specifies the exchange rate applicable between the Trade currency (Field 7) and the Local Currency.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-10 numeric characters  "." (1-6 integers and 1-9 decimal places). Default value = relevant rate as per the CURRENCY file.</p>
+            <p>    Where input manually the rate must fall between the parameters set on the CURRENCY file.</p>
+        </desc>
+</t>
+<t>
+<field>BR.COUP.TAX.AMT</field>
+<desc>
+            <p>This is the same as CU.COUP.TAX.AMT but for the broker side.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Standard amount field. (NOINPUT)</p>
+        </desc>
+</t>
+<t>
+<field>STAMP.INDICATOR</field>
+<desc>
+            <p>Field will be defaulted from SC.SETT.INSTRUCT based on the transaction code of broker but can be manually overridden.</p>
+            <p>Value defined should be either  in format AAAA/BBBB or BBBB. Value will be mapped to tag 22F stamp duty indicator in sequence E of MT54X(X= 0 to 3).</p>
+            <p>Forms an Associated multivalue field set with broker multivalue fields</p>
+        </desc>
+</t>
+<t>
+<field>TREASURY.PRICE</field>
+<desc>
+            <p>Treasury price, used to calculate treasury and market P&amp;L.</p>
+        </desc>
+</t>
+<t>
+<field>CASH.HOLD.SETTLE</field>
+<desc>
+            <p>CASH.HOLD.SETTLE will be used to control whether cash will update the SC.SETTLEMENT application.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    CASH.HOLD.SETTLE will allow input of YES or         NO only.</p>
+            <p />
+            <p />
+            <p>    If the ACTUAL.SETTLEMENT field on the SC.PARAMETER record         is NO then CASH.HOLD.SETTLE will be no-input         field that will default to NO.</p>
+            <p />
+            <p />
+            <p>    If the CASH.HOLD.SETTLE field is YES then the         cash accounting will use actual settlement .</p>
+            <p />
+            <p />
+            <p>    If SEC.TRADE transaction is authorised with CASH.HOLD.SETTLE         field set to YES then the system will create         a SC.SETTLEMENT record from the transaction.SC.SETTLEMENT         records will be created with an unauthorised status.The         cash settlement can be recorded using the AMT.RECD.PAID         field in SC.SETTLEMENT.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.HOLD.SETTLE</field>
+<desc>
+            <p>SEC.HOLD.SETTLE will be used to control whether stock will update the SC.SETTLEMENT application.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    SEC.HOLD.SETTLE will allow input of YES or         NO only.</p>
+            <p />
+            <p />
+            <p>    If the ACTUAL.SETTLEMENT field on the SC.PARAMETER record         is NO then SEC.HOLD.SETTLE will be no-input         field that will default to NO.</p>
+            <p />
+            <p />
+            <p>    If SEC.TRADE transaction is authorised with SEC.HOLD.SETTLE         field set to YES then the system will create         a SC.SETTLEMENT record from the transaction.SC.SETTLEMENT         records will be created with an unauthorised status.The         stock settlement can be recorded using the NOM.RECD.DEL         field in SC.SETTLEMENT.</p>
+            <p />
+            <p />
+            <p>    If the user has input YES in the SEC.HOLD.SETTLE         field of a transaction and consequently is processing the         stock nominal through actual settlement then the system         will update UNSETTLE.NOMINAL field on the SECURITY.POSITION         file with the nominal of the transaction when the SC.SETTLEMENT         record is created. Where the security position is being         added to (a purchase for example) this field will be         credited with the stock. Where the security position is         being debited (a sell for example) this field will be         debited with the nominal.</p>
+        </desc>
+</t>
+<t>
+<field>CUST.NOMINEE</field>
+<desc>
+            <p>Identifies the Nominee with whom the Security is registered.</p>
+            <p>    The nominee code forms part of the "key" by which the system identifies holdings by individual clients by depository holding.</p>
+            <p>    Great care should be taken at transaction level when using the nominee code.</p>
+            <p>    Because the nominee code will form part of the key when buying or selling securities an override message may well have to be overridden at transaction level.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-5 type S (uppercase alpha or numeric) character Nominee.code. Multivalue field. (Optional input)</p>
+            <p>    Must be a valid Nominee.Code.</p>
+        </desc>
+</t>
+<t>
+<field>MARGIN.FACTOR</field>
+<desc>
+            <p>This field used in the calculation of consideration using the Columbian Yield Method.</p>
+        </desc>
+</t>
+<t>
+<field>BROKER.NO</field>
+<desc>
+            <p>Indicates with which Broker the trade has been placed</p>
+            <p>    Allowed Input are the following types of "Customer".            1) Broker.            2) Counterparty.            3) Client.</p>
+            <p>    Whereas the Broker and Counterparty are self explanatory the Client may be a Customer of the Bank who is not traditionally known as either a Broker or Counterparty but as a Client (Without a Portfolio) who transacts business with the Bank.  It is therefore permissible within the Sec.Trade appliaction to enter a transaction on the "Broker" side of the transaction who will Purchase securities from a Client who is selling those securities.</p>
+            <p>    The system is intelligent enough to know that the Client is effectively a Customer without a Portfolio and will ensure that the accounting proceedures for this transaction are dealt with properly.</p>
+            <p />
+            <p />
+            <p>    Example:   Examle of a typical transaction.            Portfolio client buys stock.            All commissions stamps and taxes are added to the amount            that will be debited to the clients' account.            On the Broker side even though the transaction code is            input as a sale the commissions,stamps and taxes are            added to the amount that is payable to the Broker.</p>
+            <p>    But with a non Portfolio Client this is entered within the            Broker side of the Sec.Trade and if it is a Sale the            System will deduct commissions, taxes etc. and likewise            with the Broker side all P  L will be deducted from the            amount that the Broker will pay.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-10 Alpahnumeric Customer code or 1-10 Alphanumeric Mnemonic Customer Code. T24 will allow the following types of input which will all be validated against the Customer.Security record for that particular"Customer". Multivalue field. (Mandatory input.)</p>
+            <p>    Must exist as a valid record within the Customer.Security File.</p>
+            <p>   Cannot be changed when SERVICE.REF is populated.</p>
+        </desc>
+</t>
+<t>
+<field>CU.TAX.CODE</field>
+<desc>
+            <p>Tax code for associated customer.</p>
+        </desc>
+</t>
+<t>
+<field>TRADE.DATE</field>
+<desc>
+            <p>Records the date that the trade is made on.</p>
+            <p>    The Trade date of any transaction cannot be greater than            today; however the System will allow back dated trades.</p>
+            <p />
+            <p />
+            <p>    Note:      The trade date of any transaction is important for more            than just one reason.            The contract is a legally binding document between the            Client and Bank (Broker) and should be retained for            legal and tax reasons.            The date of the transaction is the date at which            ownership of shares is transferred along with any rights            or dividends due or payable to that client.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Up to 9 type D date characters, (Standard Date Format in range 1950-2049). (Mandatory input) Default value = Run Date.</p>
+            <p>    Can not be greater than Run Date.</p>
+            <p>   Cannot be changed when SERVICE.REF is populated.</p>
+        </desc>
+</t>
+<t>
+<field>CU.BEN.ADDR</field>
+<desc>
+            <p>Customer beneficary adderess.</p>
+        </desc>
+</t>
+<t>
+<field>MATURITY.DATE</field>
+<desc>
+            <p>Specifies the Maturity Date of the Security (Field 1).</p>
+            <p>    Date is defaulted from the Security.Master record and cannot be changed.At the moment it is used purely for information purpose.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Up to 9 type D date characters, (Standard Date format in range 1950-2049). Internally generated Field.</p>
+        </desc>
+</t>
+<t>
+<field>SETTLE.AMT</field>
+<desc>
+            <p>Multi-valued no input field associated with the previous four fields and the next field. Used in the consolidation of forex amounts for the SEC.TRADE transaction.</p>
+            <p>    Will only be populated if the CONSOLIDATE.FX field on the SC.STD.SEC.TRADE file is set to Y and there are accounts used in the SEC.TRADE that have a currency that is different from the trade currency of SEC.TRADE.</p>
+            <p>    Automatically updated with the amount in the currency in the SETTLE.CURR field equivalent to the amount in the CONSOL.AMT field at the rate input in the CONSOL.RATE field. Updated when a rate has been input in the CONSOL.RATE field.</p>
+            <p>    There will be one set of values in these six fields for each currency one of more customers are settling in if the settlement currency is different from the trade currency. Automatically updated by the system during input.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input system updated field.</p>
+        </desc>
+</t>
+<t>
+<field>BR.BEN.BANK.2</field>
+<desc>
+            <p>Contains the Customer reference for the second Beneficiary Bank for the Broker Amount due in the case of contracts involving four-party transfers of funds.</p>
+            <p>    This field will map to field 56A - Intermediary Bank in MT100. If BR.BEN.BANK1 does not have any Bank details and BR.BEN.BANK2 is entered then this field is mapped to field 57A - Account with Institution.</p>
+            <p>    If for example, the Broker requests the delivery of the funds to his account that he maintains with American Bank A, Detroit which has an account with American Bank B, New York, the User will then make the following input:-</p>
+            <p>    (i) Default (or Enter) the standard Nostro account number in the BROKER ACCOUNT. This field is always used to indicate the account where the book-keeping entries must be recorded by the system.</p>
+            <p>    (ii) Enter the Agent code (Customer number) of the American Bank A, New Detroit, in the BEN BANK 1. In case this Bank does not exist on the Database, the User can then enter the name and address of this Bank in the BEN ADDRESS.</p>
+            <p>    (iii) Enter the Agent code (Customer number) of the American Bank Bank, New York in this field. In case this Bank does not exist on the Database but there was a Customer reference for the Bank identified in the previous field, the User can enter the name and address of the Bank of Detroit in the BEN ADDRESS. This means that at least one of the two banks must have been defined on the CUSTOMER and AGENCY files.</p>
+            <p>    (iv) Enter the beneficiary account number in the BEN ACCOUNT.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    3 to 10 Character Mnemonic (Uppercase alpha, numeric or         ".") - Type MNE. Input will be checked against         the AGENCY file. or 1 to 6 Numeric character Agent code (Optional         input; default value = none.)</p>
+            <p>    Any input in this field must represent a valid Agent as         defined on the AGENCY file.</p>
+            <p>    The Customer reference input in this field must be         different from the Customer reference of BEN BANK 1.</p>
+            <p>    The BROKER ACCOUNT must be a valid NOSTRO ACCOUNT.</p>
+            <p>    The Customer reference input must be different from the         Customer reference of the Nostro account used in the         contract (ie. the system will check the Customer         reference of the BROKER ACCOUNT).</p>
+            <p>    Input in this field will not be allowed if BEN BANK 1 and         BEN ADDRESS were both entered.</p>
+        </desc>
+</t>
+<t>
+<field>BR.SEC.DEPOT.AC</field>
+<desc>
+            <p>Records which Depository(ies) the Broker is using.</p>
+            <p>    This field is used to create settlement instructions for the Clearing systems which have been set up within the Securities Module of any Particular Bank.</p>
+            <p>    The User has already input the details of where securities are to be received in the case of a purchase and from where they are to be delivered in the case of a Sale.</p>
+            <p>    As regards the Broker He must now tell the system from where it is being delivered and to where it should be delivered in the instance of a Sale.</p>
+            <p>    Field BR.ACC.NO is used in conjunction with this field to store details of the Brokers "Account" Number No.with the previously defined Depository. Where possible this information will be defaulted from the Customer.Security file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    1-6 numeric character Customer Id. or 3-10 type AAA (uppercase         alpha or numeric or ".") character Mnemonic         Customer Id. or 1-35 type A (alphanumeric) characters,         free format input. Multivalue field Subvalue fields to         record free format text relating to the Brokers'         Depository.</p>
+        </desc>
+</t>
+<t>
+<field>CU.DISC.PCENT</field>
+<desc>
+            <p>DISCOUNT PERCENT</p>
+            <p>    Customer discount applied to CU.NET.AM.TRD</p>
+            <p>    default: obtained from SCTR.GROUP.CONDITION</p>
+        </desc>
+</t>
+<t>
+<field>LAST.PAYMNT.DATE</field>
+<desc>
+            <p>Used for information purposes only to highlight to the user the accrual date or coupon last payment date of any particular bond being traded.</p>
+            <p>    Can be used in conjunction with Field 12 Interest Days to provide the user with information regarding the accrual date and hence the actual number of days accrued interest payable at Sec.Trade level.</p>
+            <p>    For Information purposes only.</p>
+            <p>    Note:      Whilst the number of days can be altered this should only            be done by firstly changing the static information within            the particular Security Master record.            The user must understand that the System uses the            accrual date within the Security.Master when it processes            its daily accruals for the Banks own portfolio and the            system will merely make an adjustment to the amount            posted within Sec.Trade to keep the Integrity in            accordance with the dates within Security.Master.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No Input field internally generated by the system and copies over from the Security.Master record.</p>
+        </desc>
+</t>
+<t>
+<field>SECURITY.CODE</field>
+<desc>
+            <p>Identifies the Security.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-6 numeric character Security number separated from a 3 numeric character suffix by "-". or     3-10 type MNE (uppercase alpha or numeric or ".") character Mnemonic Security id. (Mandatory input.)</p>
+            <p>    Must be the ID of a valid SECURITY.MASTER file record.</p>
+            <p>   Cannot be changed when SERVICE.REF is populated.</p>
+        </desc>
+</t>
+<t>
+<field>CUST.TOT.NOM</field>
+<desc>
+            <p>Calculates the total nominal amount for the customer.</p>
+            <p>    ie. the total of the Sub-Value fields for each Customer (23.1.1 + 23.1.2 etc.).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    No input required. Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>CUST.NO.NOM</field>
+<desc>
+            <p>Specifies the Nominal Amount (ie the face value) of the Security (Field 1) traded.</p>
+            <p>    For each Customer the Total Nominal Amount traded may be split into several Nominal Amounts at different Prices. These will be entered as the Nominal Amount followed by the Price relevant to that Amount.</p>
+            <p>    i.e. 23.1.1 = 1st Nominal for Customer.1 24.1.1 = Price relevant to 23.1.1 23.1.2 = 2nd Nominal for Customer.2 24.1.2 = Price relevant to 23.1.2 etc.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    1-18 numeric characters (including up to 6 decimal         places).</p>
+            <p />
+            <p />
+            <p>    The following multipliers may be used:</p>
+            <p>    T = X 1,000 eg.         1T = 1,000</p>
+            <p>    M = X 1,000,000 eg. 2M = 2,000,000</p>
+            <p>    B = X 1,000,000,000 eg. 3B = 3,000,000,000</p>
+            <p>    Multivalue field, with associated Subvalue fields.</p>
+            <p />
+            <p />
+            <p>    Mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>BR.ORDER.NOS</field>
+<desc>
+            <p>This field contains the Open Order transaction reference numbers for those trades generated as a result of executing an open order.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input allowed. Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>BR.TOT.NOM</field>
+<desc>
+            <p>Calculates the total nominal amount for the Broker. IE. the total of the Sub-Value fields for each Broker (54.1.1 + 54.1.2 + 54.1.3 etc.).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No input required. Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>PORT.CONST.NO</field>
+<desc>
+            <p>Insert text here</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Rule 1</p>
+            <p>    Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>BR.FOREIGN.FEE</field>
+<desc>
+            <p>Records the Foreign Fee amount charged on the trade.</p>
+            <p>    A brokers foreign fee can be determined either by a rate which is applied exclusively by individual brokers as a standard charge or it can and does form part of the stock exchange convention which was determined by the stock exchange within which the deal was transacted.</p>
+            <p>    If the correct stock exchange tables have been set up the this amount will default automatically where the stock exchange convention is being used and where not the amount can be calculated and input manually.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Automatic default to charge as calculated by the system. or     1-14 numeric characters  "." (number of decimal places dependant on the currency). Where Field 9, Net trade = NO, Mandatory input. Where Field 9, Net Trade = Y(es), Automatic default is to 0.00.</p>
+        </desc>
+</t>
+<t>
+<field>CU.OVE.ADDR</field>
+<desc>
+            <p>Provides the address where the Customer's Advices relating to this trade are to be sent (where different from the Address entered on the Customer record).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-35 type S (uppercase alpha or numeric) characters. Multi value field. Sub-Value fields available to enable the full address to be input. (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>BROKER.ADVICE.REQD</field>
+<desc>
+            <p>This field specifies whether a broker advice is to be sent. The default is set in the ADVICE.DEFAULT field in the SC.PARAMETER file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>    YES/NO</p>
+        </desc>
+</t>
+<t>
+<field>BR.BROKER.COMM</field>
+<desc>
+            <p>Specifies the amount of Broker Commission charged by the Broker for the trade.</p>
+            <p>    The stock exchange entered within Field 8 of the transaction determines several events within the Sec.Trade application.</p>
+            <p>    1. Automatic calculation of the Value date depending on the information opened within that Stock.Exchange record</p>
+            <p>    2. Automatic link to the standard stock Exchange commissions and charges as stored within the various Stock.Exchange tables and again determined by the information within that particular Stock.Exchange record.</p>
+            <p>    Each Stock Exchange is linked to a seperate Stock.Exchange Calculation table which contains all the local charges, stamps and taxes. Plus it allows the user to store the commission rates that YOU the Bank would normally charge to the client yourselves.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Automatic default to charge as calculated by the system. or     1-14 numeric characters  "." (number of decimal places dependant on the currency). Where Field 9, Net trade = NO, Mandatory input Where Field 9, Net Trade = Y(es), Automatic default is to 0.00.</p>
+        </desc>
+</t>
+<t>
+<field>CG.TRADE.TIME</field>
+<desc>
+            <p>This field enables you to specify an alternative time for any SEC.TRADE undergoing Capital Gains tax processing should this particular process have been requested within the SC.PARAMETER file field, CG.BASE.UPDATE.</p>
+            <p>    If left empty and the TRADE.TIME field is populated then that time(the HH:MM portion) will be defaulted into the CG.TRADE.TIME field.</p>
+            <p>    If TRADE.TIME is empty, then CG.TRADE.TIME will also be empty and will require manual input should you wish to specify a particular time. Input without a time specified is acceptable to the System but you should be aware that this will cause the time of actual input to determine the location of the transaction in the Captal Gains tax transaction file, CG.TXN.BASE</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>    Numeric values from 0 through 9</p>
+            <p>    Formatted so as                 to give HH:MM although the ":" may be                 omitted</p>
+            <p>    Input of 3 numeric characters will attract a                 leading "0" so that 745 or 7:45 becomes                 "07:45"</p>
+            <p>    Input of 2 numeric characters separated by a                 ":" will cause BOTH characters to                 attract a leading "0" so that an input                 of, say, "6:5" becomes                 "06:05".</p>
+        </desc>
+</t>
+<t>
+<field>BR.GROSS.AM.SEC</field>
+<desc>
+            <p>Calculates the Gross value of the trade in the currency of the Security (per Broker).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    NO INPUT. Internally generated field.</p>
+        </desc>
+</t>
+<t>
+<field>DEPOT.ADVICE.REQD</field>
+<desc>
+            <p>This field specifies whether a depository advice is to be produced. The default is set in the ADVICE.DEFAULT field in the SC.PARAMETER file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>    YES/NO</p>
+        </desc>
+</t>
+<t>
+<field>BROKER.TYPE</field>
+<desc>
+            <p>Indicates with whhat type of Counterparty the trade has been dealt.</p>
+            <p>    Allowed Input are the following types of "Customer".            1) Broker.            2) Counterparty.            3) Client.</p>
+            <p>    Whereas the Broker and Counterparty are self explanatory the Client may be a Customer of the Bank who is not traditionally known as either a Broker or Counterparty but as a Client (Without a Portfolio) who transacts business with the Bank.</p>
+            <p>    It is therefore permissible within the Sec.Trade appliaction to enter a transaction on the "Broker" side of the transaction who will Purchase securities from a Client who is selling those securities.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Only B (Broker) CO (Counterparty CL (Client) allowed. (Mandatory input.)</p>
+        </desc>
+</t>
+<t>
+<field>CU.TAX.LCY</field>
+<desc>
+            <p>Manually entered tax for associated customer in local currency.</p>
+        </desc>
+</t>
+<t>
+<field>BR.EBV.FEES</field>
+<desc>
+            <p>Records the amount of EBV Fees charged on the trade.</p>
+            <p>    Where indicated by the flag set within the Stock Exchange table the system will default the EBV (Effectenboursenverein) fees in accordance with the rules as laid down within that particular Stock Exchange.</p>
+            <p>    The values for which will be found within the Calculation table for that individual Stock Exchange.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Automatic default to charge as calculated by the system. or     1-14 numeric characters  "." (number of decimal places dependant on the currency). Where Field 9, Net trade = NO, Mandatory input. Where Field 9, Net Trade = Y(es), Automatic default is to 0.00.</p>
+        </desc>
+</t>
+<t>
+<field>CU.ENTITL.ID</field>
+<desc>
+            <p>ENTITLEMENT number from which this trade was generated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            
+            <p>    Free text field automatically updated by the system</p>
+        </desc>
+</t>
+<t>
+<field>CU.BEN.BANK.1</field>
+<desc>
+            <p>Customer beneficary bank.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Standard T24 override field.</p>
+            
+        </desc>
+</t>
+<t>
+<field>TRADE.TIME</field>
+<desc>
+            <p>This field will be defaulted from the most recent input to the BR.TRADE.TIME field (if any). If the SEC.TRADE has been generated by a SC.EXE.SEC.ORDERS record, then the first multi-value of BR.TRADE.TIME(if any)will be defaulted into TRADE.TIME. The value of TRADE.TIME can be overtyped by the user.</p>
+            <p>    If this field was previously blank and the TRADE.TIME.FLAG in SC.STD.SEC.TRADE is set to 'YES', then the current system time will be defaulted into this field.</p>
+            <p>    If the TRADE.TIME.FLAG is set to 'YES' then a value of "NONE" may be typed if no time of execution is available.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Up to 9 T24 Time characters. Recorded in HH:MM:SS         format. The ":" may be omitted Input of three         valid characters will attract a leading "0".         Optional field if TRADE.TIME not set to "Y" on         the SC.STD.SEC.TRADE file.</p>
+        </desc>
+</t>
+<t>
+<field>BUYR.SELLER</field>
+<desc>
+            <p>Either value in fields BUYR or SELL from SC.SETT.INSTRUCT will be populated in this field based on the operation done by broker.</p>
+            <p>If at all a BROKER.ADDR.BIC is given then the value will be defaulted from SC.SET.INSTRUCT of BROKER.ADDR.BIC.</p>            
+        </desc>
+</t>
+<t>
+<field>BUYR.SELLER.AC</field>
+<desc>
+            <p>Either value in fields BUYR.AC or SELL.AC from SC.SETT.INSTRUCT will be populated in this field based on the operation done by broker.</p>
+            <p>If at all a BROKER.ADDR.BIC is given then the value will be defaulted from SC.SET.INSTRUCT of BROKER.ADDR.BIC.</p>            
+        </desc>
+</t>
+<t>
+<field>PL.CODE</field>
+<desc>
+            <p>This will record the place of settlement of the security which will be defaulted from broker SC.SETT.INSTRUCT record.</p>
+            <p>If at all a BROKER.ADDR.BIC is given then the value will be defaulted from SC.SET.INSTRUCT of BROKER.ADDR.BIC.</p>            
+        </desc>
+</t>
+<t>
+<field>PL.SAFEKEEP</field>
+<desc>
+            <p>This will record the place of safe keep of the security which will be defaulted from broker SC.SETT.INSTRUCT record.</p>
+            <p>If at all a BROKER.ADDR.BIC is given then the value will be defaulted from SC.SET.INSTRUCT of BROKER.ADDR.BIC.</p>
+        </desc>
+</t>
+<t>
+<field>BR.FTT.TYPE</field>
+<desc>
+ <p> Defines the valid TAX.TYPE Record related to FTT(Finanicial Transactional Tax).Field will get defaulted from the field FTT.TYPE of SC.PARAMETER </p>            
+  </desc>
+</t>
+
+<t>
+<field>BR.FTT.PERC</field>
+<desc>
+ <p> Defines the valid tax rate of the FTT(Financial Transactional Tax).Field will get defaulted from the field TAX.RATE of TAX related to FTT </p>            
+  </desc>
+</t>
+
+<t>
+<field>BR.FTT.BSE.AMT</field>
+<desc>
+            <p>Tax base amount in terms of EUR currrency on which the tax percentage is applied.</p>                     
+        </desc>
+</t>
+
+<t>
+<field>BR.FTT.AMT.TCY</field>
+<desc>
+            <p>FTT Tax amount in account currency of the transaction.</p>                     
+        </desc>
+</t>
+
+
+<t>
+<field>BR.FTT.AMT.LCY</field>
+<desc>
+            <p>FTT Tax amount in local currency.</p>                     
+        </desc>
+</t>
+
+
+<t>
+<field>BR.FTT.AMT.CCY</field>
+<desc>
+            <p>FTT Tax amount currency which is EUR.</p>          
+            
+        </desc>
+</t>
+
+
+<t>
+<field>BR.FTT.AMT</field>
+<desc>
+            <p>Tax amount in EUR.</p>          
+            
+        </desc>
+</t>
+
+<t>
+<field>BR.FTT.EX.RATE</field>
+<desc>
+            <p>Exchange rate between account currency and EUR.</p>          
+            
+        </desc>
+</t>
+
+<t>
+<field>STAMP.PRICE</field>
+<desc>
+ <p>This field will hold stamp price and if present it will be mapped to tag 90A of TRADDET block in MT54X(X= 0 TO 3) instead of existing broker price.</p>
+        </desc>
+</t>
+<t>
+<field>PARENT</field>
+<desc>
+            <p> Allowed value is YES.</p>
+            <p>This Field is to determine whether the order is a parent order.</p>
+        </desc>
+</t>
+<t>
+<field>PARENT.REFERENCE</field>
+<desc>
+            <p> This fields contains alphanumeric Value </p>
+            <p> Unique parent reference that is common for both parent and child orders and will serve as a link.</p>
+        </desc>
+</t>
+<t>
+<field>REVERSE.CHILD</field>
+<desc>
+            <p> Allowed value is YES </p>
+            <p> This Field is used to reverse the child transaction</p>
+        </desc>
+</t>
+<t>
+<field>SPRTY.NARR.QUAL</field>
+<desc>
+            <p>Qualifier pertaining to Setprty narrative in tag 70C,70D or 70E of SETPRTY block  in MT540 to MT543. No validation will be done against swift qualifier.</p>
+        </desc>
+</t>
+<t>
+<field>SPRTY.NARR</field>
+<desc>
+            <p>Narrative that will be mapped to tag 70C,70D or 70E of SETPRTY block in MT540 to MT543.</p> 	
+            <p>If Narrative is entered with qualifier DECL, it will be mapped to tag 70E in SETPRTY block.</p>
+	    <p>If narrative is entered with qualifier PART or REGI, it will be mapped to tag 70D in SETPRTY block.</p>
+	    <p>If narrative is entered with qualifier PACO, it will be mapped to tag 70C in SETPRTY block.</p>
+            <p>Validation on number of multivalues based on the above options will not be performed in core and needs to be manually taken care based on the swift validation of above tag. However validation will be done to ensure that Non-swift characters are not entered. </p>
+        </desc>
+</t>
+<t>
+<field>BENE.OWNER</field>
+<desc>
+            <p>Field to hold benefical ownership and will be mapped to tag 22F qualifier BENE in SETDET block.</p>
+            <p>Value should be entered as per swift guidelines and core validation will not be performed.</p>
+        </desc>
+</t>
+<t>
+<field>BUYR.NATION</field>
+<desc>
+            <p>Field to hold country of buyer and will be mapped to tag 95C in the qualifier INVE of OTHRPRTY block..The value entered here will be validated against the country table</p>
+        </desc>
+</t>
+<t>
+<field>SUP.MIS.SUSP</field>
+<desc>
+  <p> Allowed value is Y or Null</p>
+  <p> If this field is set, then the miscellaneous entries like TAX, Commission or Charges PL etc will be raised to the respective categories instead of MISC.ACT.SUSP.CAT defined in SEC.TRADE for actual settlement </p>
+  <p> Input allowed only if CASH.HOLD.SETTLE is set to YES </p>
+</desc>
+</t>
+<t>
+<field>AUTHORISE.CHILD</field>
+<desc>
+<p>This field is used to specify whether child transactions can be authorised.If this field is YES, Parent order should be kept in INAU so that T24 service will authorise both child and parent.
+This field cannot be set as YES if there are no child transactions in exception
+Zero authoriser version cannot be used in this case
+This field will also be used in conjunction with BULK.UPDATE field in order to perform bulk update and then authorize parent and child</p>
+                <p>
+                <p>Validation Rules</p>
+                </p> 
+                <p>Allowed values are YES</p>
+</desc>
+</t>  
+<t>
+<field>DELETE.CHILD</field>
+<desc>
+<p>This field is used to specify whether parent and child transactions are to be deleted. After inputting this field, order</p>
+<p>should be left in INAU so that service will delete the child and parent. Zero authoriser version cannot be used in this case. This field cannot be set as YES if there are no child records in exception</p>
+
+                <p>
+                <p>Validation Rules</p>
+                </p>  
+                <p>Allowed value is only YES</p>                         
+</desc>
+</t>
+<t>
+<field>BULK.UPDATE</field>
+<desc>
+<p>This field is used to specify whether bulk update is to be performed from parent to child. This field cannot be input if</p> 
+<p>SC.BULK.UPDATE.PARAMETER is not set  for SEC.OPEN.ORDER</p>
+<p>This field can also be used in conjunction with AUTHORISE.CHILD to determine whether transactions are to be authorised after</p> <p>performing bulk update. Zero authoriser version cannot be used and transaction should be left in INAU. In order to perform bulk update, all transaction should be in unauthorised status</p>
+                <p>
+                <p>Validation Rules</p>
+                </p>  
+                <p>Allowed value is only YES</p>                         
+</desc>
+</t>
+<t>
+<field>CU.INCOME.AMT</field>
+<desc>
+        <p>This field will hold the income amount posted to Income Account</p>
+</desc>
+</t>
+<t>
+<field>SY.DX.REFERENCE</field>
+<desc>
+            <p>A unique reference maintained for trade which will be common for the parent trade and its underlying such as SEC.TRADE/ FOREX/ DX.TRADE. Input to this field will update file SY.DX.LINK.FILE</p>
+            <p>
+               <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>      </p>
+            <p>        </p>
+        </desc>
+</t>
+<t>
+<field>SY.TRANS.ID</field>
+<desc>
+            <p>Updated with SY.TRANSACTION reference through which the trade is created.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>        </p>
+        </desc>
+</t>
+<t>
+<field>SY.UNIT.ID</field>
+<desc>
+            <p>Holds the SY.UNIT reference through which unit the trade is created</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>        </p>
+        </desc>
+</t>
+<t>
+<field>SY.EXCLUDE.VAL</field>
+<desc>
+            <p>Says whether to exclude the valuation or not by the application.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>        </p>
+        </desc>
+</t>
+<t>
+<field>ACT.COMMISSION</field>
+<desc>
+            <p> This field will hold the actual commission calculated by the system </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   This is a NOINPUT field.</p>
+  </desc>
+</t>
+<t>
+<field>UPFRONT.SEC</field>
+<desc>
+            <p> The field is set to Y when trade is created from SC.EXE.SEC.ORDERS for orders that have the field UPFRONT.SEC set in SEC.OPEN.ORDER. This will be used to identify the trades for which a dummy security position has been updated pending NAV. </p>
+            <p> The field will be made null once the processing is done using SC.BUILD.UPFRONT.POSITION (i.e. post the NAV update).</p>      
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   This field accepts Y or Null values.</p>
+  </desc>
+</t>
+<t>
+<field>ALL.IN.COST</field>
+<desc>
+            <p> For Structure note instruments if ALL.IN.COST.BASIS is set as YES in Security Master, then All in cost is part of the issue price and the system will calculate and store the all in cost in this field for information purposes at trade level. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Based on the percentage provided in SECURITY.MASTER ALL.IN.COST Field, ALL.IN.COST is calculated on the gross cost of the trade (CU.GROSS.AM.SEC) and update here.</p>
+            
+  </desc>
+</t>
+
+<t>
+<field>CU.FTT.TYPE</field>
+<desc>
+ <p> Defines the valid TAX.TYPE Record related to FTT(Finanicial Transactional Tax).Field will get defaulted from the field FTT.TYPE of SC.PARAMETER </p>            
+  </desc>
+</t>
+
+<t>
+<field>CU.FTT.PERC</field>
+<desc>
+ <p> Defines the valid tax rate of the FTT(Financial Transactional Tax).Field will get defaulted from the field TAX.RATE of TAX related to FTT </p>            
+  </desc>
+</t>
+
+<t>
+<field>CU.FTT.BSE.AMT</field>
+<desc>
+            <p>Tax base amount in terms of EUR currrency on which the tax percentage is applied.</p>                     
+        </desc>
+</t>
+
+<t>
+<field>CU.FTT.AMT.TCY</field>
+<desc>
+            <p>FTT Tax amount in account currency of the transaction.</p>                     
+        </desc>
+</t>
+
+
+<t>
+<field>CU.FTT.AMT.LCY</field>
+<desc>
+            <p>FTT Tax amount in local currency.</p>                     
+        </desc>
+</t>
+
+
+<t>
+<field>CU.FTT.AMT.CCY</field>
+<desc>
+            <p>FTT Tax amount currency which is EUR.</p>          
+            
+        </desc>
+</t>
+
+
+<t>
+<field>CU.FTT.AMT</field>
+<desc>
+            <p>Tax amount in EUR.</p>          
+            
+        </desc>
+</t>
+
+<t>
+<field>CU.FTT.EX.RATE</field>
+<desc>
+            <p>Exchange rate between account currency and EUR.</p>          
+            
+        </desc>
+</t>
+
+<t>
+<field>PRINCIPAL.AGENT</field>
+<desc>
+            <p>This field accepts the following values :</p>
+            <p>PRINCIPAL - Indicates that the bank is acting as a principal in this transaction.</p>
+            <p>AGENT     - Indicates that the bank is acting as an agent in this transaction.</p>
+            <p>If the customer is a dealerbook and if the field holds the value 'AGENT' then stamp tax will not be calculated for the customer. </p>
+        </desc>
+</t>
+<t><field>INTEG.DATA.ITEM</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>INTEG.DATA.VALUE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

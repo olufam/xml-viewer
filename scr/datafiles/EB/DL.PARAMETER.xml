@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>DL.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>T24 Data Library - Shareware for T24 </p>
+            <p>The T24 Data Library has been created to enable data to be copied between different sites easily.  When a user or implementor of T24 has created data which he feels may be of use to other sites, he can save the data to the Data Library.  Data should be saved into logical units, for example, Dutch Bank Returns, which may include report control records, enquiries, repgens and even programs.  To save the unit, a record is created in DL.DEFINE, listing all the items which make up the unit.  The data is then saved into the unit by using the V function in DL.DEFINE, with the operation set to S. </p>
+            <p>NOTE : As with all shareware, the distributor, in this case, Temenos, does        not accept any liability for the data or programs contained in the        Data Library - it is the users responsibility to ensure that all        data and programs being installed through the Data Library are        checked and tested thoroughly before being used. </p>
+            <p>When saving records, sensitive data (e.g. the name of your bank or your VAT registration number) can be replaced by specifying the characters to be replaced and the characters they are to be replaced with, on the data library parameter file, DL.PARAMETER. </p>
+            <p>Once units have been saved, the Data Library should be sent to Temenos Development, where it will be merged into one central library.  This should be done by using the save operation in DL.PARAMETER (using the "V"erify mode in DL.PARAMETER with the OPERATION set to "S" - save). </p>
+            <p>Should you wish to restore data from another site, you should restore the data library from tape into an area on disk (e.g. /globus/DLrestore). Examine this file to determine which units you wish to copy into your data library, or whether you wish to copy all units, or only those units which have been created in the "from" data library more recently than yours. Once you have decided which units you want copied onto your data library, enter the requirements in the data library parameter file (DL.PARAMETER). You must enter an OPERATION of "R" to restore, then enter the UNIX pathname of the file from which units are to be copied (e.g. /globus/ DLrestore/F.DL.DATA should be entered in FROM.FILE), the names of the units to be restored or blank to restore all units (RESTORE.UNITS) and whether you wish to overwrite existing units (OVERWRITING = "Y" or "N") or only if the units on the from file are later ("L").  Then run DL.PARAMETER in "V"erify mode to copy the units. </p>
+            <p>Similarly if you wish to copy units from a data library in a different T24 account, you can follow the above procedure.  If the file is on the same machine you do not need to restore - just simply enter the pathname of the from data library (e.g. /globus/test/F.DL.DATA). </p>
+            <p>When you upgrade your T24 database by running GLOBUS.RELEASE, your data library will be populated with the latest units available.  Existing units will not be overwritten if there were saved after the ones on the data library on the upgrade tape. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>SAVE.UNITS</field>
+<desc>
+            <p>Specifies the names of the units to be saved from the data library (F.DL.DATA) to tape (using the device specified in TAPE.DEVICE). specified in FROM.FILE to F.DL.DATA. </p>
+            <p>When copying units from the data library to tape, F.DL.DATA, either all units can be copied or just specific units.  If all units are to be copied, this field should be left blank; if specific units are to be copied, the names of the units must be entered in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Can only be entered if the OPERATION flag is set to "S" (save)</p>
+            <p>If entered, must reference a unit in the data library (F.DL.DATA)</p>
+            <p>Optional input</p>
+            <p>Multi-value field</p>
+            <p>1-50 Type "A" (alphanumeric) characters</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.8</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.9</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.2</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESTORE.UNITS</field>
+<desc>
+            <p>Specifies the names of the units to be restored from the data library specified in FROM.FILE to F.DL.DATA. </p>
+            <p>When copying units from a data library into F.DL.DATA, either all units can be copied or just specific units.  If all units are to be copied (dependent on the setting of the OVERWRITING flag), this field should be left blank; if specific units are to be copied, the names of the units must be entered in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Can only be entered if the OPERATION flag is set to "R" (restore)</p>
+            <p>If entered, must reference a unit in the data library specified in FROM.FILE</p>
+            <p>Optional input</p>
+            <p>Multi-value field</p>
+            <p>1-50 Type "A" (alphanumeric) characters</p>
+        </desc>
+</t>
+<t>
+<field>OVERWRITING</field>
+<desc>
+            <p>When data units are being restored from the from data library into F.DL.DATA, OVERWRITING is used to specify whether existing units in F.DL.DATA should be overwritten. </p>
+            <p>If OPERATION is "Y", units will be copied from the from data library, overwriting the units in F.DL.DATA if they already exist. </p>
+            <p>If OPERATION is "N", units will only be copied from the from data library if they do not already exist in F.DL.DATA. </p>
+            <p>If OPERATION is "L" (latest), units will only be copied from the from data library if they were saved in the from file after the date on which they were saved in F.DL.DATA. </p>
+            <p />
+            <p>NOTE : Units in F.DL.DATA are only overwritten if the criteria specified        in OPERATION are matched and the unit is to be copied from the from        data library.  Units in F.DL.DATA which are not being copied from        the from data library will remain unchanged. </p>
+            <p>e.g. F.DL.DATA contains two units: TMNS000-NL.REPORTING and TMNS000-CH.REPORTING.  All units are to be copied from the data library specified in FROM.FILE, overwriting the records in F.DL.DATA (OPERATION = "Y").  If the from data library contains TMNS000-CH.REPORTING and TMNS000-PD.ADVICES, TMNS000-CH.REPORTING will be copied into F.DL.DATA, overwriting the unit which was already there; TMNS000-PD.ADVICES will be copied, creating a new unit; TMNS000-NL.REPORTING will remain unchanged. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid values are "Y", "N" and "L" (latest)</p>
+            <p>Optional input</p>
+            <p>If the operation is "R", defaults to "L" (latest)</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.4</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.5</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>TAPE.DEVICE</field>
+<desc>
+            <p>Specifies the names of the tape device to which the data library or specific units are to be saved to. </p>
+            <p>When copying units from the data library to tape, F.DL.DATA, either all units can be copied or just specific units.  If all units are to be copied (i.e. SAVE.UNITS is blank), the whole of F.DL.DATA will be copied to tape; if specific units are to be copied, only the units specified in SAVE.UNITS will be copied to tape. </p>
+            <p>When the "V"erify mode is taken, a shell script, "dl_save.sh" will be created to save the data library/units.  This shell script will then be executed to save the file/units. </p>
+            <p>Examples: </p>
+            <p>Shell script to save the whole file to tape: </p>
+            <p>cd .. find F.DL.DATA -print | cpio -ovcBdum &gt; /dev/rmt1 </p>
+            <p>(TAPE.DEVICE has been specified as "/dev/rmt1"; SAVE.UNITS has been left blank) </p>
+            <p />
+            <p>Shell script to save specific units to tape: </p>
+            <p>cd .. find 'F.DL.DATA/TMNS000-NL.REPORTING' 'F.DL.DATA/TMNS000-PD.ADVICES' -print |cpio -ovcBdum &gt; /dev/rmt0.4 </p>
+            <p>(TAPE.DEVICE has been specified as "/dev/rmt0.4"; two values have been entered into SAVE.UNITS: TMNS000-NL.REPORTING and TMNS000-PD.ADVICES) </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Can only be entered if the OPERATION flag is set to "S" (save)</p>
+            <p>If entered, must reference a unit in the data library (F.DL.DATA)</p>
+            <p>Mandatory input if OPERATION is "S" (save)</p>
+            <p>1-50 Type "A" (alphanumeric) characters</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.6</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.7</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>REPLACE.CHARS</field>
+<desc>
+            <p>This field is used to specify that certain characters or text should be replaced with the characters specified in REPLACE.WITH when records are saved from T24 files into the data library.  These fields will be checked when the "V"erify mode is taken in DL.DEFINE to save records into a unit in the data library (OPERATION in DL.DEFINE is set to "S"). </p>
+            <p>For example: </p>
+            <p>You have spent some considerable time creating PD advices, which you feel may be of benefit to other T24 clients and you therefore want to share these records with everyone.  However, these advices contain the name of your bank, which you do not want other T24 clients either seeing this information or using it inadvertently.  Therefore, you can specify in REPLACE.CHARS which characters/text you want removed. </p>
+            <p>e.g.    REPLACE.CHARS     T24 Test Bank         REPLACE.WITH      ***Bank Name *** </p>
+            <p>        REPLACE.CHARS     183535902         REPLACE.WITH      *Vat.No** </p>
+            <p>REPLACE.CHARS must be replaced by an equal number of characters in REPLACE.WITH. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input</p>
+            <p>Multi-value field</p>
+            <p>Fields REPLACE.CHARS to REPLACE.WITH form a multi-value associated set.</p>
+            <p>1-50 Type "A" (alphanumeric) characters</p>
+        </desc>
+</t>
+<t>
+<field>REPLACE.WITH</field>
+<desc>
+            <p>This field is used to specify that certain characters or text should be replaced with the characters specified in REPLACE.WITH when records are saved from T24 files into the data library.  These fields will be checked when the "V"erify mode is taken in DL.DEFINE to save records into a unit in the data library (OPERATION in DL.DEFINE is set to "S"). </p>
+            <p>For example: </p>
+            <p>You have spent some considerable time creating PD advices, which you feel may be of benefit to other T24 clients and you therefore want to share these records with everyone.  However, these advices contain the name of your bank, which you do not want other T24 clients either seeing this information or using it inadvertently.  Therefore, you can specify in REPLACE.CHARS which characters/text you want removed. </p>
+            <p>e.g.    REPLACE.CHARS     T24 Test Bank         REPLACE.WITH      ***Bank Name *** </p>
+            <p>        REPLACE.CHARS     183535902         REPLACE.WITH      *Vat.No** </p>
+            <p>REPLACE.CHARS must be replaced by an equal number of characters in REPLACE.WITH. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input</p>
+            <p>Can only be entered if REPLACE.CHARS has been entered</p>
+            <p>If blank, will default to asterixes, for the same length as REPLACE.CHARS (e.g. if REPLACE.CHARS is ANY BANK, REPLACE.WITH will default to ********)</p>
+            <p>If entered, must contain the same number of characters as REPLACE.CHARS</p>
+            <p>Multi-value field</p>
+            <p>Fields REPLACE.CHARS to REPLACE.WITH form a multi-value associated set.</p>
+            <p>1-50 Type "A" (alphanumeric) characters</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.3</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.1</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>FROM.FILE</field>
+<desc>
+            <p>The UNIX pathname of the file from which data units are to be restored. </p>
+            <p>If the operation is "R"estore, the UNIX pathname of the data library from which units are to be restored should be entered. </p>
+            <p>For example, if units are to be copied from a test account into the current account, FROM.FILE should contain the pathname of the data library in the test account. </p>
+            <p>e.g. /globus/test/F.DL.DATA </p>
+            <p>A VOC entry, F.DL.FROM.DATA will be created to point to this file which will then be checked to see if it can be opened.  If restore units are specified, this file will be checked to ensure that the units exist. </p>
+            <p>If the operation is "R"estore and FROM.FILE is left blank, it will default to the UNIX pathname of the file in the VOC pointer F.DL.FROM.DATA if it exists.  If this file does not exist and the operation is "R", FROM.FILE must be entered. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>If OPERATION is "R"estore and FILE.NAME is blank, defaults to the UNIX pathname of the file specified in the VOC entry F.DL.FROM.DATA, if it exists</p>
+            <p>If OPERATION is "R"estore, FROM.FILE must reference a file which exists</p>
+            <p>1-50 Type "A" (alphanumeric) characters</p>
+        </desc>
+</t>
+<t>
+<field>ID</field>
+<desc>
+            <p>The id of the record on the data library parameter file </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be "SYSTEM"</p>
+        </desc>
+</t>
+<t>
+<field>K.OVERWRITING</field>
+<desc>
+            <p>Please refer to helptext of field OVERWRITING</p>
+        </desc>
+</t>
+<t>
+<field>OPERATION</field>
+<desc>
+            <p>Defines whether data is to be "S" (saved) or "R" (restored).  This field is only used when the record is "V"erified. </p>
+            <p>When the program is run in "V"erify mode, if the operation is set to "S" (save), the data library is saved to tape.  The tape device used is specified in TAPE.DEVICE.  If units are specified in SAVE.UNITS, only those units are saved to tape; otherwise the whole data library (F.DL.DATA) is saved to tape.  The data library or specific units are saved to tape by the program executing the shell script, "dl_save.sh" which is created when the "V"erify mode is taken. </p>
+            <p>When the program is run in "V"erify mode with the operation set to "R" (restore), units are copied from the data library specified in FROM.FILE into F.DL.DATA, creating the unit definition record on F.DL.DEFINE.  The units which are copied are specified in RESTORE.UNITS.  If RESTORE.UNITS is blank, all units in the from file are copied.  The OVERWRITING field is used when the units to be copied already exist in F.DL.DATA.  If OVERWRITING is set to "Y", the units in F.DL.DATA are overwritten; if OVERWRITING is set to "N", the units in F.DL.DATA are not overwritten; if OVERWRITING is set to "L" (latest), the units are only overwritten if they were saved in the from data library after the date they were saved in the to data library.  (The default setting of OVERWRITING is "L".) </p>
+            <p>OPERATION does not default: it must be entered if the "V"erify mode is taken. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>"S" (save) or "R" (restore)</p>
+            <p>Optional input</p>
+            <p>Mandatory input when the "V"erify mode is taken</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

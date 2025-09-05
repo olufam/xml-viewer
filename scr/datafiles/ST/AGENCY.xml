@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>AGENCY</table>
+</header>
+<overview>
+<ovdesc>
+<p>The Agency File contains settlement details of major customers and all banks irrespective of whether there is any business connection. Details include any arrangements.  Account relationships and, where possible, the Agents correspondent bankers for specific currencies. This information is entered centrally to supply Automatic Routing instructions for remittances/cover to all banks and customers with whom the Bank has numerous dealings.  This eliminates the need to re-enter the details at transaction level.  It thus allows full advantage to be taken of electronic delivery facilities by providing, automatically, the settlement agents for remittances/cover involved in outward payments. </p><p>The absence of Agent's correspondent bankers information in this file will force the user to enter these details each time at the transaction level. </p><p>Any Nostro account defined in this table is for information only and will not be used as a default Nostro by the Transaction Processing Application which always uses the NOSTRO.ACCOUNT file. </p><p>The basic details of these banks and major customers must first be defined in the Customer file before the creation of the Agent details will be allowed.  Having created a Customer record, which is a Bank, it is advisable to create an Agency record with the same key, and all available autorouting details. </p></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>UNIV.ID</field>
+<desc><p>Defines the Universal ID applicable to banks and some multi-national Customers. </p><p>This identification is acknowledged throughout the world and thus the field values are obtainable from a published manual. </p><p><p>Validation Rules:</p></p><p>6 numeric characters. (Optional input if ABA number is blank, otherwise not allowed.)</p></desc>
+</t>
+<t>
+<field>OUR.EXT.ACCT.NO</field>
+<desc><p>Defines our actual Account Number in the Books of the Agent Bank with whom a Nostro Account relationship exists. It is used to identify the correspondent's statements related to the account. </p><p>Any details entered into this field will be accepted without further validation and are for information only. </p><p><p>Validation Rules:</p></p><p>Up to 34 type A (alphanumeric) characters.  Multivalue field to define actual Nostro account numbers. Associated with field NOSTRO.ACCT.NO. (Optional input if Nostro Account details input, otherwise not allowed.)</p></desc>
+</t>
+<t>
+<field>AUTORTE.REGN</field>
+<desc><p>Defines the Region of the Country in which the Autoroute Bank resides. </p><p>If required the location of banks within a Country can be divided into Regions to cater for specific local holidays in order that varying notice periods may be applied. </p><p><p>Validation Rules:</p></p><p>1-2 numeric characters.  Sub-value field of multivalue field AUTORTE.CCY associated with field range AUTORTE.APPL to AUTORTE.ACCT. (Optional input)</p><p>It must be a valid code on the REGION table. (The Residence of the Autoroute Bank is linked with the Region input in order to validate against the REGION table.)</p><p>If CUSTOMER or VOSTRO has been input in the Autoroute Bank field, the Region of the Country will be checked.</p></desc>
+</t>
+<t>
+<field>THEIR.ACCT.NO</field>
+<desc><p>Defines the Account Number of an account belonging to an Agent (correspondent) maintaining a Vostro Account in our Books. </p><p>The Currency of the Vostro Account will be checked to ensure that it is OUR local currency.  Where it is in a Currency other than local, an override will be required. </p><p>The Customer number on the Account record must correspond to the ID field of the Agent being defined. </p><p><p>Validation Rules:</p></p><p>2-16 numeric character Account number    or 3-10 type MNE (uppercase alpha or numeric or '.') character      mnemonic.  Multivalue field.  (Optional input if Agent is defined as a bank and the Account as a Vostro as per ACCOUNT.CLASS file. Otherwise not allowed.)</p></desc>
+</t>
+<t>
+<field>TEST.SIGNATURE</field>
+<desc><p>Defines if testing arrangements exist with the Agent and if they hold our authorised signatures. </p><p>Where a NOSTRO.ACCOUNT relationship is maintained with this Agent, input must be T or B.  For a Vostro relationship input must be T, S or B and for all other agents input is optional. </p><p><p>Validation Rules:</p></p><p>T, S, B or blank.  T     = Telegraphic Testing arrangements exist. S     = Signature arrangements exist. B     = Both conditions T &amp; S exist. blank = No control documents.  (Mandatory input if NOSTRO or VOSTRO details are input, otherwise optional.)</p></desc>
+</t>
+<t>
+<field>RESERVED.2</field>
+<desc><p>This field is reserved for future expansion. </p><p><p>Validation Rules:</p></p><p>This is a NOINPUT field.</p></desc>
+</t>
+<t>
+<field>AUTORTE.ACCT</field>
+<desc><p>Defines the external Account number of the Agent with the Autoroute Bank. </p><p>If CUSTOMER is entered as the Autoroute Bank for the associated AUTORTE.BANK field then an account number must be entered in this field. The account must be in the same currency as the associated AUTORTE.CCY, it must have the same customer as the key to the AGENCY file and it must not be defined as a NOSTRO or VOSTRO account. </p><p>If VOSTRO is entered as the Autoroute Bank, the System defaults to the first THEIR.ACCT.NO with the Currency as specified. If entered, must be one of the Vostro accounts specified in THEIR.ACCT.NO fields. </p><p>Example: </p><p>Let us suppose that we are Wonder bank and that we want to load the AGENCY file with Deutsche Bank Frankfurt who wish to receive for all Applications: </p><p>           GBP  with  Wonder bank 654321            USD  with  Morgan N.Y./Acct 123456            FRF  with  BNP Paris Acct 234567            DEM  with  themselves </p><p>The following Agent record will be loaded up: </p><p>               Deutsche Bank Frankfurt </p><p>           Field Description  Field Input </p><p>           THEIR.ACCT.NO      : 654321            AUTOROUTING        : Yes            AUTORTE.CCY        : GBP            AUTORTE.APPL       : ALL            AUTORTE.BANK       : VOSTRO            AUTORTE.REGN       : 01            AUTORTE.ACCT       : 654321 (defaulted) </p><p>           AUTORTE.CCY        : USD            AUTORTE.APPL       : ALL            AUTORTE.BANK       : Morgan NY            AUTORTE.REGN       : 01            AUTORTE.ACCT       : 123456 </p><p>           AUTORTE.CCY        : FRF            AUTORTE.APPL       : ALL            AUTORTE.BANK       : BNP Paris            AUTORTE.REGN       : 01            AUTORTE.ACCT       : 234567 </p><p>           AUTORTE.CCY        : DEM            AUTORTE.APPL       : ALL            AUTORTE.BANK       : Deutsche Fft                 (same as Agent)            AUTORTE.REGN       : 01            AUTORTE.ACCT </p><p><p>Validation Rules:</p></p><p>Up to 34 type A (alphanumeric) characters     or If CUSTOMER or VOSTRO is the Autoroute Bank either: 2-16 numeric character Account number         or 3-10 type MNE (Uppercase alpha or numeric or '.') character Account mnemonic.  Sub-value field of multivalue field AUTORTE.CCY and associated with field range AUTORTE.APPL to AUTORTE.REGN. (Optional input. Not allowed if associated Autoroute Bank is this actual Agent record.)</p></desc>
+</t>
+<t>
+<field>SWIFT.CONF.ADDR</field>
+<desc><p>Defines the SWIFT confirmation address to be used on inward/outward telex payments involving this Agent (bank). </p><p>It is used in the generation of S.W.I.F.T. Common Reference in S.W.I.F.T. messages. If this field is not completed then invalid S.W.I.F.T. messages may be generated for this addressee.</p><p><p>Validation Rules:</p></p><p /><p>8 or 11 characters in the following format: a) Bank code:         4 type SSS (uppercase alpha) characters. b) Country: 2         type SSS (uppercase alpha) character country code. c)         Location/ Bank code: 2 or 5 characters in the range A-Z         and 0-9. (Optional input, otherwise not allowed.)</p><p>The country will be checked to the COUNTRY Code file.</p><p>If an input is made and the Agent is not defined as a         bank then an override is required.</p></desc>
+</t>
+<t>
+<field>RESERVED.5</field>
+<desc><p>This field is reserved for future expansion. </p><p><p>Validation Rules:</p></p><p>This is a NOINPUT field.</p></desc>
+</t>
+<t>
+<field>MNEMONIC</field>
+<desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc>
+</t>
+<t>
+<field>RESERVED.1</field>
+<desc><p>This field is reserved for future expansion. </p><p><p>Validation Rules:</p></p><p>This is a NOINPUT field.</p></desc>
+</t>
+<t>
+<field>CLEAR.CCY</field>
+<desc><p>Specifies the currency for which a national clearing system code is required on a SWIFT message. </p><p>This field is multivalued and associated with field CLEAR.CODE. </p><p>It is used with the "AGENT" conversion when defining a message on the DE.FORMAT.SWIFT file. See the relevant helptext for field CONVERSION on the DE.FORMAT.SWIFT application. </p><p><p>Validation Rules:</p></p><p>3 type SSS (uppercase alpha) characters     or 1-3 numeric character currency code.  <p><p>Validation Rules:</p>:</p>  (i)  Must not be duplicated.  (ii) Must be input if the corresponding CLEAR.CODE field is input.</p></desc>
+</t>
+<t>
+<field>NOSTRO.ACCT.NO</field>
+<desc><p>Defines the Account Number in our books of our Nostro Account. This field will be input when the host bank maintains a Nostro Account with the Agent being defined. </p><p>This field is used to relate this account number to the associated OUR.EXT.ACCT.NO which is the account identifier used by the correspondent bank. </p><p>The default Nostro to be used in any Transaction Processing will always be defaulted from the Nostro Account files and never taken from this file. </p><p>Note: The customer of the Nostro account defined in this field must have a class of 'Bank' in accordance with the conditions defined in the ACCOUNT.CLASS table. </p><p><p>Validation Rules:</p></p><p>2-16 numeric character Account Number or 3-10 type MNE (uppercase alpha or numeric or '.') character mnemonic. Multivalue field to define all Nostro Accounts for this Agent. Associated with field OUR.EXT.ACCT.NO. (Optional input if Agent is defined as a bank and the Account is a Nostro as per ACCOUNT.CLASS file. Otherwise not allowed.) The Currency of the Nostro Account will be checked to ensure that it is the local currency in the Country of residence of the Agent, as Nostros are normally held in the appropriate local currency of the Agent. Where the Currency/Country do not match an override will be required, providing a reason narrative. The customer number on the NOSTRO.ACCOUNT record must correspond to the ID of the Agent being defined. </p><p>This field becomes NO INPUT if the records id is a BIC.CODE (begins with SW-)</p></desc>
+</t>
+<t>
+<field>RESERVED.3</field>
+<desc><p>This field is reserved for future expansion. </p><p><p>Validation Rules:</p></p><p>This is a NOINPUT field.</p></desc>
+</t>
+<t>
+<field>CUT.OFF.RULE</field>
+<desc><p>This field is used in conjunction with field </p><p> CUT.OFF.TIME</p> on the CURRENCY file to default the <p> DEBIT.VALUE.DATE</p> on an outgoing FUNDS.TRANSFER transaction. If this field is set to a value of 0 or 1 and the <p> CUT.OFF.TIME</p> field on the CURRENCY file contains a valid time then the system will apply these values when calculating the default <p> DEBIT.VALUE.DATE</p> for an outgoing FUNDS.TRANSFER, otherwise the FT.TXN.TYPE.CONDITION record for the particular FUNDS.TRANSFER type will be used to generate the default date.  <p>If the transaction is entered before the cut off time on the currency file (for the debit currency) and </p><p> CUT.OFF.RULE</p> is set to 0, then the debit value date will be todays date, if <p> CUT.OFF.RULE</p> is set to 1, then the debit value date will be todays date +1 working day.  <p>If the transaction is entered after the cut off time on the currency file (for the debit currency) and </p><p> CUT.OFF.RULE </p> is set to 0, then the debit value date will be the next working day, if <p> CUT.OFF.RULE</p> is set to 1, then the debit value date will be the next working day +1 working day.  <p><p>Validation Rules:</p></p><p /><p> Valid values are 0 and 1</p><p> a value of 0 indicates that the 48 hour cut off time rule is not being applied to this AGENCY     record.</p><p> a value of 1 indicates that the rule is being applied.</p></desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc><p>This is a multi valued field. Standard T24 alphanumeric field. </p><p><p>Validation Rules:</p></p><p>A maximum of 35 characters may be entered.</p></desc>
+</t>
+<t>
+<field>RESERVED.4</field>
+<desc><p>This field is reserved for future expansion. </p><p><p>Validation Rules:</p></p><p>This is a NOINPUT field.</p></desc>
+</t>
+<t>
+<field>AUTORTE.APPL</field>
+<desc><p>Defines the Application to which the associated Autoroute instructions apply. </p><p>When an ALL condition has been input in this field for a specific Currency, an Application ID for the same Currency will only be accepted if the Autoroute bank or the Autoroute Account are different between the ALL and Application condition. </p><p><p>Validation Rules:</p></p><p>FD  = Fiduciary FR  = Future Rate Agreement FT  = Funds Transfer FX  = Foreign Exchange LC  = Letters of Credit LD  = Loans/Deposits MM  = Money Market SC  = Securities ALL = All of above  Sub-value field of multivalue field AUTORTE.CCY associated with the sub-value fields AUTORTE.BANK to AUTORTE.ACCT. (Mandatory input if associated Autoroute Currency is input. Otherwise not allowed.)</p><p>Any specific Application ID can only be defined once per Currency.</p><p>ALL can be used to represent all Applications or all other Applications.</p><p>Where both ALL and a specific Application is defined, the System first attempts to use the specific Application.  If not acceptable (e.g. wrong Transaction Type) then use will be made of the ALL default values.</p></desc>
+</t>
+<t>
+<field>AUTORTE.BANK</field>
+<desc><p>Defines the bank to whom the Agent wishes cover to be paid for payments in a specified Currency and Application or a specific Customer or Vostro account or BIC code prefixed by SW- to be used as the default. </p><p>If VOSTRO has been input there must be a valid Vostro Account in THEIR.ACCT.NO, with the same Currency as the Currency input. </p><p><p>Validation Rules:</p></p><p>1-10 numeric character Customer code or 3-10 or type MNE (uppercase alpha or numeric or '.') character Customer mnemonic or CUSTOMER or VOSTRO. Sub-value field of multivalue field AUTORTE.CCY and has associated fields AUTORTE.APPL to AUTORTE.ACCT. (Mandatory input if AUTORTE.CCY is input otherwise not allowed.) If the data input is not CUSTOMER or VOSTRO it will be checked against the ACCOUNT.CLASS file to ensure that it is a bank. If the data input is not CUSTOMER or VOSTRO then it must either be itself or exist on the AGENCY File. If the data input is not CUSTOMER or VOSTRO then the Residence of the Autoroute Bank is not the same as the Country of the Currency defined in the prior field, an override will be requested but before this the following additional checks will be performed on the Agency record of the Autoroute Bank entered: - The Currency input must already exist on the Autoroute Bank entered. - The Autoroute Bank for that Currency is not the same as the Agent being defined. - The Residence of the Autoroute Bank for that Currency must equal the Country of the Currency defined in Autoroute Currency of the Agent being defined. If the data input is not CUSTOMER or VOSTRO then the Autoroute Bank cannot be the same as the Agent except if defining the Autorouting conditions for the local currency of the Agent. </p><p>The BIC code entered must be valid BIC code and should already exist on the Agency file and should be prefixed by SW-. The total length of this field is 14 characters.  The BIC code may also exist in DE.BIC.  </p><p>N.B. In order to use the 'SW-' functionality in Funds Transfer, the FT.TXN.TYPE.CONDITION field SWIFT.ADDRESS must be set to YES for each of the types e.g. AC, OT, IC.</p></desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc><p>This is a multi valued field. Standard T24 numeric field. </p><p><p>Validation Rules:</p></p><p>A maximum of 35 characters may be entered.</p><p>This is a NOINPUT field.</p></desc>
+</t>
+<t>
+<field>AUTORTE.CCY</field>
+<desc><p>Defines the Currency for which the associated settlement (Autorouting) instructions are to be used. </p><p>Each Autoroute is defined by the Currency of the remittance.  For each Currency separate routing instructions can be defined for each Application. </p><p><p>Validation Rules:</p></p><p>3 type SSS (Uppercase alpha) characters     or 1-3 numeric character Currency code.  Multivalue field associated with field range AUTORTE.APPL to AUTORTE.ACCT. (Mandatory input if Autorouting indicator is Y.)</p><p>Any specific Currency code can only be defined once per Agent.</p><p>The specified Autoroute Bank must also have the same currency quoted before data may be accepted for this Agent record.</p></desc>
+</t>
+<t>
+<field>CLEAR.CODE</field>
+<desc><p>Specifies the national clearing system code to be used on a SWIFT message. </p><p>This field is multivalued and associated with field CLEAR.CCY. </p><p>It is used with the "AGENT" conversion when defining a message on the DE.FORMAT.SWIFT file. See the relevant helptext for field CONVERSION on the DE.FORMAT.SWIFT application. </p><p><p>Validation Rules:</p></p><p>Up to 13 type A (alphanumeric) characters.  <p><p>Validation Rules:</p>:</p>  (i)  Input must be in the format of 2 alpha characters followed by      up to 11 numeric characters.  (ii) Must be input if the corresponding CLEAR.CCY field is input.</p></desc>
+</t>
+<t>
+<field>IBAN.OUR.EX.ACC</field>
+<desc>
+        <p>Holds IBAN of the OUR.EXT.ACCT.NO	</p>
+        <p>If value is entered, it will be validated against IN.IBAN.STRUCTURE file, else an equivalent IBAN will be retrieved from an external account record with alternate account type set as “T24.IBAN”</p>
+    </desc>
+</t>
+<t>
+<field>ABA.NUMBER</field>
+<desc><p>Defines the American Banks Association (ABA) unique identification for banks in the U.S. </p><p>Within Funds Transfer, the SWIFT standard for Country codes has been adopted.  Therefore, the program tests for Residence = US, if SWIFT is not being used this can be amended to test for the actual code used. </p><p><p>Validation Rules:</p></p><p>4 numeric characters.  Optional input if Agent is defined as a Bank (as per ACCOUNT.CLASS file).  Otherwise not allowed.</p><p>The Residence on the Customer record must be United States of America.</p></desc>
+</t>
+<t>
+<field>AGENCY</field>
+<desc><p>This is the code by which the Agent can be identified. The Agent code must also be a valid Customer identity previously created within the Customer file. </p><p>An Agent record should be opened for each bank or major Customer which has regular correspondent relationships for the receipt of funds.  Details of the Agents correspondent banks in various currencies will be recorded for each Agent and will subsequently be used automatically by the Transaction Processing Applications except if overridden at transaction level.  The absence of these details will force the user to enter all the settlement details at transaction level.  A basic record should, therefore, be manually created on this file for, at least, every Customer which is deemed to be a bank with whom the Bank has a significant volume of business. </p><p><p>Validation Rules:</p></p><p>1-10 numeric character Customer Number   or 3-10 type MNE (uppercase alpha or numeric or '.') character      mnemonic.</p></desc>
+</t>
+<t>
+<field>AUTOROUTE.AGRD</field>
+<desc><p>This field is used to indicate that an Agreement exists with the correspondent bank whose AGENCY record this is. Limited to the FUNDS.TRANSFER application, the use of this field controls whether a cover payment is sent to the correspondent bank (or not) in situations where the receiving bank of the direct payment has the same correspondent as we do.</p><p>The field has three possible values:</p><p>Blank, YES or NO.</p><p><strong>Blank</strong></p><p>Where it is blank then cover payments will be sent where required and the SWIFT message will contain values in both the Sender Correspondent and Receivers Correspondent.</p><p><strong>NO</strong></p><p>Similar to above but only the senders correspondent is present.</p><p><strong>YES</strong></p><p>An agreement exists, and if both we and the receiver of the direct payment message share the same correspondent the cover payment is to be suppressed. Additionally, only the receivers correspondent field will be populated (the senders correspondent will be blank).</p><p><p>Validation Rules:</p></p><p /><p>Values of blank, YES or NO permitted</p><p /></desc>
+</t>
+<t>
+<field>AUTOROUTING</field>
+<desc><p>Defines whether or not automatic routing instructions are to be used for this Agent. </p><p>If N has been input, no Autorouting details can be entered in the following associate fields. </p><p>If Y has been entered, input of the Autorouting details will be mandatory for this Agent. </p><p><p>Validation Rules:</p></p><p>Y = Autorouting, N = No Autorouting.  Default = NO.  Optional input.</p></desc>
+</t>
+<t>
+<field>DRAFT.ADVICE</field>
+<desc><p>Defines those banks which require drawing advices to be issued and sent to them when drafts are drawn on them. </p><p>Note: By checking the contents of this field, the Funds Transfer       Application will always identify when the production of a check       issuance advice is requested for the relevant Agent. </p><p><p>Validation Rules:</p></p><p /><p>Y = The Agent requires the Draft Advice </p><p> N = The Agent does not require the Draft Advice Default = NO.  (Optional input).</p></desc>
+</t>
+</menu>
+</t24help>
+

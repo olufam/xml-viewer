@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>BL</product>
+<table>BL.REGISTER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>In the Bills Module, the birth of a Bill is happens through this application. The BL.Register</p>
+            <p />is updated with details like Drawer, Drawee, Acceptor, Value of a Bill, Start date, Maturity date of the Bill, Charge code etc.. <p>The Liability Customer if in case of a the Bill is dishonoured is determined by a default mechanism which automatically decides based on a set of rules.</p><p>The id for this application is auto generated once it is defined in AUTO.ID.START and COMPANY files. The system would allow reversal of </p><p>BILL.REGISTER </p>not included in a <p>BILL.BATCH </p><p />and not included in a Bills Contract. <p>User could also enter dynamic particulars about the movement of a Bill like Bill Location, Status, etc. using this application.</p><p>The </p><p>BILL.TYPE </p>entered here will distinguish the products to which the <p>BILL.REGISTER </p>belongs. <p>Copy option is allowed in this Application.</p><p /><p>After the no of days as mentioned in BL.PARAMETER to move it to history from the date of maturity of the BL contract, these details will be moved to history file- BL.REGISTER.HIST.</p><p /><p /><p /><p /></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CATEGORY</field>
+<desc>
+            <p>Contains the Category Code to which this transaction will be assigned. This will default once it is defined in BL.TYPE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-5 numeric characters. (Mandatory input.)   </p>
+            <p>Must exist on the CATEGORY table.   </p>
+            <p>No Input field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BILL.TYPE</field>
+<desc>
+            <p>This is a valid key from BL.TYPE file where the category of the contract is defined and identified with numeric id. Based on id ,values specified in BL.TYPE  for Recourse, Discount, Collateral, Collection and Category code gets defaulted.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory Input</p>
+            <p>Must be a valid record in BL.TYPE</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>The currency of the Bill  should be entered here.  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>(1-3) Currency Code </p>
+            <p>Must be a valid record in CURRENCY file.</p>
+            <p>This is a mandatory input field.</p>
+        </desc>
+</t>
+<t>
+<field>BILL.REG.ID</field>
+<desc>
+            <p />
+            <p>The id for this application is auto generated. The id format is BRyydddnnnnn. If you press F3 or any other key mapped for auto-default. The id will get auto generated.</p>
+        </desc>
+</t>
+<t>
+<field>THEIR.REF.NUM</field>
+<desc>
+            <p>This is an external reference number on the Bill. If there is any such reference number other than the ones created under the Bill Register, this field can be used to input the same.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>This is a free text field.</p>
+        </desc>
+</t>
+<t>
+<field>LIAB.CUST</field>
+<desc>
+            <p>If product type is not defined in BL.TYPE, then this is a No Input field which is updated by the system once the earlier fields are populated even before the record is committed. The default in this field is directly related to the values in various other fields in the same application and the CUSTOMER Application.</p>
+            <p>The calculated value       depends on the values entered in the fields Recourse, Drawer, Acceptor and       Drawee.</p>
+            <p />
+            <p>If Recourse is       Yes and Drawer is Customer, then Drawer is LIAB.CUST.</p>
+            <p />
+            <p>If Recourse is Yes, but Drawer is not       Customer and Acceptor is Customer, then Acceptor is LIAB.CUST.</p>
+            <p />
+            <p>If Recourse is Yes       and both Drawer and Acceptor are not Customers but Drawee is Customer,       then Drawee is LIAB.CUST.</p>
+            <p />
+            <p />
+            <p>If Recourse is No       and Acceptor is Customer, then Acceptor is LIAB.CUST.</p>
+            <p />
+            <p>If Recourse is No,       but Acceptor is not Customer and Drawee is Customer, then Drawee is       LIAB.CUST.</p>
+            <p />
+            <p>In all other cases       no value would be returned for LIAB.CUST.</p>
+            <p />
+            <p>A Bill Register       could be discounted or Collateralised only if its LIAB.CUST and Customer of the Bill       Contract are same.</p>
+            <p />
+            <p>If Product Type is defined in BL.TYPE, LIAB.CUST will be defaulted based on the Liability party defined in BL.TYPE.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Automatic default based on the above values on various fields</p>
+            <p>No Input field.(If Product Type is not defined in BL.TYPE)</p>
+            <p>Must not be same customer as LIAB.CUST2.</p>
+            <p>Override will be raised when the default value is amended.</p>
+        </desc>
+</t>
+<t>
+<field>RECOURSE</field>
+<desc>
+            <p>Defaults from BL.Type as predefined. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No Input field</p>
+        </desc>
+</t>
+<t>
+<field>TENOR.TEXT</field>
+<desc>
+            <p>The text tenor of the bill has to be populated here for reference.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>free text</p>
+        </desc>
+</t>
+<t>
+<field>COLLATERAL</field>
+<desc>
+            <p>Defaults from BL.TYPE as predefined for the id.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Valid values "Yes" or "No"   </p>
+            <p>Overwriting the defaulted value is possible</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>USR.STATUS</field>
+<desc>
+            <p>The status of the Batch as given by the User defined in BL.STATUS application.</p>
+            <p>For example</p>
+            <p>1.Received by the Customer</p>
+            <p>2.Sent to Head Office</p>
+            <p>3. Received at Head Office</p>
+            <p>4.Sent to Domicile branch</p>
+            <p>If the status number is mentioned in this column, an Enquiry Report on the Status of all the bills with similar  statuses shall be generated. This will help tracking the movement of the Bill.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>(1-8) Numeric Characters. Once keyed in, the enrichment as defined in     BL.STATUS appears</p>
+            <p>Once attached to BL/BB - cannot be modified</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>START.DATE</field>
+<desc>
+            <p>The date on which the bill is drawn.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard date format. (mandatory input - defaults to the current date)   </p>
+            <p>Must be a working day.</p>
+        </desc>
+</t>
+<t>
+<field>FIN.MAT.DATE</field>
+<desc>
+            <p>No input field. At present, Maturity Date is returned in this field as per the following.</p>
+            <p>If Maturity Date (previous field ) entered as "nnnD" or "nnnM" then the maturity date will be calculated as No of Days or No of months from the Start date and same is updated here during BR Contract processing.</p>
+            <p>If the maturity date is entered as "nnn" , then at BR level fin maturity date will be NULL during BR processing. However, after attaching that BR to BL, the fin maturity date will be calculated by adding the no of days from the BL start date and gets updated here.</p>
+            
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard T24 date format</p>
+            <p>No Input field.</p>
+        </desc>
+</t>
+<t>
+<field>DRAWEE</field>
+<desc>
+            <p>This field should be populated with the person on whom the Bill has been Drawn. This could be a valid Customer Number or Mnemonic or it could be a Free Text. If the id filled in this field is that of an existing Customer, he will be the Liability Customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Can hold 35 characters</p>
+            <p>This is a mandatory input field.</p>
+        </desc>
+</t>
+<t>
+<field>DRAWER</field>
+<desc>
+            <p>This field should be populated with the person  by whom  the Bill has been Drawn. This could be a valid Customer Number or Mnemonic or it could be a Free Text</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Can hold 35 characters</p>
+            <p>This is a mandatory input field.</p>
+        </desc>
+</t>
+<t>
+<field>SYS.STATUS</field>
+<desc>
+            <p>This is a No Input field. Updated by the system based on BL.REGISTER system status. Values can be "CUR","LIQ","MAT".</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHG.CODE</field>
+<desc>
+            <p>Identifies the type of charge(s) to be levied as defined on the FT.CHARGE.TYPE/ FT.COMMISSION.TYPE file.</p>
+            <p>This table contains a record for each charge type available. Each record contains a description, a default charge amount and the P&amp;L category which is to be credited whenever the charge is levied.</p>
+            <p>The description from the FT.CHARGE.TYPE/FT.COMMISSION.TYPE will be displayed as an enrichment to this field.</p>
+            <p>Whenever a charge is processed the account entered in the associated CHARGE.ACCOUNT field will be debited. The P&amp;L category defined on the FT.CHARGE.TYPE/FTCOMMISSION.TYPE record for the charge code will be credited.</p>
+            <p>In BL module charges will be calculated and debited to charge account during BL.BILL application processing.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1 - 2 alphanumeric characters. Multi-value field   </p>
+            <p>Must be a valid charge code on the FT.CHARGE.TYPE/ FT.COMMISSION.TYPE file.   </p>
+            <p>The same combination of charge code cannot be duplicated.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TRANS.REFERENCE</field>
+<desc>
+            <p>This is a no input field. This field would be updated with the BL.BILL contract number, when the BL.REGISTER is attached to the Bills Contract and the contract is committed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>ID of the BL.BILL (12 digit)</p>
+        </desc>
+</t>
+<t>
+<field>BILL.LOCATION</field>
+<desc>
+            <p>The physical location of the bill shall be entered here. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>This is a free text</p>
+        </desc>
+</t>
+<t>
+<field>INSURER</field>
+<desc>
+            <p>This is for an alternate Drawee in case of need.. This field is only for information.</p>
+        </desc>
+</t>
+<t>
+<field>COLLECTION</field>
+<desc>
+            <p>Defaults from BL.Type as predefined for the id</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Valid values "Yes" or "No"   </p>
+            <p>Overwriting the defaulted value is possible</p>
+        </desc>
+</t>
+<t>
+<field>DISCOUNT</field>
+<desc>
+            <p> Defaults from BL.TYPE as predefined for the id.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Valid values "Yes" or "No"</p>
+            <p>Overwriting the defaulted value is possible</p>
+        </desc>
+</t>
+<t>
+<field>STATUS.DATE</field>
+<desc>
+            <p>The date on which the current status is entered has to be populated here. Default would be today.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>The standard T24 date format</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>OVERDUE.STATUS</field>
+<desc>
+            <p>This field specifies the overdue status of BL.REGISTER. If the BL.REGISTER moved to PD during maturity process, this field is updated as "PD"</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input field.</p>
+        </desc>
+</t>
+<t>
+<field>REDISCOUNT</field>
+<desc>
+            <p>For Future use</p>
+        </desc>
+</t>
+<t>
+<field>LIQUIDATION.MODE</field>
+<desc>
+            <p>There are three options available:</p>
+            <p>AUTOMATIC, SEMI-AUTOMATIC, MANUAL</p>
+            <p>AUTOMATIC will liquidate across the settlement accounts on the contract.</p>
+            <p>MANUAL will create a PD contract instead.</p>
+            <p>SEMI-AUTOMATIC will only raise a PD contract if insufficient funds exist on the settlement account.</p>
+            <p>For further details see the helptext in PD.PARAMETER where these settings are controlled from.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>If the PD product is not defined for the current company then the only     allowed setting is AUTOMATIC.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MATURITY.DATE</field>
+<desc>
+            <p>This is the date on which the Bill is due for Repayment. This should be a Date greater than Today and the Start.Date. This could be entered as  a Date (Maturity Date) or as nnnnD (No.of Days) or nnM(No.of Months) or "nnn" (No of days)</p>
+            <p>If entered as nnnnD or nnM, the system would return the calculated Maturity Date by adding the No of Days or No of Months from the Start date and update the same in Maturity date as well as in fin mat date (next field). If the calculated Maturity Date is a holiday as per the currency of the contract, then the system gives override message.</p>
+            <p>If entered as "nnn", after attaching to BL system calculates the maturity date by addding "nnn" days  from the BL start date and same is updated in Maturity date and fin mat date.</p>
+            <p>If the current date or a past date is keyed in, system will throw an enrichment "Cannot be Less/equal start date" and will not allow to proceed further.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard T24 date format</p>
+            <p>It can accept "nnn" or "nnnD" (Both No of Days from       start date )or "nnM"( No of Months)</p>
+            <p>This is a mandatory input field.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>Date on which BL.REGISTER created.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input field</p>
+            <p>Standard T24 date format</p>
+        </desc>
+</t>
+<t>
+<field>ACCEPT</field>
+<desc>
+            <p>For future use</p>
+        </desc>
+</t>
+<t>
+<field>ACCEPTOR</field>
+<desc>
+            <p>The person who has accepted the Liability on the Bill. This could be a Valid Customer No. or Mnemonic or it could be a Free Text.</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT</field>
+<desc>
+            <p>The value of the Bill is entered in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>This is a mandatory input field.</p>
+            <p>Input of currency is mandatory before entering values in this field.</p>
+        </desc>
+</t>
+<t>
+<field>BATCH.NO</field>
+<desc>
+            <p>This is a No Input field. When the BL.REGISTER is attached to BL.BATCH and committed , immediately the batch number will default in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>12 digit BL.BATCH ID</p>
+        </desc>
+</t>
+<t>
+<field>LIAB.CUST2</field>
+<desc>
+            <p>This field defines second liability customer when RECOURSE is set to Partial in BL.TYPE.</p>
+            <p>Liability customer will be defaulted based on the LIABILITY.PARTY defined in BL.TYPE with RECOURSE set to "Partial".</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed only when RECOURSE is set to Partial in attached BL.TYPE.</p>
+            <p>Must not be same customer as LIAB.CUST.</p>
+            <p>Not allowed for Product Collection.</p>
+            <p>Override will be raised when the default value is amended.</p>
+        </desc>
+</t>
+<t>
+<field>INFO.LIMIT.CUST</field>
+<desc>
+            <p>This field  defines customer for whom information limit needs to be maintained.</p>
+            <p>Info limit customer will be defaulted based on the INFO.LIMIT.PARTY defined in BL.TYPE with RECOURSE set to "Partial".</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>LIAB.CUST,LIAB.CUST2 and INFO.LIMIT.CUST customers cannot be same.</p>
+            <p>Override will be raised when the default value is amended.</p>
+        </desc>
+</t>
+<t>
+<field>DOCUMENT.NO</field>
+<desc>
+            <p>Identifies the invoice reference number for the invoice captured.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Free Text field.</p>
+        </desc>
+</t>
+<t>
+<field>DOCUMENT.TYPE</field>
+<desc>
+            <p>Identifies the type of document captured in BL.REGISTER application.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed values are Purchase Order, Invoice, Accepted Draft, Avalised Draft, Credit Note and Debit Note.</p>
+        </desc>
+</t>
+<t>
+<field>DOCUMENT.DATE</field>
+<desc>
+            <p>Identifies the document date for the invoice captured in BL.REGISTER application.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Should not be greater than today.</p>
+        </desc>
+</t>
+<t>
+<field>DOCUMENT.STATUS</field>
+<desc>
+            <p>Identifies whether the document is Active or not.</p>
+            <p>Allowed values are Active, Provisional and Disputed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            
+            <p>BL.TYPE should be allowed only when document status is 'Active'.</p>
+            <p>Not allowed to modify from "Active" to "Provisional".</p>
+            <p>Not allowed to modify from "Disputed" to "Provisional".</p>
+        </desc>
+</t>
+<t>
+<field>UPLOAD.REF</field>
+<desc>
+            <p>Identifies the upload reference from uploaded file thru' EB.FILE.UPLOAD application.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No Change Field.</p>
+        </desc>
+</t>
+<t>
+<field>CUST.BATCH.REF</field>
+<desc>
+            <p>Identifies the customer upload reference from uploaded file thru' EB.FILE.UPLOAD application.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No Change Field.</p>
+        </desc>
+</t>
+<t>
+<field>TENOR</field>
+<desc>
+            <p>Identifies the tenor of invoice registered.</p>
+            <p>Tenor will be the difference between START.DATE and MATURITY.DATE of the invoice.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System maintained Field.</p>
+        </desc>
+</t>
+
+
+<t>
+<field>RETENTION.MARGIN</field>
+<desc>
+            <p>This field is to define Retention margin for each Invoice. It can be defaulted in the below order If not inputted by user.</p>
+             <p>1. BL.BUYER.SELLER.LIMIT</p>
+             <p>2. BL.GROUP.CONDITION</p>
+             <p>3. BL.TXN.TYPE.CONDITION</p>
+
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard T24 rate field to specify retention margin percentage</p>
+            <p>Accepts values in range 0 to 99 </p>
+            <p>Nochange field </p>
+        </desc>
+</t>
+
+<t>
+<field>MAX.AVAIL.AMT</field>
+<desc>
+            <p>Specifies maximum available amount for disbursement for the invoice</p>
+             <p>Maximum amount available for disbursement will be calculated as MAX.AVAIL.AMT = Invoice amount  - (Invoice amount * RET.MARGIN/100) </p>
+
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System maintained field</p>
+            <p>Standard T24 Amount Field</p>
+            <p>Specified in currency  of BL.REGISTER</p>
+        </desc>
+</t>
+
+
+<t>
+<field>AVAILED.AMT</field>
+<desc>
+            <p>This field specifies the disbursed amount till date and will be updated after each disbursement</p>
+             <p>Maximum amount available for disbursement will be calculated as MAX.AVAIL.AMT = Invoice amount  - (Invoice amount * RET.MARGIN/100) </p>
+
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System maintained field.</p>
+            <p>Standard T24 Amount Field</p>
+            <p>Specified in currency  of BL.REGISTER</p>
+        </desc>
+</t>
+
+<t>
+<field>AVAILABLE.AMT</field>
+<desc>
+            <p>This field specifies the remaining available amount for disbursement.Available amount will be calculated as Max available amount minus Availed amount </p>
+            <p>AVAILABLE.AMOUNT = MAX.AVAIL.AMT - AVAILED.AMT </p>
+
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System maintained field.</p>
+            <p>Standard T24 Amount Field</p>
+            <p>Specified in currency  of BL.REGISTER</p>
+        </desc>
+</t>
+
+
+<t>
+<field>DISBURSE.AMT</field>
+<desc>
+            <p>This field specifies the amount to be disbursed for the invoice</p>
+            <p>AVAILABLE.AMOUNT = MAX.AVAIL.AMT - AVAILED.AMT </p>
+
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Partial amount for disbursement is not allowed when the BL.TYPE is set for PARTIAL.DISBURSEMENT : NOT ALLOWED</p>
+            <p>User input field</p>
+            <p>Specified in currency  of BL.REGISTER</p>
+        </desc>
+</t>
+
+
+<t>
+<field>GRACE.DAYS</field>
+<desc>
+            <p>This field specifies the grace days to be added for calculating final maturity date of invoice</p>
+            <p>This is an Optional field in a format of 'nnC' or 'nnW' , where 'nn' shall be 0 to 99,C stands for Calendar and  W stands for working day</p>
+            <p>Defaulted in below order</p>
+             <p>1. BL.GROUP.CONDITION with id as C-Customer number</p>
+             <p>1. BL.GROUP.CONDITION with id as group id</p>
+             <p>3. BL.TXN.TYPE.CONDITION</p>
+             <p>4. BL.PARAMETER</p>
+
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+
+            <p>User input field</p>
+            <p>Length - 3</p>
+        </desc>
+</t>
+
+<t>
+<field>SETTLEMENT.TYPE</field>
+<desc>
+            <p>This field specifies the type of settlement to be made</p>
+            <p>Options are Full / Partial / Rebate.</p>
+
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+
+            <p>User input field</p>
+            <p>Partial : allowed only when PART.SETTLEMENT is ALLOWED in BL.TYPE</p>
+        </desc>
+</t>
+
+<t>
+<field>SETTLEMENT.AMOUNT</field>
+<desc>
+            <p>This field specifies the amount to settled against invoice</p>
+
+
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+
+            <p>Standard T24 amount field</p>
+            <p>It cannot be greater than invoice amount</p>
+        </desc>
+</t>
+
+<t>
+<field>AMOUNT.SETTLED</field>
+<desc>
+            <p>This field specifies the amount settled till date</p>
+
+
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+
+            <p>Standard T24 amount field</p>
+            <p>System maintained field</p>
+            <p>Specified in currency  of BL.REGISTER</p>
+        </desc>
+</t>
+
+
+<t>
+<field>TRANS.TYPE</field>
+<desc>
+            <p>This field specifies the  various events : DISBURSE or SETTLE performed on the invoice</p>
+
+
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+
+            <p>Associated multi-value with Trans reference field</p>
+            <p>System maintained field</p>
+            <p>Updates the ACTION : DISBURSE/SETTLE and transaction reference when BL.BILL is used to disburse or settle invoice</p>
+        </desc>
+</t>
+<t>
+<field>NEW.BL.TYPE</field>
+<desc>
+            <p>Specifies the new product type when existing product needs to be changed from 'Collection' to new product with change product set to "Allowed" - Discount or Advance Factoring.</p>            
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Must be valid product in BL.TYPE</p>
+            <p>Not allowed for new contracts.</p>
+            <p>Allowed only existing product type is Collection</p>
+            <p>Product type must have "Change Product" set to "Allowed"</p>
+        </desc>
+</t>
+<t>
+<field>SUSPEND.INT</field>
+<desc>
+            <p>This field determines whether the discount interest received in advance is to be suspended(amortised amount is moved under a suspended category instead of PL) or recognized during amortisation.</p>            
+            <p>Allowed values are YES or NO.</p>
+            <p>‘YES’ indicates that the unamortised discount interest portion is to be suspended during the next cycle of amortisation.</p>
+            <p>The discount amount is moved under IRA category(SP). When this field is set to ‘Yes’ further discounting of the BL.REGISTER is not allowed.</p>
+            <p>Dr      Interest Received in advance a/c          (Portion of interest)</p>
+            <p>Cr      Interest Category SP                      (Portion of interest)</p>
+            <p>‘NO’ indicates that the suspended interest, if any, is to be recognized. The suspension is revoked and the suspended interest amount is recognized.</p> 
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Further discounting on invoice is not allowed once the invoice is marked for Suspension of discount interest using this field.</p>       
+        </desc>
+</t>
+<t><field>AVAILED.AMOUNT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>AVAILABLE.AMOUNT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>DISBURSE.AMOUNT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>SETTLEMENT.AMT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>LIAB.CUST1.PERC</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>LIAB.CUST2.PERC</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>INFO.LIMIT.CUST1</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>INFO.LIMIT.CUST2</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

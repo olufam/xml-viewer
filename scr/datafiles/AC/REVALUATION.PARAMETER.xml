@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>AC</product>
+<table>REVALUATION.PARAMETER</table>
+</header>
+<overview>
+<ovdesc></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>REVAL.DEAL.POST</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> A maximum of 3 characters may be entered.</p>
+            <p> The following values are permitted:       YES      NO</p>
+        </desc>
+</t>
+<t>
+<field>INTERPOLATION.MKR</field>
+<desc>
+            <p>Identifies whether forward exchange rates are to be interpolated or not.  Interpolation occurs when a rate can be established from two known rates.  For example, let us say that the one month forward rate for a particular currency is 1.50 and that the three month forward for the same currency is 1.60.  Using interpolation, the two-month forward rate will be calculated at 1.55.</p>
+            <p> The value of this marker is important for the revaluation of Forward contracts using the REBATE revaluation method.  Details of the interpolation formula can be found in the Forex Main File documentation.  When '2' has been selected in this field, revaluation of forward contracts using the Rebate revaluation method will not interpolate an exchange rate but instead, pick from the FORWARD.RATES table the rate defined on the nearest date compared to the value date of the Foreign Exchange deal.  When '1' has been selected, the next available rate will instead be selected.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 'Blank' -  Rate will be interpolated '1'    -  Takes the next available rate '2'    -  Takes the closest rate</p>
+        </desc>
+</t>
+<t>
+<field>REVAL.TYPE</field>
+<desc>
+            <p>This field signifies the revaluation method that must be used for revaluing deals arising out of the application in the APPKIC.ID field. The are only two ways in which revalution is performed, these being :</p>
+            <p> 'SP' - Spot revaluation that uses the spot rate.</p>
+            <p> 'RB' - Rebate revaluation that uses the forward rates table.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Must be either 'SP' or 'RB'</p>
+            <p> If APPLIC.ID = FX.RB then must be 'RB'</p>
+            <p> If APPLIC.ID = FX or FX.SP then must be 'SP'</p>
+            <p> If APPLIC.ID = REST then must be 'SP'</p>
+            <p> All other applications can be set to either 'SP' or 'RB'</p>
+        </desc>
+</t>
+<t>
+<field>LOSS.PROD.CATEG</field>
+<desc>
+            <p>This field signifies the product category to be used for the internal account number formed from the LOSS.INT.CATEG field</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Must be a valid CATEGORY code</p>
+            <p> Must be between the range 20000 - 29999</p>
+            <p> Mandatory input if the application id is entered otherwise no input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>REVAL.CCY</field>
+<desc>
+            <p>Defines whether the revaluation is calculated against the local currency or the currency specified.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 3 Alpha-numeric currency code (type CCY).</p>
+            <p> Optional input</p>
+            <p> Input can only be made if there are no POS.TRANSACTION records on the system.</p>
+        </desc>
+</t>
+<t>
+<field>REVAL.WITHIN.SP</field>
+<desc>
+            <p data-mc-conditions="FROMRELEASE.R13">To indicate whether the contracts within spot period must be revalued at different rates for finer revaluation results.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">When set to ‘Yes’, the revaluation of contracts maturing  TOM and SPOT will happen at different rates , provided the rates for  ‘ON’ and ‘TOM’ are defined in FORWARD. RATES table as -1D and -2D.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Provision is also available to calculate Today’s Rate by applying the sum of ON and TOM Premium/Discount to the Mid.Reval.Rate/Reval.Rate. However, population of the same into the field ‘Reval.Rate’ is left to the User’s option which can be done by using a local routine.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">When left blank,  the revaluation of contract within spot period will be revalued at spot rate i.e. contracts maturing Tomorrow and Spot will be revalued at the same rate.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Validation Rules:</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Valid values - ‘YES’ or ‘null’</p>
+        </desc>
+</t>
+<t>
+<field>IFRS.DISC.RATE.KEY</field>
+<desc>
+            <p>The key specified in this field is used to obtain the discount rate from PERIODIC.INTEREST table for the Local Currency. </p>
+            <p> The value should be in the range from 01 to 99.  </p>
+            <p> Input not allowed when IFRS.REVALUE is not set; Input is Mandatory when IFRS.REVALUE is set to 'YES'.</p>
+            <p> If the specified key for LOCAL currency does not exist in PI table, system raises the error message.</p>
+        </desc>
+</t>
+<t>
+<field>FASB.REVALUATION</field>
+<desc>
+            <p> Defines whether the revaluation uses the mid rate or the bid and offer rates.</p>
+            <p> YES = Bid and Offer rates </p>
+            <p> NO  = Mid rate (Default) </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Valid values are 'Y'ES or 'N'O</p>
+            <p> Optional input </p>
+        </desc>
+</t>
+<t>
+<field>PRFT.FIX.CAT</field>
+<desc>
+            <p>Specifies the profit and loss category to be used when realising the revaluation profit for a Forex deal between 2 fixed currencies.</p>
+            <p> When the 2 currencies of a Forex deal are linked to a Fixed currency, i.e. the Euro, there is no longer any fluctuation between the exchange rate as the rate is fixed. Any revaluation unrealised profit and loss can therefore be realised.</p>
+            <p> If the field REALISE.FIX.PL is set to Y in Forex deals between 2 fixed currencies, the system will post the revaluation profit on the deal to the category specified in this field, reversing the unrealised profit (if booked) from the category defined in the field PROFIT.CATEG. Realisation takes place the night before the fixed rates apply (FIXED.START.DATE in the CURRENCY record), or the next night if the fixed start date has passed.</p>
+            <p> Accounting Entries:</p>
+            <p> Cr PRFT.INT.CATEG reval amt         Dr PROFT.CATEG reval amt (If Profit posted) Cr PRFT.FIX.CATEG reval amt         Dr PRFT.FIX.INT.CT reval amt</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional Input Must be different to associated PROFIT.CATEG.</p>
+        </desc>
+</t>
+<t>
+<field>POS.DATE.SAME.CCY</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> A maximum of 5 characters may be entered.</p>
+            <p> The following values are permitted:       CALL      VALUE      FIRST      LAST</p>
+        </desc>
+</t>
+<t>
+<field>REVAL.SYS.ID</field>
+<desc>
+            <p>This field indicates the revaluation system id to be used by the revaluation process when raising revaluation P&amp;L accounting entries.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional Input</p>
+        </desc>
+</t>
+<t>
+<field>PRFT.INT.CATEG</field>
+<desc>
+            <p>This field signifies the category code to be used when constructing an internal account number to post the amount resulting from a profit calculated after the revaluation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Must be a valid category code set up on the CATEGORY file.</p>
+            <p> Must be in the range 10000 - 19999</p>
+            <p> Must be input if the application id has been entered and the field BOOK.PROFIT has been set to 'YES' otherwise it is optional.</p>
+            <p> BOOK.PROFIT has been set to 'YES' otherwise it is optional.</p>
+        </desc>
+</t>
+<t>
+<field>IFRS.DISC.PERIOD</field>
+<desc>
+            <p>To indicate whether the net unrealized revaluation amount must be discounted either from TODAY or SPOT to arrive the present value of the contracts under IFRS framework.</p>
+            <p>When set to SPOT, the discounting of contracts in forward period will happen from spot date to value date and the contracts within the spot period will not be subjected to discounting.</p>
+            <p>When set to TODAY, the discounting of contracts will happen from Today to value date, so the contracts either in  spot period or forward period will be discounted from Today.</p>
+            <p>Validation Rules:-</p>
+            <p>Valid values are ‘TODAY’ or ‘SPOT’</p>
+            <p>Input allowed only when IFRS.REVALUE is set to ‘Yes’.</p>
+        </desc>
+</t>
+<t>
+<field>IFRS.REVALUE</field>
+<desc>
+            <p> If this field is set to 'YES', then the re-valuation profit or loss for Forex and Non Deliverable Forward Deals will be booked in Local currency at deal level.  </p>
+            <p> The deal level unrealized Profit or Loss will be booked at discounted value for Forex Deals under RB Method of Revaluation and for NDF Deals.</p>
+            <p> For more details, Please refer to User Guide for FOREX Application.</p>
+            <p> Values allowed are YES, NO and NULL. Will become a No Change field once the record is authorized with a value  set to "YES" </p>
+            <p> A value with NULL is same as value with NO. </p>
+        </desc>
+</t>
+<t>
+<field>LOSS.FIX.CAT</field>
+<desc>
+            <p>Specifies the profit and loss category to be used when realising the revaluation loss for a Forex deal between 2 fixed currencies.</p>
+            <p> When the 2 currencies of a Forex deal are linked to a Fixed currency, i.e. the Euro, there is no longer any fluctuation between the exchange rate as the rate is fixed. Any revaluation unrealised profit and loss can therefore be realised.</p>
+            <p> If the field REALISE.FIX.PL is set to Y in Forex deals between 2 fixed currencies, the system will post the revaluation loss on the deal to the category specified in this field, reversing the unrealised loss from the category defined in the field LOSS.CATEG. Realisation takes place the night before the fixed rates apply (FIXED.START.DATE in the CURRENCY record), or the next night if the fixed start date has passed.</p>
+            <p> Accounting Entries:</p>
+            <p> Cr LOSS.CATEG       reval amt         Dr LOSS.FIX.CATEG reval amt Cr LOSS.FIX.INT.CT  reval amt         Dr LOSS.INT.CATEG reval amt</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional Input Must be different to associated LOSS.CATEG.</p>
+        </desc>
+</t>
+<t>
+<field>PRFT.PROD.CATEG</field>
+<desc>
+            <p>This field signifies the product category to be used for the internal account number formed from the PRFT.INT.CATEG field</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Must be a valid CATEGORY code</p>
+            <p> Must be between the range 20000 - 29999</p>
+            <p> Mandatory input if the application id is entered otherwise no input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>REVAL.RATE</field>
+<desc>
+            <p data-mc-conditions=""> To indicate whether to use REVAL.RATE in CURRENCY Table for revaluation.</p>
+            <p data-mc-conditions="FROMRELEASE.R13">Input allowed only for APPLIC.IDs, 'FX.SP', 'FX.RB' and 'ND'</p>
+            <p data-mc-conditions="FROMRELEASE.R13">If set to YES, System will use REVAL.RATE (if available) in CURRENCY table instead of MID.REVAL.RATE for calculating the Revaluation Rate.</p>
+            <p> If left blank, MID.REVAL.RATE will be used for the calculation of Revaluation Rate .</p>
+            <p>
+                <p data-mc-conditions="">Validation Rules:</p>
+            </p>
+            <p data-mc-conditions=""> Valid value - 'YES'. </p>
+            <p data-mc-conditions=""> Optional input .</p>
+        </desc>
+</t>
+<t>
+<field>LOSS.FIX.INT.CT</field>
+<desc>
+            <p>Specifies the exchange adjustment account category to be used when realising the revaluation loss for a Forex deal between 2 fixed currencies.</p>
+            <p> When the 2 currencies of a Forex deal are linked to a Fixed currency, i.e. the Euro, there is no longer any fluctuation between the exchange rate as the rate is fixed. Any revaluation unrealised profit and loss can therefore be realised.</p>
+            <p> If the field REALISE.FIX.PL is set to Y in Forex deals between 2 fixed currencies, the system will post the revaluation loss on the deal to the category specified in LOSS.FIX.CATEG, reversing the unrealised profit from the category defined in the field LOSS.CATEG.</p>
+            <p> Realisation takes place the night before the fixed rates apply (FIXED.START.DATE in the CURRENCY record), or the next night if the fixed start date has passed.</p>
+            <p> Accounting Entries:</p>
+            <p> Cr LOSS.CATEG       reval amt         Dr LOSS.FIX.CATEG reval amt Cr LOSS.FIX.INT.CT  reval amt         Dr LOSS.INT.CATEG reval amt</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional Input Must be different to associated LOSS.INT.CATEG.</p>
+        </desc>
+</t>
+<t>
+<field>LOSS.DB.TXN.CD</field>
+<desc>
+            <p>This field signifies the transaction code to be used for raising a debit accounting entry on the loss side of the P&amp;L as a result of the revaluation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Must be a valid debit transaction code set up on the TRANSACTION file</p>
+            <p> Mandatory input if the APPLIC.ID field has been entered otherwise not.</p>
+            <p> not.</p>
+        </desc>
+</t>
+<t>
+<field>FWD.REVAL.BOOKING</field>
+<desc>
+            <p>Defines whether or not P/L and EXCHADS entries are to be booked when contracts with a REVALUATION TYPE of 'RB' are revalued.</p>
+            <p> After authorisation of this record, the value in this field is changed the original value is retained in the record of the REVAL.PARAM.ENT.TODAY file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Valid values are 'Y'ES or 'N'O</p>
+            <p> Mandatory Input</p>
+            <p>On Amending the field from YES to NO, during COB the outstanding revaluation amount will be reversed and no  further revaluation entries will be posted thereafter.</p>
+            <p> On amending the field from NO to YES, system starts raising revaluation entries from there onwards. </p>
+        </desc>
+</t>
+<t>
+<field>POS.DATE.DIFF.CCY</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> A maximum of 5 characters may be entered.</p>
+            <p> The following values are permitted:       CALL      VALUE      FIRST      LAST</p>
+        </desc>
+</t>
+<t>
+<field>PRFT.CATEG</field>
+<desc>
+            <p>This field holds the category code to which any profit resulting from revaluations will be posted.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Must be a valid category code if entered.</p>
+            <p> Must be in the range of 53001-53999 (Excepting for 53006 which is being used by the system)</p>
+            <p> Must be entered if the application id has been entered and the field BOOK.PROFIT has been set to 'YES' otherwise it is optional.</p>
+        </desc>
+</t>
+<t>
+<field>LOSS.INT.CATEG</field>
+<desc>
+            <p>This field signifies the category code to be used when constructing an internal account number to post the amount resulting from a loss calculated after the revaluation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Must be an existing category code set up the CATEGORY file</p>
+            <p> Must be in the range 10000 - 19999</p>
+            <p> Must be entered if the application ID has been entered otherwise not</p>
+            <p> not entered</p>
+        </desc>
+</t>
+<t>
+<field>POSTING.STYLE</field>
+<desc>
+            <p>This field will decide how the revaluation acounting entries are to be posted. There are two possible ways in which this can be performed as shown under :</p>
+            <p> 'I/O' - In this method the old amount is reversed out and the new amount is posted again.</p>
+            <p> 'ADJ' - In this method the difference between the old &amp; new amounts is posted as an adjustment.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Valid values are 'I/O' or 'ADJ'</p>
+            <p> Mandatory input if the APPLIC.ID field has been entered.</p>
+        </desc>
+</t>
+<t>
+<field>PRFT.FIX.INT.CT</field>
+<desc>
+            <p>Specifies the exchange adjustment account category to be used when realising the revaluation profit for a Forex deal between 2 fixed currencies.</p>
+            <p> When the 2 currencies of a Forex deal are linked to a Fixed currency, i.e. the Euro, there is no longer any fluctuation between the exchange rate as the rate is fixed. Any revaluation unrealised profit and loss can therefore be realised.</p>
+            <p> If the field REALISE.FIX.PL is set to Y in Forex deals between 2 fixed currencies, the system will post the revaluation profit on the deal to the category specified in PRFT.FIX.CATEG, reversing the unrealised profit (if booked) from the category defined in the field PROFIT.CATEG.</p>
+            <p> Realisation takes place the night before the fixed rates apply (FIXED.START.DATE in the CURRENCY record), or the next night if the fixed start date has passed.</p>
+            <p> Accounting Entries:</p>
+            <p> Cr PRFT.INT.CATEG reval amt         Dr PROFT.CATEG reval amt (If Profit posted) Cr PRFT.FIX.CATEG reval amt         Dr PRFT.FIX.INT.CT reval amt</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional Input Must be different to associated PRFT.INT.CATEG.</p>
+        </desc>
+</t>
+<t>
+<field>LOSS.CATEG</field>
+<desc>
+            <p>This field holds the category code to which any loss resulting from revaluations will be posted.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Must be a valid category code if input.</p>
+            <p> Must be in the range 53001-53999 (Excepting for the value 53006 which is currently being used in the system)</p>
+            <p> Must be input if the APPLIC.ID is entered otherwise not.</p>
+        </desc>
+</t>
+<t>
+<field>PRFT.DB.TXN.CD</field>
+<desc>
+            <p>This field signifies the transaction code to be used for raising a debit accounting entry on the profit side of the P&amp;L as a result of the revaluation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Must be a valid debit transaction code setup in the TRANSACTION file.</p>
+            <p> Must be entered if the application id has been entered otherwise not.</p>
+            <p> not.</p>
+        </desc>
+</t>
+<t>
+<field>PRFT.CR.TXN.CD</field>
+<desc>
+            <p>This field signifies the transaction code to be used for raising a credit accounting entry on the profit side of the P&amp;L as a result of the revaluation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Must be a valid credit transction code setup on the TRANSACTION file.</p>
+            <p> Must be entered if the application id field has been entered otherwise not.</p>
+            <p> Otherwise not</p>
+        </desc>
+</t>
+<t>
+<field>LOSS.CR.TXN.CD</field>
+<desc>
+            <p>This field signifies the transaction code to be used for raising a credit accounting entry on the loss side of the P&amp;L as a result of the revaluation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Must be a valid credit transaction code set up on the TRANSACTION file</p>
+            <p> Mandatory input if the APPLIC.ID field has been entered otherwise not.</p>
+            <p> not.</p>
+        </desc>
+</t>
+<t>
+<field>SPLIT.POSITIONS</field>
+<desc>
+            <p>This field is used to default the value in the field SPLIT.POSITION in the application DEALER.DESK when a new DEALER.DESK record is created</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p> YES, NO or NULL</p>
+            <p> Optional Input</p>
+            <p> Default is NULL</p>
+        </desc>
+</t>
+<t>
+<field>SPOT.REVAL.BOOKING</field>
+<desc>
+            <p>Defines whether or not P/L and EXCHADS entries are to be booked when contracts with a REVALUATION TYPE that is NOT 'RB', are revalued.</p>
+            <p> After authorisation of the record, if the value in this field is ever changed the original value used the last business day is retained in in the file REVAL.PARAM.ENT.TODAY</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Valid values are 'Y'ES or 'N'O</p>
+            <p> Mandatory input</p>
+            <p>On Amending the field from YES to NO, during COB the outstanding revaluation Profit or Loss will be reversed and no further revaluation entries will be posted thereafter.</p>
+            <p> On amending the field from NO to YES, system starts raising revaluation entries from there onwards </p>
+        </desc>
+</t>
+<t>
+<field>APPLIC.ID</field>
+<desc>
+            <p>This field is used to identify an application for which the fields associated to it are being set up.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional input</p>
+            <p> Must be a valid application set up for the company indicated in the ID or</p>
+            <p> In the case of Forex it can be set to the following values :</p>
+            <p> FX.SP - Signifying all Forex contracts that have been set up with a revaluation type of 'SP'</p>
+            <p> FX.RB - Signifying all Forex contracts that have been set up with a revaluation type of 'RB'</p>
+            <p> FX.IA - Signifying all Forex contracts that have been set up with a revaluation type of 'IA'</p>
+            <p> FX    - Signifying all forex contract otherwise not defined specifically as above in other words a catch-all set.</p>
+            <p> Special value of 'ALL' signifies a catch all for the entire system that will be revalued on an individual contract basis.</p>
+            <p> Special value of 'REST' signifying a catch all which will not be revalued individually but rather in a consolidated manner. In other words this also refers to the forward asset &amp; liability parameters</p>
+        </desc>
+</t>
+<t>
+<field>BOOK.PROFITS</field>
+<desc>
+            <p>This field will be used to indicate to the system whether or not profits resulting from revaluation need to be booked or not.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Valid values 'YES' or 'NO'</p>
+            <p> Input is mandatory if the APPLIC.ID field has been entered.</p>
+        </desc>
+</t>
+<t>
+<field>COMPANY.ID</field>
+<desc>
+            <p>This is the ID of the record. Each company in the system must have a separate set of revaluation parameters set for it.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Must be a valid company id</p>
+        </desc>
+</t>
+<t>
+<field>DETAIL.REVAL.REP</field>
+<desc>
+            <p>Identifies the frequency for the production of the 'Detailed Revaluation Report' produced by the Forex End of Day process.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p> M - Monthly</p>
+            <p> D - Daily</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

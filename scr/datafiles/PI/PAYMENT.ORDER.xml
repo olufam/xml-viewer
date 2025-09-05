@@ -1,0 +1,1273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>PI</product>
+<table>PAYMENT.ORDER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Payment order Application is to obtain the Payment Related Information based on the Payment product</p>
+           
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+
+
+<t>
+  <field>ID</field>
+  <desc>
+    <p>ID of the payment order record</p>
+	<p>
+    <p>Validation Rules: Standard transaction reference </p>
+	</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>PAYMENT.ORDER.PRODUCT</field>
+  <desc>
+    <p>Payment order product</p>
+	<p>
+    <p>Validation Rules: Valid record in PAYMENT.ORDER.PRODUCT application. Enrichment from DESCRIPTION field of PAYMENT.ORDER.PRODUCT</p>
+	</p>
+    <p>Mandatory field.Defaulted in case field left blank and populated from PREF.PYMT.PRODUCT of beneficiary id used in the payment order contract</p>
+    <p>If PREF.PYMT.PRODUCT is blank for beneficiary id defined in the contract then prompted for a valid product from PAYMENT.ORDER.PRODUCT application</p>
+  </desc>
+</t>
+<t>
+  <field>ORDERING.COMPANY</field>
+  <desc>
+    <p>Company from which the transaction is done or debit account's customer's company</p>
+	<p>
+    <p>Validation Rules:
+	
+		1. Defaulted as follows:
+		   i. If debit account is customer account, the company code is defaulted from the debit account customer's company code
+		   ii. If the debit acount is internal account,then CO.CODE of the account should be considered
+		   iii. If debit is PL category, then it is defaulted from transaction company i.e. ID.COMPANY
+		2. If the company code is not the current company, then error will be thrown</p>
+
+    </p>
+	<p> No Input field</p>
+  </desc>
+</t>
+
+<t>
+  <field>ORDERING.CUSTOMER</field>
+  <desc>
+    <p>Debit Account customer</p>
+	<p>
+    <p>Validation Rules: 1. This field can be manually input or value can be defaulted
+                         2. Value is defaulted from Debit Account customer if ORDERING.CUSTOMER.BIC is not present
+                         3. Error thrown in the following cases:
+                            i. If both ORDERING.CUST and ORDERING.CUST.NAME.ADDR are null (not manually input and popualated as mentioned above)
+                         4. Overrides raised in the following scenarios:
+                            i. When the ordering customer is not the owning customer of the beneficiary when PAY.THROUGH.BENEFICIARY set to YES</p>
+    </p>
+	<p></p>
+  </desc>
+</t>
+
+<t>
+  <field>ORDERING.CUSTOMER.BIC</field>
+  <desc>
+    <p>BIC of the Ordering customer</p>
+	<p>
+    <p>Validation Rules:BIC of Ordering customer
+	 1. Value can be manually input or defaulted
+	 2. If not manually input, check whether IBAN is defined
+	 3. If IBAN is defined, then get BIC from that IBAN using getBICfromIBAN routine
+	 4. If BIC is manually defined, then check whether the BIC is valid BIC for that IBAN else throw error</p>
+    </p>
+	<p></p>
+  </desc>
+</t>
+
+<t>
+  <field>ORDERING.CUST.NAME</field>
+  <desc>
+    <p>Ordering customer name</p>	
+    <p>Validation Rules: 1. Name of Ordering customer
+                      2. Mandatory when the customer is not in T24 and ORDERING.CUSTOMER.BIC is not defined</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ORDERING.POSTAL.ADDRESS.TYPE</field>
+  <desc>
+    <p>Ordering customer's address type</p>
+    <p>Validation Rules: </p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ORDERING.POSTAL.SWIFT.ADDR</field>
+  <desc>
+    <p>Ordering customer's swift address</p>
+    <p>Validation Rules: 1. Maximum of 4 multi value set allowed
+2. Error must be thrown if multi value is more than 4
+3. Each multi-value set must allow 35 characters</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ORDERING.POSTAL.ADDR.LINE</field>
+  <desc>
+    <p>Ordering customer's address line</p>
+    <p>Validation Rules:1. Maximum of 7 multi value set allowed
+2. Error must be thrown if multi value is more than 7
+3. Each multi-value set must allow 70 characters</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ORDERING.PORTFOLIO</field>
+  <desc>
+    <p>Debit portfolio id</p>
+    <p>Validation Rules:1. Inputtable field only if SC is installed 
+   2. If DEBIT.ACCOUNT field has value, then the account will be checked if it is an account in the portfolio else error will be thrown 
+   3. If DEBIT.ACCOUNT field is null, then the account from portfolio will be defaulted based on the setup in ACCOUNT.PARAMETER.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>DEBIT.ACCOUNT</field>
+  <desc>
+    <p>Debit account id</p>
+    <p>Validation Rules:1. Can be manually input or defaulted from SEC.ACC.MASTER if ORDERING.PORTFOLIO is defined
+2. Valid T24 account 
+3. Mandatory whenDEBIT.IBAN and DEBIT.PL are not defined
+4. If DEBIT.ACCOUNT and DEBIT.IBAN are defined, then check is done to ensure that IBAN is for the debit account else error will be thrown.
+5. If DEBIT.ACCOUNT is defined and DEBIT.IBAN is not defined, if IN is installed, then DEBIT.IBAN for the account is defaulted</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>DEBIT.CCY</field>
+  <desc>
+    <p>Currency of the debit account</p>
+    <p>Validation Rules: 1. Can be manually input or defaulted from the debit account 
+2. If manually input, then the currency should be same as the debit account currency else error will be thrown
+3. If the currency is not allowed currency in the PAYMENT.ORDER.PRODUCT, then error will be thrown
+4. If the currency is different from PAYMENT.CURRENCY, then the field ALLOW.FX will be checked in PAYMENT.ORDER.PRODUCT. If it not set to YES, then error will be thrown
+5. If DEBIT.PL is defined, then DEBIT.CCY should be mandatorily input else error will be thrown</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>DEBIT.ACCOUNT.IBAN</field>
+  <desc>
+    <p>IBAN of the debit account</p>
+    <p>Validation Rules:1. Inputtable field only if IN is installed 
+2. Can be manually input or defaulted
+3. If manually input, must be a valid IBAN number for the debit account
+4. IBAN should be a valid T24 IBAN 
+5. If not manually defined, then will be populated based on the debit account
+6. If DEBIT.IBAN is defined, but DEBIT.ACCOUNT is not defined, then the debit account number will be defaulted
+7. If DEBIT.IBAN is not defined, but ORDERING.CUST.BIC is defined, then BIC will be derived from IBAN and populated
+8. If DEBIT.IBAN and DEBIT.ACCOUNT are not defined, but ORDERING.CUST.BIC is defined, then IBAN will be derived from BIC and populated
+9. If ORDERING.CUST.BIC and DEBIT.IBAN are defined, then check must be done to ensure that the IBAN is valid for the BIC defined</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>DEBIT.PL</field>
+  <desc>
+    <p>PL category to be debited</p>
+    <p>Validation Rules:1. Can be manually input
+2. Must be a valid PL category
+3. If DEBIT.PL is defined, then DEBIT.CCY should be mandatorily input
+4. Allowed only when DEBIT.ACCOUNT and DEBIT.IBAN are not defined</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>DEBIT.VALUE.DATE</field>
+  <desc>
+    <p>Value date for debit</p>
+    <p>Validation Rules:1. Debit Value date passed to Payment system
+2. Optional field
+3. Override will be raised if less then TODAY</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ORDERING.REFERENCE</field>
+  <desc>
+    <p>Reference related to the ordering details</p>
+    <p>Validation Rules:Free Text of 18 characters. Optional. No validation</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>SIGNATORY</field>
+  <desc>
+    <p>Valid signatories to authorize the payment order transaction</p>
+    <p>Validation Rules:Valid T24 Customer. No Duplicates and null multi value allowed. It will be made null during amendment of record</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>BENEFICIARY.ID</field>
+  <desc>
+    <p>Valid Beneficiary id</p>
+    <p>Validation Rules:Id of the Beneficiary. Must be a valid record in BENEFICIARY application. </p>
+    <p>Allowed only when Pay Through Beneficiary is set to Yes in PAYMENT.ORDER.PRODUCT. </p>
+	<p>Mandatory if PAY.THROUGH.BENEFICIARY is set to YES and Beneficiary Account number and Beneficiary Account IBAN are not defined.</p>
+	<p>If the beneficairy ID is input and validated, system defaults the related beneficairy details from the BENEFICIARY application into the current PO record. </p>
+	<p>Once system defaults the beneficiary details, all the beneficiary fields in the PO record are disabled for user input </p>
+	<p>If the Beneficairy ID is modified, corresponding details are again defaulted into the PO record.</p>
+	<p></p>
+	
+  </desc>
+</t>
+<t>
+  <field>CREDIT.ACCOUNT</field>
+  <desc>
+    <p>Credit Account number. T24 account</p>
+    <p>Validation Rules:Not allowed for External payment. For Internal Payment:
+1. Can be manually input or defaulted from SEC.ACC.MASTER if CREDIT.PORTFOLIO is defined 
+2. Valid T24 account 
+3. Mandatory when CREDIT.IBAN and CREDIT.PL are not defined
+4. If CREDIT.ACCOUNT and CREDIT.IBAN are defined, then check is done to ensure that IBAN is for the credit account else error will be thrown
+5. If CREDIT.ACCOUNT is defined and CREDIT.IBAN is not defined, if IN is installed and IBAN is allowed for the product, then CREDIT.IBAN for the account is defaulted</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>CREDIT.PORTFOLIO</field>
+  <desc>
+    <p>Portfolio id to be credit</p>
+    <p>Validation Rules:Not allowed for External Payment. For Internal Payment:
+1. Inputtable field only if SC is installed 
+2. Validation will be done as follows:
+    i.  Pass the customer id from ORDERING.CUST field and portfolio no. to GET.SETTLEMENT.DEFAULTS routine
+    ii. If no error is returned, the field CREDIT.ACCOUNT will be checked
+   iii. If CREDIT.ACCOUNT field has value, then the account will be checked if it is an account in the portfolio else error will be thrown 
+   iv. If CREDIT.ACCOUNT field is null, then the account from portfolio will be defaulted based on the setup in                         ACCOUNT.PARAMETER. This will also be done in the routine GET.SETTLEMENT.DEFAULTS</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>CREDIT.ACCOUNT.IBAN</field>
+  <desc>
+    <p>IBAN of the credit account</p>
+    <p>Validation Rules:Not allowed for External Payment. For Internal payment:
+1. Inputtable field only if IN is installed (done in record routine)
+2. Allowed only if IBAN is allowed for the product
+3. Can be manually input or defaulted
+4. If manually input, must be a valid IBAN number for the credit account
+5. IBAN should be a valid T24 IBAN 
+6. If not manually defined, then will be populated based on the credit account if IN is installed and IBAN is allowed for the product
+7. If CREDIT.IBAN is defined, but CREDIT.ACCOUNT is not defined, then the credit account number will be defaulted</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>CREDIT.PL</field>
+  <desc>
+    <p>PL category to be credited</p>
+    <p>Validation Rules:1. Can be manually input
+2. Must be a valid PL category
+3. If CREDIT.PL is defined, then PAYMENT.CCY should be mandatorily input</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>BENEFICIARY.ACCOUNT.NO</field>
+  <desc>
+    <p>Beneficiary Account number</p>
+    <p>Validation Rules:Not allowed for Internal payment. For external payment:
+1. Defaulted from Beneficiary record-BEN.ACCT.NO field. Cannot be overwritten
+2. Not allowed if Beneficiary id is defined</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>BENEFICIARY.IBAN</field>
+  <desc>
+    <p>IBAN of the beneficiary account</p>
+    <p>Validation Rules:Not allowed for Internal payment or if Beneficiary id is defined. Defaulted from Beneficiary record-IBAN.BEN field. Should be in Valid IBAN structure. Mandatory/Not allowed based on the PAYMENT.ORDER.COUNTRY.RULES/PAYMENT.ORDER.PRODUCT</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>BENEFICIARY.BIC</field>
+  <desc>
+    <p>BIC of the beneficiary customer</p>
+    <p>Validation Rules:Not allowed for Internal payment or if Beneficiary id is defined. Defaulted from Beneficiary record-BEN.CUSTOMER field when the value has SW- prefix. Mandatory/Not allowed based on the PAYMENT.ORDER.COUNTRY.RULES/PAYMENT.ORDER.PRODUCT</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>BENEFICIARY.CUSTOMER</field>
+  <desc>
+    <p>Customer number of the beneficiary</p>
+    <p>Validation Rules:Not allowed for Internal payment or if Beneficiary id is defined. Defaulted from Beneficiary record-BEN.CUSTOMER field it the customer is a T24 customer</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>BENEFICIARY.NAME</field>
+  <desc>
+    <p>Name of the beneficiary</p>
+    <p>Validation Rules:Not allowed for Internal payment or if Beneficiary id is defined. Defaulted from Beneficiary record-BEN.CUSTOMER field if the value does not have SW- prefix and not a valid T24 customer</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>BEN.POSTAL.ADDRESS.TYPE</field>
+  <desc>
+    <p>Beneficiary customer's address type</p>
+    <p>Validation Rules: </p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>BEN.POSTAL.SWIFT.ADDR</field>
+  <desc>
+    <p>Beneficiary customer's swift address</p>
+    <p>Validation Rules:1. Maximum of 4 multi value set allowed
+2. Error must be thrown if multi value is more than 4
+3. Each multi-value set must allow 35 characters</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>BEN.POSTAL.ADDR.LINE</field>
+  <desc>
+    <p>Beneficiary customer's long address</p>
+    <p>Validation Rules:1. Maximum of 7 multi value set allowed
+2. Error must be thrown if multi value is more than 7
+3. Each multi-value set must allow 70 characters</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>BEN.BANK.CLEARING.CODE</field>
+  <desc>
+    <p>Clearing code or sort code of the beneficiary bank</p>
+    <p>Validation Rules:Not allowed for Internal payment or if Beneficiary id is defined. Defaulted from Beneficiary record-BANK.SORT.CODE field. Mandatory/Not allowed based on the PAYMENT.ORDER.COUNTRY.RULES/PAYMENT.ORDER.PRODUCT</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>BENEFICIARY.COUNTRY.CODE</field>
+  <desc>
+    <p>Beneficiary country</p>
+    <p>Validation Rules:Not allowed for Internal payment or if beneficiar id is defined. Defaulted from Beneficiary record-BEN.PYMT.COUNTRY. Override raised when the Country code is not ALLOWED.COUNTRY.CODE as per PAYMENT.ORDER.PRODUCT</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>BEN.IDENTIFIER</field>
+  <desc>
+    <p>OtherIdentificationCode for beneficiary</p>
+    <p>Validation Rules:OtherIdentification code for Beneficiary. No validations</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>BEN.RESERVED</field>
+  <desc>
+    <p></p>
+    <p>Validation Rules:Reserved fields for Beneficiary</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ACCT.WITH.BANK.IBAN</field>
+  <desc>
+    <p>IBAN of Account with Bank</p>
+    <p>Validation Rules:Not allowed for Internal payment or if Beneficiary id is defined. Defaulted from Beneficiary record-ACCT.WITH.BANK.IBAN field. Should be in Valid IBAN structure. Mandatory/Not allowed based on the PAYMENT.ORDER.COUNTRY.RULES/PAYMENT.ORDER.PRODUCT</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ACCT.WITH.BANK.BIC</field>
+  <desc>
+    <p>BIC of Account with Bank</p>
+    <p>Validation Rules:Not allowed for Internal payment or if Beneficiary id is defined. Defaulted from Beneficiary record-ACCT.WITH.BANK field when the value has SW- prefix. If ACCT.WITH.BANK is null, then the value is fetched from the field BIC.IBAN.BEN. Mandatory/Not allowed based on the PAYMENT.ORDER.COUNTRY.RULES/PAYMENT.ORDER.PRODUCT</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ACCT.WITH.BANK.CUSTOMER</field>
+  <desc>
+    <p>Account with Bank's customer id</p>
+    <p>Validation Rules:Not allowed for Internal payment or if Beneficiary id is defined. Defaulted from Beneficiary record-ACCT.WITH.BANK field if the customer is a T24 customer</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ACCT.WITH.BANK.POSTAL.ADDR.TYPE</field>
+  <desc>
+    <p>Account with bank's address type</p>
+    <p>Validation Rules:</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ACCT.WITH.BANK.SWIFT.ADDR</field>
+  <desc>
+    <p>Account with bank's swift address</p>
+    <p>Validation Rules:1. Maximum of 4 multi value set allowed
+2. Error must be thrown if multi value is more than 4
+3. Each multi-value set must allow 35 characters</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ACCT.WITH.BANK.POSTAL.ADDR.LN</field>
+  <desc>
+    <p>Account with bank's long address</p>
+    <p>Validation Rules:1. Maximum of 7 multi value set allowed
+2. Error must be thrown if multi value is more than 7.
+3. Each multi-value set must allow 70 characters</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ACCT.WITH.BANK.BANK.CLEARING.CODE</field>
+  <desc>
+    <p>Clearing code or sort code of the account with bank</p>
+    <p>Validation Rules:Not allowed for Internal payment or if Beneficiary id is defined. Defaulted from Beneficiary record-ACCT.WITH.BANK.BK.SORT.CODE field. Mandatory/Not allowed based on the PAYMENT.ORDER.COUNTRY.RULES/PAYMENT.ORDER.PRODUCT</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ACCT.WITH.BANK.IDENTIFIER</field>
+  <desc>
+    <p>OtherIdentificationCode for account with bank</p>
+    <p>Validation Rules:OtherIdentification code for Beneficiary. No validations</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ACCT.WITH.BANK.COUNTRY</field>
+  <desc>
+    <p>Country for account with bank</p>
+    <p>Validation Rules:OtherIdentification code for Beneficiary. Valid record from Country application</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ACCT.WITH.BANK.RESERVED</field>
+  <desc>
+    <p></p>
+    <p>Validation Rules:Reserved fields for Account with bank</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>INTERMED.BANK.IBAN</field>
+  <desc>
+    <p>IBAN of Intermediary bank</p>
+    <p>Validation Rules:Will be NOINPUT when transfer is not done through beneficairy.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>INTERMED.BIC</field>
+  <desc>
+    <p>BIC of Intermediary bank.</p>
+    <p>Validation Rules:Valid BIC record from DE.BIC. Will be NOINPUT when transfer is not done through beneficairy.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>INTERMED.BANK.CUSTOMER</field>
+  <desc>
+    <p>Customer name of Intermediary bank.</p>
+    <p>Validation Rules:Will be NOINPUT when transfer is not done through beneficairy.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>INTERMED.BANK.POSTAL.ADDR.TYPE</field>
+  <desc>
+    <p>Address type of Intermediary bank.</p>
+    <p>Validation Rules:Will be NOINPUT when transfer is not done through beneficairy.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>INTERMED.SWIFT.ADDR</field>
+  <desc>
+    <p>Swift address field of Intermediary bank.</p>
+    <p>Validation Rules:Will be NOINPUT when transfer is not done through beneficairy.</p>
+    <p>Maximum of 4 multi value set allowed.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>INTERMED.POSTAL.ADDR.LINE</field>
+  <desc>
+    <p>Address fields of Intermediary bank.</p>
+    <p>Validation Rules:Will be NOINPUT when transfer is not done through beneficairy.</p>
+    <p>Maximum of 7 multi value set allowed.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>INTERMED.BANK.CLEARING.CODE</field>
+  <desc>
+    <p>Clearing code of Intermediary bank.</p>
+    <p>Validation Rules:Will be NOINPUT when transfer is not done through beneficairy.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>INTERMED.BANK.IDENTIFIER</field>
+  <desc>
+    <p>Other Identifier of Intermediary bank.</p>
+    <p>Validation Rules:Will be NOINPUT when transfer is not done through beneficairy.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>INTERMED.BANK.COUNTRY</field>
+  <desc>
+    <p>Country of Intermediary bank.</p>
+    <p>Validation Rules:Will be NOINPUT when transfer is not done through beneficairy.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>INTERMED.BANK.RESERVED</field>
+  <desc>
+    <p>Reserved fields for Intermed Bank.</p>
+    <p>Validation Rules:NOINPUT field.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>REMITTANCE.INFORMATION</field>
+  <desc>
+    <p>Information about remittance</p>
+    <p>Validation Rules:1. Value can be manually defined
+2. Maximum four multi value set each with 35 characters</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>PAYMENT.CURRENCY</field>
+  <desc>
+    <p>Credit account currency or Payment currency for the beneficiary</p>
+    <p>Validation Rules:1. Valid T24 Currency
+2. Must be present in the ALLOWED.PAYMENT.CCY in PAYMENT.ORDER.PRODUCT else error should be thrown
+3. Defaulted from PAYMENT.CCY field (36th field) of Beneficiary application for external payments</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>PAYMENT.AMOUNT</field>
+  <desc>
+    <p>Amount to be paid i.e transaction amount</p>
+    <p>Validation Rules:1. Defaulted from Beneficiary record - Preferred Payment amount field (37th field) for external payment
+2. Mandatory field</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>REQUESTED.CURRENCY</field>
+  <desc>
+    <p></p>
+    <p>Validation Rules:Optional currency used to specify the request amount to pay prior to conversion to payment currency. Allowed only when ALLOW.REQUESTED.CURRENCY is set to YES in PAYMENT.ORDER.PRODUCT. No Input for Phase I</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>REQUESTED.AMOUNT</field>
+  <desc>
+    <p></p>
+    <p>Validation Rules:Optional amount in the request currency. Either requested amount or payment amount must be present. Allowed only when ALLOW.REQUESTED.CURRENCY is set to YES in PAYMENT.ORDER.PRODUCT. No Input for Phase I</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>PAYMENT.EXECUTION.DATE</field>
+  <desc>
+    <p>Processing date of the transaction</p>
+    <p>Validation Rules:1. Can be manually input or defaulted
+2. If not manually input, defaulted to TODAY's date
+3. Error must be thrown in following cases:
+    i. If Execution date is less than today
+   ii. If Execution date is greater than today and ALLOW.FUTURE.DATE is set to NO in PAYMENT.ORDER.PRODUCT</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>REQUIRED.CREDIT.VALUE.DATE</field>
+  <desc>
+    <p>Credit value date i.e. tentative date on which the payment system will process the payment</p>
+    <p>Validation Rules:Override to be raised in the following scenarios:
+1. If ALLOW.REQUIRED.CREDIT.VALUE.DATE field is set to NO in PAYMENT.ORDER.PRODUCT
+2. If the date is less than today
+3. If the date is less the calculated float date</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>PAYMENT.PURPOSE</field>
+  <desc>
+    <p>Purpose code of the payment</p>
+    <p>Validation Rules:Valid record in the table PAYMENT.PURPOSE.CODE</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>INVOICE.REFERENCE</field>
+  <desc>
+    <p>Invoice reference</p>
+    <p>Validation Rules:Free Text of 35 characters. Optional. No validation</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>STRUCTURED.COMMUNICATION.CODE</field>
+  <desc>
+    <p>Used for SEPA</p>
+    <p>Validation Rules: </p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>STRUCTURED.ISSUER</field>
+  <desc>
+    <p>Used for SEPA</p>
+    <p>Validation Rules:Free Text of 65 characters. Optional. No validation</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>STRUCTURED.CREDITOR.REFERENCE</field>
+  <desc>
+    <p>Used for SEPA</p>
+    <p>Validation Rules:Free Text of 25 characters. Optional. No validation</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>END.TO.END.REFERENCE</field>
+  <desc>
+    <p>Used for SEPA</p>
+    <p>Validation Rules:Free Text of 35 characters. Optional. No validation</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>INSTRUCTION.ID.REF</field>
+  <desc>
+    <p>Used for SEPA</p>
+    <p>Validation Rules:Free Text of 35 characters. Optional. No validation</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>CHARGE.BEARER</field>
+  <desc>
+    <p>Bearer of the charges of the order</p>
+    <p>Validation Rules:
+1. Value can be manually selected or defaulted
+2. If not manually input, the value is defaulted as follows:
+    i. From the Beneficiary record (BEN.OUR.CHARGES field)
+    ii. If not present in Beneficiary, then from the DEFAULT.CHARGE.OPTION field of PAYMENT.ORDER.PRODUCT
+3. The field is validated as follows:
+    i. For the PAYMENT.ORDER.PRODUCT, the ALLOWED.CHARGE.OPTIONS are obtained
+    ii. The value defined in this field, is checked with the allowed charges 
+    iii. If it is not present, then an override is raised</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>WAIVE.ALL.CHARGES</field>
+  <desc>
+    <p>Whether charges to be waived or not</p>
+    <p>Validation Rules:Optional field. Value allowed is YES or Null. No validation</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>PAY.REQ.FX.CUST.RATE</field>
+  <desc>
+    <p></p>
+    <p>Validation Rules:Not allowed if PAY.REQ.FX.SPREAD and PAY.REQ.TREASURY.RATE fields have value. NOINPUT for Phase I</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>PAY.REQ.FX.SPREAD</field>
+  <desc>
+    <p></p>
+    <p>Validation Rules:Not allowed if PAY.REQ.FX.CUST.RATE is defined. NOINPUT for Phase I</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>PAY.REQ.TREASURY.RATE</field>
+  <desc>
+    <p></p>
+    <p>Validation Rules:Not allowed if PAY.REQ.FX.CUST.RATE is defined. NOINPUT for Phase I</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ORDERING.PAYMENT.FX.CUST.RATE</field>
+  <desc>
+    <p>Customer rate for the conversion between payment currency and ordering currency</p>
+    <p>Validation Rules: </p>
+    <p>Allowed only when ALLOW.FX.RATE is set to YES in PAYMENT.ORDER.PRODUCT</p>
+	<p>Customer rate needs to be equal to the sum of FX spread and Treasury rate</p>
+	<p>When all the 3 fields -Cust rate, Spread and Treasury are- are input, get the default treasury rate for the currency pair from Currency application.</p>
+    <p>If the user input treasury rate is equal to the default treasury rate, calculate the spread, and repopulate,if required </p> 
+	<p>When only Customer rate is input, treasury rate and spread are calculated and populated into the application.</p>
+	<p>Override is raised if the spread is negative</p>
+	<p>Override is raised if the rate tolerance percentage exceeds that of the value maintained in the PO Product</p>
+	<p>Not all the 3 fields can be changed during amendment </p>	
+	<p></p>
+	  </desc>
+</t>
+<t>
+  <field>ORDERING.PAYMENT.FX.SPREAD</field>
+  <desc>
+    <p>Customer spread for the conversion between payment currency and ordering currency</p>
+    <p>Validation Rules:</p>
+	<p>Allowed only when ALLOW.FX.RATE is set to YES in PAYMENT.ORDER.PRODUCT</p>
+    <p>FX spread is added to the treasury rate to calculate the Cust rate</p>
+	<p>When FX spread and treasury rates are input, Cust rate is calculated and populated back to the PO record.</p>
+	<p>When only FX spread is input, both Cust rate and treasury rate are arrived at and populated back to the PO record.</p>
+	<p>When Cust rate and FX spread are input, spread is calculated again and populated into the PO record. Treasury rate is calculated as well.</p>
+	<p>Override is raised if the rate tolerance percentage exceeds that of the value maintained in the PO Product</p>
+	<p>Not all the 3 fields can be changed during amendment </p>	
+	<p></p>
+	</desc>
+</t>
+<t>
+  <field>ORDERING.PAYMENT.TREASURY.RATE</field>
+  <desc>
+    <p>Treasury rate for the conversion between payment currency and ordering currency</p>
+    <p>Validation Rules:</p>
+	<p>Allowed only when ALLOW.FX.RATE is set to YES in PAYMENT.ORDER.PRODUCT</p>
+    <p>When only treasury rate is input, both Cust rate and FX spread are calculated and defaulted into the PO application.</p>
+	<p>When Cust rate and treasury rates are input, both spread and treasury rates are calculated.</p>
+	<p>Override is raised if the spread is negative</p>
+	<p>Override is raised if the rate tolerance percentage exceeds that of the value maintained in the PO Product</p>
+	<p></p>
+	
+  </desc>
+</t>
+<t>
+  <field>INDICATIVE.RATE</field>
+  <desc>
+    <p>Indicative rate for debit and payment ccy at time of booking the payment order</p>
+    <p>Validation Rules:Indicative rate for debit and payment ccy at time of booking the payment order. Default Rate. NOINPUT field. Populated by system</p>
+    <p>The value will be the sell rate of the curreny in the Currency application.</p>
+  </desc>
+</t>
+<t>
+  <field>CURRENCY.MARKET</field>
+  <desc>
+    <p>Currency market</p>
+    <p>Validation Rules:Default value 1. NOINPUT field</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>CLEARING.CHANNEL</field>
+  <desc>
+    <p>Clearing channel for the order</p>
+    <p>Validation Rules:
+1. Can be manually defined or defaulted
+2. For external payment, if beneficiary id is defined, defaulted from beneficiary record-CLEARING.TYPE field - 38th field
+3. It is validated as follows:
+    i. Check PAYMENT.ORDER.PRODUCT record
+    ii. If CLEARING.CHANNEL is defined, then locate the clearing channel defined in payment order with the clearing channels defined in payment order product
+    iii. If it is not located, then raise override that Clearing channel not allowed for the product</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>REGULATORY.REPORT</field>
+  <desc>
+    <p>Regulatory report</p>
+    <p>Validation Rules:1. Value can be manually defined
+2. Maximum three multi value set each with 35 characters</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>MESSAGE.PRIORITY</field>
+  <desc>
+    <p>Priority of the message</p>
+    <p>Validation Rules:Free text of 35 characters. No validations</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>BANK.TO.BANK.INFO</field>
+  <desc>
+    <p>Information passed from one bank to other</p>
+    <p>Validation Rules:Used to include information to be passed to payment system. Free Text  of 35 characters. Optional. Call EB.VAL.BK.TO.BK for Validation</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>NARRATIVE</field>
+  <desc>
+    <p>Narrative of the transaction</p>
+    <p>Validation Rules:String of 65 characters. Optional. No validation</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ADDITIONAL.INFO</field>
+  <desc>
+    <p>Additional information</p>
+    <p>Validation Rules:TEXT field. Free text of 65 characters. Optional. No validation</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>INTERNAL.ORDER.DETAILS</field>
+  <desc>
+    <p>Details of the order</p>
+    <p>Validation Rules:Free Text of 35 characters. Optional. No validation</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>INTERNAL.STATUS</field>
+  <desc>
+    <p>Status of the order</p>
+    <p>Validation Rules:RETURN_REJECT_CANCEL_ERROR</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ORDER.EXECUTION.DATE.TIME</field>
+  <desc>
+    <p>Date and time the order sent to payment system</p>
+    <p>Validation Rules:NOINPUT field. Date and Time set in this field when order is sent to the payment system</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>PAYMENT.SYSTEM.ID</field>
+  <desc>
+    <p>Reference sent from payment system</p>
+    <p>Validation Rules:Free Text of 35 characters. Optional. No validation</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>PAYMENT.SYSTEM.STATUS</field>
+  <desc>
+    <p>Status of the order in payment system</p>
+    <p>Validation Rules:Free Text of 35 characters. Optional. No validation</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>PAYMENT.STATUS.UPDATE.DATE</field>
+  <desc>
+    <p>Date and time when the payment system status as last updated</p>
+    <p>Validation Rules:NOINPUT field. Updated by system when PAYMENT.SYSTEM.STATUS field is updated</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>CURRENT.STATE</field>
+  <desc>
+    <p>Current state of the payment order</p>
+    <p>Validation Rules:NOINPUT field. Will be updated by StateMachine</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>STATE.HIST</field>
+  <desc>
+    <p>Traverse history of the payment order</p>
+    <p>Validation Rules:NOINPUT field. Will be updated by StateMachine</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>ORDER.INITIATION.TYPE</field>
+  <desc>
+    <p>An indicator to show whether the payment was initiated by bank user, corporate or private client</p>
+    <p>Validation Rules:An indicator to show whether the payment was initiated by bank user, corporate or private client. EB.LOOKUP to be used</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+<field>PAYMENT.CATEGORY</field>
+<desc>
+        <p>Field to define additional information related to SEPA standing order transactions which can be provided when a payment is initiated within T24 to be processed through payment suites.</p>
+        <p>
+            <p>Validation Rules: </p>
+            <p>Should be a valid record in the table PAYMENT.CATEG.PURPOSE.</p>
+	    <p>Optional field</p>            
+        </p>        
+    </desc>
+</t>
+<t>
+<field>PAYMENT.METHOD</field>
+<desc>
+        <p>Field to define method of transfer being initiated, which is required when it is to be processed through payment suites.</p>
+        <p>
+            <p>Validation Rules: </p>
+            <p>Should be a valid record in the lookup PAY.ORDER.PAY.METHOD.</p>
+	    <p>Optional field</p>            
+        </p>        
+    </desc>
+</t>
+<t>
+<field>ORDER.TYPE</field>
+<desc>
+        <p>Options field indicating whether Order is for Customer or Bank transfer, which is required when it is to be processed through payment suites.</p>
+        <p>
+            <p>Validation Rules: </p>
+            <p>Defaulted as Customer Transfer whne left undefined.</p>
+	    <p>Optional field</p>            
+        </p>        
+    </desc>
+</t>
+<t>
+<field>INITIATOR.NAME</field>
+<desc>
+        <p>Name of the initiator of payment.</p>
+        <p>
+            <p>Validation Rules: </p>
+             <p>Optional field.</p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+<field>INITIATOR.POST.ADDR.TYPE</field>
+<desc>
+        <p>Address type of the initiator of payment.</p>
+        <p>
+            <p>Validation Rules: Valid value from PASTAL.ADDR.TYPE lookup table.</p>
+             <p>Optional field. </p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+<field>INITIATOR.POST.ADDR.LINE</field>
+<desc>
+        <p>Address fields of initiator of payment.</p>
+        <p>
+            <p>Validation Rules: Maximum of 7 multi value set allowed.</p>
+             <p>Optional field. </p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+<field>INITIATOR.BIC</field>
+<desc>
+        <p>BIC code of initiator of payment.</p>
+        <p>
+            <p>Validation Rules: Valid record from DE.BIC application.</p>
+             <p>Optional field. </p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+<field>INITIATOR.SWIFT.ADDRESS</field>
+  <desc>
+    <p>Initiator's swift address</p>
+    <p>Validation Rules: Maximum of 4 multi value set allowed.</p>
+    <p></p>
+  </desc>
+</t>
+
+
+<t>
+<field>DEBTOR.AGENT.NAME</field>
+<desc>
+        <p>Name of the debtor agent of payment.</p>
+        <p>
+            <p>Validation Rules: Deafulted with Current lead company name when left undefined.</p>
+             <p>Optional field. </p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+<field>DEBTOR.AGENT.ADDR.TYPE</field>
+<desc>
+        <p>Address type to be used for the Debtor Agent of payment.</p>
+        <p>
+            <p>Validation Rules: Valid value from PASTAL.ADDR.TYPE lookup table.</p>
+             <p>Optional field. </p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+<field>DEBTOR.AGENT.ADDR.LINE</field>
+<desc>
+        <p>Address fields of Debtor Agent of payment.</p>
+        <p>
+            <p>Validation Rules: Maximum of 7 multi value set allowed.</p>
+             <p>Optional field. </p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+<field>DEBTOR.AGENT.BIC</field>
+<desc>
+        <p>BIC code of Debtor Agent of payment.</p>
+        <p>
+            <p>Validation Rules: Valid record from DE.BIC application.</p>
+             <p>Optional field. Defaulted to current company BIC if left undefined.</p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+  <field>DEBTOR.AGENT.CLEARING.CODE</field>
+  <desc>
+    <p>Clearing code or sort code of the Debtor Agent.</p>
+    <p>Validation Rules:</p>
+    <p>Optional field.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>DEBTOR.AGENT.IDENTIFIER</field>
+  <desc>
+    <p>Other Identification Code for Debtor Agent.</p>
+    <p>Validation Rules:</p>
+    <p>Optional field.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>DEBTOR.AGENT.RESERVED5-1</field>
+  <desc>
+    <p>Reserved fields of Debtor Agent.</p>
+    <p>Validation Rules:</p>
+    <p>Optional field.</p>
+    <p></p>
+  </desc>
+</t>
+
+<t>
+<field>ULTIMATE.DEBTOR.NAME</field>
+<desc>
+        <p>Name of the Ultimate debitor of payment.</p>
+        <p>
+            <p>Validation Rules: </p>
+             <p>Optional field. </p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+<field>ULTIMATE.DEBTOR.ADDR.TYPE</field>
+<desc>
+        <p>Address type to be used for the Ultimate debtor of payment.</p>
+        <p>
+            <p>Validation Rules: Valid value from PASTAL.ADDR.TYPE lookup table.</p>
+             <p>Optional field. </p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+<field>ULTIMATE.DEBTOR.ADDR.LINE</field>
+<desc>
+        <p>Address fields of Ultimate debtor of payment.</p>
+        <p>
+            <p>Validation Rules: Maximum of 7 multi value set allowed.</p>
+             <p>Optional field. </p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+<field>ULTIMATE.DEBTOR.BIC</field>
+<desc>
+        <p>BIC code of Ultimate debtor of payment.</p>
+        <p>
+            <p>Validation Rules: Valid record from DE.BIC application.</p>
+             <p>Optional field.</p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+<field>ULTIMATE.DEBTOR.COUNTRY</field>
+<desc>
+        <p>Country of Ultimate debtor of payment.</p>
+        <p>
+            <p>Validation Rules: Valid record from Country appplication.</p>
+             <p>Optional field. </p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+  <field>ULTIMATE.DEBTOR.RESERVED.5-1</field>
+  <desc>
+    <p>Reserved fields of Ultimate creditor.</p>
+    <p>Validation Rules:</p>
+    <p>Optional field.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+<field>ULTIMATE.CRED.NAME</field>
+<desc>
+        <p>Name of the Ultimate creditor of payment.</p>
+        <p>
+            <p>Validation Rules: </p>
+             <p>Optional field. </p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+<field>ULTIMATE.CRED.ADDR.TYPE</field>
+<desc>
+        <p>Address type to be used for the Ultimate creditor of payment.</p>
+        <p>
+            <p>Validation Rules: Valid value from PASTAL.ADDR.TYPE lookup table.</p>
+             <p>Optional field. </p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+<field>ULTIMATE.CRED.ADDR.LN</field>
+<desc>
+        <p>Address fields of Ultimate creditor of payment.</p>
+        <p>
+            <p>Validation Rules: Maximum of 7 multi value set allowed.</p>
+             <p>Optional field. </p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+<field>ULTIMATE.CRED.BIC</field>
+<desc>
+        <p>BIC code of Ultimate creditor of payment.</p>
+        <p>
+            <p>Validation Rules: Valid record from DE.BIC application.</p>
+             <p>Optional field.</p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+<field>ULTIMATE.CRED.COUNTRY</field>
+<desc>
+        <p>Country of Ultimate creditor of payment.</p>
+        <p>
+            <p>Validation Rules: Valid record from Country appplication.</p>
+             <p>Optional field. </p>
+        </p>
+        <p />
+        <P></P>
+    </desc>
+</t>
+<t>
+  <field>ULTIMATE.CRED.RESERVED.5-1</field>
+  <desc>
+    <p>Reserved fields of Ultimate creditor.</p>
+    <p>Validation Rules:</p>
+    <p>Optional field.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>INSTRUCTION.CODE</field>
+  <desc>
+    <p>Instruction code which has to be sent to account with bank.</p>
+    <p>Validation Rules: Valid record from lookup table PAYMENT.INSTRUCTION.CODE.</p>
+    <p>Optional field. MUltivalue field.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>INSTRUCTION.CODE.TEXT</field>
+  <desc>
+    <p>Text to describe the instruction code which has to be sent to account with bank.</p>
+    <p>Validation Rules:</p>
+    <p>Optional Free Text field.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>PYMT.INFO.SER.LEVEL.CODE</field>
+  <desc>
+    <p>Payment service level code to be sent to account with bank, which describes the priority and execution type of payment.</p>
+    <p>Validation Rules: Valid record from lookup table PAYMENT.SERVICE.LEVEL.CODE.</p>
+    <p>Optional field.</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>RESERVED</field>
+  <desc>
+    <p></p>
+    <p>Validation Rules:</p>
+    <p></p>
+  </desc>
+</t>
+<t>
+  <field>LOCAL.REF</field>
+    <desc>
+            <p>Local reference field(s) defined by the user.</p>
+            <p>Identifies any additional element which has been defined</p>
+            <p>locally to meet a particular requirement.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 characters as defined in the local table definition</p>
+            <p>for this local reference field. (Multi-valued field).</p>
+            <p>Optional or mandatory input according to the LOCAL.TABLE</p>
+            <p>definition for this field.</p>
+        </desc>
+</t>
+<t>
+  <field>OVERRIDE</field>
+  <desc>
+            <p>This is a multi valued field. </p>
+	        <p>Contains details of any override applicable to this record.</p>        
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 35 characters may be entered. This is a NOINPUT field.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

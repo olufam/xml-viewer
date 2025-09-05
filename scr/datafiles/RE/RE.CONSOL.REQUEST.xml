@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>RE</product>
+<table>RE.CONSOL.REQUEST</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Overview Consolidation/Reporting-Amount Abbreviation </p>
+            <p>This application is used to produce CRF reports for combination of companies. </p>
+            <p>This file holds details of the requests for different reports. </p>
+            <p>These requests can be run as part of the end of day processsing in the Batch process called EB.CONSOL.PRINT or online using the V verification function for this application. </p>
+            <p>Details that are included in a request are the Crf report, the level of the report, the currency of the report, the consolidation group and where and which exchange rates are to be used. </p>
+            <p>It is the local currency amounts, from the CRF base, that are are converted into the reporting currency. The original currency amounts are ignored for combined reporting. </p>
+            <p>For each local currency one rate is determined and is used for all the Companies with that local currency irrespective of whether there are different set of exchange rates for each company. </p>
+            <p>The Exchange rates can be taken from the following places - a) From a record on the Re.Rpt.Ccy.Rate file. This option is refered to as the SPECIAL rates. b) From the Currency file for each local currency. If more than one Currency for a local currency then the one to be used is specified on the Company.Consol record. This option is refered to as the COMPANY level rates. c) From one of the Currency files. This file will have been specified on the Company.Consol record. These rates are considered to be the DEFAULT rates. </p>
+            <p>If a particular rate is missing from the level requested it is obtained using the next level down or by using the Master company's Currency file and calculating cross rates where required. </p>
+            <p>               FIELD NO        FIELD NAME </p>
+            <p>                 0             REQ.NAME                  1.1           DESCRIPTION                  2             LANGUAGE.CODE                  3.1           REPORT.NAME                  4.1           CONTENTS                  5.1           REPORT.CCY                  6.1           CONSOL.NO                  7.1           RATES.MKR                  8.1           SPEC.RATE.ID </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>REQ.NAME</field>
+<desc>
+            <p>Id to identify diferent requests from one another. </p>
+            <p>The values used are only to separate out the different requests. </p>
+            <p>It is suggested that meaningfully names like DAILY, WEEKLY, MONTHLY are used for the request records to cover for the reports required on those bases. </p>
+            <p>For once off requests the report name or person requesting the report could be used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 type A (alphanumeric) characters. Mandatory input. </p>
+        </desc>
+</t>
+<t>
+<field>PC.PERIOD.END</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>SPCL.RATE.ID</field>
+<desc>
+            <p>Fields REPORT.NAME to SPCL.RATE.ID form a related multi value set. Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 7 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>REPORT.NAME</field>
+<desc>
+            <p>The name of the report to be printed. </p>
+            <p>Specifies the report heading record which is to be used to identify the report to be printed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 -21 Alpha characters. Multivalue field associated with fields 4.1 to 8.1. Mandatory input. :   Must be the key of a record on the RE.STAT.REPORT.HEAD file.</p>
+        </desc>
+</t>
+<t>
+<field>RATES.MKR</field>
+<desc>
+            <p>Indicates where the exchange rates are to be taken from. </p>
+            <p>Specifies the Currency file from which the exchange rates are to be taken. </p>
+            <p>DEFAULT means use the Currency file specified on the Company Consol record. </p>
+            <p>COMPANY means take the rate between the local currency for the company and the reporting currency for the Currency file for that Company. Note where more than one Currency file for the same local currency the file to be used is indicated on the Company Consol record. </p>
+            <p>SPECIAL means that the rates on the RE.PRT.CCY.RATE file for the record indicated in the field Spec.Rate.Id (field 8.1) are to be used. </p>
+            <p>Note wher a rate is found to be missing at report time then a cross rate using the Master Company Currency file is used. The Master Company is the first company set up. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be DEFAULT, COMPANY or SPECIAL. Multivalue field associated with fields 3.1 to 6.1 and 8.1. Mandatory input. :   Must be DEFAULT, COMPANY or SPECIAL.</p>
+        </desc>
+</t>
+<t>
+<field>REPORT.CCY</field>
+<desc>
+            <p>Indicates the currency that the report is to be printed in. </p>
+            <p>Specifies the currency in which the report is to be printed in. </p>
+            <p>If left blank then the Default.Rpt.Ccy from the Company.Consol record will be taken as the currency of the report. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 character Currency code or the numeric currency code. Multivalue field associated with fields 3.1 to 4.1 and 6.1 to 8.1. Optional input. :   Must be the key of a record on the CURRENCY file.</p>
+        </desc>
+</t>
+<t>
+<field>RECORD.STATUS</field>
+<desc>
+            <p>Indicates the Special Rates record to be used. </p>
+            <p>Specifies the RE.PRT.CCY.RATE record to be used when SPECIAL has been entered in the field Rates.Mkr (field 7.1) </p>
+            <p>The value entered consists of a Currency code and a sequence number separated by a full stop. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Upto 7 alpha characters. Multivalue field associated with fields 3.1 to 7.1. Optional input. :     (i) If Value in the field Rates.Mkr is SPECIAL then there must be a value entered in this field.</p>
+            <p>If Value in the field Rates.Mkr is SPECIAL and a currency code has been entered in the field Report.Ccy then the currency code entered in this field must be the same as the currency code in the field Report.Ccy.</p>
+            <p>If Value in the field Rates.Mkr is SPECIAL and a currency code has not been entered in the field Report.Ccy then the currency code entered in this field must be the same as the currency code in the field Default.Rpt.Ccy in the Company.Consol record.</p>
+            <p>If Value in the field Rates.Mkr is SPECIAL then the value entered in this field must be the key of a record on the Re.Prt.Ccy.Rate file.</p>
+            <p>If Value in the field Rates.Mkr is not SPECIAL then this field must be left blank.</p>
+        </desc>
+</t>
+<t>
+<field>CONSOL.NO</field>
+<desc>
+            <p>Indicates the consolidation group for the report that is to be printed. </p>
+            <p>Specifies the Consolidation group, indicating which companies are to be combined in the report to be printed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 Numeric characters. Multivalue field associated with fields 3.1 to 5.1 and 7.1 to 8.1. Mandatory input. :   Must be the key of a record on the COMPANY.CONSOL file.</p>
+        </desc>
+</t>
+<t>
+<field>CONTENTS</field>
+<desc>
+            <p>The level of the report to be printed. </p>
+            <p>Specifies the level of the report to be printed. </p>
+            <p>When DETAIL entered the report produced will be at CRF record level. Which means that the details of the CRF records that make up each line will be printed as well as the report lines. </p>
+            <p>When SUMMARY entered the report produced will be at report line level. Which means that only the report lines will be printed. </p>
+            <p>When BOTH entered then a DETAIL and a SUMMARY report will be produced. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be DETAIL, SUMMARY or BOTH. Multivalue field associated with fields 3.1 and 5.1 to 8.1. Mandatory input. :   Must be DETAIL, SUMMARY or BOTH.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Narrative (description) of the request record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 type A (alphanumeric) characters. Mandatory input. Multivalue field to cater for the printing of the description in several languages.</p>
+        </desc>
+</t>
+<t>
+<field>LANGUAGE.CODE</field>
+<desc>
+            <p>The language code that the reports are to be printed in. </p>
+            <p>Specifics the language code of the headings in the report if left blank then Original language is used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 numeric character. Optional input.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

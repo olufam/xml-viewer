@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>CO</product>
+<table>COLLATERAL.ALLOCATION</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This is a parameter table which is used to define the relationship between source reporting lines, collateral codes and the lines to which reported amounts may be reallocated. </p>
+            <p>It is also used to define the priority with which the different possibilities are executed (ie. when more than one collateral and/or more than one outstanding amount exist, which reallocation is to take precedence). This priority is defined implicitly by the sequence in which the field values are entered on the table. </p>
+            <p>SOURCE LINE, COLLATERAL CODE, TYPE &amp; TARGET LINE </p>
+            <p>Within one multi-value, the source line and collateral code together determine the target line. Normally, a single target line is defined per multi-value. </p>
+            <p>However, sub-values are available in the source line and collateral code fields which enable the target line to be the product of a one-to-many or many-to-many relationship, in either direction, between the source line and collateral code. </p>
+            <p>OVERVIEW OF THE COLLATERAL REALLOCATION PROCESS </p>
+            <p>Collateral values are reallocated across general ledger &amp; central bank reporting lines (on the asset side only). The field which contains the value to be </p>
+            <p>reallocated is determined by the report definition on the collateral allocation file. </p>
+            <p>The original line number is matched with the collateral code to determine the destination line number. The appropriate value is moved from the original line to it's reallocated line. </p>
+            <p>In each case, there is an exception if the remaining (not yet allocated) amount of the deal is lower than the value to be reallocated. In this instance, only this remainder is reallocated and the outstanding collateral values are carried forward for allocation against any other qualifying outstandings. </p>
+            <p>Only collateral records with an appropriate status are included in this processing. </p>
+            <p>Since collateral can be linked to the outstandings at customer level, limit level or deal level, there is a rule for matching as follows: </p>
+            <p>       if the collateral is linked at deal level,        then only the outstanding amount under this        deal may be reallocated, </p>
+            <p>       if the collateral is linked at limit level,        then only outstandings under that limit may be        reallocated, </p>
+            <p>       otherwise, collateral values are reallocated        at customer level. </p>
+            <p>The above rule always takes precedence over the following additional principles: </p>
+            <p>       outstandings should be matched against        collateral values in descending order of their        original reporting line, </p>
+            <p>       collateral values should be matched against        outstandings in ascending order of their        destination report lines. </p>
+            <p>These principles, in other words, signify that reallocated amounts should be moved as high up the report as allowed (thereby representing a lower risk and reducing liquidity requirements). </p>
+            <p>In practice, the absolute values of the report lines do not always coincide with this gradation in risk, nor is it easy to reconcile both principles simultaneously. Hence the principles are brought into effect by taking the sequence in which source &amp; target lines are defined on the collateral allocation file as the rule by which they are applied. </p>
+            <p>In other words, these fields should be entered in the descending sequence of report lines mentioned above, except where a genuine exception occurs. </p>
+            <p>The reallocation process is performed by the end-of-day program COLLATERAL.ALLOCATION.EOD. The ouput from this process is a file containing the moved (reallocated) amounts per report line (F.RE.COLLATERAL). This file is then used in producing the reports themselves. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>PERCENTAGE.BASE</field>
+<desc>
+            <p>No help text available </p>
+        </desc>
+</t>
+<t>
+<field>PERCENTAGE</field>
+<desc>
+            <p>A percentage split by which any reallocated value is to be moved to different target lines. </p>
+            <p>The value in this field corresponds to the percentage of cover afforded by the collateral. </p>
+            <p>Per combination of source line, collateral code and (possibly) type, the entire qualifying debit balance (i.e. that amount up to the value of the collateral) will normally be moved to the specified target line during reallocation. </p>
+            <p>However, if the target line requires a certain amount of excess value to be represented by the collateral, then this field may be used to specify this percentage of cover. </p>
+            <p>During the reallocation process, each related set of conditions on this table is examined in turn to match against the collateral values and debit balances recorded in the system. If a percentage is defined in this field, then this percentage limits the amount of the debit balance which may be moved. This limit is defined as the given percentage of the collateral value. </p>
+            <p>Multivalue field in association with field range SOURCE.LINE to TARGET.LINE. </p>
+            <p>Subvalue field associated with TARGET.LINE. </p>
+            <p />
+            <p>Note:  It is possible to specify, by entering a second percentage within        one multivalue set, a second target line to which the remaining        (covered) amount is to be reallocated. </p>
+            <p>       If no second (or subsequent) percentage is entered, the remaining        debit balance is not moved from its source line. </p>
+            <p>       In either case, the entire value of the collateral (or that amount        necessary to provide the given percentage of cover) is considered        to have been used in performing the reallocation and is not        available for matching against any subsequent outstandings. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The total percentage defined within one multivalue may not exceed 100.</p>
+        </desc>
+</t>
+<t>
+<field>SOURCE.LINE</field>
+<desc>
+            <p>The source line from which amounts are to be reallocated. </p>
+            <p>The source line is the reporting line in which debit balances occur that are eligible for reallocation to other lines on the basis of the value and type of collateral supporting them. </p>
+            <p>These lines are defined by use of the CRF report line definitions on F.RE.STAT.REP.LINE. </p>
+            <p>Input to this field must, when appended to the REPORT ID (field 1), form the key to a record on the report lines file. This record must be defined as either 'DETAIL' or 'LINK' (ie. total lines may not be used). </p>
+            <p>Source lines may be defined in a set of multivalues, each one of which contains a corresponding TARGET LINE . Within a single value, further sub-values may be used to form a group of source lines which all share the same target line. </p>
+            <p>Multivalue field in association with fields COLLAT.CODE. COLLAT.TYPE. TARGET.LINE. PERCENTAGE.. , subvalue field (no association). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4-digit numeric. Multivalue field. (Mandatory input)</p>
+            <p>Sub-values may not be duplicated.</p>
+            <p>Duplicate conditions (combinations of source line, code &amp; type) are not permitted.</p>
+        </desc>
+</t>
+<t>
+<field>TARGET.LINE</field>
+<desc>
+            <p>The target line to which amounts are to be reallocated. </p>
+            <p>The target line is the reporting line in which debit balances are to be reported (by reallocation from other lines) on the basis of the value and type of collateral supporting them. </p>
+            <p>These lines are defined by use of the CRF report line definitions on F.RE.STAT.REP.LINE. </p>
+            <p>Input to this field must, when appended to the REPORT ID , form the key to a record on the report lines file. This record must be defined as either 'DETAIL' or 'LINK' (ie. total lines may not be used). </p>
+            <p>Target lines may be defined in a set of multivalues, each one of which corresponds to a defined SOURCE LINE. </p>
+            <p>The only exception to the singly-defined target line is if there is a further split by percentage (eg. for a given combination of source line &amp; collateral code, </p>
+            <p>the value is reallocated to one line if the percentage of cover represented by the collateral is 75% or less and to another if it is greater than this). In this case, the field's subvalued association with PERCENTAGE may be used to indicate the split. </p>
+            <p>Multivalue field in association with fields SOURCE.LINE. COLLAT.CODE. COLLAT.TYPE. PERCENTAGE.. </p>
+            <p>subvalue field associated with PERCENTAGE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The value of the target line must not be the same as the corresponding SOURCE LINE.</p>
+        </desc>
+</t>
+<t>
+<field>GL.CB.REPORT</field>
+<desc>
+            <p>Defines whether the table is for a general ledger report or a central bank report. </p>
+            <p>The content of this field indicates which value field on the collateral main file contains the amount to be reallocated. </p>
+            <p>Its meaning is as follows: </p>
+            <p>       GL - general ledger reallocation; the value of GEN.LEDGER.VALUE             is to be used </p>
+            <p>       CB - central bank reallocation; the value of CENTRAL.BANK.VALUE         is to be used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'GL' or 'CB'. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>REPORT.ID</field>
+<desc>
+            <p>The name of the report for which the reallocation table applies. </p>
+            <p>This corresponds to the CRF report for which collateral reallocation is to take place and must have a report definition under the same name on the file F.RE.STAT.REPORT.HEAD. </p>
+            <p>The report id, or the first component of it, forms the first part of the item-id to report line records (F.RE.STAT.REP.LINE). Subsequent input to the source &amp; target line fields is validated against this file (these fields being the second part of the item-id). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 21 alphanumeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>K.PERCENTAGE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>COLLAT.CODE</field>
+<desc>
+            <p>The collateral code for which reallocation from the source line to the target line is to take place. </p>
+            <p>The collateral codes in this field indicate which categories of collateral may be considered by the reallocation process for debit balances occurring under the corresponding source lines. </p>
+            <p>The codes entered in this field must exist on the collateral code file. </p>
+            <p>Codes may be defined in a set of multivalues, each one of which contains a corresponding SOURCE.LINE and TARGET.LINE. Within a single value, further sub-values may be used to form a group of codes which all share the same source and target lines. </p>
+            <p>Multivalue field in association with field range SOURCE.LINE to PERCENTAGE. </p>
+            <p>subvalue field (no association). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 digit numeric.  Multivalue field. (Mandatory input)</p>
+            <p>Sub-values may not be duplicated.</p>
+            <p>Duplicate conditions (combinations of source line, code &amp; type) are not permitted.</p>
+        </desc>
+</t>
+<t>
+<field>COLLAT.TYPE</field>
+<desc>
+            <p>The collateral type for which reallocation from the source line to the target line is to take place. </p>
+            <p>The collateral types in this field may be used to further sub-classify the types of collateral which may be considered by the reallocation process. </p>
+            <p>The codes entered in this field must exist on the collateral type file. </p>
+            <p>If this field is left blank, the system will consider any type of collateral belonging to the COLLAT.CODE when performing the collateral reallocation process. </p>
+            <p>Multivalue field in association with field range SOURCE.LINE to PERCENTAGE. </p>
+            <p>subvalue field (no association). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 digit numeric.  Multivalue field. (Optional input)</p>
+            <p>Duplicate conditions (combinations of source line, code &amp; type) are not permitted.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.LAST.UPDATE</field>
+<desc>
+            <p>Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 35 characters may be entered.</p>
+            <p>This is a NOINPUT, no copy field.</p>
+        </desc>
+</t>
+<t>
+<field>FIN.LIMIT.REPORT</field>
+<desc>
+            <p>Specifies FINANCIAL, LIMIT or UTIL. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>May be FINANCIAL or LIMIT or UTIL.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

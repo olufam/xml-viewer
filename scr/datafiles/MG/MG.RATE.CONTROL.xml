@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>MG</product>
+<table>MG.RATE.CONTROL</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This file will control the automatic change of variable rates on mortgage contracts.  It will record any change in interest rates and the date on which the change is to be applied to existing contracts. Additionally, a date may be entered on which the user wishes customer advices for the rate change to be produced. </p>
+            <p>All mortgage contracts that are linked to a variable interest key will take the interest rates defined on this table. </p>
+            <p>This file will be updated overnight whenever a rate change for an interest key defined on the file is entered on the BASIC.INTEREST table. The new rate would be effective (EFFECTIVE.DATE and APPLICATION.DATE) the rate change date by default. And the default values for CONTRACT.UPD.DATE and ADVICE.DATE would be the processing date.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>TIME.BAND</field>
+<desc>
+            <p>This field signifies a period of time that is to be used when deciding an appropriate rate for the underlying contract using this key. The rate used will come from the correct match in this time bucket for the length of the mortgage contract. </p>
+            <p>Example : </p>
+            <p>2.1 TIME.BAND 10Y (Signifies 0 to 10 years period) 3.1.1 AMT.BAND 10,000 (Sigifies &gt;= 0 &lt;= 10,000) 4.1.1 BAND.RATE 6.1 3.1.2 AMT.BAND 20,000 (Signifies &gt; 10,000 &lt;= 20,000) 4.1.2 BAND.RATE 6.2 3.1.3 AMT.BAND (Signifies &gt; 20,000) 4.1.3 BAND.RATE 6.25 2.2 TIME.BAND 20Y (Sigifies &gt; 10 Years &lt;= 20 Years) 3.2.1 AMT.BAND 10,000 (Signifies &gt;= 0 &lt;= 10,000) 4.2.1 BAND.RATE 6.3 3.2.2 AMT.BAND 20,000 (Signifies &gt; 10,000 &lt;= 20,000) 4.2.2 BAND.RATE 6.4 2.3 TIME.BAND (Signifies &gt; 20 Years) 3.3.1 AMT.BAND (Signifies &gt; 0) 3.4.1 BAND.RATE 6.4</p>
+            <p>If a mortgage were to be entered with the following details : </p>
+            <p>PRINCIPAL.AMOUNT = 12,000 TERM = 12Y CHOSEN RATE IS FROM 4.2.2 i.e. 6.4% </p>
+            <p>PRINCIPAL.AMOUNT = 21,000 TERM = 12Y CHOSEN RATE HAS NOT BEEN ESTABLISHED. </p>
+            <p>PRINCIPAL.AMOUNT = 21,000.00 TERM = 21Y CHOSEN RATE IS FROM 3.4.1 6.4% </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional Input</p>
+            <p>If the field is not entered the rate chosen will be from         NEW.RATE field.</p>
+            <p>If this field is populated then the band rate will be         chosen from the BAND.RATE field in the appropriate         bucket.</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.KEY</field>
+<desc>
+            <p>The Interest key number and currency code identifying the record. </p>
+            <p>The key to the record is made up of a 1-4 digit number followed by a currency code. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4-7 Alphanumeric characters.</p>
+            <p>The number part of the key must be a key defined on the BASIC.RATE.TEXT table.</p>
+            <p>The currency part of the key must be a valid currency on the CURRENCY file.</p>
+        </desc>
+</t>
+<t>
+<field>EFFECTIVE.DATE</field>
+<desc>
+            <p>Defines the effective date of the rate change. </p>
+            <p>The effective date can come from either a user input or the overnight automatic updates of the file whenever the rate for this key changes on the BASIC.INTEREST file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Date format.</p>
+        </desc>
+</t>
+<t>
+<field>OLD.APPL.DATE</field>
+<desc>
+            <p>Contains the application dates for the rate specified in field OLD.RATE above. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Date Format. Multivalue field associated with fields 7.1 OLD.RATE to 9.1 OLD.APPL.DATE. No user input.  Automatically updated.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.1</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.UPD.DATE</field>
+<desc>
+            <p>Specifies the date on which contracts linked to this interest key are to be updated, i.e. the rate fields changed. </p>
+            <p>On the overnight processing on the date entered here, all contracts linked to this interest key will have their rate fields updated with the new rates.  See the example for the NEW.RATE help. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Date Format.</p>
+            <p>Must be greater than or equal to today.</p>
+        </desc>
+</t>
+<t>
+<field>BAND.RATE</field>
+<desc>
+            <p>This field signifies the band rate defined for the time band and amount band associated to it. If this is the bucket chosen then this rate will be used by the underlying contract. </p>
+            <p>Example : </p>
+            <p>2.1 TIME.BAND 10Y (Signifies 0 to 10 years period) 3.1.1 AMT.BAND 10,000 (Sigifies &gt;= 0 &lt;= 10,000) 4.1.1 BAND.RATE 6.1 3.1.2 AMT.BAND 20,000 (Signifies &gt; 10,000 &lt;= 20,000) 4.1.2 BAND.RATE 6.2 3.1.3 AMT.BAND (Signifies &gt; 20,000) 4.1.3 BAND.RATE 6.25 2.2 TIME.BAND 20Y (Sigifies &gt; 10 Years &lt;= 20 Years) 3.2.1 AMT.BAND 10,000 (Signifies &gt;= 0 &lt;= 10,000) 4.2.1 BAND.RATE 6.3 3.2.2 AMT.BAND 20,000 (Signifies &gt; 10,000 &lt;= 20,000) 4.2.2 BAND.RATE 6.4 2.3 TIME.BAND (Signifies &gt; 20 Years) 3.3.1 AMT.BAND (Signifies &gt; 0) 3.4.1 BAND.RATE 6.4</p>
+            <p>If a mortgage were to be entered with the following details : </p>
+            <p>PRINCIPAL.AMOUNT = 12,000 TERM = 12Y CHOSEN RATE IS FROM 4.2.2 i.e. 6.4% </p>
+            <p>PRINCIPAL.AMOUNT = 21,000 TERM = 12Y CHOSEN RATE HAS NOT BEEN ESTABLISHED. </p>
+            <p>PRINCIPAL.AMOUNT = 21,000.00 TERM = 21Y CHOSEN RATE IS FROM 3.4.1 6.4% </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional Input</p>
+            <p>If the field is not entered the rate chosen will be from         NEW.RATE field.</p>
+            <p>If this field is populated then the rate will be chosen         from the BAND.RATE field in the appropriate bucket.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Free format description narrative. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 Alphanumeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>OLD.EFF.DATE</field>
+<desc>
+            <p>Field contains the effective date of the interest rate specified in MG.RATE.CONTROL.HIST file. This date corresponds to a record in the MG.RATE.CONTROL.HIST file with an id containing the id on this file concatenated to this date. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Date Format.</p>
+            <p>This is a NOINPUT field.</p>
+            <p>Automatically updated.</p>
+        </desc>
+</t>
+<t>
+<field>OLD.RATE</field>
+<desc>
+            <p>Identifies the current interest rate applicable for contracts linked to this interest key. </p>
+            <p>This field contains the current rate of interest for all contracts linked to this interest key.  If a new rate is entered in the field above then on the APPLICATION.DATE of the new rate, the new rate and dates will be placed in this field and the fields below at the first multivalue position.  Therefore all rate updates will be shown in reverse chronological order within this set of multivalue fields, with the first set being the current rates. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 8 Numeric characters. Multivalue field associated with fields 7.1 OLD.RATE to 9.1 OLD.APPL.DATE. No user input.  Automatically updated.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.3</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.2</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>NEW.RATE</field>
+<desc>
+            <p>Defines the new rate to be applied for this key. </p>
+            <p>The new rate can come from either a user input or the overnight automatic updates of the file whenever the rate for this key changes on the BASIC.INTEREST file. </p>
+            <p>Example : </p>
+            <p>The interest key 01 represents a banks base mortgage rate.  It is announced on the 12 December 1993 that this rate is to be changed from 10.5% to 11% with effect from 1st January 1994.  This information is loaded on the BASIC.INTEREST table as follows: </p>
+            <p>           ID       01GBP19940101            RATE     11% </p>
+            <p>The record on this file after the overnight update will be: </p>
+            <p>NEW.RATE            11% EFFECTIVE.DATE      12 DEC 1993 APPLICATION.DATE ADVICE.DATE CONTRACT.UPD.DATE OLD.RATE            10.5%     10% OLD.EFF.DATE        15 MAY 92 01 JAN 92 OLD.APPL.DATE       01 JUN 92 01 FEB 92 </p>
+            <p>The history of prior changes for this key is shown in the multivalued history fields.  The first multivalue of these history fields show the current interest rates. </p>
+            <p>From now on the new rate of 11% will be defaulted for any new contracts entered with a value date on or after 12 December 1993. However existing contracts linked to this rate will not be updated with the new rate as the application date has not yet been entered. </p>
+            <p>The user can then input the remaining date fields as follows: </p>
+            <p>NEW.RATE            11% EFFECTIVE.DATE      12 DEC 93 APPLICATION.DATE    01 JAN 94 ADVICE.DATE         20 DEC 93 CONTRACT.UPD.DATE   15 DEC 93 OLD.RATE            10.5%     10% OLD.EFF.DATE        15 MAY 92 01 JAN 92 OLD.APPL.DATE       01 JUN 92 01 FEB 92 </p>
+            <p>This means that on the 15 December 1993 the contracts will be updated with the new rate details.  Advices will be sent on the 20th December 93 and from 1st January 94 all contracts linked to this interest key will accrue interest at 11%. </p>
+            <p>Note: At the end of day processing on the 1st January 1994, the new rate     fields will be cleared out and moved to the first multivalue set in       the old rate fields. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-8 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Contains all the Override messages which the user agreed to during Input. </p>
+            <p>During the validation of a contract, the system may provide the user with a series of screen override messages to indicate an anomaly, for instance, the repayment amount entered differs from that calculated by the system. </p>
+            <p>In the event that the user confirms the Override, the full text of the actual Override Message will be stored, for reference purposes only, in this multivalue field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field.</p>
+            <p>Multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field></field>
+<desc>
+        <p>Contains the application dates for the rate specified in field OLD.RATE above. </p>
+        <p>Validation Rules</p>
+        <p> Standard Date Format. Multivalue field associated with fields 7.1 OLD.RATE to 9.1 OLD.APPL.DATE. No user input. Automatically updated.</p>
+        <p>OLD.EFF.DATE</p>
+        <p>Field contains the effective date of the interest rate specified in MG.RATE.CONTROL.HIST file. This date corresponds to a record in the MG.RATE.CONTROL.HIST file with an id containing the id on this file concatenated to this date. </p>
+        <p>Validation Rules</p>
+        <p> Standard Date Format. This is a NOINPUT field. Automatically updated.</p>
+        <p>OLD.RATE</p>
+        <p>Identifies the current interest rate applicable for contracts linked to this interest key. This field contains the current rate of interest for all contracts linked to this interest key. If a new rate is entered in the field above then on the APPLICATION.DATE of the new rate, the new rate and dates will be placed in this field and the fields below at the first multivalue position. Therefore all rate updates will be shown in reverse chronological order within this set of multivalue fields, with the first set being the current rates. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 8 Numeric characters. Multivalue field associated with fields 7.1 OLD.RATE to 9.1 OLD.APPL.DATE. No user input. Automatically updated.</p>
+        <p>OVERRIDE</p>
+        <p>Contains all the Override messages which the user agreed to during Input. During the validation of a contract, the system may provide the user with a series of screen override messages to indicate an anomaly, for instance, the repayment amount entered differs from that calculated by the system. In the event that the user confirms the Override, the full text of the actual Override Message will be stored, for reference purposes only, in this multivalue field. </p>
+        <p>Validation Rules</p>
+        <p> Internal field. Multivalue field.</p>
+        <p>RESERVED.1</p>
+        <p>This field is reserved for future expansion. </p>
+        <p>Validation Rules</p>
+        <p> This is a NOINPUT field.</p>
+        <p>RESERVED.2</p>
+        <p>This field is reserved for future expansion. </p>
+        <p>Validation Rules</p>
+        <p> This is a NOINPUT field.</p>
+        <p>RESERVED.3</p>
+        <p>This field is reserved for future expansion. </p>
+        <p>Validation Rules</p>
+        <p> This is a NOINPUT field.</p>
+        <p>TIME.BAND</p>
+        <p>This field signifies a period of time that is to be used when deciding an appropriate rate for the underlying contract using this key. The rate used will come from the correct match in this time bucket for the length of the mortgage contract. Example : 2.1 TIME.BAND 10Y (Signifies 0 to 10 years period) 3.1.1 AMT.BAND 10,000 (Sigifies &gt;= 0 &lt;= 10,000) 4.1.1 BAND.RATE 6.1 3.1.2 AMT.BAND 20,000 (Signifies &gt; 10,000 &lt;= 20,000) 4.1.2 BAND.RATE 6.2 3.1.3 AMT.BAND (Signifies &gt; 20,000) 4.1.3 BAND.RATE 6.25 2.2 TIME.BAND 20Y (Sigifies &gt; 10 Years &lt;= 20 Years) 3.2.1 AMT.BAND 10,000 (Signifies &gt;= 0 &lt;= 10,000) 4.2.1 BAND.RATE 6.3 3.2.2 AMT.BAND 20,000 (Signifies &gt; 10,000 &lt;= 20,000) 4.2.2 BAND.RATE 6.4 2.3 TIME.BAND (Signifies &gt; 20 Years) 3.3.1 AMT.BAND (Signifies &gt; 0) 3.4.1 BAND.RATE 6.4 If a mortgage were to be entered with the following details : PRINCIPAL.AMOUNT = 12,000 TERM = 12Y CHOSEN RATE IS FROM 4.2.2 i.e. 6.4% PRINCIPAL.AMOUNT = 21,000 TERM = 12Y CHOSEN RATE HAS NOT BEEN ESTABLISHED. PRINCIPAL.AMOUNT = 21,000.00 TERM = 21Y CHOSEN RATE IS FROM 3.4.1 6.4% </p>
+        <p>Validation Rules</p>
+        <p> Optional Input If the field is not entered the rate chosen will be from NEW.RATE field. If this field is populated then the band rate will be chosen from the BAND.RATE field in the appropriate bucket.</p>
+        <p>ADVICE.DATE</p>
+        <p>Specifies the date that advices are to be sent to customers informing them of the rate change. For mortgages linked to this interest key, this date specifies when advices are to be generated for the rate change. See the example for the NEW.RATE help. </p>
+        <p>Validation Rules</p>
+        <p> Standard Date format. Must be prior or equal to application date.</p>
+        <p>AMT.BAND</p>
+        <p>This field signifies principal amount that is to be used when deciding an appropriate rate for the underlying contract using this key. The rate used will come from the correct match in this amount bucket for the principal amount on the mortgage contract. Example : 2.1 TIME.BAND 10Y (Signifies 0 to 10 years period) 3.1.1 AMT.BAND 10,000 (Sigifies &gt;= 0 &lt;= 10,000) 4.1.1 BAND.RATE 6.1 3.1.2 AMT.BAND 20,000 (Signifies &gt; 10,000 &lt;= 20,000) 4.1.2 BAND.RATE 6.2 3.1.3 AMT.BAND (Signifies &gt; 20,000) 4.1.3 BAND.RATE 6.25 2.2 TIME.BAND 20Y (Sigifies &gt; 10 Years &lt;= 20 Years) 3.2.1 AMT.BAND 10,000 (Signifies &gt;= 0 &lt;= 10,000) 4.2.1 BAND.RATE 6.3 3.2.2 AMT.BAND 20,000 (Signifies &gt; 10,000 &lt;= 20,000) 4.2.2 BAND.RATE 6.4 2.3 TIME.BAND (Signifies &gt; 20 Years) 3.3.1 AMT.BAND (Signifies &gt; 0) 3.4.1 BAND.RATE 6.4 If a mortgage were to be entered with the following details : PRINCIPAL.AMOUNT = 12,000 TERM = 12Y CHOSEN RATE IS FROM 4.2.2 i.e. 6.4% PRINCIPAL.AMOUNT = 21,000 TERM = 12Y CHOSEN RATE HAS NOT BEEN ESTABLISHED. PRINCIPAL.AMOUNT = 21,000.00 TERM = 21Y CHOSEN RATE IS FROM 3.4.1 6.4% </p>
+        <p>Validation Rules</p>
+        <p> Optional Input If the field is not entered the rate chosen will be from NEW.RATE field. If this field is populated then the rate will be chosen from the BAND.RATE field in the appropriate bucket.</p>
+        <p>APPLICATION.DATE</p>
+        <p>Defines when existing contract linked to this record will take on the new interest rate. All existing contracts linked to this interest key will start to accrue the new interest rate on the date specified here. See the example for the NEW.RATE help. </p>
+        <p>Validation Rules</p>
+        <p> Standard date format. The date cannot precede the EFFECTIVE.DATE.</p>
+        <p>BAND.RATE</p>
+        <p>This field signifies the band rate defined for the time band and amount band associated to it. If this is the bucket chosen then this rate will be used by the underlying contract. Example : 2.1 TIME.BAND 10Y (Signifies 0 to 10 years period) 3.1.1 AMT.BAND 10,000 (Sigifies &gt;= 0 &lt;= 10,000) 4.1.1 BAND.RATE 6.1 3.1.2 AMT.BAND 20,000 (Signifies &gt; 10,000 &lt;= 20,000) 4.1.2 BAND.RATE 6.2 3.1.3 AMT.BAND (Signifies &gt; 20,000) 4.1.3 BAND.RATE 6.25 2.2 TIME.BAND 20Y (Sigifies &gt; 10 Years &lt;= 20 Years) 3.2.1 AMT.BAND 10,000 (Signifies &gt;= 0 &lt;= 10,000) 4.2.1 BAND.RATE 6.3 3.2.2 AMT.BAND 20,000 (Signifies &gt; 10,000 &lt;= 20,000) 4.2.2 BAND.RATE 6.4 2.3 TIME.BAND (Signifies &gt; 20 Years) 3.3.1 AMT.BAND (Signifies &gt; 0) 3.4.1 BAND.RATE 6.4 If a mortgage were to be entered with the following details : PRINCIPAL.AMOUNT = 12,000 TERM = 12Y CHOSEN RATE IS FROM 4.2.2 i.e. 6.4% PRINCIPAL.AMOUNT = 21,000 TERM = 12Y CHOSEN RATE HAS NOT BEEN ESTABLISHED. PRINCIPAL.AMOUNT = 21,000.00 TERM = 21Y CHOSEN RATE IS FROM 3.4.1 6.4% </p>
+        <p>Validation Rules</p>
+        <p> Optional Input If the field is not entered the rate chosen will be from NEW.RATE field. If this field is populated then the rate will be chosen from the BAND.RATE field in the appropriate bucket.</p>
+        <p>CONTRACT.UPD.DATE</p>
+        <p>Specifies the date on which contracts linked to this interest key are to be updated, i.e. the rate fields changed. On the overnight processing on the date entered here, all contracts linked to this interest key will have their rate fields updated with the new rates. See the example for the NEW.RATE help. </p>
+        <p>Validation Rules</p>
+        <p> Standard Date Format. Must be greater than or equal to today.</p>
+        <p>DESCRIPTION</p>
+        <p>Free format description narrative. </p>
+        <p>Validation Rules</p>
+        <p> 1-35 Alphanumeric characters.</p>
+        <p>EFFECTIVE.DATE</p>
+        <p>Defines the effective date of the rate change. The effective date can come from either a user input or the overnight automatic updates of the file whenever the rate for this key changes on the BASIC.INTEREST file. </p>
+        <p>Validation Rules</p>
+        <p> Standard Date format.</p>
+        <p>INTEREST.KEY</p>
+        <p>The Interest key number and currency code identifying the record. The key to the record is made up of a 1-4 digit number followed by a currency code. </p>
+        <p>Validation Rules</p>
+        <p> 4-7 Alphanumeric characters. The number part of the key must be a key defined on the BASIC.RATE.TEXT table. The currency part of the key must be a valid currency on the CURRENCY file.</p>
+        <p>NEW.RATE</p>
+        <p>Defines the new rate to be applied for this key. The new rate can come from either a user input or the overnight automatic updates of the file whenever the rate for this key changes on the BASIC.INTEREST file. Example : The interest key 01 represents a banks base mortgage rate. It is announced on the 12 December 1993 that this rate is to be changed from 10.5% to 11% with effect from 1st January 1994. This information is loaded on the BASIC.INTEREST table as follows: ID 01GBP19940101 RATE 11% The record on this file after the overnight update will be: NEW.RATE 11% EFFECTIVE.DATE 12 DEC 1993 APPLICATION.DATE ADVICE.DATE CONTRACT.UPD.DATE OLD.RATE 10.5% 10% OLD.EFF.DATE 15 MAY 92 01 JAN 92 OLD.APPL.DATE 01 JUN 92 01 FEB 92 The history of prior changes for this key is shown in the multivalued history fields. The first multivalue of these history fields show the current interest rates. From now on the new rate of 11% will be defaulted for any new contracts entered with a value date on or after 12 December 1993. However existing contracts linked to this rate will not be updated with the new rate as the application date has not yet been entered. The user can then input the remaining date fields as follows: NEW.RATE 11% EFFECTIVE.DATE 12 DEC 93 APPLICATION.DATE 01 JAN 94 ADVICE.DATE 20 DEC 93 CONTRACT.UPD.DATE 15 DEC 93 OLD.RATE 10.5% 10% OLD.EFF.DATE 15 MAY 92 01 JAN 92 OLD.APPL.DATE 01 JUN 92 01 FEB 92 This means that on the 15 December 1993 the contracts will be updated with the new rate details. Advices will be sent on the 20th December 93 and from 1st January 94 all contracts linked to this interest key will accrue interest at 11%. Note: At the end of day processing on the 1st January 1994, the new rate fields will be cleared out and moved to the first multivalue set in the old rate fields. </p>
+        <p>Validation Rules</p>
+        <p> 1-8 numeric characters.</p>
+    </desc>
+</t>
+<t>
+<field>ADVICE.DATE</field>
+<desc>
+            <p>Specifies the date that advices are to be sent to customers informing them of the rate change. </p>
+            <p>For mortgages linked to this interest key, this date specifies when advices are to be generated for the rate change.  See the example for the NEW.RATE help. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Date format.</p>
+            <p>Must be prior or equal to application date.</p>
+        </desc>
+</t>
+<t>
+<field>AMT.BAND</field>
+<desc>
+            <p>This field signifies principal amount that is to be used when deciding an appropriate rate for the underlying contract using this key. The rate used will come from the correct match in this amount bucket for the principal amount on the mortgage contract. </p>
+            <p>Example : </p>
+            <p>2.1 TIME.BAND 10Y (Signifies 0 to 10 years period) 3.1.1 AMT.BAND 10,000 (Sigifies &gt;= 0 &lt;= 10,000) 4.1.1 BAND.RATE 6.1 3.1.2 AMT.BAND 20,000 (Signifies &gt; 10,000 &lt;= 20,000) 4.1.2 BAND.RATE 6.2 3.1.3 AMT.BAND (Signifies &gt; 20,000) 4.1.3 BAND.RATE 6.25 2.2 TIME.BAND 20Y (Sigifies &gt; 10 Years &lt;= 20 Years) 3.2.1 AMT.BAND 10,000 (Signifies &gt;= 0 &lt;= 10,000) 4.2.1 BAND.RATE 6.3 3.2.2 AMT.BAND 20,000 (Signifies &gt; 10,000 &lt;= 20,000) 4.2.2 BAND.RATE 6.4 2.3 TIME.BAND (Signifies &gt; 20 Years) 3.3.1 AMT.BAND (Signifies &gt; 0) 3.4.1 BAND.RATE 6.4</p>
+            <p>If a mortgage were to be entered with the following details : </p>
+            <p>PRINCIPAL.AMOUNT = 12,000 TERM = 12Y CHOSEN RATE IS FROM 4.2.2 i.e. 6.4% </p>
+            <p>PRINCIPAL.AMOUNT = 21,000 TERM = 12Y CHOSEN RATE HAS NOT BEEN ESTABLISHED. </p>
+            <p>PRINCIPAL.AMOUNT = 21,000.00 TERM = 21Y CHOSEN RATE IS FROM 3.4.1 6.4% </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional Input</p>
+            <p>If the field is not entered the rate chosen will be from         NEW.RATE field.</p>
+            <p>If this field is populated then the rate will be chosen         from the BAND.RATE field in the appropriate bucket.</p>
+        </desc>
+</t>
+<t>
+<field>APPLICATION.DATE</field>
+<desc>
+            <p>Defines when existing contract linked to this record will take on the new interest rate. </p>
+            <p>All existing contracts linked to this interest key will start to accrue the new interest rate on the date specified here.  See the example for the NEW.RATE help. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format.</p>
+            <p>The date cannot precede the EFFECTIVE.DATE.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

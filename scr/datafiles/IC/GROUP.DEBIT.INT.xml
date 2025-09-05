@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>IC</product>
+<table>GROUP.DEBIT.INT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The Group Debit Interest Table allows the specification of a calculation method of debit interest for groups of accounts and provides the link to the GENERAL.CHARGE table where the charges applicable to the same groups of Accounts are specified.  Account groups are determined automatically on the basis of Customer and Account details such as Residence, Sector, Account Category and Currency.  At the time of Account input, reference is made to ACCT.GEN.CONDITION and CONDITION PRIORITY (Ref: General Tables) tables.  From these, a General Condition code is derived for later access to the GROUP.DEBIT.INT table.  (For further information, see the ACCT.GEN.Condition and CONDITION.PRIORITY tables.)</p>
+            <p>- Interest can be calculated on a Daily, Average, or Highest            balance basis using value dated balances.</p>
+            <p>- Rates can be fixed or linked to Basic Rates plus or minus a            Margin.</p>
+            <p>- Different rates can be specified for different balance levels            and may be linked to the same or different basic rates.  The            rates may apply to the whole of the balance or to the part            between two balance levels.</p>
+            <p>- Using Group Level Conditions, it is possible to use the limits            on individual Accounts as the first level for debit interest so            that one rate can be charged up to the limit on any Account and            another rate when the limit has been exceeded.  (Limits on            individual Accounts are specified in the ACCOUNT.DEBIT.LIMIT            Table.)  In this case a maximum of 2 rates may be specified.</p>
+            <p>Where special debit interest conditions apply to a specific account, reference should be made to the table ACCOUNT.DEBIT.INT table.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>TAX.KEY</field>
+<desc>
+            <p>Identifies either a Tax record (defined in TAX table) or Tax.Type.Condition record with a "*" symbol prefixed to a valid tax.type.condition which specifies the calculation and processing of tax, applicable to debit interest. If tax rate is given then tax is calculated on the associated group of accounts. If a Tax Type Condition Identifier is specified, the system will derive the applicable TAX.CODE from the TAX.TYPE.CONDITION based on the customer grouping. (tax.type.condition allows to define different tax rates for different tax.gen.condition records). Input of tax.type.condition helps in deducting different rates of tax for different group of customers in the associated group of accounts.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>1-2 numeric characters. (Optional input. Not allowed if INTEREST.DAY.BASIS contains 'NONE'.) There must be an existing record for this code on the TAX table (Ref: General Tables) with an effective date not later than the effective date of this record.</p>
+            <p>For   computation of tax JOINT HOLDER wise for an account based on their tax status,   only a valid TAX.TYPE.CONDITION ID has to be specified along with a local   routine in CALC.ROUTINE field. eg. *CGT has to be specified.</p>
+            <p>The TAX.OPERAND in the corresponding Tax record should be PLUS</p>
+        </desc>
+</t>
+<t>
+<field>GROUP.CY.DATE</field>
+<desc>
+            <p>This is a General Condition code and date, which identifies the Group Debit Interest record and the date from which it applies.</p>
+            <p>The General Condition code must have an associated record present on the ACCT.GEN.CONDITION file.</p>
+            <p>The corresponding CONCAT record in file GROUP.DATE will be updated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>a)   1-4 numeric character General Condition code.  b)   '-' (Mandatory if numeric Currency code entered, otherwise not      input). Prime Sites '.'  c)   3 Uppercase alpha Currency code or 1-3 numeric character      Currency code (Mandatory input).  d)   '.' (Mandatory if numeric Currency Code and date entered,      otherwise not input).  e)   1-9 date characters.  (Optional input.  Default is todays      date.)</p>
+        </desc>
+</t>
+<t>
+<field>DR.CALCUL.TYPE</field>
+<desc>
+            <p>Determines whether the calculation will be performed up to the debit balance 'Level' or in 'Bands' (where the interest calculation employed is dependent upon the size of debit balance).</p>
+            <p>If more than one set of fields DR.BASIC.RATE to DR.LIMIT.AMT are input, this indicates that a different interest rate is applicable depending on the size of the debit balance.  DR CALCUL TYPE specifies whether separate calculations are to be made for each Band of the debit balance or one is to be made on the entire balance, dependent on the Level of the balance.</p>
+            <p>Example:   Assume a debit balance of 15,000 and a Group Debit            Interest record which specifies an applicable rate of 10            per cent up to 10,000 and 15 per cent above 10,000.</p>
+            <p>If Band is specified, 2 calculations will be performed,            i.e.</p>
+            <p>10 per cent on 10,000                 15 per cent on  5,000</p>
+            <p>If Level is specified, 1 calculation will be performed, i.e.</p>
+            <p>15 per cent on 15,000.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'BAND' or 'LEVEL' or any abbreviaton thereof.  (Mandatory input if more than one set of fields DR.BASIC.RATE to DR.LIMIT.AMT are specified, otherwise optional.  Not allowed if INTEREST.DAY.BASIS, contains 'NONE'.)</p>
+        </desc>
+</t>
+<t>
+<field>DR2.BASIC.RATE</field>
+<desc>
+            <p>Specifies a Basic Rate which is held on the BASIC.INTEREST Table (Ref: General Tables).  (DR2 fields specify a second interest charge which may be levied.)</p>
+            <p>Fields DR2.BASIC.RATE to DR2.LIMIT.AMT are used to specify rates applicable to different balance limits.</p>
+            <p>For examples see DR.BASIC.RATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-4 numeric characters.  Multivalue field associated with field range DR2.BASIC.RATE to DR2.LIMIT.AMT.  (Optional input.  Not allowed if corresponding DR2.INT.RATE is input or if INTEREST.DAY.BASIS contains 'NONE'.)  There must be a record in the BASIC.INTEREST table with a key consisting of this code, the Currency of the Account, and an effective date which is less than or equal to the date specified in Field 0 (Record ID).</p>
+        </desc>
+</t>
+<t>
+<field>DR2.INT.RATE</field>
+<desc>
+            <p>Specifies a fixed Rate of interest that can be used instead of a Basic Rate.  (DR2 fields specify a second interest charge which may be levied.) Fields DR2.BASIC.RATE to DR2.LIMIT.AMT are used to specify rates applicable to different balance limits.</p>
+            <p>For examples see DR.BASIC.RATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 type R (standard rate format) numeric characters plus a decimal point.  Multivalue field associated with fields DR2.BASIC.RATE to DR2.LIMIT.AMT.  (Optional input.  Not allowed if corresponding DR2.BASIC.RATE, is input or if INTEREST.DAY.BASIS contains 'NONE'.)</p>
+            <p>Not more that 6 integers may be entered.</p>
+            <p>Not more that 9 decimals may be entered.</p>
+            <p>Allow Negative Interest Rates.</p>
+        </desc>
+</t>
+<t>
+<field>DR.MIN.VALUE</field>
+<desc>
+            <p>The minimum debit interest value that will be posted to an account.</p>
+            <p>The amount should be precede with currency. If the currency is not given then system default the account currency</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Amount should be precede with currency. For example INR 1000, this will indicate 1000 Indian Rupees</p>
+        </desc>
+</t>
+<t>
+<field>DR.BALANCE.TYPE</field>
+<desc>
+            <p>Identifies the balance (Average, Daily or Highest), on which interest calculations are to be made.</p>
+            <p>The Average or Highest Balance is calculated for the period of time defined by the DEBIT CAPITALISATION FREQUENCY field on the GROUP.CAPITALISATION file.</p>
+            <p>Average is the sum total of debit balances (assume 0 if the balance is in credit) for each day of the period of calculation, divided by the number of days in the period.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'AVERAGE', 'DAILY' or 'HIGHEST', or any abbreviation thereof.  (Not allowed if INTEREST.DAY.BASIS, contains 'NONE', otherwise mandatory.)</p>
+        </desc>
+</t>
+<t>
+<field>KDATE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>DR.MAX.RATE</field>
+<desc>
+            <p>Reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>No Input</p>
+        </desc>
+</t>
+<t>
+<field>DR.BASIC.RATE</field>
+<desc>
+            <p>Specifies a floating Basic Rate which is held on the BASIC.INTEREST table (Ref: General Tables).  Fields DR.BASIC.RATE to DR.LIMIT.AMT are used to specify rates applicable to different balance limits.</p>
+            <p>Rates can be fixed or linked to Basic Rates plus or minus a Margin.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-4 numeric characters.  Multivalue Field associated with fields DR.BASIC.RATE to DR.LIMIT.AMT.  (Optional input.  Not allowed if corresponding DR.INT.RATE, is input or if INTEREST.DAY.BASIS, contains 'NONE'.)  There must be a record in the BASIC.INTEREST table with a key consisting of this code, the Currency of the Account and an effective date which is less than or equal to the date specified in Field 0, (Record ID).  Examples:  The rate or rates of interest which will be applied are defined by the following multivalue group of fields:  BASIC RATE INT RATE MARGIN OPER MARGIN RATE LIMIT AMOUNT  Examples of their use is as follows:         1) If the interest rate is to be equal to a floating Basic           Rate, only enter the following field:           BASIC RATE - Code of the applicable Basic Rate.         2) If the interest rate is to be fixed, only enter the           following field:           INT RATE - the actual rate of interest.         3) If the interest rate is to be equal to a floating Basic           Rate plus a fixed margin; enter the following fields:           BASIC RATE  - Code of the applicable Base Rate           MARGIN OPER - 'ADD'           MARGIN RATE - Margin Rate to be added.         4) If the interest rate is to be equal to a floating Basic           Rate Plus a Percentage of the floating Basic Rate; enter           the following fields:           BASIC RATE  - Code of the applicable Basic Rate           MARGIN OPER - 'MULTIPLY'           MARGIN RATE - Percentage to be added         5) If the interest rate is to be equal to a floating Basic           Rate, plus a Margin up to a limiting amount and a           floating Basic Rate, plus a different Margin above that           limiting amount, enter the following fields:           BASIC RATE  - Code of the applicable Basic Rate           MARGIN OPER - 'ADD'           MARGIN RATE - 1st Margin Rate           LIMIT AMOUNT- The limit amount for the above defined Rate           BASIC RATE  - Code of the applicable Basic Rate           MARGIN OPER - 'ADD' MARGIN RATE - 2nd Margin Rate</p>
+        </desc>
+</t>
+<t>
+<field>DR2.MARGIN.RATE</field>
+<desc>
+            <p>Specifies the amount by which the rate specified in DR2.BASIC.RATE or DR2.INT.RATE, is to be adjusted to arrive at the actual interest rate applicable.</p>
+            <p>(DR2 fields specify a second interest charge which may be levied.)</p>
+            <p>For examples see DR.BASIC.RATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 type R (standard rate format) numeric characters plus a decimal point.  Multivalue field associated with fields DR2.BASIC.RATE to DR2.LIMIT.AMT.  (Mandatory input if corresponding DR2.MARGIN.OPER is input, otherwise not allowed.)</p>
+            <p>Not more than 6 integers may be entered.</p>
+            <p>Not more than 9 decimals may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>MAX.LEGAL.RATE</field>
+<desc>
+            <p>Identifies the Maximum Legal Rate for this group.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-10 type R (standard rate format) characters plus a decimal point.  (Optional input.  Default = null.)</p>
+        </desc>
+</t>
+<t>
+<field>DR2.CALCUL.TYPE</field>
+<desc>
+            <p>Determines whether the calculation will be performed up to the debit balance Level or in Bands, where the interest calculation employed is dependent upon the size of debit balance.  (DR2 fields specify a second interest charge which may be levied.)</p>
+            <p>If more than one set of Fields 14 to 19 are input, this indicates that a different interest rate is applicable depending on the size of the debit balance.  DR2 CALCUL TYPE specifies whether separate calculations are to be made for each Band of the debit balance or one is to be made on the entire balance, dependent on the Level of the balance.</p>
+            <p>Example:   Assume a debit balance of 15,000 and a Group Debit            Interest record which specifies an applicable rate of 10            per cent up to 10,000 and 15 per cent above 10,000.</p>
+            <p>If Band is specified, 2 calculations will be performed,            i.e.:</p>
+            <p>10 per cent on 10,000                 15 per cent on  5,000</p>
+            <p>If Level is specified, 1 calculation will be performed, i.e.</p>
+            <p>15 per cent on 15,000.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'BAND' or 'LEVEL' or any abbreviation thereof.  (Mandatory input if more than one set of fields DR2.BASIC.RATE to DR2.LIMIT.AMT are specified, otherwise optional.  Not allowed if INTEREST.DAY.BASIS, contains 'NONE'.)</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.DAY.BASIS</field>
+<desc>
+            <p>Defines the method of determining the number of days used for debit interest calculations. If not entered, the basis specified on the CURRENCY table (Ref: General Tables) will be used. If no debit interest is to be calculated on Accounts in this Group, 'NONE' shoud be entered.</p>
+            <p>Can accept the following types:</p>
+            <p />
+            <p />
+            <p>For illustrations of all supported</p>
+            <p>INTEREST.BASIS</p>
+            <p>INTEREST.BASIS</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1- 4 characters - 'A', 'B', 'C', 'D', 'E', 'F' or 'NONE'.         (Optional input default from CURRENCY table.)</p>
+        </desc>
+</t>
+<t>
+<field>DR.MARGIN.OPER</field>
+<desc>
+            <p>Determines the method by which the Rate specified in field DR.BASIC.RATE or DR.INT.RATE, is to be adjusted by the Margin specified in field DR.MARGIN.RATE.  Fields DR.BASIC.RATE to DR.LIMIT.AMT are used to specify rates applicable to different balance limits.</p>
+            <p>If the Rate specified in field DR.BASIC.RATE or DR.INT.RATE, is to be adjusted by a Margin, this field specifies whether the Margin Rate is to be added to, subtracted from or multiplied by the Basic Rate to arrive at the effective interest rate.</p>
+            <p>If 'Multiply' is specified the final rate is (100 + M) percent of the Rate from field DR.BASIC.RATE or DR.INT.RATE where M is the Margin Rate percentage from DR.MARGIN.RATE).</p>
+            <p>For examples see DR.BASIC.RATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'ADD', 'SUBTRACT' or 'MULTIPLY', or any abbrevations thereof.  Multivalue field associated with fields DR.BASIC.RATE to DR.LIMIT.AMT.  (Optional input.  Only allowed if corresponding DR.BASIC.RATE or DR.INT.RATE, is input.)</p>
+        </desc>
+</t>
+<t>
+<field>DR.MIN.RATE</field>
+<desc>
+            <p>This field defines the floor (or minimum rate) for debit interest to be applied to the DR balance type. If the rate that is derived by T24, after applying any spread, is less than this rate then the interest rate will be set to this value.</p>
+            <p>(Optional Input - Percentage Rate)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Rate field.</p>
+            <p>Numeric input.</p>
+            <p>Use only valid in conjunction with DR.BASIC.RATE</p>
+            <p>Allow Negative Interest Rates.</p>
+        </desc>
+</t>
+<t>
+<field>MAX.DEBIT.CHG.RATE</field>
+<desc>
+            <p>Identifies the maximum charge percentage of the first debit interest amount. (e.g. 50%)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-10 type R (standard rate format) characters plus a decimal point.  (Optional input.  Defaulted from the GROUP.CONDITION.)</p>
+        </desc>
+</t>
+<t>
+<field>DR2.MIN.RATE</field>
+<desc>
+            <p>This field defines the floor (or minimum rate) for debit interest to be applied to the DR2 balance type. If the rate that is derived by T24, after applying any spread, is less than this rate then the interest rate will be set to this value.</p>
+            <p>(Optional Input - Percentage Rate)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Rate field.</p>
+            <p>Numeric input.</p>
+            <p>Use only valid in conjunction with DR2.BASIC.RATE.</p>
+            <p>Allow Negative Interest Rates.</p>
+        </desc>
+</t>
+<t>
+<field>DR2.MIN.WAIVE</field>
+<desc>
+            <p>A setting of Yes indicates that debit interest amounts below the minimum value, specified in DR2.MIN.VALUE, are to be waived. If HIST options are selected then during correction the system uses the mid reval rate on correction period end to convert the minimum amount</p>
+            <p>If this field is set to No or Null, the minimum value in DR2.MIN.VALUE, should be posted to the account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed values are YES, NO, YES-HIST, NO-HIST or NULL.</p>
+        </desc>
+</t>
+<t>
+<field>DR2.BALANCE.TYPE</field>
+<desc>
+            <p>Identifies the Balance (Average, Daily or Highest), on which interest calculations are to be made.  (DR2 fields specify a second interest charge which may be levied.)</p>
+            <p>The Average or Highest Balance is calculated for a period of time defined by the DEBIT CAPITALISATION FREQUENCY Field on the GROUP.CAPITALISATION file.</p>
+            <p>Average is the sum total of debit balances (assume 0 if the balance is in credit) for each day of the period of calculation, divided by the number of days in the period.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'AVERAGE', 'DAILY' or 'HIGHEST', or any abbreviation thereof.  (Optional input.  Not allowed if INTEREST.DAY.BASIS contains 'NONE'.)</p>
+        </desc>
+</t>
+<t>
+<field>DR2.MAX.RATE</field>
+<desc>
+            <p>Reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>No Input</p>
+        </desc>
+</t>
+<t>
+<field>DR2.MIN.VALUE</field>
+<desc>
+            <p>The minimum second debit interest value that will be posted to an account.</p>
+            <p>The amount should be precede with currency. If the currency is not given then system default the account currency</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Amount should be precede with currency. For example INR 1000, this will indicate 1000 Indian Rupees</p>
+        </desc>
+</t>
+<t>
+<field>DR2.LIMIT.AMT</field>
+<desc>
+            <p>Specifies the balance limit up to and including which the rates specified in the corresponding fields DR2.BASIC.RATE to DR2.MARGIN.RATE apply.</p>
+            <p>For examples see DR.BASIC.RATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 type AMT (standard amount format) numeric characters.  Multivalue field associated with fields DR2.BASIC.RATE to DR2.LIMIT.AMT.  (Mandatory input, if more than one set of fields DR2.BASIC.RATE to DR2.LIMIT.AMT are specified but not allowed for last set of if only one set is input.)  Where more than one DR Limit Amount is input, these must be in ascending sequence.</p>
+        </desc>
+</t>
+<t>
+<field>DR2.MARGIN.OPER</field>
+<desc>
+            <p>Determines the method by which the Rate specified in corresponding DR2.BASIC.RATE or DR2.INT.RATE, is adjusted by the Margin specified in corresponding DR2.MARGIN.RATE, (DR2 fields specify a second interest charge which may be levied.)</p>
+            <p>Fields DR2.BASIC.RATE to DR2.LIMIT.AMT are used to specify rates applicable to different balance limits.</p>
+            <p>If the Rate specified in DR2.BASIC.RATE or DR2.INT.RATE, is to adjusted by a Margin, this field specifies whether the Margin Rate is to be added to, subtracted from, or multiplied with the basic rate to arrive at the effective interest rate.</p>
+            <p>If 'Multiply' is specified the final rate is (100 + M) percent of the Rate from DR2.BASIC.RATE or DR2.INT.RATE where M is the Margin Rate percentage from DR2.MARGIN.RATE).</p>
+            <p>For examples see DR.BASIC.RATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'ADD', 'SUBTRACT' or 'MULTIPLY', or any abbreviation thereof.  Multivalue field associated with fields DR2.BASIC.RATE to DR2.LIMIT.AMT.  (Optional input.  Only allowed if corresponding DR2.INT.RATE, is input.)</p>
+        </desc>
+</t>
+<t>
+<field>DR.MARGIN.RATE</field>
+<desc>
+            <p>Specifies the amount by which the rate specified in DR.BASIC.RATE or DR.INT.RATE, is to be adjusted to arrive at the actual interest rate applicable.</p>
+            <p>Fields DR.BASIC.RATE to DR.LIMIT.AMT are used to specify rates applicable to different balance limits.</p>
+            <p>For examples see DR.BASIC.RATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 type R (standard rate format) numeric characters plus a decimal point.  Multivalue field associated with fields DR.BASIC.RATE to DR.LIMIT.AMT.  (Mandatory input if corresponding DR.MARGIN.OPER is input, otherwise not allowed.)</p>
+            <p>Not more than 6 integers may be entered.</p>
+            <p>Not more than 9 decimals may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>DR.LIMIT.AMT</field>
+<desc>
+            <p>Specifies the balance limit up to and including which the rates specified in corresponding Fields 6-10 apply.</p>
+            <p>For examples see DR.BASIC.RATE.</p>
+            <p>If 2 rates are input and no limit is specified for the first level, the first rate is applicable up to the Overdraft Limit specified for each Account in the ACCOUNT.DEBIT.LIMIT table.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 type AMT (standard amount format) numeric characters.  Multivalue field associated with fields DR.BASIC.RATE to DR.LIMIT.AMT.  (Optional input if more than one set of fields DR.BASIC.RATE to DR.LIMIT.AMT are specified but not allowed for last set or if only one set is input.)</p>
+            <p>Where more than one DR Limit Amount is input, these must be in ascending sequence.</p>
+            <p>If a no Limit is specified for the first level, a maximum of 2 rates may be input.</p>
+        </desc>
+</t>
+<t>
+<field>LINK.TO.GROUP</field>
+<desc>
+            <p>Specifies a condition group which the Maximum Legal Rate is linked to.</p>
+            <p>If this field is specified the condition group with the latest date in GROUP.CONDITION will be used to derive the Maximum Legal Rate.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 2 numeric character Account General Condition code. (Optional input field.)</p>
+            <p>Input not allowed if MAX.LEGAL.RATE is specified.</p>
+            <p>Must be the same group as the record id.</p>
+        </desc>
+</t>
+<t>
+<field>DR.MIN.WAIVE</field>
+<desc>
+            <p>A setting of Yes indicates that debit interest amounts below the minimum value, specified in DR.MIN.VALUE, are to be waived. If HIST options are selected then during correction the system uses the mid reval rate on correction period end to convert the minimum amount</p>
+            <p>If this field is set to No or Null, the minimum value in DR.MIN.VALUE, should be posted to the account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed values are YES, NO, YES-HIST, NO-HIST or NULL.</p>
+        </desc>
+</t>
+<t>
+<field>DR.INT.RATE</field>
+<desc>
+            <p>Specifies a fixed rate of interest that can be used instead of a Basic Rate.  Fields 6-11 are used to specify rates applicable to different balance limits.</p>
+            <p>For examples see DR.BASIC.RATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 type R (standard rate format) numeric characters plus a decimal point.  Multivalue field associated with fields DR.BASIC.RATE to DR.LIMIT.AMT.  (Optional input.  Not allowed if corresponding DR.BASIC.RATE, is input or if INTEREST.DAY.BASIS, contains 'NONE'.)</p>
+            <p>Not more than 6 integers may be entered.</p>
+            <p>Not more than 9 decimals may be entered.</p>
+            <p>Allow Negative Interest Rates.</p>
+        </desc>
+</t>
+<t>
+<field>APR.REQUIRED</field>
+<desc>
+            <p>This allows the user to specify whether the APR (TEG) calculation is required.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 alpha characters.  Valid values are "Y" and "NO". (Defaulted from the GROUP.CONDITION).</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.KEY</field>
+<desc>
+            <p>Specifies the applicable General Charge Record which defines the charges and overrides applicable to the Group of Accounts.</p>
+            <p>The General Charge record which is in effect on the date of the debit interest capitalisation specifies the interest related chrges applicable to the whole capitalisation period.</p>
+            <p>The General charge record which is in effect on the date of the charges capitalisation specifies the account ledger charges applicable ot the whole capitalisation period.</p>
+            <p />
+            <p />
+            <p>Note : No Ledger Fee Charges are calculated for the month in which an        Account is opened or closed (unless the Account Closure date is the        last day of the month).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-4 numeric character General Charge code. (Mandatory input)  There must be a record in the GENERAL.CHARGE table for this code, with an effective date not later than the effective date of this record.</p>
+        </desc>
+</t>
+<t>
+<field>COMPOUND.TYPE</field>
+<desc>
+            <p>Optional values of DAILY, WEEKn, Mnn or Nnn can be input to specify the</p>
+            <p>number of compounding periods per year.</p>
+            <p>If left blank, no compounding will occur.</p>
+        </desc>
+</t>
+<t>
+<field>COMPOUND.YIELD.METHOD</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>NEGATIVE.RATES</field>
+<desc>
+            <p>There are 3 options (YES, BLOCK.MARGIN and NO/Blank)</p>
+            <p>   Blank or NO </p>
+            <p>   Indicates that negative rates cannot be input and if a rate becomes negative as a result of the application of a margin  the rate will be set to zero</p>
+            <p>   YES</p>
+            <p>   Indicates that negative rates can be input and if the application margin makes the rate more negative </p>
+            <p>   then the more negative rate will be used.</p>
+            <p>   BLOCK.MARGIN </p>
+            <p>   Indicates that negative rates can be used but the following conditions apply</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   -  If the rate is positive and the margin makes the rate negative then the rate will be set to zero</p>
+            <p>   -  If the rate is negative and the margin makes the rate more negative then the margin will be ignored  and the original negative rate is used</p>
+            <p>   -  If the total debit interest on capitalisation is a debit to the customer then update AC.PENDING as per the exsisting functionality</p>
+            <p>   -  If the total debit interest on capitalisation is a credit to the customer then the interest will be posted directly to the customer account</p>
+            <p>   -  If correction takes place for a debit interest which results in a credit to the customer account and we have an AC.PENDING record present then AC.PENDING record is updated with the negative amount and the interest pending processing would then do the correct interest posting based on the dates defined.</p>
+
+        </desc>
+</t>
+</menu>
+</t24help>
+

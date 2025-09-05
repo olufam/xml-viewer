@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SC</product>
+<table>SC.VAL.REPORT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This table is user maintained and is used to produce the valuation reports as defined by the user, using the Enquiries System. </p>
+            <p>This table will only be used if the Valuation Subroutine on the SC.PARAMETER record is "SC.VAL.REPORT$RUN. </p>
+            <p>This means that when the user decides to use this file to produce the reports, the following steps need to be carried out to ensure that fatal errors will not occur. </p>
+            <p>1.         This table must be set up with all the enquiry record            layouts required for each report type. </p>
+            <p>2.         The SC.PARAMETER record must be updated as shown            above. </p>
+            <p>3.         There are three applications which can be used to            produce the reports:- </p>
+            <p>           (i)  Outline reports (OL.VAL.REPS).  The user must                 amend records here to validate the report type                 against SC.VAL.REPORT </p>
+            <p>           (ii) End of Day (SC.REPORTS.REQUEST)                 Same changes to be made by the user as for                 OL.VAL.REPS. </p>
+            <p>           (iii)CUSTOMER SECURITY records to be updated so                 that these report types are validated against                 SC.VAL.REPORT. </p>
+            <p>To avoid unnecessary errors it is advisable to create the same records which are held on the SC.REPORT.TYPE file and therefore, avoiding the above changes to the database apart from the SC.PARAMETER record. </p>
+            <p>A number of Enquiries are provided to the user which may be of help in creating your own.  These are:- </p>
+            <p>SC.VAL.REPORT            Transaction details showing nominal                          amout, price and estimation amount. </p>
+            <p>SC.PORT.TOTALS           Portfolio totals showing contributions,                          withdrawals, accrued interests etc. </p>
+            <p>SC.VAL.EQ.COUNTRY        Equities summary by country. </p>
+            <p>SC.VAL.EQ.INDUSTRY       Equities summary by industry. </p>
+            <p>SC.VAL.FIXED.SEC.MAT     Fixed term securities by maturity. </p>
+            <p>SC.VAL.ANNUALISE         Annualised performance analysis. </p>
+            <p>SC.VAL.LIQUIDITY.MAT     Liquidates by maturity. </p>
+            <p>SC.VAL.SAM.HEAD          Header page showing static details of                          the portfolio i.e. name and address. </p>
+            <p>SC.VAL.MATRIX            Valuations matrix grid. </p>
+            <p>The example below shows a SC.VAL.REPORT record created using above enquiries:- </p>
+            <p>3          DETAIL.HEADER SC.VAL.SAM.HEAD 4.1        ASSET.TYPE 30 _ BONDS 5.1        SUB.ASSET.TYPE 6.1        DETAIL.LAYOUT SC.VAL.REPORT 7.1        DET.PAGE.THROW NO 4.2        ASSET.TYPE 10 _ SHARES 5.2        SUB.ASSET.TYPE 6.2        DETAIL.LAYOUT SC.VAL.REPORT 7.2        DET.PAGE.THROW Y 8          DEF.DET.LAYOUT SC.VAL.REPORT 9          SUMMARY.HEADER 10.1       SUMMARY.LAYOUT SC.PORT.TOTALS 11.1       SUM.PAGE.THROW Y 10.2       SUMMARY.LAYOUT SC.VAL.ANNUALISE 11.2       SUM.PAGE.THROW NO </p>
+            <p>This will produce the report by grouping the asset types 30 and 10 on the different pages of the report and the rest together using the same layout SC.VAL.REPORT and two summary reports. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>DETAIL.LAYOUT</field>
+<desc>
+            <p>Defines the print layout for the sub-asset or asset type entered. </p>
+            <p>This is a multi-valued field and is used to define the detailed report layout for either the associated asset type or sub-asset type entered. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 32 Alphanumeric characters (Optional input)</p>
+            <p>If entered, it must be a valid enquiry record.</p>
+        </desc>
+</t>
+<t>
+<field>REPORT.TYPE</field>
+<desc>
+            <p>Defines the key to the Valuations Report type. </p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to two Alphanumeric characters</p>
+        </desc>
+</t>
+<t>
+<field>SUMMARY.LAYOUT</field>
+<desc>
+            <p>Summary report layout showing different summary reports. </p>
+            <p>This is a multi-valued field and the user can define what reports are required to produce the valuation reports. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 32 Alphanumeric characters (Optional input)</p>
+            <p>If entered, it must be a valid enquiry record.</p>
+        </desc>
+</t>
+<t>
+<field>SUMMARY.HEADER</field>
+<desc>
+            <p>Enquiry record key to print headings before summary reports. </p>
+            <p>This can be used as header only report to be printed before the summary reports showing information about the portfolio. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 32 Alphanumeric characters (Optional input)</p>
+            <p>If entered, it must be a valid enquiry record.</p>
+        </desc>
+</t>
+<t>
+<field>REP.CONTROL.ID</field>
+<desc>
+            <p>Report Control System Link report to destination printer. </p>
+            <p>This must be present in order to produce the report using the Report Control System.  Subsequently this will determine the destination printer for the report. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 Alphanumeric characters (Mandatory Input)</p>
+            <p>A valid report control key must be entered and will be enriched with its description.</p>
+        </desc>
+</t>
+<t>
+<field>DETAIL.HEADER</field>
+<desc>
+            <p>Enquiry record key to print headings before detailed reports. </p>
+            <p>This may be used to define an enquiry for printing a header for the entire report.  i.e. this may be a front page showing relative static data of the portfolio. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 32 Alphanumeric characters (Optional input)</p>
+            <p>If entered, it must be a valid "enquiry" record.</p>
+        </desc>
+</t>
+<t>
+<field>SUM.PAGE.THROW</field>
+<desc>
+            <p>Y or NO flag to throw page after each summary report is produced. </p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid input is Y or NO (Optional input defaults to NO)</p>
+        </desc>
+</t>
+<t>
+<field>SUB.ASSET.TYPE</field>
+<desc>
+            <p>Defines the Detailed Layout to be used for this sub-asset type. </p>
+            <p>This is a multi-valued field associated to the asset type and the Detailed Layout fields.  If the sub-asset type is entered the report will be produced using the associated detailed layout for all transactions with the same sub-asset type. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 5 Alphanumeric characters (Optional input)</p>
+            <p>A valid sub-asset type is required which will be enriched with the description from the sub-asset type record.</p>
+            <p>Input is allowed only if there is a corresponding Detailed Layout and the asset type has not been entered.</p>
+        </desc>
+</t>
+<t>
+<field>ASSET.TYPE</field>
+<desc>
+            <p>Defines the detailed layout to be used for this asset type. </p>
+            <p>This is a multi valued field associated to the sub-asset types and the Detailed Layout fields.  If the asset type is entered, then the report will be produced using the associated detailed Layout for transactions with the same asset type. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 3 Numeric characters (Optional input)</p>
+            <p>A valid asset type is required which will be enriched by the description from the asset type record.</p>
+            <p>Input is allowed only if there is a corresponding Detailed Layout and the sub-asset type has not been entered.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.DET.LAYOUT</field>
+<desc>
+            <p>Default detailed layout to print asset and sub-asset type transactions which have not been entered on the record. </p>
+            <p>This layout will be used to print the report for all those transactions whose asset and sub-asset types have not been associated with another detailed layout. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 32 characters (Mandatory Input)</p>
+            <p>Input must be a valid enquiry record.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Defines the description of the report type. </p>
+            <p>Input here is language based and therefore, the description is a multi-valued field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 Alphanumeric characters (Input is mandatory)</p>
+        </desc>
+</t>
+<t>
+<field>DET.PAGE.THROW</field>
+<desc>
+            <p>Yes or No flag to throw a page after printing the detailed report. </p>
+            <p>Flag will determine a page throw for each detailed layout if this is set to "Y". </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid Input is Y or NO (Optional input)</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

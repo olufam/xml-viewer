@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>AC</product>
+<table>NOSTRO.ACCOUNT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This table defines the Nostro Accounts by Currency and identifies which Account is the default Nostro for each function of each Application within the specified Currency. </p>
+            <p>The various Nostro Accounts can be recorded for each Application and, if necessary, for each Transaction Type within FUNDS.TRANSFER. Thus FT Inward and Outward Dollars could be defined to use different Nostro Accounts. </p>
+            <p>Furthermore, within the same Application various Nostros can be defined and the corresponding Application will pick up the appropriate Nostro according to the identifying digit specified at the transaction level.  The major use of this specific access method is in FX where various default Nostros may be required per Currency. </p>
+            <p>The definition of Nostro Accounts within this table eliminates the need to enter the same details each time for each transaction processed by the various Applications of T24 </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>REGION.CODE</field>
+<desc>
+            <p>Defines the Region of the Country in which the Account exists. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-4 type S (uppercase alpha or numeric) Region code. Multivalue field associated with Transaction Type and Account. (Optional input) This information will be used to recognise the different holidays between Regions within a Country when defining the payment notice period applicable.</p>
+        </desc>
+</t>
+<t>
+<field>TXN.TYPE</field>
+<desc>
+            <p>Identifies the Transaction Type of the Account in the associated field and allows the User to define different Nostro Accounts according to Transaction Type if it is required to differentiate accounts. </p>
+            <p>Current Valid FT Transaction Types are:            AC = Account transfer            DD = Direct Drawing            OC = Outward by cheque            OD = Outward by draft            OT = Outward by telex            OB = Outward by bankers payment            BA = Outward by Bacs (UK only) </p>
+            <p>           IC = Inward by cheque/draft            IB = Inward by Bankers payment            IT = Inward by telex            IM = Inward by mail transfer </p>
+            <p>           Input in this field will only be allowed for the            FUNDS.TRANSFER Application and will not be accepted            when another Application ID or ALL has been entered in            the Application field. </p>
+            <p>Note:      If all Transaction Types are to use the same Nostro            Account Number then leave this field blank. </p>
+            <p>           Where the System cannot find a specific Transaction            Type within the Application range then use will be made            of a blank Transaction Type; if this does not exist,            reference will be made to any ALL element. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 type AAA (alpha) characters transaction type. Presently only Transaction Types from the Funds Transfer Application are allowed in this field. Sub-value field associated with ACCOUNT and REGION fields. (Optional input if Application is FUNDS.TRANSFER, otherwise not allowed.) Any FUNDS.TRANSFER transaction type entered into this field must have been previously defined on the FT.TXN.TYPE.CONDITION table.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>This is a multi valued field. Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 35 characters may be entered.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT</field>
+<desc>
+            <p>Defines the identity of the Account record which is to be the default Nostro. </p>
+            <p>The System will verify against the ACCOUNT.CLASS file that the Account entered is a valid Nostro Account and also that the Currency of the Account is the same as the Currency defined as the key. </p>
+            <p>The System will also ensure that erroneous duplicated data is not entered (e.g. if ALL 9999 is present, then FT 9999 will not be permitted). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2-16 numeric character Account number or     3-10 type MNE (uppercase alpha or numeric or ".") character Account Mnemonic. Multivalue field associated with Transaction Type and Region. (Mandatory input)</p>
+            <p>Must be a valid nostro account (LIMIT.REFERENCE must equate to "NOSTRO") in the associated currency.</p>
+            <p>The System will verify that the Customer of the Account is a bank.</p>
+        </desc>
+</t>
+<t>
+<field>APPLICATION</field>
+<desc>
+            <p>Defines the Application(s) for which the associated Nostro Account must be used as the default. </p>
+            <p>In cases where different default Nostro Accounts are used depending on the Application, this field defines the Applications: </p>
+            <p>   Application products    FT = FUNDS TRANSFER    FX = FOREIGN EXCHANGE    MM = MONEY MARKET    LD = LOANS/DEPOSITS    SC = SECURITIES </p>
+            <p>   Application sub-products    NP = PAYMENT NETTING </p>
+            <p>ALL can be used to represent all Applications or all other Applications as illustrated in the following examples. </p>
+            <p>Where both ALL and a specific Application is defined, the System first attempts to use the specific Application.  If not acceptable (eg. wrong Transaction Type) then use will be made of the ALL default values. </p>
+            <p>           EXAMPLE 1 </p>
+            <p>           APPLICATION        ALL            TRANS.TYPE          -            ACCOUNT            123456 </p>
+            <p>           EXAMPLE 2 </p>
+            <p>           APPLICATION        FX            TRANS.TYPE          -            ACCOUNT            111111 </p>
+            <p>           APPLICATION        FT            TRANS.TYPE         OD            ACCOUNT            222222 </p>
+            <p>           APPLICATION        ALL            TRANS.TYPE          -            ACCOUNT            123456 </p>
+            <p>In example 1 all four Applications use A/C 123456 but in example 2, FX uses A/C 111111, FT uses A/C 222222 for outward by draft.  The other Transaction Types generated by FT and all other Applications use 123456. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Multivalue field. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>Identifies the Nostro Accounts for this Currency. </p>
+            <p>The Code used for Nostro must be a valid Currency code as held on the Currency Code file and must comply with the account data contained within this record.  Ideally the User should define default Nostros for all Currencies to avoid the need to enter the same data at the transaction level. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 type SSS (uppercase alpha) character Currency code or     1-3 numeric character Currency code. Must be a valid code in the CURRENCY file.</p>
+        </desc>
+</t>
+<t>
+<field>K.CURRENCY</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

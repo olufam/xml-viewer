@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>MM</product>
+<table>MM.FID.COMMISSION</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The Money Market Fiduciary Commission Table contains the information the system will use to calculate commissions to be charged to customers in respect of fiduciary deposits opened by those customers with the branch. </p>
+            <p>A specific commission may be defined on the table in terms of a currency only or in terms of a currency and a customer. In the former case the system will use the information as default values in respect of commission to be charged with regard to a particular currency and in the absence of specific customer ID information. In the latter case commission charged can be identified in respect of currency and of a clearly identified customer so that for the customer in question the system will have at its disposal a set of unique commission details applicable specifically for that particular customer. </p>
+            <p>The User also has the option to input a specific amount when loading a contract, and this amount may be completely independent of any conditions specified on the Fiduciary Commission Table. </p>
+            <p>Thus if the Fiduciary Commission Table specifications would normally dictate a commission of say, 5,000.00 on a contract of 500,000.00, then the User may directly input say, 7,500.00 on loading a contract (field 50 Fiduciary Total Commission Amount), and in effect override the conditions set up on the Fiduciary Commission Table for the particular currency and customer in question. </p>
+            <p>Clearly therefore, the system allows complete flexibility in permitting the User to approach the question of fiduciary commissions in any way he chooses. </p>
+            <p>There follows a description of each Fiduciary Commission Table field and its corresponding input. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>MIN.COMM.AMOUNT</field>
+<desc>
+            <p>Specifies the minimum commission to be charged in respect of a currency or a customer. </p>
+            <p>This field defines the minimum amount that will be charged in respect of a deal done in a particular currency or for a particular customer in that currency. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Amount format. - Type AMT. Input is mandatory at System level but optional at Customer level.</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT.LIMIT...</field>
+<desc>
+            <p>Specifies the maximum amount of principal to which the rate defined in the previous field is applicable. </p>
+            <p>The system will apply the rate input at the previous field to all contracts of a value up to and including the amount in this field. Any contract over this amount will have its commission calculated at the next rate (if any) in the tier of multivalue fields up to and including the next maximum amount specified. </p>
+            <p>For Example:- </p>
+            <p>FIELD                                INPUT </p>
+            <p>3.1  Commission Rate                5.0% 4.1  Amount.Limit                   50,000.00 () 3.2  Commission Rate                4.00% 4.2  Amount.Limit                  100,000.00 () 3.3  Commission Rate                3.0% 4.3  Amount.Limit                  250,000.00 () </p>
+            <p>Assume three fiduciary deposits are loaded, each one for a 61 day period, but with principal amounts of 50,000.00, 100,000.00 and 250,000.00 respectively. </p>
+            <p>Then:- a)   on 1st contract fiduciary commission is                  50,000.00 X 61 X 5%  is 417.81                  36,500 </p>
+            <p>       b)  on 2nd contract fiduciary commission is </p>
+            <p>                 100,000.00 X 61 X 4%  is 668.49                  36,500.00 </p>
+            <p>       c)  on 3rd contract fiduciary commission is </p>
+            <p>                 250,000.00 X 61 X 3%  is 1,253.42                  36,500.00 </p>
+            <p>Note:      The day basis used in the calculation is            taken from the INTEREST.BASIS field on the            contract. </p>
+            <p>From the examples given above it will be seen that the system always calculates a flat commission on the face value of the contract. If the principal amount on the contract changes during the period over which commission is calculated, then a weighted average of the individual principal amount will be used. </p>
+            <p>The associated multivalue fields 3.1 and 4.1 may be expanded up to a maximum of 999, but however many are used, the last amount field of the group must be the maximum amount allowed by the system for the appropriate currency. </p>
+            <p> eg for a '2' decimal currency: 999,999,999,999.99     for a '0' decimal currency: 99,999,999,999,999 </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard amount format. (Multivalue field associated with field 3) (Optional input ; default value is maximum amount permitted by system ie 14 x 9's).</p>
+            <p>The fiduciary commission calculated by each tier  must not be greater or equal to the maximum commission amount (field 2) except for the last tier.</p>
+            <p>The amount limits must be in ascending order.</p>
+        </desc>
+</t>
+<t>
+<field>COMMISSION.RATE</field>
+<desc>
+            <p>This is the default rate per annum to be charged on the principal amount of the contract. </p>
+            <p>This rate will be used to calculate the fiduciary commission when no rate has been entered on the fiduciary contract. </p>
+            <p>Input at this field must be within the maximum and minimum allowed for a fiduciary contract as specified on the LMM.INSTALL.CONDS table at the fields called Fid.Max.Comm.Rate and Fid.Min.Comm.Rate. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard rate format 6,9. (Multivalue field associated with field 4 Amount.Limit) (Mandatory Input.)</p>
+        </desc>
+</t>
+<t>
+<field>KEY</field>
+<desc>
+            <p>Identifies whether details contained in the record apply to currency or currency and customer together. </p>
+            <p>Input of a currency code only will represent the system default conditions for the currency. </p>
+            <p>Input of a customer number as part of the key will signify the fiduciary commission details applicable to the customer identified in respect of any deals he does in that currency. For example:- </p>
+            <p>INPUT                        SYSTEM MEANING </p>
+            <p>GBP               System will use the details on this                   record for all deals in GBP with no                   specific customer ID </p>
+            <p>GBP.20000         System will only use the details on                   this record for all deals in GBP                   done with customer number 20000.                   These details are unique and do                   not apply to any other customer. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input must be a valid currency code together with the (optional) addition of a valid customer ID</p>
+        </desc>
+</t>
+<t>
+<field>MAX.COMM.AMOUNT</field>
+<desc>
+            <p>Specifies the maximum commission to be charged in respect of a currency or a customer. </p>
+            <p>This field defines the maximum amount that will be charged in respect of a deal done in a particular currency or for a particular customer in that currency. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Amount format. - Type AMT. (Optional input).</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

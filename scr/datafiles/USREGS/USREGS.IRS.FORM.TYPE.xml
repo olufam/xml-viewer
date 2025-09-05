@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<header>
+		<product>USREGS</product>
+		<table>USREGS.IRS.FORM.TYPE</table>
+	</header>
+	<overview>
+	<ovdesc>
+		<p>This table will be used to hold the various parameters for the different tax form types.</p>
+	</ovdesc>
+	</overview>
+	<menu>
+	<t>
+		<field>FORM.ID</field>
+		<desc>
+			<p>ID of Tax Form needed for IRS.</p>
+			<p>Max 16 Alphanumeric character</p>
+		</desc>
+	</t>
+	<t>
+		<field>LL.DESCRIPTION</field>
+		<desc>
+			<p>Description of the Tax Form.</p>
+			<p>Max 35 Alphanumeric character.</p>
+		</desc>
+	</t>
+	<t>
+		<field>MAP.FILE</field>
+		<desc>
+			<p>The underlying file from which the data of the fields are to be referenced for mapping the ID for the tax table are defined here.</p>
+			<p>The allowable drop down values are STMT.ENTRY,RE.CONSOL.SPEC.ENTRY,USREGS.IRS.TAX.DETAILS</p>
+		</desc>
+	</t>
+	<t>
+		<field>SYSTEM.ID</field>
+		<desc>
+			<p>This field will have the EB.SYSTEM.ID of the transaction. </p>
+			<p>This is an optional field and need to be defined only if different mapping of ID fields are to be done depending on the main application.</p>
+			<p>EX: If the ID of Tax reporting  contains the loan reference then the TXN.REFERENCE can be directly mapped for EB.SYSTEM.ID “LD”  for STMT.ENTRY raised  from LD.LOANS.AND.DEPOSITS </p>
+			<p>In case of STMT.ENTRY raised from PD.PAYMENT.DUE   only part of the TXN.REFERENCE need to be mapped to get the loan reference.</p>
+			<p>Hence this can be achieved  by the combination of SYSTEM.ID as “PD“and ID.STMT.FLD with an extract function.</p>
+			<p>Max 6 Alphanumeric character.</p>
+		</desc>
+	</t>
+	<t>
+		<field>ID.MAP.FLD</field>
+		<desc>
+			<p>This field is to be used to define the field mapping from the underlying base table to form the id of the Tax Form database. </p>
+			<p>The default id of the tax form database is the customer No.</p>
+			<p>If tax reporting has to be done on contract level rather than customer level then this functionality can be used. </p>
+			<p>This field support Extract function.</p>
+			<p>Max 20 Alphanumeric character.</p>
+		</desc>
+	</t>
+	<t>
+		<field>ID.ROUTINE</field>
+		<desc>
+			<p>This field is used to attach user defined routine If complex level of id mapping.</p>
+			<p>It should be always taken care that the first part of the id should always be a valid customer No.</p>
+			<p>Max 35 Alphanumeric character</p>
+		</desc>
+	</t>
+	<t>
+		<field>PAYMENT.AMOUNT.POS</field>
+		<desc>
+			<p>This field defines the tax Amount code which has to contain the financial information like year to date interest or year to tax with held.</p>
+			<p>Max 35 Alphanumeric character</p>
+		</desc>
+	</t>
+	<t>
+		<field>AMOUNT.TYPE</field>
+		<desc>
+			<p>This field describes the amount code like INT.INCOME.</p>
+		</desc>
+	</t>
+	<t>
+		<field>TXN.CODE</field>
+		<desc>
+			<p>This field is used to map the Transaction codes to the particular tax Amount code.</p>
+			<p>This field along with 9 and 10 fields is used to define the transactions that needs to be accumulated to the Tax form Box.</p>
+			<p>Example – If the credit interest from account has to be captured then the transaction code 381 has to mapped here.</p>
+			<p>Max 4 Numeric character</p>
+		</desc>
+	</t>
+	<t>
+		<field>TXN.SYS.ID</field>
+		<desc>
+			<p>If a particular transaction code originating from a specific module only has to be mapped then define the EB.SYSTEM.ID of the particular application here.</p>
+			<p>Max 6 Alphanumeric character.</p>
+
+		</desc>
+	</t>
+	<t>
+		<field>TXN.ROUTINE</field>
+		<desc>
+			<p>If extra conditions has to be built to decide if a transaction entry, </p>
+			<p>with a specific transaction code has to be captured into a specific tax Box form then the routine  has to be specified here.</p>
+			<p>Max 35 Alphanumeric character</p>
+		</desc>
+	</t>
+	<t>
+		<field>INC.CATEGORY</field>
+		<desc>
+			<p>This restricts the data capture for specific categories. </p>
+			<p>If a particular form needs to mapped from only certain products then the category code for the product can be specified here.</p>
+			<p>This is an optional field.</p>
+			<p>Max 6 Numeric character.</p>
+		</desc>
+	</t>
+	<t>
+		<field>INT.MIN.AMT</field>
+		<desc>
+			<p>Minimum Amount for which the transaction will be considered.</p>
+			<p>AMOUNT field.</p>
+			<p>Max 19 Numeric character</p>
+		</desc>
+	</t>
+	<t>
+		<field>EXC.RESIDENCE</field>
+		<desc>
+			<p>Shows the residence details which are to be excluded from the IRS processing</p>
+			<p>Max 4 Alpha character</p>
+		</desc>
+	</t>
+	<t>	
+		<field>EXC.SECTOR</field>
+		<desc>
+			<p>Shows the sector codes which are to be excluded from the year-end tax reporting process</p>
+			<p>Max 5 Numeric character</p>
+		</desc>
+	</t>
+	<t>
+		<field>CONDITION.RTN</field>
+		<desc>
+			<p>The application allows conditional reporting only based on category.</p>
+			<p>If additional conditions needs to be done then this can be catered using the condition routine API.</p>
+			<p>The condition routine is triggered before id mapping and transaction mapping.</p>
+			<p>Max 35 Alphanumeric character</p>
+		</desc>
+	</t>
+	<t>
+		<field>VDATE.ADJUST</field>
+		<desc>
+			<p>All account interest capitalization accounting entries would have the booking date and value date different in T24.</p>
+			<p>This is because even though the interest capitalization was booked on cob </p>
+			<p>the value date has to be the next date since the value dated balances for accounts has to get reflected only on the next day.</p>
+			<p>Hence this functionality would allow the user to specify that the interest needs to be updated to the previous day (value date – 1) in the tax database.</p>
+			<p>The filed format is   sign:no:(C or w) . e.g. -1C . </p>
+			<p>This field is really crucial in cases of cross year reposting.</p>
+			<p>If the valued date is not adjusted then the entry may be reported on the next year instead of the previous year.</p>
+			<p>AMOUNT Field</p>
+			<p>Max 19 Alphanumeric character</p>
+		</desc>
+	</t>
+	<t>
+		<field>VDAT.ADJ.TXN</field>
+		<desc>
+			<p>This filed is the associated field to VDATE.ADJUST.</p>
+			<p>All the transactions dates that need to follow the adjust value date should be specified here.</p>
+		</desc>
+	</t>
+	</menu>
+</t24help>
+

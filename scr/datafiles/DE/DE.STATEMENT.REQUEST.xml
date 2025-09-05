@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DE</product>
+<table>DE.STATEMENT.REQUEST</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This application is used to generate outward MT920 (Request statement) which requests to send  either 940-Customer statement, 941-Balance report, 942-Interim transaction report or 950-Statement message for the Account maintained at the receiver institution.</p>
+            <p>This multiple message is sent by an account owner, or a financial institution acting on behalf of an account owner, to an account servicing institution and currently in T24, the outward MT920 is sent without validating the Account and agreement between the parties.</p>
+            <p>Also same application is used to process incoming MT920, by populating the respective fields in the application with the Incoming tag details and to generate the requested Message.Type. However when an incoming MT920 is received, before generating the required statement,  existence of Bilateral agreement for the combination of sender of MT920, Customer of the account as mentioned in the incoming MT920 and Message type request  is checked. These agreement details can be maintained in BILATERAL.AGREEMENT application for the Customer &amp; Institution along with the approved Message List.</p>
+            <p>In case the BILATERAL.AGREEMENT is not available for the above mentioned combination or error such as In valid Account in Incoming MT920 is encountered , a record is created in DE.STATEMENT.REQUEST with status as "IHLD". After adding the BILATERAL.AGREEMENT, statement request can be submitted again or request can be discarded incase the user wishes to handle the request manually.</p>
+            <p>When a request for 940/950 is received, the applications ADHOC.MESSAGES &amp; ADHOC.STATEMENTS are also updated to avoid duplicate generation of statements during end of day process. </p>
+            <p>The generated statement's delivery reference is updated back here.</p>
+            <p />
+            <p />
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>DR.FLOOR.LMT</field>
+<desc>
+            <p>This field specifies the minimum value (transaction amount) to be reported on the requested message and same is mapped to tag 34F (Floor Limit) in outward MT920.</p>
+            <p>When DR.FLOOR.LMT is alone entered &amp; CR.FLOOR.LMT is left blank, then the floor limit applies to both Debit &amp; Credit.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory -When XML.STMT.TYPE is defined and when Message.Type is specified as 942.</p>
+            <p>1-14 characters plus a decimal point (Standard Amount format) - type       AMT. </p>
+        </desc>
+</t>
+<t>
+<field>IN.DELIVERY.REF</field>
+<desc>
+            <p>Contains the inward delivery reference which created this request record.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No Input -Updated by system</p>
+            <p>Must be a valid record in DE.I.HEADER.</p>
+        </desc>
+</t>
+<t>
+<field>IN.TRANS.REF</field>
+<desc>
+            <p>Contains the incoming MT920 transaction reference number (Tag 20) details.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input -updated by system</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>IN.SWIFT.MSG</field>
+<desc>
+            <p>Contains the Inward MT920 Message, Block 4 details of entire message details.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input -Updated by system</p>
+        </desc>
+</t>
+<t>
+<field>OUT.ACCOUNT</field>
+<desc>
+            <p>This field identifies the account for which the information is requested and same is mapped to outward MT920 tag 25 details.</p>
+            <p>Duplicate values for the combination of Out.Account &amp; Message.type is not allowed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory field for Outward Instruction.</p>
+            <p>Free text 35 Characters.</p>
+        </desc>
+</t>
+<t>
+<field>INSTITUTION</field>
+<desc>
+            <p>Contains the Receiver Institution details of the MT920 (Request Message) for Outward instruction and the Sender Institution details for Inward instruction.</p>
+            <p>Outward</p>
+            <p>Specify a valid BIC prefixed with "SW-" or a Customer in this field and the outward MT920 is generated with the receiver as specified here along with the details as given in below fields.</p>
+            <p>Inward</p>
+            <p>For Inward MT920 which are processed through Inward processing, this field contains the Original Sender of MT920 ie. either a BIC address prefixed with "SW-" or a Customer number when the BIC has a record in DE.ADDRESS. To send the statement to the Sender of MT920 message, the DE.ADDRESS record for the Incoming Accounts' Customer should have the Correspondent BIC code otherwise statements are sent to the address and carrier as applicable for the Incoming Account's Customer instead of Correspondent.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory field</p>
+            <p>For outward instruction - Must be a valid BIC prefixed with     "SW-" or a valid T24 Customer Number.</p>
+            <p>For inward instruction -updated either customer number or BIC prefixed     with "SW-".</p>
+        </desc>
+</t>
+<t>
+<field>IN.ACCOUNT</field>
+<desc>
+            <p>This field identifies the Account for which transaction information requested via incoming MT920.</p>
+            <p>The tag 25 (Account Identification) detail in MT920 message,  is mapped here during Inward processing.</p>
+            <p>The  Incoming Account available here should be a valid T24 Account-otherwise Error raised.</p>
+            <p>There should be a Bilateral agreement record in existence as on the creation date for the combination of this Account Customer, the Sender of MT920 ( as populated in the previous field) and for the Message type-Otherwise Error Raised. </p>
+            <p>In addition to the above, to generate MT941,MT942 messages, in response to Incoming MT920, the Send.Msg.Type should be set to "STP" in ACCOUNT.STATEMENT application for the Account mentioned here-Otherwise Error raised.</p>
+            <p>Valid Account number can be inputted here incase the T24 Account number cannot be derived through the Incoming MT920 process-However other incoming details cannot be modified.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Updated by System with the Incoming MT920 -Tag 25 -Account Number </p>
+            <p>Can be changed to a Valid T24 Account Number before authorisataion       for direct Inward </p>
+            <p>No input field for direction - Outward </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>IN.PROCESS.ERR</field>
+<desc>
+            <p>Contains the processing error encountered during creation of this record through Inward MT920 processing.</p>
+            <p>While processing the Incoming MT920, any error is encountered then the record is put on Hold with text "Validation Error -On Hold". While the record is taken for processing, the appropriate error message is shown.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input field-Updated by system.</p>
+        </desc>
+</t>
+<t>
+<field>REQUEST.KEY</field>
+<desc>
+            <p>Identifies uniquely each Statement request transaction.</p>
+            <p>Can be generated automatically by inputting the required details in AUTO.ID.START Application &amp; in PGM.AUTOM.ID in COMPANY Application.</p>
+            <p>To avoid the necessity to input the complete Reference Number, the User has the facility to input only the sequence number of the transaction to access any transaction which has been input that day. The Application will automatically generate the seven first digits and append them to the front of the sequence number in order to retrieve the requested transaction.</p>
+            <p>Explanation of Reference Number format: SRYYDDDNNNNN where:</p>
+            <table cellSpacing="0" border="0">
+                <tbody>
+                    <tr>
+                        <td vAlign="center">
+                            <p>SR</p>
+                        </td>
+                        <td vAlign="center">
+                            <p>Application indicator - SR for the Statement Request Application</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td vAlign="center">
+                            <p>YY</p>
+                        </td>
+                        <td vAlign="center">
+                            <p>Last two digits of year when transaction is processed</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td vAlign="center">
+                            <p>DDD</p>
+                        </td>
+                        <td vAlign="center">
+                            <p>Julian day number within year when the SR is processed</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td vAlign="center">
+                            <p>NNNNN</p>
+                        </td>
+                        <td vAlign="center">
+                            <p>Sequence number.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Once authorised can not be amended.</p>
+        </desc>
+</t>
+<t>
+<field>OUT.DELIVERY.REF</field>
+<desc>
+            <p>Contains the outward delivery reference number of the Account statements(MT941/MT942/MT940/MT950) which is generated in response to this Inward MT920 request.</p>
+            <p>Request received for Interim statement (941/942) is processed online &amp; this field is updated with the relevant delivery reference.</p>
+            <p>Account Statements (940/950) are generated as a special statement during End of day process and the delivery reference number is updated here &amp; respective Account record in ACCOUNT.STATEMENT during end of day processing.</p>
+            <p>Incase a statement is already scheduled for a Message type in frequency 1 (date as given in STMT.FQU.1 field in ACCOUNT.STATEMENT) and an Inward MT920 is processed for the same message type, then statement is generated as per frequency 1 only and delivery reference is updated in ACCOUNT.STATEMENT alone. </p>
+            <p>This field is updated as "MSG ALREADY SCHEDULED TO BE SENT TODAY" when more than one MT920 request is received with same Message type-either (940/950). </p>
+            <p>The Outward Message is mapped , formatted and generated using the Carrier &amp; Address as defined for the combination of Customer / Account / Message type in the DE.PRODUCT Application as per the existing Delivery mechanism.</p>
+            <p>For example, To send Swift Message MT941 for the Accounts related to Dell  to Merrill Lynch Bank in response to MT920, following setup is required.</p>
+            <p />
+            <p>Add a record in DE.ADDRESS for the Customer (1044) &amp; Carrier (Swift )     combination as "MLNYUS33" (Swift address of Correspondent Bank- Merrill Lynch Bank)</p>
+            <p>DE.PRODUCT should be set to carrier as 'SWIFT' for the Customer(1044)     &amp; Message (941) combination.</p>
+            <p>If XML.STMT.TYPE is specified, then this field holds the XML.OUTPUT.MSG id</p>
+		    <p>XML.OUTPUT.MSG id is updated after the XML.TRANSFORMATION service</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input -Updated by system</p>
+            <p>Multi value field</p>
+            <p>Must be a valid record in DE.O.HEADER for MT messages</p>
+		    <p>Must be a valid record in XML.OUTPUT.MSG for CAMT messages</p>            
+</desc>
+</t>
+<t>
+<field>MESSAGE.TYPE</field>
+<desc>
+            <p>For outward instruction, specify the message type which is to be requested and same is mapped to tag 12 (Message Request) of MT920.</p>
+            <p>Once an inward MT920 is processed, the tag 12 details is mapped in this field.</p>
+            <p>The fields Message.Type to Cr.Floor.Lmt are Associated multi value sets and same is mapped to outward MT920 for each repeating sequence.</p>
+            <p>For Inward MT920, for each repeating sequence a record in DE.STATEMENT.REQUEST is created. Please note the incoming MT920 details mapped to this application cannot be modified except for the Incoming Account Number.</p>
+            <p>Duplicate values for the combination of Out.Account &amp; Message.type is not allowed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory field if XML.STMT.TYPE is not specified</p>
+            <p>Valid values are "940"- Customer Statement,       "941"-Balance Report, "942"- Interim Transaction       Report,"950"-Statement Message</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AC.CURRENCY</field>
+<desc>
+            <p>Specify the Currency of the Account as given in the previous field and the currency given here along with the Floor limit as given in the next field is mapped to tag 34F (Floor Limit) in outgoing MT920, when an MT942 -Interim statement is requested.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory incase Message type is given as '942'.</p>
+            <p>3 characters (uppercase alpha) - type SSS. or 1-3 numeric character       Currency Code</p>
+            <p>Must be a valid currency in CURRENCY application.</p>
+        </desc>
+</t>
+<t>
+<field>CR.FLOOR.LMT</field>
+<desc>
+            <p>This field specifies the minimum value (transaction amount) to be reported on the requested message and same is mapped to tag 34F (Floor Limit) in outward MT920.</p>
+            <p>The amount entered here along with the Currency given in the previous field is mapped to tag 34F for outward MT920 with D/C Marker as as C subject to the following:-</p>
+            <p>1. When DR.FLOOR.LMT is given as 10000.00, AC.CURRENCY as "USD" &amp; this field is left blank ,then the outward MT920-tag 34F appears as USD10000,00- which indicates all debit or credit transaction exceeds USD10000 has to be reported in the Interim statement.</p>
+            <p>2. When DR.FLOOR.LMT is given as 10000.00, CR.FLOOR.LMT is given as 15000.00 &amp; AC.CURRENCY as "USD", then in outward MT920-first tag 34F appears as USDD10000,00 &amp; in second tag 34F appears as USDC15000,00 which indicates debit entries in excess of USD10000 &amp; Credit entries in excess of USD15000 has to be reported in the interim statement.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />            
+            <p>Optional field -When Message.Type is specified as 942 and when XML.STMT.TYPE is defined</p>
+            <p>Input allowed only when DR.FLOOR.LMT is entered with different Amount.</p>
+            <p>1-14 characters plus a decimal point (Standard Amount format) - type AMT.</p>
+        </desc>
+</t>
+<t>
+<field>CREATION.DATE</field>
+<desc>
+            <p>Contains the date on which this statement request has been created.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No Input -Updated by system.</p>
+        </desc>
+</t>
+<t>
+<field>DIRECTION</field>
+<desc>
+            <p>Indicates whether the Statement Request is created by Inward processing or to generate Outward MT920 request.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Valid Values -Inward/Outward.</p>
+            <p>For XML Statements only Inward direction is allowed</p>
+            <p>No input- Updated by system.</p>
+        </desc>
+</t>
+	<t>
+      <field>XML.STMT.TYPE</field>
+      <desc>
+        <p>CAMT message type that needs to be generated </p>
+        <p>For CAMT052 message, the same field needs to be set in ACCOUNT.STATEMENT without which error will be thrown </p>
+        <p>Validation Rules</p>
+        <p>
+        </p>
+        <p>Optional multi value field</p>
+        <p>Values allowed are CAMT052 and CAMT053</p>
+      </desc>
+    </t>
+<t><field>XML.STATEMENT.TYPE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

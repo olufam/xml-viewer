@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>ARCHIVES.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The archives parameter file holds the conditions which must be satisfied before a record may be archived from a file. An archives parameter record exists for each main file to be treated by the archiving system. </p>
+            <p>The processing to be performed on the records satisfying the conditions depends on the history type assigned to the file. </p>
+            <p>If conditions are met the record from the main file is processed according to the history type. At the same time any related files are treated according to the processing required by the related file section of the archives parameter record. This may include related deletions, related archiving, or concat file deletions. </p>
+            <p>Normally all records from the main file are selected but the facility exists to select only certain records by building a list of keys to the main file from a driving file. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>DRIVING.FILE</field>
+<desc>
+            <p>Specifies another file from which a list of keys to the main file will be extracted. </p>
+            <p>Normally the archiving system selects all records on the main file and considers them each in turn for archiving against the conditions defined in the parameter file record. If a driving file is used this allows only certain records from the main file to be selected and avoids the processing overhead involved in selecting very large files when it is known that only certain records will be suitable for archiving. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-27 alphanumeric characters.</p>
+            <p>The filename entered must exist as an application on the PGM.FILE.</p>
+        </desc>
+</t>
+<t>
+<field>RELATED.ACTION</field>
+<desc>
+            <p>Specifies the action to be performed on records chosen from the related file by the selection criteria built in the previous fields. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 alphanumeric character.</p>
+            <p>Not allowed without related file defined.</p>
+            <p>Must be one of the following: A   Archive related record to tape and then delete. D   Delete related record when main file record is archived. C   Remove related file key from a concat record on the related     file.</p>
+        </desc>
+</t>
+<t>
+<field>DECISION.FROM</field>
+<desc>
+            <p>Specifies the comparison string/value/data for the decision check against the contents of the field being used in the main file or the contents of the replaced field if used. </p>
+            <p>This is the second element of the comparison check.  The first is the contents of the field number in the main file or the replaced contents from the replace file and field if specified. This field may contain a text string, numeric value, a date or an allowed keyword as follows: </p>
+            <p>@DATE       Todays date. Decision may be based on this value minus or plus             a specified number of days, e.g. @DATE-10C = today - 10             calendar days, @DATE+5W = today + 5 working days. Working days             are based on the holiday table. </p>
+            <p>@MONTH      Current month. Decision may be based on this value minus or             plus a specified number of months.  Months are taken as             complete so that the day within the month is not relevant and             any comparison is made against the number of complete months             separating the values being compared, e.g. @MONTH-3 = Current             month - 3 months, @MONTH+5 = Current month + 5 months. </p>
+            <p>@QUARTER    Current quarter. Decision may be based on this value minus or             plus a specified number of quarters. Quarters are taken as             complete so that the day within the month is not relevant and             any comparison is made against the number of complete quarters             separating the values being compared, e.g. @QUARTER-3 =             Current quarter - 3 quarters, @QUARTER+5 = Current quarter + 5             quarters. </p>
+            <p>@YEAR       Current year. Decision may be based on this value minus or             plus a specified number of years.  Years are taken as complete             so that the day within the month is not relevant and any             comparison is made against the number of complete years             separating the values being compared, e.g. @YEAR-3 = Current             year - 3 months, @YEAR+5 = Current year + 5 years. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 alphanumeric characters.</p>
+            <p>May not be used for history types 1 or 2 nor when FIELD.NUMBER has not been entered.</p>
+        </desc>
+</t>
+<t>
+<field>REPLACE.FLD</field>
+<desc>
+            <p>Specifies the field number in the replace file to be extracted. </p>
+            <p>The field specified here will be extracted from the replace file record. The contents replace the main file field contents being checked. Subsequent conditions in the parameter file record will now be applied to the new data contents. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric characters.</p>
+            <p>May not be entered for history types 1 or 2.</p>
+            <p>Must exist as valid field number in the replace file specified.</p>
+        </desc>
+</t>
+<t>
+<field>REL.SELECTION</field>
+<desc>
+            <p>Specifies the selection condition to be used to select the related file keys to be processed. </p>
+            <p>The subvalue set beginning RELATED.FIELD and ending REL.MOD.CALL builds a key to the related file. This key is then used in a selection of the related file. If "EQ" is entered only the record equal to the key so built is chosen for processing from the related file. If one of the LIKE operands is used the related file is selected using the key built up and a number of records may be chosen from the related file.  Each record chosen will be processed according to the action specified in the following field RELATED.ACTION. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-8 alphanumeric characters.</p>
+            <p>Not allowed without related file defined.</p>
+            <p>Must be one of the following:  LK         LiKe (containing) ...LK      LiKe with exact in rightmost LK...      LiKe with exact in leftmost EQ         EQual</p>
+        </desc>
+</t>
+<t>
+<field>RPL.MOD.CALL</field>
+<desc>
+            <p>Specifies the name of a routine which may be called to modify the contents of the field extracted from the replace file. Or may specify a string or field extraction. </p>
+            <p>String extraction, e.g. [2,8]23L - extracts characters 2 to 2+8 from a string length 23 left justified. </p>
+            <p>Field extraction, e.g. [.2] - extracts portion of field contents from replace file between the 1st and 2nd occurrence of "." </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 alphanumeric characters.</p>
+            <p>May not be entered for history types 1 or 2.</p>
+            <p>Must be a string extraction in format [x,y]nnA or a field extraction in format [c,n] otherwise must begin "@" and exist in the PGM.FILE as a defined subroutine.</p>
+        </desc>
+</t>
+<t>
+<field>REMAINING.RECORDS</field>
+<desc>
+            <p>Specifies a number of history records including the live record which must remain on the file. </p>
+            <p>If remaining records is set to 3 then regardless of whether all archiving conditions are met the live file record (if present) and the last two changes made will remain on file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric characters.</p>
+            <p>Valid for history types 2,3,4 only.</p>
+            <p>May only be used with history types 3 and 4 when the id contains a date.</p>
+        </desc>
+</t>
+<t>
+<field>REPLACE.FILE</field>
+<desc>
+            <p>Specifies secondary file to read during the check. </p>
+            <p>When the contents of a field from the current main file record are being checked they can be used as the key to a replace file. The purpose is to replace the contents of the main file field with those of one of the fields on the replace file and then continue the subsequent checks on the new data received. </p>
+            <p>This field begins a subvalue set such that any number of replacements may be made in succession each using the returned field contents from the last replacement to read the next replace file defined. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 alphanumeric characters.</p>
+            <p>May not be entered without FIELD.NUMBER defined and not allowed for history types 1 or 2.</p>
+        </desc>
+</t>
+<t>
+<field>CONC.MOD.CALL</field>
+<desc>
+            <p>Specifies the name of a routine which may be called to modify the entry to be looked up on the concat file. </p>
+            <p>String extraction, e.g. [2,8]23L. - extracts characters 2 to 2+8 from a string length 23 left justified. </p>
+            <p>Field extraction, e.g. [.2]. - extracts portion of field contents between the 1st and 2nd occurrence of   "." </p>
+            <p>Concat related treatments use the related field and related mod call subvalue set to build the key to the concat file. When this key is located the entry to be removed is normally the key to the main file record being processed. If this is not the case this field exists to allow the key to be modified or an entirely different key to be returned from a called routine.  The modified key will be the entry looked for in the concat record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 alphanumeric characters.</p>
+            <p>May not be entered without related file defined.</p>
+            <p>Only allowed if RELATED.ACTION is "C" for concat removal.</p>
+            <p>Must be a string extraction in format [x,y]nnA or a field extraction in format [c,n] otherwise must begin "@" and exist in the PGM.FILE as a defined subroutine.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.TIME.SPOOL</field>
+<desc>
+            <p>Fields CO.CODE.SPOOL to DATE.TIME.SPOOL form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 15 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>RELATED.FILE</field>
+<desc>
+            <p>Specifies the name of a related file from which one or more records require archiving when the main file record is archived. </p>
+            <p>When a record from the main file is found to satisfy all conditions and is archived this field specifies one or more related files which require treatment as a result. The field begins a multivalue set designed to build up criteria to select related file records and apply the specified treatment to them. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-27 alphanumeric characters.</p>
+            <p>Filename entered must exist as an application on the PGM.FILE.</p>
+            <p>Not allowed for history type 5.</p>
+        </desc>
+</t>
+<t>
+<field>REMARK</field>
+<desc>
+            <p>Description of the record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 alphanumeric characters. (Multivalue field)</p>
+        </desc>
+</t>
+<t>
+<field>REL.MOD.CALL</field>
+<desc>
+            <p>Specifies the name of a routine which may be called to modify the contents of the field from the main file. Or may specify a string or field extraction. </p>
+            <p>String extraction, e.g. [2,8]23L - extracts characters 2 to 2+8 from a string length 23 left justified. </p>
+            <p>Field extraction, e.g. [.2] - extracts portion of field contents between the 1st and 2nd occurrence of   "." </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 alphanumeric characters.</p>
+            <p>May not be entered without related file defined.</p>
+            <p>Must be a string extraction in format [x,y]nnA or a field extraction in format [c,n] otherwise must begin "@" and exist in the PGM.FILE as a defined subroutine.</p>
+        </desc>
+</t>
+<t>
+<field>DECISION</field>
+<desc>
+            <p>Specifies the logical decision to be used in the comparisons which follow. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 alphanumeric characters.</p>
+            <p>Must be one of the following:  EQ   EQual to GE   Greater than or Equal to GT   Greater Than LE   Less than or Equal to LT   Less Than NE   Not Equal to UL   UnLike (not containing) LK   LiKe (containing)</p>
+            <p>A check that the current field contents lie within a defined range of values or dates can be set up in conjunction with the two fields which follow DECISION.FROM and DECISION.TO.</p>
+        </desc>
+</t>
+<t>
+<field>DRIVING.FIELD</field>
+<desc>
+            <p>Specifies the field in the driving file from which the list of keys to the main file will be taken. </p>
+            <p>If driving field is blank all fields in all records found on the driving file are used as keys to the main file. If driving field is zero all keys on the driving file are used as keys to the main file. If driving field contains a field number the contents of this field in every record on the driving file is used as a key to the main file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric characters.</p>
+            <p>May not be entered without a driving file specified.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.TIME.UPDTE</field>
+<desc>
+            <p>Fields CO.CODE.UPDATE to DATE.TIME.UPDTE form a related multi value set. Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 15 characters may be entered.</p>
+            <p>This is a NOINPUT, no copy field.</p>
+        </desc>
+</t>
+<t>
+<field>CO.CODE.UPDATE</field>
+<desc>
+            <p>Fields CO.CODE.UPDATE to DATE.TIME.UPDTE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 11 characters may be entered.</p>
+            <p>This is a NOINPUT, no copy field.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.FORMAT</field>
+<desc>
+            <p>Specifies the format to be expected when processing a decision based on a date field. </p>
+            <p>Specifies the date format from one of the following: </p>
+            <p>1.   YYYYDDMM               YYYY = Year 2.   YYMMDD                   MM = Month 3.   YYYYJJJ                 JJJ = Julian system day 4.   YYJJJ                    DD = Day 5.   YYYYMM 6.   YYMM 7.   YYYY 8.   YY </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 numeric character between 1 and 6.</p>
+        </desc>
+</t>
+<t>
+<field>DECISION.TO</field>
+<desc>
+            <p>Specifies the comparison string/value/data for the decision check against the contents of the field being used in the main file or the contents of the replaced field if used. </p>
+            <p>This field defines a range for the comparison check.  The contents of the field number in the main file or the replaced contents from the replace file and field if specified are being checked against a range defined in the DECISION.FROM field and DECISION.TO field. This field may contain a text string, numeric value, a date or an allowed keyword as follows; </p>
+            <p>@DATE       Todays date. Decision may be based on this value minus or plus             a specified number of days, e.g. @DATE-10C = today - 10             calendar days, @DATE+5W = today + 5 working days. Working days             are based on the holiday table. </p>
+            <p>@MONTH      Current month. Decision may be based on this value minus or             plus a specified number of months.  Months are taken as             complete so that the day within the month is not relevant and             any comparison is made against the number of complete months             separating the values being compared, e.g. @MONTH-3 = Current             month - 3 months, @MONTH+5 = Current month + 5 months. </p>
+            <p>@QUARTER    Current quarter. Decision may be based on this value minus or             plus a specified number of quarters. Quarters are taken as             complete so that the day within the month is not relevant and             any comparison is made against the number of complete quarters             separating the values being compared, e.g. @QUARTER-3 =             Current quarter - 3 quarters, @QUARTER+5 = Current quarter + 5             quarters. </p>
+            <p>@YEAR       Current year. Decision may be based on this value minus or             plus a specified number of years.  Years are taken as complete             so that the day within the month is not relevant and any             comparison is made against the number of complete years             separating the values being compared, e.g. @YEAR-3 = Current             year - 3 months, @YEAR+5 = Current year + 5 years. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 alphanumeric characters.</p>
+            <p>May not be used for history types 1 or 2 nor when FIELD.NUMBER has not been entered.</p>
+            <p>May not be entered without DECISION.FROM.</p>
+            <p>Must be greater than DECISION.FROM if decision from is positive and less than if negative to correctly define a range of dates or numeric values.</p>
+        </desc>
+</t>
+<t>
+<field>WAITING.MONTHS</field>
+<desc>
+            <p>Specifies the required age of history records before they may be considered for archiving. </p>
+            <p>Decision is based on the date/time of authorisation of the record being considered and the record which replaced it. For example a record authorised on 12/03/88 was valid on the system until the next change made and authorised on 17/06/88. In this case specifying a waiting months of 3 would not cause the record from 12/03/88 to be archived until 3 months following the 17/06/88. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 numeric characters.</p>
+            <p>Invalid for history types 3,5,6. Mandatory for history types 1 and 2.</p>
+        </desc>
+</t>
+<t>
+<field>APPLICATION.FILE</field>
+<desc>
+            <p>The key to the record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Key begins with the name of the file to be treated without an "F." prefix and may be appended with ",n" where n is numeric and between 1 and 9. "n" specifies the treatment number if more than one exists for the same file.</p>
+            <p>The application name must exist in the PGM.FILE even for live files. Non-input applications must be created for live files.</p>
+        </desc>
+</t>
+<t>
+<field>CHECKFILE.ENRICHM</field>
+<desc>
+            <p>Specifies whether archived records should include their checkfile enrichments when stored on tape. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 alphanumeric characters.</p>
+            <p>Must be either "Y" or "NO".</p>
+        </desc>
+</t>
+<t>
+<field>CO.CODE.CANCEL</field>
+<desc>
+            <p>Fields CO.CODE.CANCEL to DATE.TIME.CANCL form a related multi value set. Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 11 characters may be entered.</p>
+            <p>This is a NOINPUT, no copy field.</p>
+        </desc>
+</t>
+<t>
+<field>CO.CODE.SPOOL</field>
+<desc>
+            <p>Fields CO.CODE.SPOOL to DATE.TIME.SPOOL form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 11 characters may be entered.</p>
+            <p>This is a NOINPUT, no copy field.</p>
+        </desc>
+</t>
+<t>
+<field>REL.FIELD</field>
+<desc>
+            <p>Specifies the field in the main file record whose contents are to be used to build the keys to the related file. </p>
+            <p>This field begins a multivalue set designed to build a key to the related file. This key can therefore be constructed using parts of field contents from the main file or bits of text. The key so built is then used to select the related file under a defined condition (see REL.SELECTION). </p>
+            <p>If the "ALL" keyword is specified then all fields from the main file record will be used as keys to the related file. </p>
+            <p>If "0" is entered the key to the main file record will be used as the key to the related file. </p>
+            <p>If a text string is entered it is appended to what existed from previous extractions within the subvalue set. </p>
+            <p>A field number if entered causes the contents of that field from the main file record to be used as a key to the related file. This may include specific value numbers or subvalue numbers from the field specified e.g. 23.2.3. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric field number      or text "ALL"                    or 1-35 alphanumeric text in quotes "aaaaaa"</p>
+            <p>No input without related file defined.</p>
+            <p>If "ALL" keyword is specified it must be first occurrence in the subvalue set.</p>
+            <p>Text input must be contained in quotes.</p>
+        </desc>
+</t>
+<t>
+<field>MODIFY.OR.CALL</field>
+<desc>
+            <p>Specifies the name of a routine which may be called to further modify the contents of the field in the main file being checked. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 alphanumeric characters.</p>
+            <p>Must begin with "@" and exist on the PGM.FILE as a defined subroutine.</p>
+            <p>Not allowed for history types 1 or 2. May not be entered without preceding field number specified.</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.NUMBER</field>
+<desc>
+            <p>Specifies a field from the main file record to be checked. </p>
+            <p>The field specified will be extracted from the current main file record and compared against the set of conditions defined in the parameter record. This field begins a multivalue set of fields which are checked. Each value produces a result which is "and" or "or'd" with subsequent values. Only when all checks defined beginning with this field are true will the main file record be archived. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric characters.</p>
+            <p>Must exist as a field in the main file. May be zero to specify a check on the main file key.</p>
+            <p>Only valid for history types 3,4,5,6.</p>
+            <p>May not be zero for history type 5 (SINGLE FIELD).</p>
+            <p>At least one input mandatory for history types 3,4,5,6.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.TIME.CANCL</field>
+<desc>
+            <p>Fields CO.CODE.CANCEL to DATE.TIME.CANCL form a related multi value set. Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 15 characters may be entered.</p>
+            <p>This is a NOINPUT, no copy field.</p>
+        </desc>
+</t>
+<t>
+<field>DRIVING.CALL</field>
+<desc>
+            <p>Specifies a called routine to modify each key to the main file extracted from the driving file. </p>
+            <p>Whether keys only, field contents, or specific field contents are required as keys to the main file each may be first modified or checked by a routine specified here. If the called routine decides the key should not be used it is returned as null from the routine. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 alphanumeric characters.</p>
+            <p>May not be entered without a driving file specified.</p>
+            <p>Entry must begin "@" and exist on the PGM.FILE as a defined subroutine.</p>
+        </desc>
+</t>
+<t>
+<field>HISTORY.TYPE</field>
+<desc>
+            <p>Specifies the type of archiving treatment to be applied to the file. </p>
+            <p>TYPE 1 - HISTORY CONTRACT Files with history. No action is taken on records which still exist in the live file. Records which exist entirely in history will be archived providing all conditions are satisfied. </p>
+            <p>TYPE 2 - HISTORY NON-CONTRACT Files with history. Both the live record and its history records are considered and will be archived providing all conditions are satisfied. </p>
+            <p>TYPE 3 - LIVE Live files only. Records will be archived from the live file if all conditions are satisfied. </p>
+            <p>TYPE 4 - LIVE + HISTORY Files with history. The live record is first moved to history and then the contents of history considered for archiving. The live record is not moved unless all conditions are first satisfied. </p>
+            <p>TYPE 5 - SINGLE FIELD Contents of the field are removed as specified providing all conditions are satisfied. </p>
+            <p>TYPE 6 - LIVE TO HISTORY Files with history. If all conditions are satisfied the live record is moved to the history file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 numeric character between 1 and 6.</p>
+            <p>Must be one of the following:  1.  HISTORY CONTRACT 2.  HISTORY NON-CONTRACT 3.  LIVE 4.  LIVE + HISTORY 5.  SINGLE FIELD 6.  LIVE.TO.HISTORY</p>
+            <p>History types 1,2,4,6 invalid if application type is not "H" in the PGM.FILE.</p>
+            <p>For history type 3 (LIVE) application type must be either "U", "L", or "T".</p>
+            <p>History type 5 (SINGLE FIELD) requires application type of "H","U","L", or "T".</p>
+        </desc>
+</t>
+<t>
+<field>REL.NEXT.FIELD</field>
+<desc>
+            <p>Specifies the logical relation to the next multivalue condition. </p>
+            <p>This field ends the multivalue set begun with FIELD.NUMBER. The condition is now complete and will give in a single true or false result. This field defines the logical condition with the multivalue set which follows (if any) which must be satisfied for the whole parameter record to be true for the record being processed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 alphanumeric characters -  "AND" or "OR".</p>
+            <p>Not valid for history types 1 or 2. Must be input if more than one multivalue condition exists.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

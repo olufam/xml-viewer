@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>AC</product>
+<table>AC.STMT.HANDOFF</table>
+</header>
+<overview>
+<ovdesc>
+
+        <p> AC.STMT.HANDOFF</p>
+        <p> This file is used when PRINTED account statements are to be produced outside of the DELIVERY SYSTEM. This is the case when the PRINT.BYPASS field on the delivery parameter record contains the message type 950. Any statement with a carrier type of 'PRINT' will now generate an AC.STMT.HANDOFF record. This contains details of addresses, languages and copies, and any account information that may be required on a statement. </p>
+        <p>The generation of the AC.STMT.HANDOFF record will be suppressed if a message status of DELETE is specified on the DE.PRODUCT table relevant to the account. A special statement printing routine specific to a particular customer's requirements is required to print the statements this routine processes the handoff records in a specified order. Once a statement has been printed, the handoff record is written to history if no errors were encountered, otherwise the errors are recorded on the handoff record and are reported at the end of the run. Any statements with carriers other than 'PRINT' will still be processed by the delivery system. If a statement has both 'PRINT' and a different carrier, it will be processed by both the delivery system and the print routine. In this case delivery will ignore any 'PRINT' versions, and the print routine will only produce 'PRINT' versions. 
+</p>
+    </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CUSTOMER</field>
+<desc>
+        <p>Identifies the Customer to whom the Account belongs. For internal accounts this will be null. </p>
+        <p>Validation Rules</p>
+        <p> 1-10 numeric character Customer Code. Internal file - this is a NOINPUT field.</p>
+    </desc>
+</t>
+<t>
+<field>FREQUENCY</field>
+<desc>
+        <p>Help Text for this field is unavailable. Please refer to the T24 User Guides for further information.</p>
+    </desc>
+</t>
+<t>
+<field>LIMIT.AVAIL</field>
+<desc>
+        <p>Contains the amount of the limit record available on the date of statement production, for use when the account is linked to a limit. The available amount is calculated as the ONLINE.LIMIT less the TOTAL.OS and the value of the account balances linked to the limit. The value is taken from the lowest level limit in the structure where an amount has been defined, and is converted to the account currency where the limit currency differs. </p>
+        <p>Validation Rules</p>
+        <p> Standard Amount field in the currency of the account.</p>
+    </desc>
+</t>
+<t>
+<field>COPIES</field>
+<desc>
+        <p>Specifies the number of copies of a statement required. This field will contain the same values as COPIES on the DE.PRODUCT record appropriate to the statement. </p>
+        <p>Validation Rules</p>
+        <p> 1-3 numeric characters. CARRIER.ADDR.NO, LANGUAGE and COPIES form a multivalue set. (Internal file, No input.)</p>
+    </desc>
+</t>
+<t>
+<field>ACCT.OFF.SEL</field>
+<desc>
+        <p>Help Text for this field is unavailable. Please refer to the T24 User Guides for further information.</p>
+    </desc>
+</t>
+<t>
+<field>ACCT.LIMIT.REF</field>
+<desc>
+        <p>If the customer has a Credit Limit covering this account, this field identifies the type of Limit applicable to the Account and forms part of the key to the Limit record containing Credit Limit details. This field is also used to indicate Nostro accounts. </p>
+        <p>Validation Rules</p>
+        <p> 3-9 numeric characters consisting of a 3-7 digit Limit Reference code and optionally, a 2 digit sequence number separated by '.'. Or 'NOSTRO' to denote a Nostro Account. (Internal file, No input.)</p>
+    </desc>
+</t>
+<t>
+<field>LIMIT.AMOUNT</field>
+<desc>
+        <p>Contains the allocated amount for the limit record linked to the account. The amount is taken as the ONLINE.LIMIT amount for the lowest level record defined in the limit structure on the date the statment was produced. The amount is converted from the limit currency to the account currency where required. </p>
+        <p>Validation Rules</p>
+        <p> Amount field in the currency of the account</p>
+    </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+        <p>Identifies the Currency of the account. </p>
+        <p>Validation Rules</p>
+        <p> 3 type SSS (uppercase alpha) characters. Internal file - this is a NOINPUT field.</p>
+    </desc>
+</t>
+<t>
+<field>K.COPIES</field>
+<desc>
+        <p>Help Text for this field is unavailable. Please refer to the T24 User Guides for further information.</p>
+    </desc>
+</t>
+<t>
+<field>TO.DATE</field>
+<desc>
+        <p>Indicates the end date for entries on the statement. In a VALUE.DATED system, this date will be set the PERIOD.END date in the DATES record, as the statement will only include entries with a value date less than or equal to this date. In a non-value dated system, the statement will only include entries with a BOOKING.DATE up to and including the system date, so the date is set to the system run date. </p>
+        <p>Validation Rules</p>
+        <p> 8 numeric character date. Internal file - this is a NOINPUT field.</p>
+    </desc>
+</t>
+<t>
+<field>TOTAL.PENDING</field>
+<desc>
+        <p>This amount is the total amount that due on the associated AC.PENDING record pointed to by the field PENDING.ID. </p>
+        <p>Validation Rules</p>
+        <p> This is a NOINPUT field.</p>
+    </desc>
+</t>
+<t>
+<field>SECTOR.CODE</field>
+<desc>
+        <p>Identifies the Sector Code relating to the Customer who owns the account. Not present for Internal accounts. </p>
+        <p>Validation Rules</p>
+        <p> 1-4 numeric character Sector Code. (Internal file, No input)</p>
+    </desc>
+</t>
+<t>
+<field>CARRIER.ADDR.NO</field>
+<desc>
+        <p>Specifies the carrier to be used, and the version of the address. This field will contain the same value as CARRIER.ADDR.NO on the DE.PRODUCT record appropriate to the statement. Note: Any version apart from 'PRINT' will be processed through the delivery system and will be ignored by the statement print routine. </p>
+        <p>Validation Rules</p>
+        <p> 1) 'PRINT', 'SWIFT', 'TELEX', 'TELEXP', 'TELEXF', 'EUCLID' or 'TANDEM'. </p>
+        <p>2) '.' </p>
+        <p>3) 1-3 numeric characters (The address version number on Delivery Address) CARRIER.ADDR.NO, LANGUAGE and COPIES form a multivalue set. (Internal file, No input.)</p>
+    </desc>
+</t>
+<t>
+<field>LANGUAGE</field>
+<desc>
+        <p>Specifies the language that the statement is to be printed in. This field will contain the same values as LANGUAGE on the DE.PRODUCT record appropriate to the statement. </p>
+        <p>Validation Rules</p>
+        <p> 1-2 type A (alphanumeric) characters. (A valid language mnemonic.) CARRIER.ADDR.NO, LANGUAGE and COPIES form a multivalue set. (Internal file, No input.)</p>
+    </desc>
+</t>
+<t>
+<field>DESCRIPTIVE.STMT</field>
+<desc>
+        <p>Specifies whether or not the statement should include any customer narrative entered at the time contracts etc. are input. This is taken from the ACCOUNT STATEMENT record of the account. </p>
+        <p>Validation Rules</p>
+        <p> Y(es) or N(o) (Internal file, No input.)</p>
+    </desc>
+</t>
+<t>
+<field>COMPANY.CODE</field>
+<desc>
+        <p>Identifies the company producing the statement. </p>
+        <p>Validation Rules</p>
+        <p> Company Id: CCGGGLLLL where CC is alphabetic country code. GGG is numeric company code. LLLL is local code. (Internal file, No input.)</p>
+    </desc>
+</t>
+<t>
+<field>PENDING.ID</field>
+<desc>
+        <p>This field will contain ids that will point to the AC.PENDING file containing details of the debit interest and/or charges pending on the account. </p>
+        <p>Validation Rules</p>
+        <p> This is a NOINPUT field.</p>
+    </desc>
+</t>
+<t>
+<field>CARRIER</field>
+<desc>
+        <p>Help Text for this field is unavailable. Please refer to the T24 User Guides for further information.</p>
+    </desc>
+</t>
+<t>
+<field>CONDITION.GROUP</field>
+<desc>
+        <p>Indicates the group of Accounts to which this Account belongs for the purpose of specifying rules for the calculation of interest and charges. The group is determined automatically on the basis of Customer and Account details as specified in the Account General Condition table (ACCT.GEN.CONDITION). This will be taken from the CONDITION.GROUP field on the account record. </p>
+        <p>Validation Rules</p>
+        <p> 2 numeric characters. (Internal file, No input.)</p>
+    </desc>
+</t>
+<t>
+<field>STATEMENT.NO</field>
+<desc>
+        <p>Identifies the number of the statement to be printed. </p>
+        <p>Validation Rules</p>
+        <p> 1-6 numeric character Statement Number. Internal file - this is a NOINPUT field.</p>
+    </desc>
+</t>
+<t>
+<field>ACCT.TITLE.2</field>
+<desc>
+        <p>Continuation of Account Title 1. This will be taken from the ACCT.TITLE.2 field on the account record. The ACCT.TITLE.2 is only complete when more details are entered than can be entered in ACCT.TITLE.1. </p>
+        <p>Validation Rules</p>
+        <p> Up to 35 type A (alphanumeric) characters. Indicates the Category Code for the account. Internal file - this is a NOINPUT field.</p>
+    </desc>
+</t>
+<t>
+<field>SHORT.TITLE</field>
+<desc>
+        <p>Specifies the abbreviated title of the Account. This will be taken from the SHORT TITLE field on the account record. </p>
+        <p>Validation Rules</p>
+        <p> Up to 35 type A (alphanumeric) characters. (Internal file, No input.)</p>
+    </desc>
+</t>
+<t>
+<field>DATE</field>
+<desc>
+        <p>Help Text for this field is unavailable. Please refer to the T24 User Guides for further information.</p>
+    </desc>
+</t>
+<t>
+<field>PRINT.ERROR</field>
+<desc>
+        <p>Identifies any errors that occurred when the statement was printed. This field is updated when the statement is printed if any errors, such as missing records, are encountered. Any errors found are reported at the end of the statement print routine. </p>
+        <p>Validation Rules</p>
+        <p> 1-35 alphanumeric character narrative. Multivalue field. (Internal file, No input.)</p>
+    </desc>
+</t>
+<t>
+<field>STMT.FREQU</field>
+<desc>
+        <p>Identifies the frequency of the statement to be printed. This will be the frequency code from the appropriate Statement Frequency field from the Account Staement record. </p>
+        <p>Validation Rules</p>
+        <p> 1-5 type SS (uppercase alpha or numeric, first character alpha) characters. (Internal file, No input.)</p>
+    </desc>
+</t>
+<t>
+<field>OPENING.BALANCE</field>
+<desc>
+        <p>Contains the balance at the start of the statement period. This is the same as the closing balance for the last statement for that account. </p>
+        <p>Validation Rules</p>
+        <p> Standard amount format. (Internal file, No input.)</p>
+    </desc>
+</t>
+<t>
+<field>OPENING.DATE</field>
+<desc>
+        <p>Identifies the start date of the statement period. This date is the date of the last statement. If this is the first statement produced there will be no value. </p>
+        <p>Validation Rules</p>
+        <p> 8 numeric character date. (Internal file, No input.)</p>
+    </desc>
+</t>
+<t>
+<field>ACCOUNT</field>
+<desc>
+        <p>Help Text for this field is unavailable. Please refer to the T24 User Guides for further information.</p>
+    </desc>
+</t>
+<t>
+<field>ACCOUNT.OFFICER</field>
+<desc>
+        <p>Identifies the Account Officer responsible for the account. This will contain the first OTHER.OFFICER from the Account record if specified, otherwise the ACCOUNT.OFFICER will be used. </p>
+        <p>Validation Rules</p>
+        <p> 1-4 numeric character Account Officer code. (Internal file, No input.)</p>
+    </desc>
+</t>
+<t>
+<field>ACCT.CATEGORY</field>
+<desc>
+        <p>Indicates the Category Code for the account. </p>
+        <p>Validation Rules</p>
+        <p> 4-5 numeric character Category Code. Internal file - this is a NOINPUT field.</p>
+    </desc>
+</t>
+<t>
+<field>ACCT.DATE.FREQU</field>
+<desc>
+        <p>This is the Account Number, Statement Date and Statement Frequency code of a statement still to be printed. The statement frequency codes (e) have the following meaning: 1 to 9: Normal Statements for the Cycles 1 to 9 1C to 9C: Account Closure Statements for the Cycles 1 to 9 1S to 9S: Special Statements for the Cycles 1 to 9 </p>
+        <p>Validation Rules</p>
+        <p> a) Account record key b) '.' c) 8 numeric character date (DDMMYY). d) '.' e) Frequency code as explained above Updated by System</p>
+    </desc>
+</t>
+</menu>
+</t24help>
+

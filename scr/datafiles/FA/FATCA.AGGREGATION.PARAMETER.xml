@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FA</product>
+<table>FATCA.AGGREGATION.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>FATCA.AGGREGATION.PARAMETER is used to specify the high level parameters governing the balance aggregation.</p>
+            <p>One record must be created for each company running the FATCA module.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>FATCA.AGG.PARAM.ID</field>
+<desc>
+            <p>The FATCA aggregation parameter is defined for each company. The ID to the parameter record must exist as a valid company code on the company file.</p>
+            <p>
+                   <p>Validation Rules:</p>
+            </p>
+            <p>     Up to 11 alphanumeric characters (company id).</p>        
+    </desc>
+</t>
+<t>
+<field>RELATION.LEVEL</field>
+<desc>
+            <p>As per the FATCA regulation, the balance of pre-existing accounts needs to be determined taking into account all the accounts/portfolios held by the client including the joint accounts.</p>
+            <p>In the case of joint accounts, the entire balance of the joint account will be attributed to all the joint holders.</p>
+            <p>In T24, the relationship can be defined at Customer Level (CUSTOMER) or account level (ACCOUNT). </p>
+            <p>If the relationships are defined at customer level in T24 CUSTOMER, the field has to be set as CUSTOMER.</p>
+            <p>It will be assumed that all the accounts are jointly held and the balance of all the accounts will be attributed to all the joint holders.</p>
+            <p>However, if the field is set to ACCOUNT, the relationships will be checked at individual account level and only the balances of accounts that are held jointly will be attributed to all the joint holders.</p>
+        <p>
+                <p>Validation Rules:</p>
+        </p>
+        <p>     Input allowed: CUSTOMER or ACCOUNT.</p>                                    
+        </desc>
+</t>
+<t>
+<field>RELATION.CODE</field>
+<desc>
+            <p>A number of relationships for a customer can be defined in T24. However, only certain relationships (Joint Owner, Same Owner, beneficial ownership, etc.) will have a bearing on the aggregated balance calculation.</p>
+            <p>The relation codes, that need to be considered for aggregating the balances, need to be specified in this field.</p>
+            <p>For example, if Customer 100291 has the following relationships defined:</p>
+            <p>Relation Code: 9 Joint Owners</p>
+            <p>Relation Customer: 100292</p>
+            <p>Relation Code: 7 Signatory</p>
+            <p>Relation Customer: 100295</p>
+            <p />            
+            <p>In T24, for 100292, the reverse relationship code of 99 (based on RELATION table set-up) will automatically be updated.</p>
+            <p>Relation Code: 99 Joint</p>
+            <p>Relation Customer: 100291</p>
+            <p>If both relation codes 9 and 99 are defined in Relation Code field, the aggregate balance for Customer 100291 will be arrived at by consolidating the balances of all accounts/deposits, positions, etc. held by both customers 100291 and 100292.</p>
+            <p> The balance of 100292 will be the sum of all holdings/account balances of 100292 and 100291. If only relation code 9 is defined in parameter, the balance of 100292 will only consider the holdings of 100292 and not that of client 100291.</p>
+            <p>The balances of account (if any) held by Customer 100295 will not be considered for aggregation</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Should be a valid ID from RELATION table</p>          
+        </desc>
+</t>
+<t>
+<field>EXCLD.FOR.ACCT.AGG</field>
+<desc>
+            <p>The field (multi-valued) is used to specify the categories of accounts/deposits that need to be excluded from the aggregation process.</p>
+            <p> Any account of this category (not linked to a portfolio) will be excluded while determining the aggregate balance.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Should be a valid ID from CATEGORY table</p>
+        </desc>
+</t>
+<t>
+<field>SAM.FIELD</field>
+<desc>
+            <p>Valid fields from SEC.ACC.MASTER are accepted. Fields from SAM.FIELD to SAM.OPERAND are associative multi value fields.</p>
+            <p>Each multi value set of the selection criteria will be considered with 'OR' condition.</p>
+            <p>The portfolios selected from this selection criteria are exempted from balance aggregation.</p> 
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Local reference fields, I-Descriptors and J-Descriptors are not allowed.</p>
+            <p>                    SAM.FIELD, SAM.OPERAND and SAM.VALUE fields are interdependent, all must be populated or blank.</p>
+        </desc>
+</t>
+<t>
+<field>SAM.OPERAND</field>
+<desc>
+            <p>This field accepts the operands 'EQ' 'NE'.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>            
+            <p>                    SAM.FIELD, SAM.OPERAND and SAM.VALUE fields are interdependent, all must be populated or blank.</p>
+        </desc>
+</t>
+<t>
+<field>SAM.VALUE</field>
+<desc>
+            <p>Contains the value to be compared to the SEC.ACC.MASTER field.</p>
+            <p>Each sub value of this field will be considered with 'AND' condition.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>            
+            <p>                    SAM.FIELD, SAM.OPERAND and SAM.VALUE fields are interdependent, all must be populated or blank.</p>            
+        </desc>
+</t>
+<t>
+<field>ROLE.TYPE</field>
+<desc>
+            <p>This field is reserved for future use.</p>            
+        </desc>
+</t>
+<t>
+<field>ENT.CUST.FIELD</field>
+<desc>
+            <p>Valid fields from CUSTOMER are accepted. Fields from ENT.CUST.FIELD to ENT.CUST.OPERAND are associative multi value fields.</p>
+            <p>Each multi value set of the selection criteria will be considered with 'OR' condition.</p>
+            <p>The minimum balance requirements for individuals (less than $50000) and entities (less than $250000) are different.</p>
+            <p>The fields ENT.CUST.FIELD to ENT.CUST.VAL will be used to identify Customers who are to be classified as legal entities (Corporates).</p>
+            <p>If the ENT.CUST.FIELD is set to 'INDUSTRY', the operand as 'EQ' and the ENT.CUST.VAL is '3200', any customer with the industry code set as '3200' will be considered a legal entity.</p>
+            <p>All other customers will be considered 'Individuals'.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                    Local reference fields, I-Descriptors and J-Descriptors are not allowed.</p>
+            <p>                    ENT.CUST.FIELD, ENT.CUST.OPERAND and ENT.CUST.VALUE fields are interdependent, all must be populated or blank.</p>
+            </desc>
+</t>
+<t>
+<field>ENT.CUST.OPERAND</field>
+<desc>
+            <p>This field accepts the operands 'EQ' 'NE'.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>            
+            <p>                    ENT.CUST.FIELD, ENT.CUST.OPERAND and ENT.CUST.VALUE fields are interdependent, all must be populated or blank.</p>
+        </desc>
+</t>
+<t>
+<field>ENT.CUST.VALUE</field>
+<desc>
+            <p>Contains the value to be compared to the CUSTOMER field.</p>
+            <p>Each sub value of this field will be considered with 'AND' condition.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>            
+            <p>                    ENT.CUST.FIELD, ENT.CUST.OPERAND and ENT.CUST.VALUE fields are interdependent, all must be populated or blank.</p>
+        </desc>
+</t>
+<t>
+<field>ACCT.AGGR.RTN</field>
+<desc>
+            <p>A local routine can be attached here which will be called during balance aggregation batch jobs.</p>
+            <p>This routine will take two arguments, first argument is the customer number second one is FATCA.AGGREGATE.BALANCE record.</p>
+            <p>This routine can be used to consider additional positions for balance aggregation.</p>
+            <p>Customer number is the input argument and FATCA aggregate balance record is both input/output argument.</p>
+        </desc>
+</t>
+<t>
+<field>AGGR.BAL.FILE</field>
+<desc>
+            <p>This field represents the file which will be selected for balance aggregation processing.</p>
+            <p>If FCSI is chosen then balance will be aggregated for customers having FCSI record.</p>
+            <p>If REPORTABLE.STATUS is chosen balance will be aggregated only for the customers with FCSI, Who is having their FATCA.STATUS as defined in REPORTING.PARAMETER.</p>
+            <p>If nothing is selected then balance will be aggregated as usual for all customers.</p>
+        <p>
+                <p>Validation Rules:</p>
+        </p>
+        <p>     Input allowed: FCSI or REPORTABLE.STATUS.</p>   
+        </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+        <p>This is a multi valued field. Standard T24 alphanumeric field. </p>
+        <p>
+           <p>Validation Rules:</p>
+        </p>
+        <p> A maximum of 35 characters may be entered.</p>
+    </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+        <p>This is a multi valued field. </p>
+        <p>Contains details of any override applicable to this record.</p>
+        <p>
+           <p>Validation Rules:</p>
+        </p>
+        <p> A maximum of 35 characters may be entered. This is a NOINPUT field.</p>
+    </desc>
+</t>
+</menu>
+</t24help>

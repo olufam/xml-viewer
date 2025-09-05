@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>EB.GC.CONSTRAINTS</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Global Constraints rules definition.</p>
+            <p />
+            <p>    Defines set of rules which taken together constitute the constraint for transactions which fall under this constraints record.  A breach of any single rule is a breach of the whole constraints record.</p>
+            <p />
+            <p>    Record key is APPLICATION, GROUPNAME or 'GLOBAL'/ optional key fields</p>
+            <p />
+            <p>    Optional key fields are CUSTOMER / PORTFOLIO / ACCOUNT / CURRENCY / USER.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>NARRATIVE</field>
+<desc>
+            <p>Specifies text to be used for error id or override message.</p>
+            <p />
+            <p>Mandatory when LOGIC is not 'AND' otherwise must be NULL.</p>
+        </desc>
+</t>
+<t>
+<field>EVAL.VALUE</field>
+<desc>
+            <p>Value or set of values to compare test data against, alternatively can used to specify an API or local routine (prefixed by '@' symbol) for pre-processing of data from EVAL.FIELD.</p>
+            <p />
+            <p>The constants !USER, !TODAY, !LANGUAGE, !COMPANY, !LOCAL.CCY, !LAST.WORKING.DAY and !NEXT.WORKING.DAY if entered within this field, derived from EVAL.FIELD or output by API or local routine are translated to the operator, system date, language, company, local currency, last working day and next working day respectively.  If prefixed with as second '!' symbol, they are not translated, e.g. !!USER becomes the literal string '!USER'.</p>
+            <p />
+            <p>Field must be blank or specify an API or local routine if EVAL.FIELD is specified.</p>
+        </desc>
+</t>
+<t>
+<field>TEST.FILE</field>
+<desc>
+            <p>File from which to retrieve data to test, if not base application.</p>
+        </desc>
+</t>
+<t>
+<field>TEST.ASSOC</field>
+<desc>
+            <p>Determines association of TEST.FIELD.</p>
+            <p />
+            <p>The field can be associated with the CUSTOMER that is associated with a customer/counterparty deal such as DX.TRADE.</p>
+            <p />
+            <p>If 'CUSTOMER' is chosen, as each subfield against the CUSTOMER field in the EB.GC.ACTIVE record for the current application is read in turn, the constraints processing will iterate through the subfields in TEST.FIELD.</p>
+            <p />
+            <p>If left blank, all fields/values defined on the EVAL.?? side against this constraint rule will be tested against each instance of data derived from the TEST.?? fields.</p>
+        </desc>
+</t>
+<t>
+<field>TEST.ROUTINE</field>
+<desc>
+            <p>Optional API or local subroutine for pre-processing of test data.  Must be prefixed by '@'.</p>
+        </desc>
+</t>
+<t>
+<field>LAST.VALID.DATE</field>
+<desc>
+            <p>Specifies date after which constraint expires.  Where the transaction date as mapped within EB.GC.ACTIVE falls after this date, the whole constraint is deemed invalid and processing passes to the next valid constraint.</p>
+            <p />
+            <p>    Must be on or after FIRST.VALID.DATE</p>
+        </desc>
+</t>
+<t>
+<field>LOGIC</field>
+<desc>
+            <p>Specifies the logical operator to apply between this and the next and the next constraint.</p>
+            <p />
+            <p>Valid options are 'AND', 'OR' and NULL. 'OR' and NULL are treated in exactly the same way and a constraint with either LOGIC value will be triggered independently of the next constraint.</p>
+            <p />
+            <p>The last LOGIC value in the multi valued set must be null as there is no next constraint to apply LOGIC to.</p>
+        </desc>
+</t>
+<t>
+<field>OPERAND</field>
+<desc>
+            <p>Operand for comparison of data derived from TEST.?? fields with data derived from EVAL.?? fields.</p>
+            <p />
+            <p>If comparison equates to a logical value of false (and any other constraint rules joined to this one by 'AND' have not been breached), normal processing continues, otherwise constraint rule is breached, and an error or override is raised.</p>
+            <p />
+            <p>Mandatory</p>
+        </desc>
+</t>
+<t>
+<field>EVAL.FILE</field>
+<desc>
+            <p>File from which to retrieve data to evaluate against, if not base application.</p>
+        </desc>
+</t>
+<t>
+<field>TEST.KEY</field>
+<desc>
+            <p>Key for TEST.FILE or base application.</p>
+            <p />
+            <p>If key for TEST.FILE is to be the same as for the current record, specify as '@ID'</p>
+            <p />
+            <p>If key for TEST.FILE is found within a field in base application, specify field name.  Field names may be supplied as actual field names or Value Set lookup fields (prefixed by 'V*') as specified within the relevant EB.GC.ACTIVE record's VSET.?? fields.</p>
+            <p />
+            <p>Mandatory if TEST.FILE specified.</p>
+        </desc>
+</t>
+<t>
+<field>EVAL.KEY</field>
+<desc>
+            <p>Key for EVAL.FILE or base application.</p>
+            <p />
+            <p>If key for EVAL.FILE is to be the same as for the current record, specify as '@ID'</p>
+            <p />
+            <p>If key for EVAL.FILE is found within a field in base application, specify field name.  Field names may be supplied as actual field names or Value Set lookup fields (prefixed by 'V*') as specified within the relevant EB.GC.ACTIVE record's VSET.?? fields.</p>
+            <p />
+            <p>Mandatory if EVAL.FILE specified.</p>
+        </desc>
+</t>
+<t>
+<field>FIRST.VALID.DATE</field>
+<desc>
+            <p>Specifies date on which constraint becomes active.  Where the transaction date as mapped within EB.GC.ACTIVE falls before this date, the whole constraint is deemed invalid and processing passes to the next valid constraint.</p>
+            <p />
+            <p>Must be on or after System Date.</p>
+            <p />
+            <p>Mandatory</p>
+        </desc>
+</t>
+<t>
+<field>TEST.FIELD</field>
+<desc>
+            <p>If TEST.KEY is set then this specifies fields from the application specified in TEST.FILE from which to retrieve data to test.</p>
+            <p />
+            <p>If TEST.KEY is not set and the first part of the constraint key is an application then this specifies fields from within base application from which to retrieve data to test.</p>
+            <p />
+            <p>If TEST.KEY is set and the first part of the constraint key is a group name or 'GLOBAL' then this specifies EB.GC.GLOBAL record ids from which to obtain field names from the current application from which to retrieve data to test.</p>
+            <p />
+            <p>Field names may be supplied as actual field names or Value Set lookup fields (prefixed by 'V*') as specified within the relevant EB.GC.ACTIVE record's VSET.?? fields.</p>
+            <p />
+            <p>The constants !USER, !TODAY, !LANGUAGE, !COMPANY, !LOCAL.CCY, !LAST.WORKING.DAY and !NEXT.WORKING.DAY if entered within this field, derived from the actual field or output by API or local routine are translated to the operator, system date, language, company, local currency, last working day and next working day respectively. If prefixed with as second '!' symbol, they are not translated, e.g. !!USER becomes the literal string '!USER'.</p>
+            <p />
+            <p>Mandatory</p>
+        </desc>
+</t>
+<t>
+<field>SEPARATOR</field>
+<desc>
+            <p>Delimiter used to separate values specified in EVAL.VALUE.</p>
+            <p />
+            <p>Mandatory</p>
+        </desc>
+</t>
+<t>
+<field>CONSTRAINT.KEY</field>
+<desc>
+            <p>Record key is APPLICATION, GROUPNAME or 'GLOBAL'/ optional key fields</p>
+            <p />
+            <p>  Optional key fields are CUSTOMER / PORTFOLIO / ACCOUNT / CURRENCY / USER etc</p>
+            <p />
+            <p>  e.g. FUNDS.TRANSFER//50030-1//USD/INPUTTER</p>
+        </desc>
+</t>
+<t>
+<field>ERROR.OVERRIDE</field>
+<desc>
+            <p>Specifies whether an ERROR or an OVERRIDE should be raised.</p>
+            <p />
+            <p>    Mandatory when LOGIC is not 'AND' otherwise must be NULL.</p>
+        </desc>
+</t>
+<t>
+<field>EVAL.ASSOC</field>
+<desc>
+            <p>Determines association of EVAL.FIELD / EVAL.VALUE.  The field can either be associated with the TEST side of the constraint (TEST.FIELD) or with the CUSTOMER that is associated with a customer/counterparty deal such as DX.TRADE.</p>
+            <p />
+            <p>If 'TEST' is chosen, as each subfield in TEST.FIELD for this constraint is read in turn, the constraints processing will iterate through the subfields in EVAL.FIELD (or EVAL.VALUE).</p>
+            <p />
+            <p>If 'CUSTOMER' is chosen, as each subfield against the CUSTOMER field in the EB.GC.ACTIVE record for the current application is read in turn, the constraints processing will iterate through the subfields in EVAL.FIELD (or EVAL.VALUE).</p>
+            <p />
+            <p>If left blank, all fields/values defined on the EVAL.?? side against this constraint rule will be tested against each instance of data derived from the TEST.?? fields.</p>
+        </desc>
+</t>
+<t>
+<field>EVAL.FIELD</field>
+<desc>
+            <p>If EVAL.KEY is set then this specifies fields from the application specified in EVAL.FILE from which to retrieve data to compare to test data.</p>
+            <p />
+            <p>If EVAL.KEY is not set and the first part of the constraint key is an application then this specifies fields from within base application from which to retrieve data to compare to test data.</p>
+            <p />
+            <p>If TEST.KEY is set and the first part of the constraint key is a group name or 'GLOBAL' then this specifies EB.GC.GLOBAL record ids from which to obtain field names from the current application from which to retrieve data to compare to test data.</p>
+            <p />
+            <p>Field names may be supplied as actual field names or Value Set lookup fields (prefixed by 'V*') as specified within the relevant EB.GC.ACTIVE record's VSET.?? fields.</p>
+            <p />
+            <p>Mandatory if EVAL.KEY is specified.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

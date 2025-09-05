@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>TT</product>
+<table>TFS.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The TELLER FINANCIAL SERVICES (TFS) suite of applications allow a user to enter multiple financial transactions on the same screen and commit all of them as one transaction. The TELLER.FINANCIAL.SERVICES application is the main transaction front end and captures user input data and creates a TELLER or FT or a DC batch, in the backend.</p>
+            <p />
+            <p>TFS.PARAMETER is the main parameter file for the TFS suite of applications. It allows configuration of a number of features of the TFS Transaction Front end namely</p>
+            <p>a) Interface Parameters - how to interface to TELLER or  FT or DC allowing definitions of OFS Version to be used, the API that builds the OFS body etc. (Note: This is a technical parameter and unless there is any financial institution specific development on this suite, the setup of these fields will need to adopt to standard configuration)</p>
+            <p>b) Consolidation Parameters - If the user input transactions need to be consolidated to create one or fewer postings on the Customer Account, and if so, necessary parameters for Consolidation</p>
+            <p>c) Usability Parameters - To improve user friendliness depending on the preferences of the financial institution</p>
+            <p>d) Currency Conversion Parameters - Lets the financial institution define their preferences on how the rates should be arrived depending on the type of transaction involved and if and when market exchange profit should be calculated</p>
+            <p>e) Security Parameters - to prevent fraud.</p>
+            <p>f) Transaction Limit Parameters - to apply appropriate controls on users and their transaction limits</p>
+            <p />
+            <p>Please note that any change to the parameters require a re-start of the Temenos Open Connectivity Framework.</p>
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>LIMIT.CCY</field>
+<desc>
+            <p>This field forms part of the Transaction Limit Parameters. For cases where transaction limit needs to be specified for each Currency, this field can be used to specify the Currency for which the Limit amount is specified in the associated CCY.LIMIT field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input. Input must be a key to a valid record in the CURRENCY table.</p>
+            <p>Either this or LCY.LIMIT is mandatory if TRANSACTION.LIMIT is not set to NO.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONSOL.LEVEL.ADDON</field>
+<desc>
+            <p>This field forms part of the Consolidation Parameters. If Consolidation is enabled, then TFS will combine all the user input transactions on a single TFS screen and create that as a single transaction hitting the account specified in PRIMARY.ACCOUNT field.</p>
+            <p />
+            <p>The default Consolidation level is the VALUE.DATE of the individual user input TFS transactions.</p>
+            <p />
+            <p>On top of that, if there is a need to combine transactions using additional attributes, that can be set in this field. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional Input.</p>
+            <p>Allowed Values: NO, CCY, CCY.TXN, TXN.</p>
+            <p>Default Value: NO</p>
+            <p>Input not allowed if CONSOLIDATION is set to DISABLE.</p>
+            <p />
+            <p>If set to CCY, then all user input legs of a TFS transaction will be combined based on VALUE.DATE &amp; CURRENCY of the Leg.</p>
+            <p>If set to CCY.TXN, then all user input legs of a TFS transaction will be combined based on VALUE.DATE, CURRENCY &amp; TRANSACTION type of the Leg.</p>
+            <p>If set to TXN, then all user input legs of a TFS transaction will be combined based on VALUE.DATE &amp; TRANSACTION type of the Leg.</p>
+        </desc>
+</t>
+<t>
+<field>OFS.SOURCE</field>
+<desc>
+            <p>This field forms part of the Interface Parameters. This field holds the OFS.SOURCE that should be used to talk to the underlying applications like FT, TT or DC.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Mandatory Input.</p>
+            <p>Input must be a valid record in OFS.SOURCE table. The field SOURCE.TYPE in OFS.SOURCE must be set to GLOBUS. The field FIELD.VAL must not be set to YES.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>TXN.REV.DC.CR</field>
+<desc>
+            <p>This field forms part of DATA.CAPTURE Related parameters. </p>
+            <p>When trying to reverse a TFS leg which has the underlying as TELLER or FUNDS.TRANSFER in History, TFS would undo the entries by creating offsetting DATA.CAPTURE transactions.</p>
+            <p />
+            <p>It will attempt to use the same TRANSACTION codes as in the accounting entries used by the original underlying TELLER or FUNDS.TRANSFER albeit with the REVERSAL.MARK in DC set to Y. However if those transaction codes are not enabled for use in DATA.CAPTURE module (DATA.CAPTURE field in TRANSACTION table must be set to Y), then it needs a default alternate code that it can use for the Credit Reversal Entry.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Mandatory Input.</p>
+            <p>Input must be a valid record in TRANSACTION table.</p>
+            <p>The DEBIT.CREDIT.IND in TRANSACTION must be set to CREDIT.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>OFS.VERSION</field>
+<desc>
+            <p>This field forms part of the Interface Parameters. This field holds the Version that needs to be used when interfacing with the underyling application defined in the associated INTERFACE.TO field.</p>
+            <p />
+            <p>The value in this field will be overriden by the setup in the corresponding field in TFS.TRANSACTION. If not setup at TFS.TRANSACTION level, then the value from this parameter will be used.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Mandatory Input. </p>
+            <p>Input must be a valid record in VERSION table.</p>
+            <p>If the associated INTERFACE.TO is FT, then this should be a valid version for FUNDS.TRANSFER Application</p>
+            <p>If the associated INTERFACE.TO is TT, then this should be a valid version for TELLER Application</p>
+            <p>If the associated INTERFACE.TO is DC, then this should be a valid version for DATA.CAPTURE Application.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CCY.LIMIT</field>
+<desc>
+            <p>This field forms part of the Transaction Limit Parameters. For cases where a Transaction Limit needs to be specified for a given Currency, this field can be used to specify the limit amount for the Currency defined in the associated LIMIT.CCY.</p>
+            <p />
+            <p>During Transaction time, if TFS is not able to find the currency of the transaction here, it will convert the transaction amount into Local currency and validate against the global Local Currency limit specified in LCY.LIMIT.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional Input but Input becomes mandatory if the associated LIMIT.CCY is defined.</p>
+        </desc>
+</t>
+<t>
+<field>MKT.EXCH.PROFIT</field>
+<desc>
+            <p>This field forms part of the Currency Conversion Parameters. When cross currency transactions are done, TELLER application calculates market exchange profit. This field allows to define if market exchange profit should be calculated.</p>
+            <p />
+            <p>Value in this field is overriden by the setup in the corresponding field in TFS.TRANSACTION. If not setup in TFS.TRANSACTION, then it is inherited from this parameter.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Allowed Values: YES or NO.</p>
+            <p>If Left blank, it is defaulted to NO.</p>
+            <p />
+            <p>Recommended Value: NO. It is advisable to set it to NO here and set it to YES at the transaction type (TFS.TRANSACTION) level, only for that specific transaction type for which exchange profit needs to be booked. A Foreign cash deposit into a local account and a Currency exchange both involve cross-currency but we might want to be able to calculate exchange profit only for the Currency Exchange transaction.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>HOT.FIELDS</field>
+<desc>
+            <p>This field forms part of the Usability Parameters. Depending on the preferred workflow and user preferences, the financial institution can choose to adopt one of the two workflows.</p>
+            <p />
+            <p>1. Capture all information and finally submit the request. The system will validate all information in one go, return any errors, overrides and expand denomination fields as applicable and present the screen back to the user.</p>
+            <p>2. Make certain fields as requiring validation upon field input - so any input to these fields will immediately send request for validation, upon field input and assocaited validations like expansion of denomination fields will happen on field input.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Allowed Values: As given in the Combobox.</p>
+            <p>Optional Input.</p>
+            <p />
+            <p>Recommended Values:</p>
+            <p>=</p>
+            <p />
+            <p>DEAL.RATE</p>
+            <p>CONSOLIDATE.NOW</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>BUY.FCY.SELL.LCY</field>
+<desc>
+            <p>This field forms part of the Currency Conversion Parameters. </p>
+            <p />
+            <p>In a TFS transaction, if in a Leg, the debit side is Foreign Currency and the Credit Side is Local Currency, the system needs to arrive at a deal rate.</p>
+            <p>This field allows to define the rate preferences for such a transaction.</p>
+            <p />
+            <p>Value in this field is overriden by the setup in the corresponding field in TFS.TRANSACTION. If not setup in TFS.TRANSACTION, then it is inherited from this parameter.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed Values: BUY.SELL, MID.REVAL</p>
+            <p>If left blank, it is defaulted to BUY.SELL.</p>
+        </desc>
+</t>
+<t>
+<field>CONSOLIDATION</field>
+<desc>
+            <p>This field forms part of the Consolidation Parameters. If this field is set to ENABLE, then TFS will combine all the user input transactions on a single TFS screen and create that as a single transaction hitting the account specified in PRIMARY.ACCOUNT field.</p>
+            <p />
+            <p />
+            <p>TFS achieves this by using a temporary washthru account (a placeholder)on the user input legs and eventually when the user indicates that he/she is done with entering the transactions, it creates one or more consolidated leg(s) between this Washthru account and the account specified in PRIMARY.ACCOUNT field. The consolidated Leg is really just another TFS Leg corresponding to a TELLER Transaction.</p>
+            <p />
+            <p>The default Consolidation level is the VALUE.DATE of the individual user input TFS transactions.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Allowed Values: ENABLE or DISABLE.</p>
+            <p>If left blank, it is defaulted to ENABLE.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONSOL.CHG.API</field>
+<desc>
+            <p>This field forms part of the Consolidation Parameters. If multiple transactions are combined to create one or more consolidated transactions for the Primary Account, it may be necessary to calculate a charge based on the combination of those transactions. </p>
+            <p />
+            <p>In such cases, a local API can be written to meet the requirements and attached to this field.</p>
+            <p>Whenever Consolidation of transactions happen, TFS will invoke this API and expect this API to return the</p>
+            <p>1. PL Category (Optional if Charge code is returned)</p>
+            <p>2. Charge Code (Key to FT.CHARGE.TYPE; Optional if PL Category is returned)</p>
+            <p>3. Charge Account (Account to be charged)</p>
+            <p>4. Charge Currency (Currency of the Charge Amount. Could be different from the Currency of the Charge Account. Optional. If not provided, then will be assumed to be the same as that of the Charge Account)</p>
+            <p>5. Charge Amount</p>
+            <p />
+            <p>This information is then used to build a separate TFS Transaction leg.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional Input.</p>
+            <p>Input not allowed if CONSOLIDATION is set to DISABLE.</p>
+            <p>Input must be a valid record in EB.API</p>
+        </desc>
+</t>
+<t>
+<field>TXN.LOOKUP</field>
+<desc>
+            <p>This field forms part of the Usability Parameters. Typically the lookups can be a Combobox or an enquiry drop down. Having a Combobox allows for easier input and facilitates better keyboard navigation without the use of a mouse.</p>
+            <p />
+            <p>This field allows to define the preferences for how the lookup for the TRANSACTION field in TELLER.FINANCIAL.SERVICES should be. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Allowed Values: COMBOBOX, DROPDOWN</p>
+            <p>Default Value: COMBOBOX</p>
+            <p />
+            <p>Recommended Value: COMBOBOX</p>
+            <p />
+            <p>If set to COMBOBOX, then the TRANSACTION field will list all the transactions in a Combo box type drop down (a.k.a Vetting table)</p>
+            <p>If set to DROPDOWN, then the TRANSACTION field will list all the transactions as a enquiry dropdown (a.k.a. CHECKFILE)</p>
+            <p />
+            <p>Please also see related helptext for VERSION, INCLUDE.TXN.</p>
+        </desc>
+</t>
+<t>
+<field>BUY.LCY.SELL.FCY</field>
+<desc>
+            <p>This field forms part of the Currency Conversion Parameters. </p>
+            <p />
+            <p>In a TFS transaction, if in a Leg, the debit side is Local Currency and the Credit Side is Foreign Currency, the system needs to arrive at a deal rate.</p>
+            <p>This field allows to define the rate preferences for such a transaction.</p>
+            <p />
+            <p>Value in this field is overriden by the setup in the corresponding field in TFS.TRANSACTION. If not setup in TFS.TRANSACTION, then it is inherited from this parameter.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Allowed Values: BUY.SELL, MID.REVAL</p>
+            <p>If left blank, it is defaulted to BUY.SELL.</p>
+        </desc>
+</t>
+<t>
+<field>LCY.LIMIT</field>
+<desc>
+            <p>This field forms part of the Transaction Limit Parameters. A limit specified here will be treated as in Local Currency. Typically the fields LIMIT.CCY and CCY.LIMIT will be used to specify the transaction limits by Currency. </p>
+            <p />
+            <p>For any currency not defined in those fields, TFS will automatically convert into Local currency equivalent and validate against the limit specified in this field.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional Input. Input must be numeric (Amount type field). Either this or CCY.LIMIT is mandatory if TRANSACTION.LIMIT field is not set to NO.</p>
+            <p />
+            <p>If this is not specified and if the Currency of the transaction is not specified in LIMIT.CCY/CCY.LIMIT fields, then TFS will raise an Override to that effect stating that 'Transaction Limit not defined for Currency xxx'</p>
+        </desc>
+</t>
+<t>
+<field>INTERFACE.API</field>
+<desc>
+            <p>TFS builds the OFS Body for the underlying module during run-time. Should there be a need to customise this OFS Body - for ex, add some Local Reference fields that are attached to TFS that need to be passed along to TELLER, it is possible to develop a local API and attach it here in TFS.PARAMETER, for the respective Underlying Module.</p>
+            <p>TFS will invoke this API and respect the body returned by this Local routine and pass it along to Open Financial Services.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input must be a valid record in EB.API</p>
+        </desc>
+</t>
+<t>
+<field>VERSION</field>
+<desc>
+            <p>This field forms part of the Usability Parameters. Please refer to helptext for TXN.LOOKUP for back-ground information.</p>
+            <p>If the field TXN.LOOKUP is set to COMBOBOX, then by default, TFS will select all the records in TFS.TRANSACTION and display them in a Combobox. However it may not always be required to display all transaction types for all types of operations.</p>
+            <p />
+            <p>This field and the associated INCLUDE.TXN allow filtering the transaction types that can be filtered based on a version of TELLER.FINANCIAL.SERVICES.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input. </p>
+            <p>Input must be a valid record in VERSION table and must be for TELLER.FINANCIAL.SERVICES application.</p>
+            <p>If left blank or if a specific version of TELLER.FINANCIAL.SERVICES not defined here is used, all the transaction types will be displayed for the user.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONSOL.CHG.TFS.TXN</field>
+<desc>
+            <p>This field forms part of the Consolidation Parameters. If multiple transactions are combined to create one or more consolidated transactions for the Primary Account, it may be necessary to calculate a charge based on the combination of those transactions. </p>
+            <p />
+            <p>Using the information provided the system would build a separate TFS Transaction leg.</p>
+            <p />
+            <p>This field is used to define the TFS.TRANSACTION code that needs to be used for this Charge Transaction.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional Input. If left blank, it is defaulted to the value defined in CONSOL.TFS.TXN.</p>
+            <p>Input not allowed if CONSOLIDATION is set to DISABLE.</p>
+        </desc>
+</t>
+<t>
+<field>INCLUDE.TXN</field>
+<desc>
+            <p>Refer help for the field TXN.LOOKUP for more information.</p>
+            <p>&#160;</p>
+            <p>If the field TXN.LOOKUP is set to COMBOBOX, then there might be a need to filter the transactions that appear in the Combo Box list based on the type of Screen.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input must be a valid record in TFS.TRANSACTION.</p>
+            <p>Mandatory input if the associated VERSION is defined. Otherwise Input not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>TRANSACTION.LIMIT</field>
+<desc>
+            <p>This field forms part of the Transaction Limit Parameters. Using this feature, a financial institution can put in proper controls on large value transactions and mandate a supervisor approval for transactions that breach the pre-specified limit.</p>
+            <p />
+            <p>In TFS, where there may be multiple legs, it is possible to validate the transaction amount for each of the User input legs or for the 'Consolidated' legs.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Allowed Values: NO, CONSOLIDATED.LEGS, USER.INPUT.LEGS.</p>
+            <p>Default Value: CONSOLIDATED.LEGS</p>
+            <p />
+            <p>It is important to note that TFS does not have any sensitivity to the user doing the transaction. It will simply raise an Override if the transaction amount breaches the limit. </p>
+            <p>Control on how can approve of this override or not needs to be handled at the OVERRIDE table level using Override Class and Override Class Details.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DC.REV.ON.REV</field>
+<desc>
+            <p>This field allows to define whether REVERSAL.MARKER field in DATA.CAPTURE should be retained or not when trying to Reverse a DC Transaction which by itself was input to Reverse another Underyling Transaction.</p>
+            <p />
+            <p>Assume that a TFS transaction corresponds to a TELLER or FT transaction as the underlying. And that underyling transaction is now in History. If there is a need to reverse that transaction, TFS automatically creates Offsetting DC transactions because TELLER does not allow reversal of a transaction in History and FT only partially allows reversal of a transaction in History.</p>
+            <p>In those offsetting DC transactions, the REVERSAL.MARK would be set to R.</p>
+            <p />
+            <p>Now, if this DC transaction needs to be reversed (may be becasue the reversal was done by mistake and needs to be undone), the system will create Reverse on Reverse DC transaction to offset the original DC transaction.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Allowed Values: RETAIN.MARKER, NULL</p>
+            <p>Default: NULL</p>
+            <p />
+            <p />
+            <p>Example:</p>
+            <p>========</p>
+            <p />
+            <p>A TFS transaction corresponds to a TELLER transaction that created these entries.</p>
+            <p />
+            <p>Debit 10.00 from A/C 23884. Dr Transaction Code: 1</p>
+            <p>Credit 10.00 to A/C 23779. Cr Transaction Code: 51</p>
+            <p />
+            <p>The DC transactions created to offset that underlying TELLER would create these entries</p>
+            <p />
+            <p>Debit of 10 from A/C 23779: SIGN=D TRANSACTION=51 AMT=10 REVERSAL.MARK=R</p>
+            <p>Credit of 10 to A/C 23884:  SIGN=C TRANSACTION=1 AMT=10 REVERSAL.MARK=R</p>
+            <p />
+            <p>If these entries need to be reversed (Reverse on a Reversal DC Transaction), it can be achieved in one of two ways.</p>
+            <p />
+            <p>Option 1:</p>
+            <p>---------</p>
+            <p>(If we want to retain the Reversal Marker),</p>
+            <p />
+            <p>Credit 10 to A/C 23779 : SIGN=C TRANSACTION=1 AMT=10 REVERSAL.MARK=R</p>
+            <p>Debit 10 from A/C 23884: SIGN=D TRANSACTION=51 AMT=10 REVERSAL.MARK=R </p>
+            <p />
+            <p>Option 2:</p>
+            <p>---------</p>
+            <p>(If we dont want to retain the reversal marker)</p>
+            <p />
+            <p>Credit 10 to A/C 23779: SIGN=C TRANSACTION=51 AMT=10 </p>
+            <p>Debit 10 from A/C 23884: SIGN=D TRANSACTION=1 AMT=10</p>
+            <p />
+            <p>All these entries will be shown on the account statement unless explcitly suppressed using AC.PRINT.MASK. Assuming they are not supressed, the value in this field is a decision based on how the financial institution wants these entries to be shown on the account statement/activity to the Customer. It is the difference between displaying a 'R' marker against both reversal entries or just one of the reversal entries and showing the reversal on reversal as an Offset entry rather than a reversal entry.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>TXN.CCY.TO.CR.CCY</field>
+<desc>
+            <p>This field forms part of the Currency Conversion Parameters. The CURRENCY field in TELLER.FINANCIAL.SERVICES is the Currency of the 'Transaction' itself and need not be either the Debit or the Credit Currency.</p>
+            <p />
+            <p>A hypothetical example would be a Customer wanting to transfer USD 100 from his/her GBP account to his/her EUR Account.</p>
+            <p />
+            <p>This means that there is a 3rd currency involved. </p>
+            <p />
+            <p>This field allows to define the rate preferences on how the Credit Currency equivalent should be arrived at from the Transaction Currency.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Allowed Input: BUY.SELL, MID.REVAL</p>
+            <p>If left blank, it is defaulted to MID.REVAL</p>
+            <p />
+            <p>Recommended Value: MID.REVAL</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONSOL.AMT.ZERO</field>
+<desc>
+            <p>This field forms part of the Consolidation Parameters. When Consolidation method is set to NET, it is possible that the resultant amount is 0. </p>
+            <p>This field is used to specify the financial institution's preference on what the system should do in such cases.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Allowed Values: FORCE.GROSS, IGNORE.CONSOL.LEG, UNDO.CONSOLIDATION</p>
+            <p>Default Value: FORCE.GROSS</p>
+            <p />
+            <p>If set to FORCE.GROSS, then the system will force the consolidation method to be GROSS - All Debits together and All Credits together.</p>
+            <p>If set to IGNORE.CONSOL.LEG, then the system will ignore the consolidated leg that has the amount as 0 - In other words, there will not be any entry on the customer account at all.</p>
+            <p>If set to UNDO.CONSOLIDATION, then the consolidation will be un-done and each user input leg will directly hit the Customer account.</p>
+            <p />
+            <p>For example, if there are 4 credit transactions and 2 debit transactions, and the net amount comes to 0, then</p>
+            <p />
+            <p>If set to FORCE.GROSS, there will be 2 entries on the Customer account</p>
+            <p>If set to IGNORE.CONSOL.LEG, there will be no entries on the Customer account</p>
+            <p>If set to UNDO.CONSOLIDATION, there will be 6 entries on the Customer account.</p>
+        </desc>
+</t>
+<t>
+<field>MASK.INT.AC.NO</field>
+<desc>
+            <p>This field forms part of the Security Parameters. If the Internal Account numbers are to be masked on Display, then this field needs to be set to YES. This is applicable for the 'account' related fields in TELLER.FINANCIAL.SERVICES namely ACCOUNT.DR, ACCOUNT.CR, RT.ACCOUNT.NO.</p>
+            <p />
+            <p>Instead of displaying the real number, the character defined in MASK.CHARACTER will be displayed for the full length of the value.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Allowed Values: YES or NO.</p>
+            <p>If left blank, it is defaulted to YES.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PARAMETER.ID</field>
+<desc>
+            <p>This is the key to the TFS.PARAMETER application. This could be setup for each Company. If not defined for the Company of the current TFS transaction, then the system will refer to the parameters defined under the Master Company.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Input must be a valid record in COMPANY table.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONSOL.SORT.CODE</field>
+<desc>
+            <p>This field forms part of the Consolidation Parameters. When a Cheque deposit with a float and a Cash deposit are consolidated, a default float (with same day availability) needs to be applied for the cash portion of the consolidated amount.</p>
+            <p />
+            <p>This field holds the key to BC.SORT.CODE that has a 'same day availability' - In other words, the VALUE.DATE.PRD and EXP.DATE.PRD should be left blank.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXPOSURE.METHOD</field>
+<desc>
+            <p>TFS allows capturing cheque deposits in one of two methods.</p>
+            <p />
+            <p>1. Using the Cheque Collection process</p>
+            <p>2. Using exposure ladder functionality - when cheque collection is not handled within T24 and the need is only to be able to apply a forward availability on the deposit amount.</p>
+            <p />
+            <p>In case of option 2 above, the exposure ladder can either be translated into exposure ladder in TELLER or creating AC.LOCKED.EVENTS for each of the exposure split dates in the ladder.</p>
+            <p />
+            <p>This field allows to define how the system should process Exposure ladder.</p>
+            <p />
+            <p>Validatio Rules:</p>
+            <p>================</p>
+            <p />
+            <p>Allowed Values: LOCK, FLOAT</p>
+            <p>If left blank, it is defaulted to LOCK</p>
+            <p />
+            <p>If set to FLOAT, it translates the exposure ladder to the exposure ladder in TELLER. This option can be chosen if the financial institution's business process does not allow/require revision of previously applied float - because TELLER does not allow reversal of transactions in History.</p>
+            <p>If set to LOCK, it creates AC.LOCKED.EVENTS for each of the exposure splits in the ladder. This option can be chosen if the business process allows/requires the ability to revise a previously applied hold on the deposit amount.</p>
+            <p />
+            <p>It is important to note the accounting differences between the two approaches.</p>
+            <p />
+            <p>Using TELLER exposure ladder would mean that the ONLINE.CLEARED.BALANCE on the account will not be updated until the Start of day of the respective Exposure dates.</p>
+            <p>Using AC.LOCKED.EVENTS would mean that the ONLINE.CLEARED.BALANCE and WORKING.BALANCE will be updated with the deposit amount on the date of the transaction (assuming the VALUE.DATE is the current bank date). However the amount available for withdrawal will still be constrained with the Locked Amounts.</p>
+            <p>The net effect in both approaches is the same - in terms of the actual amount available for withdrawal by the customer. However care must be taken in making sure that the enquiries/reports that display the balance of the account display the correct values.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>MASK.PL.CATEG.NO</field>
+<desc>
+            <p>This field forms part of the Security Parameters. If the PL category numbers are to be masked on Display, then this field needs to be set to YES. This is applicable for the 'account' related fields in TELLER.FINANCIAL.SERVICES namely ACCOUNT.DR, ACCOUNT.CR, RT.ACCOUNT.NO.</p>
+            <p />
+            <p>Instead of displaying the real number, the character defined in MASK.CHARACTER will be displayed for the full length of the value.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Allowed Values: YES or NO.</p>
+            <p>If left blank, it is defaulted to YES.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TXN.REV.DC.DR</field>
+<desc>
+            <p>This field forms part of DATA.CAPTURE Related parameters. </p>
+            <p>When trying to reverse a TFS leg which has the underlying as TELLER or FUNDS.TRANSFER in History, TFS would undo the entries by creating offsetting DATA.CAPTURE transactions.</p>
+            <p />
+            <p>It will attempt to use the same TRANSACTION codes as in the accounting entries used by the original underlying TELLER or FUNDS.TRANSFER albeit with the REVERSAL.MARK in DC set to Y. However if those transaction codes are not enabled for use in DATA.CAPTURE module (DATA.CAPTURE field in TRANSACTION table must be set to Y), then it needs a default alternate code that it can use for the Debit Reversal Entry.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Mandatory Input.</p>
+            <p>Input must be a valid record in TRANSACTION table.</p>
+            <p>The DEBIT.CREDIT.IND in TRANSACTION must be set to DEBIT.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>INTERFACE.TO</field>
+<desc>
+            <p>This field forms part of the Interface parameters. Defines the underlying modules that TFS can interface to.</p>
+            <p />
+            <p>Input in this field will be validated against, at the time of setting up TFS.TRANSACTION.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Allowed Values: FT, TT and DC.</p>
+            <p>Mandatory Input.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>TXN.CCY.TO.DR.CCY</field>
+<desc>
+            <p>This field forms part of the Currency Conversion Parameters. The CURRENCY field in TELLER.FINANCIAL.SERVICES is the Currency of the 'Transaction' itself and need not be either the Debit or the Credit Currency.</p>
+            <p />
+            <p>A hypothetical example would be a Customer wanting to transfer USD 100 from his/her GBP account to his/her EUR Account.</p>
+            <p />
+            <p>This means that there is a 3rd currency involved. </p>
+            <p />
+            <p>This field allows to define the rate preferences on how the Debit Currency equivalent should be arrived at from the Transaction Currency.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Allowed Input: BUY.SELL, MID.REVAL</p>
+            <p>If left blank, it is defaulted to MID.REVAL</p>
+            <p />
+            <p>Recommended Value: MID.REVAL</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONSOL.METHOD</field>
+<desc>
+            <p>This field forms part of the Consolidation Parameters. If Consolidation is enabled, then TFS will combine all the user input transactions on a single TFS screen and create that as a single transaction hitting the account specified in PRIMARY.ACCOUNT field.</p>
+            <p />
+            <p>This field allows to define if the combined transaction should be "NET" - Consolidate all debits and credits or "GROSS" - Consolidate all debits together and Consolidate all credits together.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional Input.</p>
+            <p>Allowed Values: GROSS, NET</p>
+            <p>Input not allowed if CONSOLIDATION is set to DISABLE</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RESET.FIELDS</field>
+<desc>
+            <p>This field forms part of the Misc parameters. If in a TFS Transaction, while inputting one of the Legs, the user changes the TRANSACTION type after inputting other details of that Leg. </p>
+            <p />
+            <p>This field allows us to define which of the associated field in that Leg should be cleared. </p>
+            <p />
+            <p>Examples of this would be instead of choosing Cash Deposit, the user might have chosen the Cash withdrawal code and entered currency and amount. If this field does not include AMOUNT and CURRENCY but other fields of the Leg, changing this to Cash Withdrawal will clear out all fields of that Leg except for AMOUNT and CURRENCY.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+        </desc>
+</t>
+<t>
+<field>MASK.CHARACTER</field>
+<desc>
+            <p>This field forms part of the Security Parameters. If either Internal Account numbers or PL Category numbers are to be masked on display, then this field needs to be set with the character that should be displayed for the length of the account number/category.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Single Character.</p>
+            <p>Mandatory Input if either MASK.INT.AC.NO or MASK.PL.CATEG.NO is set to YES. Otherwise Input not allowed.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONSOL.NARR.API</field>
+<desc>
+            <p>This field forms part of the Consolidation Parameters. If Consolidation is enabled, then TFS will combine all the user input transactions on a single TFS screen and create that as a single transaction hitting the account specified in PRIMARY.ACCOUNT field.</p>
+            <p />
+            <p>TFS automatically populates the statement narrative for the consolidated transaction based on the user input Legs that were combined to create that consolidated transaction.</p>
+            <p />
+            <p>If there is a need to build the narrative with a specific logic, a local API can be written and attached to this field.</p>
+            <p />
+            <p>Whenever Consolidation is done, TFS will invoke this API and expect the narrative to be populated for the consolidated transaction.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional Input.</p>
+            <p>Input not allowed if CONSOLIDATION is set to DISABLE</p>
+        </desc>
+</t>
+<t>
+<field>CONSOL.TFS.TXN</field>
+<desc>
+            <p>When multiple TFS Transactions are combined to create a consolidated transaction, the system needs a TFS.TRANSACTION type to effect that consolidated transaction. </p>
+            <p />
+            <p>This field holds the key to TFS.TRANSACTION that will be used in consolidated Transactions.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Input must be a valid record in TFS.TRANSACTION.</p>
+            <p>Mandatory input if CONSOLIDATION is set to ENABLE. Otherwise Input not allowed.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONSOL.WASHTHRU</field>
+<desc>
+            <p>This field forms part of the Consolidation Parameters. If Consolidation is enabled, then TFS will combine all the user input legs and create that as a single transaction hitting the account specified in PRIMARY.ACCOUNT field. </p>
+            <p />
+            <p>This field holds the Category code of the Washthru account used by TFS on the user input legs.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Mandatory Input if CONSOLIDATION is set to ENABLE. Otherwise input not allowed.</p>
+            <p>Input must be a valid record in CATEGORY table.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>AML.DETAILS</field>
+<desc>
+            <p>The transaction front end supports capture of Customer details </p>
+            <p>1. For an existing customer, input of the Customer number would suffice.</p>
+            <p>2. For walk-in customers who dont really have an account with T24, additional details (as required by the local/regional regulatory requirements) like Legal ID, Legal Document Name, Issuing authority, document issue and expiry date can be captured.</p>
+            <p>This field indicates whether that information should be treated by the system as just information purposes or should any real validation be done. If this field is set to VALIDATION, then the expiry date is validated and if the document has expired, an override is generated.</p>
+            <p>It should be noted that this feature does not extend to automatically do black-list checking or other real-time interface capability to an AML solution. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Allowed Values: INFORMATION, VALIDATION. </p>
+            <p>If left blank, it is defaulted to INFORMATION</p>
+        </desc>
+</t>
+<t>
+<field>AML.LOOKUP</field>
+<desc>
+            <p>See helptext for AML.DETAILS for more information about AML support.</p>
+            <p />
+            <p>The same set of AML fields in CUSTOMER are used in the transaction front end (TELLER.FINANCIAL.SERVICES). There are a few look up tables used for attributes such as LEGAL DOCUMENT, ISSUING AUTHORITY, COMMUNICATION TYPE. </p>
+            <p>These look up tables (in EB.LOOKUP) would have already been setup to be used to capture similar information when creating a customer.</p>
+            <p>This field indicates whether the transaction front end should use the same look up tables defined for CUSTOMER application or if there are native lookup tables setup.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Allowed Values: CUSTOMER, NATIVE.</p>
+            <p>If left blank, it is defaulted to CUSTOMER.</p>
+            <p>&#160;</p>
+            <p>When this field is set to CUSTOMER, then the following virtual look up tables need to have been setup in EB.LOOKUP.</p>
+            <p>a) CUS.LEGAL.DOC.NAME - for the field LEGAL.DOC.NAME</p>
+            <p>b) CUS.COMM.TYPE - for the field COMM.TYPE</p>
+            <p>c) CUS.LEGAL.ISS.AUTH - for the field LEGAL.ISS.AUTH</p>
+            <p>&#160;</p>
+            <p>When this field is set to NATIVE, then the following virtual look up tables need to have been setup in EB.LOOKUP.</p>
+            <p>a) TFS.LEGAL.DOC.NAME - for the field LEGAL.DOC.NAME</p>
+            <p>b) TFS.COMM.TYPE - for the field COMM.TYPE</p>
+            <p>c) TFS.LEGAL.ISS.AUTH - for the field LEGAL.ISS.AUTH</p>
+            <p>&#160;</p>
+            <p>Recommended value: CUSTOMER</p>
+        </desc>
+</t>
+<t>
+<field>AUTO.EXPAND.LEGS</field>
+<desc>
+            <p>This field forms part of the Usability Parameters. When launching TELLER.FINANCIAL.SERVICES, the user will be required to expand the multi-value set to record multiple transactions. To enable faster input, it is possible to auto-expand the multi-value sets to a predefined number so the user doesnt have to waste time on expanding the multi-values.</p>
+            <p>The number specified in this field is the number of Legs that will be automatically expanded when launching TELLER.FINANCIAL.SERVICES (regardless of the Version used).</p>
+            <p>&#160;</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional Input</p>
+            <p>Input must be numeric.</p>
+        </desc>
+</t>
+<t>
+<field>BUY.FCY.SELL.FCY</field>
+<desc>
+            <p>This field forms part of the Currency Conversion Parameters. </p>
+            <p />
+            <p>In a TFS transaction, if in a Leg, the debit and credit sides are both Foreign Currency, the system needs to arrive at a deal rate.</p>
+            <p>This field allows to define the rate preferences for such a transaction.</p>
+            <p />
+            <p>Value in this field is overriden by the setup in the corresponding field in TFS.TRANSACTION. If not setup in TFS.TRANSACTION, then it is inherited from this parameter.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed Values: BUY.SELL, MID.REVAL</p>
+            <p>If left blank, it is defaulted to BUY.SELL.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

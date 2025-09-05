@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>MI</product>
+<table>MI.BUILD.DATABASE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This Application is used to define how MI databases are to be built. </p>
+            <p>Each MI.DB.DEFINITION record determines: - Which databases are built - What dates they are built for - What types of input data are used </p>
+            <p>Verifying a record on this file will trigger the immediate build of the appropriate databases.  Specifying a record on this file for the MI.EOD.BUILD job (part of the MI.END.OF.DAY batch process) will build the appropriate databases when the job is next run in EOD.  The same records may be used to control user builds and batch builds, as long as the build characteristics are to be the same. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>RESERVED.3</field>
+<desc>
+            <p>Field reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.2</field>
+<desc>
+            <p>Field reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.1</field>
+<desc>
+            <p>Field reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.4</field>
+<desc>
+            <p>Field reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>PL.ALLOC.REQD</field>
+<desc>
+            <p>This flag determines whether P&amp;L Allocation is run before the database is built. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.7</field>
+<desc>
+            <p>Field reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.5</field>
+<desc>
+            <p>Field reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>REBUILD.PL.ALLOC</field>
+<desc>
+            <p>Date to rebuild P&amp;L Allocation from. </p>
+            <p>P&amp;L Allocation can be run before building the database.  A date input in this field specifies when you wish to build P&amp;L allocation from.  If this date is left blank, P&amp;L allocation will be run from the last time it was built. </p>
+            <p>If the date in this field is before the last P&amp;L allocation date, P&amp;L allocation will be rerun for the specified period.  You would use this if you changed the criteria for P&amp;L allocation, and wished the new allocation of P&amp;L to be picked up by databases already built. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid date</p>
+            <p>Optional input</p>
+            <p>Cannot be later than today's date</p>
+        </desc>
+</t>
+<t>
+<field>REBUILD.TO.DATE</field>
+<desc>
+            <p>End date to which the databases will be built. </p>
+            <p>MI databases will normally be built incrementally.  This means that each time the database build is run - either on line or in EOD - data will be added from the last time the database was built to bring the database up to date.  If the database is built each month, a month's data will be added each time. </p>
+            <p>You may want to build a database for a specific period.  For instance, for a new database, you may only want to see data from the beginning of the year.  Or you may need to rebuild a part of a database which has already been built - if you change the definition of the database, or if you have new P&amp;L allocation or backvalued balance information to include.  In this case, you should put the end date of the period you want to build in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 date field.</p>
+            <p>Optional input. Where present, must be less than the current system date and must be greater than, or equal to, the REBUILD.FROM.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>REBUILD.FR.DATE</field>
+<desc>
+            <p>Start of period from which databases will be built. </p>
+            <p>MI databases will normally be built incrementally.  This means that each time the database build is run - either on line or in EOD - data will be added from the last time the database was built to bring the database up to date.  If the database is built each month, a month's data will be added each time.  To build from the last time the database was run, this field should be left blank. </p>
+            <p>You may want to build a database for a specific period.  For instance, for a new database, you may only want to see data from the beginning of the year.  Or you may need to rebuild a part of a database which has already been built - if you change the definition of the database, or if you have new P&amp;L allocation or backvalued balance information to include.  In this case, you should put the start date of the period you want to build in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be the start of an MI period for the databases being built.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.6</field>
+<desc>
+            <p>Field reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>MI.BUILD.ID</field>
+<desc>
+            <p>A unique identifier of the database build </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input</p>
+        </desc>
+</t>
+<t>
+<field>BUILD.BAL.MVMT</field>
+<desc>
+            <p>This field is used to run a partial build of the databases defined in the DB.DEF.ID field. </p>
+            <p>By default the database build incorpates information from the three different types of source file; </p>
+            <p>BALANCE.MOVEMENT MI.BUDGET Profit and Loss entries (CATEG.ENTRY, MI.ENTRY, MI.AUTO.ENTRY) </p>
+            <p>This field allows ONLY the BALANCE.MOVEMENT information to be processed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input must either be Y or N. Optional.</p>
+            <p>If set to Y, either one of the fields BUILD.BAL.MVMT, BUILD.ENTRIES and BUILD.BUDGET can be set, or all of the fields.</p>
+        </desc>
+</t>
+<t>
+<field>BUILD.BUDGET</field>
+<desc>
+            <p>This field is used to run a partial build of the databases defined in the DB.DEF.ID field. </p>
+            <p>By default the database build incorpates information from the three different types of source file; </p>
+            <p>BALANCE.MOVEMENT MI.BUDGET Profit and Loss entries (CATEG.ENTRY, MI.ENTRY, MI.AUTO.ENTRY) </p>
+            <p>This field allows ONLY the BUDGET Pinformation to be processed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input must either be Y or N. Optional.</p>
+            <p>If set to Y, either one of the fields BUILD.BAL.MVMT, BUILD.ENTRIES and BUILD.BUDGET can be set, or all of the fields.</p>
+        </desc>
+</t>
+<t>
+<field>BUILD.ENTRIES</field>
+<desc>
+            <p>This field is used to run a partial build of the databases defined in the DB.DEF.ID field. </p>
+            <p>By default the database build incorpates information from the three different types of source file; </p>
+            <p>BALANCE.MOVEMENT MI.BUDGET Profit and Loss entries (CATEG.ENTRY, MI.ENTRY, MI.AUTO.ENTRY) </p>
+            <p>This field allows ONLY the profit and loss information to be processed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input must either be Y or N. Optional.</p>
+            <p>If set to Y, either one of the fields BUILD.BAL.MVMT, BUILD.ENTRIES and BUILD.BUDGET can be set, or all of the fields.</p>
+        </desc>
+</t>
+<t>
+<field>DB.DEF.ID</field>
+<desc>
+            <p>The database to be built. </p>
+            <p>This is a multivalue field, as you can build more than one database at a time.  However, all the databases on a build record must have the same database frequency. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.8</field>
+<desc>
+            <p>Field reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Description of the record. </p>
+            <p>Multilanguage field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 30 type A (alphanumeric) characters.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.9</field>
+<desc>
+            <p>Field reserved for future use. </p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

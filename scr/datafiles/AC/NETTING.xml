@@ -1,0 +1,719 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>AC</product>
+<table>NETTING</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Payment netting consolidates payments with the same value date and currency for any counterparty with whom we have a NETTING.AGREEMENT.</p>
+            <p />
+            <p>SUMMARY OF PAYMENT NETTING</p>
+            <p>Payment netting is only possible where we have an active NETTING.AGREEMENT with a counterparty. The netting agreement has a finite life and specifies which currencies may be net and which types of contracts may give rise to net payments.</p>
+            <p>When a payment is a valid candidate for netting, T24 will pass the entry to a suspense account instead of the nostro account and will not create a payment message in Delivery. A record will be written to the NETTING.ENTRY application for the contract and the status of the entry may be monitored here.</p>
+            <p>The CREATE.NETTING application may then be used to consolidate the outstanding payments together. These will be written to the NETTING application. There is one NETTING record for each net payment (i.e. a NETTING record is for a single customer, currency, and value date).</p>
+            <p>The NETTING record is initially placed on hold. The record may now be maintained to add settlement details, confirmation details and, if required, individual payments may be dropped from the net payment.</p>
+            <p>Upon authorisation a net payment (or receipt) message will be generated. The suspense account will be debited and the nostro will be credited.</p>
+            <p />
+            <p>PROCESSING OF FORWARD NET PAYMENTS</p>
+            <p>Payments arising from forward deals or from the maturity of contracts may also be netted. During the overnight batch T24 will check for net payments being made in the near future (as specified on NETTING.PARAMETERS). It will automatically create NETTING records ready for maintenance the following morning.</p>
+            <p />
+            <p>PARAMETERS FOR PAYMENT NETTING.</p>
+            <p>The NETTING.PARAMETERS application defines various high level specifications for netting including the transaction codes to be used for netting movements, the number of days ahead for the creation of forward netting payments, etc.</p>
+            <p>The ACCOUNT.CLASS application defines the payment netting suspense accounts on the record 'NETTING'.</p>
+            <p>The ACCOUNT.PARAMETER application defines whether the site requires netting.</p>
+            <p />
+            <p>PARAMETERS FOR PAYMENT NETTING TO GENERATE MT102 and MT203 FROM FUNDS TRANSFER APPLICATION</p>
+            <p />
+            <p>From Funds Transfer application instead of raising individual MT103 and MT202, messages can be grouped and MT102 &amp; MT203 respectively can be sent using NETTING application. For this DE.PARM and DE.MESSAGE , Netting.Allowed flag should be set to "Yes". Based on the Value entered in Netting.Status in Funds.Transfer application, NETTING.ENTRY is created with system id as FT. </p>
+            <p />
+            <p>The CREATE.NETTING application may then be used to consolidate the outstanding payments together. These will be written to the NETTING application. There is one NETTING record for each net payment (i.e. a NETTING record is for a single customer, currency, and value date combination). Incase the MT202 details exceed 1 then MT203 is sent otherwise MT202 is sent. Incase the 202 records exceeds 10, then for every 10 records, single MT203 is sent.</p>
+            <p />
+            <p>When System.Id is FT then in NETTING application only Netting &amp; Bk.To.Bk.102 and Bk.To.Bk.203  fields are allowed for input and the details required for the messages are defaulted from the corresponding Funds Transfer Contract.</p>
+            <p />  Please note NETTING application is used by FT to generate MT102 and MT203. i.e., No Accounting entries at Netting Level for FT.  </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>BENEFICIARY.BANK</field>
+<desc>
+            <p>Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 10 characters may be entered.</p>
+            <p>Must be the key to a valid entry on the CUSTOMER file.</p>
+        </desc>
+</t>
+<t>
+<field>BK.TO.BK.202</field>
+<desc>
+            <p>Bank to bank information for 202 messages. </p>
+            <p>Corresponds to field 72 on the SWIFT message. </p>
+            <p>Provides instructions from ourselves (the sender) for the receiver of the SWIFT 202 message, usually the bank where our nostro account is held. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 characters (uppercase alpha or numeric) - Type S. Multivalue field.  A maximum of 6 lines of 35 characters each will be allowed.</p>
+            <p>If this field is used, the first multivalue must contain a code word followed by further information.</p>
+            <p>All code words must be present on the SWIFT.CODE.WORDS files, and must be enclosed between slashes '/' at the beginning of the line.</p>
+            <p>Further code words and information can be entered in subsequent multivalues, but additional information continued on a new line must be preceded by double slashes '//'.</p>
+        </desc>
+</t>
+<t>
+<field>BK.TO.BK.203</field>
+<desc>
+            <p>Bank to Bank information for MT203 message can be given here and same is mapped to tag 72 of A Sequence</p>
+            <p>Provides instructions or additional information for the receiver from ourselves (the sender).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 35 characters (uppercase alpha or numeric) - Type S. Multivalue     field. A maximum of 6 lines of 35 characters each will be allowed.   </p>
+            <p>If this field is used, the first multivalue must contain a code word     followed by further information.   </p>
+            <p>All code words must be present on the SWIFT.CODE.WORDS files, and must be     enclosed between slashes '/' at the beginning of the line.   </p>
+            <p>Further code words and information can be entered in subsequent     multivalues, but additional information continued on a new line must be     preceded by double slashes '//</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>Identifies the Currency of the netted amounts. </p>
+            <p>No input system updated field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(Display only)</p>
+        </desc>
+</t>
+<t>
+<field>NETTING.STATUS</field>
+<desc>
+            <p>This field indicates the status of the contracts linked to this NETTING record. </p>
+            <p>It is an internal field and input here is automatically generated by the system. </p>
+            <p>The following values have been defined:- </p>
+            <p>           i)   FWD  =  forward value            ii)  MAT  =  matured </p>
+            <p>           iii) CUR  =  current    }            iv)  HLD  =  held       } reserved for future use            v)   CLS  =  closed     } </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System generated field 3 digit alpha field</p>
+            <p>(Display only)</p>
+        </desc>
+</t>
+<t>
+<field>BENFCY.ADD.CUST</field>
+<desc>
+            <p>This is a multi valued field. Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 35 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>SETTLE.ACCOUNT</field>
+<desc>
+            <p>Defines the identity of the default Account number that will be used for settlement. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard Account number or mnemonic. (Mandatory input)</p>
+            <p>If entered as an account number or mnemonic, the account must be in the appropriate currency.</p>
+        </desc>
+</t>
+<t>
+<field>REC.CORR.BNK</field>
+<desc>
+            <p>The correspondant bank of the receiver bank. This field may only be entered if a receiver bank has been entered. Therefore it is only used when two payment messages are required - a payment and a cover payment. </p>
+            <p>If this field is not entered then it will default from the AGENCY record for the receiver bank. This is where we store the account and the bank where we normally pay funds in this currency for this receiver. </p>
+            <p>This field corresponds to field 54 in SWIFT messages. </p>
+            <p />
+            <p />
+            <p>EXAMPLE </p>
+            <p>See the helptext for RECEIVER.BANK for an example of the use of REC.CORR.BANK. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>May be a CUSTOMER or four lines of narrative.</p>
+        </desc>
+</t>
+<t>
+<field>BK.TO.BK.102</field>
+<desc>
+            <p>Bank to Bank information for MT102 message can be given here and same is mapped to tag 72 of  Sequence C</p>
+            <p />
+            <p>Provides instructions or additional information for the receiver from ourselves (the sender).</p>
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up     to 35 characters (uppercase alpha or numeric) - Type S. Multivalue field. A     maximum of 6 lines of 35 characters each will be allowed. </p>
+            <p />
+            <p>If     this field is used, the first multivalue must contain a code word followed     by further information. </p>
+            <p />
+            <p>All     code words must be present on the SWIFT.CODE.WORDS files, and must be     enclosed between slashes '/' at the beginning of the line.</p>
+            <p />
+            <p>Further code words and     information can be entered in subsequent multivalues, but additional     information continued on a new line must be preceded by double slashes '//</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>REC.CORR.BK.102</field>
+<desc>
+            <p>The correspondent bank of the Receiver bank is populated here from the corresponding Funds Transfer contract and this field corresponds to tag 54 in SWIFT messages.</p>
+            <p />
+            <p>This fields are updated by system when MT102 to be generated from FT</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>No Input field-Updated by System</p>
+        </desc>
+</t>
+<t>
+<field>SYSTEM.ID</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>BENEFICIARY.CUST</field>
+<desc>
+            <p>Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 10 characters may be entered.</p>
+            <p>Must be the key to a valid entry on the CUSTOMER file.</p>
+        </desc>
+</t>
+<t>
+<field>STMT.NO</field>
+<desc>
+            <p>A number Generated automatically by the system after authorisation which identifies either a statement entry or a category entry in respect of a transaction. After validation but before authorisation, the value 'VAL' will be inserted in this field to indicate that the transaction has been validated successfully but is still waiting authorisation. </p>
+            <p>After authorisation of a Teller transaction, the system will automatically insert a number into this field and this number may refer to a statement entry or a category entry depending on the value contained in the corresponding multivalue fields. The following examples will illustrate the use of this field. </p>
+            <p>Example 1: </p>
+            <p>On the execution date of a transaction there will normally be an entry on a Customer account and the following type of number will be generated at this field: </p>
+            <p>          39.1  STMT.NO ............ 673732684.48           39.2  STMT.NO ............ 1 </p>
+            <p>The number automatically generated in field 39.1 is unique to the transaction in question and is built in the following way: </p>
+            <p>1.        The first four digits '6737' indicate the number of days           since the 1st of January 1968. In our example, it           corresponds to the 11th of June 1986. </p>
+            <p>2.        The next five digits '32684' indicate the number of seconds           since midnight. In our example, it corresponds to an entry           generated on line at 09:04:44 AM. </p>
+            <p>3.        The last two digits '48' indicate the number of hundreds of           seconds. </p>
+            <p>The value assigned (again automatically) to field 39.2 identifies the number in 39.1 as a statement entry number. If the User wishes to call this statement entry record on to the screen the User will invoke the STMT.ENTRY Application and the type the following at 'Awaiting ID' :- </p>
+            <p>                673732684.480001 </p>
+            <p>where the suffix '0001' identifies it as the first statement entry (there will normally be more than one as the next example will illustrate). </p>
+            <p>Example 2: </p>
+            <p>A second example outlined here is similar to that in example 1, in that there is a statement entry on value date for both the our account and the customer account. The system handles this case as follows: </p>
+            <p>                39.1  STMT.NO .......... 673732684.48                 39.2  STMT.NO .......... 1-2 </p>
+            <p>Once again field 39.1 contains the identification number automatically generated by the system while field 39.2 now contains two separate numbers signifying that there are infact two separate statement entries, one in respect of the our account pay and one in respect of the our account receive. If the User wishes to see either of these he must first of all invoke STMT.ENTRY followed by the desired function and then at 'Awaiting ID' type EITHER: </p>
+            <p>                673732684.480001 </p>
+            <p>where the addition of the suffix '0001' identifies the statement entry in respect of the our account OR </p>
+            <p>                673732684.480002 </p>
+            <p>where the addition of the suffix '0002' identifies the statement entry in respect of the customer account. </p>
+            <p>Example 3: </p>
+            <p>A third example might be that of a category entry generated at initiation of a transaction where commission or charges have been debited to the customer and credited to a profit and loss category code. In this case the following entries are generated on the transaction: </p>
+            <p>                39.1  STMT.NO .......... 673732684.48                 39.3  STMT.NO .......... 1 </p>
+            <p>Once again the standard type number is generated and inserted at field 39.1 </p>
+            <p>Now, however, field 39.2 is replaced by field 39.3 which now identifies the number in 39.1 as a category entry and not a statement entry. </p>
+            <p>To call this category entry record onto the screen the User must now type: </p>
+            <p>          CATEG.ENTRY at 'Awaiting Application' </p>
+            <p>followed by: </p>
+            <p>          673732684.480001 at 'Awaiting ID'. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal Multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER</field>
+<desc>
+            <p>Identifies the counterparty with whom the Bank makes an agreement. </p>
+            <p>This is the identification assigned to the Customer on first contact with the bank.  The customer will be referred to by this identification in all subsequent operations with the Bank. </p>
+            <p>No input system updated field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(Display only)</p>
+        </desc>
+</t>
+<t>
+<field>RECEIVER.BNK</field>
+<desc>
+            <p>The institution (usually a bank) who will be the receiver of a payment instruction message if a cover payment is required. </p>
+            <p>Input to this field will cause two payment messages to be generated, a payment request and a cover payment request. The payment request will be sent to the bank input in this field. The cover payment will be sent to our nostro (in the SETTLE.ACCOUNT field) in the normal way. </p>
+            <p />
+            <p />
+            <p>EXAMPLE </p>
+            <p>We are paying French Francs to ABC Limited at their account at Credit Lyonnais in Paris. Our FRF nostro is BNP Paris and Credit Lyonnais take cover at Credit Agricole Paris. </p>
+            <p>We would send two messages: </p>
+            <p>An MT100 to Credit Lyonnais requesting them to credit the account of ABC Limited. </p>
+            <p>An MT202 to BNP Paris requesting them to make a payment from our account to the account of Credit Lyonnais at Credit Agricole. </p>
+            <p>The contents of the fields on the NETTING record would be: </p>
+            <p>SETTLE.ACCOUNT  Nostro at BNP RECEIVER.BNK    Credit Lyonnais REC.CORR.BNK    Creidt Agricole BENEFICIARY     ABC Limited </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input. If input then two payment messages will be sent.</p>
+            <p>Number of mnemonic of customer on CUSTOMER file.</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+            <p>Local reference field(s) defined by the user. </p>
+            <p>Identifies any additional element which has been defined locally to meet a particular requirement. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Upto 11 Alphanumeric characters as defined in the local table definition for this local reference field. (Optional input.  Multivalued field).</p>
+            <p>Optional or mandatory input according to the LOCAL.TABLE defintion for this field.</p>
+        </desc>
+</t>
+<t>
+<field>BK.TO.BK.100</field>
+<desc>
+            <p>Bank to Bank information for MT100 payment messages. </p>
+            <p>Corresponds to field 72 on SWIFT. </p>
+            <p>Provides instructions or additional information for the receiver from ourselves (the sender). </p>
+            <p>Optional </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 characters (uppercase alpha or numeric) - Type S. Multivalue field.  A maximum of 6 lines of 35 characters each will be allowed.</p>
+            <p>If this field is used, the first multivalue must contain a code word followed by further information.</p>
+            <p>All code words must be present on the SWIFT.CODE.WORDS files, and must be enclosed between slashes '/' at the beginning of the line.</p>
+            <p>Further code words and information can be entered in subsequent multivalues, but additional information continued on a new line must be preceded by double slashes '//'.</p>
+        </desc>
+</t>
+<t>
+<field>BENEFICIARY</field>
+<desc>
+            <p>Identifies the bank where the beneficiary maintains his account. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 6 Numeric character Customer code, or, 3 to 10 character Customer mnemonic. (Optional input)</p>
+            <p>Specify BENEFICIARY or BENFCY.ADD</p>
+        </desc>
+</t>
+<t>
+<field>NETTING</field>
+<desc>
+            <p>Specifies if the transaction will be included in this group as a netted payment. Y = YES, N = NO (payment will not be net under this grouping) </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(Mandatory input, Default = YES)</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>Indicates the value date applicable to the transactions contained in this Payment NETTING record. </p>
+            <p>No input system updated field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(Display only)</p>
+        </desc>
+</t>
+<t>
+<field>DELIVERY.MSG</field>
+<desc>
+            <p>Confirmation that the contract details have been passed over to the Delivery system for onward communication to the counterparty. </p>
+            <p>This field is defaulted to the Delivery message Id (DE.MESSAGE) of the message sent to the Delivery system. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 Numeric character. (Display only, Default = DE.MESSAGE Id)</p>
+        </desc>
+</t>
+<t>
+<field>CONFIRMED.WITH</field>
+<desc>
+            <p>The Customer contact name with whom the paymnet was confirmed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 11 alphnumeric characters (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>NETT.ACCOUNT</field>
+<desc>
+            <p>Defines the identity of the Account record which is to be the default wash account. </p>
+            <p>No input system updated field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(Display only)</p>
+        </desc>
+</t>
+<t>
+<field>TRANS.REF</field>
+<desc>
+            <p>Contains the reference number by which the originating transaction may be accessed in the front end application. </p>
+            <p>No input system updated field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(Display only)</p>
+        </desc>
+</t>
+<t>
+<field>MSG.TYPE</field>
+<desc>
+            <p>Message type is populated here from the Funds transfer contract. This can have the value 102 or 203.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No Input field-Updated by System.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>INTERMED.ADD</field>
+<desc>
+            <p>Defines the address of the intermediary address. </p>
+            <p>If an intermediary bank is used and the customer number of the intermediary is not known (INTERMED.BNK), this multi-valued field should contain the name and address of the intermediary. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 to 35 alphanumeric S.W.I.F.T characters. (Optional input).</p>
+            <p>No input allowed if INTERMED.BNK has been defined.</p>
+            <p>A maximun of four lines is allowed.</p>
+        </desc>
+</t>
+<t>
+<field>OPERATION.CODE</field>
+<desc>
+            <p>Bank operation code is populated here from the Funds transfer contract. This can have the value CREDIT or CHQB</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>No Input field-Updated by System.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Contains all the Override messages which the user agreed to during Input. </p>
+            <p>During the validation stage of the netting process the system may provide the user with a series of screen override messages to indicate an anomaly. </p>
+            <p>In the event that the user confirms the Override, the full text of the actual Override Message will be stored, for reference purposes only, in this multivalue field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field, multivalue. (Display only)</p>
+        </desc>
+</t>
+<t>
+<field>NETTING.ID</field>
+<desc>
+            <p>System generated. </p>
+            <p>Unauthorised records are generated by the CREATE.NETTING application. NETTING records CAN NOT be input from scratch. </p>
+            <p />
+            <p>Use      E - for list of Exception records       or          L - for list of Authorised records       or          Enter valid NETTING reference number          (See below) </p>
+            <p>The reference number has the following format NPYYDDDNNNNN where: </p>
+            <p>NP    =    Application indicator for the NETTING application. </p>
+            <p>YY    =    The last two digits of the year when the transaction            is processed </p>
+            <p>DDD   =    Julian day number within year when the FX is            processed. </p>
+            <p>NNNNN =    Five digit sequential number. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>10 numeric characters, prefixed by NP: NPyydddnnnnn NP followed by 10 numbers (See Details)</p>
+        </desc>
+</t>
+<t>
+<field>PAYMENT.DETAILS</field>
+<desc>
+            <p>Allows details of the transfer to be input for inclusion on the Payments and Advices. </p>
+            <p>This field should contain reference information for the Beneficiary as supplied by the Ordering Customer.  Typical examples are Reference and invoice numbers. </p>
+            <p>Payment Details should not contain payment instructions. </p>
+            <p>This field corresponds to field 70 in S.W.I.F.T messages. </p>
+            <p>For local clearing validation rules see the section 'Local Clearing Rules' under the relevant clearing system. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 characters (uppercase alpha or numeric) - Type  S. Multivalue Field. A maximum of four lines, of 35 characters each, will be allowed. (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>CHARGES.FOR</field>
+<desc>
+            <p>This field defines how the receiver of a Payment Cable should collect its own charges. </p>
+            <p>This field will define if the Receiver Bank charges are to be borne by the Beneficiary 'BEN' or if they are for the Account of the Sending Bank. </p>
+            <p>When 'OUR' has been input, the Recipient Bank will normally send a Claim Charges Advice for the amount of their charges to the Sending Bank which in turn will collect the amount from the Ordering Customer. </p>
+            <p>This field corresponds to field 71 in S.W.I.F.T. message. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only allowed values : "BEN" or "OUR".  (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>NETT.AMT.SETTLE</field>
+<desc>
+            <p>Indicates the net settlement amount. </p>
+            <p>No input system updated field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(Display only)</p>
+        </desc>
+</t>
+<t>
+<field>BEN.ACCOUNT</field>
+<desc>
+            <p>The account number of the beneficiary at their bank. </p>
+            <p>Optional input. </p>
+            <p>Will default from the standard instructions on the AGENCY file for the beneficiary if no input is made. </p>
+            <p />
+            <p>EXAMPLE </p>
+            <p>The beneficiary of this USD payment is ABC COMPANY. They have asked us to credit their USD account 123456 at INTERSTATE BANK NEW YORK. </p>
+            <p>The following should be input: </p>
+            <p>BENEFICIARY    ABC COMPANY ACC.WITH.BNK   INTERSTATE BANK NEW YORK BEN.ACCOUNT    123456 </p>
+            <p>causing SWIFT fields as follows: </p>
+            <p>57A      IBNYUS33 58D      /123456          ABC COMPANY          520 MADISON AVENUE          NEW YORK </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 35 Type S Alphanumeric characters. (Mandatory when ACC.WITH.BNK or ACC.WITH.ADD has been  specified.  Default = ).</p>
+            <p>Will default from AGENCY</p>
+        </desc>
+</t>
+<t>
+<field>TIME.IND</field>
+<desc>
+            <p>Specify the Time indication detail here, which will be mapped to tag 13C of MT102</p>
+            <p />
+            <p>Time indication has 3 components i.e. SWIFT.CODE.WORD, TIME.INDICATION and TIME.OFFSET.</p>
+            <p />
+            <p>Swift.Code.word and time indication has to be specified here.</p>
+            <p />  TIME.OFFSET will get defaulted from field CET.TIME.DIFF in DE.PARM. If no value is given in DE.PARM, then defaulted to +0000  <p>FOR EXAMPLE:  </p><p /><p>In DE.PARM application, field CET.TIME.DIFF is set as +1000 and in FT, for field TIME.IND is given as /CLSTIME/1220, then 13C tag of swift message will be /CLSTIME/1220+1000</p><p><p>Validation Rules:</p></p><p /><p>Optional field</p><p /><p>SWIFT.CODE.WORD entered     should be a valid record in SWIFT.CODE.WORDS for the application and message     type. </p><p /><p>Time indication related code     words-CLSTIME, SNDTIME, RNCTIME can be used. </p><p /><p>Code words should be given     between two slashes. I.e. /CLSTIME/ </p><p /><p>Time details given should be     a valid HHMM format and HH should be between 00 to 23 and MM should be     between 00 to 59 </p><p /><p>Duplicate SWIFT.CODE.WORDS     not allowed for a same RELATED.MSG. </p><p /><p>If entered Minimum and     maximum number of characters is 13.</p><p /></desc>
+</t>
+<t>
+<field>SND.CORR.BK.203</field>
+<desc>
+            <p>The correspondent bank of the Sender bank is populated here from the corresponding Funds Transfer contract and this field corresponds to tag 53 in SWIFT messages.</p>
+            <p>This fields are updated by system when MT203 to be generated from FT</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No Input field-Updated by System</p>
+        </desc>
+</t>
+<t>
+<field>BENFCY.ADD</field>
+<desc>
+            <p>Identifies the full name and address of a Beneficiary Bank, where no Agent details are maintained. This field provides flexibility during input of transactions where external movement of funds are involved.  When you do not currently maintain a Customer reference for a third or fourth party bank, you can use this field to enter the full details of the name address of the Beneficiary Bank directly. However, it is important to note that only one address, as free for has been included in this module.  This means that in the case of a party transfer at least one of the two customer's banks involved in transfer of funds must have a Customer reference and the Agency defined. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 4 lines of 35 Alpha-numeric characters. - Type AAA Multivalue field. (Optional input; Default value: None).</p>
+            <p>Input will not be allowed in this field when BENEFICIARY already supplied.  </p>
+        </desc>
+</t>
+<t>
+<field>DELIVERY.REF</field>
+<desc>
+            <p>Confirmation that the contract details have been passed over to the Delivery system for onward communication to the counterparty. </p>
+            <p>The Delivery system acknowledges receipt by returning the Id of the Delivery reference that has been generated for the message. </p>
+            <p>The Id takes the following form : </p>
+            <p>  o  D19950103-392226 </p>
+            <p>where "D" signifies a delivered message (as opposed to "R" for a message received), "1995" the year, "01" the month, "03" the day in the month, and the code "392226" is the number of hundreds of seconds since midnight on that day. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>16 Alpha-numeric system generated characters. (Display only,  Default = Delivery reference)</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.AMT.PAY</field>
+<desc>
+            <p> Details the amount payed under this netting agreement. </p>
+            <p>No input system updated field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(Display only)</p>
+        </desc>
+</t>
+<t>
+<field>BENFCY.ADD.BANK</field>
+<desc>
+            <p>This is a multi valued field. Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 35 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT</field>
+<desc>
+            <p>The transaction amount. </p>
+            <p>No input system updated field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(Display only)</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.AMT.REC</field>
+<desc>
+            <p>Details the amount received under this netting agreement. </p>
+            <p>No input system updated field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(Display only)</p>
+        </desc>
+</t>
+<t>
+<field>REC.CORR.BK.203</field>
+<desc>
+            <p>The correspondent bank of the Receiver bank is populated here from the corresponding Funds Transfer contract and this field corresponds to tag 54 in SWIFT messages.</p>
+            <p>This fields are updated by system when MT203 to be generated from FT</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No Input field-Updated by System</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BK.TO.BK.210</field>
+<desc>
+            <p>Provides instructions or additional information for this message type. </p>
+            <p>Any details input by the user will be relayed to the receiver. </p>
+            <p>Whenever this field is used in a message transmitted between countries with different languages, it is recommended that English is used. </p>
+            <p>This field corresponds to field 72 on SWIFT messages, and must never be used for information for which another field is intended, or for instructions not required in a message. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 characters (uppercase alpha or numeric) - Type S. Multivalue field.  A maximum of 6 lines of 35 characters each will be allowed.</p>
+            <p>If this field is used, the first multivalue must contain a code word followed by further information.</p>
+            <p>All code words must be present on the SWIFT.CODE.WORDS files, and must be enclosed between slashes '/' at the beginning of the line.</p>
+            <p>Further code words and information can be entered in subsequent multivalues, but additional information continued on a new line must be preceded by double slashes '//'.</p>
+        </desc>
+</t>
+<t>
+<field>NOSTRO.ACCOUNT</field>
+<desc>
+            <p>Defines the identity of the NOSTRO Account number from the original STMT.ENTRY of the underlying deal. </p>
+            <p>Provided for information ONLY. </p>
+            <p>No input system updated field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(Display only)</p>
+        </desc>
+</t>
+<t>
+<field>SND.CORR.BK.102</field>
+<desc>
+            <p>The correspondent bank of the Sender bank is populated here from the corresponding Funds Transfer contract and this field corresponds to tag 53 in SWIFT messages.</p>
+            <p />
+            <p>This fields are updated by system when MT102 to be generated from FT</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>No Input field-Updated by System</p>
+        </desc>
+</t>
+<t>
+<field>INTERMED.BNK</field>
+<desc>
+            <p>Identifies the Customer code of any intermediary bank involved in the contract.  This will be specified by the counterparty. </p>
+            <p>If the intermediary is known (ie. there is an associated customer record), the customer number of the intermediary bank will be entered.  If not, details should be entered into the INTERM.ADD field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 6 Numeric character Customer code, or, 3 to 10 character Customer mnemonic. (Optional input.  Default = See Details.)</p>
+            <p>No input allowed if INTERMED.ADD is defined.</p>
+        </desc>
+</t>
+<t>
+<field>DELIVERY.DATE</field>
+<desc>
+            <p>Identifies the date that the associated Delivery message was produced or "NOT PRODUCED" for messages not yet made. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>12 Alphanumeric characters. (Display only,  Default = See details)</p>
+            <p>Must be a valid date or "NOT PRODUCED".</p>
+        </desc>
+</t>
+<t>
+<field>ACC.WITH.ADD</field>
+<desc>
+            <p>A narrative alternative to the account with bank (ACC.WITH.BNK). </p>
+            <p>Used if the account with bank is not regularly used and thus has not been recorded on the CUSTOMER application. </p>
+            <p>Corresponds to field 57D on SWIFT messages. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 to 35 alphanumeric S.W.I.F.T characters (Optional input).</p>
+            <p>No input allowed should ACC.WITH.BNK be defined.</p>
+            <p>A maximum of four lines is allowed.</p>
+        </desc>
+</t>
+<t>
+<field>ACC.WITH.BNK</field>
+<desc>
+            <p>The bank where the beneficiary maintains their account. </p>
+            <p>Corresponds to field 57 on SWIFT messages. </p>
+            <p>If we will be sending a single payment (i.e. one without cover) then this field will be used in field 57 (or its equivalent) of the payment message. </p>
+            <p>If we are sending two payments (i.e. one payment and one cover payment) then this field will be used in field 57 of the payment message (i.e. the one sent to the RECEIVER.BANK). See the help text for the receiver bank for more information on sending two payment messages. </p>
+            <p>This field is optional. If not input then it will default to instructions held on the AGENCY file for the beneficiary. </p>
+            <p>This field should always be input unless the beneficiary maintains their account at the same bank as the receiver (usually this means that they have an account at the same bank as our nostro account). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 6 Numeric character Customer code, or 3 to 10 Customer mnemonic. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>AGREED.ON</field>
+<desc>
+            <p>Indicates the date when the payment was agreed with the customer. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>AGREEMENT.NO</field>
+<desc>
+            <p>To be defined locally. </p>
+            <p>No input system updated field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(Display only)</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

@@ -1,0 +1,1512 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>AC</product>
+<table>ACCOUNT.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The ACCOUNT PARAMETER record contains information relating to: -   Cashflow -   Value Date Accounting -   Alternate Account Identifier -   Customer Number within Account Number</p>
+            <p>                        CASHFLOW For the cashflow the number of days for the cashflow window is stored in the field CASH.FLOW.DAYS.</p>
+            <p />
+            <p>                        VALUE DATE ACCOUNTING For the account transaction modules, e.g. Data Capture, Funds Transfer and Teller, the account entries can either be passed on Entry Date or on Value date.  For 'Deal' modules entries are either passed on value or there is an option to have either trade date or settlement date accounting.  The processing controlled from here is that for the account transaction modules.</p>
+            <p>                        The default option is entry date accounting.</p>
+            <p>                        Once value date accounting has been turned on it can not be turned off.</p>
+            <p>                        When value date accounting is turned on.  For any account transaction module transaction with forward value date(s).  The contingent section of the CRB base is updated with the forward amounts.  The currency Position file is updated for the value date, when foreign currency is involved.  On the value date the real entries are passed.</p>
+            <p>                        If there is a split value date in the transaction then entries to local suspense account are used to maintain balanced entries each day.  Thus the second dates movements are in the suspense account between first and second value dates.</p>
+            <p>                        The forward currency position can be revalued according to the details set up on the FX.PARAMETERS record.  See fields REVALUE.FWD.AL and FWD.AL.REVAL.CATEG.  Also the ACCOUNT.CLASS record EXCHALFWD needs to be set up.</p>
+            <p>                        On this file the fields VALUE.DATED.ACCTING to SUSPENSE.HISTORY are used for value dated accounting processing.</p>
+            <p />
+            <p>                        ALTERNATE ACCOUNT IDENTIFIERS When accounts have been taken over from another system it is useful to be able to enter the old systems account identifier.  This can be done by creating the file ALTERNATE.ACCOUNT during the takeover processing and then switch on the checking routine uses the field ALTERNATE.ACC.IDS on the ACCOUNT.PARAMETER file.</p>
+            <p />
+            <p>                        CUSTOMER NUMBER WITH ACCOUNT NUMBER When the Customer Number is to be part of the Account Number, then the position of this within the Account Number is specified here.  When a new customer account is opened the system will check that the Customer Number in the key matches that in the record.</p>
+            <p>                        Note: It must be noted that any change to the values in the fields will       only take effect after the user has signed off and then on again to       T24.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>FWD.FOR.PEND.SUSP</field>
+<desc>
+            <p>This field signifies whether or not forward entries are to be raised for pending debit interest and or charges pertaining to the suspense account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Valid values are 'YES' or 'NO'.</p>
+        </desc>
+</t>
+<t>
+<field>CR.ADJ.PREV.M</field>
+<desc>
+            <p>This field can store the</p>
+            <p>                        CATEGORY code that will be used for all adjustments to credit interest for the previous month.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Optional input</p>
+            <p />
+            <p>                        Credit Interest Adjustment categories must be in the range 50000 to 50999</p>
+        </desc>
+</t>
+<t>
+<field>AVAILABLE.BAL.UPD</field>
+<desc>
+            <p>It identifies whether</p>
+            <p />
+            <p>                        Unauthorised debits or Unauthorised credits , or both or none of them</p>
+            <p>                        It will be selected in the following order:</p>
+            <p>                        1.ACCOUNT</p>
+            <p>                        2.ACCT.GROUP.CONDITION (if ACCOUNT is blank)</p>
+            <p>                        3.ACCOUNT.PARAMETER (if ACCT.GROUP.CONDITION is blank)</p>
+            <p>                        For example if nothing is set at ACCOUNT level then the ACCT.GROUP.CONDITION is checked and if still nothing is set at this level, the ACCOUNT.PARAMETER is checked.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>                        BOTH - Unauthorised debits and credits to be included in the available balance </p>
+            <p> NONE - No unauthorised movements to be included in the available balance. </p>
+            <p> DEBITS - Only unauthorised debits to make up available balance. </p>
+            <p> CREDITS - Only unauthorised credits to make up available balance. </p>
+            <p> The default will be No unauthorised movements to be included in the available balance.</p>
+        </desc>
+</t>
+<t>
+<field>CHQ.DEP.TXN</field>
+<desc>
+            <p>This field is used to specify a list of transaction codes that must invoke the processing related to the process of depositing an out clearing cheque into a client's account. This field can be specified only if the fields DEF.COLL.SUSP, CHQ.COL.TXN, CHQ.RET.TXN &amp; DEF.RET.SUSP have been specified.</p>
+            <p>                        By specifying a transaction here the accounting module will detect this situation and do the following processing:</p>
+            <p />
+            <p>                        Change the underlying client account to which the funds are being deposited to a suspense account (constructed using the CHQ.COLL.SUSP field on the BC.SORT.CODE file or the DEF.COLL.SUSP on this file)</p>
+            <p>                        Create a CHEQUE.COLLECTION record with an initial status of 'DEPOSITED'</p>
+            <p>                        The CHEQUE.COLLECTION record can further be batched by using the CHEQUE.BATCH application. Refer to helptext for the CHEQUE.BATCH application.</p>
+            <p>                        In a multi-company environment, if you have separate TRANSACTION files for each company and you want to use CHEQUE.COLLECTION then you must set up the same transaction codes for it in each company.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>                        Optional input</p>
+            <p>                        DEF.COLL.SUSP, CHQ.COL.TXN, CHQ.RET.TXN &amp; DEF.RET.SUSP must also be specified</p>
+            <p>                        If entered must not contain duplicates</p>
+            <p>                        If entered must not be specified in the CHQ.COL.TXN or CHQ.RET.TXN fields</p>
+            <p>                        If entered must be an ID to a valid TRANSACTION record</p>
+        </desc>
+</t>
+<t>
+<field>CHQ.RET.TXN</field>
+<desc>
+            <p>This field is used to specify a list of transaction codes that must invoke the processing related to the process of returning out clearing cheques. This field can be specified only if the fields DEF.COLL.SUSP, CHQ.DEP.TXN, CHQ.COL.TXN &amp; DEF.RET.SUSP have been specified.</p>
+            <p>                        By specifying a transaction here the accounting module will detect this situation and do the following processing:</p>
+            <p />
+            <p>                        Change the status on the CHEQUE.COLLECTION record to 'RETURNED'</p>
+            <p>                        Delete the forward entries created on client account</p>
+            <p>                        Raise real entries to credit the return suspense with the cheque amount and debit the collection suspense account with the cheque amount</p>
+            <p>                        Raise any charges and/or tax entries specified on the CHEQUE.COLLECTION record</p>
+            <p>                        In a multi-company environment, if you have separate TRANSACTION files for each company and you want to use CHEQUE.COLLECTION then you must set up the same transaction codes for it in each company.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>                        Must be a valid TRANSACTION code</p>
+        </desc>
+</t>
+<t>
+<field>NOSTRO.DEFAULT</field>
+<desc>
+            <p>Specifies how Settlement Accounts are to be defaulted when using a Nostro Account for the associated account.</p>
+            <p>                        Values allowed -    A Null may be entered implying always defaulted.    'AGENCY' implys only default  when Agency conditions             exist.    'NONE' implys no Nostro account to be defaulted.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Input only allowed if an associated value in SYS.CODE.</p>
+        </desc>
+</t>
+<t>
+<field>VD.TYPE.BY.ENTRY</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>VD.CAT.SINCE</field>
+<desc>
+            <p>Date since CATEGORY range set to value dated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            </desc>
+</t>
+<t>
+<field>CLOSURE.CR.TXN</field>
+<desc>
+            <p>The credit Transaction code to be used for Online closure of Account.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> Must be a valid Id to Transaction File</p>
+        </desc>
+</t>
+<t>
+<field>VD.SYS.SINCE</field>
+<desc>
+            <p>Date since EB.SYSTEM.ID set to value dated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>USE.FIRST.ACCT</field>
+<desc>
+            <p>(Modification done in G14.2.00)</p>
+            <p>                        Defines whether an account is to be defaulted when there exists more than one possible default account. Input may be 'YES' or 'NO'.</p>
+            <p>                        Effective G14.2.00, two more options had been added.  They are applicable in MULTI BOOK environment only.  The options added are 'CUR' and 'FRS'</p>
+            <p>                        In multi book environment all the accounts are stored on the same table.  The possible defaulting is now available as follows in multi book environment</p>
+            <p>                        YES - First account of the customer in any company will be defaulted.</p>
+            <p>                        CUR - First account of the customer in current company only will be defaulted.</p>
+            <p>                        FRS - First account of the customer in the current company as first choice followed by first available account in any company will be defaulted</p>
+            <p>                        NO - If more than one account is present in the current company, then no defaulting takes place.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>                        Optional input field.</p>
+            <p>                        Only allowed if an associated SYS.CODE present.</p>
+            <p>                        The options 'CUR' and 'FRS' are available in Multi-Book environment only.</p>
+            <p>                        If the options 'CUR' or 'FRS' is accessed in Multi-Company environment,   online error message will appear.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.FIRST.MONTH</field>
+<desc>
+            <p>This field can be used to decide whether charges applied on accounts opened in the middle of the month will include the first month or not.  Please note that after changing this field the user would need to log out and then log into T24 before its effect can be seen.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>                        Valid values are YES or NO</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.SSI</field>
+<desc>
+            <p>Defines whether the system uses CUSTOMER.SSI application for defaulting the settlement accounts during input of contract in applications such as LD, MM, etc.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>                        Values allowed YES or blank (optional field)</p>
+            <p />
+            <p>                        Input in CUSTOMER.SSI Application &amp; defaulting of       settlement accounts as mentioned above is allowed only when value in       this field is "YES".</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BYPASS.JOURNAL.SUMMARY</field>
+<desc>
+            <p>Set this field to "YES" to bypass updates to the JOURNAL.SUMMARY.</p>
+        </desc>
+</t>
+<t>
+<field>USE.SESSION.NO</field>
+<desc>
+            <p>Option to always include the session number in the key of the consolidated entires and the CAL/CPL work files. If set to YES, then the session number is always used in the key. If NO or null, then the system will first try to update the record without session number in the key, if locked then session number is used in the key.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>                        Valid Options YES, NO or null</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATED.ACCTNG</field>
+<desc>
+            <p>Switch to set value dated accounting on or off or TDGL.</p>
+            <p>                        If a value dated accounting system is required then this field should be set to 'Y'.</p>
+            <p>                        Important Note: If Value Dated Accounting is to be switched ON, the parameter should be amended to Y before any user input takes place. Do not change this value if there are unauthorised transactions present (not IHLD status), as this can lead to a mismatch between the currency positions and CRF base.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        'Y' or 'NO' or 'TDGL'. Defaults to 'NO'.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.RET.SUSP</field>
+<desc>
+            <p>This field is used to specify a suspense category that will be used in the processing related to the process of returning an out clearing cheque. This field can be specified only if the fields CHQ.DEP.TXN, CHQ.COL.TXN, CHQ.RET.TXN &amp; DEF.COLL.SUSP have been specified.</p>
+            <p>                        By specifying a transaction code the accounting module will detect this situation and do the following processing:</p>
+            <p />
+            <p>                        Change the status on the CHEQUE.COLLECTION record to         'RETURNED'</p>
+            <p>                        Delete the forward entries created on client account</p>
+            <p>                        Raise real entries to credit the return suspense with the         cheque amount and debit the collection suspense account         with the cheque amount</p>
+            <p>                        Raise any charges and/or tax entries specified on the         CHEQUE.COLLECTION record</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>                        Optional input</p>
+            <p>                        CHQ.DEP.TXN, CHQ.COL.TXN, CHQ.RET.TXN &amp; DEF.COLL.SUSP         must also be specified</p>
+            <p>                        If entered must be an ID to a valid CATEGORY record</p>
+        </desc>
+</t>
+<t>
+<field>RETAIN.AC.BALANCES</field>
+<desc>
+            <p> Defines whether balances need to be maintained in Account or not.</p>
+            <p>                        When set as "YES" balances will be updated in Account and EB.CONTRACT.BALANCES.</p>
+            <p>                        When set as "NO" balances will NOT be updated in Account, will be updated ONLY in EB.CONTRACT.BALANCES.</p>
+            <p>                        When left as Blank will behave same as "YES".</p>
+            <p>                        Up to 3 characters. Optional input.</p>
+            <p>                        NOTE: Changing this setup form "YES" to "NO" will not clear the existing account balances automatically</p>
+        </desc>
+</t>
+<t>
+<field>LOCK.INC.THIS.MVMT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>KEY</field>
+<desc>
+            <p>Defines the name of the main record on the file.</p>
+            <p>                        The single record on this file must always be named 'SYSTEM'.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Can only be 'SYSTEM'. (Mandatory Input)</p>
+        </desc>
+</t>
+<t>
+<field>CLOSURE.FT.TYPE.BC</field>
+<desc>
+            <p>FT TXN TYPE to be assigned to the funds transfer generated for an automatic account closure when the funds are to be transfered externally.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Up to 4 alphanumeric characters. Must be on the FT.TXN.TYPE.CONDITION file and begin 'BC'.</p>
+        </desc>
+</t>
+<t>
+<field>MAX.TAX.SUFFIX</field>
+<desc>
+            <p>Defines the maximum number to be used when allocating the suffix for tax accounts.</p>
+            <p>                        An option exists on the TAX record to allow a unique tax account key to be generated for each transaction, field UNIQUE.SUFFIX. If set to Y the last four digits will be a random number between 1 and this value. If this field is not specified a value of 20 will be assumed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>                        Optional input</p>
+            <p>                        Must be between 1 and 9999.</p>
+        </desc>
+</t>
+<t>
+<field>CRF.REVERSAL.FLAG</field>
+<desc>
+            <p>The transaction entries that are reflected in CRF for Debit/Credit movement depends upon the sign of the numeric entry.</p>
+            <p>                        ie. if the sign of the transaction amount is negative it shown as a Debit movement and if it is positive it is shown as a Credit movement.</p>
+            <p>                        The entry in this field along with in RE.TXN.CODE provides the facility to treat reversal entries as follows:</p>
+            <p>                        YES - Reversal entries are reflected as the same CRF type and as the same type of movement as the original entry</p>
+            <p>                        NO or  - Reversal entries are reflected as the same CRF type as the original entry but as an opposite movement</p>
+            <p>                        Illustration:</p>
+            <p>                        Consider the hypothetical situation where given below is the only activity.</p>
+            <p>                        A Loan is drawndown on a Day1 and an EOD is run then the Loan is reversed out on Day 2.</p>
+            <p>                        Accounting Entries:</p>
+            <p />
+            <p />
+            <p />
+            <p>                        CRF Entries Without Reversal Marker/Flag:</p>
+            <p />
+            <p />
+            <p />
+            <p>                        CRF Entries With Reversal Marker/Flag:</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>ALTERNATE.ACC.IDS</field>
+<desc>
+            <p>Defines whether or not accounts can be referenced by an alternative key other than the mnemonic.</p>
+            <p>                        When T24 is installed and involves a data take over, users may need to access accounts using the account number from the old system.  These account numbers will be loaded into the file, ALTERNATE.ACCOUNT, which will contain the link to the T24 account no.</p>
+            <p>                        Entering Y in this field will ensure the system checks the ALTERNATE.ACCOUNT file for a possible record, before checking the T24 Account file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Y or N (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>CRF.CATEG.TYPE</field>
+<desc>
+            <p>Indicates the category code for the relevant interst type. Must be between 51000 and 51999 for debit interest and 50000 and 50999 for credit interest. Cannot be the same as the relevant previous month or previous year category codes. If not set then the standard debit interest category of 51000 for debit and 50000 for credit will be used. This allows manual interest adjustments to be reported seperately on its own CRF line. If input, it must be the same as the associated P&amp;L category code.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Must be a valid Category Code.</p>
+        </desc>
+</t>
+<t>
+<field>RETURN.TXNS</field>
+<desc>
+            <p>This is a multi-valued field that is used to trigger the update to the CHEQUE.REGISTER record when cheques issued to the banks clients are being returned. If entered it must not have been specified in any of the field</p>
+            <p>                        CHQ.DEP.TXN CHQ.COL.TXN or CHQ.RET.TXN.</p>
+            <p>                        The field is mandatory if the</p>
+            <p>                        CHEQUE.REGISTER field has been entered otherwise it must be left blank In a multi-company environment, if you have separate TRANSACTION files for each company and you want to use CHEQUE.REGISTER then you must set up the same transaction code for returned cheques in each company.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>                        Must be a valid TRANSACTION code</p>
+        </desc>
+</t>
+<t>
+<field>DR.ADJ.PREV.Y</field>
+<desc>
+            <p>This field can store the</p>
+            <p>                        CATEGORY code that will be used for all adjustments to debit interest for the previous year.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Optional input</p>
+            <p />
+            <p>                        Debit Interest Adjustment categories must be in the range 51000 to 51999</p>
+        </desc>
+</t>
+<t>
+<field>SUPRESS.CONT.CRF</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>CLOSURE.DR.TXN</field>
+<desc>
+            <p>The debit Transaction code to be used for Online closure of Account.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Must be a valid Id to Transaction File</p>
+        </desc>
+</t>
+<t>
+<field>SUSPENSE.TXN.OUT</field>
+<desc>
+            <p>Specifies the transaction code to be applied to the entry that is passed on the second value date of a split value dated transaction.</p>
+            <p>                        When a split value dated transaction is processed in a value dated accounting system, then the first 'leg' will be balanced against a suspense account.</p>
+            <p>                        This will be washed out when the second leg reaches value date.</p>
+            <p>                        The movements into and out of suspense are consolidated together. The data for consolidation is: -   The System Id (DC, TT, FT) -   The SUS.CATEGORY code -   The date on which the transaction was originally input (Booking Date). -   The value date on the transaction i.e. the date on which the items are     removed from the Suspense account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        1 - 3 numeric characters (Optional input)</p>
+            <p>                        If field VALUE.DATED.ACCTNG set to 'Y' then this field must be present.</p>
+            <p>                        Must be a valid code on the TRANSACTION file.  In a multi company environment the TRANSACTION file for each company is checked.</p>
+        </desc>
+</t>
+<t>
+<field>RAISE.VD.ENTRIES</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.ORDER</field>
+<desc>
+            <p>Specifies whether standard defaulting is to be applied for the associated SYS.CODE.</p>
+            <p>                        No value in this field denotes that the standard defaulting rules for the application will be applied for an account of the specified SYS.CODE.</p>
+            <p>                        If this field contains the value NONE then NO standard defaulting will be performed for accounts of that type. The underlying application may apply it's own specific defaulting rules if this is defined as NONE.</p>
+            <p>                        Example:</p>
+            <p>                        1. The MM application is required to default the Drawdown account in the    standard manner (portfolio, VOSTRO account, Customer account, Nostro    account), PRIN.LIQ.ACCT and INT.LIQ.ACCT should use the Drawdown    account as the default. An override is required if a different account    is entered from the default, and if more than one possible default is    found the first account should be used.</p>
+            <p>                        The definition in ACCOUNT.PARAMETER should be:</p>
+            <p>                        SYS.CODE       MM-DD  MM-PRIN MM-INT    DEF.OVERRIDE     Y      Y       Y    USE.FIRST.ACCT   Y      Y       Y    DEFAULT.ORDER          NONE    NONE</p>
+            <p>                        When the money market deal is entered, if a Drawdown account has been    entered or defaulted, and no input (or return) is entered in the    PRIN.LIQ or INT.LIQ accounts, the drawdown account will be defaulted.    Note that this processing is specific to the Money Market application    and may not necessarily operate in the same manner for other    applications.</p>
+            <p>                        2. As per the above example except that the PRIN.LIQ.ACCT and INT.LIQ.ACCT    should always default according to the standard rules.</p>
+            <p>                        The definition in ACCOUNT.PARAMETER should be</p>
+            <p>                        SYS.CODE       MM    DEF.OVERRIDE   Y    USE.FIRST.ACCT Y    DEFAULT.ORDER</p>
+            <p>                        Note this could also be defined as</p>
+            <p>                        SYS.CODE       MM-DD  MM-PRIN MM-INT    DEF.OVERRIDE     Y      Y       Y    USE.FIRST.ACCT   Y      Y       Y    DEFAULT.ORDER</p>
+            <p>                        On input of DRAWDOWN, PRIN.LIQ and INT.LIQ accounts, the system will    attempt to default according to the standard rules.</p>
+            <p>                        In case the underlying Contract Customer (eg. Customer.id in MONEYMARKET, Counterparty in FOREX) has a matching record in CUSTOMER.SSI application, then the account numbers for the relevant settlement fields get defaulted as per the definition for that Customer in CUSTOMER.SSI.</p>
+            <p>                        For example</p>
+            <p>                        Let the definition in ACCOUNT.PARAMETER be</p>
+            <p>                        SYS.CODE MM DEF.OVERRIDE Y USE.FIRST.ACCT Y DEFAULT.ORDER</p>
+            <p>                        Try creating a MM contract in a currency for a customer who has a record in CUSTOMER.SSI with the same combination. The relevant settlement fields such as Drawdown account , Principal liquidation account and Interest liquidation account get defaulted with the accounts defined in the matching record in CUSTOMER.SSI.</p>
+            <p>                        The rules for defaulting will vary according to the application, the    user guide should be consulted for details.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>                        Optional field. NONE is the only acceptable input.</p>
+        </desc>
+</t>
+<t>
+<field>CHEQUE.REGISTER</field>
+<desc>
+            <p>This field is used to indicate whether or not the cheque issue &amp; management functionality within T24 has been activated.</p>
+            <p>                        Value entered here controls the default of cheque.type in DC/FT/TT application as well as payment   stop processing, which is explained below.</p>
+            <p>                        CHEQUE TYPE DEFAULT IN DC/FT/TT</p>
+            <p>                        If the Cheque.Register is set as Yes,</p>
+            <p>                        If the transaction code used in DC/FT/TT, has cheque indicator as Yes in TRANSACTION file, then cheque.type will be defaulted as per the following:</p>
+            <p>                        1.If the Debit account has a record in CHEQUE.TYPE.ACCOUNT, that cheque.type will be defaulted.</p>
+            <p>                        2. If debit account has more than one record in CHEQUE.TYPE.ACCOUNT, then based on the range of cheque number issued for that account, appropriate cheque.type will be defaulted</p>
+            <p>                        3. If debit account has more than one record in CHEQUE.TYPE.ACCOUNT and both cheque type has same range of cheque number issued, then User has to enter the cheque.type</p>
+            <p>                        4. However user will not be able to enter a cheque.type, which is not available for the account in CHEQUE.TYPE.ACCOUNT.</p>
+            <p>                        5. If it does not satisfies above condition, then it will default to NULL. If Cheque.Register set as NO or NULL, then cheque.type will default to NULL.</p>
+            <p>                        PAYMENT STOP PROCESSING.</p>
+            <p>                        If the Cheque.Register is set as Yes,</p>
+            <p>                        1. Cheque type will be defaulted in payment stop as per the above cheque type defaulting mechanism.</p>
+            <p>                        2. Payment stop override gets generated in DC/FT/DC processing only when the cheque.type and cheque.no entered in DC/FT/TT matches with the cheque.type and cheque.no in PAYMENT. STOP</p>
+            <p>                        If the Cheque.Register is set as No,</p>
+            <p>                        1. Cheque type will not be defaulted in the payment stop and can be null.</p>
+            <p>                        2. Payment stop override will be raised if the cheque.no entered in the DC/FT/TT application matches with the PAYMENT.STOP cheque number irrespective of the Cheque.type</p>
+            <p>                        For more information see the payment stop processing.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>                        Valid values are 'YES' or 'NO'</p>
+            <p>                        Optional Input</p>
+        </desc>
+</t>
+<t>
+<field>NET.OD.APPL</field>
+<desc>
+            <p>This field is used to specify the T24 application for which debit and credit entries to an account in a transaction should be netted for displaying overdraft and cash flow overrides.</p>
+            <p />
+            <p>                        Example:</p>
+            <p>                        T24 application LD.LOANS.AND.DEPOSITS, in a discounted LOAN contract the following accounting entries are generated.</p>
+            <p>                        1. Debit entries for the interest on the value date</p>
+            <p>                        2. Credit entries for the principal on the value date.</p>
+            <p>                        3.Debit entries for the principal on the maturity date .</p>
+            <p>                        When the amounts in the entries for value date is summed up , the net is a credit .Hence when this functionality is applied, the account overdraft override is not displayed.</p>
+            <p>                        If the maturity date or any other future schedules falls within CASH.FLOW.DAYS the amount in forward entries are netted to see if it is a debit or credit . Again, if on that date the net effect is a credit to the account then no cash flow overdraft override is displayed for that date, otherwise an override is displayed as usual.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        At present, entry restricted to LD.</p>
+        </desc>
+</t>
+<t>
+<field>CONT.CAT.END</field>
+<desc>
+            <p>The ACCOUNT.PARAMETER table allows the definition of the range within which contingent accounts may be defined. The value here is the high value of the range in the respective contingent category group.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>                        Must be a record on CATEGORY file, and in the range of 3000-9999.</p>
+        </desc>
+</t>
+<t>
+<field>MVRESERVED3</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>VAL.DATE.BY.SYS</field>
+<desc>
+            <p>Y/NO/TDGL entry. If Y, any entries with the associated EB.SYSTEM.ID as their product code will be treated as value dated. Once set to 'Y', it cannot be changed to 'NO' .</p>
+            <p> The change from or to 'TDGL' is allowed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+           
+        </desc>
+</t>
+<t>
+<field>NO.UNAU.KEYS</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>SUSPENSE.TXN.IN</field>
+<desc>
+            <p>Specifies the transaction code to be applied to the entry that is passed on the first value date of a split value dated transaction.</p>
+            <p>                        When a split value dated transaction is processed in a value dated accounting system, then the first 'leg' will be balanced against a suspense account.</p>
+            <p>                        This will be washed out when the second leg reaches value date.</p>
+            <p>                        The movements into and out of suspense are consolidated together. The data for consolidation is: -   The System Id (DC, TT, FT) -   The SUS.CATEGORY code -   The date on which the transaction was originally input (Booking Date). -   The value date on the transaction i.e. the date on which the items are     removed from the Suspense account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        1 - 3 numeric characters. (Optional input)</p>
+            <p>                        If field VALUE.DATED.ACCTNG set to 'Y' then this field must be present.</p>
+            <p>                        Must be a valid code on the TRANSACTION file.  In a multi company environment the TRANSACTION file for each company is checked.</p>
+        </desc>
+</t>
+<t>
+<field>CONT.CR.TXN</field>
+<desc>
+            <p>Default contingent credit transaction code</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Should be a valid entry on the  TRANSACTION table.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.OVERRIDE</field>
+<desc>
+            <p>Defines whether an override is required when the Default account number does not match the account number input on the deal.</p>
+            <p>                        Additionally if the Account with Bank, Intermediary Bank or Beneficiary account number differ from the default derived from the information on the Agency file an override will be required if this field is set to 'YES'.</p>
+            <p>                        Input may be 'YES' or 'NO'.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Default value is 'NO'.</p>
+        </desc>
+</t>
+<t>
+<field>CR2.ADJ.PREV.M</field>
+<desc>
+            <p>This field can store the</p>
+            <p>                        CATEGORY code that will be used for all adjustments to credit2 interest for the previous month.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Optional input</p>
+            <p />
+            <p>                        Credit Interest Adjustment categories must be in the range 50000 to 50999</p>
+        </desc>
+</t>
+<t>
+<field>VAL.DATE.BY.CAT</field>
+<desc>
+            <p>Y/NO/TDGL entry. If Y, any entries with a CATEGORY code in the associated range will be treated as value dated. Category ranges set to 'Y' cannot be changed to 'NO' but the change from or to 'TDGL' is allowed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>LAST.VAL.PURGE</field>
+<desc>
+            <p>Indicates the last date on which the value dated information was last purged from STMT.VAL.ENTRY in accordance with the field VAL.NO.MONTHS The date in this field is updated when the PURGE.STMT.VAL.ENTRY routine is run.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        System maintained field. This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>CLOSURE.FT.TYPE.AC</field>
+<desc>
+            <p>FT TXN TYPE to be assigned to the funds transfer generated for an automatic account closure when the funds are to be transfered to an internal account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Up to 4 alphanumeric characters. Must be on the FT.TXN.TYPE.CONDITION file and begin 'AC'.</p>
+        </desc>
+</t>
+<t>
+<field>ACCT.CATEG.STR</field>
+<desc>
+            <p>This field is used to specify the starting account category code. The category specified in this field will be validated for allowing changes to the main customer in account record.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>                        4 numeric characters within range 1000 to 9999. Mandatory input if multi-valued and if       ACCT.CATEG.END field is input.</p>
+            <p>                        If value is available in ACCT.CATEG.END, the value entered here should       be less than or equal to the end range specified.</p>
+            <p>                        Multi-value field associated with fields 73.1 to 75.1</p>
+        </desc>
+</t>
+<t>
+<field>EXPOSURE.DATED.AF</field>
+<desc>
+            <p>Field to indicate if Available funds should be updated using exposure date of the entry for credits. </p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p />
+            <p> Y or No. Y is to update Available funds </p>
+        </desc>
+</t>
+<t>
+<field>DC.BALANCED</field>
+<desc>
+            <p>Identifies whether batch may be left unbalanced.</p>
+            <p>                        YES</p>
+            <p>                        The batch may be left unbalanced, the user may either process further with input or delete or hold the batch LOCK The batch cannot be left unbalanced,the user may either delete or hold the batch or process further with input NOTE:If set to either YES or LOCK,the feature of treating a batch as one transaction will be activated.This feature is only available in Classic and Desktop</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>                        YES</p>
+            <p />
+            <p>                        LOCK</p>
+            <p />
+            <p>                        NULL</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>UPDATE.ENTRIES</field>
+<desc>
+            <p>To indicate how entry Ids should be updated in the corresonding ECB record and EB.CONTRIES. </p>
+            <p />
+            <p> ALL : This will update all entries in ECB and EB.CONTRACT.ENTRIES.  If entry count is more than 100 then latest 100 entries updated in ECB, rest will be updated in new live file in splits and split info will be maintained in ECB.</p>
+            <p />
+            <p> NO or null : This will update no entries in ECB 3.</p>
+            <p />
+            <p> RECENT : This will update only recent (100) entries in ECB and this should not maintain or update the split entries in EB.CONTRACT.ENTRIS.</p>
+        </desc>
+</t>
+<t>
+<field>CASH.FLOW.DAYS</field>
+<desc>
+            <p>Specifies the number of calendar days forward that cash flow balances are to be maintained for the purpose of accounting overrides and cash flow processing.</p>
+            <p>                        The number of days entered here will determine the window period that cash flow balances are to be maintained on each account record. Each forward dated entry generated for an account will impact the cash flow balances if the date of the entry falls within this period.</p>
+            <p>                        As an example, if the number of days entered is 10, then any forward dated entry raised online that has the value date less than ten calendar days from today will update the accounts cash flow balances. If this update causes either a limit to be exceeded or an unauthorised overdraft to occur, then an override message will appear on the transaction input.</p>
+            <p>                        All entries raised online that fall outside the window will not update the account balances immediately and no override messages will appear, but when their value dates do fall within the window, the start of day process 'SOD.CASH.FLOW' will pull them in and update the account cash flow balances. If an exception occurs at this stage, then the CASH.FLOW.EXCEPTION file is updated to indicate this.</p>
+            <p>                        If no value is entered here then only Nostro accounts will have cash flow maintained, and a default of ten calendar days is used for these.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>                        Up to 3 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>GENERIC.CHARGES</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>NEW.ACCT.PROCESS</field>
+<desc>
+            <p>Will allow the initial sign to be based on the first movement only. For large volumes of new accounts this should be</p>
+            <p> set to minimise the work done in EOD.CRF.AL.UPDATE.</p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p />
+            <p> Can be Y, NO or null.</p>
+        </desc>
+</t>
+<t>
+<field>REVERSE.TURNOVER</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>CUST.CODE.LEN</field>
+<desc>
+            <p>Together with CUSTOMER.CODE.POS, this defines the length of the customer number within the account number.</p>
+            <p>                        Some formats of the account number use the customer number as part of the key.  In order to correctly validate the key, the starting position, and length of customer number should be defined using this field and the field CUST.CODE.LEN.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        1 numeric character. (Optional input)</p>
+            <p>                        Mandatory if CUSTOMER.CODE.POS is defined.</p>
+            <p>                        Maximum length of 6.</p>
+        </desc>
+</t>
+<t>
+<field>ENT.TODAY.UPDATE</field>
+<desc>
+            <p>A value of NO in this field will allow the &amp;#8230;ENT.TODAY file updates to be suppressed</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>                        YES_NO field.</p>
+            <p>                        For future use.</p>
+        </desc>
+</t>
+<t>
+<field>ALTERNATE.ID</field>
+<desc>
+            <p>Allows entry of any alternate account systems in use.</p>
+            <p>                        Alternate account identification systems in use on a client site may be linked to the T24 Account application by means of this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Up to 10 characters. Multi-valued field. Optional input.</p>
+            <p>                        Must be defined as an alternate account system in the ALT.ACCT.PARAMETER application.</p>
+            <p>                        Entries may be added to this field, but otherwise no amendments are allowed.</p>
+        </desc>
+</t>
+<t>
+<field>VAL.DATE.SYS.ID</field>
+<desc>
+            <p>A valid EB.SYSTEM.ID record key. This field allows the user to determine whether individual T24 products should have their accounting treated as trade or value dated. This setting will be overridden for any entries whose CATEGORY codes fall within a valid VD.CAT.START/END range. Products set to value date accounting cannot be reset to trade dated accounting.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DEF.COLL.SUSP</field>
+<desc>
+            <p>This field is used to specify a suspense category that will be used in the processing related to the process of depositing an out clearing cheque into a client's account. This field can be specified only if the fields CHQ.DEP.TXN, CHQ.COL.TXN, CHQ.RET.TXN &amp; DEF.RET.SUSP have been specified.</p>
+            <p>                        By specifying a transaction here the accounting module will detect this situation and do the following processing:</p>
+            <p />
+            <p>                        Change the underlying client account to which the funds         are being deposited to a suspense account (constructed         using the CHQ.COLL.SUSP field on the BC.SORT.CODE file or         the DEF.COLL.SUSP on this file)</p>
+            <p>                        Create a CHEQUE.COLLECTION record with an initial status         of 'DEPOSITED'</p>
+            <p>                        The CHEQUE.COLLECTION record can further be batched by using the CHEQUE.BATCH application. Refer to helptext for the CHEQUE.BATCH application.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>                        Optional input</p>
+            <p>                        CHQ.DEP.TXN, CHQ.COL.TXN, CHQ.RET.TXN &amp; DEF.RET.SUSP         must also be specified</p>
+            <p>                        If entered must be an ID to a valid CATEGORY record</p>
+        </desc>
+</t>
+<t>
+<field>AMORT.IN.LOCAL</field>
+<desc>
+            <p>Allows amortisation of foreign currency commissions to be processed in local currency.  This field should be set at initial system setup.</p>
+            <p />
+            <p>                   Default is blank meaning commissions are accrued in the commission currency.</p>
+        </desc>
+</t>
+<t>
+<field>MVRESERVED4</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>INT.MVMT.UPDATE</field>
+<desc>
+            <p>This field determines whether T24 will maintain a record of Interest Movements in accordance with the parameter file</p>
+            <p>                        INT.MOVEMENT.PARAM</p>
+            <p>                        Default is NULL or NO, indicating that the live file</p>
+            <p>                        INT.MOVEMENT will not be maintained.</p>
+            <p>                        Input of Y (for Yes) indicates that the file is to be maintained.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Valid inputs are NULL, NO or Y (optional input).</p>
+        </desc>
+</t>
+<t>
+<field>NET.OD.OVERRIDE</field>
+<desc>
+            <p>This field is used to specify whether the override suppression functionality should be enabled for the application set in NET.OD.APPL.</p>
+            <p>                        Defaults to 'NO' if NET.OD.APPL has value.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>                        Only YES or NO allowed.</p>
+        </desc>
+</t>
+<t>
+<field>CONT.DESC</field>
+<desc>
+            <p>Description field for account types, e.g. Internal contingent accounts</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>                        Free format text.</p>
+        </desc>
+</t>
+<t>
+<field>ADJ.TRADE.DATE.BAL</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>AUTO.PAY.CATEG</field>
+<desc>
+            <p>This field specifies the internal account category through which the auto payment movements will be passed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Input only allowed if 'EU' is installed</p>
+        </desc>
+</t>
+<t>
+<field>ENTRY.CATEGORY</field>
+<desc>
+            <p>Category and position type of account/p&amp;l entry which will determine the suspense account to be used when operating in a value dated accounting system.</p>
+            <p>                    If the position type for the ENTRY CATEGORY does not exist, then the entry category alone is used to determine the suspense category. Else the defualt suspsense category is used.</p>
+            <p>     Format of ENTRY.CATEGORY will either be CATEGORY-FX.POS.TYPE or CATEGORY</p>
+            <p>                      When a split value dated transaction is processed in a value dated accounting system then the first 'leg' will be balanced against a suspense account.</p>
+            <p>                        This will be washed out when the second leg reaches its value date.  The suspense account that is used is determined by the category of the second leg entry. This field and its associated field SUS.CATEGORY define this relationship,  e.g.</p>
+            <p>                        3.1        ENTRY.CATEGORY</p>
+            <p>                        4.1        SUS.CATEGORY       19998</p>
+            <p>                        3.2        ENTRY.CATEGORY      5000-XX</p>
+            <p>                        4.2        SUS.CATEGORY       19999</p>
+            <p>                        3.3        ENTRY.CATEGORY 51000</p>
+            <p>                        4.2        SUS.CATEGORY 12999</p>
+            <p>                        ENTRY.CATEGORY is a start of range value. Hence in this example 'second leg' entries with a category in the range 0 - 4999 will be suspensed using account LCL199980001 (where LCL = local currency code). Entries with a category 5000 and above will be suspensed using LCL199990001. To define one suspense account for all categories simple define:</p>
+            <p>                        3.1        ENTRY.CATEGORY</p>
+            <p>                        4.1        SUS.CATEGORY       19998</p>
+            <p>                        The purpose of these fields is to allow you to split suspense movements, for value dated accounting, within the CRB. For example you may want to report entries suspensed for Nostros separately from entries suspensed for current accounts.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>                                 Category must be valid entry in the CATEGORY file</p>
+            <p>                                 Position type must be a valid entry in FX.POS.TYPE.</p>
+        </desc>
+</t>
+<t>
+<field>SYS.CODE</field>
+<desc>
+            <p>Identifies the code of the application transaction, i.e. (MM for Money Market, SC for Securities). A value of 'ALL' is allowed to specify all transaction types.</p>
+            <p>                        Securities type transactions may also have their sub groups specified, i.e. (SC-SSL), corresponding to the security transaction type.</p>
+            <p>                        Other applications may define an optional suffix separted by a "-". There is no validation on this element, details of valid suffixes may be found in the relevant user guide or application helptext.</p>
+            <p>                        For example the Money Market application uses the following suffixes:</p>
+            <p>                        MM-DD   Drawdown Account Default</p>
+            <p>                        MM-PRIN Principal Liquidation Account</p>
+            <p>                        MM-INT  Interest Liquidation Account</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>                        Optional Input field.</p>
+            <p>                        The SYS.CODE used must have valid record in the application AC.SYS.CODES.</p>
+        </desc>
+</t>
+<t>
+<field>SUSPENSE.HISTORY</field>
+<desc>
+            <p>Specifies the number of days which suspense entry information is held for enquiry purposes.</p>
+            <p>                        When value dated accounting is used, details of all entries suspensed for the associated Suspense category and date are held in the file SUSPENSE.HISTORY.  To prevent the file becoming too large data is only stored for the number of calendar days specified here.  If no input is made the default value is 65 days.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        1 to 3 numeric characters. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>ACCT.NAU.SUBRTN</field>
+<desc>
+            <p>Specifies the routine to be called in the core accounting routine to raise any overrides from a</p>
+            <p>                        locally developed accounting sub routine. This routine will accept accounting entries, and optionally return a list of override messages at the input phase of any transaction within T24.</p>
+            <p>                        An example program namely AC.TEST.NAU is provided to test this functionality.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>                        Upto 35 alphanumeric characters.</p>
+            <p>                        Input must exist on PGM.FILE as type S (subroutine) program</p>
+            <p>                        .</p>
+        </desc>
+</t>
+<t>
+<field>DR.ADJ.PREV.M</field>
+<desc>
+            <p>This field can store the</p>
+            <p>                        CATEGORY code that will be used for all adjustments to debit interest for the previous month.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Optional input</p>
+            <p />
+            <p>                        Debit Interest Adjustment categories must be in the range 51000 to 51999</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>NETT.PAYMENTS</field>
+<desc>
+            <p>Defines whether the system performs payment NETTING.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Y or N. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Insert text here</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>                        Rule 1</p>
+            <p>                        Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>VD.CAT.START</field>
+<desc>
+            <p>A valid CATEGORY record key. The start of a range of category codes that the bank wishes to define trade or value dated accounting treatment for.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>                        Category codes entered must be in the range 10000        19999 or 50000  69999.</p>
+        </desc>
+</t>
+<t>
+<field>RETURN.SUSP.CAT</field>
+<desc>
+            <p>This field is used to default a suspense account when you want to perform the automatic return cheque process on the FUNDS.TRANSFER application. The field is mandatory if the</p>
+            <p>                        CHEQUE.REGISTER field has been entered otherwise it must not be entered.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>                        Must be a valid CATEGORY.</p>
+        </desc>
+</t>
+<t>
+<field>CR.ADJ.PREV.Y</field>
+<desc>
+            <p>This field can store the</p>
+            <p>                        CATEGORY code that will be used for all adjustments to credit interest for the previous year.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Optional input</p>
+            <p />
+            <p>                        Credit Interest Adjustment categories must be in the range 50000 to 50999</p>
+        </desc>
+</t>
+<t>
+<field>MVRESERVED2</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>CHQ.COL.TXN</field>
+<desc>
+            <p>This field is used to specify a list of transaction codes that must invoke the processing related to the process of collecting funds on out clearing cheques. This field can be specified only if the fields DEF.COLL.SUSP, CHQ.DEP.TXN, CHQ.RET.TXN &amp; DEF.RET.SUSP have been specified.</p>
+            <p>                        By specifying a transaction here the accounting module will detect this situation and do the following processing:</p>
+            <p />
+            <p>                        Change the status on the CHEQUE.COLLECTION record to 'CLEARED'</p>
+            <p>                        Delete the forward entries created on client account</p>
+            <p>                        Raise real entries to credit the client account with the cheque amount and debit the collection suspense account with the cheque amount</p>
+            <p>                        Raise any charges and/or tax entries specified on the CHEQUE.COLLECTION record</p>
+            <p>                        In a multi-company environment, if you have separate TRANSACTION files for each company and you want to use CHEQUE.COLLECTION then you must set up the same transaction codes for it in each company.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>                        Optional input</p>
+            <p>                        DEF.COLL.SUSP, CHQ.DEP.TXN, CHQ.RET.TXN &amp; DEF.RET.SUSP must also be specified</p>
+            <p>                        If entered must not contain duplicates</p>
+            <p>                        If entered must not be specified in the CHQ.DEP.TXN or CHQ.RET.TXN fields</p>
+            <p>                        If entered must be an ID to a valid TRANSACTION record</p>
+        </desc>
+</t>
+<t>
+<field>UPD.STMT.VAL.ENTRY</field>
+<desc>
+            <p>To indicate if the file STMT.VAL.ENTRY is to be updated or not.  </p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p> Possible Values YES  or NO.  YES will update STMT.VAL.ENTRY . NO will not update STMT.VAL.ENTRY. The default is 'NO'.</p>
+        </desc>
+</t>
+<t>
+<field>SUS.CATEGORY</field>
+<desc>
+            <p>The suspense category to be used, for split value dated transactions, in association with field ENTRY.CATEGORY.</p>
+            <p>                        See ENTRY.CATEGORY for further details.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Numeric 10000-19999.</p>
+        </desc>
+</t>
+<t>
+<field>UPDATE.PL.ACTIVITY</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>AC.TXN.CODE</field>
+<desc>
+            <p>Indicates the transaction code used for the updates to the customer account for manual adjustments so that they can be identified on the customer statement. If not inut, then the standard transaction code for the interest type will be used. DR 391,DR2 393, CR 381 and CR2 383.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>.</p>
+            <p />
+            <p>       Must be a valid transaction code.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNTING.SUBRTN</field>
+<desc>
+            <p>Specifies the routine to be called in EB.ACCOUNTING to export accounting</p>
+            <p />
+            <p>                        entries from T24.</p>
+            <p />
+            <p>                        The 4 arguments passed to the subroutine are as follows:</p>
+            <p>                        1 The type on entry can be -</p>
+            <p>                        "STMT" for a STMT.ENTRY</p>
+            <p>                        "FWD" for a forward STMT.ENTRY i.e the key begins F...</p>
+            <p>                        "CATG" for a CATEG.ENTRY</p>
+            <p>                        "SPEC" for an RE.CONSOL.SPEC.ENTRY</p>
+            <p>                        "CONSOL" for a CONSOL.ENT.TODAY entry</p>
+            <p />
+            <p>                        2 the accounting type that is passed</p>
+            <p>                        Values can be as follows for authorised non forward entries</p>
+            <p>                        "AUT" , "VALAUT", "ADD.AUT", "SAO"</p>
+            <p>                        "AUT" indicates that entries are being authorised</p>
+            <p>                        "VALAUT" and "ADD.AUT" indicate that entries are being validated and authorised</p>
+            <p>                        "SAO" indicates that entries are being authorised with automatic acceptance of overrides which will be stored in the override field of the passed entry</p>
+            <p />
+            <p>                        Values can be as follows for authorised forward entries</p>
+            <p>                        "AUT", "SNP.AUT" REV.AUT</p>
+            <p>                        NB when a forward contract is reversed before the value date the FWD.STMT entries will be reversed, with no "real" accounting having taken place, the TYPE used here is REV.AUT. Often the forward entries will be replaced by "real" entries as the contract becomes active, for example when the processing date is reached on a forward valued FT contract.</p>
+            <p>                        3 the record @id of the entry</p>
+            <p>                        4 the actual entry</p>
+            <p />
+            <p>                        NB: Reversal entries can be identified by "REV" in the RECORD.STATUS field</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>                        This is a locally developed routine that will be called during the</p>
+            <p />
+            <p>                        Accounting phase of any transaction within T24.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>                        Upto 35 alphanumeric characters.</p>
+            <p />
+            <p>                        Input must exist on PGM.FILE as type S (subroutine) program.</p>
+        </desc>
+</t>
+<t>
+<field>ACCT.CATEG.DESC</field>
+<desc>
+            <p>This field is used to have a description for the account category range defined in ACCT.CATEG.STR and ACCT.CATEG.END fields.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>                        Up to 35 Alphanumeric Characters</p>
+            <p />
+            <p>                        Optional input</p>
+            <p />
+            <p>                        Multi-value field associated with fields 73.1 to 75.1</p>
+        </desc>
+</t>
+<t>
+<field>ACCT.CATEG.END</field>
+<desc>
+            <p>This field is used to specify the end account category code. The category specified in this field will be validated for allowing changes to the main customer in account record.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>                        4 numeric characters within range 1000 to 9999. Mandatory input if multi-valued and if ACCT.CATEG.STR       field is input.</p>
+            <p>                        If value is available in ACCT.CATEG.STR, the value entered here should       be greater than or equal to the start range specified.</p>
+            <p>                        Multi-value field associated with fields 73.1 to 75.1</p>
+        </desc>
+</t>
+<t>
+<field>MVRESERVED1</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>INT.ADJ.TYPE</field>
+<desc>
+            <p>This field is used to specify the interest type for the manual interest adjustment  category and transaction codes defined in fields PL.CATEG.TYPE, CRF.CATEG.TYPE and AC.TXN.CODE.</p>
+            <p />
+            <p>       Validation rules</p>
+            <p />
+            <p>       Valid options are DR, DR2, CR and CR2</p>
+        </desc>
+</t>
+<t>
+<field>CREDIT.CHECK</field>
+<desc>
+            <p>Identifies on which balance, overdraft and limit checking should be made for all accounts. It can also be set at ACCOUNT level or at the ACCT.GROUP.CONDITION. The flag will be selected in the following order:</p>
+            <p>                        1. ACCOUNT</p>
+            <p>                        2. ACCT.GROUP.CONDITION, if not set at ACCOUNT level</p>
+            <p>                        3. ACCOUNT.PARAMETER, if not set at ACCT.GROUP.CONDITION level</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>                                    AVAILABLE: Credit checking is made using AVAILABLE.BAL</p>
+            <p>                                    WORKING: Credit checking is made using WORKING.BALANCE</p>
+            <p>                                    FORWARD: Credit checking is made using WORKING.BALANCE plus today's forward movements.</p>
+            <p>                                    AVAILWORK: Credit checking is made using AVAILABLE.BAL and WORKING.BALANCE.</p>
+            <p>                                    AVAILFWD: Credit checking is made using AVAILABLE.BAL and WORKING.BALANCE plus today's forward movements.</p>
+            <p>                                    BLANK: The default checking is using WORKING.BALANCE</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>VALUE.DATED.SINCE</field>
+<desc>
+            <p>This field is used to hold any system overrides.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Internal system field.</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.CODE.POS</field>
+<desc>
+            <p>Specifies the start position of the customer code within account number throughout the system.  No input in this field implies that the customer code is not held within the account number, and is not required to be checked in the account application.</p>
+            <p>                        Some formats of the account number use the customer number as part of the key.  In order to correctly validate the key, the starting position, and length of customer number should be defined using this field and the field CUST.CODE.LEN.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        1-2 numeric characters. (Optional input)</p>
+            <p>                        Position cannot exceed the account mask length.</p>
+        </desc>
+</t>
+<t>
+<field>BYPASS.TXN.JOURNAL</field>
+<desc>
+            <p>Set this field to "YES" to bypass updates to the TXN.JOURNAL.</p>
+        </desc>
+</t>
+<t>
+<field>VD.CAT.END</field>
+<desc>
+            <p>A valid CATEGORY record key. The end of a range of category codes that the bank wishes to define trade or value dated accounting treatment for.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>                        Category codes entered must be in the range 10000  19999 or 50000  69999.</p>
+            <p />
+            <p>                        Category code must be greater than that specified in the corresponding VD.CAT.START.</p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONT.DR.TXN</field>
+<desc>
+            <p>Default contingent debit transaction code</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Should be a valid entry in TRANSACTION table.</p>
+        </desc>
+</t>
+<t>
+<field>DR2.ADJ.PREV.Y</field>
+<desc>
+            <p>This field can store the</p>
+            <p>                        CATEGORY code that will be used for all adjustments to debit2 interest for the previous year.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Optional input</p>
+            <p />
+            <p>                        Debit Interest Adjustment categories must be in the range 51000 to 51999</p>
+        </desc>
+</t>
+<t>
+<field>CR2.ADJ.PREV.Y</field>
+<desc>
+            <p>This field can store the</p>
+            <p>                        CATEGORY code that will be used for all adjustments to credit2 interest for the previous year.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Optional input</p>
+            <p />
+            <p>                        Credit Interest Adjustment categories must be in the range 50000 to 50999</p>
+        </desc>
+</t>
+<t>
+<field>LOCKED.WITH.LIMIT</field>
+<desc>
+            <p>It identifies whether credit checking on Locked amounts will  include the Limit if account  has locked funds and is linked to a Limit. It will be selected in the following order:</p>
+            <p>   1. ACCOUNT</p>
+            <p>   2. ACCT.GROUP.CONDITION (if ACCOUNT is blank)</p>
+            <p>   3. ACCOUNT.PARAMETER (if ACCT.GROUP.CONDITION is blank)</p>
+            <p>   For example if nothing is set at ACCOUNT level then the ACCT.GROUP.CONDITION is checked and if still nothing is set at this level, the ACCOUNT.PARAMETER is checked.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   YES:  Locked amount checking to use Limit</p>
+            <p>   NO:   Locked amount checking not to use Limit</p>
+            <p>   Blank: The default setting is not to use Limit</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>VAL.NO.MONTHS</field>
+<desc>
+            <p>Defines the number of months that value dated information is to be retained on the system STMT.ENTRY identifiers are held on STMT.VAL.ENTRY by account number and value date. The PURGE.STMT.VAL.ENTRY routine uses the number of months defined here to calculate a date from today before which STMT.VAL.ENTRY records will be removed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Number of months between 1 and 99.</p>
+        </desc>
+</t>
+<t>
+<field>CONT.CAT.STR</field>
+<desc>
+            <p>The ACCOUNT.PARAMETER table allows the definition of the range within which contingent accounts may be defined. The value here is the low value of the range in the respective contingent category group.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>                        Must be a record on CATEGORY file, and in the range of 3000-9999.</p>
+        </desc>
+</t>
+<t>
+<field>PL.CATEG.TYPE</field>
+<desc>
+            <p>Indicates the category code for the relevant interst type. Must be between 51000 and 51999 for debit interest and 50000 and 50999 for credit interest. Cannot be the same as the relevant previous month or previous year category codes. If not set then the standard debit interest category of 51000 for debit and 50000 for credit will be used. This allows manual interest adjustments to be reported seperately in P&amp;L.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Must be a valid Category Code.</p>
+        </desc>
+</t>
+<t>
+<field>DR2.ADJ.PREV.M</field>
+<desc>
+            <p>This field can store the</p>
+            <p>                        CATEGORY code that will be used for all adjustments to debit2 interest for the previous month.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Optional input</p>
+            <p />
+            <p>                        Debit Interest Adjustment categories must be in the range 51000 to 51999</p>
+        </desc>
+</t>
+<t>
+<field>HVT.MERGE.INTERVAL</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>REVAL.LCCY.POS</field>
+<desc>
+            <p>Defines whether local currency positions are revalued during BATCH end-of-day.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                        Y or N. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>NET.LOCKED.OVERRIDE</field>
+<desc>
+<p> Field is a multi-value set under the field NET.OD.APPL, </p>
+<p> This field allows to net the entries in a transaction before validating the Locked Amount Check, that is defined in AC.LOCKED.EVENTS application.  </p>
+<p> This functionality is available for all the applications that is defined in the field NET.OD.APPL. </p>
+<p> Validation Rules: </p>
+            <p>   YES:  Locked amount checking by netting all the entries in a transaction</p>
+            <p>   NO/BLANK: Locked amount checking without netting the entries in a transaction</p>
+</desc>
+</t>
+
+<t>
+<field>USE.PAY.RECEIVE</field>
+<desc> 
+			<p>This field is the SYSTEM level set-up suspense processing, to apply the reporting properties of an underlying account or contract, if passed to core accounting.</p>
+			<p>New asset types PAYSUS/RECEIVESUS will be used for reporting based on the suspense processing setup.</p>
+			<p>The possible values are:</p>
+			<p>YES:	Process suspense as a special entry if account or contract number is passed to core accounting</p>
+			<p>NO:	This is the default set-up where the suspense processing will post the entry to the Internal account</p>
+</desc>
+</t>
+<t>
+<field>USE.PAY.REC.SYS</field>
+<desc>
+			<p>This new field is the application level set-up (if different from the system level) suspense processing to apply the reporting properties of an underlying account or contract, if passed to core accounting.</p>
+			<p>This field will be part of the associated multi-value fields VAL.DATE.SYS.ID, VAL.DATE.BY.SYS, VD.SYS.SINCE, USE.PAY.REC.SYS</p>
+			<p>New asset types PAYSUS/RECEIVESUS will be used for reporting based on the suspense processing setup.</p>
+			<p>The possible values are:</p>
+			<p>YES:	Process suspense as a special entry if account or 	contract number is passed to core accounting</p>
+			<p>NO:	This is the default set-up where the suspense 	processing will post the entry to the Internal account</p>
+</desc>
+</t>
+<t>
+<field>USE.PAY.REC.CAT</field>
+<desc>
+			<p>This new field is the Category level (if different from the application or  system level) set-up suspense processing, to apply the reporting properties of an underlying account or contract, if passed to core accounting.</p>
+			<p>It will be part of the associated multi-value set of fields  VD.CAT.START VD.CAT.END, VD.CAT.SINCE, VAL.DATE.BY.CAT</p>
+			<p>New asset types PAYSUS/RECEIVESUS will be used for reporting based on the suspense processing setup.</p>
+			<p>The possible values are:</p>
+			<p>YES:	Process suspense as a special entry if account or 	contract number is passed to core accounting</p>
+			<p>NO:	This is the default set-up where the suspense 	processing will post the entry to the Internal account</p>
+</desc>
+</t>
+<t>
+<field>VD.CAT.SYS.ID</field>
+<desc>
+			<p>Multi-value field  associated with the VD.CAT.SYS.START, VD.CAT.SYS.END, VAL.DATE.BY.CAT.SYS , USE.PAY.RECEIVE.CAT.SYS</p>
+			<p>It will hold the Application (e.g SC or sub-asset  type e.g SCSP).it is a valid key to EB.SYSTEM.ID table.</p>
+</desc>
+</t>
+<t>
+<field>VD.CAT.SYS.START</field>
+<desc>
+			<p>Multi sub-value field associated with VD.CAT.SYS.ID, VD.CAT.SYS.END, and VAL.DATE.BY.CAT.SYS, USE.PAY.RECEIVE.CAT.SYS to indicate the start range of Category to which the accounting set-up will be applied.</p>
+			<p>Valid key to the CATEGORY table, but only Internal Account and PL Category allowed </p>
+</desc>
+</t>
+<t>
+<field>VD.CAT.SYS.END</field>
+<desc>
+			<p>Multi sub-value field associated with VD.CAT.SYS.ID, VD.CAT.SYS.START, VAL.DATE.BY.CAT.SYS, USE.PAY.RECEIVE.CAT.SYS  to indicate the end range of Category to which the accounting set-up will be applied.</p>
+			<p>Valid key to the CATEGORY table, but only Internal Account and PL Category allowed</p>
+</desc>
+</t>
+<t>
+<field>VAL.DATE.BY.CAT.SYS</field>
+<desc>
+			<p>Multi sub-value field associated with  VD.CAT.SYS.ID, VD.CAT.SYS.START,  VD.CAT.SYS.END, USE.PAY.RECEIVE.CAT.SYS  to indicate the accounting set-up applicable to 	the Category range  under the application specified.</p>
+			<p>The possible options are:</p>
+			<p>“Y” to set up Value Date Accounting by Application and Category range</p>
+			<p>“NO” to set up Trade date Accounting by Application and category range</p>
+			<p>“TDGL”, to set-up Trade Date Accounting 	at GL 	level (allowed for Internal Account only)</p>
+</desc>
+</t>
+<t>
+<field>USE.PAY.RECEIVE.CAT.SYS</field>
+<desc>
+			<p>This field is the Category range level for an application (if different from the application or  system level or category range level) set-up suspense processing, to apply the reporting properties of an underlying account or contract, if passed to core accounting.</p>
+			<p>New asset types PAYSUS/RECEIVESUS will be used for reporting based on the suspense processing setup.</p>
+			<p>The possible values are:</p>
+			<p>YES:	Process suspense as a special entry if account or 	contract number is passed to core accounting</p>
+			<p>NO:	This is the default set-up where the suspense 	processing will post the entry to the Internal account</p>
+</desc>
+</t>	
+<t>
+<field>TDGL.CREDIT.CHECK</field>
+<desc>
+			<p>Field to decide whether the Trade Dated General Ledger balances (TDGL) movements to included on Credit Checking.</p>
+			<p>The possible values are:</p>
+			<p>YES/NULL: TDGL movements will be considered for credit checking</p>
+			<p>NO: Only if this field is set to "NO", system will not consider TDGL movements.</p>
+</desc>
+</t>
+<t>
+<field>CONSOLIDATE.ENTRIES</field>
+<desc>
+            <p>This is used to set the consolidation level to be used while rebuilding the transaction using AC.REBUILD.EXPOSURE.</p>
+            <p>The possible values are: Yes/No(or Null)</p>
+			<p>If set to yes, the entries will be consolidated when there are multiple entries with the same exposure date.</p>
+			<p>If set to yes, then we cannot set values in EXP.UPD.ACCT.ACTIV and Multi-Value fields EXP.CAT.START to EXP.UPD.ACCT.ACTIV.CAT.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXP.UPD.ACCT.ACTIV</field>
+<desc>
+            <p>This is used to set the ACCT.ACTIVITY updation level.</p>
+            <p>The possible values are: Yes/No(or Null)</p>
+			<p>If set to yes, the ACCT.ACTIVITY will be updated based on the exposure date.</p>
+			<p>If set to No/Null, the ACCT.ACTIVITY will be updated based on the Accounting System Used.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXP.CAT.START</field>
+<desc>
+            <p>This is used to specify the start value of a category range for which the EXP.UPD.ACCT.ACTIV.CAT is set.</p>
+            <p>Multi-value field associated with fields EXP.CAT.START to EXP.UPD.ACCT.ACTIV.CAT</p>
+            <p> Validation Rules: </p>
+			<p>Must be a valid Category.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXP.CAT.END</field>
+<desc>
+            <p>This is used to specify the end value of a category range for which the EXP.UPD.ACCT.ACTIV.CAT is set.</p>
+            <p>Multi-value field associated with fields EXP.CAT.START to EXP.UPD.ACCT.ACTIV.CAT</p>
+            <p> Validation Rules: </p>
+			<p>Must be a valid Category.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXP.UPD.ACCT.ACTIV.CAT</field>
+<desc>
+            <p>This is used to set the ACCT.ACTIVITY updation level for the Category range mentioned between EXP.CAT.START and EXP.CAT.END.</p>
+            <p>Multi-value field associated with fields EXP.CAT.START to EXP.UPD.ACCT.ACTIV.CAT</p>
+            <p>The possible values are: Yes/No(or Null)</p>
+			<p>If set to yes, the ACCT.ACTIVITY will be updated based on the exposure date.</p>
+			<p>If set to No/Null,the ACCT.ACTIVITY will be updated based on the Accounting System Used.</p>
+            <p />
+            <p />
+        </desc>
+</t>	
+<t>
+<field>FIN.DETAILS.REQ</field>
+<desc>
+            <p>This field is used to set if updating of files related to the Data Framework - Financial Reporting model is required</p>
+            <p>The possible values are: Yes/No(or Null)</p>
+			<p>If set to yes, IF.EVENTS.INTERFACE.TABLE for Financial reporting tables will be updated.</p>
+			<p>If set to No/Null,IF.EVENTS.INTERFACE.TABLE for Financial reporting model will not be updated.</p>
+            <p />
+            <p />
+        </desc>
+</t>		
+<t><field>EXPOSURE.ADJ.CR.TXN</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>EXPOSURE.ADJ.DR.TXN</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>POSTING.RESTRICT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>UPDATE.CONT.ACTIVITY</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

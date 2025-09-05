@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SA</product>
+<table>SA.RATIOS</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Score cards could be defined based on data types, data groups or certain ratios. It is possible to define the formulae for calculation of ratios in this table. This table is used to record the list of ratios and define the method (formulae) of calculation of these ratios. Data groups could be used for defining the ratio calculation.  </p>
+            <p>The steps might involve storing of intermediate values and for this purpose the Mne.Grp field may be used.</p>
+            <p>If the calculation formula were to be complex, a hook is provided where the user may attach a local routine to perform such calculation.</p>
+            <p>The basic features of this table are</p>
+            <p>CALC.PARAM - Controls how the calculation is to be done or proceeded. ADD: To be added, SUB: To be subtracted, MUL: To be multiplied and DIV: To be divided</p>
+            <p>DATA.GROUP: The value in the respective group total would be considered. Input allowed either here or in Calc.Constant</p>
+            <p>Calc.Constant - Specifies the 'constant' to be taken into consideration when calculating the ratio. Input allowed only if DATA.GROUP is null for the relevant set.</p>
+            <p>Mne.Grp - This field is used to store the intermediate calculations and could be re-used while calculating the actual ratio.</p>
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>MNE.GRP</field>
+<desc>
+            <p>While defining the formula for a ratio there could be need to hold intermediate calculations. This is typically essential when the formula is to be defined in several steps. User could provide a mnemonic group name and do an intermediate calculation and re-use such calculation while defining the final formula for the ratio. Example : It is required to calculate Total Debt to Net Income Ratio as a % figure. This is calculated as follows;</p>
+            <p>(Total Debt/Net Income)*100</p>
+            <p>Total Debt = Existing Loan Repayments + Proposed Loan Repayments</p>
+            <p>Net Income = Total Income - Total Deductions</p>
+            <p>Total Income = Montly Income + Monthly Incentives + Monthly Other Income</p>
+            <p>Total Deduction = Monthly Tax + Monthly other deductions</p>
+            <p>Assume that the following data group records are available</p>
+            <table>
+                <tr>
+                    <td>Data Group (as defined in SA.DATA.GROUP)</td>
+                    <td>Comprising Data Types (In SA.DATA.TYPES)</td>
+                </tr>
+                <tr>
+                    <td>EXIST.LOAN.REP (For existing loan repayments)</td>
+                    <td>EX.LOAN.REP (Repayment obligation towards existing loan)</td>
+                </tr>
+                <tr>
+                    <td>PROP.LOAN.REP (For proposed loan repayments)</td>
+                    <td>PR.LOAN.REP (Repayment obligation towards proposed loan)</td>
+                </tr>
+                <tr>
+                    <td />
+                    <td>PR.LOAN.OTH (Other payment obligations towards proposed loan like insurance charges etc.,)</td>
+                </tr>
+                <tr>
+                    <td>TOT.INC (For Total Income)</td>
+                    <td>MONTHLY.INC (Monthly Income)</td>
+                </tr>
+                <tr>
+                    <td />
+                    <td>MONTHLY.INC (Monthly Incentives)</td>
+                </tr>
+                <tr>
+                    <td />
+                    <td>MONTHLY.OTH (Monthly other Income)</td>
+                </tr>
+                <tr>
+                    <td>TOT.DED (For Total Deduction)</td>
+                    <td>MONTHLY.TAX (Monthly Tax Deduction)</td>
+                </tr>
+                <tr>
+                    <td />
+                    <td>MONTHLY.ODED (Monthly other deductions)</td>
+                </tr>
+            </table>
+            <p>The formula requires the following:</p>
+            <p>1) Sum of data groups EXIST.LOAN.REP and PROP.LOAN.REP. This can be stored in a mnemonic, say REP</p>
+            <p>2) Difference between data groups TOT.INC and TOT.DED representing net income. This can be stored in a mnemonic, say NI</p>
+            <p>3) Dividing REP by NI</p>
+            <p>4) Multiplying the out after step 3 by a constant 100.</p>
+            <p>This formula can therefore be defined as under;</p>
+            <table>
+                <tr>
+                    <td>CALC.PARAM</td>
+                    <td>ADD</td>
+                </tr>
+                <tr>
+                    <td>DATA.GROUP</td>
+                    <td>REP (mnemonic for total repayments)</td>
+                </tr>
+                <tr>
+                    <td>CALC.CONSTANT</td>
+                    <td />
+                </tr>
+                <tr>
+                    <td>CALC.PARAM</td>
+                    <td>DIV</td>
+                </tr>
+                <tr>
+                    <td>DATA.GROUP</td>
+                    <td>NI (mnemonic for net income)</td>
+                </tr>
+                <tr>
+                    <td>CALC.CONSTANT</td>
+                    <td />
+                </tr>
+                <tr>
+                    <td>CALC.PARAM</td>
+                    <td>MUL</td>
+                </tr>
+                <tr>
+                    <td>DATA.GROUP</td>
+                    <td />
+                </tr>
+                <tr>
+                    <td>CALC.CONSTANT</td>
+                    <td>100 </td>
+                </tr>
+            </table>
+            <p />
+            <p>Now the formula for calculating the mnemonic can be defined.</p>
+            <table>
+                <tr>
+                    <td>MNE.GRP</td>
+                    <td>REP</td>
+                </tr>
+                <tr>
+                    <td>MNE.CALC</td>
+                    <td>ADD</td>
+                </tr>
+                <tr>
+                    <td>MNE.DATA.GRP</td>
+                    <td>EXIST.LOAN.REP</td>
+                </tr>
+                <tr>
+                    <td>MNE.CALC</td>
+                    <td>ADD </td>
+                </tr>
+                <tr>
+                    <td>MNE.DATA.GRP</td>
+                    <td>PROP.LOAN.REP</td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>MNE.GRP</td>
+                    <td>NI</td>
+                </tr>
+                <tr>
+                    <td>MNE.CALC</td>
+                    <td>ADD</td>
+                </tr>
+                <tr>
+                    <td>MNE.DATA.GRP</td>
+                    <td>TOT.INC</td>
+                </tr>
+                <tr>
+                    <td>MNE.CALC</td>
+                    <td>SUB </td>
+                </tr>
+                <tr>
+                    <td>MNE.DATA.GRP</td>
+                    <td>TOT.DED</td>
+                </tr>
+            </table>
+            <p>The formula is stored in the compiled set of fields.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Upto 10 alphanumeric characters </p>
+        </desc>
+</t>
+<t>
+<field>MNE.CONSTANT</field>
+<desc>
+            <p>This field has the same function and validation as CALC.CONSTANT.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input not permitted if value exists in MNE.DATA.GRP field in the sub value set.</p>
+        </desc>
+</t>
+<t>
+<field>MNE.CALC</field>
+<desc>
+            <p>This field has the same function and validation as field CALC.PARAM.</p>
+        </desc>
+</t>
+<t>
+<field>DATA.GRP</field>
+<desc>
+            <p>Identifies the data group that needs to be included in the formula.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid record on SA.DATA.GROUP</p>
+            <p>If not present on SA.DATA.GROUP, the value must have been defined as MNE.GRP</p>
+        </desc>
+</t>
+<t>
+<field>MNE.DATA.GRP</field>
+<desc>
+            <p>Represents the Data group to be used in the calculation of value of mnemonic.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid record in SA.DATA.GROUP.</p>
+        </desc>
+</t>
+<t>
+<field>COMPILED.FLD</field>
+<desc>
+            <p>This field stores the formula in compiled form.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System updated. No input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Identifies the Ratio in more descriptive form and will be used for on-line enrichments when this ratio is used.</p>
+            <p>Multivalue field to record description in various languages.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 characters alphanumeric (Multi Language supported)</p>
+            <p>Mandatory Input</p>
+        </desc>
+</t>
+<t>
+<field>SA.RATIOS.ID</field>
+<desc>
+            <p>Free format ID to facilitate user definable ratio name. </p>
+            <p>Max 35 characters.</p>
+        </desc>
+</t>
+<t>
+<field></field>
+<desc>
+        <p>If during the process of calculation of a ratio, a constant is to be used, the value of such constant is provided here. The value of a ratio may either be retained in absolute form or be converted and held in a ratio form by using a constant. Example - Take the simple definition of Debt to Income Ratio. The formula for defining this would be (DEBT/INCOME)*100. In this case the definition of this ratio would be as follows; Calc.Param ADD Data.Group DEBT (ID of SA.DATA.GROUP) Calc.Param DIV Data.Group INCOME (ID of SA.DATA.GROUP) Calc.Param MUL Calc.Constant 100 By multiplying the resultant figure with a constant of 100, we have converted the result into a % figure. </p>
+        <p>Validation Rules</p>
+        <p> Upto 11 character numeric. No decimals allowed. Only positive values allowed.</p>
+        <p>CALC.PARAM</p>
+        <p>One of the four values ADD - To be Added SUB - To be Subtracted MUL - To be Multiplied DIV - To be Divided will be accepted. This indicator is used to control how the calculation is to be performed. Example - Take the simple definition of Debt to Income Ratio. The formula for defining this would be (DEBT/INCOME)*100. In this case the definition of this ratio would be as follows; Calc.Param ADD Data.Group DEBT (ID of SA.DATA.GROUP) Calc.Param DIV Data.Group INCOME (ID of SA.DATA.GROUP) Calc.Param MUL Calc.Constant 100 If the formula were to be defined with several steps the field MNE.GRP could be used. </p>
+        <p>Validation Rules</p>
+        <p> One of the values ADD, MUL, DIV, SUB will be accepted.</p>
+        <p>CALC.ROUTINE</p>
+        <p>Should the user so desire, a locally developed routine may also be attached. The local routine should be a valid record on PGM.FILE with the PGM.TYPE as 'S'. If the routine is so attached, then input would be permitted in field GB.DESCRIPTION alone. </p>
+        <p>Validation Rules</p>
+        <p> The local routine should be a valid record on PGM.FILE with the PGM.TYPE as 'S'.</p>
+        <p>COMPILED.FLD</p>
+        <p>This field stores the formula in compiled form. </p>
+        <p>Validation Rules</p>
+        <p> System updated. No input allowed.</p>
+        <p>DATA.GRP</p>
+        <p>Identifies the data group that needs to be included in the formula. </p>
+        <p>Validation Rules</p>
+        <p> Must be a valid record on SA.DATA.GROUP If not present on SA.DATA.GROUP, the value must have been defined as MNE.GR.</p>
+        <p>DESCRIPTION</p>
+        <p>Identifies the Ratio in more descriptive form and will be used for on-line enrichments when this ratio is used. Multivalue field to record description in various languages. </p>
+        <p>Validation Rules</p>
+        <p> Up to 35 characters alphanumeric (Multi Language supported) Mandatory Inpu.</p>
+        <p>MNE.CALC</p>
+        <p>This field has the same function and validation as field CALC.PARAM.</p>
+        <p>MNE.CONSTANT</p>
+        <p>This field has the same function and validation as CALC.CONSTANT. </p>
+        <p>Validation Rules</p>
+        <p> Input not permitted if value exists in MNE.DATA.GRP field in the sub value set.</p>
+        <p>MNE.DATA.GRP</p>
+        <p>Represents the Data group to be used in the calculation of value of mnemonic. </p>
+        <p>Validation Rules</p>
+        <p> Must be a valid record in SA.DATA.GROUP.</p>
+        <p>SA.RATIOS.ID</p>
+        <p>Free format ID to facilitate user definable ratio name. Max 35 characters.</p>
+    </desc>
+</t>
+<t>
+<field>CALC.CONSTANT</field>
+<desc>
+            <p>If during the process of calculation of a ratio, a constant is to be used, the value of such constant is provided here. </p>
+            <p>The value of a ratio may either be retained in absolute form or be converted and held in a ratio form by using a constant. </p>
+            <p>Example - Take the simple definition of Debt to Income Ratio. The formula for defining this would be (DEBT/INCOME)*100. In this case the definition of this ratio would be as follows;</p>
+            <p />
+            <p>Calc.Param        ADD</p>
+            <p>Data.Group        DEBT (ID of SA.DATA.GROUP)</p>
+            <p>Calc.Param        DIV</p>
+            <p>Data.Group        INCOME (ID of SA.DATA.GROUP)</p>
+            <p>Calc.Param        MUL</p>
+            <p>Calc.Constant     100</p>
+            <p>By multiplying the resultant figure with a constant of 100, we have converted the result into a % figure.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Upto 11 character numeric. No decimals allowed.</p>
+            <p>Only positive values allowed. </p>
+        </desc>
+</t>
+<t>
+<field>CALC.PARAM</field>
+<desc>
+            <p>One of the four values</p>
+            <p>ADD - To be Added</p>
+            <p>SUB - To be Subtracted</p>
+            <p>MUL - To be Multiplied</p>
+            <p>DIV - To be Divided</p>
+            <p>will be accepted. This indicator is used to control how the calculation is to be performed. </p>
+            <p>Example - Take the simple definition of Debt to Income Ratio. The formula for defining this would be (DEBT/INCOME)*100. In this case the definition of this ratio would be as follows;</p>
+            <p />
+            <p>Calc.Param        ADD</p>
+            <p>Data.Group        DEBT (ID of SA.DATA.GROUP)</p>
+            <p>Calc.Param        DIV</p>
+            <p>Data.Group        INCOME (ID of SA.DATA.GROUP)</p>
+            <p>Calc.Param        MUL</p>
+            <p>Calc.Constant     100</p>
+            <p />
+            <p>If the formula were to be defined with several steps the field MNE.GRP could be used.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>One of the values ADD, MUL, DIV, SUB will be accepted.</p>
+        </desc>
+</t>
+<t>
+<field>CALC.ROUTINE</field>
+<desc>
+            <p>Should the user so desire, a locally developed routine may also be attached.</p>
+            <p>The local routine should be a valid record on PGM.FILE with the PGM.TYPE as 'S'.</p>
+            <p>If the routine is so attached, then input would be permitted in field GB.DESCRIPTION alone.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The local routine should be a valid record on PGM.FILE with the PGM.TYPE as 'S'.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

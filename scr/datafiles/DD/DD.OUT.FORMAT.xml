@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DD</product>
+<table>DD.OUT.FORMAT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Each clearing system has their prescribed file format for Outward claim submission and return. </p>
+            <p> These format details are defined here &amp; it has three sections, namely, Header, Data &amp; Footer and it is attached to the relevant DD.PARAMETER for Claim file generation. In Header, Data &amp; footer section, details can be specified either as a static information related to file or can be linked to other application using DD.ITEM information, to get the clearing reference, Bank sort code, Value date &amp; Amount etc from DD.ITEM application. Refer to DD user guide- DD.OUT.FORMAT set-up section for more details. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>FTR.FIELD.NAME</field>
+<desc>
+            <p>Specify the details as applicable for the Footer record which can be as a Free text</p>
+            <p>Validation Details</p>
+            <p>Mandatory field</p>
+            <p>Allowed values : 1-35 Free text format.</p>
+        </desc>
+</t>
+<t>
+<field>FTR.INCL.FIELD</field>
+<desc>
+            <p>Specify whether the details given here to populated in out file format or not.</p>
+            <p>Value "Yes" should be given to populate the field details in to the file format.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>Valid values "Yes" or "No" or Null.</p>
+        </desc>
+</t>
+<t>
+<field>DATA.LEN.MASK</field>
+<desc>
+            <p>The content returned for this field is padded / truncated using the length mark as given here.</p>
+            <p>This is useful for padding Zeros / Spaces or special characters before the field value.</p>
+            <p>Can be used to control the formatting of a data item.</p>
+            <p>Bn Right adjust into a length of n by inserting blanks on the left. (n must not be zero.) </p>
+            <p>*n As for Bn but place asterisks before the first significant digit. </p>
+            <p>Zn As for *n but placing zeros before the first significant digit. </p>
+            <p>, Insert commas to separate thousands. </p>
+            <p>. Change '.' to ','. </p>
+            <p>. , or , . Insert points to separate thousands, and use a comma for decimals. </p>
+            <p>- Put the sign after the amount. (The sign normally precedes the amount.) '-' can only be used in conjunction with other masks.</p>
+            <p>A Print the absolute value without a sign, even if it is negative.</p>
+            <p>D Print DR after the amount if it is negative.</p>
+            <p>C Print CR after the amount if it is positive and DR if negative.</p>
+            <p>% Print % after the data.</p>
+            <p>00x00x000x Digits will be substituted for the zeros. Any other characters (x represents 1 or more characters) will be printed wherever they were in the mask.</p>
+            <p>'L'00x00x000x ) 'R'00x00x000 As above except that user specifies that format is Left or Right justified. If not specified the default is Right justified. 'L'00x00x000x 'R'00x00x000xX</p>
+            <p>More than one masking parameter may be specified, separated by a space. However, 00x00x000x may not be combined with other masking parameters.</p>
+            <p>Note : Zero amounts will always be printed unless the name of the field is entered in DEPENDENT.ON.</p>
+            <p>Examples:</p>
+            <p>Mask Entered    Field contains 1234.67    Field contains -1234.67</p>
+            <p>*10             ***1234.67                **-1234.67</p>
+            <p>Z10             0001234.67                -001234.67</p>
+            <p>B10 -           1234.67                   1234.67-</p>
+            <p>, -             1,234.67                  1,234.67-</p>
+            <p>.               1234.67                   -1234.67</p>
+            <p>B10 . , C       1.234,67CR                1.234,67DR </p>
+            <p>B10 , D         1,234.67                  1,234.67DR</p>
+            <p>The above examples show that various Masking options may be combined. The length of 10 specified includes the comma, point and a preceding sign, but not '%', 'CR' 'DR', or a sign that follows the field.</p>
+            <p>Mask Entered    Field Contains: 123456</p>
+            <p>00-(00-00)      12-(34-56)</p>
+            <p>"L"000-   000012-3456</p>
+            <p>"R"000-   0000123-456</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Where n is 1 or more digits and x is 1 or more characters: 'Bn' '*n' 'Zn' ',' '.' '-' 'C' 'D' 'A' '%' '00x00x000x..etc. ' (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Describes a DD outward format file and same is used as an enrichment when it is referred in other application.</p>
+            <p>Descriptions may be entered in each of the languages defined in the LANGUAGE table.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-35 type A (alphanumeric) characters. Multilanguage field. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>HDR.RESERVED</field>
+<desc>
+            <p>Reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field</p>
+        </desc>
+</t>
+<t>
+<field>FTR.SPL.TEXT</field>
+<desc>
+            <p>Specify the free text details which has to be populated in outgoing file incase of static information.</p>
+            <p>There are chances that the field may represent line break, end of line etc. Hence the equivalent ASCII character can be defined in the format of &lt;NNN&gt;.</p>
+            <p>During formation of the outward file, the ASCII character will be converted using CHARX (NNN) to LINE </p>
+            <p>For example: for carriage return can be represented by CHARX (013)</p>
+            <p>To represent this, this field can be input as &lt;013&gt;.</p>
+            <p>The &lt;013&gt; will be converted to CHARX (013) during formation of outward file.</p>
+            <p>No validations will be required &amp; the content of the field will be mapped as such.</p>
+            <p>The FIELD.LENGTH is also ignored.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>1-35 Alphanumeric Characters</p>
+        </desc>
+</t>
+<t>
+<field>FTR.FIELD.LINK</field>
+<desc>
+            <p>Foot field link details can be given here.</p>
+            <p>Currently this function is supported only for DATA section.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>1-65 Alpha Numeric characters</p>
+        </desc>
+</t>
+<t>
+<field>DATA.SPL.TEXT</field>
+<desc>
+            <p>Specify the free text details which has to be populated in outgoing file incase of static information.</p>
+            <p>There are chances that the field may represent line break, end of line etc. Hence the equivalent ASCII character can be defined in the format of &lt;NNN&gt;.</p>
+            <p>During formation of the outward file, the ASCII character will be converted using CHARX (NNN) to LINE </p>
+            <p>For example: for carriage return can be represented by CHARX (013)</p>
+            <p>To represent this, this field can be input as &lt;013&gt;.</p>
+            <p>The &lt;013&gt; will be converted to CHARX (013) during formation of outward file.</p>
+            <p>No validations will be required &amp; the content of the field will be mapped as such.</p>
+            <p>The FIELD.LENGTH is also ignored.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>1-35 Alphanumeric Characters</p>
+        </desc>
+</t>
+<t>
+<field>HDR.FIELD.LINK</field>
+<desc>
+            <p>Header field link details can be given here.</p>
+            <p>Currently this function is supported only for DATA section.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>1-65 Alpha Numeric characters</p>
+        </desc>
+</t>
+<t>
+<field>HDR.INCL.FIELD</field>
+<desc>
+            <p>Specify whether the details given here to populated in out file format or not.</p>
+            <p>Value "Yes" should be given to populate the field details in to the file format.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>Valid values "Yes" or "No" or Null.</p>
+        </desc>
+</t>
+<t>
+<field>HDR.FIELD.NAME</field>
+<desc>
+            <p>Specify the details as applicable for the header field which can be a Free text .</p>
+            <p>Validation Details</p>
+            <p>Mandatory field</p>
+            <p>Allowed values : 1-35 Free text format.</p>
+        </desc>
+</t>
+<t>
+<field>HDR.FIELD.RTN</field>
+<desc>
+            <p>Specify the routine which will be supplying the values for this field and it has the precedence over the field details given here.</p>
+            <p>This field is used to call a user defined routine to map additional data which is not normally available.</p>
+            <p>The routine should return back the masked output. The parameters to the routine is</p>
+            <p>INPUT, OUTPUT, ERROR </p>
+            <p>Where INPUT : the FIELD.NAME should be passed as incoming argument </p>
+            <p>OUTPUT : the field content returned back from the routine</p>
+            <p>ERROR : If any error Is encountered, then the same should be displayed and do not proceed further.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a valid record in PGM.FILE with "S" type.</p>
+            <p>Up to 35 alphanumeric characters, of which the first must be an '@' character. </p>
+            <p>The routine must be catalogued and in the VOC file.</p>
+            <p>Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>FTR.LEN.MASK</field>
+<desc>
+            <p>The content returned for this field is padded / truncated using the length mark as given here.</p>
+            <p>This is useful for padding Zeros / Spaces or special characters before the field value.</p>
+            <p>Can be used to control the formatting of a data item.</p>
+            <p>Bn Right adjust into a length of n by inserting blanks on the left. (n must not be zero.) </p>
+            <p>*n As for Bn but place asterisks before the first significant digit. </p>
+            <p>Zn As for *n but placing zeros before the first significant digit. </p>
+            <p>, Insert commas to separate thousands. </p>
+            <p>. Change '.' to ','. </p>
+            <p>. , or , . Insert points to separate thousands, and use a comma for decimals. </p>
+            <p>- Put the sign after the amount. (The sign normally precedes the amount.) '-' can only be used in conjunction with other masks.</p>
+            <p>A Print the absolute value without a sign, even if it is negative.</p>
+            <p>D Print DR after the amount if it is negative.</p>
+            <p>C Print CR after the amount if it is positive and DR if negative.</p>
+            <p>% Print % after the data.</p>
+            <p>00x00x000x Digits will be substituted for the zeros. Any other characters (x represents 1 or more characters) will be printed wherever they were in the mask.</p>
+            <p>'L'00x00x000x ) 'R'00x00x000 As above except that user specifies that format is Left or Right justified. If not specified the default is Right justified. 'L'00x00x000x 'R'00x00x000xX</p>
+            <p>More than one masking parameter may be specified, separated by a space. However, 00x00x000x may not be combined with other masking parameters.</p>
+            <p>Note : Zero amounts will always be printed unless the name of the field is entered in DEPENDENT.ON.</p>
+            <p>Examples:</p>
+            <p>Mask Entered    Field contains 1234.67    Field contains -1234.67</p>
+            <p>*10             ***1234.67                **-1234.67</p>
+            <p>Z10             0001234.67                -001234.67</p>
+            <p>B10 -           1234.67                   1234.67-</p>
+            <p>, -             1,234.67                  1,234.67-</p>
+            <p>.               1234.67                   -1234.67</p>
+            <p>B10 . , C       1.234,67CR                1.234,67DR </p>
+            <p>B10 , D         1,234.67                  1,234.67DR</p>
+            <p>The above examples show that various Masking options may be combined. The length of 10 specified includes the comma, point and a preceding sign, but not '%', 'CR' 'DR', or a sign that follows the field.</p>
+            <p>Mask Entered    Field Contains: 123456</p>
+            <p>00-(00-00)      12-(34-56)</p>
+            <p>"L"000-   000012-3456</p>
+            <p>"R"000-   0000123-456</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Where n is 1 or more digits and x is 1 or more characters: 'Bn' '*n' 'Zn' ',' '.' '-' 'C' 'D' 'A' '%' '00x00x000x..etc. ' (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>FTR.RESERVED</field>
+<desc>
+            <p>Reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field.</p>
+        </desc>
+</t>
+<t>
+<field>FTR.FIELD.RTN</field>
+<desc>
+            <p>Specify the routine which will be supplying the values for this field and it has the precedence over the field details given here.</p>
+            <p>This field is used to call a user defined routine to map additional data which is not normally available.</p>
+            <p>The routine should return back the masked output. The parameters to the routine is</p>
+            <p>INPUT, OUTPUT, ERROR </p>
+            <p>Where INPUT : the FIELD.NAME should be passed as incoming argument </p>
+            <p>OUTPUT : the field content returned back from the routine</p>
+            <p>ERROR : If any error Is encountered, then the same should be displayed and do not proceed further.</p>
+            <p>Sample routine DD.SAMPLE.ROUTINE is released, which will give the total amount &amp; number of items added in a file. This can be amended as per the user requirements and can be used to create a contra entry at the footer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a valid record in PGM.FILE with "S" type.</p>
+            <p>Up to 35 alphanumeric characters, of which the first must be an '@' character.</p>
+            <p>The routine must be catalogued and in the VOC file.</p>
+            <p>Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>HDR.SPL.TEXT</field>
+<desc>
+            <p>Specify the free text details which has to be populated in outgoing file incase of static information.</p>
+            <p>There are chances that the field may represent line break, end of line etc. Hence the equivalent ASCII character can be defined in the format of &lt;NNN&gt;.</p>
+            <p>During formation of the outward file, the ASCII character will be converted using CHARX (NNN) to LINE </p>
+            <p>For example: for carriage return can be represented by CHARX (013)</p>
+            <p>To represent this, this field can be input as &lt;013&gt;.</p>
+            <p>The &lt;013&gt; will be converted to CHARX (013) during formation of outward file.</p>
+            <p> No validations will be required &amp; the content of the field will be mapped as such.</p>
+            <p>The FIELD.LENGTH is also ignored.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>1-35 Alphanumeric Characters</p>
+        </desc>
+</t>
+<t>
+<field>DATA.INCL.FIELD</field>
+<desc>
+            <p>Specify whether the details given here to populated in out file format or not.</p>
+            <p>Value "Yes" should be given to populate the field details in to the file format.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>Valid values "Yes" or "No" or Null.</p>
+        </desc>
+</t>
+<t>
+<field>HDR.LEN.MASK</field>
+<desc>
+            <p>The content returned for this field is padded / truncated using the length mark as given here.</p>
+            <p>This is useful for padding Zeros / Spaces or special characters before the field value.</p>
+            <p>Can be used to control the formatting of a data item.</p>
+            <p>Bn Right adjust into a length of n by inserting blanks on the left. (n must not be zero.) </p>
+            <p>*n As for Bn but place asterisks before the first significant digit. </p>
+            <p>Zn As for *n but placing zeros before the first significant digit. </p>
+            <p>, Insert commas to separate thousands. </p>
+            <p>. Change '.' to ','. </p>
+            <p>. , or , . Insert points to separate thousands, and use a comma for decimals. </p>
+            <p>- Put the sign after the amount. (The sign normally precedes the amount.) '-' can only be used in conjunction with other masks.</p>
+            <p>A Print the absolute value without a sign, even if it is negative.</p>
+            <p>D Print DR after the amount if it is negative.</p>
+            <p>C Print CR after the amount if it is positive and DR if negative.</p>
+            <p>% Print % after the data.</p>
+            <p>00x00x000x Digits will be substituted for the zeros. Any other characters (x represents 1 or more characters) will be printed wherever they were in the mask.</p>
+            <p>'L'00x00x000x ) 'R'00x00x000 As above except that user specifies that format is Left or Right justified. If not specified the default is Right justified. 'L'00x00x000x 'R'00x00x000xX</p>
+            <p>More than one masking parameter may be specified, separated by a space. However, 00x00x000x may not be combined with other masking parameters.</p>
+            <p>Note : Zero amounts will always be printed unless the name of the field is entered in DEPENDENT.ON.</p>
+            <p>Examples:</p>
+            <p />
+            <table>
+                <tr>
+                    <td> Mask Entered</td>
+                    <td> Field contains 1234.67 </td>
+                    <td>
+                        <p>Field contains -1234.67</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>*10</td>
+                    <td>***1234.67</td>
+                    <td>**-1234.67 </td>
+                </tr>
+                <tr>
+                    <td>Z10 </td>
+                    <td>0001234.67</td>
+                    <td>-001234.67 </td>
+                </tr>
+                <tr>
+                    <td>B10 -</td>
+                    <td>1234.67</td>
+                    <td>
+                        <p>1234.67- </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>, - </td>
+                    <td>1,234.67</td>
+                    <td>1,234.67- </td>
+                </tr>
+                <tr>
+                    <td>.</td>
+                    <td>1234,67 </td>
+                    <td>-1234,67 </td>
+                </tr>
+                <tr>
+                    <td>B10 . , C</td>
+                    <td>1.234,67CR</td>
+                    <td>
+                        <p>1.234,67DR </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>B10 , D</td>
+                    <td>1,234.67</td>
+                    <td>
+                        <p>1,234.67DR</p>
+                    </td>
+                </tr>
+            </table>
+            <p>The above examples show that various Masking options may be combined. The length of 10 specified includes the comma, point and a preceding sign, but not '%', 'CR' 'DR', or a sign that follows the field.</p>
+            <table>
+                <tr>
+                    <td>Mask Entered</td>
+                    <td>Field Contains: 123456 </td>
+                </tr>
+                <tr>
+                    <td>00-(00-00)</td>
+                    <td>12-(34-56) </td>
+                </tr>
+                <tr>
+                    <td>"L"000-</td>
+                    <td>000012-3456 </td>
+                </tr>
+                <tr>
+                    <td>"R"000-</td>
+                    <td>
+                        <p>0000123-456</p>
+                    </td>
+                </tr>
+            </table>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Where n is 1 or more digits and x is 1 or more characters: 'Bn' '*n' 'Zn' ',' '.' '-' 'C' 'D' 'A' '%' '00x00x000x..etc. ' (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>CLR.SYSTEM.SEQ</field>
+<desc>
+            <p>The id to this application is a clearing system which is defined in DD.REASON.CODES suffixed with Sequence No.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory field</p>
+            <p>Must be a valid record in DD.REASON.CODES suffixed with sequence no.</p>
+        </desc>
+</t>
+<t>
+<field>DATA.FIELD.LINK</field>
+<desc>
+            <p>Data field link details can be given here.</p>
+            <p>Can be linked to another application using the DD.ITEM field value when the field value is same for both application..</p>
+            <p>For example to populate the BC.SORT.CODE from DD.DDI as applicable for the underlying DD.ITEM following setup is done</p>
+            <p>9.1     DATA.FIELD.NAME          MANDATE.REF    ...........</p>
+            <p>Mandate Reference is used because common for both DD.ITEM &amp; DD.DDI </p>
+            <p>14.1    DATA.INCL.FIELD           NO</p>
+            <p>9.2     DATA.FIELD.NAME           SORT.CODE</p>
+            <p>10.2    DATA.FIELD.LINK           MANDATE.REF&gt;DD.DDI&gt;BC.SORT.CODE</p>
+            <p>14.2    DATA.INCL.FIELD           Y</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>1-65 Alpha Numeric characters</p>
+            <p>Should be a valid T24 Application &amp; field name.</p>
+        </desc>
+</t>
+<t>
+<field>DATA.FIELD.NAME</field>
+<desc>
+            <p>Specify the details as applicable for the Data record which can be as a Free text or a Field name when this field name is linked to DD application in the next field..</p>
+            <p>Validation Details</p>
+            <p>Mandatory field</p>
+            <p>Allowed values : 1-35 Free text format or a valid field name.</p>
+        </desc>
+</t>
+<t>
+<field>DATA.FIELD.RTN</field>
+<desc>
+            <p>Specify the routine which will be supplying the values for this field and it has the precedence over the field details given here.</p>
+            <p>This field is used to call a user defined routine to map additional data which is not normally available.</p>
+            <p>The routine should return back the masked output. The parameters to the routine is</p>
+            <p>INPUT, OUTPUT, ERROR</p>
+            <p>Where INPUT : the FIELD.NAME should be passed as incoming argument </p>
+            <p>OUTPUT : the field content returned back from the routine</p>
+            <p>ERROR : If any error Is encountered, then the same should be displayed and do not proceed further.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a valid record in PGM.FILE with "S" type.</p>
+            <p>Up to 35 alphanumeric characters, of which the first must be an '@' character.</p>
+            <p>The routine must be catalogued and in the VOC file.</p>
+            <p>Optional input.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

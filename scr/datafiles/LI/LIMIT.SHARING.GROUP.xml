@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>LI</product>
+<table>LIMIT.SHARING.GROUP</table>
+</header>
+<overview>
+<ovdesc>
+
+        <p>The LIMIT.SHARING.GROUP application allows defining group limits which can be granted to a group of customer and product in addition to their individual limit.
+The allowed products should be a valid product belonging to application AC or MM or MD or LD or AA and the customers who are allowed to use the sharing group should not be part of any liability group.
+Main group key will be identified by its first character ‘M’ and Sub group key will start with ‘S’. Allowed products for Main group should only be a product and can be a sub product for sub groups. The sub group information should be a subset of the parent group (Main group). A sub group allowed customer should be an allowed customer in the Main group, similarly for allowed products.
+When there is a Main group defined with a Loan, Overdraft and Money Market products, a cap can be set for Loan and Overdraft product alone using a sub group limit. Any utilization on the Main group limit will additionally check the cap amount set in the sub group limit.
+</p>
+    </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>ALLOWED.CUSTOMER</field>
+<desc>
+        <p>Customers who are part of sharing Group.</p>
+        <p>Removing a customer from the allowed customer list should be done only through LIMIT.CHANGE application.</p>
+        <p>Validation Rules:</p>
+        <p>
+            <p value="1">1-10 numeric character Customer Number or 1-10 character type MNE Customer Mnemonic.  Multivalue field.</p>
+            <p value="2">It must be a valid customer record on the customer file.</p>
+            <p value="3">Should not be a part of any existing Customer Liability Group.</p>
+            <p value="4">For sub groups the customer should be an allowed customer in the Main group.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>ALLOWED.PRODUCT</field>
+<desc>
+        <p>Defines the Limit product for which the group Limit can be used.</p>
+        <p>The products defined should be a valid reference child of the limit reference specified in the CREDIT.LINE field.</p>
+        <p>Removing a product from the allowed product list should be done only through LIMIT.CHANGE application.</p>
+        <p>Validation Rules:</p>
+        <p>
+            <p value="1">1-10 numeric character Limit reference value.  Multivalue field</p>
+            <p value="2">It must be a valid record in the LIMIT.REFERENCE file.</p>
+            <p value="3">Mandatory for Main group and optional for sub groups.</p>
+            <p value="4">Cross limit products and products not belonging to AC or MM or LD or MD or AA are not allowed.</p>
+            <p value="5">For Main group the sub product references are not allowed.</p>
+            <p value="6">For sub group it should be a subset of the main group allowed products.</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>CREDIT.LINE</field>
+<desc>
+        <p>This field is to denote Top product line of the Group Limit. 
+</p>
+        <p style="font-weight: bold;">Main Group:</p>
+        <p>For Main group the credit line should be specified with a Global limit reference value when multiple allowed products are specified.
+</p>
+        <p style="font-weight: bold;">Sub Group:
+</p>
+        <p>
+            <p value="1">For sub groups the credit line can be a global limit reference or a product reference or sub-product reference.</p>
+            <p value="2"> 
+Credit line is mandatory for Sub group as sub group limits are created for the credit line defined here. 
+</p>
+            <p value="3">When global reference is specified it should be same as the Main group credit line value. When product reference is specified, it should be an allowed product in the Main group. When sub group product reference is specified, it should be a valid reference child of any of the allowed products in the Main group.
+</p>
+        </p>
+        <p>Validation Rules:
+</p>
+        <p>1-10 numeric character Limit reference value.
+It must be a valid record on the LIMIT.REFERENCE file.
+Mandatory for Sub group. 
+Mandatory for Main group when multiple values are specified in ALLOWED.PRODUCT field. 
+</p>
+    </desc>
+</t>
+<t>
+<field>ID</field>
+<desc>
+        <p>Unique key starting with M or S followed by 9 digit sequence number.</p>
+        <p>M - Main Group</p>
+        <p>S - Sub Group under the Main group</p>
+        <p>Validation Rules:</p>
+        <p>Two parts with first part as 1 Character (M or S), second part as 1 to 9-digit sequence number.</p>
+    </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+        <p>Local reference field.</p>
+        <p>This is a no input field.</p>
+    </desc>
+</t>
+<t>
+<field>MASTER.GROUP.KEY</field>
+<desc>
+        <p>This field will be automatically updated by system during authorization with the master group key in which the sharing group key is linked. 
+</p>
+        <p>This will be updated only for the Main group and not for the sub groups.
+</p>
+        <p>The Master group in LI.MASTER.GROUP will contain the group of sharing group keys with linked customers. The reallocation will happen based on the LI.MASTER.GROUP information. (For E.g if there are two sharing groups with related customers part of a master group, any reallocation on one group will do a reallocation on the other group based on the defined priority)
+</p>
+        <p>Validation Rules:
+</p>
+        <p>
+            <p value="1">This is a no input field.
+</p>
+            <p value="2">Valid record from LI.MASTER.GROUP.
+</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>PARENT.GROUP</field>
+<desc>
+        <p>Used for sub groups to create a hierarchy with main group.
+</p>
+        <p>This field should not be entered for Main groups and is mandatory for sub groups.
+</p>
+        <p>A valid main group key can only be specified, this field will not accept sub group key as a parent group.
+</p>
+        <p>Validation Rules:
+</p>
+        <p>
+            <p value="1">1 Character (M), 1 to 9-digit sequence number.
+</p>
+            <p value="2">It must be a valid main group record on the LIMIT.SHARING.GROUP file
+</p>
+        </p>
+    </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+        <p>This is a multi valued field.  </p>
+		<p>Contains details of any override applicable to this record.</p>
+        <p>
+           <p>Validation Rules:</p>
+        </p>
+        <p> A maximum of 35 characters may be entered. This is a NOINPUT field.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.2</field>
+<desc>
+        <p>Reserved for future use. 
+</p>
+        <p>This is a no input field.
+</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.3</field>
+<desc>
+        <p>Reserved for future use.</p>
+        <p>This is a no input field.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.4</field>
+<desc>
+        <p>Reserved for future use. 
+</p>
+        <p>This is a no input field.
+</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.5</field>
+<desc>
+        <p>Reserved for future use. 
+This is a no input field.
+</p>
+    </desc>
+</t>
+<t>
+<field>SHORT.DESC</field>
+<desc>
+        <p>Contains the description of the Limit sharing group. This field is used as enrichment field for the group limit keys.
+Validation Rules:
+1-35 type A (alphanumeric) characters.  Multilanguage field.  Multivalue field. (Mandatory Input)
+</p>
+    </desc>
+</t>
+<t>
+<field>SINGLE.LINE.SER.NO</field>
+<desc>
+        <p>Holds the serial number of sharing group limit. Limit records can be created only if the serial number is input in this field.</p>
+        <p>Any transaction of a customer belonging to this group can utilize this limit, irrespective of the Individual credit line serial numbers which the contract utilizes.</p>
+        <p>If value of this field is blank, multiple credit lines can be created using serial numbers from 1 to 99.</p>
+        <p>Example:</p>
+        <p style="font-weight: bold;">Group Limit setup</p>
+        <table class="TableStyle-Basic" style="mc-table-style: url('../../../Resources/TableStyles/TemenosTables.css');" cellspacing="0">
+            <col style="width: 161px;" class="Column-Column1" />
+            <col style="width: 173px;" class="Column-Column1" />
+            <tbody>
+                <tr class="Body-Body1">
+                    <td class="BodyE-Column1-Body1" style="font-weight: bold;">Limit Sharing Group	</td>
+                    <td class="BodyD-Column1-Body1" style="text-align: center;">M000000001</td>
+                </tr>
+                <tr class="Body-Body1">
+                    <td class="BodyE-Column1-Body1" style="font-weight: bold;">
+                        <p>SINGLE.LINE.SER.NO	</p>
+                    </td>
+                    <td class="BodyD-Column1-Body1" style="text-align: center;">02</td>
+                </tr>
+                <tr class="Body-Body1">
+                    <td class="BodyE-Column1-Body1" style="font-weight: bold;">
+                        <p>Allowed Product	</p>
+                    </td>
+                    <td class="BodyD-Column1-Body1" style="text-align: center;">0002000</td>
+                </tr>
+                <tr class="Body-Body1">
+                    <td class="BodyB-Column1-Body1" style="font-weight: bold;">
+                        <p>Allowed Customer	</p>
+                    </td>
+                    <td class="BodyA-Column1-Body1" style="text-align: center;">900001</td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="font-weight: bold;">Transaction for Customer 900001</p>
+        <table class="TableStyle-Basic" style="mc-table-style: url('../../../Resources/TableStyles/TemenosTables.css');caption-side: top;" cellspacing="0">
+            <col style="width: 94px;" class="Column-Column1" />
+            <col style="width: 118px;" class="Column-Column1" />
+            <col style="width: 173px;" class="Column-Column1" />
+            <col style="width: 144px;" class="Column-Column1" />
+            <tbody>
+                <tr class="Body-Body1">
+                    <td class="BodyE-Column1-Body1" style="text-align: center;font-weight: bold;">
+                        <p>TXN REF	</p>
+                    </td>
+                    <td class="BodyE-Column1-Body1" style="text-align: center;font-weight: bold;">Contract Limit Ref</td>
+                    <td class="BodyE-Column1-Body1" style="text-align: center;font-weight: bold;">	Limit Utilized	</td>
+                    <td class="BodyD-Column1-Body1" style="text-align: center;font-weight: bold;">Group Limit utilized</td>
+                </tr>
+                <tr class="Body-Body1">
+                    <td class="BodyE-Column1-Body1" style="text-align: center;">
+                        <p>Transaction 1	</p>
+                    </td>
+                    <td class="BodyE-Column1-Body1" style="text-align: center;">2020.01	</td>
+                    <td class="BodyE-Column1-Body1" style="text-align: center;">M000000001.0002000.02.900001	</td>
+                    <td class="BodyD-Column1-Body1" style="text-align: center;">Yes</td>
+                </tr>
+                <tr class="Body-Body1">
+                    <td class="BodyE-Column1-Body1" style="text-align: center;">
+                        <p>Transaction 2</p>
+                    </td>
+                    <td class="BodyE-Column1-Body1" style="text-align: center;">	2020.03	</td>
+                    <td class="BodyE-Column1-Body1" style="text-align: center;">M000000001.0002000.02.900001	</td>
+                    <td class="BodyD-Column1-Body1" style="text-align: center;">Yes</td>
+                </tr>
+                <tr class="Body-Body1">
+                    <td class="BodyB-Column1-Body1" style="text-align: center;">
+                        <p>Transaction 3	</p>
+                    </td>
+                    <td class="BodyB-Column1-Body1" style="text-align: center;">3030.01	</td>
+                    <td class="BodyB-Column1-Body1" style="text-align: center;">900001.0003000.01	</td>
+                    <td class="BodyA-Column1-Body1" style="text-align: center;">No, since Product is not a part of group limit.</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>Validation Rules:</p>
+        <p>
+            <p value="1">NOCHANGE field.</p>
+            <p value="2">Accepted values are 1- 99.</p>
+            <p value="3">For Sub group limits, value in this field must be same as Parent group limit setup.</p>
+        </p>
+    </desc>
+</t>
+</menu>
+</t24help>
+

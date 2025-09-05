@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FD</product>
+<table>FD.COMMISSION.TYPE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This application allows rules for calculating commission on fiduciary deposits to be defined. </p>
+            <p>Fiduciary commission can be calculated as a flat amount, or on a level or banded basis. The commission levels and bands, and flat amounts can be specified in any valid currency, but must  always be defined in the local currency. </p>
+            <p>The application is used to define the transaction code to be used for debiting the customer and crediting the bank (Profit and Loss). The category to be credited is defined on the FD.PARAMETER record, and is the same as the category for the accrued fixed commission. </p>
+            <p>Commission is calculated using the following formula: </p>
+            <p>           Comm = Base Amt * Comm Rate * No Days                   ------------------------------                         Days in Year * 100 where: </p>
+            <p>Base Amt       is the amount on which the calculation is based. This may                be the Principal, Interest or Income (Principal plus                Interest) of the order. In the case of principal the                principal used is a weighted average of the principal over                the commission period. </p>
+            <p>Comm Rate      is the rate defined in the FD.COMMISSION.TYPE table.  This                may be determined in relation to the base amount by a                banded or level method. </p>
+            <p>No Days        is the number of days in the commission period, determined                according to the interest day basis of the order.  Days in                Year is the number of days in the year accoding to the                interest day basis of the order. </p>
+            <p>Days in Year   is the number of days in the year according to the interest                day basis of the order. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>RESERVED3</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>The description of the commission type. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-35 alphanumeric characters.  Multi language field.  (Mandatory input.)</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED2</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>UPTO.AMT</field>
+<desc>
+            <p>Defines the maximum range to which the associated Comm Rate applies. </p>
+            <p>The Upto Amt for each range must be greater than the Upto amount of any previous range. On the last range, this field must be left blank to indicate that you are defining the last range to the Maximum Amount permissable. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 AMT type characters (Standard Amount Format) (Optional input)</p>
+            <p>Input only allowed when CALC.TYPE is LEVEL or BAND</p>
+        </desc>
+</t>
+<t>
+<field>SHORT.DESCR</field>
+<desc>
+            <p>The short description of the commission code used to enrich the commission type. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-20 alphanumeric characters.  Multi language field. (Mandatory field)</p>
+        </desc>
+</t>
+<t>
+<field>FLAT.AMT</field>
+<desc>
+            <p>Defines the amount to be charged for this commission type in the currency defined in the CURRENCY field. </p>
+            <p>The user will enter an amount in this field when the Commission being defined is expressed as a Flat amount, the CALC.TYPE is "FLAT" and the charge amount does not vary according to the base amount. The charge amount in this case does not depend on the number days in the commission period. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 AMT type characters (standard amount format) (Optional input)</p>
+            <p>Mandatory when CALC.TYPE is FLAT.</p>
+            <p>Not allowed when CALC.TYPE is not FLAT.</p>
+        </desc>
+</t>
+<t>
+<field>USES.CUST.BASIS</field>
+<desc>
+            <p>This field , when set to "YES" will ensure that the file 'FD.CUST.VALUE' will be taken into consideration when calculating the commission rate. 'FD.CUST.VALUE' is a file that holds the total of the customer's banking portfolios, excluding 'ASSET.TYPE' and 'SUB.ASSET.TYPE,' as defined on the "FD.PARAMETER.FILE". </p>
+            <p>In summary, this field specifies if the commission is based upon customer, rather than deal value.</p>
+            <p>.<p>Validation Rules:</p></p>
+            <p>
+                <p>Optional Input. "Yes," "No," or null are valid </p>
+                <p>If this field is set to "Yes," then input to the field CALC.TYPE, must be "Level." It cannot be either "Band," or "Flat.</p>
+                <p>Input to this field cannot be altered, once the record has been authorised.</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>TXN.CODE.CR</field>
+<desc>
+            <p>The transaction code to be used when crediting the profit and loss account of the bank. </p>
+            <p>The transaction code for commission accruals is defined on the FD.TXN.CODES table. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. (Mandatory Input)</p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+            <p>The transaction code must be defined on the TRANSACTION file.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.CODE</field>
+<desc>
+            <p>The tax code, or TAX.TYPE.CONDITION ID to be used to take additional tax from the customer based on the commission amount. </p>
+            <p>Tax can be applied to the commission calculated, and will be debited from the customer at the same time as the commission. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 or 2 digit Tax code. (Optional input)</p>
+            <p>A tax code with a date earlier than or equal to Today's date must exist.</p>
+            <p>A valid TAX.TYPE.CONDITION ID defined in the format *tax.type - sub type where tax type is a valid TAX.TYPE on the TAX.TYPE table, and sub type is a sub division of the TAX.TYPE. for example *VAT, *VAT-001.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED4</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>CALC.TYPE</field>
+<desc>
+            <p>The method of calculation to be used for the associated currency. </p>
+            <p>This field specifies whether separate calculations are to be made for each band of the base fiduciary amount, whether only one is calculated which is dependent on the level of the base amount, or whether a Flat amount is to be applied. </p>
+            <p>Example: </p>
+            <p>Assume a Fiduciary Order of Principal 100,000 USD where commission is calculated based on the Principal. The commission type record specifies an applicable rate of 2 per cent up to 10,000 and 1.5 percent over 10,000. </p>
+            <p>    If Band is performed for all sub value groups, 2 calculations will be     performed, i.e.                2% on 10,000                1.5% on 90,000 </p>
+            <p>    If Level is specified for all sub value groups, 1 calculation will be     performed, i.e.                1.5% on 100,000 </p>
+            <p>    If Flat is specified, the basic Flat Amount will be applied. </p>
+            <p>It should be noted that the principal amount used for Fiduciary orders is the weighted average principal during the commission period. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>FLAT, LEVEL or BAND or any abbreviation thereof. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>COMM.RATE</field>
+<desc>
+            <p>Specifies the commission rate used to calculate the commission. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 11 type R characters plus a decimal point.  (standard rate format)  (Optional input)</p>
+            <p>Rate input must be positive and less than or equal to 100%.</p>
+            <p>Not more than 3 integers may be entered.</p>
+            <p>Not more than 6 decimal may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>COMM.TYPE</field>
+<desc>
+            <p>The name of the commission type defined in the following record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2-11 alphanumeric characters. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>Together with fields CALC.TYPE, FLAT.AMT, UPTO.AMT and COMM.RATE, this defines the details of the commission calculation. This field holds the currency of the definition. </p>
+            <p>The commission amount must always be specified in local currency and if special Commissions are to be applied to different currencies (e.g. different calculation method and percentages), then commissions must also be specified for each applicable currency. </p>
+            <p>If a specific currency is not represented within the multivalue set, the System will default to the details associated to the local currency, and then derives the Currency equivalent amount at the currency table middle rate. The local currency will always be present. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 alpha character SWIFT standard currency code. (Mandatory input)</p>
+            <p>The local currency must always be defined.</p>
+            <p>No duplicates allowed.</p>
+        </desc>
+</t>
+<t>
+<field>TXN.CODE.DR</field>
+<desc>
+            <p>The transaction code to be used when debiting the customer for the commission amount. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. (Mandatory Input)</p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+            <p>Must exist on the Transaction file.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED5</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED1</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

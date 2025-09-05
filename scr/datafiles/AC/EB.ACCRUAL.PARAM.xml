@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>AC</product>
+<table>EB.ACCRUAL.PARAM</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This application is used to determine how accruals are performed by the core accrual processing.</p>
+            <p>The following options are available.</p>
+            <p>Whether or not accrual takes place on the first day of a contract, the default is yes.</p>
+            <p>Whether of not accrual takes place on the last day of a contract, the default is no.</p>
+            <p>Whether the efective date of a principal increase or decrease is changed by a set number of days (+ or -).</p>
+            <p>All applications that use the core accrual processing will provide an option to input an EB.ACCRUAL.PARAM key in the main contract, so that different products within the same application can be accrued differently.</p>
+            <p>An associated application TEST.ACCRUAL has been developed to that different accrual methods can be tested and demonstrated.</p>
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>PARAM.ID</field>
+<desc>
+            <p>A description of the type of accrual method being set up.</p>
+            <p />
+            <p>mandatory input</p>
+            <p>3 -35 Aplhanumeric characters</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.DECR.ADJ</field>
+<desc>
+            <p>Inidcates whether the effective date of a principal decrease is to be adjusted by the number of days entered here.</p>
+            <p />
+            <p>Optional input.</p>
+            <p>If entered must be + or - followed by a number of days to adjust, eg. +1</p>
+        </desc>
+</t>
+<t>
+<field>MOVEMENT.ADJ</field>
+<desc>
+            <p>Idicates the adjustment required for the associated MOVEMENT.TYPE field. The MOVEMENT fields are sued when special types of principal movement need to have their interest effective dates adjusted differently to that of the default. For example the norm for a principal increase is no adjust ment except for interest capitalisation which needs to be adjusted by +1 day. In this case a special type will be defined for this type on principal movement.</p>
+            <p />
+            <p />
+            <p />
+            <p>Optional input.</p>
+            <p>If entered must be + or - followed by a number of days to adjust, eg. +1</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.INCR.ADJ</field>
+<desc>
+            <p>Inidcates whether the effective date of a principal increase is to be adjusted by the number of days entered here.</p>
+            <p />
+            <p>Optional input.</p>
+            <p>If entered must be + or - followed by a number of days to adjust, eg. +1</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>A multi language description of the accrual method being set up.</p>
+            <p />
+            <p>Standard Multivalued Language field.</p>
+        </desc>
+</t>
+<t>
+<field>EB.ROUNDING.RULE</field>
+<desc>
+            <p>Indicates whether any special rounding rules should be applied to the core accrual processing using this accrual method.</p>
+            <p />
+            <p>Optional input.</p>
+            <p>Must be the kay to an EB.ROUNDING.RULE record.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>INCLUDE.START.DATE</field>
+<desc>
+            <p>Indicates whether an accrual takes place for the start data of the contract.</p>
+            <p>The default is yes, If NO is input then no accrual will take place on the start date of a contract.</p>
+            <p />
+            <p>Optional input.</p>
+            <p>Y Null or NO</p>
+        </desc>
+</t>
+<t>
+<field>INTMED.CALC.ROUND</field>
+<desc>
+            <p>If intermediate rounding is set then rounding will take place for the last value of each group determined by a change of interest, principal or period, bypassing monthly splits.</p>
+            <p />
+            <p>For example we have a contract for 1m for 6 months at 5% with a change of principal in month 301012006 to 01072006.</p>
+            <p>On 15032006 Principal is increased to 1.5M.01</p>
+            <p>Accruals will take place for the following groups</p>
+            <p>01 to 3101 1m at 5%</p>
+            <p>0102 to 2802 1m at 5%</p>
+            <p>0103 to 1403 1m at 5%</p>
+            <p>1503 to 3103 1.5m at 5%</p>
+            <p>0104 to 3004 1.5m at 5%</p>
+            <p>0105 to 3105 1.5m at 5%</p>
+            <p>0106 to 3006 1.5m at 5%</p>
+            <p />
+            <p>Current rounding</p>
+            <p>If the whole period is calculated then all unrounded and rounded amounts are summed.Then the difference is added to the final accrued amount (as at 3006) and rounded again.</p>
+            <p />
+            <p>Intermediate rounding</p>
+            <p>The above rounding calculation will take place for the groups from 0101 to 1403, and then again for the groups from 1503 to 3006.</p>
+            <p />
+            <p>If the daily accrual takes place on the final date of a group then with intermediate rounding the groups going back to the last change of principal, interest or period must be used for rounding, if the split is for  change of principal, interest or period but will not take place for a normal month end.</p>
+            <p />
+            <p>If intermediate rounding is not set then rounding will take place using all accrual groups.</p>
+        </desc>
+</t>
+<t>
+<field>MOVEMENT.TYPE</field>
+<desc>
+            <p>MOVEMENT.TYPE is used to define a special type of principal movement that has its effective date adjusted differently to the default. For example the default principal increase adjustment may be zero days, that is no adjustment but the adjustment for interest capitalisation should be +1 day.</p>
+            <p />
+            <p>The values allowed here will be determined by the relvant Temenos.</p>
+            <p />
+            <p>This is an alphanumeric field up to 10 characters.</p>
+            <p>This is multi valued associated with MOVEMENT.ADJ</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRIN.ADJUST.RTN</field>
+<desc>
+            <p>A locally developed subroutine to be used to adjust the principal interest amounts and effective dates.</p>
+            <p />
+            <p>Optional input</p>
+            <p>Must exist with a record on PGM.FILE which is type "S".</p>
+        </desc>
+</t>
+<t>
+<field>LAST.DAY.INCLUSIVE</field>
+<desc>
+            <p>Indicates whether an accrual takes place on the final day of an accrual period.</p>
+            <p>This can either be the last day of a month or the last day of the contract.</p>
+            <p>If it takes place on the last day of the month then the first day of the next period will be the first day of the month.</p>
+            <p />
+            <p>Optional Input</p>
+            <p>Y = accrue on the last day of each interest period.</p>
+            <p>NO or null = no accrual on last day of interest period</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AMORT.API</field>
+<desc>
+            <p>Local routine to define amortization calculation.</p>
+            <p>Optional input</p>
+            <p>Must exist with a record on PGM.FILE which is type "S" </p>
+			</desc>
+</t>
+<t>
+<field>DAILY.ROUNDING</field>
+<desc>
+			<p>Indicates whether rounding should be applied to interest accruals on daily basis.</p>
+			<p />
+			<p>Optional input</p>
+			<p> Yes = Rounding off accrued interest on daily basis. </p>
+			<p> No or Null = Accrued interest will not be rounded off on daily basis. </p>
+			<p />
+</desc>
+</t>
+</menu>
+</t24help>
+

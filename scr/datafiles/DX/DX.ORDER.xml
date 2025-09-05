@@ -1,0 +1,3471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DX</product>
+<table>DX.ORDER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>DX.ORDER is the main order input routine for the Derivatives module.</p>
+            <p>       All orders in the Derivatives module are double-sided, with one or more Primary counterparties (which may be customers, own-book dealers or brokers) versus a single Secondary counterparty.</p>
+            <p>       The application provides powerful and intuitive features for the input of Derivatives trading data, allowing maturity dates, prices and commissions to be entered or automatically defaulted in the formats favoured by the Bank's back office.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CHANNEL</field>
+<desc>
+        <p>Holds the information on mode of channel used to enter into the order.</p>
+        <p>The mode of channels are linked to EB.LOOKUP table. </p>
+    </desc>
+</t>
+<t>
+<field>EXCHANGE.TYPE</field>
+<desc>
+        <p>Holds the information on exchange type used to enter into the order. </p>
+        <p>The mode of  exchange types are linked to EB.LOOKUP table. </p>
+    </desc>
+</t>
+<t>
+<field>PRI.CHANNEL</field>
+<desc>
+        <p>The channel through which the trade is placed. The mode of channel should also be defined in EB.LOOKUP table.  The EB.LOOKUP record should start as DX.CHANNEL</p>
+        <p>&#160;</p>
+    </desc>
+</t>
+<t>
+<field>PRI.EXCHANGE.TYPE</field>
+<desc>
+        <p>The type of exchange where the Contract is booked. These exchanges types must be defined in EB.LOOKUP table.  The EB.LOOKUP record should start as DX.EXCHANGE.TYPE</p>
+    </desc>
+</t>
+<t>
+<field>SEC.TOTAL.PREM.AMT</field>
+<desc>
+            <p>Applicable at DX.TRADE level only. </p>
+            <p>No Input field.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.SETTLOTS</field>
+<desc>
+            <p>Number of lots settled, by Settlement.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       19 Decimals</p>
+            <p>       No Input Field</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONTRACT.CODE</field>
+<desc>
+            <p>The Contract CODE for this trade, as per the information in DX.CONTRACT.MASTER. Choose from the drop down menu list, the Contract applicable to the trade dealt.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 12 alphanumeric characters, input must exist on DX.CONTRACT.MASTER     </p>
+            <p>       Mandatory input field </p>
+        </desc>
+</t>
+<t>
+<field>PRI.MESS.CTL</field>
+<desc>
+            <p />
+            <p>       Optional message control and validation for customer override address.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 35 alpha characters available</p>
+            <p>       Must be a valid record in MESSAGE.CONTROL</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRI.BEN.NO</field>
+<desc>
+            <p />
+            <p>       When a contract matures, funds must be moved to actually settle the contract. This involves paying the Primary Counterparty (This would normally be a Customer.)or his nominated beneficiary for the currency sold and receiving funds for the currency purchased. The counterparty will advise us of where the money which we have sold is to be paid and we will advise them where we require the currency purchased to be remitted. The delivery of funds will normally be as one payment but may be in several instalments. </p>
+            <p>       Entry in this field will be accepted where the beneficiary is known to the bank (i.e. there is a customer record for the beneficiary). If the beneficiary is not known to us, the beneficiary details may be entered in the Beneficiary address field. </p>
+            <p>       Note that, where the beneficiary requests the funds into an account he has with us, this should be specified in the Our Account Pay field. </p>
+            <p>       It is important to note that when the Beneficiary is specified, the Primary Counterparty Correspondent field will be used to indicate the bank of the beneficiary. </p>
+            <p>       The primary counterparty may ask us to pay the amount sold in a number of ways: </p>
+            <p>       To an account with us </p>
+            <p>       We may pay the funds directly into an account provided it is in the same currency as that being sold. To make payment directly to a counterparty's internal account the relevant account number should be entered in the Our Account Pay field and no other input will be necessary in this field. </p>
+            <p>       To an account at another bank overseas </p>
+            <p>       To pay money to another bank overseas we would have to advise our agent, in the country concerned, to pay to the counterparty's bank. In this case, the Nostro account number of our agent should be entered in the Our Account Pay field. If the counterparty's bank is known to us (i.e. there is a customer record), then the bank's number should be entered in CPARTY.CORR.NO if these details have not yet been defined on the Agency file. If the bank is not known to us, (i.e. there is no customer record) the bank's name and address should be entered in the multi-valued field CPARTY.CORR.ADD. When known, the counterparty's account number at his bank should be entered in the field CPARTY.BANK.ACC. </p>
+            <p>       To an account at another bank locally </p>
+            <p>       Where payment is to be effected locally, settlement can be through a number of different methods. The most common are Banker's Payments, CHIPS, or CHAPS. In all cases, the number of our internal clearing account, or our clearing agent should be entered in OUR.ACCOUNT.PAY. Details of the counterparty's bank account should be completed as detailed above. </p>
+            <p>       To a beneficiary of the counterparty </p>
+            <p>       The counterparty may nominate a third party beneficiary of the funds. If the beneficiary is to be paid by crediting an account with us, the account number should be entered in OUR.ACCOUNT.PAY. If the beneficiary does not have an account with us, the internal clearing number or Nostro account of our agent should be entered in OUR.ACCOUNT.PAY. </p>
+            <p>       Where we are paying to another bank but the beneficiary is known to us (i.e. there is a customer record), the customer number of the beneficiary will be entered in the field BENEFICIARY.NO. Where no relationship exists, the payment details will be entered in the multi-valued field BENFCY.ADD. </p>
+            <p>       Payment via an intermediary bank </p>
+            <p>       Occasionally the counterparty may ask for payment to be made through an intermediary bank. This occurs where the counterparty or beneficiary's correspondent is not in the country of the currency involved. As an example, let us say that the BANK 'ABC' in Hong Kong uses BANK 'XYZ' in Hong Kong as their dollar agent. When a dollar payment is to be made we would pay American Bank in New York (the Intermediary) for Bank XYZ in HK (the Cparty correspondent), account Bank ABC (the Cparty or Beneficiary). The Intermediary can be entered as a number in the INTERMED.BK.NO field if a customer relationship exists (i.e. there is a customer number) or as narrative in the INTERMED.ADD field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       1-6 numeric characters Customer Number or 3-10 character         customer mnemonic (uppercase alphanumeric or '.') - Type         MNE. (Input in this field is optional. Default value =         counterparty.) Multivalue field associated with field         range OUR.ACCOUNT.PAY to REC.ADV.NARR.</p>
+            <p>       Input must represent a valid customer on the Customer         file.</p>
+            <p>       Input in this field is not allowed when details have been         entered in the beneficiary address field.</p>
+            <p>       Input is only allowed when Our Account pay represents a         Nostro account.</p>
+            <p>       Input is not acceptable for Negotiated or other internal         deals.</p>
+            <p>       Input is not allowed unless the counterparty is known (i.e.         deal sub-type is not 'BR').</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRI.COMM.EXC</field>
+<desc>
+            <p>FX rate to convert between commission currency and commission account currency. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input Field</p>
+            <p>       If field is left Null, input will default to MID-RATE</p>
+            <p>       Up to 19 numeric characters available </p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.PAY.DATE</field>
+<desc>
+            <p>A date field to define when the settlement payment occurs for this period.</p>
+            <p>  Input should be a date between the fix date and the maturity date.</p>
+            <p>  Input mandatory if CAP. FLOOR is input.</p>
+            <p>  Input mandatory if CAP.FLOOR holds the value CAP or FLOOR.</p>
+            <p>  Input not allowed if UNDERLYING is not equal to OTHER(Cap,floor,swaption) in DX.CONTRACT.MASTER.</p>
+            <p>  Input not allowed if CAP.FLOOR holds the value SWAPTION.</p>
+        </desc>
+</t>
+<t>
+<field>TREASURY.CUSTOMER</field>
+<desc>
+            <p>It is a NOINPUT field.</p>
+            <p>  Identifies if the counter party is a treasury customer or not.</p>
+            <p>  It is updated at trade level.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.SETTNOS</field>
+<desc>
+            <p>Settlement's performed on this customer's side of the transaction.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Updated by DX.CO,PROCESS</p>
+            <p>       Multi-value set field </p>
+            <p>       No Input Field </p>
+            <p>       Up to 18 alphanumeric characters available </p>
+        </desc>
+</t>
+<t>
+<field>PRI.OPEN.CLOSE</field>
+<desc>
+            <p>The Open or Close of a transaction, This field is used for Exchange reporting, Certain initial margin calculation routines and calculation of the commission.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Input must be either OPEN/CLOSE</p>
+            <p>       Up to 5 alphanumeric characters available </p>
+        </desc>
+</t>
+<t>
+<field>SEC.ACCOUNT</field>
+<desc>
+            <p>For OWN BOOK portfolios (SAM.DEALER.BOOK field not null), construct internal accounty code as follows:</p>
+            <p>       TRADE.CCY:(SAM.ASSET.CAT):INT.DEPT.CODE</p>
+            <p>       Where</p>
+            <p>       SAM ASSET.CAT is rhe contents of the ASSET.CAT field from SAM.</p>
+            <p>       INT.DEPT.CODE is hard-coded to "0001"</p>
+            <p>       ASSR.CAT may be "CRF00" in which case it is an indicator only and not a valid internal account category code.</p>
+            <p>       Do not allow manual override of ACCOUNT field for dealer book portfolios.</p>
+            <p>       Enrich with the account SHORT.NAME where valid account is used.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Mandatory input if this record has been authorised at         least once.</p>
+            <p>       No-input until the order has been authorised</p>
+            <p>       Up to 16 alphanumeric characters available </p>
+        </desc>
+</t>
+<t>
+<field>SEC.COMM.CCY</field>
+<desc>
+            <p>The currency of the commission type. Can only be input if commission is being manually overridden.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-input until the order has been authorised.</p>
+            <p>       Up to 3 characters in CCY format</p>
+            <p>       Multi-value field</p>
+            <p>       No Input unless there is input in SEC.COMM.TYPE &amp; SEC.COMM.CDE         = &amp;#145;OVERRIDE&amp;#146;</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.STATUS</field>
+<desc>
+            <p>Order status can be OPEN, TRANSMITTED, REJECTED, CANCELLATION REQUEST, CANCELLED, MODIFICATION REQUEST, PARTIAL and FILLED. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Becomes inputtable when ORDER.AMEND field is set to YES.</p>
+            <p>       Up to 21 alphanumeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>POSITION.TYPE</field>
+<desc>
+            <p />
+            <p>       POSITION.TYPE</p>
+            <p>       NO input Default to &amp;#145;TR&amp;#146;.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Rule 1 Default to TR</p>
+            <p>       Rule 2 No Input</p>
+        </desc>
+</t>
+<t>
+<field>SEC.PREM.OFFSET</field>
+<desc>
+            <p>No of days offset from charging to account posting for premiums for this SEC.CUSTOMER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No         Input Field</p>
+            <p>       Input         defaults from values in DX.CONTRACT.MASTER</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEC.BUY.SELL</field>
+<desc>
+            <p>Indicates whether the Broker is buying or selling the transaction. Opposite of Primary side BUY or SELL flag. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Multi-value field. </p>
+            <p>       Opposite of client side BUY or SELL flag</p>
+            <p>       No Input Field &amp;#150; set automatically </p>
+            <p>       Up to 4 alphanumeric characters available </p>
+        </desc>
+</t>
+<t>
+<field>SEC.AUTO.MANUAL</field>
+<desc>
+            <p>Automatically generated or Manual commission entry.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       AUTOMATIC-MANUAL</p>
+            <p>       Default to AUTOMATIC</p>
+            <p>       No Input until this order has been authorised.</p>
+            <p>       Up to 9 alphanumeric characters available </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRI.COMM.AMT</field>
+<desc>
+            <p>Commission amount in commission currency Can be input if commission is being manually overridden.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 19 numeric characters </p>
+            <p>       Multi-value field</p>
+            <p>       No Input unless there is input to the PRI.COMM.TYP field         &amp; PRI.COMM.CDE = &amp;#145;OVERRIDE&amp;#146;</p>
+            <p>       Format amount based on currency in field PRI.COMM.CCY</p>
+        </desc>
+</t>
+<t>
+<field>PRI.BK2BK.IN</field>
+<desc>
+            <p />
+            <p>       Provides instructions or additional information from the sending bank for the receiver, intermediary account with institution or beneficiary institution. </p>
+            <p>       Any details input by the user will be relayed to the receiver. </p>
+            <p>       Whenever this field is used in a message transmitted between countries with different languages, it is recommended that English is used. </p>
+            <p>       This field corresponds to field 72 on SWIFT messages, and must never be used for information for which another field is intended, or for instructions not required in a message. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 35 characters (uppercase alpha or numeric) - Type S.         Multivalue field. A maximum of 6 lines of 35 characters         each will be allowed.</p>
+            <p>       If this field is used, the first multivalue must contain         a code word followed by further information.</p>
+            <p>       All code words must be present on the SWIFT.CODE.WORDS         files, and must be enclosed between slashes '/' at the         beginning of the line.</p>
+            <p>       Further code words and information can be entered in         subsequent multivalues, but additional information         continued on a new line must be preceded by double         slashes '//'.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.TAX.TYPE</field>
+<desc>
+            <p>The tax type to be applied to the secondary side of the trade.</p>
+            <p />
+            <p>Mandatory when a tax amount or tax code has been specified.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.ENTITLE</field>
+<desc>
+            <p />
+            <p>       When entitlements are pending the PENDING.DIARY field on DX.ORDER is marked with the Diary event. The order cannot be amended whilst this is set.  When entitlements are authorised, the PENDING.DIARY field is cleared and the trades become free to be amended again. The DX.ENTITLEMENT Id. is stamped on the PRI.ENTITLE and SEC.ENTITLE for the relevant customers.  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No input</p>
+        </desc>
+</t>
+<t>
+<field>PRI.DLV.KEY</field>
+<desc>
+            <p>Delivery Keys</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input Field</p>
+            <p>       Up to 35 alphanumeric characters available </p>
+        </desc>
+</t>
+<t>
+<field>SEC.PND.SETT</field>
+<desc>
+            <p>Pending Settlement/closeout numbers. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 18 AMT</p>
+            <p>       No Input Field </p>
+        </desc>
+</t>
+<t>
+<field>PRI.PREM.PST</field>
+<desc>
+            <p>Option premium posted per PRI.PREM.TXN.</p>
+            <p>       The amount of the option premium posted (either full amount or partial pro-rata'd amount for partial closeouts with premium due on closeout).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Numeric amount, up to 35 characters</p>
+            <p>       Multivalue set with PRI.PREM.TXN</p>
+        </desc>
+</t>
+<t>
+<field>PRI.PND.LOTS</field>
+<desc>
+            <p>No of lots involved in pending DX.CLOSEOUT for this PRI.CUSTOMER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 19 characters</p>
+            <p>       No Input Field</p>
+        </desc>
+</t>
+<t>
+<field>SEC.CACC.AMT</field>
+<desc>
+            <p>Commission amount re-specified in currency of commission account. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-input until the order has been authorised.</p>
+            <p>       No Input, field defaults to SEC.COMM.AMT if both         commission and account are the same.</p>
+        </desc>
+</t>
+<t>
+<field>EXOTIC.TYPE</field>
+<desc>
+            <p>An option type with associate fields which define its unique characteristics.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Exotic Type should be one of the Option Types specified in the DX.CONTRACT.MASTER record if OPTION.TYPE field set in DX.CONTRACT.MASTER is not set to ALL.</p>
+            <p />
+            <p>  Exotic Type is a Noinput field if OPTION.TYPE field is set to blank in DX.CONTRACT.MASTER.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.LOTS</field>
+<desc>
+            <p>The number of lots/contracts traded by this customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 19 amount format characters available </p>
+            <p>       Format to the decimals set in CONTRACT.DPS under DX.CONTRACT.MASTER     </p>
+            <p>       Multi-value set field </p>
+            <p>       Mandatory Field </p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.CCY</field>
+<desc>
+            <p>The currency of the contract traded.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input Field</p>
+            <p>       Default from DX.CONTRACT.MASTER CURRENCY</p>
+        </desc>
+</t>
+<t>
+<field>PRI.CPY.ADD</field>
+<desc>
+            <p />
+            <p>       Identifies the bank to which the primary counterparty (This would normally be the bank) wishes the amount sold to be paid. This will either be the bank of the counterparty or the bank of their nominated beneficiary. </p>
+            <p>       When a contract matures, funds must be moved to actually settle the contract. This involves paying the counterparty or his nominated beneficiary for the currency sold and receiving funds for the currency purchased. The counterparty will advise us of where the money which we have sold is to be paid and we will advise them where we require the currency purchased to be remitted. The delivery of funds will normally be as one payment but may be in several instalments. </p>
+            <p>       If the bank is known to us (i.e. a customer record exists), details should be entered in the CPARTY.CORR.NO field. If not, the should be entered in this multi-valued field. </p>
+            <p>       The counterparty may ask us to pay the amount sold in a number of ways: </p>
+            <p>       To an account with us </p>
+            <p>       We may pay the funds directly into an account provided it is in the same currency as that being sold. To make payment directly to a counterparty's internal account the relevant account number should be entered in the OUR.ACCOUNT.PAY field and no other input will be necessary in this field. </p>
+            <p>       To an account at another bank overseas </p>
+            <p>       To pay money to another bank overseas we would have to advise our agent, in the country concerned, to pay to the counterparty's bank. In this case, the Nostro account number of our agent should be entered in the OUR.ACCOUNT.PAY field. If the counterparty's bank is known to us (i.e. there is a customer record), then the bank's number should be entered in CPARTY.CORR.NO if these have not yet been defined on the Agency file. If the bank is not known to us (i.e. there is no customer record), the bank's name and address should be entered in the multi-valued field CPY.CORR.ADD. When known, the counterparty's account number at his bank should be entered in the field CPARTY.BANK.ACC. </p>
+            <p>       To an account at another bank locally </p>
+            <p>       Where payment is to be effected locally, settlement can be through a number of different methods. The most common are Banker's Payments, CHIPS, or CHAPS. In all cases, the number of our internal clearing account, or our clearing agent should be entered in OUR.ACCOUNT.PAY. Details of the counterparty's bank account should be completed as detailed above. </p>
+            <p>       To a beneficiary of the counterparty </p>
+            <p>       The counterparty may nominate a third party beneficiary of the funds. If the beneficiary is to be paid by crediting an account with us, the account number should be entered in OUR.ACCOUNT.PAY. If the beneficiary does not have an account with us, the internal clearing number or Nostro account of our agent should be entered in OUR.ACCOUNT.PAY. </p>
+            <p>       Where we are paying to another bank but the beneficiary is known to us (i.e. there is a customer record), the customer number of the beneficiary will be entered in the field BENEFICIARY.NO. Where no relationship exists, the payment details will be entered in the multi-valued field BENFCY.ADD. </p>
+            <p>       Payment via an intermediary bank </p>
+            <p>       Occasionally the counterparty may ask for payment to be made through an intermediary bank. This occurs where the counterparty or beneficiary's correspondent is not in the country of the currency involved. As an example, let us say that the Bank 'ABC' in Hong Kong uses Bank 'XYZ' in Hong Kong as their dollar agent. When a dollar payment is to be made we would pay American Bank in New York (the Intermediary) for Bank 'XYZ in (the counterparty correspondent), account Bank 'ABC' (the counterparty or Beneficiary). The Intermediary can be entered as a number in the INTERMED.BK.NO field if a customer relationship exists (i.e. there is a customer number) or as narrative in the INTERMED.ADD field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 4 lines of 35 character narrative. Multivalue field         associated with field range OUR.ACCOUNT.PAY to REC.ADV.NARR.</p>
+            <p>       Input is not allowed when a correspondent number has been         entered.</p>
+            <p>       Input is only allowed when Our Account Pay is a Nostro         account.</p>
+            <p>       Input is not allowed for deal sub-types 'BR','IN', and         'NE'.</p>
+            <p>       Input is restricted to four lines of 35 characters.</p>
+            <p>       Input in this field or the previous one (counterparty         Corr No) is mandatory when Our Account Pay represents a         Nostro account and no autorouting details (settlement         instructions) exist on the Agency file for the         counterparty of the deal.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRI.ORDER.NO</field>
+<desc>
+            <p>Order(s) associated with this trade.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input Field </p>
+            <p>       Input will default from DX.ORDERS</p>
+            <p>       Up to 35 alphanumeric characters available </p>
+        </desc>
+</t>
+<t>
+<field>FEE</field>
+<desc>
+            <p>Specifies whether fee is required or not.</p>
+            <p>  It accepts two values either YES or NO.</p>
+            <p>  Input mandatory if TRANSFER.TYPE holds the value TRANSFER.INC or TRANSFER.INC.PAY.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.OVE.ADDR</field>
+<desc>
+            <p />
+            <p>       If the information on this secondary transaction requires it to be delivered to a different address, then this field should be populated with that address specified. The new address will now override any address setup in the customer file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 35 characters of free text </p>
+            <p>       Multi-value and Multi sub-value field</p>
+            <p>       No-Input until this order is authorised</p>
+        </desc>
+</t>
+<t>
+<field>SEC.NET.COST</field>
+<desc>
+            <p>This is the cost to the secondary customer  expressed in trade currency equivalent.  </p>
+            <p />
+            <p>       The net cost is calculated as (Lots * Sec. Int. Price) +/- (Commissions and Charges) </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>       No input field </p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRI.PREMIUM.CCY</field>
+<desc>
+            <p>Specifies the Premium currency for FX OTC option trades.</p>
+            <p>Default value is from Premium currency of the secondary side.</p>
+            <p>Validation rules:</p>
+            <p>Must be a valid record of the currency table.</p>
+            <p>Applicable only for FX OTC option trades. No input field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PERIOD.END.DATE</field>
+<desc>
+            <p>A date field to define when the period of caplet/ floor ends.</p>
+            <p>  Input must be a date between the Start date and the Maturity date.</p>
+            <p>  Input mandatory if CAP.FLOOR holds the value CAP or FLOOR.</p>
+            <p>  Input not allowed if CAP.FLOOR holds the value SWAPTION.</p>
+            <p>  Input not allowed if UNDERLYING is not equal to OTHER(Cap,floor,swaption) in   DX.CONTRACT.MASTER.</p>
+            <p>  Input not allowed if CAP.FLOOR holds the value SWAPTION.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.RT.PORT.ID</field>
+<desc>
+            <p>The following field allows the user to automatically route Order's/Trades and the resultant fills from the system to another. The system will automatically assign the couterparty to any trade depending on product and location that was traded. Routing of the input of trades and orders can only take place if the secondary customer on the trade has a routing customer set-up on DX.ACC.MASTER</p>
+            <p>       SEC.RT.CUST.ID is the customer Id held in the SEC.RT.COMPANY company.</p>
+            <p>       If this field is blank no routing will take place. This customer will be the Secondary customer in the mirrored trade/order in the SEC.RT.COMPANY company.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       NOINPUT this data will be defaulted from the appropriate         DX.ACC.MASTER record.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SWAP.REFERENCE</field>
+<desc>
+            <p>It is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.CPY.NO</field>
+<desc>
+            <p />
+            <p>       Identifies the bank to which the secondary counterparty (This is normally the broker) wishes the amount sold to be paid. This will either be the bank of the counterparty or the bank of their nominated beneficiary. </p>
+            <p>       When a contract matures, funds must be moved to actually settle the contract. This involves paying the counterparty or his nominated beneficiary for the currency sold and receiving funds for the currency purchased. The counterparty will advise us of where the money which we have sold is to be paid and we will advise them where we require the currency purchased to be remitted. The delivery of funds will normally be as one payment but may be in several instalments. </p>
+            <p>       If the bank is known to us (i.e. a customer record exists), the customer number of the bank will be entered in this field. If not, the details should be entered in the CPY.CORR.ADD field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-Input until this order is authorised.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 35 alphanumeric characters.</p>
+            <p>       No Input</p>
+        </desc>
+</t>
+<t>
+<field>SEC.ACC.CCY</field>
+<desc>
+            <p>Currency of specified secondary customer account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 3 characters CCY.</p>
+            <p>       NO INPUT.</p>
+        </desc>
+</t>
+<t>
+<field>TRADE.CCY</field>
+<desc>
+            <p>- the user-defined alpha currency code </p>
+            <p>       - the user-defined numeric currency code </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Alpha format - This code will then comprise three alpha         characters as defined in the currency table. It is         recommended to use the standard SWIFT currency code. </p>
+            <p>       The following are examples of ISO/SWIFT codes: </p>
+            <p>       - USD = US Dollars - GBP = Pounds Sterling - DEM = Deutsche Marks - FRF = French Francs </p>
+            <p />
+            <p>       Numeric format - In most Treasury operations, certain         currencies are traded more often that others. To         continually enter a three alpha character code would be         unnecessarily time consuming. Currencies may therefore be         given a numeric ranking between 1 and 999 on the Currency         table. If USD is the most frequently traded currency it         should have a numeric code of 1. Entering 1 will then         access the details of US dollars from the Currency table.     </p>
+            <p />
+            <p>       3 characters (uppercase alpha) - type SSS or 1-3 numeric         characters Currency Code (Mandatory input) The currency         code entered must appear on the Currency table. Dealing         between LU'X' and BE'X' currency codes is prohibited. </p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.PRICE</field>
+<desc>
+            <p>The price of the Limit order. Mandatory for 'LIMIT' orders LIMIT.TYPE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Mandatory for 'LIMIT' orders</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRI.IM.AMT</field>
+<desc>
+            <p>Amount of Inital Margin charged for this leg of the order/trade.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No input field</p>
+            <p>       Only used on order entry and only as an estimation of the         full IM fot this trade.</p>
+            <p>       Calculated by reval suite</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEC.CHARGE.DATE</field>
+<desc>
+            <p />
+            <p>       The date on which to charge commissions, fees, and taxes. Choose from the drop down menu of 'TRADE' or 'SETTLEMENT' to populated this field. Default from DX.CONTRACT.MASTER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 10 alpha characters available</p>
+            <p>       No-input until the order has been authorised.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.INTR.ADD</field>
+<desc>
+            <p />
+            <p>       Identifies any intermediary bank involved in the transaction and will be specified by the counterparty. </p>
+            <p>       If the intermediary is known to us (i.e. their is an associated customer record), the customer number of the intermediary bank should be entered in the INTERMED.BK.NO field. If not, details should be entered in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-Input until this order is authorised.</p>
+        </desc>
+</t>
+
+<t>
+<field>SEC.EX.RATE.ACC</field>
+<desc>
+            <p>Exchange rate from trade ccy to secondary customer account ccy. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       19 figures for AMT</p>
+            <p>       No Input, field defaults with the Exchange rate from the         trade CCY to the Customer Ref CCY </p>
+        </desc>
+</t>
+<t>
+<field>TRADE.DATE</field>
+<desc>
+            <p>The date on which the actual trade takes place, 'Contractual Execution Date'.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 11 characters in DATE format</p>
+            <p>       If field is left Null the default is Today's Date</p>
+            <p>       The date cannot exceed the trade date.</p>
+        </desc>
+</t>
+<t>
+<field>FX.PREM.AMT</field>
+<desc>
+            <p>The total premium calculated for an FX contract, where the figure overrides the premium calculated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input</p>
+            <p>       Up to 19 alphanumeric characters.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>USR.FLD.VAL</field>
+<desc>
+            <p>Value for the user field stated in USR.FLD.NAME.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Must have minimum and maximum characters of type as per USR.FLD.MIN, USR.FLD.MAX and USR.FLD.IN2 as shown in the DX.OPTION.TYPE record for this EVENT.TYPE.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.BEN.ADD</field>
+<desc>
+            <p />
+            <p>       This field is used when the secondary counterparty (This is normally the broker)of the deal instructs us to pay funds to another party who does not have an account with us. </p>
+            <p>       When a contract matures, funds must be moved to actually settle the contract. This involves paying the counterparty or his nominated beneficiary for the currency sold and receiving funds for the currency purchased. The counterparty will advise us of where the money which we have sold is to be paid and we will advise them where we require the currency purchased to be remitted. The delivery of funds will normally be as one payment but may be in several instalments. </p>
+            <p>       If the beneficiary is known to us (i.e. there is a customer record), the beneficiary details should be entered in the BENEFICIARY.NO field. If unknown to us, details should be entered in this multi-value field. Note that, where the beneficiary requests the funds into an account he has with us, this should be specified in the OUR.ACCOUNT.PAY field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-Input until this order is authorised.</p>
+        </desc>
+</t>
+<t>
+<field>PREMIUM.DUE</field>
+<desc>
+            <p>Premium, The amount by which a futures or option contract is priced above either: The theoretical or 'fair' value of the contract or the 'futures equivalent' or 'cash' price of the underlying instrument.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 10 alpha characters </p>
+            <p>       Defaulted by information stored in DX.EXCHANGE.MASTER         under the PREM.POST.TIME</p>
+            <p>       No Input unless TRADE.TYPE = "OPTION"</p>
+        </desc>
+</t>
+<t>
+<field>USR.FLD.PRICE</field>
+<desc>
+            <p>Indicates whether the contents of this field form part of the price and position record keys.</p>
+            <p />
+            <p>  This field is defaulted from the</p>
+            <p>  USR.FLD.PRICE</p>
+            <p>  DX.OPTION.TYPE.</p>
+            <p />
+            <p>  System generated field (non-inputtable).</p>
+        </desc>
+</t>
+<t>
+<field>REGION</field>
+<desc>
+            <p>Each exchange is uniquely associated with a REGION.</p>
+            <p>  Regions are associated with exchanges to identify record in holiday application for trading      calendars.</p>
+            <p>  Defaulted from DX.EXCHANGE.MASTER.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.LIMIT.REF</field>
+<desc>
+            <p>The limit reference identifying which Customer credit line to update.</p>
+            <p>       If no input is made in this field the Limits system will provide a default according to the LIMIT.REFERENCE record which has its field Application identifier set to DX.ORDER. If no match is found in the selective reference(s) the default will be the reference which is set to blank.</p>
+            <p>       The amount used to update limits is controlled by the selection field ,LIM.AMT.VAL.CONT, on DX.PARAMETER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Optional Input. 3 to 10 numeric characters limit         reference code. Input in this field must be a valid limit         reference number. </p>
+        </desc>
+</t>
+<t>
+<field>ORDER.DATE</field>
+<desc>
+            <p>The date on which the order was recieved.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Default to TODAY</p>
+            <p>       Mandatory input</p>
+            <p>       Up to 11 DATE format</p>
+        </desc>
+</t>
+<t>
+<field>SPREAD.RATE</field>
+<desc>
+            <p>This is the rate (signed) to be added to or subtracted from the reference rate.</p>
+        </desc>
+</t>
+<t>
+<field>FILLED.IPRICE</field>
+<desc>
+            <p />
+            <p>       For every amendment made to a DX.ORDER in UNAUTHORISED status, system creates a new multivalue set of fields FILLED.LOTS, FILLED.PRICE and FILLED.IPRICE</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>        No input field </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEC.PREM.EXCH.RATE</field>
+<desc>
+            <p>Applicable at DX.TRADE level only. </p>
+            <p>No Input field.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.SETTNOS</field>
+<desc>
+            <p>Any Settlement's or maturity Settlements performed on the Secondary Customer (broker's/client's) side of the transaction.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up dated by DX.CLOSEOUT</p>
+            <p>       Multi-value set field</p>
+            <p>       No Input Field</p>
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRI.COMM.ACC</field>
+<desc>
+            <p>Account to post commission to Customer account in PRI.COMM.CCY if available, else default to PRI.ACCOUNT. Only input if commission is being manually overridden.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 16 characters, input must exist on the ACCOUNT         Application</p>
+            <p>       No Input unless there is input to field PRI.COMM.TYPE and         PRI.COMM.CDE = &amp;#145;OVERRIDE&amp;#146;</p>
+        </desc>
+</t>
+<t>
+<field>PRI.NARR</field>
+<desc>
+            <p>Free text narrative, for any information applicable.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 35 characters of free format text</p>
+            <p>       Multi-value field</p>
+        </desc>
+</t>
+<t>
+<field>PRI.ACCOUNT</field>
+<desc>
+            <p>Identifies the Customer's Account, over which financial entries relating to the trade are to be passed. </p>
+            <p>       Multi-value Field.</p>
+            <p>       Default is to the Account specified on the Customer's SEC ACC MASTER record, for the Trade CCY or (if no Account in the Trade CCY is specified) to the Customer's No.1 Account on the SEC ACC MASTER record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 16 character in ACCOUNT format number or 3-10         character Mnemonic Account id (uppercase alpha or numeric         or "."). </p>
+            <p>       Default value = the Account specified on the Customer's         SEC ACC MASTER record. </p>
+            <p>       Must be a valid Account on the ACCOUNT file. </p>
+            <p>       Mandatory Input</p>
+        </desc>
+</t>
+<t>
+<field>DEPT.ACCT.OFFICER</field>
+<desc>
+            <p>Department or Account officer ID. If 'DEALER.DESK' is populated the default will apply.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 4 numeric characters </p>
+            <p>       Input must exist in DEP.ACCT.OFFICER</p>
+        </desc>
+</t>
+<t>
+<field>SEC.ALLOW.SETT</field>
+<desc>
+            <p>Is this trade authorised for settlement or close out? Choose from the drop down menu 'Y' (YES) or 'N' (NO).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input until this order has been authorised.</p>
+            <p>       Up to 1 alpha character allowed.</p>
+            <p>       If not populated or left blank/null the default is 'Y'.         If HEDGE.TRADE is populated with "HEDGE" than         no input is necessary as the Default is set to 'N'.</p>
+        </desc>
+</t>
+<t>
+<field>IND.PRICE</field>
+<desc>
+            <p>This field captures the value entered in the field Sec. Price of DX. ORDER at order stage 0</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No input field</p>
+        </desc>
+</t>
+<t>
+<field>PRI.PREM.OFFSET</field>
+<desc>
+            <p>No of days offset from charging to account posting for premiums for this PRI.CUSTOMER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No         Input Field</p>
+            <p>       Input         defaults from values in DX.CONTRACT.MASTER</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEC.CUST.STATUS</field>
+<desc>
+            <p>A No Input field default from DX.CUSTOMER field Trading .status</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Default from DX.CUSTOMER field Trading .status</p>
+            <p>       No Input Field</p>
+            <p>       Up to 10 alphanumeric characters available </p>
+        </desc>
+</t>
+<t>
+<field>BROKER.DATE</field>
+<desc>
+            <p>A Broker Date cannot be entered until a ORDER.DATE and ORDER.TIME have been entered. This is the date at which the order was passed to the broker. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Default to TODAY.</p>
+            <p>       All secondary fields cannot be populated until BROKER.DATE         and BROKER.TIME field's have been populated.</p>
+            <p>       Up to 11 DATE format.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.NET.COST</field>
+<desc>
+            <p>This is the cost to the primary customer expressed in trade currency equivalent.   </p>
+            <p />
+            <p>       The net cost is calculated as (Lots * Pri. Int. Price) +/- (Commissions and Charges)    </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>       No input field     </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEC.BEN.NO</field>
+<desc>
+            <p />
+            <p>       This field is used when the secondary counterparty (This is normally the broker.)of the deal instructs us to pay funds to another party who does not have an account with us. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-Input until the order has been authorised</p>
+        </desc>
+</t>
+<t>
+<field>PRI.CONSTRAINT</field>
+<desc>
+            <p>The DX.TRADING.CONSTRAINT ID relating to this customer to apply the set level of constraints for the portfolio or individual trades according to the relationship between the bank and this customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 17 alpha characters</p>
+            <p>       ID, Customer Number or Portfolio Number required if         'SYSTEM' is not populated in this field.</p>
+            <p>       ID, must be a valid Customer Number or Portfolio Number         in DX.TRADING.CONSTRAINT</p>
+        </desc>
+</t>
+<t>
+<field>SEC.PREM.TXN</field>
+<desc>
+            <p>Event causing premium postings. May be single valued DXTRA transaction if premium due on the trade, single or multivaled DXCO transaction(s) if premium due at closeout time.</p>
+            <p />
+            <p />
+            <p>       No input field</p>
+        </desc>
+</t>
+<t>
+<field>CUST.BNK.NME</field>
+<desc>
+            <p>Specifies the receiver bank name.</p>
+            <p>  Input mandatory if TRANSFER.TYPE holds the value TRANSFER.INC or TRANSFER.INC.PAY.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.CONF.NAR</field>
+<desc>
+            <p />
+            <p />
+            <p>       This field allows the user to enter free text narrative relating to the deal record. </p>
+            <p>       Using SWIFT this information will appear on the Bank-to-Bank information field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 6 lines of 35 characters.</p>
+            <p>       Multivalue field associated with field range OUR.ACCOUNT.PAY         to REC.ADV.NARR.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY.MARKET</field>
+<desc>
+            <p />
+            <p>       The system recognizes the need for a number of different markets within one currency. For this reason this field identifies which Exchange Rate Currency Market is accessed for this transaction. </p>
+            <p>       The system caters for the need to have more than one market within a given currency. The use of this field will only be applicable for those countries where the exchange market defines different rates for the same foreign Currency according to rules determined by the local authorities or local central bank. </p>
+            <p>       A typical example would be Belgium where foreign currencies are quoted on the Regular Market and also on the Free Market. Different sets of exchange rates will exist for these two markets. </p>
+            <p>       If default movement is not specified as 'DX', then if DEAL movement type has been specified on MU.TXN.GRP.CCY.MKT the market specified will be defaulted ito this field and the field will be made no input. </p>
+            <p>       If neither 'DX' is set or DEAL movement is specified, then input is mandatory in this field and may not be changed after authorisation. </p>
+            <p>       It is possible to specify separate markets to be used for COMM.CHRG and BROKERAGE. Any commission or change entries generated will use the specified market for COMM.CHRG if set up and similary BROKERAGE entries will use the BROKERAGE market if set up. If not set up the DEFAULT MOVEMENT currency market will be taken. The system allows the user to view the Foreign Exchange position by currency market when more than one market is applicable. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       1 numeric</p>
+            <p>       The market entered must appear on the Currency Market         table.</p>
+            <p>       This field cannot be changed after authorisation.</p>
+            <p>       The market must exist on the local CURRENCY record.</p>
+            <p>       The market must exist on the CURRENCY record for both BUY         and SELLCCY.</p>
+        </desc>
+</t>
+<t>
+<field>TICK.VALUE</field>
+<desc>
+            <p>Tick Value defaulted from DX.CONTRACT.MASTER</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No input field</p>
+        </desc>
+</t>
+<t>
+<field>PRI.AUTO.MANUAL</field>
+<desc>
+            <p>This field defines if the system should automatically search for commissions for this customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Input must be either : AUTOMATIC/MANUAL</p>
+            <p>       No Duplicates allowed in the Multivalued fields</p>
+            <p>       Up to 9 alphanumeric characters available </p>
+        </desc>
+</t>
+<t>
+<field>CARRIER.ALLOWED</field>
+<desc>
+            <p>This specifies the carriers that are allowed to be used for the delivery messages generated by this order.</p>
+        </desc>
+</t>
+
+
+<t>
+<field>PRI.COMM.PRC</field>
+<desc>
+            <p>The field is used to capture the commission by percentage.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed only for manual commission.</p>
+            <p>Calculated commission amount can be overwritten manually</p>
+        </desc>
+</t>
+
+
+<t>
+<field>PRI.COMM.CDE</field>
+<desc>
+            <p>Commission code -'OVERRIDE' for fully manual commissions., 'AUTO' (defaulted by DX.GET.COMMISSION) for full automatic processing or'*&lt;FT.COMMISSION/CHARGE.TYPE ID&gt;' for semi-automatic.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 20 characters &amp;#150; input must exist on FT.COMMISSION.TYPE         or FT.CHARGE.TYPE</p>
+            <p>       No Input field unless there is input to PRI.COMM.TYP</p>
+        </desc>
+</t>
+<t>
+<field>PRI.EX.RATE.REF</field>
+<desc>
+            <p>Exchange rate from trade currency to customer ref currency</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input Field </p>
+            <p>       Defaulted from the Customer&amp;#146;s Account record</p>
+        </desc>
+</t>
+<t>
+<field>SEC.INT.PRICE</field>
+<desc>
+            <p>Standard T24 price format including contract size i.e. price per lot, not price per underlying unit</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Multi-value set field</p>
+            <p>       No Input Field</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEC.PREM.PST</field>
+<desc>
+            <p>Amount of premium posted per premium posting event.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input.</p>
+        </desc>
+</t>
+<t>
+<field>SY.DEAL.REF</field>
+<desc>
+            <p>This field is obsolete.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.DLV.KEY</field>
+<desc>
+            <p />
+            <p>       Delivery Keys</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input Field &amp;#150;delivery key with default into the         field</p>
+        </desc>
+</t>
+<t>
+<field>SEC.RCAD.NAR</field>
+<desc>
+            <p />
+            <p>       This field allows the user to enter free text narrative which is to appear on the advice to receive relating to the deal record. </p>
+            <p>       Using SWIFT this information will appear on the Bank-to-Bank information field. </p>
+            <p>       When a Text number has been input in field OUR.ACCOUNT.REC, the message text corresponding to the specified number will be automatically displayed in this field. It will also be part of the Bank to Bank information printed on the confirmation sent to the CPARTY except if overridden by another narrative. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-Input until the order is authorised.</p>
+            <p>       Up to 6 lines of 35 characters. Multivalue field         associated with field range OUR.ACCOUNT.PAY to REC.ADV.NARR.</p>
+            <p>       Input is limited to 6 lines of 35 characters.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRI.TAX.TYPE</field>
+<desc>
+            <p>The tax type to be applied to the primary side of the trade.</p>
+            <p />
+            <p>Mandatory when a tax amount or tax code has been specified.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.CACC.AMT</field>
+<desc>
+            <p>Commission amount re-specified in currency of commission account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input Field</p>
+            <p>       This field will default from PRI.COMM.AMT if both         commission and account CCY is the same</p>
+            <p>       Format amount based on currency in field PRI.CACC.CCY</p>
+        </desc>
+</t>
+<t>
+<field>DLV.CCY</field>
+<desc>
+            <p>Contract currency. No input, default from DX.CONTRACT.MASTER</p>
+            <p>       'Delivery currency'</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input field</p>
+        </desc>
+</t>
+<t>
+<field>OPTION.TYPE</field>
+<desc>
+            <p />
+            <p>       Choose the type of option from the drop down menu 'CALL' or 'PUT'</p>
+            <p>       CALL: Confers upon the holder the right, but not obligation, to BUY stock at a fixed price at a future date</p>
+            <p>       PUT: Confers upon the holder the right, but not obligation, to SELL stock at a fixed price at a future date </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 4 alpha characters </p>
+            <p>       No Input unless TRADE.TYPE = "OPTION" </p>
+            <p>       Input must be either CALL/PUT</p>
+        </desc>
+</t>
+<t>
+<field>DEST.PORTFOLIO</field>
+<desc>
+            <p>Specifies the  external recipient customer portfolio reference.</p>
+            <p>  Input mandatory if TRANSFER.TYPE holds the value TRANSFER.INC or TRANSFER.INC.PAY.</p>
+            <p>  Should be valid record in SEC.ACC.MASTER.</p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.START</field>
+<desc>
+            <p>A date field to define when the period of caplet/floor starts.</p>
+            <p>  Its value should be greater than the TRADE date.</p>
+            <p>  Its value should be lesser than the PERIOD.END.DATE.</p>
+            <p>  Input not allowed if UNDERLYING is not equal to OTHER(Cap,floor,swaption) in      DX.CONTRACT.MASTER.</p>
+            <p>  Input not allowed if CAP.FLOOR holds the value SWAPTION.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.CPY.ADD</field>
+<desc>
+            <p />
+            <p>       Contains the account number of the secondary counterparty or nominated beneficiary at their correspondent bank. </p>
+            <p>       The field will be used to provide the correspondent with the necessary details to credit the counterparty's or beneficiary's account. </p>
+            <p>       When a contract matures, funds must be moved to actually settle the contract. This involves paying the counterparty or his nominated beneficiary for the currency sold and receiving funds for the currency purchased. The counterparty will advise us of where the money which we have sold is to be paid and we will advise them where we require the currency purchased to be remitted. The delivery of funds will normally be as one payment but may be in several installments. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-Input until this order is authorised</p>
+        </desc>
+</t>
+<t>
+<field>TAX.AMT.TCY</field>
+<desc>
+            <p>Tax Amount in trade currency.</p>
+        </desc>
+</t>
+<t>
+<field>USR.RSVD.X3</field>
+<desc>
+            <p>Reserved for future use.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.LINK</field>
+<desc>
+            <p>The Strategy id against which the tracsaction is hedged. It is a user input field</p>
+            <p>Upon inputting data here, it updates the link as a record in DX.STRATEGY.LINK with Transaction id </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 35 alpha characters </p>
+            <p>       Mandatory input if HEDGE.TRADE is populated by "HEDGE".</p>
+            <p>       Multi-value field</p>
+        </desc>
+</t>
+<t>
+<field>TRADE.TYPE</field>
+<desc>
+            <p>The type of contract that has been traded on an exchange, FUTURE, OPTION or STOCK.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 6 alpha characters </p>
+            <p>       Auto populated field by information stored in DX.CONTRACT.MASTER         under the CONTRACT.ID.</p>
+            <p />
+            <p>       Will default to FUTURE/OPTION/STOCK</p>
+            <p />
+            <p>       No Change Field </p>
+            <p>       Mandatory Input</p>
+        </desc>
+</t>
+<t>
+<field>SEC.PND.LOTS</field>
+<desc>
+            <p>Number of lots in a pending closeout.</p>
+            <p />
+            <p />
+            <p>       No Input field</p>
+        </desc>
+</t>
+<t>
+<field>PRI.COMM.TAX</field>
+<desc>
+            <p>Amount of tax calculated in commission account's currency. Only input if commission is being manually overridden.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 19 characters</p>
+            <p>       No Input unless PRI.COMM.TYP and PRI.COMM.CDE = &amp;#145;OVERRIDE&amp;#146;</p>
+            <p>       Format amount based on currency in field PRI.CACC.CCY</p>
+        </desc>
+</t>
+<t>
+<field>SEC.OPEN.CLOSE</field>
+<desc>
+            <p>The Open or Close of a transaction, information to Notify an Exchange of the status of the transaction and calculation of the commission. Choose from the drop down menu 'OPEN' or 'CLOSE'.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-input until the order has been authorised</p>
+            <p>       Up to 5 alpha characters available &amp;#150; input must be         either OPEN/CLOSE</p>
+        </desc>
+</t>
+<t>
+<field>SEC.RT.COMPANY</field>
+<desc>
+            <p>The following field allows the user to automatically route Order's/Trades and the resultant fills from the system to another. The system will automatically assign the couterparty to any trade depending on product and location that was traded. Routing of the input of trades and orders can only take place if the secondary customer on the trade has a routing customer set-up on DX.ACC.MASTER.</p>
+            <p>       Once a trade/order has been authorised the system can replicate the necessary trade/order data into the company specified in the DX.ACC.MASTER. the Secondary customer will be set as the RT.CUST.ID in the DX.ACC.MASTER.</p>
+            <p>       The T24 company in which the SEC.RT.CUST.ID (Secondary Routing Customer Id) is held, this will allow trades/orders to be mirrored into the T24 company</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       NO INPUT this data will be defaulted from the appropriate         DX.ACC.MASTER record. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRI.COMM.TYP</field>
+<desc>
+            <p>The Commission Type defaulted by DX.COMMISSION.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Input must be one of the following: COMMISSION/EXECUTION/CLEARING/REGULATORY/MISC/AUTOMATIC</p>
+            <p>       Must be one of the COMMISSION.TYPES entered in DX.PARAMETER         or "OVERRIDE."</p>
+            <p>       Multi-value field</p>
+            <p>       If the field is left Null, it will default to AUTOMATIC</p>
+            <p>       Up to 10 alphanumeric characters available </p>
+        </desc>
+</t>
+<t>
+<field>EXCHANGE.CODE</field>
+<desc>
+            <p>The name of the Exchange where the applicable contract is traded. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 10 alpha characters available </p>
+            <p>       Auto populated field by information stored in DX.EXCHANGE.MASTER         under the CONTRACT.ID. </p>
+            <p>       No Change Field</p>
+        </desc>
+</t>
+<t>
+<field>PRI.ACC.CCY</field>
+<desc>
+            <p>Currency of specified customer account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Field defaults from ACCOUNT application</p>
+            <p>       No Input Field</p>
+        </desc>
+</t>
+<t>
+<field>PREM.PYMT.AMT</field>
+<desc>
+            <p>The premium payment amount in the contract currency.</p>
+            <p>  Input mandatory if CAP.FLOOR holds the value CAP or FLOOR.</p>
+            <p>  Input not allowed if UNDERLYING is not equal to OTHER(Cap,floor,swaption) in DX.CONTRACT.MASTER.</p>
+            <p>  Input mandatory in PREM.PYMT.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.RT.WHEN</field>
+<desc>
+            <p>PRI.RT.WHEN (Primary Routing When) This field will default the time and the date the ORDER/TRADE has been replicated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-Input this field will be defaulted as soon as the         ORDER/TRADE has been replicated.</p>
+            <p>       DATE/TIME</p>
+        </desc>
+</t>
+<t>
+<field>CUST.BNK.SORT.CDE</field>
+<desc>
+            <p>Specifies the receiver bank sort code.</p>
+            <p>  Input mandatory if TRANSFER.TYPE holds the value TRANSFER.INC or TRANSFER.INC.PAY.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.BUY.SELL</field>
+<desc>
+            <p>Indicates if the primary counterparty is Buying or Selling a trade.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Multi-value field. </p>
+            <p>       Uo to 4 alphanumeric characters.</p>
+            <p>       No Input Field &amp;#150; set automatically </p>
+        </desc>
+</t>
+<t>
+<field>SEC.COMM.AMT</field>
+<desc>
+            <p>Commission amount in commission currency.Can only be input if commission is being manually overridden.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-input until the order has been authorised.</p>
+            <p>       Up to 19 characters in AMT format</p>
+            <p>       No Input unless there is input to SEC.COMM.TYP &amp; SEC.COMM.CDE         = &amp;#145;OVERRIDE&amp;#146;</p>
+            <p>       Format amount based on currency in field SEC.CACC.CCY</p>
+        </desc>
+</t>
+<t>
+<field>PRI.CUST.NO</field>
+<desc>
+            <p>Identifies the Customer(s) with whom the trade is made. </p>
+            <p>       The Customer details for the DX.TRADE application are contained in Fields 26-87. </p>
+            <p>       Multi-value set available is to enable the processing of trades with more than one customer. These will be entered as complete sets of for each individual customer. i.e. Fields 26.1 - 87.1 contain all the details for Customer 1. </p>
+            <p>       Fields 26.2 - 87.2 contain all the details for Customer 2. All further Customer details will follow on as described above (26.3 - 87.3 then 26.4 - 87.4 etc.). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to1-10 numeric character Customer ID number or 3-10         type MNE (uppercase alpha or numeric or ".")         character Mnemonic Customer id.</p>
+            <p>       Multi-value set. </p>
+            <p>       Mandatory input.</p>
+            <p>       Must be the Id of a valid Customer for whom the DX.CUSTOMER         file record (Field 1 - Customer.Type) equals C (Customer).     </p>
+        </desc>
+</t>
+<t>
+<field>INP.MAT.DATE</field>
+<desc>
+            <p>Holds the T24 internal maturity date returned from DX.VAL.PERIOD.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 11 characters in DATE format </p>
+            <p />
+            <p>       No Input Field </p>
+        </desc>
+</t>
+<t>
+<field>PRI.STRATEGY</field>
+<desc>
+            <p>The Trading Strategy on futures or stock transactions for reporting purposes. </p>
+            <p>       e.g. Straddle, Strangle, Butterfly, Spreads, etc&amp;#133;.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 35 alpha characters</p>
+            <p>       Multi-value field</p>
+            <p>       Input must exist on DX.STRATEGY application</p>
+        </desc>
+</t>
+<t>
+<field>SEC.TAX.CODE</field>
+<desc>
+            <p>The Tax Code for the secondary side of the trade.</p>
+            <p />
+            <p>Must be a valid entry in the TXN.TAX.CODE table.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.CUST.TYPE</field>
+<desc>
+            <p>Default from DX.CUSTOMER, CUSTOMER.TYPE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Input defaults from the DX.CUSTOMER Application &amp;#150;         CUSTOMER.TYPE field</p>
+            <p>       Up to 15 alphanumeric characters.</p>
+            <p>       No Input Field</p>
+        </desc>
+</t>
+<t>
+<field>SEC.CHG.OFFSET</field>
+<desc>
+            <p>Days offset to apply to CHG.POST. This defaults from the value in DX.CONTRACT.MASTER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       NO INPUT until this order has been authorised.</p>
+            <p>       Up to 3 characters </p>
+            <p>       This field defaults from the value in DX.CONTRACT.MASTER</p>
+        </desc>
+</t>
+<t>
+<field>PREM.PYMT.DATE</field>
+<desc>
+            <p>A date field to define when the premium for this period is to be paid.</p>
+            <p>  Input should be a date between the trade date and the maturity date.</p>
+            <p>  Input mandatory if CAP.FLOOR holds the value CAP or FLOOR.</p>
+            <p>  Input not allowed if UNDERLYING is not equal to OTHER(Cap,floor,swaption) in DX.CONTRACT.MASTER.</p>
+            <p>  Input mandatory in PREM.PYMT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.OVE.ADDR</field>
+<desc>
+            <p>If the information on this transaction requires it to be delivered to a different address, then this field should be populated with that address specified. The new address will now override any address set-up in the customer file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up         to 35 characters of free text</p>
+            <p>       Multi-value and Multi sub-value field</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEC.HEDGE.TRADE</field>
+<desc>
+            <p>Defines trade as hedging or speculative transaction. Very important - </p>
+            <p>       Is this a Hedge or Trade (Speculative) transaction? Choose from the drop down menu 'HEDGE' or 'TRADE'</p>
+            <p>       HEDGE: A transaction tending to the opposite effect of another transaction, engaged in to minimise loss on the latter.</p>
+            <p>       TRADE: Dealing in a commodity or financial asset with a view to obtaining a profit on the prospective change in the market value of the item in question. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-input until the order has been authorised.</p>
+            <p>       Up to 5 alpha character available &amp;#150; input must be         either HEDGE/TRADE</p>
+            <p>       Controls accounting treatment for the Profit and Loss</p>
+            <p>       If left Null, the field will default to 'TRADE'</p>
+            <p>       Controls accounting treatment of P&amp;L</p>
+        </desc>
+</t>
+<t>
+<field>PRI.TRANS.KEY</field>
+<desc>
+            <p>Transaction generated by this leg of the trade</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input Field </p>
+            <p>       Input is defaulted from DX.TRANSACTION</p>
+            <p>       Up to 35 alphanumeric characters available </p>
+        </desc>
+</t>
+<t>
+<field>INT.STRIKE.PRICE</field>
+<desc>
+            <p>Price format for T24 calculation. No Input required.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 19 numeric characters </p>
+            <p>       No Input Field &amp;#150; calculations will default into the         field</p>
+        </desc>
+</t>
+
+<t>
+<field>SEC.COMM.PRC</field>
+<desc>
+            <p>The field is used to capture the commission by percentage.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed only for manual commission.</p>
+            <p>Calculated commission amount can be overwritten manually.</p>
+        </desc>
+</t>
+
+
+<t>
+<field>SEC.COMM.CDE</field>
+<desc>
+            <p>Commission code-'OVERRIDE' for fully manual, 'AUTO' (defaulted by DX.GET.COMMISSION) for full automatic processing or'*&lt;FT.COMMISSION/CHARGE.TYPE.ID&gt;'for semi-automatic.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-input until the order has been authorised.</p>
+            <p>       Up to 20 characters &amp;#150; input must exist on FT.COMMISSION.TYPE         or FT.CHARGE.TYPE</p>
+            <p>       No Input unless there is input to field SEC.COMM.TYPE and         SEC.COMM.CDE = &amp;#145;OVERRIDE&amp;#146;</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SUPPRESS.ALL.MSG</field>
+<desc>
+            <p>This field is not inputtable within DX.ORDER, but can be set within the resulting DX.TRADE record.</p>
+            <p />
+            <p>   If selected, this field suppresses all delivery message generation related to this trade (does not include closeout messages).</p>
+            <p />
+            <p>   Optional field - Yes or blank.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.PREM.EXCH.RATE</field>
+<desc>
+            <p>Applicable at DX.TRADE level only. </p>
+            <p>No Input field.</p>
+        </desc>
+</t>
+<t>
+<field>CUST.BNK.ADD</field>
+<desc>
+            <p>Specifies the receiver bank address.</p>
+            <p>  Input mandatory if TRANSFER.TYPE holds the value TRANSFER.INC or TRANSFER.INC.PAY.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.IM.ACC</field>
+<desc>
+            <p>Used to default the inital margin account, or override it for this trade.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input field</p>
+        </desc>
+</t>
+<t>
+<field>PRICE.TRADED</field>
+<desc>
+            <p>Specifies the price at which the trade is being done.</p>
+            <p>  Input mandatory if TRANSFER.TYPE holds the value TRANSFER.INC or TRANSFER.INC.PAY.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.INT.PRICE</field>
+<desc>
+            <p>Standard T24 price format.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 19 numerical characters available</p>
+            <p>       NOINPUT</p>
+        </desc>
+</t>
+<t>
+<field>PRI.CACC.CCY</field>
+<desc>
+            <p>Currency of commission posting account . NOINPUT. Default from currency of PRI.COMM.ACC.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Will default from Currency from PRI.COMM.ACC</p>
+            <p>       No Input Field</p>
+        </desc>
+</t>
+<t>
+<field>PRI.SEC.ACC</field>
+<desc>
+            <p>Identifies the SECURITY.ACCOUNT of the Customer </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Input must be a valid record on the SEC.ACC.MASTER         Application </p>
+            <p>       Must be a DX.CUSTOMER of the Customer.</p>
+            <p>       Multi-value field. </p>
+            <p>       Portfolio ID must be &amp;#145;owned&amp;#146; by the customer         defined in PRMY.NUMBER (SEC.ACC.MASTER application)</p>
+            <p>       Trading on portfolio allowed only in the company mentioned in PORT.COMP.ID of SEC.ACC.MASTER </p>  
+        </desc>
+</t>
+<t>
+<field>DEC.DATE</field>
+<desc>
+            <p>The Last Date by which a customer may exercise an option. The exercise date (European Options) or last exercise date (American Options) for this contract.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 11 date format characters available. </p>
+            <p>       Input should default if CONTRACT.TYPE is "OPTION"     </p>
+            <p>       Date Formula "+3WE,-1BD" = 3</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DEST.CUST</field>
+<desc>
+            <p>Specifies the external recipient customer reference number.</p>
+            <p>  Input mandatory if TRANSFER.TYPE holds the value TRANSFER.INC or TRANSFER.INC.PAY.</p>
+            <p>  Should be a valid record in DX.CUSTOMER.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.INTR.BK.NO</field>
+<desc>
+            <p />
+            <p />
+            <p>       Identifies any intermediary bank involved in the transaction and will be specified by the primary counterparty (This would normally be the Customer.). </p>
+            <p>       If the intermediary is known to us (i.e. their is an associated customer record), the customer number of the intermediary bank should be entered in the INTERMED.BK.NO field. If not, details should be entered in this field. </p>
+            <p>       When a contract matures, funds must be moved to actually settle the contract. This involves paying the counterparty or his nominated beneficiary for the currency sold and receiving funds for the currency purchased. The counterparty will advise us of where the money which we have sold is to be paid and we will advise them where we require the currency purchased to be remitted. The delivery of funds will normally be as one payment but may be in several installments. </p>
+            <p>       If the bank is known to us (i.e. a customer record exists), details should be entered in the counterparty Corr No field. If not, the should be entered in this multi-valued field. </p>
+            <p>       The counterparty may ask us to pay the amount sold in a number of ways: </p>
+            <p>       To an account with us </p>
+            <p>       We may pay the funds directly into an account provided it is in the same currency as that being sold. To make payment directly to a counterparty's internal account the relevant account number should be entered in the OUR.ACCOUNT.PAY field and no other input will be necessary in this field. </p>
+            <p>       To an account at another bank overseas </p>
+            <p>       To pay money to another bank overseas we would have to advise our agent, in the country concerned, to pay to the counterparty's bank. In this case, the Nostro account number of our agent should be entered in the OUR.ACCOUNT.PAY field. If the counterparty's bank is known to us (i.e. there is a customer record), then the bank's number should be entered in CPARTY.CORR.NO if these have not yet been defined on the Agency file. If the bank is not known to us (i.e. there is no customer record), the bank's name and address should be entered in the multi-valued field CPY.CORR.ADD. When known, the counterparty's account number at his bank should be entered in the field CPARTY.BANK.ACC. </p>
+            <p>       To an account at another bank locally </p>
+            <p>       Where payment is to be effected locally, settlement can be through a number of different methods. The most common are Banker's Payments, CHIPS, or CHAPS. In all cases, the number of our internal clearing account, or our clearing agent should be entered in OUR.ACCOUNT.PAY. Details of the CPARTY's bank account should be completed as detailed above. </p>
+            <p>       To a beneficiary of the CPARTY </p>
+            <p>       The CPARTY may nominate a third party beneficiary of the funds. If the beneficiary is to be paid by crediting an account with us, the account number should be entered in OUR.ACCOUNT.PAY. If the beneficiary does not have an account with us, the internal clearing number or Nostro account of our agent should be entered in OUR.ACCOUNT.PAY. </p>
+            <p>       Where we are paying to another bank but the beneficiary is known to us (i.e. there is a customer record), the customer number of the beneficiary will be entered in the field BENEFICIARY.NO. Where no relationship exists, the payment details will be entered in the multi-valued field BENFCY.ADD. </p>
+            <p>       Payment via an intermediary bank </p>
+            <p>       Occasionally the CPARTY may ask for payment to be made through an intermediary bank. This occurs where the CPARTY or beneficiary's correspondent is not in the country of the currency involved. As an example, let us say that the Bank 'ABC' in Hong Kong uses Bank 'XYZ' in Hong Kong as their dollar agent. When a dollar payment is to be made we would pay American Bank in New York (the Intermediary) for Bank 'XYZ' in HK (the CPARTY correspondent), account Bank 'ABC' (the CPARTY or Beneficiary). The Intermediary can be entered as a number in the INTERMED.BK.NO field if a customer relationship exists (i.e. there is a customer number) or as narrative in the INTERMED.ADD field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 4 lines of 35 characters. Multivalue field         associated with field range OUR.ACCOUNT.PAY to REC.ADV.NARR.</p>
+            <p>       Input in this field is not allowed when details have been         entered in the intermediary bank number field.</p>
+            <p>       Input is only allowed when Our Account Pay represents a         Nostro account.</p>
+            <p>       Input is not acceptable for Negotiated or other internal         deals.</p>
+            <p>       Input is not allowed unless the CPARTY is known (i.e.         deal sub-type is not 'BR').</p>
+            <p>       Input will only be allowed if details of the         correspondent have been entered.</p>
+            <p>       Input will not be allowed if there is a common         correspondent signified by COMMONCORR being entered in         the CPARTY.CORR.NO field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>HEDGE.PL.CATEG</field>
+<desc>
+            <p>It is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>PENDING.DIARY</field>
+<desc>
+            <p>When entitlements are pending the PENDING.DIARY field on DX.TRADE is marked with the Diary event. The trade cannot be amended whilst this is set. It is recommended that all trades therefore be authorised before entitlements are created. When entitlements are authorised, the PENDING.DIARY field is cleared and the trades become free to be amended again. The DX.ENTITLEMENT Id. is stamped on the PRI.ENTITLE and SEC.ENTITLE for the relevant customers.  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No input</p>
+        </desc>
+</t>
+<t>
+<field>SEC.NARR</field>
+<desc>
+            <p>Free -text narrative.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input until this order has been authorised.</p>
+            <p>       Up to 35 alphanumeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>ORIG.PRICE</field>
+<desc>
+            <p>It is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.LINK</field>
+<desc>
+            <p>The Strategy id against which the tracsaction is hedged. It is a user input field</p>
+            <p>Upon inputting data here, it updates the link as a record in DX.STRATEGY.LINK with Transaction id </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 35 alpha characters </p>
+            <p>       Mandatory if the order has been authorised at least once.</p>
+            <p>       Mandatory input if HEDGE.TRADE is populated by "HEDGE".</p>
+            <p>       Multi-value field</p>
+        </desc>
+</t>
+<t>
+<field>SEC.CONSTRAINT</field>
+<desc>
+            <p>The DX.TRADING.CONSTRAINT ID relating to this secondary customer to apply the set level of constraints for the portfolio or individual trades according to the relationship between the bank and this customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-input</p>
+            <p>       Constraints should initally only be checked for the         primary side of the trade, and only after the secondary         side of the trade is available when the trade has been         authorised will any details entered into the secondary         field set be checked for constraints.</p>
+            <p>       Up to 17 alpha characters available</p>
+            <p>       ID, Customer Number or Portfolio Number required if         'SYSTEM' is not populated in this field.</p>
+            <p>       ID, must be a valid Customer Number or Portfolio Number         in DX.TRADING.CONSTRAINT</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEC.TAX.AMT.ACY</field>
+<desc>
+            <p>Tax amount in account currency.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.PREM.PRICE</field>
+<desc>
+            <p>Applicable at DX.TRADE level only. </p>
+            <p>No Input field.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.COMM.ACC</field>
+<desc>
+            <p>Account to post commission too. Customer account in SEC.COMM.CCY if available, else default to SEC.ACCOUNT. Only input if commission is being manually overridden.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-input until the order has been authorised.</p>
+            <p>       Up to 16 characters in ACC format</p>
+            <p>       No Input unless there is input to SEC.COMM.TYP &amp; SEC.COMM.CDE         = &amp;#145;OVERRIDE&amp;#146;</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BROKER.TIME</field>
+<desc>
+            <p />
+            <p>       A Broker Time cannot be entered until a ORDER.DATE and ORDER.TIME have been entered. This is the time at which the order was passed to the broker. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Default to current time according to atomic clock.</p>
+            <p>       All secondary fields cannot be populated until BROKER.DATE         and BROKER.TIME field's have been populated.</p>
+            <p>       Up to 11 TIME format.</p>
+        </desc>
+</t>
+<t>
+<field>DEALER.DESK</field>
+<desc>
+            <p>The Dealer ID for this executed trade. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 2 alpha characters </p>
+            <p>       Input must exist on DEALER.DESK</p>
+        </desc>
+</t>
+<t>
+<field>TRADE.STATUS</field>
+<desc>
+            <p>The status of the trade in the system, 'NO INPUT' field updated by other applications.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input Field. Will default to either ACTIVE/INACTIVE</p>
+        </desc>
+</t>
+<t>
+<field>CHILD.REF</field>
+<desc>
+            <p>The Id of any child trades/order etc. created from this trade.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 35 alphanumeric characters.</p>
+            <p />
+        </desc>
+</t>
+
+<t>
+<field>CUT.OFF.TIME</field>
+<desc>
+            <p>When DAY.TRADE is YES then on reaching the cut off time aggregated trade gets created by broker.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>NOINPUT field defaulted from DX.EXCHANGE.MASTER</p>
+            <p />
+        </desc>
+</t>
+
+<t>
+<field>DAY.TRADE</field>
+<desc>
+            <p>When set to YES instead of creating trade for each fills an aggregated trade gets created by broker. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed values are YES and NO.</p>
+            <p>Defaulted from DX.EXCHANGE.MASTER and be overwritten at initial order level. Changes not allowed at fill order.</p>
+            <p />
+        </desc>
+</t>
+
+<t>
+<field>TRADE.TIME</field>
+<desc>
+            <p>Time at which the order is filled or executed in the exchange. When DAY.TRADE is YES then orders that all gets executed before the 
+               CUT.OFF.TIME are aggregated together and trade created by broker.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Default to Cut off time when not inputted.</p>
+            <p>Input not allowed when DAY.TRADE is not set.</p>
+            <p />
+        </desc>
+</t>
+
+<t>
+<field>INTEG.DATA.ITEM</field>
+<desc>
+            <p>Free text field used by Integration framework.</p>
+        </desc>
+</t>
+
+<t>
+<field>INTEG.DATA.VALUE</field>
+<desc>
+            <p>Free text field used by Integration framework.</p>
+        </desc>
+</t>
+
+<t>
+<field>USR.RSVD.X5</field>
+<desc>
+            <p>Reserved for future use.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.ALLOW.SETT</field>
+<desc>
+            <p>Allow settlement or close out of this trade? Choose from the drop down menu 'Y' (YES) or 'N' (NO).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 1 alpha character allowed.</p>
+            <p>       If not populated or left blank/null the default is 'Y'.         If HEDGE.TRADE is populated with "HEDGE" than         no input is necessary as the Default is set to 'N'.</p>
+        </desc>
+</t>
+<t>
+<field>USR.FLD.TEXT</field>
+<desc>
+            <p>The user defined prompt for the USR.FLD.VAL field e.g. "FX Kick In Rate".</p>
+            <p>  The field is defaulted from</p>
+            <p>  USR.FLD.TEXT</p>
+            <p>  DX.OPTION.TYPE.</p>
+            <p>  System generated field (non-inputtable).</p>
+        </desc>
+</t>
+<t>
+<field>PRI.EX.RATE.ACC</field>
+<desc>
+            <p>Exchange rate to customer account currency</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input Field</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.SIZE</field>
+<desc>
+            <p>Contract data - no of trading units per standard lot orderd.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No input field - defaulted from DX.CONTRACT.MASTER</p>
+            <p>       Numeric, up to 16 characters</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TAX.AMT.ACY</field>
+<desc>
+            <p>Tax amount in account currency.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.INTR.ADD</field>
+<desc>
+            <p />
+            <p />
+            <p>       Identifies any intermediary bank involved in the transaction and will be specified by the primary counterparty (This would normally be the Customer.). </p>
+            <p>       If the intermediary is known to us (i.e. their is an associated customer record), the customer number of the intermediary bank should be entered in the INTERMED.BK.NO field. If not, details should be entered in this field. </p>
+            <p>       When a contract matures, funds must be moved to actually settle the contract. This involves paying the counterparty or his nominated beneficiary for the currency sold and receiving funds for the currency purchased. The counterparty will advise us of where the money which we have sold is to be paid and we will advise them where we require the currency purchased to be remitted. The delivery of funds will normally be as one payment but may be in several installments. </p>
+            <p>       If the bank is known to us (i.e. a customer record exists), details should be entered in the counterparty Corr No field. If not, the should be entered in this multi-valued field. </p>
+            <p>       The counterparty may ask us to pay the amount sold in a number of ways: </p>
+            <p>       To an account with us </p>
+            <p>       We may pay the funds directly into an account provided it is in the same currency as that being sold. To make payment directly to a counterparty's internal account the relevant account number should be entered in the OUR.ACCOUNT.PAY field and no other input will be necessary in this field. </p>
+            <p>       To an account at another bank overseas </p>
+            <p>       To pay money to another bank overseas we would have to advise our agent, in the country concerned, to pay to the counterparty's bank. In this case, the Nostro account number of our agent should be entered in the OUR.ACCOUNT.PAY field. If the counterparty's bank is known to us (i.e. there is a customer record), then the bank's number should be entered in CPARTY.CORR.NO if these have not yet been defined on the Agency file. If the bank is not known to us (i.e. there is no customer record), the bank's name and address should be entered in the multi-valued field CPY.CORR.ADD. When known, the counterparty's account number at his bank should be entered in the field CPARTY.BANK.ACC. </p>
+            <p>       To an account at another bank locally </p>
+            <p>       Where payment is to be effected locally, settlement can be through a number of different methods. The most common are Banker's Payments, CHIPS, or CHAPS. In all cases, the number of our internal clearing account, or our clearing agent should be entered in OUR.ACCOUNT.PAY. Details of the CPARTY's bank account should be completed as detailed above. </p>
+            <p>       To a beneficiary of the CPARTY </p>
+            <p>       The CPARTY may nominate a third party beneficiary of the funds. If the beneficiary is to be paid by crediting an account with us, the account number should be entered in OUR.ACCOUNT.PAY. If the beneficiary does not have an account with us, the internal clearing number or Nostro account of our agent should be entered in OUR.ACCOUNT.PAY. </p>
+            <p>       Where we are paying to another bank but the beneficiary is known to us (i.e. there is a customer record), the customer number of the beneficiary will be entered in the field BENEFICIARY.NO. Where no relationship exists, the payment details will be entered in the multi-valued field BENFCY.ADD. </p>
+            <p>       Payment via an intermediary bank </p>
+            <p>       Occasionally the CPARTY may ask for payment to be made through an intermediary bank. This occurs where the CPARTY or beneficiary's correspondent is not in the country of the currency involved. As an example, let us say that the Bank 'ABC' in Hong Kong uses Bank 'XYZ' in Hong Kong as their dollar agent. When a dollar payment is to be made we would pay American Bank in New York (the Intermediary) for Bank 'XYZ' in HK (the CPARTY correspondent), account Bank 'ABC' (the CPARTY or Beneficiary). The Intermediary can be entered as a number in the INTERMED.BK.NO field if a customer relationship exists (i.e. there is a customer number) or as narrative in the INTERMED.ADD field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 4 lines of 35 characters. Multivalue field         associated with field range OUR.ACCOUNT.PAY to REC.ADV.NARR.</p>
+            <p>       Input in this field is not allowed when details have been         entered in the intermediary bank number field.</p>
+            <p>       Input is only allowed when Our Account Pay represents a         Nostro account.</p>
+            <p>       Input is not acceptable for Negotiated or other internal         deals.</p>
+            <p>       Input is not allowed unless the CPARTY is known (i.e.         deal sub-type is not 'BR').</p>
+            <p>       Input will only be allowed if details of the         correspondent have been entered.</p>
+            <p>       Input will not be allowed if there is a common         correspondent signified by COMMONCORR being entered in         the CPARTY.CORR.NO field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRI.PYMT.NAR</field>
+<desc>
+            <p />
+            <p>       This field allows the user to enter free text narrative which is to appear on payments relating to the deal record. </p>
+            <p>       Using SWIFT this information will appear on the Bank-to-Bank information field. </p>
+            <p>       When a Text number has been input in field OUR.ACCOUNT.PAY, the message text corresponding to the specified number will be automatically displayed in this field. It will also be part of the Bank to Bank information printed on the confirmation sent to the CPARTY except if overridden by another narrative. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 6 lines of 35 characters. Multivalue field         associated with field range OUR.ACCOUNT.PAY to REC.ADV.NARR.</p>
+            <p>       Input is limited to 6 lines of 35 characters.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.DLV.AMT</field>
+<desc>
+            <p />
+            <p>       Delivery currency amount &amp;#8211; &amp;#8216;secondary ccy&amp;#8217; amount for Forex.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 19 numeric characters</p>
+            <p>       Multi-value and Multi      sub-value field</p>
+        </desc>
+</t>
+<t>
+<field>SEC.EX.RATE.REF</field>
+<desc>
+            <p>Exchange rate to customer account currency</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       19 figures for AMT</p>
+            <p>       No Input, field defaults with the Exchange rate from the         trade CCY to the Customer Ref CCY </p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEC.PREM.EXC</field>
+<desc>
+            <p>Specifies the treasury rate or the exchange rate of the two currencies involved in the trade.</p>
+            <p>For FX OTC trade is the rate between the Premium currency and Account currency whereas for other type of trades it is rate between the Trade currency and Account currency. </p>
+            <p>If customer type of DX.TRADE matches the  customer type specified in SPECIAL.RATE field of  DX.PARAMETER then this field holds the treasury rate of the two currencies.</p>
+            <p>If customer type of DX.TRADE doesn’t matches the  customer type specified in SPECIAL.RATE field)  of    DX.PARAMETER then this field holds the exchange rate of the two currencies.</p>
+            <p>Validation rules:</p>
+            <p>Up to 11 numeric values.                                                                                                                                                                                                    </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>USR.FLD.NAME</field>
+<desc>
+            <p>The User defined name for the USR.FLD.VAL e.g. for an FX Kick In Rate on an Option type, this might be "KI.RATE".  Defaulted from the list of values held in the DX.OPTION.TYPE record for the EXOTIC.TYPE specified here.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  System generated field (non-inputtable).</p>
+        </desc>
+</t>
+<t>
+<field>PRI.CHARGE.DATE</field>
+<desc>
+            <p>The date on which to charge commissions, fees, and taxes. Choose from the drop down menu of 'TRADE' or 'SETTLEMENT' to populated this field. Default from commission setup for the customer related.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 10 alpha characters &amp;#150; input must be either         TRADE/SETTLEMENT</p>
+        </desc>
+</t>
+<t>
+<field>ALT.IND.NAME</field>
+<desc>
+            <p>Identifies the alternate id's for contracts in this system, i.e. CUSIP,ISIN etc.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Defaulted from DX.PARAMETER</p>
+            <p>       No Input</p>
+            <p>       Up to 35 alphanumeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>LOTS.OPEN</field>
+<desc>
+            <p>The total number of lots left open to be filled on this order.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input</p>
+        </desc>
+</t>
+<t>
+<field>SEC.ORIG.LOTS</field>
+<desc>
+            <p>Number of lots originally transacted on this trade for the broker/client. Set when the trade lots was initially populated with a figure, decreases with settlements/close outs or option action. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Format to the decimals set in CONTRACT.DPS under DX.CONTRACT.MASTER</p>
+            <p>       Multi-value set field</p>
+            <p>       No Input Field</p>
+        </desc>
+</t>
+<t>
+<field>PRI.REF.CCY</field>
+<desc>
+            <p>SEC.ACC.MASTER level reference currency.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Field is defaulted from SEC.ACC.MASTER</p>
+            <p>       No Input Field</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRI.PREM.TXN</field>
+<desc>
+            <p>DX.TRANSACTION record associated with the posting of some or all option premium associated with the order.</p>
+            <p>       This may be a DXTRA type transaction if the premium is due at order input time, or one or more multivalued DXCO type transactions if the premium is due at closeout for this contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       DX.TRANSACTION id</p>
+            <p>       Multivalue set with PRI.PREM.PST</p>
+        </desc>
+</t>
+<t>
+<field>SEC.CONF.NAR</field>
+<desc>
+            <p />
+            <p>       This field allows the user to enter free text narrative relating to the deal record. </p>
+            <p>       Using SWIFT this information will appear on the Bank-to-Bank information field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-Input until this order is authorised.</p>
+            <p>       Up to 6 lines of 35 characters.</p>
+            <p>       Multivalue field associated with field range OUR.ACCOUNT.PAY         to REC.ADV.NARR.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRI.TAX.CODE</field>
+<desc>
+            <p>The Tax Code for the primary side of the trade.</p>
+            <p />
+            <p>Must be a valid entry in the TXN.TAX.CODE table.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.CUST.STATUS</field>
+<desc>
+            <p>Customers Trading status</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Default from DX.CUSTOMER Application, TRADING STATUS         field</p>
+            <p>       Up to 10 alphanumeric characters.</p>
+            <p>       No Input Field</p>
+        </desc>
+</t>
+<t>
+<field>PRI.RCAD.NAR</field>
+<desc>
+            <p />
+            <p />
+            <p>       This field allows the user to enter free text narrative which is to appear on the advice to receive relating to the deal record. </p>
+            <p>       Using SWIFT this information will appear on the Bank-to-Bank information field. </p>
+            <p>       When a Text number has been input in field OUR.ACCOUNT.REC, the message text corresponding to the specified number will be automatically displayed in this field. It will also be part of the Bank to Bank information printed on the confirmation sent to the CPARTY except if overridden by another narrative. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 6 lines of 35 characters. Multivalue field         associated with field range OUR.ACCOUNT.PAY to REC.ADV.NARR.</p>
+            <p>       Input is limited to 6 lines of 35 characters.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.TRANS.KEY</field>
+<desc>
+            <p>Transaction generated by this leg of the trade</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input Field &amp;#150; input will default from DX.TRANSACTION</p>
+            <p>       Up to 35 alphanumeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.ORDER.NO</field>
+<desc>
+            <p />
+            <p>       Order(s) associated with this trade.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input, field defaults from DX.ORDERS associated with         this trade</p>
+            <p>       Up to 35 alphanumeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.CACC.CCY</field>
+<desc>
+            <p>Currency of commission posting account</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-input until the order has been authorised.</p>
+            <p>       Up to 3 characters in CCY format</p>
+            <p>       No Input default from currency of PRI.COMM.ACC</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEC.LIMIT.REF</field>
+<desc>
+            <p />
+            <p>       The limit reference identifying which Customer credit line to update.</p>
+            <p>       If no input is made in this field the Limits system will provide a default according to the LIMIT.REFERENCE record which has its field Application identifier set to DX.TRADE-SEC. The suffix -SEC is used by DX.TRADE to distinguish when a customer exists on the secondary side of the trade. If no match is found in the selective reference(s) the default will be the reference which is set to blank.</p>
+            <p>       The amount used to update limits is controlled by the selection field ,LIM.AMT.VAL.CONT, on DX.PARAMETER.</p>
+            <p />
+            <p />
+            <p>       No input field</p>
+        </desc>
+</t>
+<t>
+<field>SEC.PRICE</field>
+<desc>
+            <p>Price  per unit of lot/lots traded. For 'OPTION' trades, this denotes the  'PREMIUM' price in TRADE currency </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 numeric characters (0-6 integers and  0-9 decimals) </p>
+        </desc>
+</t>
+<t>
+<field>LOTS.TRANSFER</field>
+<desc>
+            <p>Specifies the number of lots to be transferred.</p>
+            <p>  It is a NOINPUT field.</p>
+            <p>  Input mandatory if TRANSFER.TYPE holds the value TRANSFER.INC or TRANSFER.INC.PAY.</p>
+        </desc>
+</t>
+<t>
+<field>PREM.PYMT.FREQ</field>
+<desc>
+            <p>Input should be of type FQU which is a standard T24 Frequency code.</p>
+            <p>  Represents the frequency in which the premium payment is to be made.</p>
+        </desc>
+</t>
+<t>
+<field>USR.RSVD.X4</field>
+<desc>
+            <p>Reserved for future use.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.RT.WHEN</field>
+<desc>
+            <p />
+            <p>       The following field allows the user to automatically route Order's/Trades and the resultant fills from the system to another. The system will automatically assign the couterparty to any trade depending on product and location that was traded. Routing of the input of trades and orders can only take place if the secondary customer on the trade has a routing customer set-up on DX.CUSTOMER.</p>
+            <p>       SEC.RT.WHEN defaults the date and time as soon as the order/trade has been replicated</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No input this field will be defaulted as soon as the         order/trade has been replicated</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEC.CUST.NO</field>
+<desc>
+            <p>Broker number. Must exsist in both CUSTOMER and DX.CUSTOMER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-input until the order has been authorised</p>
+            <p>       Mandatory input if this order has been authorised at         least once. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SUB.ASSET.TYPE</field>
+<desc>
+            <p>Identifies the group of like Securities, which are reported together. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 5 numeric characters, input must exist on SUB.ASSET.TYPE     </p>
+            <p>       No Change Field</p>
+        </desc>
+</t>
+<t>
+<field>PRI.RT.COMPANY</field>
+<desc>
+            <p>PRI.RT.COMPANY (Primary Routing Company) field is part of the order/trade routing it will hold the T24 company in which the PRIMARY ROUTING CUSTOMER ID is held, this will allow trades/orders to be mirrored into the T24 company.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-Input this data will be defaulted from the appropriate         DX.ACC.MASTER record.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.HEDGE.TRADE</field>
+<desc>
+            <p>Is this a Hedge, Trade (Speculative), Covered or Uncovered transaction? Choose from the drop down menu 'HEDGE', 'TRADE' 'COVERED, 'UNCOVERED'</p>
+            <p>       HEDGE: A transaction tending to the opposite effect of another transaction, engaged in to minimise loss on the latter.</p>
+            <p>       TRADE: Dealing in a commodity or financial asset with a view to obtaining a profit on the prospective change in the market value of the item in question. </p>
+            <p>       COVERED: </p>
+            <p>       Having a long position in an asset combined with a short position in a call option on the same underlying asset.</p>
+            <p />
+            <p>       UNCOVERED: This is also called A naked call/put. This is where the writer of a call option does not own a long position in the stock on which the call has been written.</p>
+            <p>       Where the writer of a put option does not have a short position in the stock on which the put has been written.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Input must be either TRADE/HEDGE/COVERED/UNCOVERED </p>
+            <p>       If left Null, this field will default to 'TRADE'</p>
+            <p>       Up to 10 alphanumeric characters available </p>
+        </desc>
+</t>
+<t>
+<field>STRIKE.PRICE</field>
+<desc>
+            <p>The price at which an option holder has the right to buy (Call Options) or sell (Put Options) the underlying instrument, or to cash-settle the option if appropriate, to exercise the option.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 19 numeric characters available</p>
+            <p>       No input unless Trade Type is 'OPTION'.</p>
+        </desc>
+</t>
+<t>
+<field>FX.PIPS</field>
+<desc>
+            <p>The pipage on the trade. Calculated depending on FX.PIP.TYPE</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       The contents of the field will override the premium         calculated for this trade, and this calculated value will         be used instead.</p>
+            <p>       No Input unless this is a foreign ccy contract.</p>
+            <p>       Up to 19 alphanumeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.COMM.TAX</field>
+<desc>
+            <p>Amount of tax calculated in commission currency. Only input if commission is being manually overridden</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input unless input in SEC.COMM.TYPE and SEC.COMM.CDE =         'OVERRIDE'.</p>
+            <p>       Up to 19 alphanumeric characters.</p>
+            <p>       No-input until the order has been authorised.</p>
+        </desc>
+</t>
+<t>
+<field>TICK.SIZE</field>
+<desc>
+            <p>Tick size defaulted from DX.CONTRACT.MASTER</p>
+            <p />
+            <p />
+            <p>       No Input Field </p>
+        </desc>
+</t>
+<t>
+<field>SEC.COMM.TYP</field>
+<desc>
+            <p>The Commission Type defaulted by DX.GET.COMMISSION.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-input until the order has been authorised.</p>
+            <p>       Up to 10 alpha characters &amp;#150; input must be one of the         following :</p>
+            <p>       COMMISSION/EXECUTION/CLEARING/REGULATORY/AUTOMATIC/MISC</p>
+            <p>       Multi-value field (No Duplicates allowed) </p>
+            <p>       If field is left Null, it will default to AUTOMATIC. If         SEC.COMM.TYP is set to AUTOMATIC then Multi-values not         allowed </p>
+            <p>       This field should not allow the input of AUTOMATIC if it         was set to ANY of the other selections</p>
+        </desc>
+</t>
+<t>
+<field>BUY.FLOATING.RATE</field>
+<desc>
+            <p>This is the sequence number of the Periodic Interest Table for Buy floating rate. The format is      XXYYY where XX is the sequence no and YYY is the currency.</p>
+            <p>  Input not allowed if UNDERLYING is not a Cap, Floor or Swaption.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.RT.LINK</field>
+<desc>
+            <p />
+            <p>       The following field allows the user to automatically route Order's/Trades and the resultant fills from the system to another. The system will automatically assign the couterparty to any trade depending on product and location that was traded. Routing of the input of trades and orders can only take place if the secondary customer on the trade has a routing customer set-up on DX.CUSTOMER.</p>
+            <p>       SEC.RT.LINK (Primary routing link) The Trade ID which this transaction is hedged against.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No input </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXOTIC.EVENT</field>
+<desc>
+            <p>Holds values YES or blank.</p>
+            <p>  If set to YES, during closeout triggers the routine CO.PGM defined against the OPTION.TYPE record for the exotic type in the field EXOTIC.TYPE.</p>
+            <p>  For example, it may denote whether the exotic event deciding the existence of the option has happened or not.</p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.FIX.DATE</field>
+<desc>
+            <p>Date of fixing the period date.</p>
+            <p>  Input mandatory if CAP.FLOOR is input.</p>
+            <p>  Input must be a date between the trade date and the maturity date.</p>
+            <p>  The PERIOD.FIX.DATE should be less than the PERIOD.PAY.DATE.</p>
+            <p>  Input mandatory if CAP.FLOOR holds the value CAP or FLOOR.</p>
+            <p>  Input not allowed if UNDERLYING is not equal to OTHER(Cap,floor,swaption) in   DX.CONTRACT.MASTER.</p>
+            <p>  Input not allowed if CAP.FLOOR holds the value SWAPTION.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.SEC.ACC</field>
+<desc>
+            <p>Portfolio ID. must be 'owned' by customer defined in CUST.NUMBER</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-input until the order has been authorised</p>
+            <p>       Mandatory input if this record has been authorised at         least once. </p>
+            <p>       Default value = the NOSTRO.ACCOUNT for the Trade Currency     </p>
+            <p>       Must be the Id of a valid Account</p>
+            <p>       Trading on portfolio allowed only in the company mentioned in PORT.COMP.ID of SEC.ACC.MASTER </p>
+        </desc>
+</t>
+<t>
+<field>PRI.CHG.OFFSET</field>
+<desc>
+            <p>No of days offset from charging to account posting for commissions and charges for this PRI.CUSTOMER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input Field</p>
+            <p>       Input defaults from values in DX.CONTRACT.MASTER</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.LOTS</field>
+<desc>
+            <p>The total number of lots for which this order has been placed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRI.SETTLOTS</field>
+<desc>
+            <p>Number of lots/contracts settled/close out for this transaction by the customer, per settlement/close out.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input field</p>
+            <p>       Multi-value set field</p>
+            <p>       Up to 19 amount format characters available </p>
+        </desc>
+</t>
+<t>
+<field>ORDER.TIME</field>
+<desc>
+            <p>The time at which the order was recieved.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Default to current time according to the atomic clock</p>
+            <p>       Mandatory input</p>
+            <p>       Up to 11 TIME format.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.STRATEGY</field>
+<desc>
+            <p>The Trading Strategy on futures or stock transactions for reporting purposes. </p>
+            <p>       e.g. Straddle, Strangle, Butterfly, Spreads, etc&amp;#133;.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 35 alpha characters &amp;#150; input must exist in DX.STRATEGY</p>
+            <p>       Multi-value field</p>
+            <p>       No-input until the order has been authorised</p>
+        </desc>
+</t>
+<t>
+<field>DAYS.PER.YEAR</field>
+<desc>
+            <p>Its value is populated from INTEREST.DAY.BASIS of the CURRENCY table.</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.ID</field>
+<desc>
+            <p />
+            <p>       ID of DX.ORDER. Automatically generated by system.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>       A validatin is given with the total number of order against the total number of executed order.</p>
+            <p />
+            <p />
+            <p>       Alphanumeric, up to 19      characters</p>
+            <p>       'DXORD' identifier, Julian      date (YYDDD) and sequence number</p>
+        </desc>
+</t>
+<t>
+<field>DEST.CUST.PORT</field>
+<desc>
+            <p>Specifies the recipient customer or portfolio.</p>
+            <p>  Input mandatory if TRANSFER.TYPE holds the value TRANSFER.INC or TRANSFER.INC.PAY.</p>
+            <p>  Should be valid record in CUSTOMER.</p>
+        </desc>
+</t>
+<t>
+<field>FILLED.LOTS</field>
+<desc>
+            <p />
+            <p>        For every amendment made to a DX.ORDER in UNAUTHORISED status, system creates a new multivalue set of fields FILLED.LOTS, FILLED.PRICE and FILLED.IPRICE</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>        No input field</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEC.PREMIUM.CCY</field>
+<desc>
+            <p>Specifies the Premium currency for FX OTC option trades. This facilitates the USER to define the Premium in any other currency besides the Trade Currency.</p>
+            <p>Default currency will be Account currency involved in the trade. </p>
+            <p>Validation rules:</p>
+            <p>Must be a valid record of the currency table.</p>
+            <p>Applicable only for FX OTC option trades. </p>
+            <p>No change field after authorization of the trade.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.COMM.EXC</field>
+<desc>
+            <p>FX rate to convert between commission currency and commission account currency</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Currently No Input </p>
+            <p>       Default in mid-rate</p>
+        </desc>
+</t>
+<t>
+<field>SEC.LOTS</field>
+<desc>
+            <p>Number of lots on this trade for the Secondary Customer (broker/client). Format to number of Contract.Dps held in DX.CONTRACT.MASTER. No-input until this record has been authorised</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Format to the decimals set in CONTRACT.DPS under DX.CONTRACT.MASTER</p>
+            <p>       Multi-value set field</p>
+            <p>       No Input Field</p>
+            <p>       Mandatory if this record has been authorised at least         once.</p>
+        </desc>
+</t>
+<t>
+<field>FILLED.PRICE</field>
+<desc>
+            <p />
+            <p>        For every amendment made to a DX.ORDER in UNAUTHORISED status, system creates a new multivalue set of fields FILLED.LOTS, FILLED.PRICE and FILLED.IPRICE</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>        No input field </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEC.TRADE.COST</field>
+<desc>
+            <p>The cost of this trade by calculating the price or premium multiplied by the total number of lots, i.e SEC.PRICE*SEC.LOTS.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input Field </p>
+            <p>       Calculated using the following formula: Price/Premium *         total number of lots </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ORDER.ADVICE</field>
+<desc>
+            <p>Order advice may be SOLICTED, UNSOLICTED or DICRETIONARY</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 13 alphanumeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.PYMT.NAR</field>
+<desc>
+            <p />
+            <p>       This field allows the user to enter free text narrative which is to appear on payments relating to the deal record. </p>
+            <p>       Using SWIFT this information will appear on the Bank-to-Bank information field. </p>
+            <p>       When a Text number has been input in field OUR.ACCOUNT.PAY, the message text corresponding to the specified number will be automatically displayed in this field. It will also be part of the Bank to Bank information printed on the confirmation sent to the CPARTY except if overridden by another narrative. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-Input until this order is authorised.</p>
+            <p>       Up to 6 lines of 35 characters. Multivalue field         associated with field range OUR.ACCOUNT.PAY to REC.ADV.NARR.</p>
+            <p>       Input is limited to 6 lines of 35 characters.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRI.PREM.PRICE</field>
+<desc>
+            <p>Applicable at DX.TRADE level only. </p>
+            <p>No Input field.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.COMM.CCY</field>
+<desc>
+            <p>The currency of the commission charged, defaulted by DX.GET.COMMISSION. Can only be input if commission is being manually overridden.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 3 characters in CCY format </p>
+            <p>       Multi-value field</p>
+            <p>       No Input unless there is input to PRI.COMM.TYP &amp; PRI.COMM.CODE         = &amp;#145;OVERRIDE&amp;#146;</p>
+        </desc>
+</t>
+<t>
+<field>PARENT.REF</field>
+<desc>
+            <p>Reference of Parent Order/Expiry etc. that created this trade.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 35 alphanumeric characters.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXTERNAL.REF</field>
+<desc>
+            <p>External reference of trade input automatically from interface(s)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 35 characters of free text available</p>
+            <p>       Multi-value field</p>
+        </desc>
+</t>
+<t>
+<field>SEC.MESS.CTL</field>
+<desc>
+            <p>Optional message control and validation for customer override address.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 35 alpha characters available</p>
+            <p>       Must be valid in MESSAGE.CONTROL</p>
+            <p>       No In-put until this order is authorised</p>
+        </desc>
+</t>
+<t>
+<field>SEC.IM.ACC</field>
+<desc>
+            <p>Used to default the inital margin account, or override it for this trade.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 16 for ACC</p>
+            <p>       NO INPUT.</p>
+        </desc>
+</t>
+<t>
+<field>MASTER.AGREEMENT</field>
+<desc>
+            <p>Input is mandatory if CAP.FLOOR holds the value swaption.</p>
+            <p>  Input should be a valid record in SWAP.AGREEMENT.TYPE.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.REF.CCY</field>
+<desc>
+            <p>SEC.ACC.MASTER level reference currency.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input, field defaults from SEC.ACC.MASTER</p>
+            <p>       No-input until the order has been authorised.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.CUST.REF</field>
+<desc>
+            <p>Free text reference/narrative field for this PRI.CUSTOMER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 16 characters</p>
+        </desc>
+</t>
+<t>
+<field>SEC.BK2BK.IN</field>
+<desc>
+            <p />
+            <p>       Provides instructions or additional information from the sending bank for the receiver, intermediary account with institution or beneficiary institution. </p>
+            <p>       Any details input by the user will be relayed to the receiver. </p>
+            <p>       Whenever this field is used in a message transmitted between countries with different languages, it is recommended that English is used. </p>
+            <p>       This field corresponds to field 72 on SWIFT messages, and must never be used for information for which another field is intended, or for instructions not required in a message. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-input until this order is authorised</p>
+            <p>       Up to 35 characters (uppercase alpha or numeric) - Type S.         Multivalue field. A maximum of 6 lines of 35 characters         each will be allowed.</p>
+            <p>       If this field is used, the first multivalue must contain         a code word followed by further information.</p>
+            <p>       All code words must be present on the SWIFT.CODE.WORDS         files, and must be enclosed between slashes '/' at the         beginning of the line.</p>
+            <p>       Further code words and information can be entered in         subsequent multivalues, but additional information         continued on a new line must be preceded by double         slashes '//'.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>PERIOD.FREQUENCY</field>
+<desc>
+            <p>Input should be of type FQU which is a standard T24 Frequency code.</p>
+            <p>  Input not allowed if UNDERLYING is not OTHER in DX.CONTRACT.MASTER.</p>
+            <p>  Input not allowed if CAP.FLOOR holds the value SWAPTION.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.CPY.BNK.ACC</field>
+<desc>
+            <p />
+            <p>       Contains the account number of the counterparty or nominated beneficiary at their correspondent bank. </p>
+            <p>       The field will be used to provide the correspondent with the necessary details to credit the counterparty's or beneficiary's account. </p>
+            <p>       When a contract matures, funds must be moved to actually settle the contract. This involves paying the counterparty or his nominated beneficiary for the currency sold and receiving funds for the currency purchased. The counterparty will advise us of where the money which we have sold is to be paid and we will advise them where we require the currency purchased to be remitted. The delivery of funds will normally be as one payment but may be in several installments. </p>
+            <p>       If the bank is known to us (i.e. a customer record exists), details should be entered in the CPARTY.CORR.NO No field. If not, the should be entered in this multi-valued field. </p>
+            <p>       The counterparty may ask us to pay the amount sold in a number of ways: </p>
+            <p>       To an account with us ===================== We may pay the funds directly into an account provided it is in the same currency as that being sold. To make payment directly to a counterparty's internal account the relevant account number should be entered in the OUR.ACCOUNT.PAY field and no other input will be necessary in this field. </p>
+            <p>       To an account at another bank overseas ====================================== To pay money to another bank overseas we would have to advise our agent, in the country concerned, to pay to the counterparty's bank. In this case, the Nostro account number of our agent should be entered in the OUR.ACCOUNT.PAY field. If the counterparty's bank is known to us (i.e. there is a customer record), then the bank's number should be entered in CPARTY.CORR.NO if these have not yet been defined on the Agency file. If the bank is not known to us (i.e. there is no customer record), the bank's name and address should be entered in the multi-valued field CPY.CORR.ADD. When known, the counterparty's account number at his bank should be entered in the field CPARTY.BANK.ACC. </p>
+            <p>       To an account at another bank locally ===================================== Where payment is to be effected locally, settlement can be through a number of different methods. The most common are Banker's Payments, CHIPS, or CHAPS. In all cases, the number of our internal clearing account, or our clearing agent should be entered in OUR.ACCOUNT.PAY. Details of the counterparty's bank account should be completed as detailed above. </p>
+            <p>       To a beneficiary of the counterparty ==================================== The counterparty may nominate a third party beneficiary of the funds. If the beneficiary is to be paid by crediting an account with us, the account number should be entered in OUR.ACCOUNT.PAY. If the beneficiary does not have an account with us, the internal clearing number or Nostro account of our agent should be entered in OUR.ACCOUNT.PAY. </p>
+            <p>       Where we are paying to another bank but the beneficiary is known to us (i.e. there is a customer record), the customer number of the beneficiary will be entered in the field BENEFICIARY.NO. Where no relationship exists, the payment details will be entered in the multi-valued field BENFCY.ADD. </p>
+            <p>       Payment via an intermediary bank ================================ Occasionally the counterparty may ask for payment to be made through an intermediary bank. This occurs where the counterparty or beneficiary's correspondent is not in the country of the currency involved. As an example, let us say that the Bank 'ABC' in Hong Kong uses Bank 'XYZ in Hong Kong as their dollar agent. When a dollar payment is to be made we would pay American Bank in New York (the Intermediary) for Bank XYZ in HK (the counterparty correspondent), account Bank ABC (the counterparty or Beneficiary). The Intermediary can be entered as a number in the INTERMED.BK.NO field if a customer relationship exists (i.e. there is a customer number) or as narrative in the INTERMED.ADD field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       34 character account number. Multivalue field associated         with field range OUR.ACCOUNT.PAY to REC.ADV.NARR.</p>
+            <p>       Input is only allowed when Our Account Pay is a Nostro         account.</p>
+            <p />
+            <p>       Input will only be accepted where Beneficiary or         counterparty Correspondent details have been entered.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXECUTING.BROKER</field>
+<desc>
+            <p>The Broker Whom Executed the trade on the Bank's behalf.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 10 alpha characters, input must exist on DX.CUSTOMER         with a CUSTOMER.TYPE = &amp;#145;BROKER&amp;#146; </p>
+        </desc>
+</t>
+<t>
+<field>PRI.ORIG.LOTS</field>
+<desc>
+            <p>Number of lots originally transacted on this trade for the customer. Set when the trade lots was initially populated with a figure, decreases with settlements/close outs or option action. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Format to the decimals set in CONTRACT.DPS under DX.CONTRACT.MASTER</p>
+            <p>       Multi-value set field</p>
+            <p>       No Input Field</p>
+            <p>       Up to 19 amount format characters available </p>
+        </desc>
+</t>
+<t>
+<field>SEC.DLV.AMT</field>
+<desc>
+            <p>Delivery currency amount-'secondary ccy' amount for FOREX options/futures.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 19 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.RT.PORT.ID</field>
+<desc>
+            <p>The PRI.RT.PORT.ID (Primary Routing Portfolio Identification) field is part of the order/trade routing it will hold the customer held in the PRIMARY ROUTING COMPANY company. If this field is blank no routing will take place. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-Input this data will be defaulted fron the appropriate         DX.ACC.MASTER record.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.TIME</field>
+<desc>
+            <p>The time this trade was executed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 9 time characters in TIME format</p>
+            <p>       Default to current time if permitted by DX.PARAMETER         under DEFAULT.TIME.</p>
+        </desc>
+</t>
+<t>
+<field>CREATE.TRADES</field>
+<desc>
+            <p />
+            <p>       This field should be set to YES to authorise a filled DX order, which in turn creates DX trades at average price </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>        Defaults from      DX.PARAMETER, but can be amended manually</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEC.ENTITLE</field>
+<desc>
+            <p>When entitlements are pending the PENDING.DIARY field on DX.TRADE is marked with the Diary event. The trade cannot be amended whilst this is set. It is recommended that all trades therefore be authorised before entitlements are created. When entitlements are authorised, the PENDING.DIARY field is cleared and the trades become free to be amended again. The DX.ENTITLEMENT Id. is stamped on the PRI.ENTITLE and SEC.ENTITLE for the relevant customers.  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No input</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRI.PND.SETT</field>
+<desc>
+            <p>ID of any DX.CLOSEOUT pending (Unauthorised) for this PRI.CUSTOMER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 35 characters</p>
+            <p>       No Input Field</p>
+        </desc>
+</t>
+<t>
+<field>FX.PIP.TYPE</field>
+<desc>
+            <p>Type of FX pips RATE PER LOT, PERCENTAGE or FIXED.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Mandatory for FX options</p>
+            <p>       No Input unless this is a foreign ccy contract</p>
+            <p>       Up to 11 alphanumeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.CPY.NO</field>
+<desc>
+            <p />
+            <p>       Identifies the bank to which the primary counterparty (This would normally be Customer.)wishes the amount sold to be paid. This will either be the bank of the counterparty or the bank of their nominated beneficiary. </p>
+            <p>       When a contract matures, funds must be moved to actually settle the contract. This involves paying the counterparty or his nominated beneficiary for the currency sold and receiving funds for the currency purchased. The counterparty will advise us of where the money which we have sold is to be paid and we will advise them where we require the currency purchased to be remitted. The delivery of funds will normally be as one payment but may be in several instalments. </p>
+            <p>       If the bank is known to us (i.e. a customer record exists), the customer number of the bank will be entered in this field. If not, the details should be entered in the CPY.CORR.ADD field. </p>
+            <p>       The counterparty may ask us to pay the amount sold in a number of ways: </p>
+            <p>       To an account with us </p>
+            <p>       We may pay the funds directly into an account provided it is in the same currency as that being sold. To make payment directly to a counterparty's internal account the relevant account number should be entered in the OUR.ACCOUNT.PAY field and no other input will be necessary in this field. </p>
+            <p>       To an account at another bank overseas </p>
+            <p>       To pay money to another bank overseas we would have to advise our agent, in the country concerned, to pay to the counterparty's bank. In this case, the Nostro account number of our agent should be entered in the OUR.ACCOUNT.PAY field. If the counterparty's bank is known to us (i.e. there is a customer record), then the bank's number should be entered in CPARTY.CORR.NO if these have not yet been defined on the Agency file. If the bank is not known to us, (i.e. there is no customer record) the bank's name and address should be entered in the multi-valued field CPY.CORR.ADD. When known, the counterparty's account number at his bank should be entered in the field CPARTY.BANK.ACC. </p>
+            <p>       To an account at another bank locally </p>
+            <p>       Where payment is to be effected locally, settlement can be through a number of different methods. The most common are Banker's Payments, CHIPS, or CHAPS. In all cases, the number of our internal clearing account, or our clearing agent should be entered in OUR.ACCOUNT.PAY. Details of the counterparty's bank account should be completed as detailed above. </p>
+            <p>       To a beneficiary of the counterparty </p>
+            <p>       The counterparty may nominate a third party beneficiary of the funds. If the beneficiary is to be paid by crediting an account with us, the account number should be entered in OUR.ACCOUNT.PAY. If the beneficiary does not have an account with us, the internal clearing number or Nostro account of our agent should be entered in OUR.ACCOUNT.PAY. </p>
+            <p>       Where we are paying to another bank but the beneficiary is known to us (i.e. there is a customer record), the customer number of the beneficiary will be entered in the field BENEFICIARY.NO. Where no relationship exists, the payment details will be entered in the multi-valued field BENFCY.ADD. </p>
+            <p>       Payment via an intermediary bank </p>
+            <p>       Occasionally the counterparty may ask for payment to be made through an intermediary bank. This occurs where the counterparty or beneficiary's correspondent is not in the country of the currency involved. As an example, let us say that the Bank ABC in Hong Kong uses Bank 'XYZ' in Hong Kong as their dollar agent. When a dollar payment is to be made we would pay American Bank in New York (the Intermediary) for Bank 'XYZ' in (the counterparty correspondent), account Bank 'ABC' (the counterparty or Beneficiary). The Intermediary can be entered as a number in the INTERMED.BK.NO field if a customer relationship exists (i.e. there is a customer number) or as narrative in the INTERMED.ADD field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       1-6 Numeric character Customer Number or 3-10 character         customer mnemonic (uppercase alphanumeric or '.') - Type         MNE Input in this field is optional. Default = as per         Agency file when Our Account Pay = Nostro. Multivalue         field associated with field range OUR.ACCOUNT.PAY to REC.ADV.NARR.</p>
+            <p>       Input must represent a valid customer on the Customer         file.</p>
+            <p>       Input in this field is not allowed when details have been         entered in the correspondent address field.</p>
+            <p>       Input is only allowed when OUR.ACCOUNT.PAY represents a         Nostro account.</p>
+            <p>       Input in this field or the next one (CPY.CORR.ADD) is         mandatory when OUR.ACCOUNT.PAY represents a Nostro         account and no autorouting details (settlement         instructions) exist on the Agency file for the         counterparty of the deal.</p>
+            <p>       Input is not acceptable for Negotiated or other internal         deals.</p>
+            <p>       Input is not allowed unless the counterparty is known (i.e.         deal sub-type is not 'BR').</p>
+        </desc>
+</t>
+<t>
+<field>EXCLUDE.VALUATION</field>
+<desc>
+            <p>This field is obsolete.</p>
+        </desc>
+</t>
+<t>
+<field>LINK.REFERENCE</field>
+<desc>
+            <p>Linked to TRANS.LINK.REFERENCE application.</p>
+            <p>  It is updated at trade level.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.TAX.AMT.TCY</field>
+<desc>
+            <p>Tax Amount in trade currency.</p>
+        </desc>
+</t>
+<t>
+<field>CAP.FLOOR</field>
+<desc>
+            <p>Valid inputs are: CAP, FLOOR and SWAPTION.</p>
+            <p>  Input for this field is mandatory if underlying is OTHER in DX.CONTRACT.MASTER.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.PREM.EXC</field>
+<desc>
+            <p>Specifies the treasury rate or the exchange rate of the two currencies involved in the trade.</p>
+            <p>For FX OTC trade is the rate between the Premium currency and Account currency whereas for other type of trades it is rate between the Trade currency and Account currency. </p>
+            <p>If customer type of DX.TRADE matches the  customer type specified in SPECIAL.RATE field of  DX.PARAMETER then this field holds the treasury rate of the two currencies.</p>
+            <p>If customer type of DX.TRADE doesn’t matches the  customer type specified in SPECIAL.RATE field  of    DX.PARAMETER then this field holds the exchange rate of the two currencies.</p>
+            <p>Validation rules:</p>
+            <p>Up to 11 numeric values.</p>
+        </desc>
+</t>
+<t>
+<field>UNDERLYING</field>
+<desc>
+            <p>Mandatory if the trade is set as covered.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Defaulted from DX.CONTRACT.MASTER</p>
+            <p>       No Input.</p>
+        </desc>
+</t>
+<t>
+<field>CUST.CPARTY</field>
+<desc>
+            <p>Specifies the receiver counterparty.</p>
+            <p>  Input mandatory if TRANSFER.TYPE holds the value TRANSFER.INC or TRANSFER.INC.PAY.</p>
+            <p>  Should be valid record in CUSTOMER.</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.TYPE</field>
+<desc>
+            <p>Defines what kind of order this is, Good till cancel etc.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       DX.ORDER.TYPE to define.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>VALUATION.PRICE</field>
+<desc>
+            <p>The last price used to calculate the variation margin for the trade</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Input is defaulted from DX.RUN.REVALUE</p>
+            <p>       Up to 19 numeric characters </p>
+            <p>       No Input</p>
+        </desc>
+</t>
+<t>
+<field>TRANSFER.TYPE</field>
+<desc>
+            <p>The type of trade executed via a broker and the process route it takes to be cleared for the bank's account. Choose from drop down menu 'GIVEUP', 'GIVEIN', 'TRANSFERS' and 'SWITCH'.</p>
+            <p>       GIVEUP; Term used in a transaction involving 3 brokers, Broker A, a floor broker, executes a buy order for broker B, another member firm broker who has too much business at the time to execute the order. The broker whom Broker A completes the transaction(the sell side broker) is Broker C. Broker A "Gives Up" the name of Broker B, so that the record shows a transaction between Broker B and Broker C even though the trade was actually executed between Broker A and Broker C.</p>
+            <p>       GIVEIN: Term used for the execution of a transaction by a broker to the floor member firm.</p>
+            <p>       TRANSFER: Term used to movement of transactions from one account to another.</p>
+            <p>       SWITCH: Selling Stock and Bonds to replace them with other Stocks and Bonds with better prospects for gain or higher yields. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Input must be one of the following :EXECUTION/CLEARING/BOTH./TRANSFER/SWITCH     </p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.TYPE</field>
+<desc>
+            <p>Defines LIMIT or MARKET orders.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Defaults to Market</p>
+            <p>       Mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.TOTAL.PREM.AMT</field>
+<desc>
+            <p>Applicable at DX.TRADE level only. </p>
+            <p>No Input field.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.CUST.TYPE</field>
+<desc>
+            <p>Default from DX.CUSTOMER field CUSTOMER.TYPE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input</p>
+            <p>       Default from DX.CUSTOMER.</p>
+            <p>       Up to 15 alphanumeric characters available </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PRI.TRADE.COST</field>
+<desc>
+            <p>The cost of this trade by calculating the price or premium multiplied by the total number of lots.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Calculation is based on (Price/premium * total number of         Lots)</p>
+            <p>       No Input Field</p>
+            <p>       Up to 19 numeric characters </p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.DATE</field>
+<desc>
+            <p>The date the Limit order is valid until . Mandatory for 'LIMIT' orders LIMIT.TYPE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Mandatory for 'LIMIT' orders</p>
+            <p>       Default to TODAY</p>
+            <p>       This order is valid from TODAY until, EOE/D of the LIMIT.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>SELL.FLOATING.RATE</field>
+<desc>
+            <p>This is the sequence number of the Periodic Interest Table for a Sell floating rate. The format      is XXYYY where XX is the sequence no and YYY is the currency.</p>
+            <p>  Input not allowed if UNDERLYING is not a Cap, Floor or Swaption.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.INTR.BK.NO</field>
+<desc>
+            <p />
+            <p>       Identifies any intermediary bank involved in the transaction and will be specified by the counterparty. </p>
+            <p>       If the intermediary is known to us (i.e. their is an associated customer record), the customer number of the intermediary bank will be entered in this field. If not, details should be entered in the INTERMED.ADD field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-Input until this order is authorised.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.CUST.REF</field>
+<desc>
+            <p>Secondary Customer reference field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 16 characters</p>
+            <p>       NO INPUT until this order has been authorised</p>
+        </desc>
+</t>
+<t>
+<field>NARRATIVE</field>
+<desc>
+            <p>Free text narrative for the Trade level.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 35 alpha characters available</p>
+            <p>       Multi-value field</p>
+        </desc>
+</t>
+<t>
+<field>SEC.IM.AMT</field>
+<desc>
+            <p>Amount of Inital Margin charged for this leg of the order/trade. Calculated by the reval suite. Only used on order entry and only as an estimation of the full IM for this trade.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input.</p>
+            <p>       Up to 19 figures for the AMT.</p>
+        </desc>
+</t>
+<t>
+<field>LOTS.FILLED</field>
+<desc>
+            <p>The total number of lots that have been filled so far for this order.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No Input</p>
+        </desc>
+</t>
+<t>
+<field>SEC.CPY.BNK.ACC</field>
+<desc>
+            <p>S</p>
+            <p>       Contains the account number of the secondary counterparty or nominated beneficiary (This is normally the broker) at their correspondent bank. </p>
+            <p>       The field will be used to provide the correspondent with the necessary details to credit the counterparty's or beneficiary's account. </p>
+            <p>       When a contract matures, funds must be moved to actually settle the contract. This involves paying the counterparty or his nominated beneficiary for the currency sold and receiving funds for the currency purchased. The counterparty will advise us of where the money which we have sold is to be paid and we will advise them where we require the currency purchased to be remitted. The delivery of funds will normally be as one payment but may be in several installments. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No-input until this order is authorised.</p>
+        </desc>
+</t>
+<t>
+<field>PRI.PRICE</field>
+<desc>
+            <p>Price  per unit of lot/lots traded. For 'OPTION' trades, this denotes the  'PREMIUM' price in TRADE currency.</p>
+            <p>Default from Secondary side price.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 numeric characters (0-6 integers and  0-9 decimals) </p>
+            <p>No input field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MATURITY.DATE</field>
+<desc>
+            <p>The delivery period or prompt date of the contract transacted.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 11 characters in DATE format </p>
+            <p>       The field CONTRACT.ID and TRADE.DATE must be populated         with a valid maturity date and prior to this field </p>
+            <p>       Must be in the format: MONTHLY TRADES = Month/Year e.g.         SEP00 </p>
+            <p>       DAILY TRADES = Day/Month/Year e.g. 15SEP00 </p>
+            <p>       The date must be greater than the Trade Date </p>
+            <p>       Mandatory Field </p>
+        </desc>
+</t>
+<t>
+<field>PRI.RT.LINK</field>
+<desc>
+            <p>The following field allows the user to automatically route Order's/Trades and the resultant fills from the system to another. The system will automatically assign the couterparty to any order depending on product and location. Routing of the input of orders can only take place if the secondary customer on the orderhas a routing customer set-up on DX.ACC.MASTER.</p>
+            <p>       PRI.RT.LINK (Primary routing link) The Trade ID which this transaction is hedged against.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       No         input </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>OPTION.STYLE</field>
+<desc>
+            <p>Defines the rule of settlement of an option according to the type populated in this field. The type is chosen from the drop down menu:</p>
+            <p>        AMERICAN: An option that may be exercised at any time prior to its expiry date</p>
+            <p>        EUROPEAN: An option that may only be exercised on its expiry date.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>An input field for FX-OTC options.</p>
+            <p>        Will default to either : AMERICAN/EUROPEAN/CARRIBEAN </p>
+            <p>        Field Defaults from DX.CONTRACT.MASTER field OPTION.STYLE  For FX-OTC Options alone, user input is allowed.   <![CDATA[    ]]></p>
+            <p>A NOCHANGE field with additional optional definition of CARRIBEAN</p>
+        </desc>
+</t>
+<t>
+<field>PRI.BEN.ADD</field>
+<desc>
+            <p />
+            <p />
+            <p>       This field is used when the primary counterparty (This would normally be the Customer) of the deal instructs us to pay funds to another party who does not have an account with us. </p>
+            <p>       When a contract matures, funds must be moved to actually settle the contract. This involves paying the counterparty or his nominated beneficiary for the currency sold and receiving funds for the currency purchased. The primary counterparty will advise us of where the money which we have sold is to be paid and we will advise them where we require the currency purchased to be remitted. The delivery of funds will normally be as one payment but may be in several instalments. </p>
+            <p>       If the beneficiary is known to us (i.e. there is a customer record), the beneficiary details should be entered in the BENEFICIARY.NO field. If unknown to us, details should be entered in this multi-value field. Note that, where the beneficiary requests the funds into an account he has with us, this should be specified in the OUR.ACCOUNT.PAY field. </p>
+            <p>       It is important to note that when the Beneficiary is specified, the Primary Counterparty Correspondent field will be used to indicate the bank of the beneficiary. </p>
+            <p>       The counterparty may ask us to pay the amount sold in a number of ways: </p>
+            <p>       To an account with us </p>
+            <p>       We may pay the funds directly into an account provided it is in the same currency as that being sold. To make payment directly to a counterparty's internal account the relevant account number should be entered in the OUR.ACCOUNT.PAY field and no other input will be necessary in this field. </p>
+            <p>       To an account at another bank overseas </p>
+            <p>       To pay money to another bank overseas we would have to advise our agent, in the country concerned, to pay to the counterparty's bank. In this case, the Nostro account number of our agent should be entered in the OUR.ACCOUNT.PAY field. If the counterparty's bank is known to us (i.e. there is a customer record), then the bank's number should be entered in CPARTY.CORR.NO if these details have not yet been defined on the Agency file. If the bank is not known to us, (i.e. there is no customer record) the bank's name and address should be entered in the multi-valued field CPARTY.CORR.ADD. When known, the counterparty's account number at his bank should be entered in the field CPARTY.BANK.ACC. </p>
+            <p>       To an account at another bank locally </p>
+            <p>       Where payment is to be effected locally, settlement can be through a number of different methods. The most common are Banker's Payments, CHIPS, or CHAPS. In all cases, the number of our internal clearing account, or our clearing agent should be entered in OUR.ACCOUNT.PAY. Details of the counterparty's bank account should be completed as detailed above. </p>
+            <p>       To a beneficiary of the counterparty </p>
+            <p>       The counterparty may nominate a third party beneficiary of the funds. If the beneficiary is to be paid by crediting an account with us, the account number should be entered in OUR.ACCOUNT.PAY. If the beneficiary does not have an account with us, the internal clearing number or Nostro account of our agent should be entered in OUR.ACCOUNT.PAY. </p>
+            <p>       Where we are paying to another bank but the beneficiary is known to us (i.e. there is a customer record), the customer number of the beneficiary will be entered in the field BENEFICIARY.NO. Where no relationship exists, the payment details will be entered in the multi-valued field BENFCY.ADD. </p>
+            <p>       Payment via an intermediary bank </p>
+            <p>       Occasionally the counterparty may ask for payment to be made through an intermediary bank. This occurs where the counterparty or beneficiary's correspondent is not in the country of the currency involved. As an example, let us say that the Bank 'ABC' in Hong Kong uses Bank 'XYZ' in Hong Kong as their dollar agent. When a dollar payment is to be made we would pay American Bank in New York (the Intermediary) for Bank 'XYZ in HK (the Cparty correspondent), account Bank 'ABC' (the Cparty or Beneficiary). The Intermediary can be entered as a number in the INTERMED.BK.NO field if a customer relationship exists (i.e. there is a customer number) or as narrative in the Intermed Add field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       4 lines of 35 characters. Multivalue field associated         with field range OUR.ACCOUNT.PAY to REC.ADV.NARR.</p>
+            <p>       Input is not allowed when a beneficiary number has been         entered.</p>
+            <p>       Input is only allowed when OUR.ACCOUNT.PAY is a Nostro         account.</p>
+            <p>       Input is not allowed for deal sub-types 'BR','IN', and         'NE'.</p>
+            <p>       Input is restricted to four lines of 35 characters.</p>
+            <p>       Insert text here</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>ADVICE</field>
+<desc>
+            <p>Specifies whether transfer advice is required or not.</p>
+            <p>  It accepts two values either YES or NO.</p>
+            <p>  Input mandatory if TRANSFER.TYPE holds the value TRANSFER.INC or TRANSFER.INC.PAY.</p>
+        </desc>
+</t>
+<t>
+<field>AI.RESERVED1</field>
+<desc>
+            <p>Reserved for future use.</p>
+        </desc>
+</t>
+<t>
+<field>AI.RESERVED2</field>
+<desc>
+            <p>Reserved for future use.</p>
+        </desc>
+</t>
+<t>
+<field>ALT.IND.ID</field>
+<desc>
+            <p>Holds the full CUSIP id or alternate index of this order.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Up to 35 alphanumeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>AUTO.AUTHORISE</field>
+<desc>
+            <p>When set as YES the trade gets automatically authorised.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Once the value YES is provided in AUTO.AUTHORISE it cannot be changed.</p>
+        </desc>
+</t>
+
+
+<t>
+<field>ORDER.CLOSEOUT</field>
+<desc>
+            <p>Allows null or CLOSE.</p>
+            <p>When set to CLOSE the order is considered as a square-off order to be closed against trades provided in CLOSEOUT.TRADE field.</p>
+            <p>The version to be used for closeout is defined in CLOSEOUT.VERSION field of DX.PARAMETER. For example when set to AUTO.CLOSE,  the closeout process uses DX.CO.MANUAL.INPUT,AUTO.CLOSE</p>
+            <p>Also the contract used in order should have B2B set to YES else the user has to manually do the closeout process for the other side. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No partial fill is allowed when this field is set to CLOSE.</p>
+        </desc>
+</t>
+
+<t>
+<field>CLOSEOUT.TRADE</field>
+<desc>
+            <p>Valid trade ID needs to be inputted. This trade gets squared off against the trade that gets created through current order.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>The trade should hold the same customer / broker / counterparty that belongs to the order.</p>
+            <p>The trade inputted should not have multivalue in its primary side.</p>
+        </desc>
+</t>
+
+<t>
+<field>CLOSEOUT.LOTS</field>
+<desc>
+            <p>This field is associated with CLOSEOUT.TRADE field which holds the lots to be closed out for the trades provided.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>The lots provided cannot exceed the lots in trade.</p>
+            <p>Sum of the lots provided should match the lots filled in order.</p>
+        </desc>
+</t>
+<t>
+<field>KICKIN.EXPIRE</field>
+<desc>
+            <p>Value to this field gets defaulted from DX.CONTRACT.MASTER field KICKIN.EXPIRE.</p>
+            <p>
+               <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>        Upto 3 alphanumeric values</p>
+            <p>        Valid inputs are either YES or NO</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.AMEND</field>
+<desc>
+            <p>Once this field is set to 'YES' the order behaves as amendment order and not as a fill order and on authorisation doesn't create trade.</p>
+            <p>The fields LIMIT.TYPE, LIMIT.PRICE, LIMIT.DATE, ORDER.TYPE and ORDER.LOTS becomes inputtable when this field is set to YES and fill in secondary side are not allowed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed value is YES or null</p>
+          
+        </desc>
+</t>
+<t><field>STRIKE.QUOTE.CCY</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>STRIKE.QUOTE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>CCY.BOUGHT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>AMT.BOUGHT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>CCY.SOLD</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>AMT.SOLD</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>EXOTIC.DATE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>EXOTIC.TIME</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>CANCEL.PEND.ORDERS</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

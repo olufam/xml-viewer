@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DE</product>
+<table>DE.INWARD.ROUTING</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The use of the Inward Routing Table is optional, selected by one of the system control parameters on Parameter. </p>
+            <p>A particular Message Type will always be routed inward to a particular banking application.  However, different messages of the same Message Type can be marked for the attention of different Account Officers or Departments within that banking application.  This can be done by setting up conditions in the Inward Routing Table to equate certain Account Officers or Departments with particular values of Currency Code, Country Code (or any other field in the message header). </p>
+            <p>Complex conditions can be set up by using several sets of Field Name, Operand and Condition in the same Inward Routing Table record.  The routing is applied to a message for which all conditions in a particular record are true. </p>
+            <p>For each message the Inward Routing Table is in the sequence of increasing Status.Keys.  The first record found which contains a true condition for the message will determine the Department to be used for routing. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>MESSAGE.TYPE</field>
+<desc>
+            <p>Specifies the basic Message Type (as defined in the DE.MESSAGE table) whose routing is defined in this record. </p>
+            <p>Note that the routing defined in this record only applies to this one Message Type. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-4 numeric characters. (Mandatory input) Must be on the DE.MESSAGE table.</p>
+        </desc>
+</t>
+<t>
+<field>STATUS.KEY</field>
+<desc>
+            <p>Defines a search sequence through the Inward Routing table.  Only the first applicable record will be used. </p>
+            <p>Records are processed in Status Key sequence;  records with smaller numbers come first on the table.  The first condition to match a particular message is used to set the Department code in the header. </p>
+            <p />
+            <p>Example: </p>
+            <p>If a record with a Status Key of 10 states that Type 100 messages for Customer 5000 are to be dealt with by Department 'X', and a record with a status key of 20 states that Type 100 messages in dollars are to be dealt with by Department 'Y', then if a Type 100 message is a dollar payment to Customer 5000, it will be 'Routed' to Department 'X' because Status Key 10 is the first record with a true condition for that message. </p>
+            <p>It is advisable to use well spaced numbers for Status Keys so that intermediate records can be added later if necessary. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-5 numeric characters. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>OPERAND</field>
+<desc>
+            <p>Describes how FIELD.NAME is to be tested (in conjunction with Condition). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>One of the following:  'EQUAL'          'NOT EQUAL' 'GREATER THAN'   'LESS THAN'  FIELD.NAME, OPERAND and CONDITION form a multivalue set. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>CONDITION</field>
+<desc>
+            <p>Specifies a value that the field named in FIELD.NAME is to be compared with. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-13 type A (alphanumeric) characters.  Either a character string (no delimiters - eg. SMITH not 'SMITH')  or     a numeric value (with sign and decimal point if required)  or     a date (6 digits YYMMDD).  FIELD.NAME, OPERAND and CONDITION form a multivalue set. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>DEPARTMENT</field>
+<desc>
+            <p>Defines the Department or Account Officer that messages fulfilling the conditions below must be routed to. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-4 type A (alphanumeric) characters. (Mandatory input)  Must be on the DEPT.ACCT.OFFICER file.</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.NAME</field>
+<desc>
+            <p>Specifies the name of a field on the message header which is to be used to control the inward routing of messages. </p>
+            <p>Example: </p>
+            <p>If all MT100 messages in US Dollars must be routed to Department 'D', then a record would be set up as follows:            STATUS.KEY    500            MESSAGE TYPE  100            DEPARTMENT    D            FIELD NAME    CURRENCY            OPERAND       EQUAL            CONDITION     USD </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>One of the following: 'COUNTRY.CODE'     'LANGUAGE'   'AMOUNT' 'VALUE.DATE'       'COMPANY'    'CURRENCY' 'MESSAGE.PRIORITY' 'ACCOUNT'    'CUSTOMER' 'TRANS.REF'        'CARRIER'     'STATUS' 'IN.PAY.TYPE'      'TEST.KEY.REQ''TEST.KEY.INP' FIELD NAME, OPERAND (Field 4.1) and CONDITION (Field 5.1) form a multivalue set. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.POS</field>
+<desc>
+            <p>Specifies a field number in Inward Header corresponding to the Field Name that is to be used for Inward Routing. This improves performance when checking whether conditions match. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 numeric characters. Multivalue set. (No input)</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

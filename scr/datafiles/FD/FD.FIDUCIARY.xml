@@ -1,0 +1,1481 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FD</product>
+<table>FD.FIDUCIARY</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p />
+            <p>This application is used by dealers to place fiduciary deposits made by customers with other banks. The placement contract is generated automatically from the FD.FID.ORDERS made by customers, the dealer must decide which bank the funds are to be placed with and the interest rate applicable. </p>
+            <p />
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>REIMBURSE.STATUS</field>
+<desc>
+            <p>Defines the status of a request for reimbursement of principal by the customer of the associated FD.FID.ORDER. </p>
+            <p>Once a request for reimbursement has been received, the dealer must accept the request by changing the REIMBURSE.STATUS to ACCEPTED. On authorisation of the placement, the status is set to ACTIONED and the confirmation is generated and sent to the FID.BANK. </p>
+            <p>Once the reimbursement is actioned, the status cannot be changed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>REQUESTED, ACCEPTED or ACTIONED. (Optional input)</p>
+            <p>A status of ACTIONED cannot be changed.</p>
+            <p>No input allowed with no REIMBURSE.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>FID.BANK</field>
+<desc>
+            <p>The bank where the funds are to be placed. </p>
+            <p>The Fid bank will be automatically assigned when the placement is created, if the pooled group used to generate the placement contains orders of one customer only, and that customer has expressed a preferred bank (on FD.CUST.DETAILS). </p>
+            <p>A customer can express banks which the funds should not be placed with, this is defined on FD.CUST.DETAILS for information only. Each customer may also express the maximum amount to be placed with any one bank, and also individual limits for each bank for placement of funds. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-6 digit customer number         or 3-10 digit customer mnemonic  (Mandatory input, no change after authorisation)</p>
+            <p>Input must be the id to an existing CUSTOMER record.</p>
+            <p>The customer entered must be defined as a BANK according to the ACCOUNT.CLASS definition.</p>
+        </desc>
+</t>
+<t>
+<field>FID.BK.CORR.AC</field>
+<desc>
+            <p>The account number of the account maintained by the FID.BANK with its correspondent. </p>
+            <p>The value will be defaulted from the AGENCY record of the FID.BANK if specified for the currency of the placement. The account number should be entered if known for ease of processing at the correspondent bank. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-16 alphanumeric SWIFT characters (Optional input)</p>
+            <p>No input allowed if FID.BANK.CORR and FID.BK.CORR.ADD are not present.</p>
+        </desc>
+</t>
+<t>
+<field>CHANGE.STATUS</field>
+<desc>
+            <p>Defines the status of the associated PRIN.CHANGE. </p>
+            <p>Once the account officer has submitted a request for PRINCIPAL change, the CHANGE.STATUS will be set to REQUESTED for the associated PRIN.CHANGE and CHANGE.DATE. If the dealer accepts the change request, they must do so by setting the CHANGE.STATUS to ACCEPTED. If the dealer does not wish to accept the change, the change fields must be removed from the FD.FID.ORDER record. </p>
+            <p>Once the dealer has Accepted the change and authorised the contract, it cannot be removed. Changes accepted in error can effectively be reversed by adding a change for the opposite amount to the FD.FID.ORDER record for the same CHANGE.DATE, which must also be ACCEPTED by the dealer. </p>
+            <p>There will only ever be 1 REQUESTED change for the same CHANGE.DATE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>REQUESTED, ACCEPTED or ACTIONED (Optional Input)</p>
+            <p>Multi value sets cannot be deleted</p>
+            <p>Expansion of the CHANGE fields is not allowed</p>
+            <p>A status of ACTIONED cannot be changed.</p>
+            <p>REQUESTED changes can only be set to ACCEPTED, or back to REQUESTED.</p>
+        </desc>
+</t>
+<t>
+<field>TARGET</field>
+<desc>
+            <p>This is an 'I' type field holds the TARGET of the customer</p>
+        </desc>
+</t>
+<t>
+<field>EARLY.ORIG.DATE</field>
+<desc>
+            <p />
+            <p>This field is used to store the original maturity date of an anticipated fixed deposit.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Must be a valid date</p>
+            <p />
+            <p>NOINPUT</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MATURE.AT.SOD</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>FID.BANK.CORR</field>
+<desc>
+            <p>Specifies the customer number of the correspondent bank of the FID.BANK used for payment of funds to the Fiduciary Bank. </p>
+            <p>The correspondent bank will be defaulted at input of the FID.BANK, if defined as the AUTOROUTE.BANK for the currency in the AGENCY record for the FID.BANK. If the customer number of the correspondent is not known, the name and address of the correspondent should be entered in the field FID.BK.CORR.ADD instead. </p>
+            <p>The contents of this field or the FID.BK.CORR.ADD will be used in the SWIFT message 202 in field 57, as the Account With Bank. The MT202 is sent at drawdown and at time of principal increase. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-6 numeric customer number          or 3-10 alphanumeric customer mnemonic (Optional input)</p>
+            <p>No input allowed if FID.BK.CORR.ADD is present.</p>
+            <p>Input in either this field or FID.BK.CORR.ADD is mandatory when a NOSTRO DRAWDOWN.ACCT is specified.</p>
+            <p>The customer must be defined as a BANK according to the ACCOUNT.CLASS definition.</p>
+        </desc>
+</t>
+<t>
+<field>SECTOR</field>
+<desc>
+            <p>This is an 'I' type field holds SECTOR of the customer</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.7</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>DELIVERY.REF</field>
+<desc>
+            <p>Identifies the message generated from the associated ADVICE.CODE in the delivery system. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>15 alphanumeric delivery reference.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>FID.TYPE</field>
+<desc>
+            <p>The type of Fiduciary placement to be made. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>"FIXED" or "NOTICE" or any abbreviation thereof.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>INTERST.BASIS</field>
+<desc>
+            <p>This is an 'I' type field holds the INT.DAY.BASIS</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.INT</field>
+<desc>
+            <p>The amount of interest due to the associated ORDER.NO at the next interest payment date, or maturity. </p>
+            <p>The amount of interest payable to each order is calculated as follows: </p>
+            <p>       ORDER.INT = INTEREST.AMT * ORDER.AMT / AMOUNT of Placement </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric amount formatted according to the CURRENCY of the      order.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.ACTION</field>
+<desc>
+            <p>Allows an order to be removed from the pool group and the placement, and reduce the placement principal by the order amount. </p>
+            <p>The dealer may wish to remove on or more orders from the placement, prior to authorisation of the deal. This will prevent the necessity of deleting the placement and re-approving all the orders. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>REMOVE (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>FIDUCIARY.ID</field>
+<desc>
+            <p>This field holds the ID of the contract</p>
+        </desc>
+</t>
+<t>
+<field>FORWARD.BACKWARD</field>
+<desc>
+            <p>No input field. Input is defaulted from FD.GROUP.PAYMENT.</p>
+            <p>This field indicates the method that will be followed if the cycled interest settlement date is a non working day in the relative currency.</p>
+            <p>The following provides an explanation of the various input values for this field:</p>
+            <p>Null = Calendar  The sysem will use the same date irrespective of whether dates cycled are working days or not.</p>
+            <p>1 = Forward  The system will cycle forward to the next available working day.</p>
+            <p>2 = Backward  The system will cycle to the previous working day.</p>
+            <p>3 = Fwd Same Month  The system will cycle forward unless the next working day unless it falls in the next month.  In this case, it will cycle to the previous working day.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field  defaulted from FD.GROUP.PAYMENT</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+            <p>Local reference fields defined by the user. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 alphanumeric characters.  Multivalued field.  (Locally defined)</p>
+        </desc>
+</t>
+<t>
+<field>OUR.REMARKS</field>
+<desc>
+            <p>Allows entry of any relevant remarks to the deal made by the bank. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 Alphanumeric characters (Optional field)</p>
+        </desc>
+</t>
+<t>
+<field>CONF.BY.CUST</field>
+<desc>
+            <p>The date and time that the confirmation of the deal with the FID,BANK is processed. </p>
+            <p>Customer confirmations are entered by using the 'V'erify function. Confirmation is required for new deals and after each principal change. Unconfirmed deals are stored on the FD.UNCONF.CPARTY file, and are reported at end of day. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>20 alphanumeric characters</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>OFFICER</field>
+<desc>
+            <p>This is an 'I' type field holds the revaluation account officer</p>
+        </desc>
+</t>
+<t>
+<field>SOURCE.FILE</field>
+<desc>
+            <p>This is an 'I' type field holds the file name.</p>
+        </desc>
+</t>
+<t>
+<field>DEAL.DATE</field>
+<desc>
+            <p>The date the placement contract is generated. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>8 character standard date.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>BROKER.CODE</field>
+<desc>
+            <p>The code of the broker used to make the placement, or the deal method used. </p>
+            <p>This field is either used to record the method used to make the deal, e.g. Phone, Reuters, etc, or the code of the broker used.  If a broker code is specified the amount of brokerage payable should be entered using the BROKER.CCY and BROKER.AMT fields. Brokerage is taken when the contract reaches the value date. </p>
+            <p>No change allowed after authorisation. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 alphanumeric FX.DEAL.METHOD     or 1-6 numeric character BROKER code. (Optional input)</p>
+            <p>If an alpha numeric code is entered, it must exist on the FX.DEAL.METHOD file.</p>
+            <p>Numeric input must exist on the BROKER file.</p>
+        </desc>
+</t>
+<t>
+<field>SPEC.INSTR</field>
+<desc>
+            <p>Contains any special instructions for the dealer regarding the placement. </p>
+            <p>When the associated order is input, the account officer may enter special instructions for the placement in the field DEALER.INSTR. These instructions are stored in this field on the placement. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-35 alphanumeric characters.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.12</field>
+<desc>
+            <p>Reserved for future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No Input.</p>
+        </desc>
+</t>
+<t>
+<field>CATEGORY</field>
+<desc>
+            <p>Denotes the category of the placement used for reporting purposes. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>5-digit category code (Mandatory input)</p>
+            <p>Must be within the range defined for the FID.TYPE defined in PLCMT.START and PLCMT.END on FD.PARAMETER.</p>
+        </desc>
+</t>
+<t>
+<field>EARLY.ORIG.RATE</field>
+<desc>
+            <p />
+            <p>This field is used to store the original interest rate of an anticipated fixed deposit.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-11 numeric rate field</p>
+            <p />
+            <p>NOINPUT</p>
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>BACK.VAL.CHG</field>
+<desc>
+            <p>Denotes whether associated rate change is back valued and already effected for a NOTICE fiduciary linked to an FD.GROUP.PAYMENT record. </p>
+            <p>When a back valued change has already been made for an FD.GROUP.PAYMENT record in the current period, and a back valued NOTICE deal is entered, the rate change will be applied on line at authorisation of the deal. This will ensure that any deal will have all effected rate changes applied immediately. </p>
+            <p>Note that back valued changes entered in FD.GROUP.PAYMENT on the same day as input of a back valued deal will not be effected on-line, and will only be processed tonight. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>"Y" or null.</p>
+            <p>This is a NOINPUT, system maintained field.</p>
+        </desc>
+</t>
+<t>
+<field>INT.DAY.BASIS</field>
+<desc>
+            <p>Specifies the method to be used for calculating interest, and also the commission on the related order contracts. </p>
+            <p>For inside group deposits, the contents of this field is taken from the order. </p>
+            <p>For the other types of deposits, the default is taken either from FD.BANK.DETAILS, if any, or from CURRENCY. </p>
+            <p>Can accept the following types:</p>
+            <p />
+            <p>A - 360/360</p>
+            <p>B - 366/365</p>
+            <p>E - 366/365</p>
+            <p>F - 360/365</p>
+            <p />
+            <p>For illustrations of all supported </p>
+            <p>INTEREST.BASIS</p>
+            <p> types see: INTEREST.BASIS</p>
+            <p>No Change allowed after authorisation. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A, B, E or F (Optional input) </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RESERVED.9</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.PEN.COMM.AMT</field>
+<desc>
+            <p />
+            <p>The amount of commission calculated based on the </p>
+            <p>PEN.COMM.TYPE</p>
+            <p> specified, without considering the percentage specified for the customer. The default commission amount is calculated by the formula: </p>
+            <p />
+            <p />
+            <p>Def Comm = (Base Amt * No Days * Comm Rate) / (Days in Year * 100) </p>
+            <p />
+            <p />
+            <p>where: </p>
+            <p />
+            <p />
+            <p>Base Amt is always the </p>
+            <p>PRINCIPAL</p>
+            <p> of the order. No Days is the number of days between the value date and the early maturity. Comm Rate is the percentage specified on </p>
+            <p>FD.COMMISSION.TYPE</p>
+            <p>. Days in Year is the number of days in the year according to </p>
+            <p>INTEREST.DAY.BASIS.</p>
+            <p />
+            <p />
+            <p />
+            <p>Commission is always taken in the same currency as the order. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-14 numeric amount formatted according to the </p>
+            <p>CURRENCY</p>
+            <p>This is a </p>
+            <p>NOINPUT</p>
+            <p>This field is not populated if </p>
+            <p>PEN.COMM.TYPE</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CCY.MARKET</field>
+<desc>
+            <p>The currency market of the placement. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 numeric currency market code.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>FID.STATUS</field>
+<desc>
+            <p>The status of the placement for processing purposes. </p>
+            <p>The following values in the FID.STATUS field are possible: </p>
+            <p>FWD - Forward deal, not yet reached VALUE DATE CUR - Current deal LIQ - Liquidated deal, i.e. reached maturity date MAT - Matured deal, written to History file </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 alpha characters</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>CO.CODE</field>
+<desc>
+            <p>The text of any override message generated in the course of processing the order. </p>
+            <p>Overrides generated and automatically approved will be stored in this field. For renewal contracts with errors or overrides encountered during processing of the renewal, the message will be stored here. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 45 alpha numeric characters (No input field)</p>
+        </desc>
+</t>
+<t>
+<field>DEF.PEN.COMM.RATE</field>
+<desc>
+            <p />
+            <p>This field specifies the default penalty commission rate based on the </p>
+            <p>PEN.COMM.TYPE</p>
+            <p> specified.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-11 numeric rate field</p>
+            <p>This is a </p>
+            <p>NOINPUT</p>
+            <p>This field is not populated if </p>
+            <p>PEN.COMM.TYPE</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.NO</field>
+<desc>
+            <p>This is an 'I' type field holds the CUSTOMER</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.1</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>FID.BK.CORR.ADD</field>
+<desc>
+            <p>The name and address of the correspondent of the FID.BANK if the customer number is not known. </p>
+            <p>This field must be present if there is no FID.BANK.CORR and a NOSTRO DRAWDOWN.ACCT is specified. This field specifies where the funds should be paid when transferred to the NOSTRO account customer. </p>
+            <p>The contents of this field or the FID.BK.CORR.ADD will be used in the SWIFT message 202 in field 57, as the Account With Bank. The MT202 is sent at drawdown and at time of principal increase. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-35 alphanumeric SWIFT characters.  Multivalue field (Optional input)</p>
+            <p>No input allowed if FID.BK.CORR.ADD is present.</p>
+            <p>Input in either this field or FID.BK.CORR.ADD is mandatory when a NOSTRO DRAWDOWN.ACCT is specified.</p>
+        </desc>
+</t>
+<t>
+<field>BROKER.FIDUCIARY</field>
+<desc>
+            <p>Please refer helptext of  FD.UNCONF.BROKER application</p>
+        </desc>
+</t>
+<t>
+<field>MATURITY.DATE</field>
+<desc>
+            <p>The actual MATURITY.DATE of a FIXED placement or the number of days NOTICE required on a NOTICE contract. </p>
+            <p>For content of this field is defaulted as the ORIG.MAT.DATE. The dealer can modify the Maturity date on FIXED placements within a specified window according to the MAT.DAYS.UPD on the FD.PARAMETER file. Once authorised the associated orders will all be adjusted with the amended maturity date. No change is allowed once the placement has been drawndown. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-8 standard date format           or 1-3 number of days notice (Optional input)</p>
+            <p>The maturity date must be within the number of days specified in the MAT.DAYS.UPD field on FD.PARAMETER when compared with the ORIG.MAT.DATE.</p>
+            <p>No input allowed for NOTICE placements.</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.ID</field>
+<desc>
+            <p>The key of the FD.FID.ORDER which generated the associated change request is held in this field. </p>
+            <p>Fields CHANGE.DATE to CHNG.STATUS form a related multi value set. Fields ORDER.ID to CHNG.STATUS form a related sub value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 18 alphanumeric characters.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.2</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.AMT</field>
+<desc>
+            <p>The amount of principal of the associated ORDER.NO. </p>
+            <p>The amount shown on the placement is the current amount of principal and does not include any pending principal changes. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric amount</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>SWIFT.COMMON.REF</field>
+<desc>
+            <p>The common reference used for SWIFT messages to identify the contract. </p>
+            <p>The SWIFT common reference will be defaulted using the SWIFT address on the COMPANY record, the interest rate, and the SWIFT.CONF.ADDR on the AGENCY record of the FID.BANK. If no common reference can be constructed the value NONE will be used, and an override will be required. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>16 alphanumeric SWIFT characters. (Mandatory field)</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>The currency code of the funds to be placed.</p>
+            <p />
+            <p>The currency code must be set up in FD.FID.CURRENCY.</p>
+            <p />
+            <p>The currency is automatically assigned from the pooled orders which are to be placed.</p>
+        </desc>
+</t>
+<t>
+<field>INTERMED.ADDR</field>
+<desc>
+            <p>The name and address of the intermediary bank used for transferring funds to the FID.BANK. </p>
+            <p>If an intermediary bank is used to transfer funds to the FID.BANK, and the customer number of that bank is not known, the name and address of the intermediary should be entered here. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-35 alphanumeric SWIFT characters. (Optional input)</p>
+            <p>No input allowed if INTERMED.BANK is specified.</p>
+            <p>A maximum of four lines is allowed.</p>
+        </desc>
+</t>
+<t>
+<field>DEALER.SORT</field>
+<desc>
+            <p>INTERNAL Idesc field</p>
+        </desc>
+</t>
+<t>
+<field>LAST.UPDATED.ORD</field>
+<desc>
+            <p>The ID of the last order updated during the autorisation of the placement. </p>
+            <p>When a placement is authorised updates to the associated orders are also made. To improve system processing each order updated is treated as a separate transaction. The last order updated is stored in this field. If the system were to 'crash' during the update phase at authorisation of the placement, order updates may not be complete. In this situation the user should authorise the placement again once the system has been recovered, and the orders already updated will be ignored. If this step is not performed, an end of day job will complete the authorisation. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-18 Alphanumeric ORDER.ID</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RECORD.STATUS</field>
+<desc>
+            <p>Denotes whether a deal slip is to be produced if a deal slip is defined for the appropriate activity of the order. </p>
+            <p>Default value is Y. </p>
+            <p>The production of deal slips is defined on the FD.ADVICES file. For each activity code and optionally category of order, it is possible to specify a DEAL.SLIP.FORMAT, which will be used to produce a deal slip for the order. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Y or NO (Optional Input)</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Text of any override messages generated. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>35 alphanumeric characters.</p>
+            <p>This is a NOINPUT, system field.</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.NOS</field>
+<desc>
+            <p>Together with fields SPEC.INSTR, ORDER.AMT and ORDER.INT, defines details of the orders which have been used to create the placement. </p>
+            <p>Once the placement has been generated the dealer can remove an order from the placement, and so reduce the principal by the amount of the order. This can only be achieved whilst the placement is unauthorised. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>15-18 alphanumeric FID.ORDER ID.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>INDUSTRY</field>
+<desc>
+            <p>This is an 'I' type field holds the INDUSTRY of the customer</p>
+        </desc>
+</t>
+<t>
+<field>MANUAL.INTEREST</field>
+<desc>
+            <p>Specifies for NOTICE placements, whether the placement is to have the interest rates and payment dates determined by the FD.GROUP.PAYMENT mechanism, or whether the contract is to be maintained manually. </p>
+            <p>Most NOTICE placements are grouped by currency, fiduciary bank and days notice, and interest rates and payment dates are quoted by the Fiduciary bank for these groups. In certain cases one placement may require a special set of rate conditions, in which case it will be processed in isolation from the group. Input of Y in this field specifies that this placement is not to be included in the FD.GROUP.PAYMENT record applicable to the placement, and interest rate and payment date must be entered on the contract. </p>
+            <p>Input of NO denotes that the interest rate and payment dates are to be extracted from the FD.GROUP.PAYMENT record which applies to the placement. The key to the FD.GROUP.PAYMENT file is comprised of: </p>
+            <p>               Fid Bank "." Currency "." Days Notice </p>
+            <p>No change allowed after authorisation. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Y or NO. (Optional input)</p>
+            <p>No input allowed for FIXED contracts.</p>
+        </desc>
+</t>
+<t>
+<field>BROKER.CCY</field>
+<desc>
+            <p>The currency in which brokerage is to be paid. </p>
+            <p>Brokerage can be taken in any valid currency when there is a broker code specified. The brokerage is credited to an internal account the category of which is specified on the ACCOUNT.CLASS record BROKER. The brokerage is debited from the PL category code BROKER.CAT specified on FD.PARAMETER. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 alpha character SWIFT standard currency code. (Optional input)</p>
+            <p>Input only allowed when a numeric BROKER.CODE is specified.</p>
+            <p>Must exist on the currency file.</p>
+        </desc>
+</t>
+<t>
+<field>FID.SUBTYPE</field>
+<desc>
+            <p />
+            <p>Defines the subtype at fiduciary type level</p>
+            <p> . </p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>3-alpha characters </p>
+            <p />
+            <p />
+            <p />
+            <p>This is a NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>ORIG.MAT.DATE</field>
+<desc>
+            <p>The maturity date of a FIXED placement, or the number of days notice required on a NOTICE placement, as specified on the order contracts used to create the placement. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format or 0-999 days Notice.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>CHNG.STATUS</field>
+<desc>
+            <p>Defines the status of the associated PRIN.CHANGE. </p>
+            <p>Once the account officer has submitted a request for PRINCIPAL change, the CHNG.STATUS will be set to REQUESTED for the associated PRIN.CHANGE and CHANGE.DATE and ORDER.ID. If the dealer accepts the change request, they must do so by setting the CHNG.STATUS to ACCEPTED. If the dealer does not wish to accept the change, the change fields must be removed from the FD.FID.ORDER record. </p>
+            <p>Once the dealer has Accepted the change and authorised the contract, it cannot be removed. Changes accepted in error can effectively be reversed by adding a change for the opposite amount to the FD.FID.ORDER record for the same CHANGE.DATE, which must also be ACCEPTED by the dealer. </p>
+            <p>There will only ever be one REQUESTED change for the same CHANGE.DATE. </p>
+            <p>Fields CHANGE.DATE to CHNG.STATUS form a related multi value set. Fields ORDER.ID to CHNG.STATUS form a related sub value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>REQUESTED, ACCEPTED or ACTIONED. (Optional input)</p>
+            <p>Multi value sets cannot be deleted.</p>
+            <p>Expansion of the CHANGE fields is not allowed.</p>
+            <p>A status of ACTIONED cannot be changed.</p>
+            <p>REQUESTED changes can only be set to ACCEPTED, or back to REQUESTED.</p>
+        </desc>
+</t>
+<t>
+<field>INT.AMT.DIFF</field>
+<desc>
+            <p>Any difference amount between the interest due on the placement, and the interest to be paid to the associated orders. </p>
+            <p>In some case the full INTEREST.AMT is not equal to the sum of the ORDER.INT. In these cases the difference will be calculated and stored in this field. At interest payment the difference amount will be posted to a difference account. The difference account posted to is defined on the FD.PARAMETER.  The category in the field INT.DIFF.CAT is combined with the placement currency to form an internal account number. </p>
+            <p>An example of a difference entry is described below: </p>
+            <p>                             FIXED Placement for 300,000 USD                               Interest Amount of   1,000 USD The placement is comprised of 3 orders, each for 100,000 USD The interest due to each order is therefore                       1,000 * 100,000 / 300,000 = 333.33 USD The total interest for the 3 orders is 999.99 USD, leaving a difference entry of 0.01 USD. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric amount field.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>EARLY.STATUS</field>
+<desc>
+            <p>This field specifies the status of the early maturity request.</p>
+            <p>Once the account officer has submitted a request for an early maturity, the EARLY.STATUS will be set to REQUESTED. If the dealer accepts the request, he must do so by setting the EARLY.STATUS to ACCEPTED. If the dealer does not wish to accept the change, the early maturity date must be removed from the FD.FID.ORDER record. </p>
+            <p />
+            <p />
+            <p>Once the dealer has accepted the change and authorised the contract, it cannot be removed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>REQUESTED, ACCEPTED or ACTIONED. (Optional input) </p>
+            <p>A status of ACTIONED cannot be changed.</p>
+            <p>REQUESTED changes can only be set to ACCEPTED, or back to REQUESTED.</p>
+            <p />
+            <p>Field Properties</p>
+            <p />
+            <p>Up to 10 alphanumeric characters.</p>
+            <p />
+            <p>Possible values: REQUESTED, ACCEPTED, ACTIONED.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>INTEREST.KEY</field>
+<desc>
+            <p>The key to the BASIC.INTEREST file used for floating interest rates, currently not available for use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field, reserved for future expansion. </p>
+        </desc>
+</t>
+<t>
+<field>STMT.NOS</field>
+<desc>
+            <p>The ID of the accounting entries raised by the accounting system. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>20 alphanumeric characters.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>PRODCCY</field>
+<desc>
+            <p>This is an 'I' type field holds the CURRENCY.</p>
+        </desc>
+</t>
+<t>
+<field>POOLED.GROUP</field>
+<desc>
+            <p>The identifier of the pooled group of Fiduciary Orders used to generate the placement contract. </p>
+            <p>The pooled group number is the key to the FD.POOL.GROUP record. This contains details of the orders used to generate the placement and the status of the pooling process. Once the placement has been created the FD.POOL.GROUP is only used in the case of reversal of the placement. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>10 numeric group number comprised of:             5 digit julian date            5 digit serial number</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.RATE</field>
+<desc>
+            <p>The current rate of interest which applies to the placement. </p>
+            <p>The interest rate is taken from the order for inside group deposits. For other types of deposits, the interest rate must be entered on FIXED contracts, and NOTICE contracts where MANUAL.INTEREST has been requested. </p>
+            <p>For NOTICE contracts with MANUAL.INTEREST set to NO, inside group deposits excluded, the interest rate shown will be the current rate from the applicable FD.GROUP.PAYMENT record. </p>
+            <p>The interest rate cannot be changed after authorisation. </p>
+            <p>For NOTICE contracts with MANUAL.INTEREST set to Y, rate changes can be entered using the NEW.INT.RATE and RATE.EFF.DATE date fields. </p>
+            <p>The rate may be amended at any time before maturity on a FIXED contract, the new rate will have effect from the START of the contract replacing the previous rate. Such a modification will require an override. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-11 numeric rate field (Optional input)</p>
+            <p>No input allowed for NOTICE contracts with MANUAL.INTEREST set to NO</p>
+            <p>Mandatory input when MANUAL.INTEREST is set to Y.</p>
+            <p>Mandatory input for FIXED contracts, except for inside group placements.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.5</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.6</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>DRAWDOWN.ACCT</field>
+<desc>
+            <p>Specifies the account to be credited with the principal of the placement at the start of the contract, i.e. the value date. </p>
+            <p>The drawdown account will be defaulted if no input is made according to the following rules: </p>
+            <p>1)  If the AGENCY record of the FID.BANK contains the value VOSTRO in the     AUTOROUTE.BANK field for the currency of the placement, the VOSTRO     account maintained in that currency will be used. </p>
+            <p>2)  The NOSTRO.ACCOUNT record for the currency will be used to obtain the     default NOSTRO account. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2-16 numeric account number         or 3-10 alphanumeric account mnemonic (Mandatory input)</p>
+            <p>The account must be in the same currency as the CURRENCY of the placement.</p>
+            <p>Input must exist on the account file when the FID.STATUS is FWD, or a principal increase is pending.</p>
+        </desc>
+</t>
+<t>
+<field>EARLY.INT.RATE</field>
+<desc>
+            <p>This field is used to specify the new interest rate of a fixed contract whose maturity is anticipated. The penalty commission used to compensate the unit paying the interest may indeed be calculated in the form of a reduction of the initial interest rate.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-11 numeric rate field (optional input)</p>
+            <p />
+            <p>NOINPUT</p>
+            <p>EARLY.MAT.DATE</p>
+            <p />
+            <p />
+            <p> INTEREST.RATE</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SOURCE.ID</field>
+<desc>
+            <p>This is an 'I' type field holds the ID</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.FIDUCIARY</field>
+<desc>
+            <p>Please refer helptext of  FD.UNCONF.CUSTOMER application for further information.</p>
+        </desc>
+</t>
+<t>
+<field>NEW.INT.RATE</field>
+<desc>
+            <p>Specifies the new interest rate applicable to NOTICE contracts from the associated RATE.EFF.DATE. </p>
+            <p>New interest rates may be entered directly to the contract when MANUAL.INTEREST management is requested. For non manual NOTICE placements, this field will contain the known rate changes defined in the applicable FD.GROUP.PAYMENT record. Any change to the FD.GROUP.PAYMENT record will update the placement contract during the end of the day. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-11 numeric RATE type. (Optional input)</p>
+            <p>No input allowed when MANUAL.INTEREST is not equal to Y.</p>
+            <p>Input mandatory when associated RATE.EFF.DATE is present.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.TIME</field>
+<desc>
+            <p>The reference of the delivery message generated for the associated ACTIVITY.CODE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 20 alpha numeric delivery reference field. (No input field)</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.AMT</field>
+<desc>
+            <p>The amount of interest calculated up to the Maturity date for FIXED contracts, and the next interest payment date for NOTICE contracts. </p>
+            <p>The interest amount is calculated when the interest rate and next interest payment date is known. If any principal change and/or rate change falls within the current period, the amount is recalculated. </p>
+            <p>The amount of interest calculated for the placement is used to determine the interest due to each order. The principal of each order is taken as a percentage of the placement principal, and this percentage is used to calculate the interest due on each order. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric amount in the format of the CURRENCY of the placement.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>EARLY.MAT.DATE</field>
+<desc>
+            <p>This date allows anticipating the reimbursement of a fixed deposit.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Must be a valid date</p>
+            <p />
+            <p>NOINPUT</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RESERVED.4</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>PEN.COMM.TYPE</field>
+<desc>
+            <p />
+            <p>The type of penalty commission determines the rate used to calculate the penalty commission on the fiduciary order. The commission type is defaulted based on the conditions that apply to the customer of the order, defined in the </p>
+            <p>CUSTOMER.CHARGE</p>
+            <p> file. The </p>
+            <p>FD.GROUP.CONDITION</p>
+            <p> that applies to the customer is shown in the </p>
+            <p>GROUP.COND.NO</p>
+            <p> field. The commission type that is taken as the default is found by first locating the </p>
+            <p>CATEGORY</p>
+            <p> code in the </p>
+            <p>FD.GROUP.CONDITION</p>
+            <p> record, if this is not found the </p>
+            <p>FID.TYPE</p>
+            <p> is checked. The corresponding </p>
+            <p>PEN.COMM.TYPE</p>
+            <p> is then taken as default. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>NOINPUT</p>
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>MAT.NOTICE</field>
+<desc>
+            <p>Please refer help text of MATURITY.DATE  for further information.</p>
+        </desc>
+</t>
+<t>
+<field>SEND.CONFIRM</field>
+<desc>
+            <p>Defines whether confirmations are required for the placement. </p>
+            <p>Production of payments and advices is controlled by the activity code of the event in the life of the contract. This activity code is combined with a prefix denoting whether it applies to the placement or order, and is fixed or notice, and optionally the category code, to form a key to the FD.ADVICES file. </p>
+            <p>The format of the advices key is: </p>
+            <p>           TAxxx-ccccc where            T = The type of contract "N"otice or "F"ixed            A = The application, "O"rder or "P"lacement          xxx = Three digit activity code defined on FD.ACTIVITY        ccccc = The category code of the application (optional) </p>
+            <p>If a record is found and messages are requested, this field can be used to override the message production. Confirmation messages have an activity code in the range 100-199. </p>
+            <p>The default value of this field is "Y". </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Y or NO. (Optional field)</p>
+        </desc>
+</t>
+<t>
+<field>PREVENT.POOLING</field>
+<desc>
+            <p>With Call/NOtice contracts it is possible to allow new fiduciary orders to be added to an existing placement. This optional field allows the dealer to close a particular Call/Notice placement, and thereby prevent any new call/notice Fiduciary orders from being added. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>A maximum of 3 characters may be entered.</p>
+            <p>The following values are permitted: YES</p>
+        </desc>
+</t>
+<t>
+<field>INPUTTER</field>
+<desc>
+            <p>The person who input/amended this record.</p>
+            <p />
+            <p>System-generated field only.</p>
+        </desc>
+</t>
+<t>
+<field>SEND.PAYMENT</field>
+<desc>
+            <p>Defines whether payment messages are to be sent for the placement. </p>
+            <p>Production of payments and advices is controlled by the activity code of the event in the life of the contract. This activity code is combined with a prefix denoting whether it applies to the placement or order, and is fixed or notice, and optionally the category code, to form a key to the FD.ADVICES file. </p>
+            <p>The format of the advices key is: </p>
+            <p>           TAxxx-ccccc where            T = The type of contract "N"otice or "F"ixed            A = The application, "O"rder or "P"lacement          xxx = Three digit activity code defined on FD.ACTIVITY        ccccc = The category code of the application (optional) </p>
+            <p>If a record is found and messages are requested, this field can be used to override the message production. Payment messages have an activity code of 210 or 202. </p>
+            <p>The default value of this field is "Y". </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Y or NO. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>RATE.EFF.DATE</field>
+<desc>
+            <p>Defines the effective date of the associated NEW.INT.RATE change. </p>
+            <p>New interest date details can only be entered directly into the fiduciary placement contract when MANUAL.INTEREST management is requested for NOTICE contracts. For other NOTICE contracts the new rate details are entered via the FD.GROUP.PAYMENT application.  The known rate changes are then shown on the contract. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>8 numeric date characters. (Optional input)</p>
+            <p>No input allowed when MANUAL.INTEREST is not equal to "Y".</p>
+            <p>Input mandatory when associated NEW.INT.RATE is present.</p>
+            <p>Cannot before the contract VALUE.DATE.</p>
+            <p>Must not be before previous interest payment date.</p>
+            <p>Dates must be in ascending order.</p>
+            <p>Duplicate dates not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>REIMBURSE.DATE</field>
+<desc>
+            <p>The date of reimbursement of principal for a NOTICE placement. </p>
+            <p>When a customer wishes to close a NOTICE fiduciary contract, the REIMBURSE.DATE will be entered by the account officer on the FD.FID.ORDER record. Once authorised, the REIMBURSE.DATE will be set to the date on the ORDER record, and then REIMBURSE.STATUS will be set to REQUESTED. </p>
+            <p>The dealer must accept the request for reimbursement by setting the REIMBURSE.STATUS to ACCEPTED. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>8 character date field.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>FINAL.MAT.DATE</field>
+<desc>
+            <p>NOT USED</p>
+        </desc>
+</t>
+<t>
+<field>CHANGE.DATE</field>
+<desc>
+            <p>Specifies the value date when the associated PRIN.CHANGEs are to take place. </p>
+            <p>The customer may require a change to the existing principal of NOTICE order. This is entered by the account officer in the PRIN.CHANGE field of the order, with the corresponding CHANGE.DATE when the change is to be effective. On authorisation of the order, the placement is automatically updated with the PRIN.CHANGE and CHANGE.DATE, the associated CHNG.STATUS field is set to REQUESTED, and the associated ORDER.ID field is set to the key of the order which generated the change. </p>
+            <p>The dealer must accept the request for principal change by changing the CHNG.STATUS to ACCEPTED. Once the change is accepted, the confirmation is sent to the FID.BANK, and the status is then set to ACTIONED on the placement, and the corresponding Order. The principal change will be made during the end of day on the CHANGE.DATE requested. </p>
+            <p>Fields CHANGE.DATE to CHNG.STATUS form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>8 numeric date characters.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>DEALER.DESK</field>
+<desc>
+            <p>Identifies the Dealer Desk processing the placement. </p>
+            <p>The dealer desk on the USER record of the dealer will be used as the default value. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 alphanumeric character dealer desk ID in the range A-Z, a-z, plus 0-9.  (Mandatory input)</p>
+            <p>Input must exist as a record on the DEALER.DESK file.</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.REF</field>
+<desc>
+            <p>The limit reference of the product applicable to the placement contract. </p>
+            <p>Fiduciary placements do not represent any risk from the Bank's point of view, but the bank may still wish to assign a limit to the fiduciary bank. Limits can be assigned and checked as any other loan limit if required, by setting the LIMIT.REF to a value defined on the LIMIT.REFERENCE with FX.OR.TIME.BANDS set to 'TB'. </p>
+            <p>A Limit Reference with the FX.OR.TIME.BAND value of 'IN' can be specified, which shows that the limit is an information limit only. A credit line can be allocated for an information limit if required, and the overrides will be generated where appropriate by setting the CHECK.LIMIT flag to Y on the Limit record. If no limit record is specified for an information limit, the record is still created but with the CHECK.LIMIT flag set to NO, resulting in no Limit override messages. </p>
+            <p>If no entry is made in this field the value defined for the type on placement on the LIMIT.PARAMETER record will be defaulted. If no default is found an error message will be generated. A default serial number of '01' will always be defaulted, and the limit will be created automatically if it does not already exist. Any other serial number must form part of the key to an existing limit record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            3 or 4 digit numeric limit reference followed by "." followed by a 2 digit serial number with leading zero  (Mandatory input)</p>
+            <p>Must exist on the LIMIT.REFERENCE file with a value in FX.OR.TIME.BAND of TB or IN.</p>
+            <p>A default value must be defined on LIMIT.PARAMETER.</p>
+            <p>Any value entered must match the specific definition on LIMIT.PARAMETER if defined.</p>
+            <p>A serial number greater than 01 must form part of the key to an existing Limit record.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.10</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>PRINT.DEAL.SLIP</field>
+<desc>
+            <p>Defines whether deal slip production is required for the placement. </p>
+            <p>If a DEAL.SLIP.FORMAT is defined on the FD.ADVICES record applicable to the placement and the activity in question, a deal slip can be produced if requested on this field.  The default is NO. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Y or NO (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>RESIDENCE</field>
+<desc>
+            <p>This is an 'I' type field holds the residence of the customer</p>
+        </desc>
+</t>
+<t>
+<field>SORT.ID</field>
+<desc>
+            <p>Internal IDESC field</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>BID.RATE</field>
+<desc>
+            <p />
+            <p>Defines the original rate of the PERIODIC.INTEREST, and is used to calculate the INTEREST.RATE with the different calculation methods. Only used for outside contracts</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>This is a Numeric NOINPUT       field</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONSOL.KEY</field>
+<desc>
+            <p>The consolidation key generated for updates to the CRB base. </p>
+            <p>The fiduciary application is defined on the CRF as 2 application files under the same application name.  When defining conditions for the consol key on CONSOLIDATE.COND the placement file is referenced as FID.PLACEMENT for the application FIDUCIARY.  Asset types relating to the placement are: </p>
+            <p>FWDCONTDR - for forward contracts and principal changes CONTDR    - for live contracts </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-40 alphanumeric characters</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>INT.LIQ.ACCT</field>
+<desc>
+            <p>The account number through which interest is to received from the FID.BANK. </p>
+            <p>The default value will be the PRIN.LIQ.ACCT. This account will be debited with the interest due at maturity, and interest payment. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2-14 numeric account number       or 3-10 alphanumeric account mnemonic (Mandatory input)</p>
+            <p>Account must be a NOSTRO account.</p>
+            <p>Must exist on the account file.</p>
+        </desc>
+</t>
+<t>
+<field>PEN.COMM.RATE</field>
+<desc>
+            <p>This field specifies the actual penalty commission rate. It may either be keyed in or defaulted based on </p>
+            <p>PEN.COMM.TYPE</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-11 numeric rate field</p>
+            <p>This is a </p>
+            <p>NOINPUT</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PEN.COMM.AMT</field>
+<desc>
+            <p />
+            <p>This field specifies the actual amount of penalty commission to be debited to the customer.</p>
+            <p />
+            <p />
+            <p>It may either be keyed in or calculated using the formula shown for </p>
+            <p>DEF.PEN.COMM.AMT</p>
+            <p>PEN.COMM.RATE</p>
+            <p>DEF.PEN.PERCENT</p>
+            <p>FD.GROUP.CONDITION</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-14 numeric amount formatted according to the </p>
+            <p>CURRENCY</p>
+            <p>This is a </p>
+            <p>NOINPUT</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RESERVED.11</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>SEND.PYAMENT</field>
+<desc>
+            <p>Defines whether payment messages are to be sent for the placement. </p>
+            <p>Production of payments and advices is controlled by the activity code of the event in the life of the contract. This activity code is combined with a prefix denoting whether it applies to the placement or order, and is fixed or notice, and optionally the category code, to form a key to the FD.ADVICES file. </p>
+            <p>The format of the advices key is :-            TAxxx-ccccc Where T = The type of contract "N"otice or "F"ixed A = The application, "O"rder or "P"lacement xxx = Three digit activity code defined on FD.ACTIVITY ccccc = The category code of the application (optional) </p>
+            <p>If a record is found and messages are requested, this field can be used to override the message production. Payment messages have an activity code of 210 or 202. </p>
+            <p>The default value of this field is "Y". </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Y or NO. (Optional Input)</p>
+        </desc>
+</t>
+<t>
+<field>PLACEMENT.NO</field>
+<desc>
+            <p>The unique reference number by which a fiduciary placement is identified in the FD.FIDUCIARY application. </p>
+            <p>The placement number is automatically assigned when the final order in a pooled group is approved by the dealer. It is not possible to input a new placement without approving the associated orders first. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>12 character reference number comprised of:              "FD" application identifier followed by 5-digit Julian date without century followed by 5-digit sequence number  (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>THEIR.REFERENCE</field>
+<desc>
+            <p>The reference number for the placement as known by the FID.BANK. </p>
+            <p>This will be quoted in all correspondence with the FID.BANK during the life of the placement. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-16 alphanumeric SWIFT characters. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.3</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>INTERMED.BANK</field>
+<desc>
+            <p>The intermediary bank used for payment of the principal amount at drawdown. </p>
+            <p>The intermediary bank will be defaulted at time of input of the FID.BANK if a NOSTRO drawdown account is specified. The Intermediary will be defaulted from the AGENCY record of the FID.BANK.CORR if specified for the currency of the placement, and the AUTOROUTE.BANK is not the correspondent itself. </p>
+            <p>If an intermediary bank is required and the customer number of the bank is not known, the field INTERMED.ADDR should be used to specify the name and address of the intermediary. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-6 numeric customer number          or 3-10 alphanumeric customer mnemonic (Optional input)</p>
+            <p>No input allowed if INTERMED.ADDR is present.</p>
+            <p>The customer must be defined as a BANK according to the ACCOUNT.CLASS definition.</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.LIQ.ACCT</field>
+<desc>
+            <p>The account to be used for reimbursement of principal. </p>
+            <p>The DRAWDOWN.ACCT will be used as the default value if present. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2-14 numeric account number         or 3-10 alphanumeric account mnemonic (Mandatory input)</p>
+            <p>Must be a NOSTRO account.</p>
+            <p>Must exist on the ACCOUNT file.</p>
+        </desc>
+</t>
+<t>
+<field>CONF.BY.BROKER</field>
+<desc>
+            <p>The date and time that the confirmation of the deal from the broker was processed. </p>
+            <p>Confirmation from the broker is entered by using the 'V'erify function for the order. Deals can be confirmed when they are new, or after each principal change. Unconfirmed broker deals are held on the FD.UNCONF.BROKER file, and are reported at the end of day. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>20 alphanumeric characters.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>The date the placement contract commences, i.e. the date the funds are paid to the FID.BANK. </p>
+            <p>The value date is the same as the pooled orders which are used to generate the placement. The value date is defaulted from the order date according to the days delivery specified on the currency file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date input.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.CHANGE</field>
+<desc>
+            <p>A change to the principal of placement pending, generated by a request to change the Order. </p>
+            <p>The customer may require a change to the existing principal of NOTICE order. This is entered by the account officer in the PRIN.CHANGE field of the order, with the corresponding CHANGE.DATE when the change is to be effective. On authorisation of the order, the placement is automatically updated with the PRIN.CHANGE and CHANGE.DATE, the associated CHNG.STATUS field is set to REQUESTED and the associated ORDER.ID field is updated with the key to the FD.FID.ORDER record which generated the request. </p>
+            <p>The dealer must accept the request for principal change by changing the CHNG.STATUS to ACCEPTED. Once the change is accepted, the confirmation is sent to the FID.BANK, and the status is then set to ACTIONED on the placement, and the corresponding Order. The principal change will be made during the end of day on the CHANGE.DATE requested. </p>
+            <p>A negative PRIN.CHANGE denotes that a principal decrease is requested. </p>
+            <p>Fields CHANGE.DATE to CHNG.STATUS form a related multi value set. Fields ORDER.ID to CHNG.STATUS form a related sub value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric amount, with optional leading minus (-).</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.8</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>PRODCAT</field>
+<desc>
+            <p>This is an 'I' type field holds the CATEGORY</p>
+        </desc>
+</t>
+<t>
+<field>BANK.TO.BANK</field>
+<desc>
+            <p>Any extra information required by the FID.BANK for processing the placement and its delivery instructions. </p>
+            <p>This field corresponds to field 72 in SWIFT. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-35 alphanumeric SWIFT characters. (Optional input)</p>
+            <p>A maximum of 6 lines of information is allowed.</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.PAY.DATE</field>
+<desc>
+            <p>For NOTICE contracts this field shows the next interest payment date. </p>
+            <p>For FIXED contracts interest is only paid at the MATURITY DATE. For NOTICE contracts where MANUAL.INTEREST is required, the interest payment date must be entered by the dealer.  Where MANUAL.INTEREST is not required, the interest payment date is defaulted from the FD.GROUP.PAYMENT record applicable to the placement. </p>
+            <p>The interest payment date can be associated with a frequency, or may be announced at given intervals by the Fiduciary Bank. </p>
+            <p>When multiple NOTICE orders are pooled onto a single placement, and an order is being reimbursed, the interest for this order will be paid on the date held in this field, regardless of the date on which the order was reduced to zero principal. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>8 numeric date field followed by optional 5 character standard frequency field.  (Optional input)</p>
+            <p>No input allowed for FIXED contracts.</p>
+            <p>No input allowed if MANUAL.INTEREST is NO.</p>
+            <p>The interest payment date cannot be before the VALUE.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>BROKER.AMT</field>
+<desc>
+            <p>Defines the amount of brokerage payable on the Value date of the placement. </p>
+            <p>Brokerage can be taken in any currency specified in the BROKER.CCY field when a nu,eric BROKER.CODE is given. Brokerage is taken at Value date. It is debited from the PL category BROKER.CAT on FD.PARAMETER, and credited to an internal account in the BROKER.CCY using the account class record BROKER. </p>
+            <p>No change after authorisation. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric amount. (Optional input)</p>
+            <p>Mandatory input when BROKER.CCY is specified.</p>
+            <p>This is a NOINPUT field when BROKER is not numeric.</p>
+        </desc>
+</t>
+<t>
+<field>CURR.NO</field>
+<desc>
+            <p>Specifies whether a confirmation should be sent for the order if defined for the appropriate activity. </p>
+            <p>Default value Y </p>
+            <p>This field can be used to override a default confirmation that is defined on FD.ADVICES for the activity code and optionally the category code of the Order. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Y or NO (Optional Input)</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.OFFICER</field>
+<desc>
+            <p>This is an 'I' type field holds the revaluation account officer</p>
+        </desc>
+</t>
+<t>
+<field>ADVICE.CODE</field>
+<desc>
+            <p>The advice code used to generate the delivery message with the reference of the associated DELIVERY.REF. </p>
+            <p>Production of payments and advices is controlled by the activity code of the event in the life of the contract. This activity code is combined with a prefix denoting whether it applies to the placement or order, and is fixed or notice, and optionally the category code, to form a key to the FD.ADVICES file. </p>
+            <p>The format of the advices key is: </p>
+            <p>           TAxxx-ccccc where            T = The type of contract "N"otice or "F"ixed            A = The application, "O"rder or "P"lacement          xxx = Three digit activity code defined on FD.ACTIVITY        ccccc = The category code of the application (optional) </p>
+            <p>The key generated is used to read the FD.ADVICES file. This is first checked with the CATEGORY code appended, if not present, the advice code itself is used. The FD.ADVICES record will determine which message types are to be produced. The message type to be produced is appended to the advice key, if no advice is required the word NONE is appended. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            5-character advice code followed by dash (-) followed by 3-digit message type or NONE (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT</field>
+<desc>
+            <p>The amount of funds to be placed with the FID.BANK. </p>
+            <p>The amount of the placement is determined by the dealer by approving and amending groupings of pooled orders. Once each pool group is approved the placement is created for the total of that group. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-19 numeric characters</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>AUTHORISER</field>
+<desc>
+            <p>The person who authorised this record.</p>
+            <p />
+            <p>System-generated field only.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

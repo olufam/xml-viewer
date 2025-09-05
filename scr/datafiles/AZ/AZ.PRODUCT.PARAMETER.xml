@@ -1,0 +1,1447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>AZ</product>
+<table>AZ.PRODUCT.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+
+        <p> AZ ALL IN ONE PRODUCT PARAMETER AZ.PRODUCT.PARAMETER All in One Account module enables the Banks to define Account based Loan and Deposit products. The loan/ deposit accounts opened under this module, based on a pre defined All in One Products, are different from the Contract based Loans and Deposits, in view of flexibility in operations, like a normal account. The repayment schedules defined under this module are for the purpose of reference with the account balance, for arriving at the arrears or allowing redraw facilities, on the scheduled dates. AZ.PRODUCT.PARAMETER file describes the parameter details of All in One Account Products. By using this file, Banks can define various types of Loan / Deposit Products under All In One Module (AZ Module) like Education Loan, Housing Loan, Car loan etc., with different features unique to each type of Product. The AZ accounts opened under a particular All in One product, inherits the default features of the product like penal rate, Repayment type, Maximum Interest only period, etc. However, at AZ account level also, changes are accepted to override the defaulted values. Certain validations like minimum term, maximum term, allowed category, maximum back date, minimum and maximum amount (in the case of deposit) are done at the AZ account, with respect to the values defined under the corresponding AZ Product. 
+</p>
+        <p>RESCHED.TYPE</p>
+        <p>
+Defines the types of reschedules for all the AZ accounts opened under this product, for the purpose of linking it with the notice of reschedule. For a particular type of reschedule, the reschedule notice will be linked and the reschedule event will happen after the expiry of reschedule notice. The valid types of reschedules are: 1. Rate Change 2. Lump sum Repayment 3. Redraw 4. Term Change 5. Frequency Change Note: At present only Rate Change is supported. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Multi value field associated with Reschedule Notice
+</p>
+        <p>REVOLVING.RATIO</p>
+        <p>
+Inputs in this field indicate that the product is a REVOLVING type. Input permitted is Numeric, which is applied to the total drawls made by the customer to arrive at the schedule repayment amounts by way of CC schedules. The ratio input in this field is defaulted to AZ main A/c. Input made can be altered at any time. VALIDATIONS Any numeric from 1-100 Allowed only for CREDIT CARD type of products.
+</p>
+        <p>ROLL.MAT.WRK.DAY</p>
+        <p>
+This field indicates if the rolled over new maturity date should be a working day or not. If the field is Yes, during rollover of loans &amp; deposits, if the new maturity date happens to be on a holiday, then the system shall set the new maturity date to the first working day after the rolled over date. Assume that value date of AZ is 10th Aug 2005 &amp; maturity date is 15th Aug 2005 . Then during rollover, the system shall set Value date as 15th Aug &amp; new maturity date as 20th Aug. If the field is YES &amp; 20th Aug happens to be a holiday &amp; first working day after rollover is 22nd Aug , then new maturity date will be set to 22nd Aug. If the field is NO, then new maturity date will still be 20th Aug only. Allowed values - YES,NO. NO &amp; null are treated the same. 
+</p>
+        <p>ROLLOVER.ACCTNG</p>
+        <p>
+This field specifies if accounting entries over the AZ.ACCOUNT need to be raised during rollover. This could be useful for passbook printing purposes. For example, Let us assume that the deposit is for 5000. If the MATURITY.INSTR is 'AUTOMATIC ROLLOVER' then during rollover the following entries will be generated. A. Nominated account is given, Case 1. Rollover amount - 5000 Dr AZ.ACCOUNT 5000 Cr Nominated a/c 5000 Cr AZ.ACCOUNT 5000 Dr Nominated a/c 5000 Case 2. Rollover amount - 6000 Dr AZ.ACCOUNT 5000 Cr Nominated a/c 5000 Cr AZ.ACCOUNT 6000 Dr Nominated a/c 6000 Case 3. Rollover amount - 4000 Dr AZ.ACCOUNT 5000 Cr Nominated a/c 5000 Cr AZ.ACCOUNT 4000 Dr Nominated a/c 4000 B. No nominated account given, Case 1. Rollover amount - 5000 Dr AZ.ACCOUNT 5000 Cr Internal a/c 5000 Cr AZ.ACCOUNT 5000 Dr Internal a/c 5000 Case 2. Rollover amount - 6000 Dr AZ.ACCOUNT 5000 Cr Internal a/c 5000 Cr AZ.ACCOUNT 6000 Dr Internal a/c 6000 Create a TELLER.DEFAULT crediting AZ.ACCOUNT for 1000. Case 3. Rollover amount - 4000 Dr AZ.ACCOUNT 5000 Cr Internal a/c 5000 Cr AZ.ACCOUNT 4000 Dr Internal a/c 4000 Create a TELLER.DEFAULT debiting Internal account for 1000. MATURITY.DR txn code will be used on the debit side and ROLLOVER.CR txn code will be used on the credit side entries to AZ.ACCOUNT. If nominated account is not provided then an internal account will be used. The category of the internal account need to be defined in ACCOUNT.CLASS application for 'AZROLLOVER' id. Allowed only if ACCT.SYNC is set to 'Y'. Allowed only for FIXED type deposits. 
+</p>
+        <p>ROLLOVER.CR</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used when raising the credit entry during rollover of deposits. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".
+</p>
+        <p>SINGLE.LIMIT</p>
+        <p>
+This field specifies the value that should be set in the SINGLE.LIMIT field in the ACCOUNT that is attached to this APP. Input can be 'Y', 'N' or ''. If input as 'Y' then the acct that is attached to the product parameter should also have the field single limit marked as yes. If input as 'N' or '' then the acct that is attached to the product parameter cannot have the field single limit marked as 'Y'. In this case all the AZ.ACCOUNT that are linked to the same limit must have REDUCE.LIMIT set to be the same. VALIDATIONS Input can be either 'Y', 'N' or ''.
+</p>
+        <p>TAX.ON.CHG.TXN</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to identify the entries that are raised due to the tax on charge collected as late payment fee. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y". Debit transction code defined in the TAX file.
+</p>
+        <p>TAX.ON.INT.TXN</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the loan/deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a tax on interest entry when the TAX.KEY is defined in AZ.ACCOUNT. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y". Both debit / credit transaction code allowed. Debit/Credit transaction code should be the same as the transaction code defined in TAX table. For instance, if TAX.KEY is defined as 10 in AZ.ACCOUNT, in the respective Tax table, the Credit/debit transaction code is defined as 243/244, then the same codes should be defined here.
+</p>
+        <p>TERM.PRIORITY</p>
+        <p>
+Specifies whether the Term of the loan has to be prioritised and kept constant or not, in the case of Re scheduling. In AZ Loan accounts, the term of the loan or repayment amount may change due to certain factors like Principal increase, Principal decrease, change in Rate of interest, change in frequency etc. In such cases, it is possible to retain the original term and the maturity date as constant and change the repayment amount suitably, by specifying the Term Priority as 'Y'. If Term Priority is specified as 'N', then by keeping the repayment amount as constant the term will be changed by altering the maturity date of the loan. This field has to be opted by the user whenever a Rescheduling of the loan account is to be done. According to the value defined here, Rescheduling will be done and the previous schedule will be written to AZ.SCHEDULES.HIST. In case of annuity type of loans if the user defined annuity amount is greater than the system generated amount then the contract will be matured earlier than the actual maturity date even though this field is set to 'Y'. In case of OTHERS/NONRED type of loans, TERM.PRIORITY 'N' is not applicable as they may have uneven payments. Hence if AZ contract is of OTHERS/NONRED type of loans, then system shall ignore the value in this field and work as if TERM.PRIORITY is 'Y'. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Valid value 'Y' or 'N'
+</p>
+        <p>BONUS.PREMIUM</p>
+        <p>
+Defines the code relevant for crediting premium amount to the Deposit account. It is more relevant in the case of Deposit accounts like Savings Plan/ Recurring Deposit etc., where for prompt payment of installments a certain amount will be credited to the account as bonus. Bonus is not applicable to multi deposits 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Should be a valid code defined in FT.CHARGE.TYPE, FT.COMMISSION.TYPE By prefixing ' * ' with the ID of SAVINGS.PREMIUM, it can be linked to SAVINGS.PREMIUM
+</p>
+        <p>CARD.TYPE</p>
+        <p>
+Input in this field should be a valid id in CARD.TYPE application. When input the APP id will be populated in the attached CARD.TYPE. VALIDATIONS Any valid card type id can be input. Input allowed only for CREDIT CARD type of loans.
+</p>
+        <p>CC.AMT.RTN</p>
+        <p>
+This field holds a user defined API which calculates and updates the TYPE.CC amount in a CREDIT-CARD type AZ loan account created under this product. If exists, this API will be executed to calculate and update TYPE.CC amount field in AZ.SCHEDULES for both AZ sub account and AZ main account. 
+
+</p>
+        <b>Validation Rules</b>
+        <p>: A valid key from EB.API file Input allowed only with repayment type as CREDIT-CARD 
+</p>
+        <p>CC.PR.GRACE.PERIOD</p>
+        <p>
+For any repayment type if the GENERATION of CC schedules (principal repayment schedule) is to be postponed then this field is used. Input permitted in this field is Numeric and it should be read along with the frequency input in the repay date field of card issue application. When a card issue frequency is monthly and input made in this field is 3, it means for 3 months the generation of CC schedule is to be postponed, i.e., NO CC schedule is generated. If in card issue the frequency is weekly then it is to be interpreted that 'CC' schedules will not be generated for 3 weeks. For a Non Redemption type, input in this field is mandatory. This is for the reason that in Non Redemption type CI (interest) schedules are generated regularly and the Principal (CC schedules) repayment is made in one BULLET payment. VALIDATIONS Input allowed only if the Repayment Type is a Non redemption Allowed only for CREDIT CARD type of products.
+</p>
+        <p>CHARGE.DR.TXN</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to identify the entries that are raised while charging the late payment fee. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".
+</p>
+        <p>COMPOUND.TYPE</p>
+        <p>
+This field accepts the frequency like DAILY,WEEKn, MONTHnn, Nnn to determine the compounding period in a year. 
+
+</p>
+        <b>Validation Rules</b>
+        <p>: ALLOWED for fixed deposits only
+</p>
+        <p>CR.DEP.FQU</p>
+        <p>
+Defines the frequency of further credits to the deposit account. In the case of deposits like Savings Plan, Recurring Deposit, this field is use for defining the frequency of future credits expected. For example, if M01 is defined here, regular monthly credits to the account are expected. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Type of input allowed are: D&lt;nn&gt;,W&lt;nn&gt;, M&lt;nn&gt;. This field and grace period field should have a rationale input i.e. Grace can't be Month. End while the deposit frequency is daily. This validation is valid from 14.2.00 with the introduction of period. end option in Grace period field.
+</p>
+        <p>CR.INT.FQU</p>
+        <p>
+Defines the frequency for interest credit, for all deposit accounts opened under this product. Example If 'M01' is defined here, this frequency will be defaulted to the deposit account of this product and interest will be credited / capitalised every month from the start date. This is acheived by defaulting the 'I' schedule into the az.account during creation. If a liquidation account is defined in ACCOUNT then interest will be credited to that account as per this frequency. Otherwise the interest will be capitalised in the Deposit account itself If 'NM01' is defined here, then the interest will be paid out to the nominated account after capitalising it every month from the start date. This is acheived by defaulting the 'IN' schedule into the az.account during creation. This field is also used during deposit rollover. Based on the setup done here either a 'I' or 'IN' schedule will be created during rollover. If this is not defined then the 'IN' schedule will be created on maturity after rollover. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Type of input allowed are: Dnn,Wnn, Mnn
+</p>
+        <p>CR.INT.TYPE</p>
+        <p>
+Defines the type by which the credit interest frequency will be processed for the deposit accounts opened under this product. This field is associated with CR.INT.FQU ( frequency for interest credit) Allowed types are: ANNIVERSARY / PERIOD.END If ANNIVERSARY is defined then the credit interest frequency will be based on the opening date. If PERIOD.END is defined then the credit interest will be based on the calendar end like month end.
+</p>
+        <p>CR.TXN.CODE</p>
+        <p>
+Defines the Transaction Code to be used on the Credit entry generated by AZ. The Transaction Code of the entry is used to determine the references and narratives to be printed on statements. The Debit/Credit indicators within the Transaction Code table are not used to verify this input. If the ACCT.SYNC field is "Y" -then the transaction code defined here might be used as a default for the other leg of the transaction that it not affecting the loan. The transaction code defined here should be used or duplicated in any other field. See example in DR.TXN.CODE. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> 1-10(Max Value) numeric characters Transaction Code. (Mandatory Input)</p>
+        <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        <p> Must be an existing code in Transaction Table. </p>
+        <p>ACCT.SYNC</p>
+        <p>
+Allowed values are 'YES' and ''. If 'YES' then the working balance in a/c and the principal in AZ.ACCOUNT created will be in sync. This can be achieved by using specific transaction codes for specific AZ related events. (For more details on transaction codes and events, refer the help text for various fields like DRAWDOWN.TXN). If the input is 'NULL', the two balances might not be in harmony. If 'YES', then an entry over the AZ.ACCOUNT should contain a valid txn code (apart from DR.TXN.CODE and CR.TXN.CODE) defined in its APP so that it knows how to process the entry within AZ. VALIDATIONS Permitted values either 'YES' or ''. Once input the values cannot be changed.
+</p>
+        <p>CREATE.PD.EOD</p>
+        <p>
+For CREDIT CARD type of products this field indicates if PD has to be created during COB on the schedule dates if the repay account has insufficient funds. If set as 'YES' then PD will be created during COB, else PD will have to created through a online payment beyond the schedule date. This field is valid only for CREDIT CARD type of products. This field is allowed only if PD.LINK.TO.AZ.is set to 'YES'. Allowed values are 'YES', 'NO', ''. 'NO' and '' are considered to be the same. For credit cards, system has to settles first by date wise and then by component wise. Hence related PD.PARAMETER should have REPAYMENT.METHOD as '3' and only the following components are settled by AZ and in the order REPAYMENT.ORDER as A1,TX,A2,PE,PS,IN,PR 
+</p>
+        <p>CREATE.TD.FOR.INT</p>
+        <p>
+This field indicates whether to create TELLER.DEFAULT or not for the interest amount during part withdrawal(through TELLER) /Pre closure when till account is used as credit side account. . If this value is YES then a TELLER.DEFAULT record will be created when a TELLER transaction is processed debiting an AZ.ACCOUNT Fixed Deposit. This will only be created when no nominated/interest liquidation is specified on the AZ.ACCOUNT. If the field CREATE.TD.FOR.INT is NULL the interest will be credited to the credit side account irrespective of it being the till account. 
+
+</p>
+        <b>Validation Rules</b>
+        <p>: Value of YES is permitted only for Deposits &amp; with Teller product installed in the company 
+</p>
+        <p>CREDIT.AMT.MULTI</p>
+        <p>
+This field indicates if B schedules need to be validated to be in multiples of the CREDIT.AMOUNT defined in AZ.ACCOUNT. If 'YES' is set then the B schedule amount can be only in multiples of the the CREDIT.AMOUNT, if defined in AZ.ACCOUNT. Allowed values are 'YES' or ''. Allowed only for SAVINGS PLAN type of deposit products. Allowed only if ACCT.SYNC is set as 'YES'.
+</p>
+        <p>DEP.DR.MATURITY</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to when raising the debit entry during normal deposit maturity. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".
+</p>
+        <p>DEP.DR.PART</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a part withdrawal of a deposit. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".
+</p>
+        <p>DEP.DR.PRE.CLOSURE</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is due to preclosure of a deposit. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".
+</p>
+        <p>DEPOSIT.CR</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a deposit credit entry. If MULTI is set as 'Y' then a sub account is created else a principle increase is made. In case of clearing credits the transction code for collection, the txn code defined in CQ.PARAMETER / ACCOUNT.PARAMETER that is used when the cheque is marked as CLEARED, has to be defined here. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".
+</p>
+        <p>DESCRIPTION</p>
+        <p>
+Identifies the name of the Product in a more descriptive form ( example : Home Loan, Education Loan) 
+
+</p>
+        <b>Validation Rules</b>
+        <p> 1-35 type alpha characters Mandatory Input Multi valued for languages
+</p>
+        <p>DR.TXN.CODE</p>
+        <p>
+Defines the Transaction Code to be used on the Debit entry generated by AZ. The Transaction Code of the entry is used to determine the references and narratives to be printed on statements. The Debit/Credit indicators within the Transaction Code table are not used to verify this input. The transaction code defined here should be used or duplicated in any other field. If the ACCT.SYNC field is "Y" -then the transaction code defined here might be used as a default for the other leg of the transaction that it not affecting the loan / deposit when the transaction is triggered from AZ.ACCOUNT. To exemplify, In Credit Card type of loan, if the loan repayment takes place. Dr. will be to the internal/customer/nominated a/c and credit to the loan a/c. As debit side of the transaction is not affecting the loan (debit to a customer a/c)- the transaction code will be one inscribed in this field. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> 1-10(Max Value) numeric characters Transaction Code. (Mandatory Input)</p>
+        <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        <p> Must be an existing code in Transaction Table. </p>
+        <p>DRAWDOWN.TXN</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the loan side (Debit or Credit) are identified and categorized as TXN codes. Draw down Txn implies making a draw down on the loan a/c- where Debit will be to the Loan a/c and Credit will be to the Nominated a/c. When entered the system automatically identifies the transaction code as an EVENT of Draw down. Whenever, loan is drawn this TXN code is used to identify the event, if ACCT.SYNC.is set to 'Y'. VALIDATIONS Must be a valid id in transaction application. TXN codes are input to identify the EVENT i.e loan repay, Draw down etc Mandatory input if the ACCT. SYNC is set to "Y".
+</p>
+        <p>ALLOWED.CATEG</p>
+        <p>
+The default category to which the All in One product is allocated. It is ensured by the system that all AZ accounts opened under this product, belong to the category entered here. The category code is used to classify financial transactions in T24 according to the type of business operations or product type. The first two digits represents the highest level classification and next three digits represents sub classification which provides a clear definition of the profit and loss or the product type. The use of these codes with personal customer characteristics (like Residence, Status, Sector code etc.,) will enable the Banks to produce balance sheets and returns reflecting a coordinated and structured view of its operation, by directing business transactions to their appropriate place in the report. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> 5-7 Numeric Codes It must be an existing code in the CATEGORY table For customer Accounts, it must be in the range of 1000 to 9999 The category is defaulted to AZ.ACCOUNT from the corresponding ACCOUNT record and validated against the category code defined here.
+</p>
+        <p>DRAWDOWN.TYPE</p>
+        <p>
+Defines a type of drawdown for this product, which specifies the method of withdrawing the Principal amount, from the loan accounts of this product. The various types of drawdowns are: 1. Full Drawdown: The entire loan amount has to be withdrawn at a time. No partial withdrawals are allowed 2. Partial and No interest: Partial or full withdrawal of the loan amount is permitted from the loan account. Interest and Principal repayment need not be done during the drawdown period. 3. Partial and interest: The drawdown of loan amount can be done in partial or in full. During the drawdown period repayment towards interest has to be made. Otherwise it will be treated as arrears. If a nominated account is defined, in all the options, the system will automatically transfer the drawdown amount on the drawdown date to the nominated account. If no nominated account is defined and if the drawdown is preferred through the AZ account itself, then a teller default will be created and the amount can be drawn through teller using the teller default feature. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Valid for Loan products only. Valid numbers are 1,2,3. Default is 1 (Full Drawdown) Must be 1 for CREDIT CARD type of loans.
+</p>
+        <p>EARLY.RED.MARGIN</p>
+        <p>
+Defines the margin rate of interest that has to be deducted from the eligible rate arrived for early redemption of deposit amount. For example if margin is defined as 2, and for early redemption of a deposit the eligible interest was arrived as 9% after referring the interest table, then the final interest paid for this early redemption will be 7% 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Numeric Value.
+</p>
+        <p>EXTEND.MAT.DATE</p>
+        <p>
+Currently noinput field. For future use.
+</p>
+        <p>FORWARD.ACC.MNTHS</p>
+        <p>
+For future use. 
+</p>
+        <p>GRACE.PERIOD</p>
+        <p>
+Defines the period in number of days, until the expiry of which the loan accounts under this product, shall not be considered to be in arrears. If the account continues to be in arrears status, even after the expiry of the grace period, penalty interest will be applied on the arrears, as per penalty parameters defined. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Optional field 1-999 numeric Cannot have negative values.
+</p>
+        <p>HIGHEST.RANGE</p>
+        <p>
+This field should be read along with the field AMT.PERCENT. Input in this field indicates the product is RANGED Revolving type. It is a multi value set. The field Highest Range can take only amount which implies the range. Each drawals is taken and is matched with the range within which it falls. The %age or the amount specified in the range under amt. percent field is applied to arrive at the CC amount. REVOLVING.RATIO *10% HIGHEST.RANGE 100000 AMT.PERCENT B*100 HIGHEST.RANGE 300000 AMT.PERCENT *10 HIGHEST.RANGE 500000 AMT.PERCENT 250000 (1) A '*', before the numeric entered in AMT.PERCENT is must or else the system will deem it as amount and will generate CC schedule for only USD10 and not 10% of the outstanding. (2) A 'B*100', implies '100% of the balance in the acct'. This is because when the outstanding in a sub acct falls within this range then it is obvious that as per the minimum class an amount of 100000 is payable. However, if the outstanding in the acct is 98573 in that case CC schedule amount will be more than the outstanding that is actually payable if we stick to the concept of 100000 minimum. To obviate this we have introduced the concept 100% of the balance outstanding or 100000. (3) The fields Highest Range and Amt. Percent can be multi valued to specify different ranges. Amt. Percent field can be input either with a %age or an amount. A sub acct indicating a draw down is taken and is matched for a range within which it falls and the %age specified in the amt. percent field for that range is applied. If the AMT.PERCENT field contains an amount the system doesn't calculate any %age, but takes the amount as the 'CC' amount. For ex: (1) Reference to the table, if the amount of draw down in a sub a/c comes to 250000 then it falls within the range of 300000 hence attracts 10% of the range as the 'CC' amount. (2) Similarly, if the draw down in a sub a/c comes to 500000 then it attracts a flat amount of 250000 instead of any % age since the AMT.PERCENT field contains an amount. (3) If the draw down in a sub a/c comes to 600000, since there is no range within which it falls it automatically attracts the revolving %age for generation of 'CC' schedule amount, which in the present case (refer table) will be 10%. VALIDATIONS Input allowed only if the Repayment Type is Ranged Revolving. Allowed only for CREDIT CARD type of products.
+</p>
+        <p>INT.ADJ.TXN</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the loan/deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a interest adjustment entry.This is applicable only for Annuity contracts and if this entry is encountered, then the system shall debit AZINTADJ Suspense account instead of the underlying AZ Account. VALIDATIONS Must be a valid "ID" in transaction application Mandatory input if the ACCT. SYNC is set to "Y". Only debit transaction code allowed. Value date in the entry should be same as the bank date(TODAY). Applicable only for ANNUITY contracts with Reduce limit as 'NO'.
+</p>
+        <p>INT.BASIS</p>
+        <p>
+Defines the method of determining the number of days used for debit interest calculations. In each of the options specified below the number on the left represents the number of days basis for multiplying Can accept the following types: Key G is used as interest basis for the weekly frequency defined in loan account schedule. For illustrations of all supported INTEREST.BASIS INTEREST.BASIS 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Optional input. If no value is defined for this field in AZ.PRODUCT.PARAMETER, then for all the AZ.ACCOUNTs relating to this product, the interest basis will be picked up by the system automatically based on the currency of the account, by referring the CURRENCY table. characters of value A, B, C, D, E, F, or G 
+</p>
+        <p>INT.CORR.IMMED</p>
+        <p>
+Defines the way system should collect interest correction amount . Value NEXT is allowed only for Annuity contracts &amp; with ANNUITY.ADJUST as YES . When correction entries are raised due to back-dated drawdown or repayment, then the system collects the correction amount from AZINTADJ Suspense account immediately . Only during NEXT repayment( online/cob), the system shall collect above correction amount from repayment account. Default value is CURRENT and in this case, correction amount is collected immediately from the repayment account . Values - CURRENT,NEXT 
+</p>
+        <p>INT.CORR.RTN</p>
+        <p>
+A local hook routine triggered when interest correction entry is raised for Annuity contracts with Annuity adjustment as YES. It takes precedence over INT.CORR.IMMED. It should be called with the following arguments (ACC.ID,'',INT.CORR.IMMED) where ACC.ID is input argument &amp; holds the AZ Account ID currently being processed. Y.INT.CORR.IMMED is output returned from this subroutine &amp; should hold the values of CURRENT, NEXT only. 
+</p>
+        <p>AMT.PERCENT</p>
+        <p>
+Refer help text of HIGHEST.RANGE field.
+</p>
+        <p>INT.CORR.TXN</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the loan/deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a interest correction entry. Interest correction can be for various reason like preclosure or part withdrawal in deposits etc... VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y". Both debit / credit transaction code allowed. Refer to INT.CR.CAP for transaction codes that need to be setup.
+</p>
+        <p>INT.CR.CAP</p>
+        <p>
+This pertains to AZ deposits where on Capitalisation date interest is capitalized to the credit of the deposit acct using this TXN code. Valid Transaction code should be entered. This txn code is used capitalization of interest to the deposit acct, where Credit will be to the deposit acct and debit to the interest payable category. When TXN code is entered the system will automatically identify the transaction code as event of Interest Credit Cap. VALIDATIONS Must be a valid 'ID' in Transaction application TXN codes are input to identify the EVENT Mandatory input if the ACCT. SYNC is set to 'Y' Refer to INT.DR.CAP on the specific transaction codes that need to defined..This is not applicable for ANNUITY/ CREDIT CARDS.
+</p>
+        <p>INT.DR.CAP</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the loan / deposit side (Debit or Credit) are identified and categorized as TXN codes. Interest Dr. Cap implies the Capitalization of interest to the loan a/c- where Debit will be to the loan a/c and Credit to the Interest Receivable category. When entered the system automatically identifies the transaction code as an EVENT of Interest Dr. Cap. When the interest is capitalized, this CODE is used on the Debit side of the Transaction for identifying the event. In case of a loan during I schedule the system would raise an entry to debit the az.account with 392/391 as the txn code. During N schedule the system would raise an entry to credit the az account with the value defined in the first multi value of INT.CR.CAP. In case of a deposit during I schedule the system would raise an entry to credit the az.account with 382/381 as the txn code. During N schedule the system would raise an entry to debit the az account with the value defined in the first multi value of INT.DR.CAP. When interest is to be paid manually then these fields could be multivalued and different txn codes can be defined if needed. VALIDATIONS Must be a valid "ID" in Transaction application. TXN codes are input to identify the EVENT i.e loan repay, Draw down etc. Mandatory input if the ACCOUNT. SYNC is set to 'Y' The following table gives the txn codes that have to be defined in addition to any other txn codes. Field Name Interest liq acct Loan Deposit INT.CR.CAP Yes 392 382 No 391 381 INT.DR.CAP Yes 392 382 No 391 381 INT.CORR.TXN Yes 396 386 No 395 385
+</p>
+        <p>INT.FIXED.RATE</p>
+        <p>
+Indicates the annual fixed interest rate applicable for the loan / deposit accounts opened under this Product. The rate of interest is defaulted to the AZ account from here. However, the interest rate can be modified at the account level also. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> 1- 5 numeric characters of rate type, like 18.50.
+</p>
+        <p>INT.ONLY</p>
+        <p>
+This field is used to define whether 'interest only repayment' is allowed for this product or not. If Y (Yes) is defined, accounts opened under this product shall be able to have Interest Only repayment facility If N (No) is defined, accounts of this product shall not be able to have the Interest Only repayment facility. For loan accounts with repayment type 'Non Redemption', no validation will be done with respect to this field. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> The permitted values are 'Y' or 'N' Valid only for Loan products Default is 'N'
+</p>
+        <p>INT.SUS.TXN</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the loan/deposit side (Debit or Credit) are identified and categorized as TXN codes. It is applicable only for Annuity contracts . If ANNUITY.ADJUST is Yes at the AZ contract level and the ANNUITY amount defined is lesser than the interest for the period, then the system shall use this transaction code to debit AZINTADJ Suspense account &amp; credit AZ Account. VALIDATIONS Must be a valid "ID" in transaction application Mandatory input if the ACCT. SYNC is set to "Y". Only debit transaction code allowed. Applicable only for ANNUITY contracts .
+</p>
+        <p>IRA.PROCESS</p>
+        <p>
+This is a switch for activating the IRA processing in AZ.
+</p>
+        <p>LAST.DAY.INCL</p>
+        <p>
+This field determines whether the cap date is considered for interest calculation or not. Valid inputs are 'Y' or NULL. 1. If 'Y', the interest calculation, will consider the balance as of the Cap date and post the entries with the value date of cap date + 1. 2. If null, in the interest calculation, the interest will be calculated for the balance of cap date -1, and the entries will be posted with the value date of processing date. In case of online loan repayment resulting in interest capitalisation/collection , LAST.DAY.INCL is considered to be 'N' even if LAST.DAY.INCL is 'Y' in AZ/APP Level. Validation This field is a noinput field for ANNUITY type of repayment.
+</p>
+        <p>LATE.PYMT.FEE</p>
+        <p>
+Defines the charges to be levied on the SAVINGS PLAN type of accounts for having paid the installments late. Based on the value given under LIAB.TO.PENALTY, the delayed installment for late payment charges will be arrived. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Should be a valid charge code defined under FT.CHARGE.TYPE or FT.COMMISSION.TYPE
+</p>
+        <p>LIAB.TO.PENALTY</p>
+        <p>
+Based on the value given under this field, the number of delayed installments liable to penalty will be arrived and corresponding charges defined under LATE.PMT.FEE will be charged. Numbers specified in this field refers to number of installments. For example, if 2 is defined here, the account will be liable for late fee after 2 installments are missed. This field is applicable for SAVINGS PLAN type of deposits. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Numeric value ranging from 0 to 99
+</p>
+        <p>ANNUITY.ADJUST</p>
+        <p>
+In case of ANNUITY type of loans, this field indicates if the annuity amount can be lesser than the interest amount for the period. If 'YES' is defined, then system allows user to define ANNUITY Amount lesser than the interest amount . If 'NO' is defined, then system validates that the ANNUITY amount should be atleast interest. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Valid options are 'YES', 'NO'. Default is 'NO'.
+</p>
+        <p>LOAN.DEPOSIT</p>
+        <p>
+Indicates the type of product being defined. One of the following options is available for selection: DEPOSIT LOAN Deposit products have balances greater than zero and earn credit interest as per the rate of interest, defined by the Bank Loan products begin with zero balances and have negative balances. The negative balances incur debit interest as per the rate of interest defined. Mandatory input
+</p>
+        <p>LOAN.INT.ADJUST</p>
+        <p>
+This field is used to decide whether interest adjustment is allowed or not in an ANNUITY or CREDIT-CARD type AZ loan account. Interest adjustment is a functionality by which interest payment could be lesser than the accrued interest amount and the remaining amount would be debited from suspense account of class AZINTADJ. The suspense account would be settled during the subsequent repayments. Interest adjustment is allowed only if this field is set to YES. 
+
+</p>
+        <b>Validation Rules</b>
+        <p>: Holds YES or NO Input allowed only if ACCT.SYNC field is set to YES. 
+</p>
+        <p>LOAN.PRECLOSE</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the loan side (Debit or Credit) are identified and categorized as TXN codes. Loan Preclose implies closing down of the loan a/c well before the ORIGINAL maturity date- where Credit will be to the Loan a/c and Debit will be to the Repay a/c. When entered the system automatically identifies the transaction code as an EVENT of Loan Preclose. The SYSTEM record must be defined in AZ.SETTLEMENT.PRIORITY file. VALIDATIONS Must be a valid "ID" in transaction application. TXN codes are input to identify the EVENT i.e loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".
+</p>
+        <p>LOAN.REPAY</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the loan side (Debit or Credit) are identified and categorized as TXN codes. Loan Repay txn implies repayment of loan installment - where Credit will be to the Loan a/c and Debit will be to the Repay a/c. When this txn code is used it repays the loan based on the rules defined in AZ.SETTLEMENT.PRIORITY. When entered the system automatically identifies the transaction code as an EVENT of Loan Repay. Whenever repayment of loan is made through AZ.ACCOUNT, this transaction is used to identify the event, if ACCT.SYNC.is set to 'YES'. VALIDATIONS Must be a valid "id" in transaction application. TXN codes are input to identify the EVENT i.e loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".
+</p>
+        <p>MATURITY.INSTR</p>
+        <p>
+Defines the maturity instruction for the deposit accounts opened under this product. If 'Automatic Rollover' is specified the deposit will be rolled over with the same terms as that of the original deposit. If 'Payment to Nominated Account' is defined here, on date of maturity the maturity amount will be credited to the nominated account specified in the deposit account. Partial Rollovers and rollover with additional amount are handled at account level. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Permitted values : 'Automatic Rollover' / 'Payment to Nominated Account' Allowed only for FIXED type deposits.
+</p>
+        <p>MATURITY.TXN</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the loan side (Debit or Credit) are identified and categorized as TXN codes. Maturity txn implies complete and full closure of loan a/c- where Credit will be to the Loan a/c and Debit will be to the Repayment a/c. When entered the system automatically identifies the transaction code as an EVENT of Loan Maturity. When the loan is normally closed as per schedule of repayment then this TXN code is used on the credit side of the transaction. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".
+</p>
+        <p>MAX.BACK.DATE</p>
+        <p>
+Defines the maximum number of days, earlier than the current business date, up to which the value date of the accounts, defined under this product, can go back. However, the maximum back value date defined under DATES table of T24, will override the maximum back date arrived by the number of days defined here. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> 1-3 digit Numeric value Cannot have negative values
+</p>
+        <p>MAX.INSTL.INT.ONLY</p>
+        <p>
+Total period of time that the interest only repayment could be defined for a loan during the life time of a loan account. If input is given in numbers it is treated as number of days. If input is given prefixing P, it is treated as number of installments. Example: If input is given as 60, it implies that the total number of Interest Only repayment period cannot exceed 60 days during the life of the loan account. If input is given as P60, it implies that the total number Interest only repayment period cannot exceed 60 installments (of any frequency like daily, monthly) during the life of the loan account. Note: For loan accounts with repayment type 'Non Redemption', no validation will be done with respect to this field. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Value for this field will be accepted only if 'INT ONLY' field is defined as Y Valid only for Loan Product Cannot have negative values
+</p>
+        <p>MAXIMUM.AMOUNT</p>
+        <p>
+The maximum amount of Deposit or Loan for this product is defined here. While opening accounts under this product, the amount of the account is validated against the amount defined here, for maximum value. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> 1 to 20 type AMT (standard amount format) Characters (Optional Input) Must be greater than or equal to Minimum Amount Negative values not permitted 
+</p>
+        <p>MAXIMUM.TERM</p>
+        <p>
+This field defines the Maximum Term allowed for the AZ Loan or Deposit accounts created under this product. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> 2 Numeric and 1 Alpha Character Permitted values for Alpha Characters: D - Number of days M - Number of months Y - Number of years Must be greater than or equal to Minimum Term Negative values not permitted
+</p>
+        <p>APPLY.PENALTY</p>
+        <p>
+Identifies whether or not penalty is to be applied to accounts of this product. If 'Y' is defined, for loan products, penal interest will be applied on arrears automatically by the system. If 'N' is defined penalty will not be applied automatically. The user has to apply manually, if required. This field is not applicable for DEPOSIT type, as the rate of interest for redemption will be automatically calculated by the system based on the value provided in other fields like, PI.TABLE.TO.USE, PI.METHOD. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Valid options are 'Y', 'N'. Default is 'N'.
+</p>
+        <p>MIN.CREDIT.BAL</p>
+        <p>
+Defines the minimum credit balance that has to be held in accounts of this product, at any time. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Amount field Negative value not permitted Applicable for credit balance type of accounts
+</p>
+        <p>MINIMUM.AMOUNT</p>
+        <p>
+The minimum amount of Deposit or Loan for this product is defined under this field. While opening accounts under this product, the amount of the account is validated against the amount defined here, for minimum value. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> 1 to 20 type AMT (standard amount format) Characters (Optional Input) Must be less than or equal to Maximum Amount Negative values not permitted 
+</p>
+        <p>MINIMUM.TERM</p>
+        <p>
+This field defines the Minimum Term required for the AZ Loan or Deposit accounts created under this product. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> 2 Numeric and 1 Alpha Character Permitted values for Alpha Characters: D - Number of days M - Number of months Y - Number of years Must be less than or equal to Maximum Term Negative values not permitted 
+</p>
+        <p>MULTI</p>
+        <p>
+This field defines if the sub accounts are to be created during credit or debit over the AZ.ACCOUNT. Input allowed only if ACCT.SYNC is set to 'Y'. Input allowed only for CREDIT CARD type of loan product and FIXED or SAVINGS PLAN type of deposit products. If 'YES' were input then subject to, other parameter set up, every debit entry using DRAWDOWN.TXN code in a CREDIT CARD kind of set up would create a SUB acct and every credit entry using DEPOSIT.CR txn code or B schedule in the deposit will create a SUB acct. VALIDATIONS Permitted values either 'YES' or '' Once input the values cannot be changed .
+</p>
+        <p>OD.CATEGORY</p>
+        <p>
+This field defines the category code to which the account needs to be changed, if the deposit is matured based on certain conditions, like, 1. MATURITY.INSTR and nominated account are not defined. 2. MATURITY.INSTR is not defined but nominated account is defined and FINAL.MATURITY in AZ.ACCOUNT is not defined. Should be a valid category defined in the CATEGORY table. Range allowed: 1 to 9999
+</p>
+        <p>OD.CHARGE.TXN</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the loan side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a credit entry and a overdue charge repayment to a loan. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y". Not allowed for CREDIT CARD type of products. Debit transaction code not allowed.
+</p>
+        <p>OD.INTEREST.TXN</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the loan side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a credit entry and a overdue interest repayment to a loan. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y". Not allowed for CREDIT CARD type of products. Debit transaction code not allowed.
+</p>
+        <p>OD.PRINCIPAL.TXN</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the loan side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a credit entry and a overdue principal repayment to a loan. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y". Not allowed for CREDIT CARD type of products. Debit transaction codes not allowed.
+</p>
+        <p>OFFSET.ALLOWED</p>
+        <p>
+For future use. 
+</p>
+        <p>OVERRIDE</p>
+        <p>
+Holds the override messages that the user has confirmed Validation:				NOINPUT field
+</p>
+        <p>APPROPRIATE.TYPE</p>
+        <p>
+This field decides how a repayment received should be apportioned among the various withdrawals made under a Credit Card account. Permitted inputs are (1) Proportionate and (2) FIFO [First in First Out]. TO ILLUSTRATE: - Suppose there are 3 draws through sub a/c Withdrawal 1 350000 Withdrawal 2 650000 Withdrawal 3 250000 TOTAL 1250000 Appropriation Type- Proportionate If the repayment received, is 125000 the set-off will be 125000*350000/1250000 Towards Drawl (1) -35000 ----I.e.- 125000*350000/1250000 Towards Drawl, (2) it is 65000--I.e.- 125000*650000/1250000 Finally toward drawl (3) 25000--I.e.- 125000*250000/1250000 Appropriation Type- FIFO If on the other hand the repayment received is, say 450000 and type is FIFO then: - First withdrawal of 350000 will be fully adjusted and then remaining amount of 100000 will be adjusted towards the O/s of second withdrawal. This way it will continue until the last drawl is met with fully. VALIDATIONS: Input can be either Proportionate or FIFO. Input is subject to change. Allowed only for CREDIT CARD type of products.
+</p>
+        <p>PARAMETER.NO</p>
+        <p>
+Indicates the id of the parameter record. Accepts a alphanumeric id. Mandatory input. Maximum of 16 characters allowed. If the id is specific to a particular company other than the master company then it is suffixed with the company id delimited by a '*'.
+</p>
+        <p>PART.REDEMPTION</p>
+        <p>
+Defines whether a portion of the funds available in the fixed Deposit can be allowed for redemption, before the maturity date of the deposit. If 'Y' is defined the accounts opened under this deposit product will have the facility of part redemption. If 'N' is defined, part redemption facility will not be available for deposit accounts opened under this product Allowed only form FIXED deposit products.
+</p>
+        <p>PASSBOOK.ID</p>
+        <p>
+This field specifies the id of TELLER.PASSBOOK that need to be used while printing passbooks for this product. This field provides a facility to define different passbook layouts for different products. The id must be a valid id in TELLER.PASSBOOK. If not defined then the id SYSTEM in TELLER.PASSBOOK will be used by default while printing passbooks.
+</p>
+        <p>PAY.INT.AT.MAT</p>
+        <p>
+This field is used to decide whether accrued interest has to be paid out or rolled over during rollover of a fixed deposit. Allowed values are YES or NO If 'YES' is defined, then during rollover, the accrued interest before rollover will be paid out .When final maturity is reached or maturity instruction is Payment to Nominated account, then interest will be paid to Nominated account. If 'NO' is defined, then interest will be rolled over along with the principal deposit amount by default. The amount of rolled over deposit can anyway be overridden by the rollover amount definition at AZ.ACCOUNT level 
+</p>
+        <p>PD.LINK.MAIN.AZ</p>
+        <p>
+For Credit cards, this field signifies if PD should be created for Main master account or for sub account. Value of 'YES' signifies that PD shall be created for Main account. Otherwise PD will be created for sub account. Can hold values YES &amp; blank.
+</p>
+        <p>PD.LINK.TO.AZ</p>
+        <p>
+This field can be input as either 'YES' or 'NO' or ''. If this field is YES-an, attempt to repay an amount, less than the amount raised by way of schedules after repay date will create, PD. In this case APPLY.PENALTY must be set to 'N'.If PD is not installed, then the funds will be automatically debited from repay account. If this field is NO then, the amount still payable will continue to remain in the account (i.e., the principal will not be reduced) and AZ.OVERDUES will be updated. Allowed only if ACCT.SYNC is set to 'YES'. Not allowed for CREDIT CARD type of loan products. If this field is '' then, FT on hold will be created for the insufficient funds. VALIDATIONS YES or NO or ''. Value in this field should be same as that of ACCT.SYNC for loans Once input the values cannot be changed. Partial payment will raise PD only if repay date is past for credit cards.
+</p>
+        <p>PENAL.MARGIN</p>
+        <p>
+Indicates the margin or spread of penalty, which has to be applied to the effective interest (variable interest or fixed interest or the combination of both) of the loan account, to arrive at the penal interest. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> 1-5 numeric characters of rate type (example 3.25, 99.99) A margin, which will result in a negative interest rate is prohibited. Cannot be greater than 100%. This field is available for input only if APPLY.PENALTY is defined as Y and PENAL.OPERAND is not Null. 
+</p>
+        <p>PENAL.OPERAND</p>
+        <p>
+Determines the method by which the effective interest of the loan product (either a key based variable interest or fixed interest or a combination of both) is to be adjusted by the Penal margin to arrive at the penal interest rate. This field specifies whether the Margin Rate is to be added to, subtracted from or multiplied by the effective rate to arrive at the penal interest rate. If Multiply is specified the final rate is (100 + M) percent of the effective interest rate , where M is the Margin Rate percentage. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Valid values are ADD, SUBTRACT or MULTIPLY. This field is available for input only when APPLY.PENALTY is Y
+</p>
+        <p>PENAL.RATE</p>
+        <p>
+Defines the penal rate of interest that can be applied on the value defined under the field PENALTY.ON. At present, the penalty interest rate is applied on the arrears amount only. When PENAL.OPERAND and PENAL.MARGIN are not defined, then this field is allowed for input by user. Otherwise, where the operand and margin values are defined, the penal rate will be calculated automatically by the system from the effective interest. If APPLY.PENALTY is set to 'Y' and PENAL.MARGIN, PENAL.OPERAND and PENAL.RATE are null the system would default the EFFECTIVE.INT.RATE into this field. The penal interest rate entered here is defaulted to AZ loan account. However, at account level it can be modified, in case of need. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Rate type, numeric value Maximum value 100 Negative values not accepted.
+</p>
+        <p>PENALTY.COLL.AT</p>
+        <p>
+Defines when the charges defined in LATE.PYMT.FEE field in APP are to be collected when they are processed during COB. IMMEDIATE: The fee will be collected immediately while processing in COB. MATURITY: The fee will be carried forward till maturity of the deposit. This is applicable in the case of part withdrawal of deposit. NEXT-INSTALLMENT: In the case of part withdrawal of Savings Plan type, the fee will be adjusted in the next installment credited to the account. NEXT-INT-DUE: In the case of part withdrawal the fee will be adjusted in the next interest due for remaining deposit 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Valid values are, IMMEDIATE, MATURITY, NEXT-INSTALLMENT, NEXT-INT-DUE
+</p>
+        <p>BONUS.CR</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used while raising the bonus entry in SAVINGS PLAN type of deposit. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".
+</p>
+        <p>PENALTY.ON</p>
+        <p>
+Identifies the basis for applying the penalty calculation. For Loan products the following values apply: 1. Arrears 2. Balance Owing 3. Credit limit For Deposit products, the following values apply: 4. Interest days 5.Fixed Amount 6. Redeemed amount At present, only penalty processing on arrears alone will be done. Other values are reserved for future development. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Input allowed only if APPLY PENALTY is defined as 'Y' Negative values not permitted
+</p>
+        <p>PERIODIC.RATE.KEY</p>
+        <p>
+A reference number entered here as a key, links to an interest rate defined in the PERIODIC.INTEREST table. Interest rates are defined in PERIODIC.INTEREST table for various periods. The Periodic Rate key is used for Deposit Products to apply interest, based on the period of the deposit. When the Product is FIXED.FLOATING type - this PI key will be allowed to be used in combination with RATE.KEY in field no.12. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Input is not allowed, if RATE.KEY is already defined Permitted- if the RATE.PERIOD contains any VALUE. Allowed only for deposit products.
+</p>
+        <p>PI.METHOD</p>
+        <p>
+Specifies the method that has to be used for selecting the interest rate from Periodic Interest Table, for Deposit accounts, corresponding to the period of deposit. Allowed values are Previous, Next or Interpolate 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Input is allowed only if Periodic rate key is defined
+</p>
+        <p>PI.TABLE.TO.USE</p>
+        <p>
+In the case of early redemption of a deposit, either partial or full, the eligible interest rate will be based on the period for which the redeemed amount was in force. To find this eligible interest rate, the system has to refer either the current periodic interest table or the periodic interest table that corresponds to the opening date of the deposit or the lowest of these two rates or trigger a routine to get the interest rate. Allowed input are 'CURRENT' / 'OPENING' / 'LOWEST' / 'OTHERS'
+</p>
+        <p>POSTING.RESTRICT</p>
+        <p>
+Any valid code entered in this field, defines the restrictions for posting entries in AZ accounts, opened under this product. This field can be effectively used in AZ Loan products, for achieving certain restrictions like, not allowing redraw facility.Temenos recommends the user to define the Restriction at APP and not in the underlying account 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Optional input 1 to 4 numeric characters Posting Restriction code, based on EB.OBJECT It must be an existing code in the POSTING.RESTRICT table Posting restriction codes used in ACCOUNT, like 99, for marking Closure are not valid under this module, as All in One account closure is handled in a different way.
+</p>
+        <p>PRE.CLOSE.RTN</p>
+        <p>
+A local routine with a valid PGM.FILE entry with PGM.TYPE set to 'S' can be attached in this field. This routine will be triggered when a part withdrawal or preclose of a deposit happens. If it is a multi deposit then this routine will be triggered for every sub account during preclosure / part withdrawal. This field is allowed only if PI.TABLE.TO.USE is set to OTHERS. The routine to be triggered will have to be input as 'LOCAL.ROUTINE(INTEREST.RATE)'. Where INTEREST.RATE is the rate that is returned from the routine. This rate will be used instead of EARLY.RED.MARGIN if any given.
+</p>
+        <p>PRE.CLOSURE.FEE</p>
+        <p>
+Defines the charges to be levied for pre-closure of the deposit / loan account or part withdrawal of deposit. These charges will be debited only if the pre-closure of the deposit / loan is done by using AZ.ACCOUNT. The withdrawals made through other channels like Teller or ATM, the system will not recognise the differential interest and the charges. In these cases, the pre-closure fee and differential fee are to be debited manually. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Should be a valid charge code defined under FT.CHARGE.TYPE or FT.COMMISSION.TYPE.
+</p>
+        <p>PRINCIPAL.TXN</p>
+        <p>
+Valid Transaction code should be entered. Txn codes that affect the loan side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a credit entry and a principal repayment to a loan. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y". Not allowed for CREDIT CARD type of products. Debit transaction codes not allowed.
+</p>
+        <p>PROD.END.DATE</p>
+        <p>
+This field indicates the date from which the product is not avaliable. If defined then it may not be possible to create AZ.ACCOUNT with value date after this date. The defined date cannot be lesser than the PRODUCT.START.DATE. During repayments through AZ.ACCOUNT the value in REPAY.V.DATE cannot be greater than the value defined here, if any. Not applicable for sub accounts opened under SAVINGS PLAN type of products, in this case only the master account is validated and not the sub accounts.
+</p>
+        <p>PROD.START.DATE</p>
+        <p>
+This field indicates the date from which the product is avaliable. If defined then it may not be possible to create AZ.ACCOUNT with value dates prior to this date. The defined date cannot be greater than the PRODUCT.END.DATE. During repayments through AZ.ACCOUNT the value in REPAY.V.DATE cannot be lesser than the value defined here, if any. Not applicable for sub accounts opened under SAVINGS PLAN type of products, in this case only the master account is validated and not the sub accounts.
+</p>
+        <p>BONUS.ON</p>
+        <p>
+"This field defines the base amount on which bonus is to be calculated for deposits of SAVINGS PLAN type. If defined as 'PRINCIPAL' then the bonus will be calcuated on the amount in the PRINCIPAL field in AZ.ACCOUNT. If defined as 'INTEREST' then the bonus will be calculated on the interest that has been capitalised so far. If '' then the bonus will be calculated on the WORKING.BALANCE of the account. If MULTI is set to 'YES' then the base amount will be the sum of the amounts of the valid sub accounts. Allowed values are 'PRINCIPAL', 'INTEREST' and ''. This field should be read along with BONUS.ON.ARREARS.
+</p>
+        <p>RATE.CHNG.EXIST</p>
+        <p>
+This field can take "Y", "N" or "null". When the field is input as "Y" or "" any change in rate of interest i.e. through Basic.Interest key will be effective not only to new accounts but the existing accounts will also be taken at the changed rate-from the date of such change. If "N" is input then any change in rate of interest will be applicable only to the new a/cs whose draw downs are after the date of such change.
+</p>
+        <p>RATE.KEY</p>
+        <p>
+Contains the linking reference number of the appropriate interest rate, which will be used for interest computation purposes. The key indicates the rate to be used for interest computation purposes on Loans and Deposit accounts. The key can take the form of an entry on the BASIC RATE TEXT and consequently BASIC INTEREST table. A rate change on the BASIC.INTEREST rate table will automatically reschedule the loan / deposit accounts that are linked to table, on the respective dates or on the dates defined as per the interest revision notice periods. This process will be done during COB. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> 1-2 numeric characters. (Optional input.) Should have been defined in BASIC.RATE.TEXT and in BASIC.INTEREST table
+</p>
+        <p>RATE.OPERAND</p>
+        <p>
+Determines the method by which the basic interest rate is to be adjusted by the RATE.SPREAD to arrive at the Variable interest rate for this loan product. This field specifies whether the Spread Rate is to be added to, subtracted from or multiplied by the basic interest rate to arrive at the final variable interest rate. If Multiply is specified the final rate is (100 + M) percent of the effective interest rate , where M is the Margin Rate percentage. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Valid values are ADD, SUBTRACT or MULTIPLY. This field is available for input only when RATE.KEY is defined
+</p>
+        <p>RATE.PERCENT</p>
+        <p>
+Defines the percentage of outstanding amount up to which the Variable interest rate is applicable. For the rest of the percentage amount, fixed interest rate will be applicable. Example: If 60 is defined here, variable interest will be applied on 60% of the outstanding amount and Fixed interest will be applied on the remaining 40% of the outstanding amount. The only EXCEPTION is FIXED-FLOATING type of deposit or loan-which takes only 100 as input in this field. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> 1-5 numeric rate type like 60, 45.50 etc. Maximum value 100. No negative values will be accepted. In case of FIXED-FLOATING type -this field has to be input with the value 100. In case this is defined then any change to the BASIC.INTEREST will not be applicable.
+</p>
+        <p>RATE.PERIOD</p>
+        <p>
+Input in this field implies that the product is a Fixed Floating type. A Fixed Floating product initially takes a FIXED rate of interest and then moves to floating rate of interest till maturity based on the PERIOD input in the field RATE.PERIOD. Values may be input in the following format, i.e. nnD or nnM or nny The floating rate is prompted by 'R' schedule without which a FIXED FLOATING deposit or loan acct cannot be committed or authorized. The rates of interest both FIXED and FLOATING are defaulted from APP. A combination of the following interest is permitted for input, (1) BASIC.INTEREST (BI) and FIXED.RATE (2) BASIC.INTEREST (BI) and PERIODIC INTEREST (PI) To illustrate, In AZ.PRODUCT.PARAMETER the RATE.PERIOD is input as 03M. The Fixed Floating Deposit Start date is 05.04.2003 and maturity date is 04.04.2004. Interest is FIXED at 20% (field INT.FIXED.RATE) and for floating BI rate with RATE.KEY as 01 RATE.SPREAD as 2% RATE.OPERAND as ADD [Assume that the BI rate on the date of R schedule is 6.75%] System takes FIXED rate of interest at 20% from 05.04.2003 to 05.07.2003 And FLOATING rate at 8.75% (6.75% + 2%) from 06.07.2003 till 04.04.2004 Thus RATE.PERIOD is the field that differentiates a FIXED-FLOATING contract from other types of contracts. Based on the input in this field 'R' schedule is triggered to bring FLOATING rate in to operation. VALIDATIONS (1) Two numeric and One alphanumeric input allowed. (2) Permitted values in RATE.PERIOD nn&gt;D, nn&gt;M and nn&gt;Y (3) Fixed and Floating interest rates are defaulted from APP- user has the option to change the FIXED rate of interest directly at account level and FLOATING rate by changing the INTEREST. RATE value in BI table. (4) The change in Rate. key value can be gauged from the ACI record only (5) Spread cannot be changed it is fixed. (6) For fixed floating a combination of BI + PI, BI + FIXED is allowed but not PI AND FIXED. (7) Not applicable for credit cards
+</p>
+        <p>RATE.SPREAD</p>
+        <p>
+Indicates the spread or margin of interest, which has to be applied to the basic interest rate defined in BASIC.INTEREST ( linked through RATE.KEY) of the loan account, to arrive the variable interest. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> 1-5 numeric characters of rate type (example 3.25, 99.99) A margin, which will result in a negative interest rate is prohibited. Cannot be greater than 100 This field is available for input only if RATE.KEY is defined
+</p>
+        <p>RECALC.CURR.AMT</p>
+        <p>
+Specifies whether the changes made to the loan account schedule, on account of re-scheduling, are to be effected from the current repayment date or from the next repayment date. If 'Y' is defined here the effect of re-scheduling will be given from the current repayment date and if 'N' is specified the effect will be from the next repayment date. This field will not be considered for future dated or back dated BI rate changes. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Allowed values 'Y' or 'N' Optional input Not applicable for credit card loans
+</p>
+        <p>REDUCE.LIMIT</p>
+        <p>
+This field is used to provide a revolving limit functionlity in loan products. If defined as '' then on the scheduled dates the limit is reduced for P and A schedules and incase of N schedules where there is no interest liquadation account, which provides a non-revolving functionlity. If defined as 'NO' then on the scheduled dates the limit is not reduced which provides a revolving limit functionlity. In this case the PRINCIPAL in AZ.ACCOUNT is not reduced on schedule dates or when the principal is repaid. Not allowed for deposits and CREDIT CARD. 'NO' not allowed for ANNUITY type of loans. If set to 'NO' then value in DRAWDOWN field cannot be set to 1, i.e., full drawdown. Allowed values are 'NO' or ''.
+</p>
+        <p>REPAYMENT.TYPE</p>
+        <p>
+Defines the Repayment type of the All in One Accounts opened under this product. This type determines the way in which the loan / deposit account is to be repaid. The repayment types available for loan accounts are: 1. ANNUITY This type of loan has a fixed periodic repayment amount (the 'annuity') consisting of two variable components of principal and interest. The repayment amount is calculated at the start of the contract so that the principal will be fully repaid after the required number of repayments. Initially, repayments consist mostly of interest. However, as the contract progresses, the size of the principal component increases as the accrued interest reduces. In All in One loan account, for defining a zero repayment at the start of the loan, for a fixed period, Annuity type of repayment can be defined in the schedule with amount as Zero. 2. LINEAR Linear loans also have an interest and a principal component to their periodic repayments. In this case, however, the principal repayment amount remains fixed over the lifetime of the contract. The interest element reduces as the accrued interest on the reducing balance decreases. This leads to a repayment scheme whereby the total periodic repayment reduces over the lifetime of the contract. 3. NONRED In NONRED type of loans, there is no regular repayment of principal, but only interest. The redemption of Principal will be done on maturity date of the loan. In All in One account loans, the validations relating to Interest Only and Maximum Period interest only will not happen for this type of loan. 4. OTHER Non structured repayments are handled under this type. Repayment of any amount on any dates are allowed, provided the total repayment amount is equal to principal. 5.CREDIT CARD This type of Loan repayment type was added from G14.0.00. For this repayment type, the schedules are NO. When the repayment type is Credit Card the regular schedules are discarded, sub a/cs are created and new types of schedules like CI, CC are generated automatically. Repayment types available for Deposit accounts are: FIXED Deposit amount is accepted in a fixed lump sum and repaid as fixed amount either with interest accumulated or not. SAVING PLAN Deposit amount is accepted in a periodic basis and the principal is increased in a recurring manner till the end of a fixed term. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> 1 to 12 Alpha characters. Input must be either 'ANNUITY', 'LINEAR', 'OTHERS', 'NONRED' or 'CREDIT CARD' for loan products and 'SAVINGS PLAN' or 'FIXED' for Deposit products. Once defined and record authorised cannot be changed.
+</p>
+        <p>RESCHED.NOTICE</p>
+        <p>
+Defines the notice period in days for the corresponding reschedule type, for all the AZ accounts opened under this product. For a particular type of reschedule, the reschedule notice will be linked and the reschedule event will happen after the expiry of reschedule notice. The valid types of reschedules are: 1. Rate Change 2. Lump sum Repayment 3. Redraw 4. Term Change 5. Frequency Change Note: At present, only Rate Change is supported. If the BASIC.INTEREST is changed today or for a forward date after the contract is input then this change is applied to the az.account after the number of days defined in this field. The BI change is processed during COB. 
+
+</p>
+        <b>Validation Rules</b>
+        <p> Multi value field associated with Reschedule Type Input allowed only if reschedule Type is defined 1-99 numeric character with period D, M or Y (Example: 15D, 01M) Not applicable for credit card loans
+</p>
+        <p>BONUS.ON.ARREARS</p>
+        <p>
+This field defines if bonus is to calculated even if there are any arrears in the payment installment of deposit. If defined as '' then even of one installment is not paid then bonus will not be calculated. If defined as 'YES' then if the number of late payments exeeds the defined LIAB.TO.PENALTY then bonus will not be calculated. Allowed values are 'YES' and ''.
+</p>
+        <p>PAY.INT.AT.PARTRED</p>
+        <p>
+Field at the product level, to indicate if interest is to be paid to Settlement account immediately during part redemption. If set to NULL, then interest is paid out immediately to Settlement account during part redemption. If set to NO, then interest will be paid only during the next IN or on the maturity date.			 
+
+</p>
+        <b>Validation Rules</b>
+        <p>		 Allowed only for normal Fixed deposits.		 Default is null.
+</p>
+        <p>NONAZ.COLL.RED.FEE</p>
+        <p>
+Field to indicate if PRE.CLOSURE.FEE should be collected when part redemption or pre closure is done through TELLER/FT. When set to NULL, the fee is not collected when redemption is done through TELLER/FT. When set to YES, the fee is charged on the AZ.ACCOUNT or Settlement account based on the field CHG.FROM.RED.AMT in AZ.ACCOUNT.		 
+
+</p>
+        <b>Validation Rules</b>
+        <p> 	 Only allowed for normal Fixed deposits.
+</p>
+        <p>IAS.CLASSIFICATION</p>
+        <p>
+This field holds the classification of contract based on IFRS standard.Input not allowed for Credit-card type of contractsInput not allowed when ACCT.SYNC is set to null 
+</p>
+        <p>IAS.SUB.TYPE</p>
+        <p>
+This field holds the Sub type for the corresponding classification defined in IAS.CLASSIFICATION field.
+</p>
+    </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>LATE.PYMT.FEE</field>
+<desc>
+        <p>Defines the charges to be levied on the SAVINGS PLAN type of accounts for having paid the installments late. Based on the value given under LIAB.TO.PENALTY, the delayed installment for late payment charges will be arrived. </p>
+        <p>Validation Rules</p>
+        <p> Should be a valid charge code defined under FT.CHARGE.TYPE or FT.COMMISSION.TYPe</p>
+    </desc>
+</t>
+<t>
+<field>EARLY.RED.MARGIN</field>
+<desc>
+        <p>Defines the margin rate of interest that has to be deducted from the eligible rate arrived for early redemption of deposit amount. For example if margin is defined as 2, and for early redemption of a deposit the eligible interest was arrived as 9% after referring the interest table, then the final interest paid for this early redemption will be 7% </p>
+        <p>Validation Rules</p>
+        <p> Numeric Value.</p>
+    </desc>
+</t>
+<t>
+<field>PRE.CLOSE.RTN</field>
+<desc>
+        <p>A local routine with a valid PGM.FILE entry with PGM.TYPE set to 'S' can be attached in this field. This routine will be triggered when a part withdrawal or preclose of a deposit happens. If it is a multi deposit then this routine will be triggered for every sub account during preclosure / part withdrawal. This field is allowed only if PI.TABLE.TO.USE is set to OTHERS. The routine to be triggered will have to be input as 'LOCAL.ROUTINE(INTEREST.RATE)'. Where INTEREST.RATE is the rate that is returned from the routine. This rate will be used instead of EARLY.RED.MARGIN if any given.</p>
+    </desc>
+</t>
+<t>
+<field>DEP.DR.MATURITY</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to when raising the debit entry during normal deposit maturity. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".</p>
+    </desc>
+</t>
+<t>
+<field>DEPOSIT.CR</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a deposit credit entry. If MULTI is set as 'Y' then a sub account is created else a principle increase is made. In case of clearing credits the transction code for collection, the txn code defined in CQ.PARAMETER / ACCOUNT.PARAMETER that is used when the cheque is marked as CLEARED, has to be defined here. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".</p>
+    </desc>
+</t>
+<t>
+<field>IAS.CLASSIFICATION</field>
+<desc>
+        <p>This field holds the classification of contract based on IFRS standard.Input not allowed for Credit-card type of contractsInput not allowed when ACCT.SYNC is set to null</p>
+    </desc>
+</t>
+<t>
+<field>OFFSET.ALLOWED</field>
+<desc>
+        <p>For future use.</p>
+    </desc>
+</t>
+<t>
+<field>EXTEND.MAT.DATE</field>
+<desc>
+        <p>Currently noinput field. For future use.</p>
+    </desc>
+</t>
+<t>
+<field>RATE.OPERAND</field>
+<desc>
+        <p>Determines the method by which the basic interest rate is to be adjusted by the RATE.SPREAD to arrive at the Variable interest rate for this loan product. This field specifies whether the Spread Rate is to be added to, subtracted from or multiplied by the basic interest rate to arrive at the final variable interest rate. If Multiply is specified the final rate is (100 + M) percent of the effective interest rate , where M is the Margin Rate percentage. </p>
+        <p>Validation Rules</p>
+        <p> Valid values are ADD, SUBTRACT or MULTIPLY. This field is available for input only when RATE.KEY is defined</p>
+    </desc>
+</t>
+<t>
+<field>PENAL.RATE</field>
+<desc>
+        <p>Defines the penal rate of interest that can be applied on the value defined under the field PENALTY.ON. At present, the penalty interest rate is applied on the arrears amount only. When PENAL.OPERAND and PENAL.MARGIN are not defined, then this field is allowed for input by user. Otherwise, where the operand and margin values are defined, the penal rate will be calculated automatically by the system from the effective interest. If APPLY.PENALTY is set to 'Y' and PENAL.MARGIN, PENAL.OPERAND and PENAL.RATE are null the system would default the EFFECTIVE.INT.RATE into this field. The penal interest rate entered here is defaulted to AZ loan account. However, at account level it can be modified, in case of need. </p>
+        <p>Validation Rules</p>
+        <p> Rate type, numeric value Maximum value 100 Negative values not accepted.</p>
+    </desc>
+</t>
+<t>
+<field>INT.ONLY</field>
+<desc>
+        <p>This field is used to define whether 'interest only repayment' is allowed for this product or not. If Y (Yes) is defined, accounts opened under this product shall be able to have Interest Only repayment facility If N (No) is defined, accounts of this product shall not be able to have the Interest Only repayment facility. For loan accounts with repayment type 'Non Redemption', no validation will be done with respect to this field. </p>
+        <p>Validation Rules</p>
+        <p> The permitted values are 'Y' or 'N' Valid only for Loan products Default is 'N'</p>
+    </desc>
+</t>
+<t>
+<field>INT.BASIS</field>
+<desc>
+        <p>Defines the method of determining the number of days used for debit interest calculations. In each of the options specified below the number on the left represents the number of days basis for multiplying Can accept the following types: Key G is used as interest basis for the weekly frequency defined in loan account schedule. For illustrations of all supported INTEREST.BASIS INTEREST.BASIS </p>
+        <p>Validation Rules</p>
+        <p> Optional input. If no value is defined for this field in AZ.PRODUCT.PARAMETER, then for all the AZ.ACCOUNTs relating to this product, the interest basis will be picked up by the system automatically based on the currency of the account, by referring the CURRENCY table. characters of value A, B, C, D, E, F, or g</p>
+    </desc>
+</t>
+<t>
+<field>DR.TXN.CODE</field>
+<desc>
+        <p>Defines the Transaction Code to be used on the Debit entry generated by AZ. The Transaction Code of the entry is used to determine the references and narratives to be printed on statements. The Debit/Credit indicators within the Transaction Code table are not used to verify this input. The transaction code defined here should be used or duplicated in any other field. If the ACCT.SYNC field is "Y" -then the transaction code defined here might be used as a default for the other leg of the transaction that it not affecting the loan / deposit when the transaction is triggered from AZ.ACCOUNT. To exemplify, In Credit Card type of loan, if the loan repayment takes place. Dr. will be to the internal/customer/nominated a/c and credit to the loan a/c. As debit side of the transaction is not affecting the loan (debit to a customer a/c)- the transaction code will be one inscribed in this field. </p>
+        <p>Validation Rules</p>
+        <p> 1-3 numeric character Transaction code. (Mandatory input.) Must be an existing code in Transaction Table.</p>
+    </desc>
+</t>
+<t>
+<field>SINGLE.LIMIT</field>
+<desc>
+        <p>This field specifies the value that should be set in the SINGLE.LIMIT field in the ACCOUNT that is attached to this APP. Input can be 'Y', 'N' or ''. If input as 'Y' then the acct that is attached to the product parameter should also have the field single limit marked as yes. If input as 'N' or '' then the acct that is attached to the product parameter cannot have the field single limit marked as 'Y'. In this case all the AZ.ACCOUNT that are linked to the same limit must have REDUCE.LIMIT set to be the same. VALIDATIONS Input can be either 'Y', 'N' or ''.</p>
+    </desc>
+</t>
+<t>
+<field>MATURITY.TXN</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the loan side (Debit or Credit) are identified and categorized as TXN codes. Maturity txn implies complete and full closure of loan a/c- where Credit will be to the Loan a/c and Debit will be to the Repayment a/c. When entered the system automatically identifies the transaction code as an EVENT of Loan Maturity. When the loan is normally closed as per schedule of repayment then this TXN code is used on the credit side of the transaction. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".</p>
+    </desc>
+</t>
+<t>
+<field>PRINCIPAL.TXN</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the loan side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a credit entry and a principal repayment to a loan. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y". Not allowed for CREDIT CARD type of products. Debit transaction codes not allowed.</p>
+    </desc>
+</t>
+<t>
+<field>TAX.ON.CHG.TXN</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to identify the entries that are raised due to the tax on charge collected as late payment fee. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y". Debit transction code defined in the TAX file.</p>
+    </desc>
+</t>
+<t>
+<field>LAST.DAY.INCL</field>
+<desc>
+        <p>This field determines whether the cap date is considered for interest calculation or not. Valid inputs are 'Y' or NULL. 1. If 'Y', the interest calculation, will consider the balance as of the Cap date and post the entries with the value date of cap date + 1. 2. If null, in the interest calculation, the interest will be calculated for the balance of cap date -1, and the entries will be posted with the value date of processing date. In case of online loan repayment resulting in interest capitalisation/collection , LAST.DAY.INCL is considered to be 'N' even if LAST.DAY.INCL is 'Y' in AZ/APP Level. Validation This field is a noinput field for ANNUITY type of repayment.</p>
+    </desc>
+</t>
+<t>
+<field>CAP.INT.AT.SOD</field>
+<desc>
+            <p> Field at the product level, to indicate if the Schedule on the Due date should be processed during the Start of Day or End of Day.</p>
+            <p> If set to YES, then the Schedule is processed during the Start of Day.</p>
+            <p> If set to NO, then the Schedule is processed during the End of Day.</p>
+            <p />
+            <p> Validation rules:</p>
+            <p>Accepted values YES or NO</p>
+            <p> Allowed only for Fixed Deposits.</p>
+            <p> Defaulted to NO</p>
+        </desc>
+</t>
+<t>
+<field>CC.PR.GRACE.PERIOD</field>
+<desc>
+        <p>For any repayment type if the GENERATION of CC schedules (principal repayment schedule) is to be postponed then this field is used. Input permitted in this field is Numeric and it should be read along with the frequency input in the repay date field of card issue application. When a card issue frequency is monthly and input made in this field is 3, it means for 3 months the generation of CC schedule is to be postponed, i.e., NO CC schedule is generated. If in card issue the frequency is weekly then it is to be interpreted that 'CC' schedules will not be generated for 3 weeks. For a Non Redemption type, input in this field is mandatory. This is for the reason that in Non Redemption type CI (interest) schedules are generated regularly and the Principal (CC schedules) repayment is made in one BULLET payment. VALIDATIONS Input allowed only if the Repayment Type is a Non redemption Allowed only for CREDIT CARD type of products.</p>
+    </desc>
+</t>
+<t>
+<field>MAX.INSTL.INT.ONLY</field>
+<desc>
+        <p>Total period of time that the interest only repayment could be defined for a loan during the life time of a loan account. If input is given in numbers it is treated as number of days. If input is given prefixing P, it is treated as number of installments. Example: If input is given as 60, it implies that the total number of Interest Only repayment period cannot exceed 60 days during the life of the loan account. If input is given as P60, it implies that the total number Interest only repayment period cannot exceed 60 installments (of any frequency like daily, monthly) during the life of the loan account. Note: For loan accounts with repayment type 'Non Redemption', no validation will be done with respect to this field. </p>
+        <p>Validation Rules</p>
+        <p> Value for this field will be accepted only if 'INT ONLY' field is defined as Y Valid only for Loan Product Cannot have negative values</p>
+    </desc>
+</t>
+<t>
+<field>BONUS.ON</field>
+<desc>
+        <p>"This field defines the base amount on which bonus is to be calculated for deposits of SAVINGS PLAN type. If defined as 'PRINCIPAL' then the bonus will be calcuated on the amount in the PRINCIPAL field in AZ.ACCOUNT. If defined as 'INTEREST' then the bonus will be calculated on the interest that has been capitalised so far. If '' then the bonus will be calculated on the WORKING.BALANCE of the account. If MULTI is set to 'YES' then the base amount will be the sum of the amounts of the valid sub accounts. Allowed values are 'PRINCIPAL', 'INTEREST' and ''. This field should be read along with BONUS.ON.ARREARS.</p>
+    </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+        <p>Identifies the name of the Product in a more descriptive form ( example : Home Loan, Education Loan) </p>
+        <p>Validation Rules</p>
+        <p> 1-35 type alpha characters Mandatory Input Multi valued for languages</p>
+    </desc>
+</t>
+<t>
+<field>MINIMUM.AMOUNT</field>
+<desc>
+        <p>The minimum amount of Deposit or Loan for this product is defined under this field. While opening accounts under this product, the amount of the account is validated against the amount defined here, for minimum value. </p>
+        <p>Validation Rules</p>
+        <p> 1 to 20 type AMT (standard amount format) Characters (Optional Input) Must be less than or equal to Maximum Amount Negative values not permitted</p>
+    </desc>
+</t>
+<t>
+<field>NONAZ.COLL.RED.FEE</field>
+<desc>
+        <p>Field to indicate if PRE.CLOSURE.FEE should be collected when part redemption or pre closure is done through TELLER/FT. When set to NULL, the fee is not collected when redemption is done through TELLER/FT. When set to YES, the fee is charged on the AZ.ACCOUNT or Settlement account based on the field CHG.FROM.RED.AMT in AZ.ACCOUNT.		 </p>
+        <p>Validation Rules</p>
+        <p> 	 Only allowed for normal Fixed deposits.</p>
+    </desc>
+</t>
+<t>
+<field>RESCHED.TYPE</field>
+<desc>
+        <p>Defines the types of reschedules for all the AZ accounts opened under this product, for the purpose of linking it with the notice of reschedule. For a particular type of reschedule, the reschedule notice will be linked and the reschedule event will happen after the expiry of reschedule notice. The valid types of reschedules are: 1. Rate Change 2. Lump sum Repayment 3. Redraw 4. Term Change 5. Frequency Change Note: At present only Rate Change is supported. </p>
+        <p>Validation Rules</p>
+        <p> Multi value field associated with Reschedule Notice</p>
+    </desc>
+</t>
+<t>
+<field>PI.METHOD</field>
+<desc>
+        <p>Specifies the method that has to be used for selecting the interest rate from Periodic Interest Table, for Deposit accounts, corresponding to the period of deposit. Allowed values are Previous, Next or Interpolate </p>
+        <p>Validation Rules</p>
+        <p> Input is allowed only if Periodic rate key is defined</p>
+    </desc>
+</t>
+<t>
+<field>PAY.INT.AT.PARTRED</field>
+<desc>
+        <p>Field at the product level, to indicate if interest is to be paid to Settlement account immediately during part redemption. If set to NULL, then interest is paid out immediately to Settlement account during part redemption. If set to NO, then interest will be paid only during the next IN or on the maturity date.			 </p>
+        <p>Validation Rules</p>
+        <p>		 Allowed only for normal Fixed deposits.		 Default is null.</p>
+    </desc>
+</t>
+<t>
+<field>INT.CORR.IMMED</field>
+<desc>
+        <p>Defines the way system should collect interest correction amount . Value NEXT is allowed only for Annuity contracts &amp; with ANNUITY.ADJUST as YES . When correction entries are raised due to back-dated drawdown or repayment, then the system collects the correction amount from AZINTADJ Suspense account immediately . Only during NEXT repayment( online/cob), the system shall collect above correction amount from repayment account. Default value is CURRENT and in this case, correction amount is collected immediately from the repayment account . Values - CURRENT,NEXt</p>
+    </desc>
+</t>
+<t>
+<field>TAX.ON.INT.TXN</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the loan/deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a tax on interest entry when the TAX.KEY is defined in AZ.ACCOUNT. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y". Both debit / credit transaction code allowed. Debit/Credit transaction code should be the same as the transaction code defined in TAX table. For instance, if TAX.KEY is defined as 10 in AZ.ACCOUNT, in the respective Tax table, the Credit/debit transaction code is defined as 243/244, then the same codes should be defined here.</p>
+    </desc>
+</t>
+<t>
+<field>MATURITY.INSTR</field>
+<desc>
+        <p>Defines the maturity instruction for the deposit accounts opened under this product. If 'Automatic Rollover' is specified the deposit will be rolled over with the same terms as that of the original deposit. If 'Payment to Nominated Account' is defined here, on date of maturity the maturity amount will be credited to the nominated account specified in the deposit account. Partial Rollovers and rollover with additional amount are handled at account level. </p>
+        <p>Validation Rules</p>
+        <p> Permitted values : 'Automatic Rollover' / 'Payment to Nominated Account' Allowed only for FIXED type deposits.</p>
+    </desc>
+</t>
+<t>
+<field>CHARGE.DR.TXN</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to identify the entries that are raised while charging the late payment fee. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".</p>
+    </desc>
+</t>
+<t>
+<field>ROLLOVER.CR</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used when raising the credit entry during rollover of deposits. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".</p>
+    </desc>
+</t>
+<t>
+<field>CREDIT.AMT.MULTI</field>
+<desc>
+        <p>This field indicates if B schedules need to be validated to be in multiples of the CREDIT.AMOUNT defined in AZ.ACCOUNT. If 'YES' is set then the B schedule amount can be only in multiples of the the CREDIT.AMOUNT, if defined in AZ.ACCOUNT. Allowed values are 'YES' or ''. Allowed only for SAVINGS PLAN type of deposit products. Allowed only if ACCT.SYNC is set as 'YES'.</p>
+    </desc>
+</t>
+<t>
+<field>REDUCE.LIMIT</field>
+<desc>
+        <p>This field is used to provide a revolving limit functionlity in loan products. If defined as '' then on the scheduled dates the limit is reduced for P and A schedules and incase of N schedules where there is no interest liquadation account, which provides a non-revolving functionlity. If defined as 'NO' then on the scheduled dates the limit is not reduced which provides a revolving limit functionlity. In this case the PRINCIPAL in AZ.ACCOUNT is not reduced on schedule dates or when the principal is repaid. Not allowed for deposits and CREDIT CARD. 'NO' not allowed for ANNUITY type of loans. If set to 'NO' then value in DRAWDOWN field cannot be set to 1, i.e., full drawdown. Allowed values are 'NO' or ''.</p>
+    </desc>
+</t>
+<t>
+<field>MINIMUM.TERM</field>
+<desc>
+        <p>This field defines the Minimum Term required for the AZ Loan or Deposit accounts created under this product. </p>
+        <p>Validation Rules</p>
+        <p> 2 Numeric and 1 Alpha Character Permitted values for Alpha Characters: D - Number of days M - Number of months Y - Number of years Must be less than or equal to Maximum Term Negative values not permitted</p>
+    </desc>
+</t>
+<t>
+<field>OD.INTEREST.TXN</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the loan side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a credit entry and a overdue interest repayment to a loan. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y". Not allowed for CREDIT CARD type of products. Debit transaction code not allowed.</p>
+    </desc>
+</t>
+<t>
+<field>INT.FIXED.RATE</field>
+<desc>
+        <p>Indicates the annual fixed interest rate applicable for the loan / deposit accounts opened under this Product. The rate of interest is defaulted to the AZ account from here. However, the interest rate can be modified at the account level also. </p>
+        <p>Validation Rules</p>
+        <p> 1- 5 numeric characters of rate type, like 18.50.</p>
+    </desc>
+</t>
+<t>
+<field>ROLLOVER.ACCTNG</field>
+<desc>
+        <p>This field specifies if accounting entries over the AZ.ACCOUNT need to be raised during rollover. This could be useful for passbook printing purposes. For example, Let us assume that the deposit is for 5000. If the MATURITY.INSTR is 'AUTOMATIC ROLLOVER' then during rollover the following entries will be generated. A. Nominated account is given, Case 1. Rollover amount - 5000 Dr AZ.ACCOUNT 5000 Cr Nominated a/c 5000 Cr AZ.ACCOUNT 5000 Dr Nominated a/c 5000 Case 2. Rollover amount - 6000 Dr AZ.ACCOUNT 5000 Cr Nominated a/c 5000 Cr AZ.ACCOUNT 6000 Dr Nominated a/c 6000 Case 3. Rollover amount - 4000 Dr AZ.ACCOUNT 5000 Cr Nominated a/c 5000 Cr AZ.ACCOUNT 4000 Dr Nominated a/c 4000 B. No nominated account given, Case 1. Rollover amount - 5000 Dr AZ.ACCOUNT 5000 Cr Internal a/c 5000 Cr AZ.ACCOUNT 5000 Dr Internal a/c 5000 Case 2. Rollover amount - 6000 Dr AZ.ACCOUNT 5000 Cr Internal a/c 5000 Cr AZ.ACCOUNT 6000 Dr Internal a/c 6000 Create a TELLER.DEFAULT crediting AZ.ACCOUNT for 1000. Case 3. Rollover amount - 4000 Dr AZ.ACCOUNT 5000 Cr Internal a/c 5000 Cr AZ.ACCOUNT 4000 Dr Internal a/c 4000 Create a TELLER.DEFAULT debiting Internal account for 1000. MATURITY.DR txn code will be used on the debit side and ROLLOVER.CR txn code will be used on the credit side entries to AZ.ACCOUNT. If nominated account is not provided then an internal account will be used. The category of the internal account need to be defined in ACCOUNT.CLASS application for 'AZROLLOVER' id. Allowed only if ACCT.SYNC is set to 'Y'. Allowed only for FIXED type deposits.</p>
+    </desc>
+</t>
+<t>
+<field>RESCHED.NOTICE</field>
+<desc>
+        <p>Defines the notice period in days for the corresponding reschedule type, for all the AZ accounts opened under this product. For a particular type of reschedule, the reschedule notice will be linked and the reschedule event will happen after the expiry of reschedule notice. The valid types of reschedules are: 1. Rate Change 2. Lump sum Repayment 3. Redraw 4. Term Change 5. Frequency Change Note: At present, only Rate Change is supported. If the BASIC.INTEREST is changed today or for a forward date after the contract is input then this change is applied to the az.account after the number of days defined in this field. The BI change is processed during COB. </p>
+        <p>Validation Rules</p>
+        <p> Multi value field associated with Reschedule Type Input allowed only if reschedule Type is defined 1-99 numeric character with period D, M or Y (Example: 15D, 01M) Not applicable for credit card loans</p>
+    </desc>
+</t>
+<t>
+<field>DEP.DR.PART</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a part withdrawal of a deposit. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".</p>
+    </desc>
+</t>
+<t>
+<field>DRAWDOWN.TXN</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the loan side (Debit or Credit) are identified and categorized as TXN codes. Draw down Txn implies making a draw down on the loan a/c- where Debit will be to the Loan a/c and Credit will be to the Nominated a/c. When entered the system automatically identifies the transaction code as an EVENT of Draw down. Whenever, loan is drawn this TXN code is used to identify the event, if ACCT.SYNC.is set to 'Y'. VALIDATIONS Must be a valid id in transaction application. TXN codes are input to identify the EVENT i.e loan repay, Draw down etc Mandatory input if the ACCT. SYNC is set to "Y".</p>
+    </desc>
+</t>
+<t>
+<field>LOAN.DEPOSIT</field>
+<desc>
+        <p>Indicates the type of product being defined. One of the following options is available for selection: DEPOSIT LOAN Deposit products have balances greater than zero and earn credit interest as per the rate of interest, defined by the Bank Loan products begin with zero balances and have negative balances. The negative balances incur debit interest as per the rate of interest defined. Mandatory input</p>
+    </desc>
+</t>
+<t>
+<field>MULTI</field>
+<desc>
+        <p>This field defines if the sub accounts are to be created during credit or debit over the AZ.ACCOUNT. Input allowed only if ACCT.SYNC is set to 'Y'. Input allowed only for CREDIT CARD type of loan product and FIXED or SAVINGS PLAN type of deposit products. If 'YES' were input then subject to, other parameter set up, every debit entry using DRAWDOWN.TXN code in a CREDIT CARD kind of set up would create a SUB acct and every credit entry using DEPOSIT.CR txn code or B schedule in the deposit will create a SUB acct. VALIDATIONS Permitted values either 'YES' or '' Once input the values cannot be changed .</p>
+    </desc>
+</t>
+<t>
+<field>APPROPRIATE.TYPE</field>
+<desc>
+        <p>This field decides how a repayment received should be apportioned among the various withdrawals made under a Credit Card account. Permitted inputs are (1) Proportionate and (2) FIFO [First in First Out]. TO ILLUSTRATE: - Suppose there are 3 draws through sub a/c Withdrawal 1 350000 Withdrawal 2 650000 Withdrawal 3 250000 TOTAL 1250000 Appropriation Type- Proportionate If the repayment received, is 125000 the set-off will be 125000*350000/1250000 Towards Drawl (1) -35000 ----I.e.- 125000*350000/1250000 Towards Drawl, (2) it is 65000--I.e.- 125000*650000/1250000 Finally toward drawl (3) 25000--I.e.- 125000*250000/1250000 Appropriation Type- FIFO If on the other hand the repayment received is, say 450000 and type is FIFO then: - First withdrawal of 350000 will be fully adjusted and then remaining amount of 100000 will be adjusted towards the O/s of second withdrawal. This way it will continue until the last drawl is met with fully. VALIDATIONS: Input can be either Proportionate or FIFO. Input is subject to change. Allowed only for CREDIT CARD type of products.</p>
+    </desc>
+</t>
+<t>
+<field>DEP.DR.PRE.CLOSURE</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is due to preclosure of a deposit. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".</p>
+    </desc>
+</t>
+<t>
+<field>MAXIMUM.TERM</field>
+<desc>
+        <p>This field defines the Maximum Term allowed for the AZ Loan or Deposit accounts created under this product. </p>
+        <p>Validation Rules</p>
+        <p> 2 Numeric and 1 Alpha Character Permitted values for Alpha Characters: D - Number of days M - Number of months Y - Number of years Must be greater than or equal to Minimum Term Negative values not permitted</p>
+    </desc>
+</t>
+<t>
+<field>RATE.CHNG.EXIST</field>
+<desc>
+        <p>This field can take "Y", "N" or "null". When the field is input as "Y" or "" any change in rate of interest i.e. through Basic.Interest key will be effective not only to new accounts but the existing accounts will also be taken at the changed rate-from the date of such change. If "N" is input then any change in rate of interest will be applicable only to the new a/cs whose draw downs are after the date of such change.</p>
+    </desc>
+</t>
+<t>
+<field>MAX.BACK.DATE</field>
+<desc>
+        <p>Defines the maximum number of days, earlier than the current business date, up to which the value date of the accounts, defined under this product, can go back. However, the maximum back value date defined under DATES table of T24, will override the maximum back date arrived by the number of days defined here. </p>
+        <p>Validation Rules</p>
+        <p> 1-3 digit Numeric value Cannot have negative values</p>
+    </desc>
+</t>
+<t>
+<field>PERIODIC.RATE.KEY</field>
+<desc>
+        <p>A reference number entered here as a key, links to an interest rate defined in the PERIODIC.INTEREST table. Interest rates are defined in PERIODIC.INTEREST table for various periods. The Periodic Rate key is used for Deposit Products to apply interest, based on the period of the deposit. When the Product is FIXED.FLOATING type - this PI key will be allowed to be used in combination with RATE.KEY in field no.12. </p>
+        <p>Validation Rules</p>
+        <p> Input is not allowed, if RATE.KEY is already defined Permitted- if the RATE.PERIOD contains any VALUE. Allowed only for deposit products.</p>
+    </desc>
+</t>
+<t>
+<field>HIGHEST.RANGE</field>
+<desc>
+        <p>This field should be read along with the field AMT.PERCENT. Input in this field indicates the product is RANGED Revolving type. It is a multi value set. The field Highest Range can take only amount which implies the range. Each drawals is taken and is matched with the range within which it falls. The %age or the amount specified in the range under amt. percent field is applied to arrive at the CC amount. REVOLVING.RATIO *10% HIGHEST.RANGE 100000 AMT.PERCENT B*100 HIGHEST.RANGE 300000 AMT.PERCENT *10 HIGHEST.RANGE 500000 AMT.PERCENT 250000 (1) A '*', before the numeric entered in AMT.PERCENT is must or else the system will deem it as amount and will generate CC schedule for only USD10 and not 10% of the outstanding. (2) A 'B*100', implies '100% of the balance in the acct'. This is because when the outstanding in a sub acct falls within this range then it is obvious that as per the minimum class an amount of 100000 is payable. However, if the outstanding in the acct is 98573 in that case CC schedule amount will be more than the outstanding that is actually payable if we stick to the concept of 100000 minimum. To obviate this we have introduced the concept 100% of the balance outstanding or 100000. (3) The fields Highest Range and Amt. Percent can be multi valued to specify different ranges. Amt. Percent field can be input either with a %age or an amount. A sub acct indicating a draw down is taken and is matched for a range within which it falls and the %age specified in the amt. percent field for that range is applied. If the AMT.PERCENT field contains an amount the system doesn't calculate any %age, but takes the amount as the 'CC' amount. For ex: (1) Reference to the table, if the amount of draw down in a sub a/c comes to 250000 then it falls within the range of 300000 hence attracts 10% of the range as the 'CC' amount. (2) Similarly, if the draw down in a sub a/c comes to 500000 then it attracts a flat amount of 250000 instead of any % age since the AMT.PERCENT field contains an amount. (3) If the draw down in a sub a/c comes to 600000, since there is no range within which it falls it automatically attracts the revolving %age for generation of 'CC' schedule amount, which in the present case (refer table) will be 10%. VALIDATIONS Input allowed only if the Repayment Type is Ranged Revolving. Allowed only for CREDIT CARD type of products.</p>
+    </desc>
+</t>
+<t>
+<field>RATE.SPREAD</field>
+<desc>
+        <p>Indicates the spread or margin of interest, which has to be applied to the basic interest rate defined in BASIC.INTEREST ( linked through RATE.KEY) of the loan account, to arrive the variable interest. </p>
+        <p>Validation Rules</p>
+        <p> 1-5 numeric characters of rate type (example 3.25, 99.99) A margin, which will result in a negative interest rate is prohibited. Cannot be greater than 100 This field is available for input only if RATE.KEY is defined</p>
+    </desc>
+</t>
+<t>
+<field>PART.REDEMPTION</field>
+<desc>
+        <p>Defines whether a portion of the funds available in the fixed Deposit can be allowed for redemption, before the maturity date of the deposit. If 'Y' is defined the accounts opened under this deposit product will have the facility of part redemption. If 'N' is defined, part redemption facility will not be available for deposit accounts opened under this product Allowed only form FIXED deposit products.</p>
+    </desc>
+</t>
+<t>
+<field>PRE.CLOSURE.FEE</field>
+<desc>
+        <p>Defines the charges to be levied for pre-closure of the deposit / loan account or part withdrawal of deposit. These charges will be debited only if the pre-closure of the deposit / loan is done by using AZ.ACCOUNT. The withdrawals made through other channels like Teller or ATM, the system will not recognise the differential interest and the charges. In these cases, the pre-closure fee and differential fee are to be debited manually. </p>
+        <p>Validation Rules</p>
+        <p> Should be a valid charge code defined under FT.CHARGE.TYPE or FT.COMMISSION.TYPE.</p>
+    </desc>
+</t>
+<t>
+<field>INT.SUS.TXN</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the loan/deposit side (Debit or Credit) are identified and categorized as TXN codes. It is applicable only for Annuity contracts . If ANNUITY.ADJUST is Yes at the AZ contract level and the ANNUITY amount defined is lesser than the interest for the period, then the system shall use this transaction code to debit AZINTADJ Suspense account &amp; credit AZ Account. VALIDATIONS Must be a valid "ID" in transaction application Mandatory input if the ACCT. SYNC is set to "Y". Only debit transaction code allowed. Applicable only for ANNUITY contracts .</p>
+    </desc>
+</t>
+<t>
+<field>POSTING.RESTRICT</field>
+<desc>
+        <p>Any valid code entered in this field, defines the restrictions for posting entries in AZ accounts, opened under this product. This field can be effectively used in AZ Loan products, for achieving certain restrictions like, not allowing redraw facility.Temenos recommends the user to define the Restriction at APP and not in the underlying account </p>
+        <p>Validation Rules</p>
+        <p> Optional input 1 to 4 numeric characters Posting Restriction code, based on EB.OBJECT It must be an existing code in the POSTING.RESTRICT table Posting restriction codes used in ACCOUNT, like 99, for marking Closure are not valid under this module, as All in One account closure is handled in a different way.</p>
+    </desc>
+</t>
+<t>
+<field>PENALTY.COLL.AT</field>
+<desc>
+        <p>Defines when the charges defined in LATE.PYMT.FEE field in APP are to be collected when they are processed during COB. IMMEDIATE: The fee will be collected immediately while processing in COB. MATURITY: The fee will be carried forward till maturity of the deposit. This is applicable in the case of part withdrawal of deposit. NEXT-INSTALLMENT: In the case of part withdrawal of Savings Plan type, the fee will be adjusted in the next installment credited to the account. NEXT-INT-DUE: In the case of part withdrawal the fee will be adjusted in the next interest due for remaining deposit </p>
+        <p>Validation Rules</p>
+        <p> Valid values are, IMMEDIATE, MATURITY, NEXT-INSTALLMENT, NEXT-INT-DUe</p>
+    </desc>
+</t>
+<t>
+<field>CREATE.TD.FOR.INT</field>
+<desc>
+        <p>This field indicates whether to create TELLER.DEFAULT or not for the interest amount during part withdrawal(through TELLER) /Pre closure when till account is used as credit side account. . If this value is YES then a TELLER.DEFAULT record will be created when a TELLER transaction is processed debiting an AZ.ACCOUNT Fixed Deposit. This will only be created when no nominated/interest liquidation is specified on the AZ.ACCOUNT. If the field CREATE.TD.FOR.INT is NULL the interest will be credited to the credit side account irrespective of it being the till account. </p>
+        <p>Validation Rules</p>
+        <p>: Value of YES is permitted only for Deposits &amp; with Teller product installed in the company</p>
+    </desc>
+</t>
+<t>
+<field>LOAN.INT.ADJUST</field>
+<desc>
+        <p>This field is used to decide whether interest adjustment is allowed or not in an ANNUITY or CREDIT-CARD type AZ loan account. Interest adjustment is a functionality by which interest payment could be lesser than the accrued interest amount and the remaining amount would be debited from suspense account of class AZINTADJ. The suspense account would be settled during the subsequent repayments. Interest adjustment is allowed only if this field is set to YES. </p>
+        <p>Validation Rules</p>
+        <p>: Holds YES or NO Input allowed only if ACCT.SYNC field is set to YES.</p>
+    </desc>
+</t>
+<t>
+<field>COMPOUND.TYPE</field>
+<desc>
+        <p>This field accepts the frequency like DAILY,WEEKn, MONTHnn, Nnn to determine the compounding period in a year. </p>
+        <p>Validation Rules</p>
+        <p>: ALLOWED for fixed deposits only</p>
+    </desc>
+</t>
+<t>
+<field>LOAN.PRECLOSE</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the loan side (Debit or Credit) are identified and categorized as TXN codes. Loan Preclose implies closing down of the loan a/c well before the ORIGINAL maturity date- where Credit will be to the Loan a/c and Debit will be to the Repay a/c. When entered the system automatically identifies the transaction code as an EVENT of Loan Preclose. The SYSTEM record must be defined in AZ.SETTLEMENT.PRIORITY file. VALIDATIONS Must be a valid "ID" in transaction application. TXN codes are input to identify the EVENT i.e loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".</p>
+    </desc>
+</t>
+<t>
+<field>BONUS.PREMIUM</field>
+<desc>
+        <p>Defines the code relevant for crediting premium amount to the Deposit account. It is more relevant in the case of Deposit accounts like Savings Plan/ Recurring Deposit etc., where for prompt payment of installments a certain amount will be credited to the account as bonus. Bonus is not applicable to multi deposits </p>
+        <p>Validation Rules</p>
+        <p> Should be a valid code defined in FT.CHARGE.TYPE, FT.COMMISSION.TYPE By prefixing ' * ' with the ID of SAVINGS.PREMIUM, it can be linked to SAVINGS.PREMIUm</p>
+    </desc>
+</t>
+<t>
+<field>PROD.START.DATE</field>
+<desc>
+        <p>This field indicates the date from which the product is avaliable. If defined then it may not be possible to create AZ.ACCOUNT with value dates prior to this date. The defined date cannot be greater than the PRODUCT.END.DATE. During repayments through AZ.ACCOUNT the value in REPAY.V.DATE cannot be lesser than the value defined here, if any. Not applicable for sub accounts opened under SAVINGS PLAN type of products, in this case only the master account is validated and not the sub accounts.</p>
+    </desc>
+</t>
+<t>
+<field>BONUS.ON.ARREARS</field>
+<desc>
+        <p>This field defines if bonus is to calculated even if there are any arrears in the payment installment of deposit. If defined as '' then even of one installment is not paid then bonus will not be calculated. If defined as 'YES' then if the number of late payments exeeds the defined LIAB.TO.PENALTY then bonus will not be calculated. Allowed values are 'YES' and ''.</p>
+    </desc>
+</t>
+<t>
+<field>REVOLVING.RATIO</field>
+<desc>
+        <p>Inputs in this field indicate that the product is a REVOLVING type. Input permitted is Numeric, which is applied to the total drawls made by the customer to arrive at the schedule repayment amounts by way of CC schedules. The ratio input in this field is defaulted to AZ main A/c. Input made can be altered at any time. VALIDATIONS Any numeric from 1-100 Allowed only for CREDIT CARD type of products.</p>
+    </desc>
+</t>
+<t>
+<field>GRACE.PERIOD</field>
+<desc>
+        <p>Defines the period in number of days, until the expiry of which the loan accounts under this product, shall not be considered to be in arrears. If the account continues to be in arrears status, even after the expiry of the grace period, penalty interest will be applied on the arrears, as per penalty parameters defined. </p>
+        <p>Validation Rules</p>
+        <p> Optional field 1-999 numeric Cannot have negative values.</p>
+    </desc>
+</t>
+<t>
+<field>PD.LINK.TO.AZ</field>
+<desc>
+        <p>This field can be input as either 'YES' or 'NO' or ''. If this field is YES-an, attempt to repay an amount, less than the amount raised by way of schedules after repay date will create, PD. In this case APPLY.PENALTY must be set to 'N'.If PD is not installed, then the funds will be automatically debited from repay account. If this field is NO then, the amount still payable will continue to remain in the account (i.e., the principal will not be reduced) and AZ.OVERDUES will be updated. Allowed only if ACCT.SYNC is set to 'YES'. Not allowed for CREDIT CARD type of loan products. If this field is '' then, FT on hold will be created for the insufficient funds. VALIDATIONS YES or NO or ''. Value in this field should be same as that of ACCT.SYNC for loans Once input the values cannot be changed. Partial payment will raise PD only if repay date is past for credit cards.</p>
+    </desc>
+</t>
+<t>
+<field>BONUS.CR</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used while raising the bonus entry in SAVINGS PLAN type of deposit. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".</p>
+    </desc>
+</t>
+<t>
+<field>CR.INT.TYPE</field>
+<desc>
+        <p>Defines the type by which the credit interest frequency will be processed for the deposit accounts opened under this product. This field is associated with CR.INT.FQU ( frequency for interest credit) Allowed types are: ANNIVERSARY / PERIOD.END If ANNIVERSARY is defined then the credit interest frequency will be based on the opening date. If PERIOD.END is defined then the credit interest will be based on the calendar end like month end.</p>
+    </desc>
+</t>
+<t>
+<field>CR.DEP.FQU</field>
+<desc>
+        <p>Defines the frequency of further credits to the deposit account. In the case of deposits like Savings Plan, Recurring Deposit, this field is use for defining the frequency of future credits expected. For example, if M01 is defined here, regular monthly credits to the account are expected. </p>
+        <p>Validation Rules</p>
+        <p> Type of input allowed are: D&lt;nn&gt;,W&lt;nn&gt;, M&lt;nn&gt;. This field and grace period field should have a rationale input i.e. Grace can't be Month. End while the deposit frequency is daily. This validation is valid from 14.2.00 with the introduction of period. end option in Grace period field.</p>
+    </desc>
+</t>
+<t>
+<field>RATE.PERCENT</field>
+<desc>
+        <p>Defines the percentage of outstanding amount up to which the Variable interest rate is applicable. For the rest of the percentage amount, fixed interest rate will be applicable. Example: If 60 is defined here, variable interest will be applied on 60% of the outstanding amount and Fixed interest will be applied on the remaining 40% of the outstanding amount. The only EXCEPTION is FIXED-FLOATING type of deposit or loan-which takes only 100 as input in this field. </p>
+        <p>Validation Rules</p>
+        <p> 1-5 numeric rate type like 60, 45.50 etc. Maximum value 100. No negative values will be accepted. In case of FIXED-FLOATING type -this field has to be input with the value 100. In case this is defined then any change to the BASIC.INTEREST will not be applicable.</p>
+    </desc>
+</t>
+<t>
+<field>TERM.PRIORITY</field>
+<desc>
+        <p>Specifies whether the Term of the loan has to be prioritised and kept constant or not, in the case of Re scheduling. In AZ Loan accounts, the term of the loan or repayment amount may change due to certain factors like Principal increase, Principal decrease, change in Rate of interest, change in frequency etc. In such cases, it is possible to retain the original term and the maturity date as constant and change the repayment amount suitably, by specifying the Term Priority as 'Y'. If Term Priority is specified as 'N', then by keeping the repayment amount as constant the term will be changed by altering the maturity date of the loan. This field has to be opted by the user whenever a Rescheduling of the loan account is to be done. According to the value defined here, Rescheduling will be done and the previous schedule will be written to AZ.SCHEDULES.HIST. In case of annuity type of loans if the user defined annuity amount is greater than the system generated amount then the contract will be matured earlier than the actual maturity date even though this field is set to 'Y'. In case of OTHERS/NONRED type of loans, TERM.PRIORITY 'N' is not applicable as they may have uneven payments. Hence if AZ contract is of OTHERS/NONRED type of loans, then system shall ignore the value in this field and work as if TERM.PRIORITY is 'Y'. </p>
+        <p>Validation Rules</p>
+        <p> Valid value 'Y' or 'N'</p>
+    </desc>
+</t>
+<t>
+<field>CR.TXN.CODE</field>
+<desc>
+        <p>Defines the Transaction Code to be used on the Credit entry generated by AZ. The Transaction Code of the entry is used to determine the references and narratives to be printed on statements. The Debit/Credit indicators within the Transaction Code table are not used to verify this input. If the ACCT.SYNC field is "Y" -then the transaction code defined here might be used as a default for the other leg of the transaction that it not affecting the loan. The transaction code defined here should be used or duplicated in any other field. See example in DR.TXN.CODE. </p>
+        <p>Validation Rules</p>
+        <p> 1-3 numeric character Transaction code. (Mandatory input.) Must be an existing code in Transaction Table.</p>
+    </desc>
+</t>
+<t>
+<field>PENAL.MARGIN</field>
+<desc>
+        <p>Indicates the margin or spread of penalty, which has to be applied to the effective interest (variable interest or fixed interest or the combination of both) of the loan account, to arrive at the penal interest. </p>
+        <p>Validation Rules</p>
+        <p> 1-5 numeric characters of rate type (example 3.25, 99.99) A margin, which will result in a negative interest rate is prohibited. Cannot be greater than 100%. This field is available for input only if APPLY.PENALTY is defined as Y and PENAL.OPERAND is not Null.</p>
+    </desc>
+</t>
+<t>
+<field>MAXIMUM.AMOUNT</field>
+<desc>
+        <p>The maximum amount of Deposit or Loan for this product is defined here. While opening accounts under this product, the amount of the account is validated against the amount defined here, for maximum value. </p>
+        <p>Validation Rules</p>
+        <p> 1 to 20 type AMT (standard amount format) Characters (Optional Input) Must be greater than or equal to Minimum Amount Negative values not permitted</p>
+    </desc>
+</t>
+<t>
+<field>PD.LINK.MAIN.AZ</field>
+<desc>
+        <p>For Credit cards, this field signifies if PD should be created for Main master account or for sub account. Value of 'YES' signifies that PD shall be created for Main account. Otherwise PD will be created for sub account. Can hold values YES &amp; blank.</p>
+    </desc>
+</t>
+<t>
+<field>INT.CR.CAP</field>
+<desc>
+        <p>This pertains to AZ deposits where on Capitalisation date interest is capitalized to the credit of the deposit acct using this TXN code. Valid Transaction code should be entered. This txn code is used capitalization of interest to the deposit acct, where Credit will be to the deposit acct and debit to the interest payable category. When TXN code is entered the system will automatically identify the transaction code as event of Interest Credit Cap. VALIDATIONS Must be a valid 'ID' in Transaction application TXN codes are input to identify the EVENT Mandatory input if the ACCT. SYNC is set to 'Y' Refer to INT.DR.CAP on the specific transaction codes that need to defined..This is not applicable for ANNUITY/ CREDIT CARDS.</p>
+    </desc>
+</t>
+<t>
+<field>PASSBOOK.ID</field>
+<desc>
+        <p>This field specifies the id of TELLER.PASSBOOK that need to be used while printing passbooks for this product. This field provides a facility to define different passbook layouts for different products. The id must be a valid id in TELLER.PASSBOOK. If not defined then the id SYSTEM in TELLER.PASSBOOK will be used by default while printing passbooks.</p>
+    </desc>
+</t>
+<t>
+<field>IRA.PROCESS</field>
+<desc>
+        <p>This is a switch for activating the IRA processing in AZ.</p>
+    </desc>
+</t>
+<t>
+<field>INT.DR.CAP</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the loan / deposit side (Debit or Credit) are identified and categorized as TXN codes. Interest Dr. Cap implies the Capitalization of interest to the loan a/c- where Debit will be to the loan a/c and Credit to the Interest Receivable category. When entered the system automatically identifies the transaction code as an EVENT of Interest Dr. Cap. When the interest is capitalized, this CODE is used on the Debit side of the Transaction for identifying the event. In case of a loan during I schedule the system would raise an entry to debit the az.account with 392/391 as the txn code. During N schedule the system would raise an entry to credit the az account with the value defined in the first multi value of INT.CR.CAP. In case of a deposit during I schedule the system would raise an entry to credit the az.account with 382/381 as the txn code. During N schedule the system would raise an entry to debit the az account with the value defined in the first multi value of INT.DR.CAP. When interest is to be paid manually then these fields could be multivalued and different txn codes can be defined if needed. VALIDATIONS Must be a valid "ID" in Transaction application. TXN codes are input to identify the EVENT i.e loan repay, Draw down etc. Mandatory input if the ACCOUNT. SYNC is set to 'Y' The following table gives the txn codes that have to be defined in addition to any other txn codes. Field Name Interest liq acct Loan Deposit INT.CR.CAP Yes 392 382 No 391 381 INT.DR.CAP Yes 392 382 No 391 381 INT.CORR.TXN Yes 396 386 No 395 385</p>
+    </desc>
+</t>
+<t>
+<field>CR.INT.FQU</field>
+<desc>
+        <p>Defines the frequency for interest credit, for all deposit accounts opened under this product. Example If 'M01' is defined here, this frequency will be defaulted to the deposit account of this product and interest will be credited / capitalised every month from the start date. This is acheived by defaulting the 'I' schedule into the az.account during creation. If a liquidation account is defined in ACCOUNT then interest will be credited to that account as per this frequency. Otherwise the interest will be capitalised in the Deposit account itself If 'NM01' is defined here, then the interest will be paid out to the nominated account after capitalising it every month from the start date. This is acheived by defaulting the 'IN' schedule into the az.account during creation. This field is also used during deposit rollover. Based on the setup done here either a 'I' or 'IN' schedule will be created during rollover. If this is not defined then the 'IN' schedule will be created on maturity after rollover. </p>
+        <p>Validation Rules</p>
+        <p> Type of input allowed are: Dnn,Wnn, Mnn</p>
+    </desc>
+</t>
+<t>
+<field>INT.CORR.RTN</field>
+<desc>
+        <p>A local hook routine triggered when interest correction entry is raised for Annuity contracts with Annuity adjustment as YES. It takes precedence over INT.CORR.IMMED. It should be called with the following arguments (ACC.ID,'',INT.CORR.IMMED) where ACC.ID is input argument &amp; holds the AZ Account ID currently being processed. Y.INT.CORR.IMMED is output returned from this subroutine &amp; should hold the values of CURRENT, NEXT only.</p>
+    </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+        <p>Holds the override messages that the user has confirmed Validation:				NOINPUT field</p>
+    </desc>
+</t>
+<t>
+<field>PAY.INT.AT.MAT</field>
+<desc>
+        <p>This field is used to decide whether accrued interest has to be paid out or rolled over during rollover of a fixed deposit. Allowed values are YES or NO If 'YES' is defined, then during rollover, the accrued interest before rollover will be paid out .When final maturity is reached or maturity instruction is Payment to Nominated account, then interest will be paid to Nominated account. If 'NO' is defined, then interest will be rolled over along with the principal deposit amount by default. The amount of rolled over deposit can anyway be overridden by the rollover amount definition at AZ.ACCOUNT level</p>
+    </desc>
+</t>
+<t>
+<field>PENALTY.ON</field>
+<desc>
+        <p>Identifies the basis for applying the penalty calculation. For Loan products the following values apply: 1. Arrears 2. Balance Owing 3. Credit limit For Deposit products, the following values apply: 4. Interest days 5.Fixed Amount 6. Redeemed amount At present, only penalty processing on arrears alone will be done. Other values are reserved for future development. </p>
+        <p>Validation Rules</p>
+        <p> Input allowed only if APPLY PENALTY is defined as 'Y' Negative values not permitted</p>
+    </desc>
+</t>
+<t>
+<field>DRAWDOWN.TYPE</field>
+<desc>
+        <p>Defines a type of drawdown for this product, which specifies the method of withdrawing the Principal amount, from the loan accounts of this product. The various types of drawdowns are: 1. Full Drawdown: The entire loan amount has to be withdrawn at a time. No partial withdrawals are allowed 2. Partial and No interest: Partial or full withdrawal of the loan amount is permitted from the loan account. Interest and Principal repayment need not be done during the drawdown period. 3. Partial and interest: The drawdown of loan amount can be done in partial or in full. During the drawdown period repayment towards interest has to be made. Otherwise it will be treated as arrears. If a nominated account is defined, in all the options, the system will automatically transfer the drawdown amount on the drawdown date to the nominated account. If no nominated account is defined and if the drawdown is preferred through the AZ account itself, then a teller default will be created and the amount can be drawn through teller using the teller default feature. </p>
+        <p>Validation Rules</p>
+        <p> Valid for Loan products only. Valid numbers are 1,2,3. Default is 1 (Full Drawdown) Must be 1 for CREDIT CARD type of loans.</p>
+    </desc>
+</t>
+<t>
+<field>OD.CATEGORY</field>
+<desc>
+        <p>This field defines the category code to which the account needs to be changed, if the deposit is matured based on certain conditions, like, 1. MATURITY.INSTR and nominated account are not defined. 2. MATURITY.INSTR is not defined but nominated account is defined and FINAL.MATURITY in AZ.ACCOUNT is not defined. Should be a valid category defined in the CATEGORY table. Range allowed: 1 to 9999</p>
+    </desc>
+</t>
+<t>
+<field>RECALC.CURR.AMT</field>
+<desc>
+        <p>Specifies whether the changes made to the loan account schedule, on account of re-scheduling, are to be effected from the current repayment date or from the next repayment date. If 'Y' is defined here the effect of re-scheduling will be given from the current repayment date and if 'N' is specified the effect will be from the next repayment date. This field will not be considered for future dated or back dated BI rate changes. </p>
+        <p>Validation Rules</p>
+        <p> Allowed values 'Y' or 'N' Optional input Not applicable for credit card loans</p>
+    </desc>
+</t>
+<t>
+<field>RATE.KEY</field>
+<desc>
+        <p>Contains the linking reference number of the appropriate interest rate, which will be used for interest computation purposes. The key indicates the rate to be used for interest computation purposes on Loans and Deposit accounts. The key can take the form of an entry on the BASIC RATE TEXT and consequently BASIC INTEREST table. A rate change on the BASIC.INTEREST rate table will automatically reschedule the loan / deposit accounts that are linked to table, on the respective dates or on the dates defined as per the interest revision notice periods. This process will be done during COB. </p>
+        <p>Validation Rules</p>
+        <p> 1-2 numeric characters. (Optional input.) Should have been defined in BASIC.RATE.TEXT and in BASIC.INTEREST table</p>
+    </desc>
+</t>
+<t>
+<field>FORWARD.ACC.MNTHS</field>
+<desc>
+        <p>For future use.</p>
+    </desc>
+</t>
+<t>
+<field>CC.AMT.RTN</field>
+<desc>
+        <p>This field holds a user defined API which calculates and updates the TYPE.CC amount in a CREDIT-CARD type AZ loan account created under this product. If exists, this API will be executed to calculate and update TYPE.CC amount field in AZ.SCHEDULES for both AZ sub account and AZ main account. </p>
+        <p>Validation Rules</p>
+        <p>: A valid key from EB.API file Input allowed only with repayment type as CREDIT-CARd</p>
+    </desc>
+</t>
+<t>
+<field>INT.ADJ.TXN</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the loan/deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a interest adjustment entry.This is applicable only for Annuity contracts and if this entry is encountered, then the system shall debit AZINTADJ Suspense account instead of the underlying AZ Account. VALIDATIONS Must be a valid "ID" in transaction application Mandatory input if the ACCT. SYNC is set to "Y". Only debit transaction code allowed. Value date in the entry should be same as the bank date(TODAY). Applicable only for ANNUITY contracts with Reduce limit as 'NO'.</p>
+    </desc>
+</t>
+<t>
+<field>INT.CORR.TXN</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the loan/deposit side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a interest correction entry. Interest correction can be for various reason like preclosure or part withdrawal in deposits etc... VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y". Both debit / credit transaction code allowed. Refer to INT.CR.CAP for transaction codes that need to be setup.</p>
+    </desc>
+</t>
+<t>
+<field>CREATE.PD.EOD</field>
+<desc>
+        <p>For CREDIT CARD type of products this field indicates if PD has to be created during COB on the schedule dates if the repay account has insufficient funds. If set as 'YES' then PD will be created during COB, else PD will have to created through a online payment beyond the schedule date. This field is valid only for CREDIT CARD type of products. This field is allowed only if PD.LINK.TO.AZ.is set to 'YES'. Allowed values are 'YES', 'NO', ''. 'NO' and '' are considered to be the same. For credit cards, system has to settles first by date wise and then by component wise. Hence related PD.PARAMETER should have REPAYMENT.METHOD as '3' and only the following components are settled by AZ and in the order REPAYMENT.ORDER as A1,TX,A2,PE,PS,IN,Pr</p>
+    </desc>
+</t>
+<t>
+<field>ROLL.MAT.WRK.DAY</field>
+<desc>
+        <p>This field indicates if the rolled over new maturity date should be a working day or not. If the field is Yes, during rollover of loans &amp; deposits, if the new maturity date happens to be on a holiday, then the system shall set the new maturity date to the first working day after the rolled over date. Assume that value date of AZ is 10th Aug 2005 &amp; maturity date is 15th Aug 2005 . Then during rollover, the system shall set Value date as 15th Aug &amp; new maturity date as 20th Aug. If the field is YES &amp; 20th Aug happens to be a holiday &amp; first working day after rollover is 22nd Aug , then new maturity date will be set to 22nd Aug. If the field is NO, then new maturity date will still be 20th Aug only. Allowed values - YES,NO. NO &amp; null are treated the same.</p>
+    </desc>
+</t>
+<t>
+<field>OD.CHARGE.TXN</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the loan side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a credit entry and a overdue charge repayment to a loan. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y". Not allowed for CREDIT CARD type of products. Debit transaction code not allowed.</p>
+    </desc>
+</t>
+<t>
+<field>OD.PRINCIPAL.TXN</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the loan side (Debit or Credit) are identified and categorized as TXN codes. This txn code is used to signify that the entry is a credit entry and a overdue principal repayment to a loan. VALIDATIONS Must be a valid "ID" in transaction application TXN codes are input to identify the EVENT i.e. loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y". Not allowed for CREDIT CARD type of products. Debit transaction codes not allowed.</p>
+    </desc>
+</t>
+<t>
+<field>LIAB.TO.PENALTY</field>
+<desc>
+        <p>Based on the value given under this field, the number of delayed installments liable to penalty will be arrived and corresponding charges defined under LATE.PMT.FEE will be charged. Numbers specified in this field refers to number of installments. For example, if 2 is defined here, the account will be liable for late fee after 2 installments are missed. This field is applicable for SAVINGS PLAN type of deposits. </p>
+        <p>Validation Rules</p>
+        <p> Numeric value ranging from 0 to 99</p>
+    </desc>
+</t>
+<t>
+<field>PI.TABLE.TO.USE</field>
+<desc>
+        <p>In the case of early redemption of a deposit, either partial or full, the eligible interest rate will be based on the period for which the redeemed amount was in force. To find this eligible interest rate, the system has to refer either the current periodic interest table or the periodic interest table that corresponds to the opening date of the deposit or the lowest of these two rates or trigger a routine to get the interest rate. Allowed input are 'CURRENT' / 'OPENING' / 'LOWEST' / 'OTHERS'</p>
+    </desc>
+</t>
+<t>
+<field>CARD.TYPE</field>
+<desc>
+        <p>Input in this field should be a valid id in CARD.TYPE application. When input the APP id will be populated in the attached CARD.TYPE. VALIDATIONS Any valid card type id can be input. Input allowed only for CREDIT CARD type of loans.</p>
+    </desc>
+</t>
+<t>
+<field>PENAL.OPERAND</field>
+<desc>
+        <p>Determines the method by which the effective interest of the loan product (either a key based variable interest or fixed interest or a combination of both) is to be adjusted by the Penal margin to arrive at the penal interest rate. This field specifies whether the Margin Rate is to be added to, subtracted from or multiplied by the effective rate to arrive at the penal interest rate. If Multiply is specified the final rate is (100 + M) percent of the effective interest rate , where M is the Margin Rate percentage. </p>
+        <p>Validation Rules</p>
+        <p> Valid values are ADD, SUBTRACT or MULTIPLY. This field is available for input only when APPLY.PENALTY is y</p>
+    </desc>
+</t>
+<t>
+<field>PARAMETER.NO</field>
+<desc>
+        <p>Indicates the id of the parameter record. Accepts a alphanumeric id. Mandatory input. Maximum of 16 characters allowed. If the id is specific to a particular company other than the master company then it is suffixed with the company id delimited by a '*'.</p>
+    </desc>
+</t>
+<t>
+<field>REPAYMENT.TYPE</field>
+<desc>
+        <p>Defines the Repayment type of the All in One Accounts opened under this product. This type determines the way in which the loan / deposit account is to be repaid. The repayment types available for loan accounts are: 1. ANNUITY This type of loan has a fixed periodic repayment amount (the 'annuity') consisting of two variable components of principal and interest. The repayment amount is calculated at the start of the contract so that the principal will be fully repaid after the required number of repayments. Initially, repayments consist mostly of interest. However, as the contract progresses, the size of the principal component increases as the accrued interest reduces. In All in One loan account, for defining a zero repayment at the start of the loan, for a fixed period, Annuity type of repayment can be defined in the schedule with amount as Zero. 2. LINEAR Linear loans also have an interest and a principal component to their periodic repayments. In this case, however, the principal repayment amount remains fixed over the lifetime of the contract. The interest element reduces as the accrued interest on the reducing balance decreases. This leads to a repayment scheme whereby the total periodic repayment reduces over the lifetime of the contract. 3. NONRED In NONRED type of loans, there is no regular repayment of principal, but only interest. The redemption of Principal will be done on maturity date of the loan. In All in One account loans, the validations relating to Interest Only and Maximum Period interest only will not happen for this type of loan. 4. OTHER Non structured repayments are handled under this type. Repayment of any amount on any dates are allowed, provided the total repayment amount is equal to principal. 5.CREDIT CARD This type of Loan repayment type was added from G14.0.00. For this repayment type, the schedules are NO. When the repayment type is Credit Card the regular schedules are discarded, sub a/cs are created and new types of schedules like CI, CC are generated automatically. Repayment types available for Deposit accounts are: FIXED Deposit amount is accepted in a fixed lump sum and repaid as fixed amount either with interest accumulated or not. SAVING PLAN Deposit amount is accepted in a periodic basis and the principal is increased in a recurring manner till the end of a fixed term. </p>
+        <p>Validation Rules</p>
+        <p> 1 to 12 Alpha characters. Input must be either 'ANNUITY', 'LINEAR', 'OTHERS', 'NONRED' or 'CREDIT CARD' for loan products and 'SAVINGS PLAN' or 'FIXED' for Deposit products. Once defined and record authorised cannot be changed.</p>
+    </desc>
+</t>
+<t>
+<field>LOAN.REPAY</field>
+<desc>
+        <p>Valid Transaction code should be entered. Txn codes that affect the loan side (Debit or Credit) are identified and categorized as TXN codes. Loan Repay txn implies repayment of loan installment - where Credit will be to the Loan a/c and Debit will be to the Repay a/c. When this txn code is used it repays the loan based on the rules defined in AZ.SETTLEMENT.PRIORITY. When entered the system automatically identifies the transaction code as an EVENT of Loan Repay. Whenever repayment of loan is made through AZ.ACCOUNT, this transaction is used to identify the event, if ACCT.SYNC.is set to 'YES'. VALIDATIONS Must be a valid "id" in transaction application. TXN codes are input to identify the EVENT i.e loan repay, Draw down etc. Mandatory input if the ACCT. SYNC is set to "Y".</p>
+    </desc>
+</t>
+<t>
+<field>MIN.CREDIT.BAL</field>
+<desc>
+        <p>Defines the minimum credit balance that has to be held in accounts of this product, at any time. </p>
+        <p>Validation Rules</p>
+        <p> Amount field Negative value not permitted Applicable for credit balance type of accounts</p>
+    </desc>
+</t>
+<t>
+<field>APPLY.PENALTY</field>
+<desc>
+        <p>Identifies whether or not penalty is to be applied to accounts of this product. If 'Y' is defined, for loan products, penal interest will be applied on arrears automatically by the system. If 'N' is defined penalty will not be applied automatically. The user has to apply manually, if required. This field is not applicable for DEPOSIT type, as the rate of interest for redemption will be automatically calculated by the system based on the value provided in other fields like, PI.TABLE.TO.USE, PI.METHOD. </p>
+        <p>Validation Rules</p>
+        <p> Valid options are 'Y', 'N'. Default is 'N'.</p>
+    </desc>
+</t>
+<t>
+<field>PROD.END.DATE</field>
+<desc>
+        <p>This field indicates the date from which the product is not avaliable. If defined then it may not be possible to create AZ.ACCOUNT with value date after this date. The defined date cannot be lesser than the PRODUCT.START.DATE. During repayments through AZ.ACCOUNT the value in REPAY.V.DATE cannot be greater than the value defined here, if any. Not applicable for sub accounts opened under SAVINGS PLAN type of products, in this case only the master account is validated and not the sub accounts.</p>
+    </desc>
+</t>
+<t>
+<field>RATE.PERIOD</field>
+<desc>
+        <p>Input in this field implies that the product is a Fixed Floating type. A Fixed Floating product initially takes a FIXED rate of interest and then moves to floating rate of interest till maturity based on the PERIOD input in the field RATE.PERIOD. Values may be input in the following format, i.e. nnD or nnM or nny The floating rate is prompted by 'R' schedule without which a FIXED FLOATING deposit or loan acct cannot be committed or authorized. The rates of interest both FIXED and FLOATING are defaulted from APP. A combination of the following interest is permitted for input, (1) BASIC.INTEREST (BI) and FIXED.RATE (2) BASIC.INTEREST (BI) and PERIODIC INTEREST (PI) To illustrate, In AZ.PRODUCT.PARAMETER the RATE.PERIOD is input as 03M. The Fixed Floating Deposit Start date is 05.04.2003 and maturity date is 04.04.2004. Interest is FIXED at 20% (field INT.FIXED.RATE) and for floating BI rate with RATE.KEY as 01 RATE.SPREAD as 2% RATE.OPERAND as ADD [Assume that the BI rate on the date of R schedule is 6.75%] System takes FIXED rate of interest at 20% from 05.04.2003 to 05.07.2003 And FLOATING rate at 8.75% (6.75% + 2%) from 06.07.2003 till 04.04.2004 Thus RATE.PERIOD is the field that differentiates a FIXED-FLOATING contract from other types of contracts. Based on the input in this field 'R' schedule is triggered to bring FLOATING rate in to operation. VALIDATIONS (1) Two numeric and One alphanumeric input allowed. (2) Permitted values in RATE.PERIOD nn&gt;D, nn&gt;M and nn&gt;Y (3) Fixed and Floating interest rates are defaulted from APP- user has the option to change the FIXED rate of interest directly at account level and FLOATING rate by changing the INTEREST. RATE value in BI table. (4) The change in Rate. key value can be gauged from the ACI record only (5) Spread cannot be changed it is fixed. (6) For fixed floating a combination of BI + PI, BI + FIXED is allowed but not PI AND FIXED. (7) Not applicable for credit cards</p>
+    </desc>
+</t>
+<t>
+<field>IAS.SUB.TYPE</field>
+<desc>
+        <p>This field holds the Sub type for the corresponding classification defined in IAS.CLASSIFICATION field.</p>
+    </desc>
+</t>
+<t>
+<field>ACCT.SYNC</field>
+<desc>
+        <p>Allowed values are 'YES' and ''. If 'YES' then the working balance in a/c and the principal in AZ.ACCOUNT created will be in sync. This can be achieved by using specific transaction codes for specific AZ related events. (For more details on transaction codes and events, refer the help text for various fields like DRAWDOWN.TXN). If the input is 'NULL', the two balances might not be in harmony. If 'YES', then an entry over the AZ.ACCOUNT should contain a valid txn code (apart from DR.TXN.CODE and CR.TXN.CODE) defined in its APP so that it knows how to process the entry within AZ. VALIDATIONS Permitted values either 'YES' or ''. Once input the values cannot be changed.</p>
+    </desc>
+</t>
+<t>
+<field>ALLOWED.CATEG</field>
+<desc>
+        <p>The default category to which the All in One product is allocated. It is ensured by the system that all AZ accounts opened under this product, belong to the category entered here. The category code is used to classify financial transactions in T24 according to the type of business operations or product type. The first two digits represents the highest level classification and next three digits represents sub classification which provides a clear definition of the profit and loss or the product type. The use of these codes with personal customer characteristics (like Residence, Status, Sector code etc.,) will enable the Banks to produce balance sheets and returns reflecting a coordinated and structured view of its operation, by directing business transactions to their appropriate place in the report. </p>
+        <p>Validation Rules</p>
+        <p> 5-7 Numeric Codes It must be an existing code in the CATEGORY table For customer Accounts, it must be in the range of 1000 to 9999 The category is defaulted to AZ.ACCOUNT from the corresponding ACCOUNT record and validated against the category code defined here.</p>
+    </desc>
+</t>
+<t>
+<field>AMT.PERCENT</field>
+<desc>
+        <p>Refer help text of HIGHEST.RANGE field.</p>
+    </desc>
+</t>
+<t>
+<field>ANNUITY.ADJUST</field>
+<desc>
+        <p>In case of ANNUITY type of loans, this field indicates if the annuity amount can be lesser than the interest amount for the period. If 'YES' is defined, then system allows user to define ANNUITY Amount lesser than the interest amount . If 'NO' is defined, then system validates that the ANNUITY amount should be atleast interest. </p>
+        <p>Validation Rules</p>
+        <p> Valid options are 'YES', 'NO'. Default is 'NO'.</p>
+    </desc>
+</t>
+</menu>
+</t24help>
+

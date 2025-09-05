@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FT</product>
+<table>AC.ENTRY.PARAM</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This application is used to define the layout of incoming generic accounting interface files, and various parameters defining the processing of overrides and the suspensing of entries. </p>
+            <p>   The system will allow an ASCII file, which is either of fixed length, padded fields, or delimited by a specified character, to create accounting entries. The application will ensure that balanced, verified entries are raised in the Globus accounting system. </p>
+            <p />
+            <p>   File Layout </p>
+            <p>   The ACSII file may be comprised of record types, which are HEADER or TRAILER records containing control information, and DATA records containing the entry information. </p>
+            <p>   Each RECORD.TYPE can be identified by a specified character sequence in the record from a given position (RECORD.ID.POS) for a given length (RECORD.ID.LEN), or the nth element (RECORD.ID.POS) delimeted by the delimeter (FIELD.DELIM). The value idenitfying the sepcific type may be defined (RECORD.ID) </p>
+            <p>   Each element to be extracted within the record will be defined by starting position within the record (DATA.START)and the number of bytes to be extracted (DATA.LEN), or as the nth element (RECORD.ID.POS)with a specified delimiter (FIELD.DELIM). </p>
+            <p>   Each data item may have a specified validation routine, either a standard IN2 routine, or a user written validation routine. </p>
+            <p>   Data is extracted to a reporting file AC.INWARD.ENTRY, the location of the data to be extracted may be defined in ENQ.FILE.LOC. </p>
+            <p />
+            <p>   Accounting Options </p>
+            <p>   The generic interface will ensure that entries raised are balanced and verified.The following options are provided: </p>
+            <p>   Entries may be balanced according to the following options: </p>
+            <p>    Balance by currency, debit and credit, ignoring value date.  Balance by currency netting debit and credit entries, irrespective of   value date.  Balance by value date and currency, debit and credit.  Balance by value date, currency irrespective of sign, netting debits   and credits.  Balance per entry. </p>
+            <p>   Balancing entries may be raised to either a nominated account per currency, or to an internal account of a defined category and department (CONTRA.ACCT.CATEG and ACCOUNT.OFFICER). The balancing (contra) entries will use definable debit and credit transaction codes, together with an additional narrative. </p>
+            <p>   In the case of P&amp;L entries, an additional option (CONTRA.PL.LOCAL) allows these entries to be treated as local currency or not when raising balancing entries. If  P&amp;L entries are balanced by currency account entries, position updates will result, whereas if treated as local currency there is no currency position. </p>
+            <p>   Transaction codes may be supplied in the interface file, or default codes (DT.TXN.CODE &amp; CR.TXN.CODE)will be used for debits and credits. </p>
+            <p>   The following options will be available for handling errors and overrides:  Overrides may automatically be approved  The entry may be automatically suspensed when an override is encountered   using the accounting suspense mechanism  The entry may be suspensed to an account of specific ACCOUNT.CLASS   (SUSP.CLASS.DR/CR) for the currency, and will create a Funds Transfer   transaction of HLD status to allow correction of the error automatically   defined (FT.TYPE). </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>DD.ITEM.LOC</field>
+<desc>
+            <p>This field contains the name of the field in DD.ITEM to map the record into, only allowed if the DD.PARAMETER exists.</p>
+            <p />
+            <p> Validation rules:</p>
+            <p> • Should be an existing field name or number in DD.ITEM. </p>
+            <p> • A maximum of 35 alphanumeric characters may be entered.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONTRA.CCY</field>
+<desc>
+            <p>Specific currency code used to allow a specific contra account to be defined for the currency. </p>
+            <p>   CONTRA.CCY and CONTRA.ACCT form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be a valid CURRENCY.</p>
+        </desc>
+</t>
+<t>
+<field>CR.TXN.CODE</field>
+<desc>
+            <p>The transaction code to be used when posting CREDIT entries from the interface, should no transaction code be supplied. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be the key to a valid record on the TRANSACTION file.</p>
+            <p>   Mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>VALIDATION.RTN</field>
+<desc>
+            <p>Specifies additional validation routines to be applied to entry created from the interface file. </p>
+            <p>   User written routines may be specified to valdiate the contents of the entry. The routine, if written must contain them following arguments: </p>
+            <p>   Entry Record     (Stmt / Categ entry to be raised) (IN) Reporting Record (AC.INWARD.ENTRY record) (IN) may be modified Error Message    (OUT) any error messages preventing posting of the entry Suspense Message (OUT) any error message causing the entry to be suspensed </p>
+            <p>   Generally available routine which may be used include: </p>
+            <p>   FT.VALIDATE.DD.MANDATE </p>
+            <p>   This will validate an entry to see if a direct debit mandate exists for it. It relies on the following information being mapped into local reference of AC.INWARD.ENTRY, and the local reference items having the names specified below: </p>
+            <p>   "THEIR.ACCOUNT"   - The account number to which the DD is payable. "THEIR.SORT.CODE" - The sort code of the destination account. "PROCESS.DATE"    - The Processing date of the mandate. </p>
+            <p>   The routine will also use ACCOUNT.NUMBER and THEIR.REFERENCE to check against the Standing Order file. </p>
+            <p>   FT.CHECK.AUTO.LIMIT </p>
+            <p>   Validates the local currency equivalent of an entry against the AUTO.PROCESS.LIMIT in FT.APPL.DEFAULT. If exceeded the entry is suspensed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Optional Input.</p>
+        </desc>
+</t>
+<t>
+<field>RECORD.ID.POS</field>
+<desc>
+            <p>The starting position of the element in the record which identifies the record type is defined here in a fixed length file, or the element number of the record id in a delimited file. </p>
+            <p>   Fields RECORD.TYPE to ENQ.LOC.FILE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   1 to 4 numeric characters.</p>
+            <p>   Mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRA.NARRATIVE</field>
+<desc>
+            <p>The narrative to be added to the contra entries raised. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.DELIM</field>
+<desc>
+            <p>Contains the value of the field delimiter character when a delimited file is supplied. </p>
+            <p>   The delimiter may be any character and can be expressed as the actual character, or the ASCII value of the character in the format [nnn] where nnn is in the range 1-255. </p>
+            <p>   Where no value is defined the file must contain fixed length padded records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Value may be a single character.  or  The ASCII value of a character in the format [nnn] where nnn is the ASCII value.</p>
+        </desc>
+</t>
+<t>
+<field>DD.PARAMETER</field>
+<desc>
+            <p>The field is to specify if the format described is for a direct debit.</p>
+            <p />
+            <p> Validation rules:</p>
+            <p> • It must be the key to valid record on the DD.PARAMETER file.</p>
+            <p> • A maximum of 4 alphanumeric characters may be entered.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DATA.START</field>
+<desc>
+            <p>Starting position in the record of the associated data item for a fixed length file, and the field number for a delimited file. A delimited file must contain a FIELD.DELIM value. </p>
+            <p>   Fields DATA.ITEM to ENQ.FILE.LOC form a related sub value set. </p>
+            <p>   Fields RECORD.TYPE to ENQ.LOC.FILE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRA.ENTRY</field>
+<desc>
+            <p>This field holds the option to be used for raising balancing entries. The options available are: </p>
+            <p>   CURRENCY     - Balance by currency, debit and credit, ignoring value date. </p>
+            <p>   CURRENCY.NET - Balance by currency, netting debit and credit entries                irrespective of value date. </p>
+            <p>   CCY.VAL      - Balance by value date and currency, debit and credit. </p>
+            <p>   CCY.VAL.NET  - Balance by value date, currency irrespective of sign,                netting debits or credits. </p>
+            <p>   ENTRY        - Balance each individual entry. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be one of either CURRENCY, CURRENCY.NET, CCY.VAL, CCY.VAL.NET or ENTRY.</p>
+            <p>   Mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>UPDATE.REPORT.FILE</field>
+<desc>
+            <p>Specifies whether the system should update the reporting file AC.INWARD.ENTRY when processing transactions.</p>
+            <p>   This file is usually updated to provide a record of the entries contained in the interface file being processed, however in certain circumstances the volume of data received means that this is not required. If this is the case the value of this field should be set to NO.</p>
+            <p>   Note that if the value is set to NO the system will not be able to produce any of the audit reports specified in PRODUCE.REPORT field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>   Optional Input</p>
+            <p>   Valid entries are YES and NO</p>
+        </desc>
+</t>
+<t>
+<field>SYSTEM.ID</field>
+<desc>
+            <p>Holds the SYSTEM.ID to be used in the accounting entries created. </p>
+            <p>   The value in this field is used to identify the source application of the entries. The first 2 characters are used to split entries by section in the transaction journal report. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be the key to a valid record on the EB.SYSTEM.ID file.</p>
+            <p>   Mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>DATA.ITEM</field>
+<desc>
+            <p>The name of the item in the record. </p>
+            <p>   Any value may be entered in this field, however only specific values will be used to create the resultant entry. These are: </p>
+            <p>   DATA.ITEM.NAME        DETAILS </p>
+            <p>   ACCOUNT               Contains the Account Number for the entry mapped to                       ACCOUNT.NUMBER PL.CATEGORY           Contains PL.CATEGORY. Either PL.CATEGORY or account                       number should be supplied. CURRENCY              Currency of the entry. Must match the account if                       supplied. Default is account currency or Local for                       P&amp;L entries. VALUE.DATE            VALUE.DATE of entry, optional. The value used in the                       entry will default from the transaction code of the                       entry used in the field DEFAULT.VALUE.DATE. AMOUNT                Amount of movement in the currency supplied.                       This must be present, and unsigned. AMOUNT.LCY            Unsigned local equivalent of amount.                       Optional. EXCH.RATE             Local to foreign exhange to be used.                       Optional. SIGN                  SIGN of entry AMOUNT.May be +,-, DR, CR. If not                       supplied the TXN.CODE value will be used. TXN.CODE              TRANSACTION.CODE to be used for posting the entry                       and deriving the SIGN where SIGN is not supplied. REVERSAL.MARKER       A value to indicate if the entry is a reversal of a                       previous entry. THEIR.REF             The reference of the entry known to the account                       holder. OUR.REF               The bank's reference to the transaction. TRANS.REFERENCE       The reference allocated to the transcation. PRODUCT.CATEGORY      The product categroy for P&amp;L entries ACCOUNT.OFFICER       The account officer for P&amp;L entries CUSTOMER              The CUSTOMER.ID for P&amp;L entries. DEPARTMENT            The DEPARTMENT code for P&amp;L entries. NARRATIVE             Entry narrative. Each time this value is supplied, a                       new value will be added. EXPOSURE.DATE         The exposure date for credit items. When not                       supplied the value will be defaulted from the                       EXPOSURE.DATE field of the TRANSACTION. CONTROL.DATE          The control date held in the header/trailer. CONTROL.TOTAL         The number of transactions in the file. FILE.REF              The Tape/File number from the header. CHECKSUM              The supplied CHECKSUM from the header. CALC.CHECKSUM         The calculated CHECKSUM in the header. CR.TOTAL              The supplied Credit Txn total in the header. DR.TOTAL              The supplied Debit Txn total in the header. CALC.CR.TOTAL         The Calculated Credit Txn total in header. CALC.DR.TOTAL         The calculated Debit Txn total in header. EXPIRY.DATE           The file expiry date from the header, </p>
+            <p />
+            <p>   LOCAL.REF-NAME where NAME corresponds to a local reference field name defined on the STANDARD.SELECTION table for STMT.ENTRY or CATEG.ENTRY </p>
+            <p>   (Multi-valued Local Reference field values should be separated by the character </p>
+            <p>    in the input)</p>
+            <p>   Fields DATA.ITEM to ENQ.FILE.LOC form a related sub value set. </p>
+            <p>   Fields RECORD.TYPE to ENQ.LOC.FILE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>   Up to 30 alphanumeric characters.</p>
+            <p>   Mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>DATA.MAND</field>
+<desc>
+            <p>A value of "Y" in this field denotes that the associated DATA.ITEM is mandatory. </p>
+            <p>   Fields DATA.ITEM to ENQ.FILE.LOC form a related sub value set. </p>
+            <p>   Fields RECORD.TYPE to ENQ.LOC.FILE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Where present, input must be Y.</p>
+            <p>   Optional.</p>
+        </desc>
+</t>
+<t>
+<field>SUSP.CLASS.CR</field>
+<desc>
+            <p>The key to the ACCOUNT.CLASS record containing the ACCOUNT record with the category to be used when raising suspense entries for non-existent accounts, or accounts with overrides, where the orignal entry was a credit entry. </p>
+            <p>   User defined ACCOUNT.CLASS records may be defined with a prefix of U-. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be the key to a valid record on the ACCOUNT.CLASS file.</p>
+            <p>   Mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>DATA.LEN</field>
+<desc>
+            <p>The length of the associated DATA.ITEM when extracting from the record for a fixed length file. For delimited files this can be used as maximum field length check. </p>
+            <p>   Fields DATA.ITEM to ENQ.FILE.LOC form a related sub value set. </p>
+            <p>   Fields RECORD.TYPE to ENQ.LOC.FILE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   1 to 3 numeric characters.</p>
+            <p>   Optional for delimited files, mandatory for fixed length files.</p>
+        </desc>
+</t>
+<t>
+<field>LOG.LEVEL</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Description of the record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>KEY</field>
+<desc>
+            <p>The key to the records on this file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   1 to 10 alphanumeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRA.DR.TXN.CODE</field>
+<desc>
+            <p>The transaction code to be used when posting a debit balancing entry. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be the key to a valid record on the TRANSACTION file.</p>
+            <p>   Mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>DD.DDI.LOC</field>
+<desc>
+            <p>Description:</p>
+            <p> This field contains the name of the DD.DDI location, allowed if the linked DD.PARAMETER exists.</p>
+            <p />
+            <p> Validation rules: </p>
+            <p> • Should be an existing field name or number in DD.DDI. </p>
+            <p> • A maximum of 35 alphanumeric characters may be entered.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>FT.TYPE</field>
+<desc>
+            <p>This field is used to hold the FT.TXN.TYPE.CONDITION which will be used when Funds Transfer records are to be produced in HLD status. </p>
+            <p>   When an entry is posted to a suspense account, for example when a non-existent account or P&amp;L category is supplied, or an override is generated from the accounting sub-system, a Funds Transfer record will be created in HLD status, posting the amount to the original account, the other side being the suspense account. </p>
+            <p>   If this field is blank, the Funds Transfer records are not produced. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   NOINPUT when the FUNDS.TRANSFER application is not installed, otherwise input must be the key to a valid record on the FT.TXN.TYPE.CONDITION file.</p>
+            <p>   Where input, the first two characters must be "AC".</p>
+            <p>   Optional.</p>
+        </desc>
+</t>
+<t>
+<field>PRODUCE.REPORT</field>
+<desc>
+            <p>The name of the ENQUIRY.REPORT record to be used to generate the interface report is specified in this field. </p>
+            <p>   The enquiry used to produce the report will normally be based on the AC.INWARD.ENTRY file (although this does not have to be the case). In order to ensure only entries for the file last processed are reported, when the selection field FILE.NAME.NO is used, the selection will be supplied with the file name last updated automatically. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be the key to a valid record on the ENQUIRY.REPORT file.</p>
+            <p>   Optional.</p>
+        </desc>
+</t>
+<t>
+<field>ENQ.FILE.LOC</field>
+<desc>
+            <p>This field is used to specify the location in the extract entry file, AC.INWARD.ENTRY, for the associated DATA.ITEM to be mapped to. </p>
+            <p>   When the interface file is processed a reporting entry is built in the file AC.INWARD.ENTRY. The key to this file is: </p>
+            <p>   FILE.NAME "." FILE.SEQ.NO "-" record in file (DATA items) FILE.NAME "." FILE.SEQ.NO "-HEADn"           (header items) FILE.NAME "." FILE.SEQ.NO "-TRAIL"           (trailer) FILE.NAME "." FILE.SEQ.NO "-ERROR"           (header/trailer errors) </p>
+            <p>   Data will be mapped to the same field as the corresponding accounting entry to be raised, and additionally to the location defined in this field. Data is always mapped to the reporting file, even if the entry is not raised, the field ENTRY.POSTED denoted whether or not the entry was raised. </p>
+            <p>   To define specific multi values and subvalues a "-" character should be specified and the multi/sub value set, e.g. </p>
+            <p>   FIELD.NAME-1 </p>
+            <p>   FIELD.NAME-1-1 </p>
+            <p>   N.B. If the field name specified is LOCAL.REF then the multi value      indicator must be present, and a subvalue indicator may be set if      required. </p>
+            <p>   Fields DATA.ITEM to ENQ.FILE.LOC form a related sub value set. </p>
+            <p>   Fields RECORD.TYPE to ENQ.LOC.FILE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be a valid data field as defined for the AC.INWARD.ENTRY file.</p>
+        </desc>
+</t>
+<t>
+<field>DR.TXN.CODE</field>
+<desc>
+            <p>The transaction code to be used when posting DEBIT entries from the interface, should no transaction code be supplied. </p>
+            <p>   If processing a cheque file and the cheque reference number is required to be checked against the PAYMENT.STOP file, the value of CHEQUE.IND should be set to Y in the TRANSACTION record. In this case THEIR.REFERENCE will be checked against PAYMENT.STOP for the account. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be the key to a valid record on the TRANSACTION file.</p>
+            <p>   Mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRA.PL.LOCAL</field>
+<desc>
+            <p>Specifies whether Profit and Loss entries in foreign currency are treated as local when maintaining a balanced system. </p>
+            <p>   If Y is entered any P&amp;L entry will be balanced by a LOCAL currency internal account entry. As a result of this P&amp;L entries will not generate a currency position. If Y is not entered, the balancing entries will be raised in the currency of the entry, which will result in a currency position update. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Where present, input must be Y.</p>
+            <p>   Optional.</p>
+        </desc>
+</t>
+<t>
+<field>PROCESSING.DATE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>DATA.VAL.RTN</field>
+<desc>
+            <p>The name of the validation routine to be applied to the extracted data item. </p>
+            <p>   The routine may be a Standard system validation routine beginning IN2..., see Regional Development guide for futher details, or a user customised routine. A user routine must have no arguments, the value is supplied in the variable COMI, and the value may be modified as required, errors should be returned in the variable ETEXT. </p>
+            <p>   Some of the main IN2 routines likely to be used are: </p>
+            <p>   IN2                  Validates numbers, removes leading zeros. </p>
+            <p>   IN2ANT               Validates internal and customer accounts. Will                      convert MNEMONIC and ALTERNATE.ACCOUNT ids to account                      number where valid. </p>
+            <p>   IN2ACC               As IN2ANT except that only customer accounts are                      allowed. </p>
+            <p>   IN2CUS               Validates customer numbers, converts mnemonics to                      valid numbers where supplied. </p>
+            <p>   IN2CCY               Validates currency codes. Will convert numeric                      currency code to a standard code. </p>
+            <p>   IN2A                 Ensures input is alpha-numeric. </p>
+            <p>   IN2S                 Ensures input is SWIFT standard. </p>
+            <p>   User Routines which may be used which are generally available include: </p>
+            <p>   FT.LOCAL.TXN         This will compare an external transaction code                      supplied against the file FT.LOCAL.TXN.CODES. This                      may be translated into a Globus transaction code, and                      may also be used to ignore certain types of                      transaction. </p>
+            <p>   FT.CHECK.SORT.CODE   This routine validates the SORT.CODE supplied against                      the FT.LOCAL.CLEARING record, to see if the code is                      defined as one of our clearing codes. If not not an                      error is returned. </p>
+            <p>   Fields DATA.ITEM to ENQ.FILE.LOC form a related sub value set. </p>
+            <p>   Fields RECORD.TYPE to ENQ.LOC.FILE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Any routines specified in this field must be catalogued.</p>
+            <p>   Optional.</p>
+        </desc>
+</t>
+<t>
+<field>RECORD.TYPE</field>
+<desc>
+            <p>Each line of the source file is treated as a separate record, which may be of three basic types: </p>
+            <p>   HEADn  - Up to nine header records may be defined which contain control          information. </p>
+            <p>   DATA   - The data records are used to create the accounting entries. </p>
+            <p>   TRAIL  - One trailer record may be defined which may contain control          information. </p>
+            <p>   Fields RECORD.TYPE to ENQ.LOC.FILE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Input must either be TRAIL, DATA or HEAD followed by 1 digit.</p>
+            <p>   Duplicates are not permitted.</p>
+            <p>   DATA must be defined.</p>
+            <p>   Mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>RECORD.ID.LEN</field>
+<desc>
+            <p>The length of the record indentifier is defined in this field. </p>
+            <p>   For fixed length records this field must be defined, for delimited files this can be used as an optinal maximum length. </p>
+            <p>   Fields RECORD.TYPE to ENQ.LOC.FILE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   1 to 4 numeric characters</p>
+            <p>   Mandatory for fixed length files. Optional for delimited files</p>
+        </desc>
+</t>
+<t>
+<field>SUSP.CLASS.DR</field>
+<desc>
+            <p>The key to the ACCOUNT.CLASS record containing the ACCOUNT record with the category to be used when raising suspense entries for non-existent accounts, or accounts with overrides, where the orignal entry was a debit entry. </p>
+            <p>   User defined account class records may be defined with a prefix of U-. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be the key to a valid record on the ACCOUNT.CLASS file.</p>
+            <p>   Mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRA.CR.TXN.CODE</field>
+<desc>
+            <p>The transaction code to be used when posting a credit balancing entry. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be the key to a valid record on the TRANSACTION file.</p>
+            <p>   Mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.OFFICER</field>
+<desc>
+            <p>The DEPT.ACCT.OFFICER code to be used in the generation of the default suspense contra account number, and as the ACCOUNT.OFFICER in the contra entry. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be the key to a valid record on the DEPT.ACCT.OFFICER file.</p>
+            <p>   Mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNTING.MODE</field>
+<desc>
+            <p>This field is used to specify the accounting mode to be used when raising the interface entries, concerning the handling of any overrides which may be raised. </p>
+            <p>   The following options are valid: </p>
+            <p>   SAO - Automatic override approval. SSS - Suspense entry on override (this option may only be used during       EOD). SNP - Do not raise entry on override. </p>
+            <p>   If an override is encountered, or a non-existent account number is supplied, the relevant SUSP.CLASS.DR/CR will only be used is the option SNP is used. Option SSS is therfore not recommended. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be one of either SAO, SSS or SNP.</p>
+            <p>   Mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRA.ACCT.CATEG</field>
+<desc>
+            <p>The category code to be used when constructing the balancing suspense account number. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be the key to a valid record on the CATEGORY file, in the range 10000 to 19999.</p>
+            <p>   Mandatory input. A record must exist in CATEG.INT.ACCT for the category entered.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRA.ACCT</field>
+<desc>
+            <p>The account number in the associated CONTRA.CCY, to be used as the contra account for entries in that currency. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Must be the key to a valid record on the ACCOUNT file.</p>
+            <p>   The currency of the account specified must be that of the currency specified in the related CONTR.CCY field.</p>
+        </desc>
+</t>
+<t>
+<field>RECORD.ID</field>
+<desc>
+            <p>The value of the RECORD.ID which indicates that the record is of the type defined. A pattern may be defined for matching, e.g. "2N" will match any two digits. </p>
+            <p>   Fields RECORD.TYPE to ENQ.LOC.FILE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Up to 20 characters of any type may be entered.</p>
+            <p>   Mandatory.</p>
+        </desc>
+</t>
+<t><field>FWD.ENTRIES</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>DELETE.FWDS</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

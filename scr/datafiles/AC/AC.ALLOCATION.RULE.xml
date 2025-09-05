@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>AC</product>
+<table>AC.ALLOCATION.RULE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This table is used to define accounting events used by the soft accounting processing where the event is used to identify mapping tables to determine the type of accounting entries to raise and the content of these entries.</p>
+            <p />
+            <p>      The accounting event will be supplied either by the underlying application. An identifying code will be supplied as part of the event interface information from the underlying application.</p>
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>MVMT.TARGET</field>
+<desc>
+            <p>The target balance associated with the event type.</p>
+            <p>      This field is sub-valued and can be expanded to allow multiple movements to be raised.</p>
+            <p>      The values allowed when  MVMT.DETAIL is set to STMT are:</p>
+            <p>      BAL*BALANCE.TYPE key </p>
+            <p>      Soft Balance Type (Defined in AC.BALANCE.TYPE)</p>
+            <p>      INT*ACCOUNT.CLASS key</p>
+            <p>      AccountClass for posting to an internal account of the specified class in event currency</p>
+            <p>      INTLCY*ACCOUNT.CLASS key </p>
+            <p>      AccountClass for posting to an internal account in local currency of the specified class.</p>
+            <p>      AC*ACCOUNT key</p>
+            <p>      account number for posting to a specific account number.</p>
+            <p>      TXN*</p>
+            <p>      Contract id to be mapped from the supplied event information</p>
+            <p>      The values allowed when MVMT.DETAIL is set to CATEG are:</p>
+            <p>      PL*CATEGORY key</p>
+            <p>      category code for profit and loss posting</p>
+            <p>      The values allowed when MVMT.DETAIL is set to SPECIAL are:</p>
+            <p>      CRB</p>
+            <p>      TXN indicating that the contract of the event will be used.</p>
+            <p>      No Input allowed if the MVMT.DETAIL is not populated.</p>
+        </desc>
+</t>
+<t>
+<field>MVMT.SPEC</field>
+<desc>
+            <p>The AC.POSTING.DETAIL to be used when creating RE.CONSOL.SPEC.ENTRY movement entries. This AC.POSTING.DETAIL will also be used for opposite entries, if the OPP.SPEC field is left blank.</p>
+        </desc>
+</t>
+<t>
+<field>OPP.STMT</field>
+<desc>
+            <p>The AC.POSTING.DETAIL to be used when creating STMT.ENTRY opposite entries. If this field is left blank, the value in the MVMT.STMT field will be used.</p>
+        </desc>
+</t>
+<t>
+<field>EVENT.TYPE</field>
+<desc>
+            <p>An optional identifier to allow the allocation associated only when the event type supplied with the accounting event matches. A null value will be assumed to be the default value. No duplicate values allowed. The applications should document the structure of their accounting events to allow this table to be configured correctly. Could be another sub-table.</p>
+            <p />
+            <p>      Multi Valued</p>
+            <p />
+            <p>A valid AC.EVENT record is allowed.</p>
+        </desc>
+</t>
+<t>
+<field>RULE.ID</field>
+<desc>
+            <p>The key to the AC.ALLOCATION.RULE table, this will be passed as the RULE_ID field of a soft accounting event.</p>
+            <p>    A soft  accounting event is comprised of the following: -</p>
+            <p>     E_TransactionID  </p>
+            <p>   The transaction (e.g. FT, TT) reference of the deal moving funds to the contract. For AA generated movements it will be the AA transaction reference. If not supplied the contract will be assumed as the transaction.</p>
+            <p>    E_TransactionSysId  </p>
+            <p>   The system id of the transaction. If not supplied the contract system id will be assumed.</p>
+            <p>    E_ContractId </p>
+            <p>     For AA the contract is the account/arrangement number.</p>
+            <p>    E_ContractSysId  </p>
+            <p>   The system id of the contract</p>
+            <p>    E_RuleId </p>
+            <p>   The allocation rule key to use in building the entries</p>
+            <p>    E_EventType  </p>
+            <p>    The type of event within the same rule. Can be used to distinguish between PL current, PL Prev Month etc</p>
+            <p>    E_EventCcy</p>
+            <p>   The currency of the supplied event details</p>
+            <p>    E_Sign</p>
+            <p>   The sign of event amounts</p>
+            <p>    E_Amount</p>
+            <p>   The movement amount for the contract in contract ccy. Unsigned</p>
+            <p>    E_AmountLcy</p>
+            <p>    The local currency equivalent of the movement amount. If not supplied will be calculated using the mid-rate for the currency.</p>
+            <p>    E_Exchrate</p>
+            <p>    The exchange rate used to calculate the local currency equivalent. If not supplied will be calculated.</p>
+            <p>    E_ValueDate</p>
+            <p>    The Value Date for the accounting event</p>
+            <p>    E_ExposureDate</p>
+            <p>    The ExposureDate for the accounting event</p>
+            <p>    E_BalSubType</p>
+            <p>    The sub type to be used for the event in the update of the balances (depends on balance type). For AA this could be the due date</p>
+            <p>    E_ReversalInd   </p>
+            <p>   Indicates if the event is a reversal</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MVMT.STMT</field>
+<desc>
+            <p>The AC.POSTING.DETAIL to be used when creating STMT.ENTRY movement entries. This AC.POSTING.DETAIL will also be used for opposite entries, if the OPP.STMT field is left blank.</p>
+        </desc>
+</t>
+<t>
+<field>OPP.CATEG</field>
+<desc>
+            <p>The AC.POSTING.DETAIL to be used when creating CATEG.ENTRY opposite entries. If this field is left blank, the value in the MVMT.CATEG field will be used.</p>
+        </desc>
+</t>
+<t>
+<field>MVMT.CATEG</field>
+<desc>
+            <p>The AC.POSTING.DETAIL to be used when creating CATEG.ENTRY movement entries. This AC.POSTING.DETAIL will also be used for opposite entries, if the OPP.CATEG field is left blank.</p>
+        </desc>
+</t>
+<t>
+<field>OPP.TARGET</field>
+<desc>
+            <p>The target balance associated with the event type.</p>
+            <p>      This field is sub-valued and can be expanded to allow multiple movements to be raised.</p>
+            <p>      The values allowed when  OPP.DETAIL is set to STMT are:</p>
+            <p>      BAL*BALANCE.TYPE key </p>
+            <p>      Soft Balance Type (Defined in AC.BALANCE.TYPE)</p>
+            <p>      INT*ACCOUNT.CLASS key</p>
+            <p>      AccountClass for posting to an internal account of the specified class in event currency</p>
+            <p>      INTLCY*ACCOUNT.CLASS key </p>
+            <p>      AccountClass for posting to an internal account in local currency of the specified class.</p>
+            <p>      AC*ACCOUNT key</p>
+            <p>      account number for posting to a specific account number.</p>
+            <p>      TXN*</p>
+            <p>      Contract id to be mapped from the supplied event information</p>
+            <p>      The values allowed when MVMT.DETAIL is set to CATEG are:</p>
+            <p>      PL*CATEGORY key</p>
+            <p>      category code for profit and loss posting</p>
+            <p>      The values allowed when OPP.DETAIL is set to SPECIAL are:</p>
+            <p>      CRB</p>
+            <p>      TXN indicating that the contract of the event will be used.</p>
+            <p>      No Input allowed if the OPP.DETAIL is not populated.</p>
+        </desc>
+</t>
+<t>
+<field>MVMT.DR.TXN</field>
+<desc>
+            <p>The TRANSACTION to be used when creating debit STMT.ENTRY or CATEG.ENTRY movement entries. If this field is left blank, the value of the DEF.DR.TXN field will be used instead.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>standard override field in this case used to indicate that a transaction code with a debit or credit defined has been entered in a credit or debit movement field of the opposite type</p>
+        </desc>
+</t>
+<t>
+<field>ENTRY.PRINT.MASK</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>OPP.CR.TXN</field>
+<desc>
+            <p>The TRANSACTION to be used when creating credit STMT.ENTRY or CATEG.ENTRY opposite entries. If this field is left blank, the value of the DEF.CR.TXN field will be used instead.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.CR.RE.T</field>
+<desc>
+            <p>The default RE.TXN.CODE to be used when creating credit RE.CONSOL.SPEC entries. This will only be used when the MVMT.CR.RE.T or OPP.CR.RE.T field is left blank.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.CR.TXN</field>
+<desc>
+            <p>The default TRANSACTION to be used when creating credit STMT.ENTRY or CATEG.ENTRY entries. This will only be used when the MVMT.CR.TXN or OPP.CR.TXN field is left blank.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.DR.RE.T</field>
+<desc>
+            <p>The default RE.TXN.CODE to be used when creating debit RE.CONSOL.SPEC entries. This will only be used when the MVMT.DR.RE.T or OPP.DR.RE.T field is left blank.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.DR.TXN</field>
+<desc>
+            <p>The default TRANSACTION to be used when creating debit STMT.ENTRY or CATEG.ENTRY entries. This will only be used when the MVMT.DR.TXN or OPP.DR.TXN field is left blank.</p>
+        </desc>
+</t>
+<t>
+<field>OPP.CR.RE.T</field>
+<desc>
+            <p>The RE.TXN.CODE to be used when creating credit RE.CONSOL.SPEC opposite entries. If this field is left blank, the value of the DEF.CR.RE.T field will be used instead.</p>
+        </desc>
+</t>
+<t>
+<field>MVMT.CR.TXN</field>
+<desc>
+            <p>The TRANSACTION to be used when creating credit STMT.ENTRY or CATEG.ENTRY movement entries. If this field is left blank, the value of the DEF.CR.TXN field will be used instead.</p>
+        </desc>
+</t>
+<t>
+<field>MVMT.DR.RE.T</field>
+<desc>
+            <p>The RE.TXN.CODE to be used when creating debit RE.CONSOL.SPEC movement entries. If this field is left blank, the value of the DEF.DR.RE.T field will be used instead.</p>
+        </desc>
+</t>
+<t>
+<field>MVMT.CR.RE.T</field>
+<desc>
+            <p>The RE.TXN.CODE to be used when creating credit RE.CONSOL.SPEC movement entries. If this field is left blank, the value of the DEF.CR.RE.T field will be used instead.</p>
+        </desc>
+</t>
+<t>
+<field>OPP.DR.RE.T</field>
+<desc>
+            <p>The RE.TXN.CODE to be used when creating debit RE.CONSOL.SPEC opposite entries. If this field is left blank, the value of the DEF.DR.RE.T field will be used instead.</p>
+        </desc>
+</t>
+<t>
+<field>OPP.SPEC</field>
+<desc>
+            <p>The AC.POSTING.DETAIL to be used when creating RE.CONSOL.SPEC.ENTRY opposite entries. If this field is left blank, the value in the MVMT.SPEC field will be used.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p> Used to describe the type of allocation ruleds being set up.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>OPP.DR.TXN</field>
+<desc>
+            <p>The TRANSACTION to be used when creating debit STMT.ENTRY or CATEG.ENTRY opposite entries. If this field is left blank, the value of the DEF.DR.TXN field will be used instead.</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+        <p>This is a multi valued field. Standard T24 alphanumeric field. </p>
+        <p>
+           <p>Validation Rules:</p>
+        </p>
+        <p> A maximum of 35 characters may be entered.</p>
+    </desc>
+</t>
+</menu>
+</t24help>
+

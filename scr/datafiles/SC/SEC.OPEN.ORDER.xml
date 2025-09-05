@@ -1,0 +1,1377 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>SC</product>
+        <title>SECURITY.OPEN.ORDER</title>
+        <table>SEC.OPEN.ORDER</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>The Security Open Order facility is the application to be used for passing Limit Orders and Market instructions between the Portfolio Management Department and the Dealing Department. </p>
+            <p>    It can be utilised in several different ways. </p>
+            <p>    1) It can be used by a Banks Dealing Department to store all unexecuted limit orders or ordinary market instructions received from either their Back Office (Securities Administration/Portfolio Management or indeed direct from their Clients. </p>
+            <p>    2) It can therefore be used as a link between Back Office and Dealers where the Account Officer has received Buy/Sell Instructions from his client and wishes to inform / instruct the Dealer. </p>
+            <p>    3) It is also conceivable that where a client has direct access via a terminal to his Portfolio account he would use this facility to pass on instructions regarding his positions. </p>
+            <p>    However used this Sub System will allow the inputter to enter Buy or Sell Instructions against a particular stock at a certain price by a specified date in whatever currency he wishes. </p>
+            <p>    The authorised Security Open Order creates a Trade Open Order for the Dealer at which level he either partially or completely fills the transaction. When entered this automatically creates a Sec.Trade in Hold Status which ideally the Back Office would pick up and finalise. This Security Trade would contain the original Security Open Order reference number. </p>
+        </ovdesc>
+    </overview>
+    <menu>
+        <t>
+            <field>SPLIT.CHRGS</field>
+            <desc>
+                <p>This field is only populated if the SEC.OPEN.ORDER record was created from the ORDER.BY.CUST application  the transaction was a SWITCH with a value in the SPLIT.CHRGS field.</p>
+                <p>    NULL - If this field is blank then any commission calculated will be charged on both the purchase  the sale at the full rate. XX% - The percentage of the charges to be applied to the trade .</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    NULL, or percentage between 0%  100%</p>
+            </desc>
+        </t>
+        <t>
+            <field>STOCK.EXCHANGE</field>
+            <desc>
+                <p>This optional field is used to record the STOCK.EXCHANGE in which the order is to be processed.</p>
+                <p>    It is possible that this field may already be populated from the details recorded in the ORDER.BY.CUST application.</p>
+                <p>    If this was the case, then it may still be changed if found to be necessary.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Must be a valid stock exchange record existing on the STOCK.EXCHANGE file.</p>
+            </desc>
+        </t>
+        <t>
+            <field>SUB.ACCOUNT</field>
+            <desc>
+                <p>Specifies the sub account for depository. </p>
+                <p>    SUB.ACCOUNT must be defined in the CUSTOMER.SECURITY record of the respective DEPOSITORY.</p>
+                <p>    This field will be defaulted from SC.SUB.ACC.ROUTING application.  </p>
+                <p>    If CU.DEPOSITORY has a value, then SUB.ACCOUNT will validate with this DEPOSITORY.</p>
+                <p>    Multi valued field associated with all the fields from CUST.NUMBER and CU.DISC.PCENT</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    1-16 numeric characters</p>
+                <p>    Must be defined in CUSTOMER.SECURITY record for the depository</p>
+                <p>    Optional field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>THREAD.KEY</field>
+            <desc>
+                <p>The thread key if the SEC.OPEN.ORDER was created by the service.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TIME.TO.BROKER</field>
+            <desc>
+                <p>Specifies the time a particular Order has been placed with the Broker/Counterparty in the BROKER field.</p>
+                <p>    The multi value fields BROKER, DATE.TO.BROKER and TIME.TO.BROKER can be used by the Dealers to record the fact that a particular order has already been placed with a particular Broker. </p>
+                <p>    This field associated with the DATE.TO.BROKER field will record the time and date the order was sent to a broker. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Up to 9 type T time characters,(Standard time format in the form HH:MM:SS).</p>
+                <p>    Optional input.</p>
+                <p>    If TRADE.TIME.FLAG is set to YES in SC.STD.SEC.TRADE then the value of this field will be defaulted from the current system time.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TRADE.CCY</field>
+            <desc>
+                <p>Specifies the currency in which the transaction will be settled. </p>
+                <p>    The trade currency is the settlement currency for the Broker involved.  As with the SEC.TRADE application it determines the currency of the account to which the Broker Net amount is posted.  The customer however can be debited in a different currency. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    3 type CCY (alpha) character currency code. or 1-3 numeric character currency number. (Mandatory Input.) Default value = Price currency as specified within the Security Master record for that particular Security ID.</p>
+                <p>    Must exist on the CCY file.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TRADE.DATE</field>
+            <desc>
+                <p>This is the date that the SEC.TRADE transactions associated with this order were produced. </p>
+                <p>    Normal T24 Date input. Defaults to current working day when the SEC.TRADE transactions were produced. </p>
+                <p>    Validation Rules</p>
+                <p>    Up to  9 date charaters. (Optional Input)</p>
+            </desc>
+        </t>
+        <t>
+            <field>TRADE.PRICE</field>
+            <desc>
+                <p>Specifies the price at which the transaction was executed. </p>
+                <p>    This field along with the multivalue fields 22 to 28 contain all the relevant details relating to a partially completed Security Open Order. </p>
+                <p>    These fields are updated by the Trade Open Order Section of the Limit/Open Order Sub Section. </p>
+                <p>    Validation Rules</p>
+                <p>    1 - 14 Numeric input. (Automatic Default.)</p>
+            </desc>
+        </t>
+        <t>
+            <field>TRADE.TIME</field>
+            <desc>
+                <p>This is the time that the SEC.TRADE transactions associated with this order were produced. </p>
+                <p>    Multi-valued field which is updated from the TRADE.TIME field in the associated SC.EXE.SEC.ORDERS record.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Up to 9 T24 Time charaters. Recorded in HH:MM:SS format. (Optional Input)</p>
+                <p>    A NO-INPUT field. Trade.Time updated from the associated SC.EXE.SEC.ORDERS record. </p>
+            </desc>
+        </t>
+        <t>
+            <field>TRADED.NOM</field>
+            <desc>
+                <p>The amount of nominal that has been traded on this order if a partial execution has been performed.</p>
+            </desc>
+        </t>
+        <t>
+            <field>BR.DELIV.INSTR</field>
+            <desc>
+                <p>This field contains the delivery instruction to broker. System indicator which is used to define whether the delivery is to be made free of payment or against payment. This field will be defaulted to the related DELIVERY.INSTR field of the BROKER in SC.EXE.SEC.ORDERS. In Orders with DEAL.STATUS set to TRADED, this field will default to CU.DELIV.INSTR and BR.DELIV.INSTR.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Must be the key to a valid entry on the SC.DEL.INSTR         file.</p>
+                <p>    1 to 3 alpha code.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TRADER.CODE</field>
+            <desc>
+                <p>Specifies the dealer of the trading department for the order. This will get defaulted from the ORDER.BY.CUST.</p>
+                <p/>
+                <p>  Validation Rules:</p>
+                <p>  Should be a valid DEPT.ACCT.OFFICER</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>TRADER.DESC</field>
+            <desc>
+                <p>Specifies the description on field TRADE.CODE.</p>
+                <p/>
+                <p>  Validation Rules:</p>
+                <p>  Multi Value No Input field which is used to store any comments or free format narrative concerning the customer or the transaction. Free Format narrative text. Up to 35 maximum characters per line.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>TRANSACTION.CODE</field>
+            <desc>
+                <p>Indicates whether the Customer is placing an order to buy or sell. </p>
+                <p>    The transaction code is user defined for convenience and adaptability to cover all eventualities within the Securitys Module  From Coupon Payments to Redemptions and Capital Increase Type updates. Within the Open Order application it is suggested that the same codes as for the Sec.Trade application i.e. For A purchase of securities SPR and for a Sale SSL be used. </p>
+                <p>    Validation Rules</p>
+                <p>    1-3 type S (uppercase alpha) character Sc.Trans.Name. (Mandatory Input.)</p>
+                <p>    Must be a valid code on the SC.TRANS.NAME file.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TYPE.OF.TRADE</field>
+            <desc>
+                <p>The Open Order can be used by the Portfolio Manager to process Buy or Sell instructions for Bonds or shares traded on either the Spot market or on the Forward market.  </p>
+                <p>    It is at this level that the Portfolio Manager instructs the Dealers that the order he is giving relates to a particular transaction. This then determines the transaction that will be created when the deal has been executed. i.e.  S will generate a SEC.TRADE  </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    It will accept S and its valid. Where S = SEC.TRADE. </p>
+            </desc>
+        </t>
+        <t>
+            <field>VAL.IN.SETT.CCY</field>
+            <desc>
+                <p>System updated multi-value field. This field will be updated with the order value (Nominal x Price in SECURITY.MASTER) for each customer in security currency. The first multi value belongs to the first customer and so on. If LIMIT.PRICE is input and transaction code is debit, lower price among market and limit price is used for sell and higher price is used for buy. If transaction code is credit, then lowest is used. If OPN.ORD.FWD.ACCT field in SC.PARAMETER is set to Y, then a forward entry will be generated to the respective customer account based on the value in this field.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    18 BOTTOM type characters (No Input)</p>
+            </desc>
+        </t>
+        <t>
+            <field>VALUE.DATE</field>
+            <desc>
+                <p>Records the date on which the trade is to be effected.</p>
+                <p>    The value date for any transaction can vary from 1 day to 1 month depending on the security being traded and the stock exchange at which it is being traded.</p>
+                <p>    A default value date can be defaulted by using the facility within the STOCK.EXCHANGE table.Here the user can define the number of Business or Calendar days between the trade and value date of any particular Stock Exchange.</p>
+                <p>    In STOCK.EXCHANGE table, user can also specify the settlement basis as FIXED. In this case, a calendar (STK.EXCH.CALENDAR) is maintained for the Stock Exchange and for a Year. A settlement day can be defined for a period for a particular Stock Exchange and Year.</p>
+                <p>    The value date specified here would be carried forward to the order execution and would be used as the value date of the trade</p>
+                <p>    N.B Care should be taken when and if using this facility.</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Up to 9 type D date characters</p>
+            </desc>
+        </t>
+        <t>
+            <field>VERIFY.BY.DEALER</field>
+            <desc>
+                <p>System updated field</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Up to 40 SWIFT characters (No Input)</p>
+            </desc>
+        </t>
+        <t>
+            <field>WHT.TAX.CODE</field>
+            <desc>
+                <p/>
+                <p>    Indicates the Tax code from the TAX.TYPE.CONDITION / TAX file. Defaults from the field SHARE.TAX / BOND.TAX from the file TXN.TAX.CODE.</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p/>
+                <p/>
+                <p>    No input field</p>
+            </desc>
+        </t>
+        <t>
+            <field>BR.EX.RATE.ACC</field>
+            <desc>
+                <p>This field will give the exchange rate between the TRADE.CCY and BR.ACCOUNT.CCY. This field will be allowed for input only if DEAL.STATUS is set to TRADED. If this field has any value then the same will be defaulted in BR.EX.RATE.ACC field in SEC.TRADE. Buy rate will be used for calculating the exchange rate.</p>
+            </desc>
+        </t>
+        <t>
+            <field>BR.PRICE</field>
+            <desc>
+                <p>BR.PRICE field will contain the execution price. Input will be allowed to this field only when DEAL.STATUS field is set to TRADED.The price entered in this field will be used as execution price in SEC.TRADE previously traded orders.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Standard Numeric field</p>
+                <p>    Input allowed only if DEAL.STATUS is equal to TRADED</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>BR.SEC.ACCT</field>
+            <desc>
+                <p>This field will be allowed for input only if BROKER.TYPE field is set to BANK - PORTFOLIO. This field will allow a SEC.ACC.MASTER set as a dealer book portfolio.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    A Valid SEC.ACC.MASTER id will be allowed as input.</p>
+                <p>    SEC.ACC.MASTER must be a dealer book portolio.</p>
+                <p>    Input allowed only when BROKER.TYPE field is set to BANK - PORTFOLIO.</p>
+            </desc>
+        </t>
+        <t>
+            <field>BROK.CORRES</field>
+            <desc>
+                <p>This field can be used to decide if you want a SEC.OPEN.ORDER confirmation to be produced or not. </p>
+                <p>    Inputting YES in this field will result in a SEC.OPEN.ORDER confirmation being produced at authorisation. Inputting NO will result in no confirmation being produced. Default is no confirmation being produced. </p>
+                <p>    Validation Rules</p>
+                <p>    YES or NO (Optional Input)</p>
+            </desc>
+        </t>
+        <t>
+            <field>BROKER</field>
+            <desc>
+                <p>Specifies the counterparty with whom the trade is to be effected. </p>
+                <p>    If an Investment Manager would like a particular trade passed onto a particular broker he could enter a preference at this point with perhaps a reason in the free format narrative field. Normally however the choice of the broker would be left to the Dealers themselves. The CUSTOMER thus entered must be defined as BROKER, CLIENT, COUNTERPARTY in CUSTOMER.TYPE field of CUSTOMER.SECURITY. If a CUSTOMER is defined as CUSTOMER in CUSTOMER.TYPE field of CUSTOMER.SECURITY, a check will be made to see if the CUSTOMER has any DEALER BOOK accounts. If the CUSTOMER has a dealer book portfolio then the customer will be allowed as a valid input. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    1 - 6 Numeric Customer code within the range 1 - 999999. or 3 - 10 type MNE (uppercase alpha or numeric or . ) character Mnemonic Customer ID. (Optional Input).</p>
+                <p>    Must exist as a Customer type Broker, Counterparty, Client on the Customer Security File.</p>
+                <p>    If a CUSTOMER id with dealer book portfolio will be allowed.</p>
+            </desc>
+        </t>
+        <t>
+            <field>BROKER.NO</field>
+            <desc>
+                <p>The ID of the Broker (or brokers) that the order is placed with. </p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>    Upto 10 alphanumeric customer number / mnemonic (No input, external field)</p>
+            </desc>
+        </t>
+        <t>
+            <field>BROKER.TYPE</field>
+            <desc>
+                <p>BROKER.TYPE field will allow the following options BROKER/ COUNTERPARTY/ CLIENT/ BANK - PORTFOLIO. Input in this field will be checked with the CUSTOMER.TYPE field in CUSTOMER.SECURITY. If the BROKER field contains a CUSTOMER.NO (Defined as customer in CUSTOMER.SECURITY) and if the CUSTOMER has a Dealer Book portfolio, then the BROKER.TYPE field will default to BANK-PORTFOLIO.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Valid input will be BROKER/COUNTERPART/CLIENT/BANK-PORTFOLIO</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>CALC.CHRGS</field>
+            <desc>
+                <p>This field can be modified with the following results  YES - CU.COMMISSION, CU.COMM.TAX, CU.STAMP.TAX  CU.EBV.FEES will be recalculated. If CASH.CHRGS is set to NET then the nominal will be recalculated taking into account any values that are in fields CU.BRKR.COMM, CU.FOREIGN.FEE, CU.COMMISSION, CU.COMM.TAX, CU.STAMP.TAX  CU.EBV.FEES, CU.FEES.MISC or CU.DISC.PCENT. NO - No charge/commissions will be recalculated, however, if CASH.CHRGS is set to NET  there are any values in CU.BRKR.COMM, CU.FOREIGN.FEE, CU.COMMISSION, CU.COMM.TAX, CU.STAMP.TAX  CU.EBV.FEES, CU.FEES.MISC or CU.DISC.PCENT then the nominal will be recalculated.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Mandatory if transaction is cash </p>
+                <p>    YES or NO</p>
+            </desc>
+        </t>
+        <t>
+            <field>CASH.CHRGS</field>
+            <desc>
+                <p>This field determines whether the cash amount entered in CU.CASH.AMOUNT field is to include charges (NET) or have charges applied in addition (GROSS).</p>
+                <p>    NET - The nominal will be calculated so that when the charges are added to the trade, the total value of the trade matches the CU.CASH.AMOUNT. GROSS - The nominal is calculated  then the charges are added to the CU.CASH.AMOUNT.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Mandatory Input if CU.CASH.AMOUNT field is used. </p>
+                <p>    NET or GROSS</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACCOUNT.MANAGER</field>
+            <desc>
+                <p>Automatic default to the Account Manager as specified for this client at Customer level. </p>
+                <p>    Validation Rules</p>
+                <p>    Default is a valid Account Officer ID. (Automatic Default.)</p>
+                <p>    Must exist as a valid Account Officer record on the Account Officer File.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CASH.ROUNDING</field>
+            <desc>
+                <p>Each time the NET option is used the system always tries to match the cash amount exactly, however, sometimes this is not possible  this field determines what to do with the transaction.</p>
+                <p>    If set to UNDER/OVER the system will calculate to the nearest trading unit under the cash amount for a purchase  to the nearest trading unit over the cash amount for a sale. If set to EXACT the system will then allow the user to use the ADJUST.COMM field to determine whether to adjust the commission down to make the total trade equal the cash amount.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    MANDATORY field if the CASH.CHRGS field is set to NET otherwise a NOINPUT field.</p>
+                <p>    UNDER/OVER or EXACT</p>
+            </desc>
+        </t>
+        <t>
+            <field>COM.TAX.BCUR</field>
+            <desc>
+                <p>This field is populated only when the transaction is for cash.</p>
+                <p>    Customer commissions in SEC.OPEN.ORDER are defaulted from the CUSTOMER.CHARGE record for the customer using the SC.APPLICATION set of fields. It will use the set of fields linked to SC.TRADING if they are present and default to ALL otherwise. From there the system links to the SCTR.GROUP.CONDITION application and then onto the SCTR.CHARGE.PARAMETER application to get the actual FT.COMMISSION.TYPE record used. Some commissions have a tax code associated with them which is used to charge tax on the commission. </p>
+                <p>    If Tax is raised on the customer commission then the amount of tax raised in the local currency of the system is recorded in this field. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    No input field automatically updated by the system.</p>
+            </desc>
+        </t>
+        <t>
+            <field>COM.TAX.CODE</field>
+            <desc>
+                <p>This field is populated only when the transaction is for cash.</p>
+                <p>    Customer commissions in SEC.OPEN.ORDER are defaulted from the CUSTOMER.CHARGE record for the customer using the SC.APPLICATION set of fields. It will use the set of fields linked to SC.TRADING if they are present and default to ALL otherwise. From there the system links to the SCTR.GROUP.CONDITION application and then onto the SCTR.CHARGE.PARAMETER application to get the actual FT.COMMISSION.TYPE record used. Some commissions have a tax code associated with them which is used to charge tax on the commission. </p>
+                <p>    If Tax is raised on the customer commission then the Tax Code used (from the TAX file) to calculate the tax on the commission is recorded in this field. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    No input field automatically updated by the system.</p>
+            </desc>
+        </t>
+        <t>
+            <field>COM.TAX.XRTE</field>
+            <desc>
+                <p>This field is populated only when the transaction is for cash.</p>
+                <p>    Customer commissions in SEC.OPEN.ORDER are defaulted from the CUSTOMER.CHARGE record for the customer using the SC.APPLICATION set of fields. It will use the set of fields linked to SC.TRADING if they are present and default to ALL otherwise. From there the system links to the SCTR.GROUP.CONDITION application and then onto the SCTR.CHARGE.PARAMETER application to get the actual FT.COMMISSION.TYPE record used. Some commissions have a tax code associated with them which is used to charge tax on the commission. </p>
+                <p>    If Tax is raised on the customer commission then the amount is calculated in the local currency of the system and recorded in the COM.TAX.BCUR field. This field will contain the exchange rate used between the local currency of the system and the trade currency of the ORDER.BY.CUST, used in calculating the amount of tax in the Local currency. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    No input field automatically updated by the system.</p>
+            </desc>
+        </t>
+        <t>
+            <field>COMM.CODE</field>
+            <desc>
+                <p>This field is populated only when the transaction is for cash.</p>
+                <p>    Customer commissions in SEC.OPEN.ORDER are defaulted from the CUSTOMER.CHARGE record for the customer using the SC.APPLICATION set of fields. It will use the set of fields linked to SC.TRADING if they are present and default to ALL otherwise. From there the system links to the SCTR.GROUP.CONDITION application and then onto the SCTR.CHARGE.PARAMETER application to get the actual FT.COMMISSION.TYPE record used. </p>
+                <p>    When the customer commissions are worked out the FT.COMMISSION.TYPE code used is put in this field. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    No input field automatically updated by the system.</p>
+            </desc>
+        </t>
+        <t>
+            <field>COMM.PERCENT</field>
+            <desc>
+                <p>This field is populated only when the transaction is for cash.</p>
+                <p>    Customer commissions in SEC.OPEN.ORDER are defaulted from the CUSTOMER.CHARGE record for the customer using the SC.APPLICATION set of fields. It will use the set of fields linked to SC.TRADING if they are present and default to ALL otherwise. From there the system links to the SCTR.GROUP.CONDITION application and then onto the SCTR.CHARGE.PARAMETER application to get the actual FT.COMMISSION.TYPE record used. </p>
+                <p>    When the customer commission is calculated the percentage used to calculate the commission will be recorded in this field. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    No input field automatically updated by the system.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CONFIRMATION</field>
+            <desc>
+                <p>Indication only of the type of transaction as regards the Broker side of the transaction. </p>
+                <p>    When transaction code entered at field 6 for the client the system reads the SC.TRANS.TYPE file in which are stored sets of transaction codes and defaults to the reverse code for the Broker side of a particular transaction. </p>
+                <p>    Validation Rules</p>
+                <p>    1 - 3 type S (uppercase alpha) character SC.Trans.Name Code. (Automatic Default)</p>
+                <p>    Must exist as a valid transaction code on the SC.TRANS.NAME file.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.BRKR.COMM</field>
+            <desc>
+                <p>Specifies the amount of Broker Commission charged to the Customer for the trade</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Field length is 1-15 numeric characters with 0-9 decimal places. </p>
+                <p>    The number of decimal places is dependant on the number of decimal places stated on the CURRENCY file, for the TRADE.CCY </p>
+                <p>    Input will be carried forward into the subsequent field on SC.EXE.SEC.ORDERS record created</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.BROKER.NO</field>
+            <desc>
+                <p>The field identifies the broker related to the customer and would default from Customer Broker specified for the company in SC.SPLIT.TRADE.PARAM. If specified in a multi-company order routing scenario where portfolios are shared across companies, the input here would identify the customers for whom the order needs to be routed through the routing company.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Must be a valid BROKER as defined in CUSTOMER.SECURITY.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.CASH.AMOUNT</field>
+            <desc>
+                <p>This field contains the cash amount that is to be traded. </p>
+                <p>    If the CASH.CHRGS field is set to GROSS then the cash amount will be used to calculate the nominal  any charges/commissions that apply will be added to this value, however, if the CASH.CHRGS field is set to NET the cash amount will include all charges/commissions, adjusting the nominal to achieve this.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Mandatory if ORDER.TYPE is CASH</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACCT.NARRATIVE</field>
+            <desc>
+                <p>Optional narrative field for any narrative for the account officer. </p>
+                <p>    Field for narrative associated with the Account Officer. </p>
+                <p>    Validation Rules</p>
+                <p>    Up to 40 alpahnueric characters (Optional Input).</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.COMM.TAX</field>
+            <desc>
+                <p>This is the tax amount based on the commision charged.</p>
+                <p>    This field is automatically updated when the CU.COMMISSION field is populated.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.COMMISSION</field>
+            <desc>
+                <p>Records the Commission amount charged to the Customer for the trade. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Field length is 1-15 numeric characters with 0-9 decimal places </p>
+                <p>    The number of decimal places is dependant on the number of decimal places stated on the CURRENCY file for the TRADE.CCY </p>
+                <p>    Input will be carried forward into the subsequent field on SC.EXE.SEC.ORDERS record created</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.DEPO.NOM</field>
+            <desc>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>    Up to 14 currency dependent amount (No input)</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.DEPOSITORY</field>
+            <desc>
+                <p>A valid CUSTOMER.SECURITY record defined as DEPOSITORY in CUSTOMER.TYPE field is allowed to be input. This field defaults the DEPOSITORY only if DEF.CUST.DEPO field in SC.PARAMETER is set to YES. If DEF.CUST.DEPO field in SC.PARAMETER is set to YES then the defaulting of depository is done from different applications in the following hierarchy.</p>
+                <p/>
+                <p>     SEC.ACC.MASTER</p>
+                <p/>
+                <p>     CUSTOMER.SECURITY</p>
+                <p/>
+                <p>    SC.CU.DEPO.DEFAULT</p>
+                <p/>
+                <p>    SECURITY.POSITION </p>
+                <p/>
+                <p>    SECURITY.MASTER. </p>
+                <p>    If CU.DEPOSITORY field is populated then this DEPOSITORY will be used for updating the Open Order position in SECURITY.POSITION. If this field is populated then the same is defaulted in CU.DEPOSITORY field in SC.EXE.SEC.ORDERS. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Accepts 1 - 10 numeric characters.</p>
+                <p>    Input must be a valid CUSTOMER.SECURITY record defined as DEPOSITORY in the CUSTOMER.TYPE field.</p>
+                <p>    No Change field.</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>CU.DISC.AMT</field>
+            <desc>
+                <p>This field is populated automatically when the transaction is cash  is calculated using CU.DISC.PCENT </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.DISC.PCENT</field>
+            <desc>
+                <p>Multi-valued optional input field detailling the percentage customer discount in percentage terms. This discount will be defaulted from the SCTR.GROUP.CONDITION record associated with the customer. It will feed through to the CU.DISC.PCENT field on the subsequent SEC.TRADE. </p>
+                <p>    Validation Rules</p>
+                <p>    Optional numeric input.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.EBV.FEES</field>
+            <desc>
+                <p>Records the amount of EBV Fees charged to the Customer for the trade. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Field length is 1-15 numeric characters with 0-9 decimal places </p>
+                <p>    The number of decimal places is dependant on the number of decimal places stated on the CURRENCY file for the TRADE.CCY </p>
+                <p>    Input will be carried forward into the subsequent field on SC.EXE.SEC.ORDERS record created</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.ENTL.ID</field>
+            <desc>
+                <p>ENTITLEMENT number from which this trade has been generated.</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Noinput field</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.EX.RATE.ACC</field>
+            <desc>
+                <p>This field contains the exchange rate applicable between the currency of the customers account and the settlement currency of the transaction.</p>
+                <p>    Initially this will default but may be changed by the User if found to be necessary. </p>
+                <p>    Changing the CUST.ACC.NO field will result in a manually entered rate being refreshed.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Defaults to the current rate calculated using the currency files</p>
+                <p>    Rate may be changed if required</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>CU.FEES.MISC</field>
+            <desc>
+                <p>Records the amount of Miscellaneous Fees charged to the Customer for the trade. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Field length is 1-15 numeric characters with 0-9 decimal places </p>
+                <p>    The number of decimal places is dependant on the number of decimal places stated on the CURRENCY file for the TRADE.CCY </p>
+                <p>    Input will be carried forward into the subsequent field on SC.EXE.SEC.ORDERS record created</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACT.DEAL.DESK</field>
+            <desc>
+                <p>System populated field, the dealer desk that executed the transaction.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.FOREIGN.FEE</field>
+            <desc>
+                <p>Records the Foreign Fee amount charged to the Customer for the trade.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Field length is 1-15 numeric characters with 0-9 decimal places </p>
+                <p>    The number of decimal places is dependant on the number of decimal places stated on the CURRENCY file for the TRADE.CCY </p>
+                <p>    Input will be carried forward into the subsequent field on SC.EXE.SEC.ORDERS record created</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.INT.CTR</field>
+            <desc>
+                <p>Interest counter for the associated customer, applicable to shares only.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.NOM.CODE</field>
+            <desc>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>    Up to 5 SWIFT characters (No input)</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.NOTES</field>
+            <desc>
+                <p/>
+                <p>    Free format field for carrying forward user specified information, if any. Authomatically carried forward from sec open order to trade, if input.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p/>
+                <p>    1-35 Alphanumeric input (Optional Input)</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.STAMP.TAX</field>
+            <desc>
+                <p>Records the Stamp Tax amount charged to the Customer for the trade. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Field length is 1-15 numeric characters with 0-9 decimal places </p>
+                <p>    The number of decimal places is dependant on the number of decimal places stated on the CURRENCY file for the TRADE.CCY </p>
+                <p>    Input will be carried forward into the subsequent field on SC.EXE.SEC.ORDERS record created</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.WHT.PERC</field>
+            <desc>
+                <p/>
+                <p>    Multi-valued field detailing the percentage </p>
+                <p>    Tax rate in percentage terms. This tax rate will be defaulted from the TAX record associated with </p>
+                <p>    the customer / depository</p>
+                <p>    . </p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    No input field</p>
+            </desc>
+        </t>
+        <t>
+            <field>CU.WHT.TAX</field>
+            <desc>
+                <p/>
+                <p>    Specifies the amount of Tax on the Securities up to the Value Date of the trade. The calculation is used for Tax payable on any Bond / Share on Sale. </p>
+                <p/>
+                <p>    The Tax rate to be applied is fetched from the field CU.WHT.PERC. This is the estimate of tax which would be charged on execution of trade and would be recalculated in SC.EXE.SEC.ORDERS and SEC.TRADE based on actual trade consideration</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    1-18 numeric characters (including up to 3 decimal places, dependant on currency).</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>CUM.EX.IND</field>
+            <desc>
+                <p>Cum and Ex Indicators for the transaction </p>
+                <p>    This field allows entry of Cum and Ex indicators relating to the Transaction. Where these apply, they will be mapped onto the relevant SWIFT message and are mandatory from a business point of view.</p>
+                <p>    NB. These codes are validated against DE.TRANSLATION to ensure that they exist and are prefixed with SW (i.e. SWIFT).</p>
+                <p>    The list of valid codes must also be entered in the application SM.PARAMETER, key SYSTEM.</p>
+                <p>    Values entered here will be carried forward to SC.EXE.SEC.ORDERS and then to SEC.TRADE.</p>
+                <p>    Validation Rules </p>
+                <p/>
+                <p>    10 Type A (alphanumeric) characters.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CURR.PRICE</field>
+            <desc>
+                <p>If ORDER.TYPE field is set to CASH then this field is used to calculate how much nominal to trade, calculated from the CU.CASH.AMOUNT field.</p>
+                <p>    If the record was created by the ORDER.BY.CUST application then this field will be defaulted from either the MARKET.PRICE or MARKET.PRICE.CR depending on the type of trade.</p>
+                <p>    If this field is left blank then it will defaulted from the LAST.PRICE field in the SECURITY.MASTER record.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Valid price for the transaction </p>
+            </desc>
+        </t>
+        <t>
+            <field>CUST.ACC.NO</field>
+            <desc>
+                <p>Identifies the customers account over which the financial entries relative to the underlying transaction are to be passed.</p>
+                <p>    Will default according to the definitions recorded in the customers portfolio as defined in the SECURITY.ACCNT field.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Will default according to definitions on the customers SEC.ACC.MASTER account</p>
+                <p>    May be changed but must be a valid account, recorded on the underlying SEC.ACC.MASTER account</p>
+                <p>    Accepts alpha and/or numeric values or MNEMONIC id of an account</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACTIVITY.CODE</field>
+            <desc>
+                <p>System maintained field.  This field holds the activity number, which is triggered by the latest activity in the life-cycle of the transaction. The activity is 4 digit number composed of three main parts:  First indicates the operation  1 -Inputting a SEC.OPEN.ORDER</p>
+                <p>    Second indicates the type of instrument  1 - New order  2 - Modified order 3 - Cancelled order</p>
+                <p>    And the last two digit indicate the detail activity related to the function For example. : For the input/authorize function, last two digit will be  01. For Reversal function, last two digits will be 02. Thus, the activity for new order will be SC-1101.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Up to 7 Alpha numeric characters</p>
+            </desc>
+        </t>
+        <t>
+            <field>CUST.DEPO</field>
+            <desc>
+                <p>This is a system updated multi-value field. This field will be updated for SELL orders. This field will contain the customers existing depositories for the SECURITY.MASTER and SEC.ACC.MASTER used in the order. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    1 - 6 character customer number (No input)</p>
+            </desc>
+        </t>
+        <t>
+            <field>CUST.NUMBER</field>
+            <desc>
+                <p>Identifies the Customer with whom the trade is made. </p>
+                <p>    This field is not multivalue as it is intended as a single client,single order entry. For Block bookings the ORDER BY SECURITY application would be used. </p>
+                <p>    The field is optional as a Dealer/Investment Manager may well wish to pass an order for say 10,000 shares and only after execution decide which of his clients to involve and for how much. </p>
+                <p>    Validation Rules</p>
+                <p>    1-10 numeric character Customer ID Number or    3-10 type MNE (uppercase alpha or numeric  or .) character Mnemonic Customer id. (Optional Input)</p>
+            </desc>
+        </t>
+        <t>
+            <field>CUSTOMER.NO</field>
+            <desc>
+                <p>Multivalue field used to store the Customer Number of the client when an order is partially completed. </p>
+                <p>    Fields 22 to 28 contain details of a partially completed Open Order. They are all Multivalue and are used to store the Reference number,the amount filled, the price paid or received and the trade date of each transaction. </p>
+                <p>    Note:     Just as the Security Trade reference number is stored at           this level as a full audit check and for ease when following           a transaction through so to the Open Order reference           number is passed onto the Security Trade itself and stored           within field 45.1.1 CU.ORDER.NOS. </p>
+                <p>    Validation Rules</p>
+                <p>    (Automatic Default)</p>
+            </desc>
+        </t>
+        <t>
+            <field>DATE.TO.BROKER</field>
+            <desc>
+                <p>Specifies the date a particular Order has been placed with the Broker/Counterparty in Field 21. </p>
+                <p>    The multi value fields 21,22  23 can be used by the Dealers to record the fact that a particular order has already been placed with a particular Broker. </p>
+                <p>    The responsibility for monitoring these limits will then fall on the Broker himself. It is multi value to allow more than one Broker should the Dealer wish to spread the Order with more than a single Broker. </p>
+                <p>    However he need not actually deal with the specified Broker as he is at liberty to trade with others and when he processes the execution he will have the opportunity to specify a different Broker. </p>
+                <p>    From a proceedural point of view he will obviously have to be careful that the deal is not duplicated. </p>
+                <p>    Validation Rules</p>
+                <p>    Up to 9 type D date characters,(Standard Date format in range 1950 - 2049).</p>
+            </desc>
+        </t>
+        <t>
+            <field>DEAL.NARRATIVE</field>
+            <desc>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>    40 alphanumeric characters (Optional Input)</p>
+            </desc>
+        </t>
+        <t>
+            <field>DEAL.STATUS</field>
+            <desc>
+                <p>Current status of the order. </p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>    ACCEPTED, REJECTED, TRANSMITTED, OFFICER.TRANS, TRADED (Optional Input),'CANCELLED' AND 'CANCEL.CHILD'.</p>
+                <P>    When DEAL.STATUS is CANCELLED, Pending executions will be executed and remaining orders will be cancelled. If there are no pending executions, whole order will be cancelled. DEAL.STATUS of CANCEL.CHILD can be set only for parent order and similar processing with deal status CANCELLED will happen for child orders </P>
+            </desc>
+        </t>
+        <t>
+            <field>DEF.DEAL.DESK</field>
+            <desc>
+                <p>System populated field, the dealer desk allocated to the order.</p>
+            </desc>
+        </t>
+        <t>
+            <field>DELIVERY.KEY</field>
+            <desc>
+                <p>Records the key of any delivery produced by this SEC.OPEN.ORDER. </p>
+                <p>    System generated field that records the ID of any delivery produced by this SEC.OPEN.ORDER. </p>
+                <p>    Validation Rules</p>
+                <p>    10 alpha numeric characters (No input allowed)</p>
+            </desc>
+        </t>
+        <t>
+            <field>DEPOSITORY</field>
+            <desc>
+                <p>Stipulates into or out of which Depository Securities should be placed or withdrawn when a Security Transaction is effected. </p>
+                <p>    Once this Sec.Open.Order has been validated there is an on-line check to verify that sufficient securities are held in the case of a Sale. In the case where insufficient securities exist then an override message will inform the inputter of the fact. </p>
+                <p>    Validation Rules</p>
+                <p>    Customer Number or Customer Mnemonic</p>
+                <p>    Must exist as a valid Customer type DEPOSITORY in the CUSTOMER.SECURITY application.</p>
+                <p>    Cannot be changed once the order has been TRADED or TRANSMITTED if STP processing is used.</p>
+            </desc>
+        </t>
+        <t>
+            <field>EXE.BY.BROKER</field>
+            <desc>
+                <p>No input field which records the actual amount traded for any particular order. </p>
+                <p>    Where an Order has only been partially completed then this field is updated with the actual amount traded as opposed to the amount of the Order itself.The partially completed Order will remain outstanding until it is either fully completed or until the Order reaches its expiry date. </p>
+                <p>    Validation Rules</p>
+                <p>    No input. System generated field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ADJUST.COMM</field>
+            <desc>
+                <p>If the CASH.ROUNDING field is set to EXACT then this field becomes active to determine whether to reduce the commission in order to make the total trade match the cash amount exactly.</p>
+                <p>    If set to YES and the value of the total trade does not match the cash amount, the system will check to see if there is enough commission to cover the difference between the two figures. If there is the system will reduce of commission (and tax on commission) to make the values match. If there is not enough commission to achieve this an error message will be displayed  the user will have to choose another option if they require the trade to proceed. If set to NO and the value of the total trade does not match the cash amount an error message will be displayed  the user will have to choose another option if they require the trade to proceed. Validation Rules</p>
+                <p/>
+                <p>    MANDATORY field if the CASH.ROUNDING field is set to EXACT otherwise a NOINPUT field.</p>
+                <p>    YES or NO</p>
+            </desc>
+        </t>
+        <t>
+            <field>EXE.DETAIL</field>
+            <desc>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>    Upto 30 alphanumeric char (External field)</p>
+            </desc>
+        </t>
+        <t>
+            <field>GROUP.ORDER</field>
+            <desc>
+                <p/>
+                <p>    When orders are grouped by SC.GROUP.ORDERS a grouped SEC.OPEN.ORDER is created. This grouped SEC.OPEN.ORDER id is written in this field. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    No-input system updated field</p>
+            </desc>
+        </t>
+        <t>
+            <field>INT.CTR</field>
+            <desc>
+                <p>Interest counter for the associated security, applicable to shares only.</p>
+            </desc>
+        </t>
+        <t>
+            <field>LIMIT.EXP.DATE</field>
+            <desc>
+                <p>This field specifies the validity of the Limit, i.e. how long is it to remain in force. </p>
+                <p>    When field 9 is entered this field becomes Mandatory. The logic being that if a limit price is passed onto the Dealers then they require an expiry date for that Order. </p>
+                <p>    The validity of that date will depend very much on work and local practices. </p>
+                <p>    Validation Rules</p>
+                <p>    Up to 9 type D date characters,(Standard Date format in range 1950 - 2049). (Optional Input)</p>
+            </desc>
+        </t>
+        <t>
+            <field>LIMIT.PRICE</field>
+            <desc>
+                <p>The Price at which the shares are to be bought or sold. </p>
+                <p>    This can be used in conjunction with field ORDER.TYPE to inform the Dealers of a Limit price to be reached before the transaction should be executed. </p>
+                <p>    When this value is left blank, with field ORDER.TYPE set to M, it indicates that the securities are to be bought or sold at Market. </p>
+                <p>    If field ORDER.TYPE is set to P, and this field is entered, then the instructions to the Dealer are to trade, but only, at the price stipulated. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    1-15 numeric characters (0-6 integers  0-9 decimals) plus a . (Optional Input)</p>
+                <p>    If this field is entered the following field LIMIT.EXP.DATE becomes Mandatory.</p>
+                <p>    Dealers will rarely accept open ended Limit instructions as it places a heavy burden on them.</p>
+            </desc>
+        </t>
+        <t>
+            <field>LIMIT.TYPE</field>
+            <desc>
+                <p>Field used to default the LIMIT.DATE field. Input of GTD, GTM, GTY or GTW allowed. GTD - Order valid until the order date. GTW - Good this week (GTW) orders will be only valid in the week of its placement.(i.e. If Saturday and Sunday are weekends, Expiry date will  be Friday's date but, If Friday is holiday, Expiry date will be Thursday's date.). GTM - Order valid until the end of the month of the order date. GTY - Order valid until the end of the year of the order date. </p>
+                <p>    Validation Rules</p>
+                <p>    Valid input GTD, GTM, GTY, GTW (Optional Input)</p>
+                <p>    Will default to GTD.</p>
+            </desc>
+        </t>
+        <t>
+            <field>LINK.ORDER.NO</field>
+            <desc>
+                <p>As an aide memoir the user may if he wishes link a particular Security Open Order with another by entering at this point the relative Security Open Order transaction reference number. </p>
+                <p>    At a later date it may be possible to link Purchase and Sale Orders together for the purpose of reporting overall positions by Customer/Security. Or possibly for Risk Management. The idea behind this field was to make one transaction dependent on another. That is to say a purchase could not be effected until sufficient funds had been raised by the sale of existing securities which would happen only when an Open Order for the Sale had been executed. </p>
+                <p>    Validation Rules</p>
+                <p>    10 Numeric characters prefixed by OPODSC,i.e. OPODSCyydddnnnnn yy = year (e.g.85 = 1985) ddd = julian dater (i.e 01/jan =001, 02/jan = 002, 01/feb = 032, etc.) nnnnn = transaction sequence number. (Mandatory Input).</p>
+                <p>    Must exist as a valid Security Open Order Transaction on the Security Open Order File.</p>
+            </desc>
+        </t>
+        <t>
+            <field>LIQUIDATION.PERIOD</field>
+            <desc>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>    6 Year and month characters</p>
+            </desc>
+        </t>
+        <t>
+            <field>MARKET.TYPE</field>
+            <desc>
+                <p>Market type can be Spot (S), Forward (F) or Normal (N)</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    S, N or F (Optional Input)</p>
+            </desc>
+        </t>
+        <t>
+            <field>MATURITY.DATE</field>
+            <desc>
+                <p>Specifies the maturity date of the security. The date is defaulted from the SECURITY.MASTER record and can not be changed. </p>
+                <p>    For information purposes only.</p>
+                <p>    N.B - This field is only applicable for Bonds.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Up to 9 type D date characters (Standard date format)</p>
+                <p>    Internally generated field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>AMT.TO.BROKER</field>
+            <desc>
+                <p>Specifies the particular amount of an order which has been placed with the previously defined Broker. </p>
+                <p>    The multi value fields 21, 22  23 can be used by the Dealers to record the fact that a particular order for a particular amount of stock has already been placed with a particular Broker. The responsibility for monitoring these limits will then fall on the Broker himself. </p>
+                <p>    The multi value facility is to allow more than one Broker should the Dealer wish to spread the Order amongst several Brokers. </p>
+                <p>    These fields however are initially an aide memoire for the Dealer involved as he need not actually deal with the specified Broker. He is at liberty to trade with others and when he processes the execution T24 will allow him the opportunity to enter a different Broker. Care should be taken from a procedural point of view, however, that the deal is not duplicated. </p>
+                <p>    Validation Rules</p>
+                <p>    Numeric input. (Optional Input)</p>
+            </desc>
+        </t>
+        <t>
+            <field>MSG.BROKER</field>
+            <desc>
+                <p>Identifies the broker for whom the message is to be sent</p>
+                <p>    Validation Rules</p>
+            </desc>
+        </t>
+        <t>
+            <field>MSG.CLASS</field>
+            <desc>
+                <p>An integral part of the Delivery multi-value set, this field contains a message class ID, (defined in EB.ADVICES). There may be many classes specified, but only classes, which are related to the operation, will be triggered. For example, the EB.ADVICES number SC-1101 (New order) may have the following classes and messages:</p>
+                <p>    Message No. : 502</p>
+                <p>    EB.MESSAGE.CLASS : NEWORDER</p>
+                <p>    And let us assume that the EB.MESSAGE.CLASS ID has been mapped to SC internal class specified in SC.PARAMETER as follows:</p>
+                <p/>
+                <p>    NEW. MESSAGE</p>
+                <p/>
+                <p>    In the SEC.OPEN.ORDER, the NEWORDER class will only be triggered for MT502, when BROKER.TYPE is BROKER and CONFIRMATION is YES. You can choose whether you want to produce the messages by flipping the YES/NO flag - SEND. ADVICE</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>MSG.NO</field>
+            <desc>
+                <p>An integral part of the Delivery multi-set, this field is used to determine the message type to which the user wishes to amend the delivery and is used exclusively with the fields MSG.CLASS, OVR.CARRIER, OVR.ADDRESS and SEND. ADVICE.</p>
+                <p>    Validation Rules</p>
+                <p>    Up to 4 numeric characters</p>
+            </desc>
+        </t>
+        <t>
+            <field>NARRATIVE</field>
+            <desc>
+                <p>Free format text field for input of additional Client/Investment Manager comments. </p>
+                <p>    If entered this field will be automatically carried through to the Trade Open Order Application,to inform the Dealer of any additional qualifications or important details regarding the Security Open Order. </p>
+                <p>    Automatically this will also be carried through to the automatically created Security Trade record - thus completing the link between Back Office, Dealers and Asset Management for any specific details relating to the Order, Settlement or Customer instructions. </p>
+                <p>    Validation Rules</p>
+                <p>    1-40 alpha numeric type input. (Optional Input)</p>
+            </desc>
+        </t>
+        <t>
+            <field>NO.NOM.FILLED</field>
+            <desc>
+                <p>Used when a Security Open Order is only partially filled and the amount of that transaction is stored here. </p>
+                <p>    Along with the multivalue fields  22 to 28 this field  contains relating to a partially filled Security Open Order. </p>
+                <p>    These fields are updated by the Trade Open Order Section of the Limit/Open Order Sub System. </p>
+                <p>    Validation Rules</p>
+                <p>    1 - 14 Numeric character input. (Automatic Default)</p>
+            </desc>
+        </t>
+        <t>
+            <field>NO.NOMINAL</field>
+            <desc>
+                <p>Specifies the Nominal Amount (i.e. the face value) of the Security as detailed in Field 4. to be bought or sold. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    1-18 numeric characters (including up to 6 decimal         places)\</p>
+                <p/>
+                <p>    The following multipliers may be used:- </p>
+                <p>    T = x 1,000         eg. 1T = 1,000 </p>
+                <p>    M = x 1,000,000 eg. 1M = 1,000,000 </p>
+                <p>    Mandatory Input</p>
+            </desc>
+        </t>
+        <t>
+            <field>NOMINEE.CODE</field>
+            <desc>
+                <p>Identifies the Nominee Company if any with whom or in whose name the securities are registered. </p>
+                <p>    The Nominee code when entered throughout the Securities Module forms part of the position key used for storing and accessing Clients positions in a specified position.  It is therefore important to note that when and if input initially, when creating a security position, it must be entered when carrying out transactions or administration duties at a later date;  failure to do so might cause misleading warning messages such as Insufficient Stock. </p>
+                <p>    Validation Rules</p>
+                <p>    1 - 5 type S (uppercase alpha or numeric) character Nominee code. (Optional Input.)</p>
+            </desc>
+        </t>
+        <t>
+            <field>ODD.LOT.ORDER</field>
+            <desc>
+                <p/>
+                <p>    This field indicates if the order is an order of odd lot or not.</p>
+                <p/>
+                <p>    The values allowed are :</p>
+                <p/>
+                <p>     - YES : Odd lot order. No check is done for trading unit. But the order is validated against the 3 SECURITY MASTER fields added for odd lot process : ODD.LOT.TRADE, ODD.LOT.BROKER, ODD.LOT.EXCHANGE</p>
+                <p/>
+                <p>     - NO : Normal order. The trading unit will be checked. If the number of shares is not divisible by the trading unit of the security, then the order is rejected.</p>
+                <p/>
+                <p>     - BLANK : Default equivalent to NO.</p>
+                <p/>
+                <p>    Validation Rules</p>
+            </desc>
+        </t>
+        <t>
+            <field>ORDER.DATE</field>
+            <desc>
+                <p>Date of the instructions contained within the transaction. </p>
+                <p>    The date in this field is important since, if a clients instructions are missed, this effectively is the date to which any loss will apply. </p>
+                <p>    The validation on the ORDER.DATE field in this SEC.OPEN.ORDER application can be controlled to a certain extent by the User. The current versions of this transaction enable this field to contain a date of less than the system date. This is to allow the booking of orders that had been previously agreed but not yet been input into the system, perhaps resulting from the ORDER.BY.CUST application.</p>
+                <p>    If you wish to INHIBIT input of past order dates, a VERSION routine has been written to ensure that order validation will prevent this field from allowing past dates. </p>
+                <p>    The name of this VERSION routine is SC.SOO.ORDER.DATE.VAL and to invoke this alternative field validation, you should enter the following into the fields :</p>
+                <p>    Field : </p>
+                <p>    VALIDATION.FLD  ORDER.DATE </p>
+                <p>    VALIDATION.RTN           SC.SOO.ORDER.DATE.VAL </p>
+                <p>    on all SEC.OPEN.ORDER versions for which you wish to inhibit input of dates in the past and authorise.</p>
+                <p>    It is also possible for the date to be fed through from the ORDER.BY.CUST application if the SEC.OPEN.ORDER was generated as a result of a successful verification of the underlying ORDER.BY.CUST transaction. Even so, the date will still be subject to the checks described above.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    No matter whether running under the sub-routine or not, the default date is always the System date.</p>
+                <p>    Up to 9 type D date characters, (Standard Date Format) Mandatory input.</p>
+                <p>    Date cannot be less than today if this field is under the control of the sub-routine described above.</p>
+                <p>    An override will be required if the date input is greater than today whether validation is running under the sub-routine or not.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ORDER.NOMINAL</field>
+            <desc>
+                <p/>
+                <p/>
+                <p>    System generated. </p>
+                <p>    Validation Rules</p>
+                <p>    Up to 14 numeric amounts according to currency (No input field)</p>
+            </desc>
+        </t>
+        <t>
+            <field>BANK.CORRES</field>
+            <desc>
+                <p>Bank Correspondent field. </p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>    15 alphanumeric characters</p>
+            </desc>
+        </t>
+        <t>
+            <field>ORDER.NUMBER</field>
+            <desc>
+                <p>Unique Code used to identify each separate Security Open Order. </p>
+                <p>    Only the sequence number nnnnn is required to be input. The Application will automatically generate the prefix (OPODSC) and the first five digits (yyddd) and attach the sequence number. </p>
+                <p>    The sequence number may be either User entered or System generated using the Automatic numbering application. </p>
+                <p/>
+                <p>    Note:     Unless a Version record has been established for the           Security Open Order it requires both an inputter and an           authoriser before it will update the Dealers Trade Open           Order file. </p>
+                <p>    Validation Rules</p>
+                <p>    10 Numeric characters prefixed by OPODSC,i.e. OPODSCyydddnnnnn. yy = year (e.g.85 = 1985) ddd = julian date (i.e. 01/jan - 001, 02/jan = 002, 01/feb = 032, etc) nnnnn = transaction sequence number (Mandatory Input)</p>
+                <p>    Security Open Order Numbers cannot be duplicated.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ORDER.TIME</field>
+            <desc>
+                <p>Time of the instructions contained within the transactions. </p>
+                <p>    This field is the time of the order.</p>
+                <p>    It is possible that the time may have been supplied from the successful verification of an ORDER.BY.CUST transaction, in which case the field will already have been populated. If this was the case, then you may still change the time if so required.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Up to 8 Type T Time characters. Optional input. (Default is time the order is input)</p>
+                <p>    Will default to current time unless a time is input or has been defaulted from an ORDER.BY.CUST transaction</p>
+                <p>    The time will be recorded in an HH:MM:SS format</p>
+            </desc>
+        </t>
+        <t>
+            <field>ORDER.TYPE</field>
+            <desc>
+                <p>This input details the type of Order being passed to the Dealers. Whether buy or sell at BEST or at MARKET. </p>
+                <p>    A buy or sell instruction to a dealer with the at Market flag signifies that there is no limit or restriction on the price at which he can execute the transaction. The client or investment manager is happy with the market price. </p>
+                <p>    Best price indicates that the dealer ought really to shop around for his price as there may be a lot of activity and consequently differing prices to be achieved. </p>
+                <p>    Price indicates that the price input within field 9 is a minimum or maximum price to be paid or received for the securities stipulated. LIMIT.PRICE is mandatory input for both Price and Stop kind of order types. </p>
+                <p>    Cash indicates that the customer wants to trade a particular amount of cash in the transaction. The nominal will be calculated from this cash amount  can either be net or gross of charges/commissions. This is controlled by the CASH.CHRGS field.</p>
+                <p>    The type of order is determined based on the specifications for various order types in SC.ORDER.TYPE file.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    MUST BE A VALID SC.ORDER.TYPE record</p>
+            </desc>
+        </t>
+        <t>
+            <field>OUTSTAND.NOM</field>
+            <desc>
+                <p>The nominal that is outstanding after the partial execution of an order.</p>
+            </desc>
+        </t>
+        <t>
+            <field>OVERRIDE</field>
+            <desc>
+                <p>Contains details of any overrides applicable to this Account. </p>
+                <p>    Standard T24 override field. </p>
+                <p>    Validation Rules</p>
+                <p>    Up to 35 type A (alphanumeric) characters. Multivalue field. (Internal field.)</p>
+            </desc>
+        </t>
+        <t>
+            <field>OVR.ADDRESS</field>
+            <desc>
+                <p>This field enables the user to divert a particular message type to another (third) party.   The user has a number of options:  Simple insertion of a name or address. This will re-route the message in PRINT format to the named party.  The code TX- followed by a telex number. This will re-route the message by TELEX to the number detailed.  The code SW- followed by a S.W.I.F.T. code. This will re-route the message by SWIFT to the respective bank.  The code C- followed by a valid customer number or mnemonic. This will re-route the message in PRINT format to the customer indicated. </p>
+                <p>     Validation Rules  35 Alphanumeric character field.  </p>
+            </desc>
+        </t>
+        <t>
+            <field>OVR.CARRIER</field>
+            <desc>
+                <p>An integral part of the Delivery multi-value set, this field enables the user to override the defaulted carrier for a particular message type and select a new carrier.  For example : If a specific message is generated by SWIFT, the user is able to override this by choosing other available options from the CARRIER table, e.g. TELEX or PRINT.    Validation Rules  Must be a valid record in the CARRIER table.  </p>
+            </desc>
+        </t>
+        <t>
+            <field>PORT.CONST.NO</field>
+            <desc>
+                <p>Identifies the constraint related to the customer. Based on the constraint specified, constraint checks would be performed for the portfolio. If no constraint is specified and a constraint record exists for the portfolio, the checks would still be performed</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Accepts a valid PORTFOLIO.CONSTRAINT ID</p>
+            </desc>
+        </t>
+        <t>
+            <field>PREMIUM.PRICE</field>
+            <desc>
+                <p>Amount of premium price</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    10 Character amount field</p>
+            </desc>
+        </t>
+        <t>
+            <field>REFERENCE.NO</field>
+            <desc>
+                <p>Multivalue field used to store the Security Transaction Reference number created when the dealer executes the whole or a partial amount of an Order. </p>
+                <p>    Fields 22 to 28 contain details of a partially completed Open Order. They are all Multivalue and are used to store the Reference number,the amount filled, the price paid or received and the trade date of each transaction. </p>
+                <p>    Note:     Just as the Security Trade reference number is stored at this level as a full audit check and for ease when following a transaction through so to the Open Order reference number is passed onto the Security Trade itself and stored within field 45.1.1 CU.ORDER.NOS. </p>
+                <p>    Validation Rules</p>
+                <p>    Standard Security Buy /Sell Transaction Reference Number which consists of the Module Mnemonic SECTSC suffix separated from 10 numeric characters yydddnnnnn Where yy = year (e.g 85 = 1985) ddd = julian date ( i.e. 01/jan = 001, 02/jan = 002, 01/feb = 032,etc (Automatic Default)</p>
+            </desc>
+        </t>
+        <t>
+            <field>BR.ACC.NO</field>
+            <desc>
+                <p>Identifies the Account over which financial entries relating to the Broker for the trade, are to be passed. This field will be allowed for input only when DEAL.STATUS field has a value TRADED. If this field is input then the BR.ACC.NO field in SEC.TRADE will be defaulted with the same account number.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Must be the Id of a valid Account.</p>
+                <p>    Default value = the Nostro.Account for the Trade Currency</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ROUT.COMPANY</field>
+            <desc>
+                <p>The company through which the order needs to be routed. Defaulted based on conditions specified in SC.ORDER.ROUTING.</p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    Valid COMPANY to be input. Routing done in cases where portfolios are       shared across companies.</p>
+            </desc>
+        </t>
+        <t>
+            <field>SEC.ACC.NO</field>
+            <desc>
+                <p>The ID of the portfolio (or portfolios) that has placed the order. </p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>    12 alphanumeric characters (No input, Externally updated field)</p>
+            </desc>
+        </t>
+        <t>
+            <field>SECURITIES.CR.DR</field>
+            <desc>
+                <p>Indication only of the type of transaction as regards the Broker side of the transaction. </p>
+                <p>    When transaction code entered at field 6 for the client the system reads the SC.TRANS.TYPE file in which are stored sets of transaction codes and defaults to the reverse code for the Broker side of a particular transaction. </p>
+                <p>    Validation Rules</p>
+                <p>    1 - 3 type S (uppercase alpha) character SC.Trans.Name Code. (Automatic Default)</p>
+                <p>    Must exist as a valid transaction code on the SC.TRANS.NAME file.</p>
+            </desc>
+        </t>
+        <t>
+            <field>SECURITY.ACCNT</field>
+            <desc>
+                <p>This field will automatically default to the Safecustody account of the Client entered in field 2. However the user may wish to override this and choose a different account. </p>
+                <p>    Validation Rules</p>
+                <p>    Standard Security Account Master ID; 1-10 numeric character customer ID separated by - from 1-3 numeric character Security Account ID. (Mandatory Input.) Default value = the Customers first Security account number i.e. nnnnnn-001.</p>
+                <p>    Must be a valid security account number which is contained within the Sec.Acc.Master file.</p>
+            </desc>
+        </t>
+        <t>
+            <field>SECURITY.NO</field>
+            <desc>
+                <p>Identifies the Security number involved in this particular Open Order Transaction. </p>
+                <p>    Validation Rules</p>
+                <p>    Security Number, Security Mnemonic or Security alternate index.</p>
+                <p>    Cannot be changed once the order has been TRADED or TRANSMITTED if STP processing is used.</p>
+            </desc>
+        </t>
+        <t>
+            <field>SEGMENT</field>
+            <desc>
+                <p>System populated field, identifies the segment allocated to the transaction.</p>
+            </desc>
+        </t>
+        <t>
+            <field>SEND.ADVICE</field>
+            <desc>
+                <p>Acting as part of the delivery multivalue set, this field provides the user with the ability to decide whether to send or withhold sending the delivery of any message produced under the contract.  Validation Rules  Options available are (Y)es - Send Message or (N)o - Do Not Send Message  Default is (Y)es </p>
+            </desc>
+        </t>
+        <t>
+            <field>SERVICE.REF</field>
+            <desc>
+                <p>The service reference number if the SEC.OPEN.ORDER record was created through the service.</p>
+            </desc>
+        </t>
+        <t>
+            <field>SETTLEMENT.CCY</field>
+            <desc>
+                <p>This is the currency the resulting SEC.TRADE is to be settled in. </p>
+                <p>    Will default to the TRADE.CCY if no currency is input. </p>
+                <p>    Validation Rules</p>
+                <p>    3 Swift currency characters Must exist on the CURRENCY file</p>
+            </desc>
+        </t>
+        <t>
+            <field>SOFT.DLVRY.KEY</field>
+            <desc>
+                <p>Holds the delivery reference of MT502</p>
+                <p>    Validation Rules</p>
+                <p>    Up to 35 characters in length</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>BR.ACCOUNT.CCY</field>
+            <desc>
+                <p>This field will automatically populate the currency of the account number entered in BR.ACC.NO field. This field will be allowed for input only if DEAL.STATUS field is set to TRADED. If this field has any value then the same will be defaulted in BR.ACCOUNT.CCY field in SEC.TRADE. </p>
+                <p>    Validation Rules</p>
+                <p/>
+                <p>    CCY must always be same as TRADE.CCY </p>
+                <p>    CCY must be same as of CCY of BR.ACC.NO</p>
+            </desc>
+        </t>
+       <t>
+            <field>BUYING.POWER</field>
+              <desc>
+                <p>Buying power of the portfolio on placement of order</p>
+              </desc>
+       </t>
+       <t>
+         <field>ROUT.SEC.ACC</field>
+           <desc>
+             <p>Portfolio reference under the company to which order will be routed </p>
+           </desc>
+     </t>
+     <t>
+       <field>ROUT.BROKER</field>
+         <desc>
+           <p>Broker reference under the company to which order will be routed </p>
+         </desc>
+     </t>
+     <t>
+       <field>ROUTED.ORDER.REF</field>
+         <desc>
+           <p> SEC.OPEN.ORDER reference under the routed company </p>
+         </desc>
+     </t>
+     <t>
+       <field>EXT.CUSTODIAN</field>
+         <desc>
+           <p>To identify the external custodian where position is held.</p>
+           <p> Validation Rules </p>
+           <p> Mandatory, if TRANSACTION.CODE matches to EXT.CR.TXN or EXT.DR.TXN of SC.PARAMETER. Once it matches and EXT.CUSTODIAN is not set; then it will be defaulted from SC.PARAMETER</p>
+         </desc>
+     </t>
+     <t>
+        <field>IN.HOUSE.SEC.ACC</field>
+          <desc>
+            <p>Portfolio for which in house dealing transaction is done. External positions will be captured for Portfolio defined in this field. </p>
+          </desc>
+     </t>
+     <t>
+            <field>ADVICE.REQD</field>
+            <desc>
+                <p>To be set to YES if MT502 is to be sent.</p>
+            </desc>
+        </t>
+     <t>
+             <field>AUTHORISE.TRADE</field>
+            <desc>
+                <p>To be set to YES if the corresponding SEC.TRADE needs to be authorised automatically.</p>
+	        <p>If this Field is set to YES and DEAL.STATUS is TRANSMITTED this value will be carried over to Corresponding SC.EXE.SEC.ORDER Record.</p>
+            </desc>
+        </t>
+     <t>
+         <field>IN.HOUSE.CUSTODIAN</field>
+            <desc>
+              <p>External custodian involved in inhouse dealing. If IN.HOUSE.SEC.ACC is defined, Custodian defined in this field will maintain that portfolio. Custodian defined in this field must be a valid record in CUSTOMER.SECURITY with type as Broker/counterparty.</p>
+            </desc>
+      </t>
+      
+       <t>
+       <field>STP.ORDER</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+       </desc>
+       </t>
+       
+        <t>
+          <field>PARENT</field> 
+           <desc>
+            <p> Allowed value is YES </p>
+            <p> This Field is to determine whether the order is a parent order </p>
+        </desc>
+       </t>
+
+        <t>
+        <field>PARENT.REFERENCE</field>
+        <desc>
+            <p> This field will accept  alphanumeric Value </p>
+            <p> Unique parent reference that is common for both parent and child orders and will serve as a link.</p>
+        </desc>
+       </t>
+
+       <t>
+       <field>REVERSE.CHILD</field>
+       <desc>
+            <p> Allowed value is YES </p>
+            <p> This Field is used to reverse the child transaction </p>
+        </desc>
+       </t>
+       <t>
+       <field>EXE.HLT</field>
+       <desc>
+       <p>Allowed options are YES,NO and NULL. YES will indicate whether the execution should be flagged for halt. NO will indicate execution should be processed without halt.On setting NULL then system will populate the value for EXE.HLT eithier from CUSTOMER.SERCURITY or SECURITY.MASTER</p>
+       </desc>
+       </t>
+       <t>
+       <field>TRADE.HLT</field>
+       <desc>
+       <p>Allowed options are YES,NO and NULL. YES will indicate whether the execution should be flagged for halt. NO will indicate execution should be processed without halt.On setting NULL then system will populate the value for TRADE.HLT eithier from CUSTOMER.SERCURITY or SECURITY.MASTER</p>
+       </desc>
+       </t> 
+<t>
+<field>AUTHORISE.CHILD</field>
+<desc>
+<p>This field is used to specify whether child transactions can be authorised and will be defaulted from AUTH.CHILD.ORDER field of SC.STD.SEC.TRADE only on initial input. In case of subsequent amendments after authorisation, this field has to be manually specified</p>
+<p>Manual amendment is possible. If this field is YES, Parent order should be kept in INAU so that T24 service will authorise both child and parent.</p>
+<p>This field cannot be set as YES if there are no child transactions in exception</p>
+<p>This field will be used in conjunction with ORDER.EXCEP.CHECK field of SC.BULK.TRANS.MATCHING in which case parent will not be</p> <p>allowed to authorise if child orders are in exception and Zero authoriser version cannot be used in this case </p>
+<p>This field will also be used in conjunction with BULK.UPDATE field in order to perform bulk update and then authorize parent and child</p>
+                <p>
+                <p>Validation Rules</p>
+                </p>                            
+                <p>Allowed values are YES, NO</p>
+</desc>
+</t>  
+<t>
+<field>DELETE.CHILD</field>
+<desc>
+<p>This field is used to specify whether parent and child transactions are to be deleted. After inputting this field, order</p>
+<p>should be left in INAU so that service will delete the child and parent. Zero authoriser version cannot be used in this case. This field cannot be set as YES if there are no child records in exception</p>
+
+                <p>
+                <p>Validation Rules</p>
+                </p>  
+                <p>Allowed value is only YES</p>                         
+</desc>
+</t>
+<t>
+<field>BULK.UPDATE</field>
+<desc>
+<p>This field is used to specify whether bulk update is to be performed from parent to child. This field cannot be input if</p> <p>SC.BULK.UPDATE.PARAMETER is not set  for SEC.OPEN.ORDER</p>
+<p>This field can also be used in conjunction with AUTHORISE.CHILD to determine whether transactions are to be authorised after</p> <p>performing bulk update. Zero authoriser version cannot be used and transaction should be left in INAU. In order to perform bulk update, all transaction should be in unauthorised status</p>
+                <p>
+                <p>Validation Rules</p>
+                </p>  
+                <p>Allowed value is only YES</p>                         
+</desc>
+</t>
+<t>
+<field>ROUNDING.FACTOR</field>
+<desc>
+<p>Minimum lot using which nominal will be executed. This will be defaulted from ORDER.BY.CUST. Value should be in multiple of trading units and nominal in order should be in multiple of this field</p>               
+</desc>
+</t>
+<t>
+<field>MKT.IDN.CODE</field>
+<desc>
+<p>The swift market identifier code is defined in this field</p>
+<p>This field gets defaulted by reading the value in stock exchange in order  and default the MIC from Stock Exchange.</p>
+<p>
+                <p>Validation Rules</p>
+                </p>  
+                <p>1-4 Alphanumeric input</p>               
+</desc>
+</t>     
+
+<t>
+<field>UPFRONT.SEC</field>
+<desc>
+<p>The field gets defaulted, from the UPFRONT.SEC field in SECURITY.MASTER, for Credit transactions. If this field is set, the position will be created for this security.</p>
+<p>/Validation Rules:</p>
+<p>This field is a NOCHANGE field</p>
+</desc>
+</t>
+         
+<t><field>WAIVE.CU.BR.COM</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>CU.INCOME.ACC</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>CU.INCOME.CCY</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>BR.CASH.AMT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>INTEG.DATA.ITEM</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>INTEG.DATA.VALUE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

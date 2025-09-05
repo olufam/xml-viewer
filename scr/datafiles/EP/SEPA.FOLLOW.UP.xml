@@ -1,0 +1,1046 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>EP</product>
+        <title>SEPA.FOLLOW.UP</title>
+        <table>SEPA.FOLLOW.UP</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>The purpose of this ‘H’ type application is the input of any SEPA outward transaction.</p>
+            <p>   For any basic initial transaction (e.g. Credit Transfer or Direct Debit), the T24 FUNDS.TRANSFER standard application can be customized to be a suitable input tool as well. But this requires the definition of several additional local fields in its associated LOCAL.REF.TABLE record. The needed local references and two specific FT versions will be delivered with the package: FT,SEPAOUT.CR and FT,SEPAOUT.DB.</p>
+            <p>   For that later processing, 2 enquiries are available: SEPA.VIEW.INWARD using the inward transaction details for any return or refund action and SEPA.VIEW.OUTWARD using the outward transaction details for any reverse or cancel posting.</p>
+            <p>   In both cases the unambiguous reference established with the initial operation allows the system to fill in almost all the fields of this application including the initial booking entries and even initial fees to reverse. The only fields to populate are related to the reason motivating the action taken. These fields will be automatically redefined as specific fields of the SEPA.FOLLOW.UP application.</p>
+            <p>   In fact, the SEPA.FOLLOW.UP is the only T24 application enabled to redefine some of its fields without having to rely on additional local references definition.</p>
+            <p>   The 75th fields of the application are left for redefinition and they will be presented in a separate window of the input coding version. These fields can be redefined thanks to the SEPA.LAYOUT and SEPA.FIELDS parameter tables into up to 25 groups of 3 fields. The first one being the narrative, the second the content to be defaulted and/or inputted and the third one the given vetting table whenever the second is not null and the enrichment if the second field is completed.</p>
+            <p>   At authorization, this application generates an outward message within the SEPA.OUTWARD file that will be integrated in an outward XML message as soon as the PRESENTATION.DATE (minus the optional outward pending days) is reached.</p>
+            <p>   A customer’s advice can be issued and fees taken exactly as via a standard FUNDS.TRANSFER. </p>
+            <p>   When a ‘MAN’ or ‘RET’ process type has been required or enforced upon an inward SEPA  transaction, the SEPA.FOLLOW.UP application record is already present in ‘FHLD’ (non validated status), in ‘FNAU’ (non authorized status), in ‘FNAO’ (authorization to be granted) or in live.</p>
+            <p>   Otherwise, it is still possible to post a return/refund operation even if the initial operation has been automatically or manually accepted and booked on the customer’s account thanks to the enquiry set up on the inward SEPA archive file SEPA.INWARD.</p>
+            <p>   The key to this application matches: ‘SFU’:yydddsssss where :</p>
+            <p>   yy are the two last digit of the actual year,</p>
+            <p>   ddd is the current Julian date,</p>
+            <p>   sssss is the date current sequential number. More or less digits can be adopted when booking the F.LOCKING record FXXX.SEPA.FOLLOW.UP with the full initial key on the first day of SEPA treatment from the JED editor or via the AUTO.ID.START application.</p>
+            <p/>
+        </ovdesc>
+    </overview>
+    <menu>
+        <t>
+            <field>FIELD.VET6</field>
+        </t>
+        <t>
+            <field>FIELD.VET7</field>
+        </t>
+        <t>
+            <field>FIELD.VET8</field>
+        </t>
+        <t>
+            <field>FIELD.VET9</field>
+        </t>
+        <t>
+            <field>IN.REASON.OVE</field>
+            <desc>
+                <p>This field specifies the Reason for a return/refund generation.</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 50 type A(Alphanumeric) </p>
+                <p>  Multi Value field and NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>INITIAL.ACCOUNT</field>
+            <desc>
+                <p>This field contains the T24 ACCOUNT of the bank’s customer</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 16 type ANT(Account Number)</p>
+                <p>  Value should exist in ACCOUNT Application </p>
+            </desc>
+        </t>
+        <t>
+            <field>INITIAL.ADDRESS</field>
+            <desc>
+                <p>This field contains the Address of the bank’s customer</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 24 type A(Alphanumeric) </p>
+                <p>  Multi Value field and NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>INITIAL.AMOUNT</field>
+            <desc>
+                <p>This field contains the Initial amount of the transaction</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 18 type AMT(AMOUNT) </p>
+                <p>  NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>INITIAL.BRANCH</field>
+            <desc>
+                <p>This field contains the Branch of the bank’s customer</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 35 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>INITIAL.CLEAR.ID</field>
+            <desc>
+                <p>This field holds the Key to the previous operation referred to.</p>
+                <p>   (from SEPA.INWARD or SEPA.OUTWARD)</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  value upto 20 type ANY(Any Character)</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHARGE.TYPE</field>
+            <desc>
+                <p>This field holds the Key to FT.CHARGE.TYPE to define charges. </p>
+                <p>   The default value comes from the layout or parameter FTTC but it can be changed by a validation routine as all other fields.</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 11 type A(Alphanumeric)</p>
+                <p>  Value shoud exist in FT.CHARGE.TYPE</p>
+                <p>  Multi Value field</p>
+            </desc>
+        </t>
+        <t>
+            <field>INITIAL.CURRENCY</field>
+            <desc>
+                <p>This field  contains the Initial currency of the transaction</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 3 type CCY(CURRENCY) </p>
+                <p>  NOINPUT field and Value should exist in CURRENCY Application</p>
+            </desc>
+        </t>
+        <t>
+            <field>INITIAL.CUSTOMER</field>
+            <desc>
+                <p>This field contains the Identification of the bank’s customer.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 10 type CUS(Customer number)</p>
+                <p>  NOINPUT field and Value should exist in CUSTOMER Application</p>
+            </desc>
+        </t>
+        <t>
+            <field>INITIAL.IBAN</field>
+            <desc>
+                <p>This field contains the IBAN account of the bank’s customer.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 34 type A(Alphanumeric)</p>
+                <p>  NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>INITIAL.NAME</field>
+            <desc>
+                <p>This field contains the Name of the bank’s customer.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 35 type A(Alphanumeric)</p>
+                <p>  NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>INPUT.REASON.CODE</field>
+            <desc>
+                <p>This field defines the Reason code updated for reversal of transaction made.</p>
+                <p>   Must be a valid reason code in </p>
+                <p>   SEPA.REASONS template</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 4 type A(Alphanumeric)</p>
+                <p>  Value should exist in SEPA.REASONS Application</p>
+            </desc>
+        </t>
+        <t>
+            <field>LINKED.FT.ID</field>
+            <desc>
+                <p>This field holds the Key to the acceptance FT simultaneously generated by a MAN inward process type.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  value upto 25 type ANY(Any Character)</p>
+                <p>  NOINPUT FIELD</p>
+            </desc>
+        </t>
+        <t>
+            <field>LOT.PROCESS.ID</field>
+            <desc>
+                <p>This field holds the Key of the LOT.PROCESS record if this record has been generated from one.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  value upto 24 type ANY(Any Character)</p>
+                <p>  NOINPUT FIELD</p>
+            </desc>
+        </t>
+        <t>
+            <field>MANDATE.ID</field>
+            <desc>
+                <p>This field denotes the Mandate identification for direct debit.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 35 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>OPERATION.CODE</field>
+            <desc>
+                <p>This field  specifies the SEPA operation code (3 digits) </p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value must be 3 with 2 preceeding Zero&apos;s </p>
+            </desc>
+        </t>
+        <t>
+            <field>OPERATION.REF</field>
+            <desc>
+                <p>This field  specifies the Reference of the sender’s bank.</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 24 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>COMMISSION.AMT</field>
+            <desc>
+                <p>This field contains the Amount of any commission prefixed by its currency. May be signed for discount.</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 22 type AMT(AMOUNT)</p>
+                <p>  Associated Multi Value set of field COMMISSION.TYPE</p>
+            </desc>
+        </t>
+        <t>
+            <field>OUT.CLEAR.ID</field>
+            <desc>
+                <p>This field holds the Key to the generated SEPA.OUTWARD record – no input field.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  value upto 20 type ANY(Any Character)</p>
+                <p>  NOINPUT FIELD</p>
+            </desc>
+        </t>
+        <t>
+            <field>OVERRIDE</field>
+            <desc>
+                <p>This field is defaulted with a Override Message generated for this application.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 35 type A(Alphanumeric)</p>
+                <p>  NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>PAYMENT.DETAILS</field>
+            <desc>
+                <p>This field gives a Narrative description of the transaction.</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 35 type A(Alphanumeric) and Multi Value field</p>
+            </desc>
+        </t>
+        <t>
+            <field>PEACH.ID</field>
+            <desc>
+                <p>This field contains the Destination PE-ACH plateform center</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 10 type ANY(Any Character)</p>
+                <p>  Value should exist in SEPA.PEACH Application</p>
+            </desc>
+        </t>
+        <t>
+            <field>PRESENTATION.DATE</field>
+            <desc>
+                <p>This field specifies the Generation date of the SEPA outward file.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 11 type D(DATE)</p>
+            </desc>
+        </t>
+        <t>
+            <field>PROCESSING.DATE</field>
+            <desc>
+                <p>This field specifies the Date on which the SEPA.Follow.up is created</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 11 type D(DATE)</p>
+            </desc>
+        </t>
+        <t>
+            <field>PROFIT.CENTRE.CUST</field>
+            <desc>
+                <p>This field contains the Customer Id to be used to identify the booking profit center.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 10 type CUS(Customer number)</p>
+                <p>  Value should exist in CUSTOMER Application</p>
+            </desc>
+        </t>
+        <t>
+            <field>PROFIT.CENTRE.DEPT</field>
+            <desc>
+                <p>This field holds the Key to DEPT.ACCT.OFFICER (profit center). These 2 fields are mutually exclusive.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 4 type DAO(Deparment Accounting Officer) </p>
+                <p>  Value should exist in DEPT.ACCT.OFFICER Application</p>
+            </desc>
+        </t>
+        <t>
+            <field>REASON.CODE</field>
+            <desc>
+                <p>This field denotes the Return, Refund or Reverse reason code. </p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 4 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>SDD.DATE.OF.SIGN</field>
+            <desc>
+                <p>This field specifies the Date on which the direct debit is signed</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 11 and type D(DATE)</p>
+            </desc>
+        </t>
+        <t>
+            <field>COMMISSION.CODE</field>
+            <desc>
+                <p>This field specifies the Calculation method for commissions:</p>
+                <p>   CREDIT LESS CHARGES,</p>
+                <p>   DEBIT PLUS CHARGES or WAIVE</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 20 </p>
+                <p>  User can input only &apos;CREDIT LESS CHARGES&apos; or &apos;DEBIT PLUS CHARGES WAIVE&apos;</p>
+            </desc>
+        </t>
+        <t>
+            <field>SDD.STATUS</field>
+            <desc>
+                <p>This field specifies the Sequence value for Direct debit</p>
+                <p>   Possible value are FRST / RCUR / FNAL / OOFF</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 5 and User can input only &apos;FRST&apos; or &apos;RCUR&apos; or &apos;FNAL&apos; or &apos;OOFF&apos;</p>
+            </desc>
+        </t>
+        <t>
+            <field>SDD.STATUS</field>
+            <desc>
+                <p>This field  specifies the Status of Direct debit</p>
+                <p>   Value populated by SEPA routines</p>
+                <p>   Possible values are AUTH / NOTAUTH</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 10 And User can input only &apos;AUTH&apos; or &apos;NOTAUTH&apos;</p>
+            </desc>
+        </t>
+        <t>
+            <field>SDD.TYPE</field>
+            <desc>
+                <p>This field denotes the Type of Direct debit</p>
+                <p>   CORE / B2B</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 5 and User can input only &apos;CORE&apos; or &apos;B2B&apos;</p>
+            </desc>
+        </t>
+        <t>
+            <field>SEPFUP.REF</field>
+            <desc>
+                <p>This field contains a key which is Automatically generated</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 15 type A(Alphanumeric)</p>
+                <p>  Value in the Format: ‘SFU’:yydddsssss where :</p>
+                <p>  YY are the two last digit of the actual year,</p>
+                <p>  ddd is the current Julian date,</p>
+                <p>  sssssss is the date current sequential number. More or less digits can be adopted when booking the F.LOCKING record FXXX.SEPA.FOLLOW.UP with the full initial key on the first day of SEPA treatment from the JED editor or via the AUTO.ID.START application.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SETTLEMENT.DATE</field>
+            <desc>
+                <p>This field denotes the Date required for the payment.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 11 type D(DATE)</p>
+            </desc>
+        </t>
+        <t>
+            <field>STATEMENT.NOS</field>
+            <desc>
+                <p>This field  provides a Reference of the accounting entries.</p>
+                <p>   A context enquiry allows a drill down. </p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 29 type A(Alphanumeric)</p>
+                <p>  NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>STP.STATUS</field>
+            <desc>
+                <p>This field  specifies the Updates status of the direct debit when failed due to certain check validated at the SEPA.LAYOUT level</p>
+                <p>   Possible value are AC-SDD-TYPE/BLK-AMOUNT/BLK-BIC/BLK-IBAN/BLK-LIMIT/BLK-NBOFTXN/BLK-SERVICE/INTXN/MANDATE/RCVNTFND/REFUSAL/TIME-FRAME</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 15 and User can input only &apos;AC-SDD-TYPE&apos; or &apos;BLK-AMOUNT&apos; or &apos;BLK-BIC&apos; or &apos;BLK-IBAN&apos; or &apos;BLK-LIMIT&apos; or &apos;BLK-NBOFTXN&apos; or &apos;BLK-SERVICE&apos; or &apos;INTXN&apos; or &apos;MANDATE&apos; or &apos;RCVNTFND&apos; or &apos;REFUSAL&apos; or &apos;TIME-FRAME&apos;</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>TAX.AMT</field>
+            <desc>
+                <p>This field Gives the amount of taxes taken from the client, nostro or charge account.</p>
+                <p>  Validation Rules</p>
+                <p>  Value upto 22 type AMT(AMOUNT)</p>
+                <p>  Associated Multi Value set of field TAX.TYPE</p>
+                <p>  NOINPUT FIELD</p>
+            </desc>
+        </t>
+        <t>
+            <field>TAX.TYPE</field>
+            <desc>
+                <p>This field  holds the Key to TAX.TYPE for each calculated taxes.</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 11 type A(Alphanumeric)</p>
+                <p>  Value shoud exist in TAX.TYPE</p>
+                <p>  Multi Value field and NOINPUT FIELD </p>
+            </desc>
+        </t>
+        <t>
+            <field>THEIR.ADDRESS</field>
+            <desc>
+                <p>This field  contains the Address of the receiver</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 35 and Multi Value field</p>
+            </desc>
+        </t>
+        <t>
+            <field>COMMISSION.TYPE</field>
+            <desc>
+                <p>This field holds the Key to FT.COMMISSION.TYPE definition.</p>
+                <p>   The default value comes from the layout or parameter FTTC but it can be changed by a validation routine as all other fields.</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 11 type A(Alphanumeric)</p>
+                <p>  Value shoud exist in FT.COMMISSION.TYPE</p>
+                <p>  Multi Value field</p>
+            </desc>
+        </t>
+        <t>
+            <field>THEIR.BANK</field>
+            <desc>
+                <p>This field  contains the BIC code of the receiver’s bank</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 11 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>THEIR.BRANCH</field>
+            <desc>
+                <p>This field  contains the Branch code of the receiver’s bank</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 35 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>THEIR.IBAN</field>
+            <desc>
+                <p>This field  contains the IBAN account of the receiver</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 34 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>THEIR.NAME</field>
+            <desc>
+                <p>This field  contains the Name of the receiver</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 24 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>THEIR.REFERENCE</field>
+            <desc>
+                <p>This field  specifies the Reference of the sender</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 35 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>TRANSACTION.TYPE</field>
+            <desc>
+                <p>This field holds the Key to FT.TXN.TYPE.CONDITION giving the payment conditions for the customer.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 4 type A(Alphanumeric)</p>
+                <p>  Value should exist in FT.TXN.TYPE.CONDITION Application</p>
+            </desc>
+        </t>
+        <t>
+            <field>CREDIT.ACCT.NO</field>
+            <desc>
+                <p>This field contains the Credited account</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 16 type ANT(Account Number)</p>
+                <p>  Value should exist in ACCOUNT Application</p>
+            </desc>
+        </t>
+        <t>
+            <field>CREDIT.AMOUNT</field>
+            <desc>
+                <p>This field contains the Gross credit amount</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 18 type AMT(AMOUNT)</p>
+                <p>  NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>CREDIT.CURRENCY</field>
+            <desc>
+                <p>This field specifies the Credit currency</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 3 type CCY(CURRENCY)</p>
+                <p>  Value should exist in CURRENCY Application</p>
+            </desc>
+        </t>
+        <t>
+            <field>CREDIT.THEIR.REF</field>
+            <desc>
+                <p>This field denotes the Credit reference</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 27 type S(SWIFT Character)</p>
+            </desc>
+        </t>
+        <t>
+            <field>CREDIT.VALUE.DATE</field>
+            <desc>
+                <p>This field specifies the Credit value date</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 11 type D(DATE)</p>
+            </desc>
+        </t>
+        <t>
+            <field>CREDITOR.ID</field>
+            <desc>
+                <p>This field denotes the Identification of the Direct Debit creditor.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 35 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>ADVICE.REQD.Y.N</field>
+            <desc>
+                <p>This field contains a value of ‘Y’:which denotes Issuing of a customer advice.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 2 and User can input only &apos;Y&apos; or &apos;NO&apos;</p>
+            </desc>
+        </t>
+        <t>
+            <field>CUST.DETAIL.ID</field>
+            <desc>
+                <p>This field holds the Key to the SEPA.INWARD.DETAIL:’,’:rank of related transaction in the CB message.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 24 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>CUSTOMER.ID</field>
+            <desc>
+                <p>This field contains the ID of the Handing over customer</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 10 type ANY(Any Character)</p>
+                <p>  Value should exist in CUSTOMER Application</p>
+            </desc>
+        </t>
+        <t>
+            <field>DEBIT.ACCT.NO</field>
+            <desc>
+                <p>This field contains the Debited account number</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 16 type ANT(Account Number)</p>
+                <p>  Value should exist in ACCOUNT Application</p>
+            </desc>
+        </t>
+        <t>
+            <field>DEBIT.AMOUNT</field>
+            <desc>
+                <p>This field contains the Gross debit amount number</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 18 type AMT(AMOUNT)</p>
+                <p>  NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>DEBIT.CURRENCY</field>
+            <desc>
+                <p>This field contains the Debit currency</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 3 type CCY(CURRENCY)</p>
+                <p>  Value should exist in CURRENCY Application</p>
+            </desc>
+        </t>
+        <t>
+            <field>DEBIT.THEIR.REF</field>
+            <desc>
+                <p>This field specifies the Debit reference</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 16 type S(SWIFT Character)</p>
+            </desc>
+        </t>
+        <t>
+            <field>DEBIT.VALUE.DATE</field>
+            <desc>
+                <p>This field specifies the Debit value date</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 11 type D(DATE)</p>
+            </desc>
+        </t>
+        <t>
+            <field>DELIVERY.REF</field>
+            <desc>
+                <p>This field specifies the Reference of the issued customer advice</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 46 type A(Alphanumeric)</p>
+                <p>  NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>EXCHANGE.RATE</field>
+            <desc>
+                <p>This field holds the Exchange rate between the customer account and the counterparty in EUR.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 16 type R(NUMERIC)</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.CONTENT1</field>
+            <desc>
+                <p>This field contains the Value given to the 1st field to redefine</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 35</p>
+            </desc>
+        </t>
+        <t>
+            <field>AMOUNT.CHARGED</field>
+            <desc>
+                <p>This field  contains the amount to be charged which is equal to Total amount of charges + commissions.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 18 type AMT(AMOUNT)</p>
+                <p>  NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.CONTENT10</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT11</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT12</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT13</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT14</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT15</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT16</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT17</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT18</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT19</field>
+        </t>
+        <t>
+            <field>AMOUNT.CREDITED</field>
+            <desc>
+                <p>This field contains the Net credit amount</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 18 type AMT(AMOUNT)</p>
+                <p>  NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.CONTENT2</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT20</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT21</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT22</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT23</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT24</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT25</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT3</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT4</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT5</field>
+        </t>
+        <t>
+            <field>AMOUNT.DEBITED</field>
+            <desc>
+                <p>This field contains the Net debit amount</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 18 type AMT(AMOUNT)</p>
+                <p>  NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.CONTENT6</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT7</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT8</field>
+        </t>
+        <t>
+            <field>FIELD.CONTENT9</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR1</field>
+            <desc>
+                <p>This field provides a Description of the 1st field to redefine (after SEPA.FIELDS DESCRIPTION field or, by default, SEPA.LAYOUT FIELD.NAME field if a vetting list is also foreseen).</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 35 type A(Alphanumeric)</p>
+                <p>  NOINPUT FIELD</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.DESCR10</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR11</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR12</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR13</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR14</field>
+        </t>
+        <t>
+            <field>APPLYING.ON</field>
+            <desc>
+                <p>This field specifies the Way of previous application referred to.</p>
+                <p>   ‘INWARD’ : reply to a received operation</p>
+                <p>   ‘OUTWARD’ : reply to a sent operation</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 7 type A(Alphanumeric)</p>
+                <p>  User can input only &apos;INWARD&apos; or &apos;OUTWARD&apos;</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.DESCR15</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR16</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR17</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR18</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR19</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR2</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR20</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR21</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR22</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR23</field>
+        </t>
+        <t>
+            <field>CHANNEL</field>
+            <desc>
+                <p>This field specifies the SEPA channel of the Original Transaction for which this Follow Up is generated.</p>
+                <p/>
+                <p>   B2B - Bank to Bank</p>
+                <p>   C2B - Customer to Bank</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 3 and Possible Values &apos;B2B or &apos;C2B&apos;</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.DESCR24</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR25</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR3</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR4</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR5</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR6</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR7</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR8</field>
+        </t>
+        <t>
+            <field>FIELD.DESCR9</field>
+        </t>
+        <t>
+            <field>FIELD.VET1</field>
+            <desc>
+                <p>This field denotes the Enrichment or vetting list for the 1st field to redefine. (Given by the SEPA.FIELDS fields ALLOWED.VALUE + ALLOWED.NARR).</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 35 type A(Alphanumeric)</p>
+                <p>  NOINPUT FIELD and Individual Multi Value field</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHARGE.ACCT.NO</field>
+            <desc>
+                <p>This field contains the Optional account to book separately the charges and commissions if foreseen in the T24 customer convention or to take fees for a non financial operation initiated by the customer.</p>
+                <p/>
+                <p>  Validation Rules </p>
+                <p>  Value upto 16 type ANT(Account Number)</p>
+                <p>  Value should exist in ACCOUNT Application</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.VET10</field>
+        </t>
+        <t>
+            <field>FIELD.VET11</field>
+        </t>
+        <t>
+            <field>FIELD.VET12</field>
+        </t>
+        <t>
+            <field>FIELD.VET13</field>
+        </t>
+        <t>
+            <field>FIELD.VET14</field>
+        </t>
+        <t>
+            <field>FIELD.VET15</field>
+        </t>
+        <t>
+            <field>FIELD.VET16</field>
+        </t>
+        <t>
+            <field>FIELD.VET17</field>
+        </t>
+        <t>
+            <field>FIELD.VET18</field>
+        </t>
+        <t>
+            <field>FIELD.VET19</field>
+        </t>
+        <t>
+            <field>CHARGE.AMT</field>
+            <desc>
+                <p>This field contains the Amount of any charge prefixed by its currency. May be signed for discount.</p>
+                <p>  Validation Rules</p>
+                <p>  Value upto 22 type AMT(AMOUNT)</p>
+                <p>  Associated Multi Value set of field CHARGE.TYPE</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.VET2</field>
+        </t>
+        <t>
+            <field>FIELD.VET20</field>
+        </t>
+        <t>
+            <field>FIELD.VET21</field>
+        </t>
+        <t>
+            <field>FIELD.VET22</field>
+        </t>
+        <t>
+            <field>FIELD.VET23</field>
+        </t>
+        <t>
+            <field>FIELD.VET24</field>
+        </t>
+        <t>
+            <field>FIELD.VET25</field>
+        </t>
+        <t>
+            <field>FIELD.VET3</field>
+        </t>
+        <t>
+            <field>FIELD.VET4</field>
+        </t>
+        <t>
+            <field>FIELD.VET5</field>
+        </t>
+        <t>
+            <field>CHARGE.CODE</field>
+            <desc>
+                <p>This field specifies the Calculation method for charges:</p>
+                <p>   CREDIT LESS CHARGES,</p>
+                <p>   DEBIT PLUS CHARGES or WAIVE</p>
+                <p/>
+                <p>  Validation Rules</p>
+                <p>  Value upto 20 </p>
+                <p>  User can input only &apos;CREDIT LESS CHARGES&apos; or &apos;DEBIT PLUS CHARGES WAIVE&apos;</p>
+            </desc>
+        </t>
+		<t>
+            <field>CATEG.PURPOSE</field>
+            <desc>
+                <p>Specifies the category purpose as published in an external category purpose code list from SEPA.CATEG.PURPOSE or specifies the Category purpose in a proprietary form.</p>
+                <p/>
+                <p>     Validation Rules </p>
+                <p>     Value upto 35 type A(Alphanumeric)</p>   
+				<p>     NOINPUT field</p>				
+            </desc>
+        </t>
+		<t>
+            <field>PURPOSE</field>
+            <desc>
+                <p>Specifies the purpose as published in an external purpose code list from SEPA.PURPOSE.CODE or specifies the purpose in a proprietary form.</p>
+                <p/>
+                <p>     Validation Rules </p>
+                <p>     Value upto 35 type A(Alphanumeric)</p> 
+				<p>     NOINPUT field</p>				
+            </desc>
+        </t>
+		<t>
+            <field>ADDITIONAL.INFO</field>
+            <desc>
+                <p>Allowed only When the reason code is selected as FRAD,  additional information in this field is mapped in the outward xml message generated for camt056.</p>
+                <p/>
+                <p>     Validation Rules </p>
+                <p>     Value upto 35 type A(Alphanumeric)</p> 				
+            </desc>
+        </t>
+		<t>
+            <field>EONIA.RATE</field>
+            <desc>
+                <p>Contains the EONIA rate to calculate the compensation amount.</p>
+                <p/>
+                <p>     Validation Rules </p>
+                <p>     Value upto 16 type R</p> 				
+            </desc>
+        </t>
+		<t>
+            <field>COMPENSATION.AMT</field>
+            <desc>
+                <p>The amount should be calculated automatically from transaction amount based on the EONIA rate inputted.</p>
+                <p/>
+                <p>     Validation Rules </p>
+                <p>     Value upto 18 type numeric </p> 				
+            </desc>
+        </t>
+		<t>
+            <field>PMTINF.ID</field>
+            <desc>
+                <p>This field holds the value of PmtInfID from the original PAIN transaction which will be provided in the XML file</p>
+                <p/>
+                <p>     Validation Rules </p>
+                <p>     Value upto 35 type R </p> 			
+				<p>     NOINPUT field</p>
+            </desc>
+        </t>
+		<t>
+            <field>END.TO.END.ID</field>
+            <desc>
+                <p>This field holds the EndToEndId value from the original transaction if present.</p>
+                <p/>
+                <p>     Validation Rules </p>
+                <p>     Value upto 35 type A(Alphanumeric)</p> 			
+            </desc>
+        </t>
+		<t>
+            <field>PAYMENT.REF</field>
+            <desc>
+                <p>This field holds the Payment Reference from the original transaction.</p>
+                <p/>
+                <p>     Validation Rules </p>
+                <p>     Value upto 65 type A(Alphanumeric). Multi Value field.</p> 			
+            </desc>
+        </t>
+    </menu>
+</t24help>

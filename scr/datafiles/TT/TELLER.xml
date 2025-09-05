@@ -1,0 +1,1057 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>TT</product>
+<table>TELLER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The TELLER application processes all retail transactions and generates self-balancing entries to the main accounting system.</p>
+            <p>    There are two sides to each transaction, the input side (1) and the balancing side (2). Although there are many types of transaction (cash deposit, buy foreign currency etc) they are all processed in the same way. The TELLER.TRANSACTION file determines default account numbers, charges, value dates, advice printing etc.</p>
+            <p>    In order to input a transaction the current user must be assigned to an open till number (see TELLER.ID) and it is this number which will determine the internal cash account to be maintained. This number is prompted for on entry of the user's first transaction.</p>
+            <p>    Teller can now handle transactions with multiple buy and/or sell transactions within one overall deal. This allows the bank to perform more complex 'Bureau de Change' transactions within a single stream transaction.</p>
+            <p>    Automatic calculation of commissions and charges is provided and (for more awkward requirements) the ability to provide the nearest matches above/below currency amounts, for example 'Approx GBP 50 of French Francs' taking into account the actual stock of French banknotes held.</p>
+            <p>    When a type of charge or commission is included in a multi-line deal it is applied once for the deal. If the type of charge or commission is dependant on the deal amount then it is calculated once on the total of the amounts in individual lines of the deal with maximum and minimum restrictions applied. More than one charge or commission type may be applied to a deal. When each line is committed the opportunity is presented to specify a single charge amount which replaces all the other charges for a deal.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>AMOUNT.LOCAL.1</field>
+<desc>
+            <p>Specifies the Amount to be debited/credited to the side 1 account.</p>
+            <p>    Must be input if the side 1 account is local, otherwise this field will contain the local equivalent of AMOUNT.FCY.1.</p>
+            <p>    Input is not allowed if side 1 is a foreign currency account.</p>
+            <p>    From 14.1.00 release this field is part of the associated multi valued fields.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    18 Numeric characters. (Mandatory Input)</p>
+        </desc>
+</t>
+<t>
+<field>CHEQUE.DRAWN</field>
+<desc>
+            <p>This fields holds the number of the cheque/draft value from TELLER.FINANCIAL.SERVICES transaction</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input. Value must be numeric.</p>
+            <p>Value in this field can be used when printing the cheque/draft upon completion of the transaction.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE.1</field>
+<desc>
+            <p>Defines the date when the entry is to be given value for interest purposes.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    11 Date type characters.</p>
+            <p>    Should be a working day between the back value and forward value minimum - Over-Ride.</p>
+            <p>    Cannot be earlier than the back value maximum or later than the forward value maximum.</p>
+            <p>    Mandatory for customer account entries - defaulted from the TRANSACTION defined on the TELLER.TRANSACTION record. Noinput for internal accounts.</p>
+        </desc>
+</t>
+<t>
+<field>POSS.DUP.DATE</field>
+<desc>
+            <p />
+            <p>  For use in connection with the Branch Resilience (BR) product. i.e this field gets enabled only when BR is installed.</p>
+            <p />
+            <p>  When a breakdown in server communications occurs, at a time when the Teller is finishing a deal, it may not be evident that the deal has completed successfully. Branch Resilience requires the deal to be completed both on the Head Office server and on the backup branch system before it is considered successful. In this event the Teller will re-enter the deal after logging onto the branch backup server, but must flag the deal as a possible duplicate by using this field. The value entered must be the booking date at the branch (this information will be needed when communications are re-established and the deal is also updated at the Head Office). </p>
+            <p />
+            <p>  With a value in this field set the system will check for other Teller transactions with the same account numbers, value dates and amounts. If one or more is found an override will be raised allowing the user to investigate before committing it or if approved the investigation can be done later.  </p>
+            <p />
+            <p>  When the deal update is posted on the Head Office server the POSS.DUP.DATE field being present will do the same checking and raise an override - since this is part of an automated process the investigation of the duplicate is done by looking for any deals with POSS.DUP.DATE set and with the warning override present. The system cannot be 100% certain of the deal being a duplicate or whether there are legitimately two exact copy deals, hence user intervention is necessary.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.2</field>
+<desc>
+            <p>Specifies the customer number from ACCOUNT.2</p>
+            <p>    Used as an enrichment if the account number is a customer account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Standard Customer code. (No-input)</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.CUSTOMER</field>
+<desc>
+            <p>This is the Customer a given charge is to be applied to. Only used on a Multi Line deal Header record.</p>
+            <p> System will default the CHARGE.CUSTOMER field based on CHARGE.ACCOUNT defaulted or User entered CHARGE.ACCOUNT</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    No Input</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.CATEGORY</field>
+<desc>
+            <p>Determines the P&amp;L category or the local currency internal account where the teller charge should be posted.</p>
+            <p>    Defaulted from the TELLER.TRANSACTION record.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    5 Numeric characters. (Optional - if there are no charges)</p>
+        </desc>
+</t>
+<t>
+<field>TRANSACTION.NUMBER</field>
+<desc>
+            <p>This is the reference to the TELLER transaction. It can be in one of two formats; one the standard T24 transaction format means the contract is what may be termed a 'single-leg transaction' where the details of the transaction are on a single TELLER record. Alternatively, there can be transactions which we will refer to as multi-line (meaning there is normally more than one line or leg) and the details of each leg are recorded on a Master record (which shows all the legs and the total charges).</p>
+            <p>    The purpose of the multi-line contracts is to allow a client to purchase (or sell) several currencies and be charged commission based on the entire deal rather than several unconnected transactions which could impose the minimum charge for each trade.</p>
+            <p />
+            <p />
+            <p>    Single Leg and Master deal references appear as TTyydddnnnnn</p>
+            <p>    Multi-line deals appear as TTyydddnnnnn-nn</p>
+            <p>    Where yyddd is the Year and day number (Julian date format) and nnnnn/nnnnn-nn are 00001/00001-01 to 99999/99999-99</p>
+            <p />
+            <p />
+            <p>    References can be entered manually or you can allow the system to generate the next one automatically. The COMPANY record must have the TELLER application included in the field PGM.AUTOM.ID and have had the first value set via a valid AUTO.ID.START record. Single legs can than be generated with the 'Next record' icon or F3 function key. Multi-line deals are normally invoked by using a '-' character (without the quotes), with further leg id's being prompted for.</p>
+            <p />
+            <p />
+            <p>    It should be noted that the multi-line deals are considered as a 'single entity' by the system. Accounting/charges are still made Real -Time for each leg with Position and PM movements, so T24 is always up to date, but from the Client point of view the transaction is a single deal. If the Version is set for zero authorisation the Teller will see a prompt to 'Finish' the input. If, however, the Version is set for 1 authoriser then if the Teller exits the deal it is not deemed complete, more legs can be added or a separate authorisation process is required.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    The date must be TODAY for all functions except S, D         &amp; P.</p>
+            <p>    The id must be prefixed by TT.</p>
+            <p>    Cannot add legs to a fully authorised deal</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXPOSURE.DATE.1</field>
+<desc>
+            <p>Defines the date on which the available balance will be credited.</p>
+            <p>    Defaulted from the TRANSACTION  defined on the TELLER.TRANSACTION record.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    11 Date type characters No Input for debit or internal accounts.</p>
+            <p>    Should be a working day between the back value and forward value minimum - Over-Ride.</p>
+            <p>    Cannot be earlier than the back value maximum or later than the forward value maximum.</p>
+        </desc>
+</t>
+<t>
+<field>NET.AMOUNT</field>
+<desc>
+            <p>Specifies the balancing amount +/- any charges and rounding amount.</p>
+            <p>    The side 2 amount (foreign or local) plus/minus any transaction charges and rounded to the local cash minimum (See ROUNDING.AMOUNT).</p>
+            <p />
+            <p>    In case SPLIT.CHARGE.ENTRIES in related teller transaction is YES &amp; ACCOUNT.2 is a non-customer account  and ACCOUNT.1 is customer account, then the charges will not be included in NET.AMOUNT as it will be collected/paid from ACCOUNT.1.</p>
+            <p>    This is the amount which will be paid to or should be received from the customer.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    18 Numeric characters. (No-input)</p>
+            <p>    The net amount cannot be negative - ie the charges are greater than the amount to be paid out.</p>
+        </desc>
+</t>
+<t>
+<field>SERIAL.NO</field>
+<desc>
+            <p>This field shows the serial number information corresponding to the internal ACCOUNT of the credit side. This may be either a single number or as a range, e.g. NO.1 - NO.2.</p>
+            <p>    The format (mask) of the serial number must be already defined in the ACCOUNT file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Valid input must be confined to the format defined in the ACCOUNT file.</p>
+            <p>    Optional input field.</p>
+            <p>    Mandatory field if ACCOUNT&gt;STOCK.CONTROL.TYPE is SERIAL.</p>
+        </desc>
+</t>
+<t>
+<field>AUTH.DATE</field>
+<desc>
+            <p>Noinput field. Used to store System date during authorisation of a TELLER</p>
+        </desc>
+</t>
+<t>
+<field>TELLER.ID.2</field>
+<desc>
+            <p>For side 2 of the TELLER deal there may be a requirement to use an Internal Account for Cash or Clearing. Where the Account is specific to one TELLER then the value here will be used.</p>
+            <p>    For example in transfering cash from one Till to another this field would contain the TELLER.ID of one of the Tills, the other Till would appear in the field TELLER.ID.1.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Mandatory Input. 4 Numeric characters. (Defaults to         current signed on teller)</p>
+            <p>    Must be current signed on Teller unless the transaction         is a Teller transfer.</p>
+            <p>    Teller id must be open (unless it's the vault) to perform         transfers.</p>
+            <p>    Must be a valid entry on the TELLER.ID file.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.ACCOUNT</field>
+<desc>
+            <p>This is the Account a given charge is to be applied to. CHARGE.ACCOUNT  is generally set as ACCOUNT.2.</p>
+            <p />
+            <p>    Only exception is when SPLIT.CHARGE.ENTRIES in related teller transaction is YES &amp; ACCOUNT.2 is Internal/PL and ACCOUNT.1 is customer account. In this case CHARGE.ACCOUNT will be set to ACCOUNT.1</p>
+            <p> If CHG.TYPE field has a value, CUST.AC.TRANSFER set as YES and CHARGE.CODE attached in TELLER.TRANSACTION file, below is the combination system will default the CHARGE.ACCOUNT</p>
+            <p> If DR.CR.MARKER is DEBIT,CHG.TYPE is DEBIT PLUS CHARGES or DR.CR.MARKER is CREDIT,CHG.TYPE is CREDIT LESS CHARGES system will default ACCOUNT.1 as CHARGE.ACCOUNT,</p>
+            <p> ACCOUNT.1 is multi-valued, system will default the CHARGE.ACCOUNT as first account in ACCOUNT.1 </p>
+            <p> If DR.CR.MARKER is CREDIT,CHG.TYPE is DEBIT PLUS CHARGES or DR.CR.MARKER is DEBIT,CHG.TYPE is CREDIT LESS CHARGES system will default ACCOUNT.2 as CHARGE.ACCOUNT</p>
+            <p> User Can Overwrite the system defaulted CHARGE.ACCOUNT with Third Account or any Customer Account.</p>
+            <p> For Customer to Customer transfer, if CHG.TYPE field is changed from DEBIT PLUS CHARGES or CREDIT LESS CHARGES to Null system will default ACCOUNT.2 as CHARGE.ACCOUNT.</p>
+            <p />
+            <p />
+            <p>    Only used on a Multi Line deal Header record.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> User Overwrites the system defaulted CHARGE.ACCOUNT, it must be either of ACCOUNT.1 Currency or ACCOUNT.2 Currency</p>
+            <p> If more than one CHARGE.CODE exists, all the CHARGE.ACCOUNT's must be Same</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DR.UNIT</field>
+<desc>
+            <p>As for UNIT but for the debit side.</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.1</field>
+<desc>
+            <p>The customer number from ACCOUNT.1</p>
+            <p>    Used as an enrichment if the account number is a customer account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Standard Customer code (No-input)</p>
+        </desc>
+</t>
+<t>
+<field>CHEQUE.ACCT.NO</field>
+<desc>
+            <p>Records the account number of a cheque drawn on another bank.</p>
+            <p>    No processing is associated with this field. Used for notation only.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    20 Alphanumeric characters. (Optional Input)</p>
+        </desc>
+</t>
+<t>
+<field>CHEQ.TYPE</field>
+<desc>
+            <p>Specify the type of cheque used in the transaction.</p>
+            <p>    Below mentioned cheque Type defaulting mechanism will be used if the Cheque.Register in ACCOUNT.PARAMETER is set as "Yes". Otherwise it will default to NULL.</p>
+            <p>    DEFAULTING MECHANISM</p>
+            <p>    If the Cheque.Register is set as Yes,</p>
+            <p>    If the transaction code used in DC/FT/TT, has cheque indicator as Yes in TRANSACTION file, then cheque.type will be defaulted as per the following:</p>
+            <p>    1.</p>
+            <p />
+            <p />
+            <p>    2.</p>
+            <p />
+            <p>    3.</p>
+            <p />
+            <p>    4.</p>
+            <p />
+            <p>    5.</p>
+            <p />
+            <p>    If Cheque.Register set as NO or NULL then the cheque type will defaults to NULL.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>    Optional field</p>
+            <p>    Must be a valid record in CHEQUE.TYPE.</p>
+        </desc>
+</t>
+<t>
+<field>CARD.TXN.DETAIL</field>
+<desc>
+            <p> Holds the card transaction details like merchant , location etc</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p> Free Text Multi-value field</p>
+            <p> Applicable only when CARD.NUMBER is present </p>
+        </desc>
+</t>
+<t>
+<field>PAYEE.NAME</field>
+<desc>
+        <p>This field holds the PAYEE.NAME as mentioned in Cheque or Draft.</p>
+        <p>
+            <p>Validation Rules:</p>
+        </p>
+        <p data-mc-conditions="FROMRELEASE.R13">Standard T24 alpha numeric field.</p>
+        <p data-mc-conditions="FROMRELEASE.R13">Allows a maximum of 50 characters.</p>
+    </desc>
+</t>
+<t>
+<field>CHEQUE.NUMBER</field>
+<desc>
+            <p>Specifies the Number of the cheque to be processed.</p>
+            <p>    If this is a cheque drawn on this branch then this will be passed in the statement entry for the customer account as THEIR REFERENCE.If CHEQUE.NUMBER is alphanumeric, then the system shall not validate against CHEQUE.REGISTER. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    20 Alphanumeric characters. (Optional Input)</p>
+            <p>    Mandatory if the cheque indicator is set by the TRANSACTION defined on the TELLER.TRANSACTION record.</p>
+        </desc>
+</t>
+<t>
+<field>EXPOSURE.DATE.2</field>
+<desc>
+            <p>Defines the date on which the available balance will be credited.</p>
+            <p>    Defaulted from the TRANSACTION  defined on the TELLER.TRANSACTION record.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    11 Date type characters. Noinput for debit or internal accounts.</p>
+            <p>    Should be a working day between the back value and forward value minimum - Over-Ride.</p>
+            <p>    Cannot be earlier than the back value maximum or later than the forward value maximum.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.CODE</field>
+<desc>
+            <p>This field contains a multivalue list of the charge and/or commission codes to be applied to this transaction. Charges should not be collected for those transactions that are a child of TFS.</p>
+            <p>    Defaulted from the TELLER.TRANSACTION record, or if the Teller had chosen the option to Modify the charges then the code from the field</p>
+            <p>    MODIFY.CHARGE.CODE</p>
+            <p>    ModCharge</p>
+            <p>    ModCharge- MODIFIED</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>    System Generated</p>
+        </desc>
+</t>
+<t>
+<field>EXP.ACCT</field>
+<desc>
+            <p>TELLER</p>
+            <p>    EXP. ACCT</p>
+            <p>    This field is defaulted with the account on the credit side.</p>
+            <p>    The account may be either customer or internal account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Any valid account no input on the credit side.</p>
+        </desc>
+</t>
+<t>
+<field>DR.CR.MARKER</field>
+<desc>
+            <p>Determines if side 1 is a debit or credit.</p>
+            <p>    Defaulted from the TELLER.TRANSACTION file (see transaction field).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    DEBIT CREDIT (No-input)</p>
+        </desc>
+</t>
+<t>
+<field>THEIR.REFERENCE</field>
+<desc>
+            <p>Specifies the reference given to the entry by the customer involved.</p>
+            <p>    If the transaction is a cheque encashment then this field will contain the cheque number, defaulted from the CHEQUE.NUMBER field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    16 SWIFT characters (Alphanumeric) (Optional)</p>
+        </desc>
+</t>
+<t>
+<field>POS.TYPE.2</field>
+<desc>
+            <p>Identifies the type of foreign exchange position for this entry.</p>
+            <p>    Defaulted from the TELLER.TRANSACTION file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    2 Alpha characters. (No-input)</p>
+        </desc>
+</t>
+<t>
+<field>RATE.1</field>
+<desc>
+            <p>Specifies the local equivalent rate used between AMOUNT.FCY.1 and AMOUNT.LOCAL.1</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-12 type R (Standard Rate Format - up to 8 integer and 6 decimal) characters plus a decimal point or 1-15 type R (Up to 8 integer and 9 decimal) characters plus a decimal point when EXTENDED.PREC in SPF is set to Y. (No-input)</p>
+        </desc>
+</t>
+<t>
+<field>WAIVE.CHARGES</field>
+<desc>
+            <p>This field is used to Waive any transaction charges.</p>
+            <p>    If set to Y - will waive any charges that have been defined in the TELLER.TRANSACTION record.</p>
+            <p>    This does not apply to multi-line Teller inputs. To waive charges in multi-line input use the "Replace charge" option which appears after each line and type a currency code and zero.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Y YES N NO (Optional)</p>
+        </desc>
+</t>
+<t>
+<field>NARRATIVE.2</field>
+<desc>
+            <p>Defines the Narrative text to be passed to the statement entry.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Up to 34 Characters (Optional Input)</p>
+        </desc>
+</t>
+<t>
+<field>TRANSACTION.CODE</field>
+<desc>
+            <p>The actual type of deal is controlled by the value entered here. The record entered must be present on an application file called TELLER.TRANSACTION and it is this underlying record which affects the currencies permitted, which accounts are allowed, whether charges are to be defaulted and so on.</p>
+            <p>    Each TELLER deal has two sides; one will be the Debit and the other side the Credit. It is the TELLER.TRANSACTION record which controls which becomes which. Please refer to the Helptext for TELLER.TRANSACTION for more details on how this control works.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p> 1-10(Max Value) numeric characters Transaction Code. (Mandatory Input)</p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+            <p>    Must be a valid entry on the TELLER.TRANSACTION file.</p>
+        </desc>
+</t>
+<t>
+<field>CURR.MARKET.1</field>
+<desc>
+            <p>Specifies the currency market applicable to this entry.</p>
+            <p>    Defaulted from the TELLER.TRANSACTION file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    2 Numeric characters. (No-input)</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT.LOCAL.2</field>
+<desc>
+            <p>Specifies the amount to be debited/credited to the side 2 account.</p>
+            <p>    Will be defaulted from the side 1 transaction only when the MKT.EXCH.METHOD field in the TELLER.PARAMETER is 'NONE'.</p>
+            <p>    If the MKT.EXCH.METHOD in TELLER.PARAMETER is 'MIDDLE' then AMOUNT.LOCAL.2 will indicate that local equivalents will be calculated using middle rates for corresponding currency markets.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    18 Numeric characters. (No-input)</p>
+        </desc>
+</t>
+<t>
+<field>NEW.CUST.BAL</field>
+<desc>
+            <p>Indicates the customers new working balance as a result of this transaction.</p>
+            <p />
+            <p>    Defaulted for the customer side of the transaction. If it's a customer account transfer then it reflects the new account balance of side 1.</p>
+            <p />
+            <p>    It is provided for information only (used for outputing on advices for example) and indicates the new working (uncleared) balance at the time of the transaction.</p>
+            <p />
+            <p>    Noinput field.</p>
+        </desc>
+</t>
+<t>
+<field>EXPOSURE.CCY</field>
+<desc>
+            <p>This field contains the currency in which the exposure amount split information has been specified.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    No Input Allowed</p>
+        </desc>
+</t>
+<t>
+<field>RATE.2</field>
+<desc>
+            <p>Specifies the local equivalent rate used between AMOUNT.FCY.2 and AMOUNT.LOCAL.2</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    1-12 type R (Standard Rate Format - up to 8 integer and 6 decimal) characters plus a decimal point or 1-15 type R (Up to 8 integer and 9 decimal) characters plus a decimal point when EXTENDED.PREC in SPF is set to Y. (No-input)</p>
+        </desc>
+</t>
+<t>
+<field>POS.TYPE.1</field>
+<desc>
+            <p>Identifies the type of foreign exchange position for this entry.</p>
+            <p>    Defaulted from the TELLER.TRANSACTION file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    2 Alpha characters. (No-input)</p>
+        </desc>
+</t>
+<t>
+<field>MKT.EXCH.PROFIT</field>
+<desc>
+            <p>The amount of marketing exchange profit calculated in local currency. Is calculated when MKT.EXCH.METHOD field in TELLER.TRA- NSACTION is set to "MIDDLE".</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Type AMT field with '-' allowed. NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>CHRG.AMT.LOCAL</field>
+<desc>
+            <p>Specifies the charge amount in local currency which will be credited to the P&amp;L defined in CHARGE.CATEGORY.</p>
+            <p>    Defaulted from the TELLER.TRANSACTION record. Charge amounts can be altered from this definition (even set to zero) or all charges can be waived - see WAIVE.CHARGES.</p>
+            <p>    Input in this field is valid only if charges are present in TELLER.TRANSACTION.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    18 Numeric characters. (Optional - if there are no charges).</p>
+        </desc>
+</t>
+<t>
+<field>CURR.MARKET.2</field>
+<desc>
+            <p>Specifies the currency market applicable to this entry.</p>
+            <p>    Defaulted from the TELLER.TRANSACTION file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    2 Numeric characters. (No-input)</p>
+        </desc>
+</t>
+<t>
+<field>NARRATIVE.1</field>
+<desc>
+            <p>Defines the Narrative text to be passed to the statement entry.</p>
+            <p>    From 14.1.00 release this field is part of the associated multi valued fields</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Up to 34 Characters (Optional Input)</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.MAT.DATE</field>
+<desc>
+            <p>TELLER</p>
+            <p>    CONTRACT. MAT. DATE</p>
+            <p>    This field is invoked for input if the AZ.ACCOUNT is input on the credit side with an intent to create a deposit- Suitable Teller. Transaction codes and txn codes should be used for the invocation.</p>
+            <p>    This field is opened up for multi FIXED deposits only.  Since for Multi-Savings type - the maturity date is already specified in the Main a/c itself.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Enter any valid date format..</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>OUR.REFERENCE</field>
+<desc>
+            <p>Specifies the bank's reference to this transaction.</p>
+            <p>    This field also provides the link to TELLER.DEFAULT.  If data is entered here, prior to any other information, then the system will attempt to default all fields from the TELLER.DEFAULT record whose id is OUR.REFERENCE.  See the overview of TELLER.DEFAULT for more details.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    16 SWIFT Characters (Alphanumeric) (Optional).</p>
+        </desc>
+</t>
+<t>
+<field>CHRG.CR.TXN.CDE</field>
+<desc>
+            <p>The Debit transaction code for a given charge. Only relevant on a Multi Line deal.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Must be a valid Debit Transaction code</p>
+        </desc>
+</t>
+<t>
+<field>CHEQUE.BANK.CDE</field>
+<desc>
+            <p>Specifies the sort code on a cheque drawn on another bank.</p>
+            <p>    Processing can be associated with this field if the number entered corresponds with an existing BC.SORT.CODE</p>
+            <p>    Otherwise, it's used for notation only.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    20 Alphanumeric characters, (Optional Input)</p>
+        </desc>
+</t>
+<t>
+<field>TFS.REFERENCE</field>
+<desc>
+            <p>This field holds the TFS Transaction Id if this TELLER transaction is input through TELLER.FINANCIAL.SERVICES transaction</p>
+            <p>No-Input field and updated by the system</p>
+        </desc>
+</t>
+<t>
+<field>TRUST.SETTLE.CUST</field>
+<desc>
+            <p>Shows the customer with whom the stock in retailer trust is settled.</p>
+            <p>    This field will be used to verify the stock entered on the TELLER transaction is held in trust by the same customer. The stock will then be removed from the retailer trust if there is no validation error.</p>
+            <p>    Input to this field will also inhibit the defaulting of serial nos.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Must be a valid CUSTOMER.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY.2</field>
+<desc>
+            <p>Specifies the Currency code for the side 2 entry.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    3 Alpha characters. (Mandatory - defaults to local)</p>
+            <p>    Will be validated against VALID.CURRENCIES in TELLER.TRANSACTION. These can be defined as : L   local currency only F   foreign currency only A   any currency</p>
+            <p>    Must be the same as the currency of ACCOUNT.2.</p>
+            <p>    Must be valid entry on the CURRENCY file.</p>
+            <p>    If side 1 is a foreign ccy PL category then side 2 ccy should be of the same ccy.</p>
+        </desc>
+</t>
+<t>
+<field>DR.SERIAL.NO</field>
+<desc>
+            <p>As for SERIAL.NO but for the debit side.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.TYPE</field>
+<desc>
+            <p>Field to configure which Account is to be defaulted as charge account either Account.1 or Account.2</p>
+            <p>If ACCOUNT.1 is Multi-valued, system will default the first account(in ACCOUNT.1) in CHARGE.ACCOUNT field</p>
+            <p>This field will be defaulted from TELLER.TRANSACTION file</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>It will be allowed for only customer to customer transfer i.e.CUST.AC.TRANSFER field set as YES in TELLER.TRANSACTION file</p>
+            <p>Can accept value as DEBIT PLUS CHARGES or CREDIT LESS CHARGES or Null.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.GRP</field>
+<desc>
+            <p>Noinput field. Used to store Contract group based on setup in APPL.GEN.CONDITION</p>
+        </desc>
+</t>
+<t>
+<field>EXP.SPT.DAT</field>
+<desc>
+            <p>TELLER</p>
+            <p>    EXP. SPT. DAT</p>
+            <p>    The dates and the relative amount/percentage given in the exposure ladder will be populated once the transaction is committed.</p>
+            <p>    This is an associated multi-value field and depending on the exposure ladder this field will be multi-valued.</p>
+            <p>    To illustrate</p>
+            <p>    If the T24 date is 10.12.2003 and the exposure ladder is defined as 02Days 20% and 04Days 30%</p>
+            <p>    Then in this case - the exposure ladder will be multi-valued three times  and the EXP. SPT. DAT field will be updated with 10.12.2003, 12.12.2003 and 14.12.2003</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Date in standard format.</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT.FCY.2</field>
+<desc>
+            <p>Specifies the foreign currency amount to be posted to side 2.</p>
+            <p>    Will be defaulted from the side 1 transaction.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    18 Numeric characters. (No-input)</p>
+        </desc>
+</t>
+<t>
+<field>UNIT</field>
+<desc>
+            <p>Specifies the number of units of the corresponding denomination to pay to the customer.</p>
+            <p>    On input of a transaction amount the units are defaulted to 0 for each denomination defined for the credit currency.</p>
+            <p>    If you wish to pay out specific denominations (and have this recorded on the transaction record) then you should enter the number of units required of the highest denomination required. Whenever a unit is entered all lower denominations are defaulted.</p>
+            <p>    All zero units will be removed from the transaction record at authorisation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    9     Numeric</p>
+            <p>    If units are entered their total value must equal the credit amount (the amount paid to the customer).</p>
+        </desc>
+</t>
+<t>
+<field>SERIES.ID</field>
+<desc>
+            <p>This field is used to enter the series id of the stock register.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Mandatory if stock register is entered in previous field</p>
+            <p>    If entered must be a valid stock series from STOCK.REGISTER</p>
+        </desc>
+</t>
+<t>
+<field>STOCK.NUMBER</field>
+<desc>
+            <p>Specifies the Stock Number to be processed.</p>
+            <p>    On entering a valid stock register, series id and stock number system changes the range of stock number for the appropriate record in STOCK.REGISTER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Mandatory if stock register and series id is entered in the previous     fields.</p>
+        </desc>
+</t>
+<t>
+<field>CHRG.AMT.FCCY</field>
+<desc>
+            <p>Specifies the charge amount in foreign currency (if side 2 is foreign) which will be credited to the P&amp;L defined in CHARGE.CATEGORY.</p>
+            <p>    Defaulted from the CHARGE.AMT.LOCAL field converted at the mid rate. Charge amounts can be altered from this definition (even set to zero) or all charges can be waived - see WAIVE.CHARGES.</p>
+            <p>    Input in this field is valid only if charges are present in TELLER.TRANSACTION.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    18 Numeric characters. (Optional - if there are no charges).</p>
+        </desc>
+</t>
+<t>
+<field>DEALER.DESK</field>
+<desc>
+            <p>TELLER</p>
+            <p>    DEALER.DESK</p>
+            <p>    Identifies the dealer desk position which needs to be updated by the deal being created. The dealer desk code is held on the position record so that the exchange position can be displayed at dealer desk level.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    2 alphanumeric character dealer code in the range A-Z, a-z, plus 0-9.     Optional Input; Default = '00'.</p>
+            <p>    The code entered must appear on the DEALER.DESK table.</p>
+            <p>    The field cannot be changed once the deal has been authorised.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>STOCK.REGISTER</field>
+<desc>
+            <p>In this field valid stock register can be entered and if entered, next field (Series id) becomes mandatory.</p>
+            <p>    On entering a valid stock register, series id and stock number system changes the range of stock number for the appropriate record in STOCK.REGISTER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Optional field</p>
+            <p>    If entered must be a valid record id in STOCK REGISTER</p>
+            <p>    If entered next field (Series id ) is mandatory</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Contains details of any overrides applicable to this Transaction.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Up to 35 type A (alphanumeric) characters. Multivalue field. (Internal field.)</p>
+        </desc>
+</t>
+<t>
+<field>DEAL.RATE</field>
+<desc>
+            <p>The rate applied between the side 1 and side 2 currencies .</p>
+            <p>    When defaulting rates the following rules will apply:</p>
+            <p>    1.        The debit currency is the BUY and the credit currency is           the SELL. 2.        The local equivalent of the BASE currency will be used to           default both side 1 and side 2 local amounts. 3.        The DEAL.RATE is defaulted from the mid-rate +/- the           treasury and customer spread defined for the currency           market of the transaction. See DEAL.MARKET in the           TELLER.TRANSACTION file. 4.        If one side is local then this is used as the local amount for           the other side and then the equivalent rate is the same as           the deal rate.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    11 Numeric characters. (Mandatory if account currencies are different. Defaulted from currency file.)</p>
+            <p>    Should be within rate tolerance - override.</p>
+        </desc>
+</t>
+<t>
+<field>CARD.NUMBER</field>
+<desc>
+            <p>Holds the card number that has been used for Debiting the account and shall be populated in the debit side statement entries</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> Should hold a valid CARD.ISSUE record</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DR.DENOM</field>
+<desc>
+            <p>As the DENOMINATION field but for the debit side.</p>
+        </desc>
+</t>
+<t>
+<field>ROUNDING.AMOUNT</field>
+<desc>
+            <p>Specifies the amunt required to round (up or down) the net amount figure to the local cash minimum.</p>
+            <p>    The amount is only calculated if a minimum round amount has been specified in the CURRENCY file and if the net amount is a payment across the local currency cash account.</p>
+            <p>    The rounding amount is debited/credited to the P&amp;L category defined in the TELLER.PARAMETER file.</p>
+            <p>    Eg. Local Cash Minimum set to 0.05</p>
+            <p>    Original Net        Rounding Amount             New Net 501.52cr            0.02cr                     501.50cr 501.54cr            0.01dr                     501.55cr 501.52dr            0.02dr                     501.50dr 501.54dr            0.01cr                     501.55dr</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    (No-input)</p>
+        </desc>
+</t>
+<t>
+<field>CHRG.DR.TXN.CDE</field>
+<desc>
+            <p>The Debit transaction code for a given charge. Only relevant on a Multi Line deal.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Must be a valid Debit Transaction code</p>
+        </desc>
+</t>
+<t>
+<field>STMT.NO</field>
+<desc>
+            <p>A number Generated automatically by the system after authorisation which identifies either a statement entry or a category entry in respect of a transaction. After validation but before authorisation, the value 'VAL' will be inserted in this field to indicate that the transaction has been validated successfully but is still waiting authorisation.</p>
+            <p>    After authorisation of a Teller transaction, the system will automatically insert a number into this field and this number may refer to a statement entry or a category entry depending on the value contained in the corresponding multivalue fields. The following examples will illustrate the use of this field.</p>
+            <p>    Example 1:</p>
+            <p>    On the execution date of a transaction there will normally be an entry on a Customer account and the following type of number will be generated at this field:</p>
+            <p>    39.1  STMT.NO ............ 673732684.48           39.2  STMT.NO ............ 1</p>
+            <p>    The number automatically generated in field 39.1 is unique to the transaction in question and is built in the following way:</p>
+            <p>    1.        The first four digits '6737' indicate the number of days           since the 1st of January 1968. In our example, it           corresponds to the 11th of June 1986.</p>
+            <p>    2.        The next five digits '32684' indicate the number of seconds           since midnight. In our example, it corresponds to an entry           generated on line at 09:04:44 AM.</p>
+            <p>    3.        The last two digits '48' indicate the number of hundreds of           seconds.</p>
+            <p>    The value assigned (again automatically) to field 39.2 identifies the number in 39.1 as a statement entry number. If the User wishes to call this statement entry record on to the screen the User will invoke the STMT.ENTRY Application and the type the following at 'Awaiting ID' :-</p>
+            <p>    673732684.480001</p>
+            <p>    where the suffix '0001' identifies it as the first statement entry (there will normally be more than one as the next example will illustrate).</p>
+            <p>    Example 2:</p>
+            <p>    A second example outlined here is similar to that in example 1, in that there is a statement entry on value date for both the our account and the customer account. The system handles this case as follows:</p>
+            <p>    39.1  STMT.NO .......... 673732684.48                 39.2  STMT.NO .......... 1-2</p>
+            <p>    Once again field 39.1 contains the identification number automatically generated by the system while field 39.2 now contains two separate numbers signifying that there are infact two separate statement entries, one in respect of the our account pay and one in respect of the our account receive. If the User wishes to see either of these he must first of all invoke STMT.ENTRY followed by the desired function and then at 'Awaiting ID' type EITHER:</p>
+            <p>    673732684.480001</p>
+            <p>    where the addition of the suffix '0001' identifies the statement entry in respect of the our account OR</p>
+            <p>    673732684.480002</p>
+            <p>    where the addition of the suffix '0002' identifies the statement entry in respect of the customer account.</p>
+            <p>    Example 3:</p>
+            <p>    A third example might be that of a category entry generated at initiation of a transaction where commission or charges have been debited to the customer and credited to a profit and loss category code. In this case the following entries are generated on the transaction:</p>
+            <p>    39.1  STMT.NO .......... 673732684.48                 39.3  STMT.NO .......... 1</p>
+            <p>    Once again the standard type number is generated and inserted at field 39.1</p>
+            <p>    Now, however, field 39.2 is replaced by field 39.3 which now identifies the number in 39.1 as a category entry and not a statement entry.</p>
+            <p>    To call this category entry record onto the screen the User must now type:</p>
+            <p>    CATEG.ENTRY at 'Awaiting Application'</p>
+            <p>    followed by:</p>
+            <p>    673732684.480001 at 'Awaiting ID'.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Internal Multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>EXP.SPT.AMT</field>
+<desc>
+            <p>TELLER</p>
+            <p>    EXP. SPT. AMT</p>
+            <p>    This field will be updated with the relative amount based on the exposure conditions.</p>
+            <p>    This is an associated multi-value field and depending on the exposure ladder this field will be multi-valued.</p>
+            <p>    To illustrate</p>
+            <p>    If the T24 date is 10.12.2003 and the exposure ladder is defined as 02Days 20% and 04Days 30% for an amount of say 100000 USD</p>
+            <p>    Then in this case - the exposure ladder will be multi-valued three times and the EXP. SPT. AMT  field will be updated with 50000, 20000 and 30000.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Field can be input with amount.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY.1</field>
+<desc>
+            <p>Specifies the Currency code for the side 1 entry.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    3 Alpha characters. (Mandatory - defaults to local)</p>
+            <p>    Will be validated against VALID.CURRENCIES in TELLER.TRANSACTION.</p>
+            <p>    Must be the same as the currency of ACCOUNT.1.</p>
+            <p>    Must be valid entry on the CURRENCY file.</p>
+            <p>    If side 2 is a foreign ccy PL category then side 1 ccy should be of the same ccy.</p>
+        </desc>
+</t>
+<t>
+<field>TELLER.ID.1</field>
+<desc>
+            <p>For side 1 of the TELLER deal there may be a requirement to use an Internal Account for Cash or Clearing. Where the Account is specific to one TELLER then the value here will be used.</p>
+            <p>    For example in transfering cash from one Till to another this field would contain the TELLER.ID of one of the Tills, the other Till would appear in the field TELLER.ID.2.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Mandatory Input. 4 Numeric characters. (Defaults to         current signed on teller)</p>
+            <p>    Must be current signed on Teller unless the transaction         is a Teller transfer.</p>
+            <p>    Teller id must be open (unless it's the vault) to perform         transfers.</p>
+            <p>    Must be a valid entry on the TELLER.ID file.</p>
+        </desc>
+</t>
+<t>
+<field>DENOMINATION</field>
+<desc>
+            <p>Specifies the denomination to be used for paying out cash.</p>
+            <p>    Defaulted on entry of transaction amount. It will contain all the denominations defined for the credit side currency in the TELLER.DENOMINATION file.</p>
+            <p>    All multivalue with zero units are removed at authorisation.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    12    Alphanumeric (No-input)</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE.2</field>
+<desc>
+            <p>Defines the date when the entry is to be given value for interest purposes.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    11 Date type characters</p>
+            <p>    Should be a working day between the back value and forward value minimum - Over-Ride.</p>
+            <p>    Cannot be earlier than the back value maximum or later than the forward value maximum.</p>
+            <p>    Mandatory for customer account entries - defaulted from the TRANSACTION defined on the TELLER.TRANSACTION record. Noinput for internal accounts.</p>
+        </desc>
+</t>
+<t>
+<field>TRUST.CUSTOMER</field>
+<desc>
+            <p>Indicates the customer to whom the stock is sold in trust.</p>
+            <p>    This will be used to flag the stock as being held in trust by the TRUST.CUSTOMER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Must be a valid CUSTOMER.</p>
+        </desc>
+</t>
+<t>
+<field>ISSUE.CHEQUE.TYPE</field>
+<desc>
+            <p>This field determines the CHEQUE.TYPE for an Internal Draft.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Allows a valid record from CHEQUE.TYPE table.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.1</field>
+<desc>
+            <p>Specifies the account to which the side 1 amount will be posted.</p>
+            <p>    Defaulted from TELLER. TRANSACTION. Internal accounts are defaulted from CAT.DEPT.CODE.1 on the TELLER.TRANSACTION file and the currency code. If no dept. code is specified then the teller id is used.</p>
+            <p>    P&amp;L categories are defaulted from the CAT.DEPT.CODE.1 on the TELLER. TRANSACTION file. If a department code is specified then this will be used in the ACCOUNT. OFFICER field of the entry.</p>
+            <p />
+            <p />
+            <p>    From the release G14.1.00, this field can be multi-valued AND can be input with more than one account. The fields ACCOUNT.1, AMOUNT.LOCAL.1, AMOUNT.FCY.1 and NARRATIVE.1 are associated fields and whenever this field is multi-valued these associated fields also get multi-valued and need to be input accordingly.</p>
+            <p />
+            <p>    However, the accounts inputs and its currency should be same.</p>
+            <p>    In a multivalued teller transaction , the accounts in the multi value set should not contain STOCK.CONTROL.TYPE set as it is not possible to update stocks</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Customer account Internal account P &amp; L category (Mandatory         Input)</p>
+            <p>    Will be validated against VALID.ACCOUNTS.1 in the TELLER. TRANSACTION         file. This can be defined as Internal, Customer, P&amp;L         category or Any</p>
+            <p>    Must be a valid entry on the ACCOUNT file (unless it is a         p&amp;l category or new internal account).</p>
+            <p>    P&amp;L categories must be entered in the format         PLnnnnnXXXX where nnnnn is a valid category in the range         60000 - 69999 and XXXX is an optional DEPT.ACCT.OFFICER         code.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.2</field>
+<desc>
+            <p>Specifies the account to which the side 2 amount will be posted.</p>
+            <p>    Defaulted from TELLER.TRANSACTION. Internal accounts are defaulted from CAT.DEPT.CODE.2 on the TELLER.TRANSACTION file and the currency code. If no dept. code is specified then the teller id is used.</p>
+            <p>    P&amp;L categories are defaulted from the CAT.DEPT.CODE.1 on the TELLER.TRANSACTION file. If a department code is specified then this will be used in the ACCOUNT.OFFICER field of the entry.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    Customer account Internal account P &amp; L category (Mandatory         Input)</p>
+            <p>    Will be validated against VALID.ACCOUNTS.2 in the TELLER.TRANSACTION         file. This can be defined as Internal, Customer, P&amp;L         category or Any</p>
+            <p>    Must be a valid entry on the ACCOUNT file (unless it is a         p&amp;l category or new internal account).</p>
+            <p>    P&amp;L categories must be entered in the format         PLnnnnnXXXX where nnnnn is a valid category in the range         60000 - 69999 and XXXX is an optional DEPT.ACCT.OFFICER         code.</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT.DEPOSITED</field>
+<desc>
+            <p>The cash amount paid by the customer can be entered in this field.</p>
+            <p>    This amount represents the amount received from the customer.  With an autocash interface installed this amount will be used in calculating the change to be paid to the customer.  The denomination units will also be defaulted based on the change rather than the net amount.</p>
+            <p>    Eg.  Customer wishes to deposit 400CHF into his account and offers a 500CHF note.  400 would be entered in AMOUNT.LOCAL.1, as the amount to be credited to his account, 500 would be entered into AMOUNT.DEPOSITED and the change to be paid by the autocash dispenser (if installed) is calculated at 100CHF.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    18 numeric characters (Optional)</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT.FCY.1</field>
+<desc>
+            <p>Specifies the foreign currency amount to be posted to side 1.</p>
+            <p>    Input not allowed if the side 1 account is local.</p>
+            <p>    From 14.1.00 release this field is part of the associated multi valued fields</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>    18 Numeric characters. (Mandatory Input)</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

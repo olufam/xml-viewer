@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>CR</product>
+<table>CR.OPPORTUNITY.DEFINITION</table>
+</header>
+<overview>
+<ovdesc>
+
+ 
+ CR
+ CR.OPPORTUNITY.DEFINITION
+ CR.OPPORTUNITY.DEFINITION
+ 
+ 
+ 
+ This function was previously embedded in the CAMPAIGN.DEFINITION table and has been removed to make the process more generic.
+ 
+ The Opportunity Template contains the rules to determine whether an opportunity should be generated for a customer or group of customers. As part of the processing, 
+ which may be looped to test against multiple customers, this record is called for a particular customer, to either generate a customer-specific Opportunity record or fail 
+ the opportunity for this customer and therefore produce no record :
+ 
+ Much of the information on the template will be copied over to the opportunity itself if a customer is found to match the requirements of the template.
+ 
+ 
+ 
+</ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>PROB.RULE</field>
+<desc>
+
+ <p>Phase 2 Enhancement. Reserved for future use.</p>
+ 
+</desc>
+</t>
+<t>
+<field>VALUE.RULE</field>
+<desc>
+
+ <p>Phase 2 Enhancement. Reserved for future use.</p>
+ 
+</desc>
+</t>
+<t>
+<field>PRODUCT</field>
+<desc>
+        <p>
+ Product that this opportunity relates to. 
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ If AA product is configured then it will accept PRODUCT value. If AA is not available, it will not be possible to enter a value here.
+ If the OPPOR.DEF.ID (ID) field is the same as an AA.PRODUCT record, then the value in this field must also be the same PRODUCT record.
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>OPPOR.CHANNEL</field>
+<desc>
+        <p>
+ Channel(s) through which this opportunity will be communicated. When this template is used to create an opportunity, for outbound communications the system will use one preferred channel which is compatible with customer preferences. However, for an inbound opportunity, multiple channels (as long as they are compatible with the customer’s preferences) may be specified, as we don’t know which method will be used by the customer
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ 
+ Must exist on CHANNEL table.
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>SHORT.DESC</field>
+<desc>
+
+ <p>Short Discription that is used for enrichment</p>
+ 
+</desc>
+</t>
+<t>
+<field>TRIGGER.STATUS</field>
+<desc>
+        <p>
+ Field to indicate status code of the Opportunity which, when reached, should initiate the Origination Process.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 
+ Input must exist on CR.OPPORTUNITY.STATUS
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>OFS.VERSION</field>
+<desc>
+        <p>
+ Version of PW.PROCESS application. This will be used to create Process Workflow through OFS
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 
+ Input must a version of PW.PROCESS
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>OPPOR.DEF.ID</field>
+<desc>
+        <p>
+ ID of Opportunity definition template.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 
+ Allowed input is alpha numeric, and can be any value. However, if the input is either an AA.PRODUCT or an AA.PRODUCT.GROUP (with suffix -GROUP) then this indicates that 
+ the opportunity definition is the 'default' definition for that PRODUCT/PRODUCT.GROUP. This will enable automatic defaulting into the OPPORTUNITY record when this PRODUCT or 
+ PRODUCT.GROUP is specified. From the point of view of the CR.OPPORTUNITY.DEFINTION validation, if the ID is the same as an AA.PRODUCT record, then the same value must be placed in
+ to the PRODUCT field. If the ID (without suffix -GROUP) is the same as an AA.PRODUCT.GROUP record, then this value will be placed into the PRODUCT.GRP field. If the ID does not link 
+ to either PRODUCT or PRODUCT.GROUP, then one of PRODUCT, PRODUCT.GRP or CATEGORY would have to be manually specified.
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>RT.START.DATE</field>
+<desc>
+<p>Date from when a particular opportunity will be available to a customer.</p>
+ 
+</desc>
+</t>
+<t>
+<field>ORIG.PROCESS</field>
+<desc>
+
+  <p>Process that will be initiated if the opportunity to be generated is taken up by the customer.</p>
+ 
+ Validation Rule:
+ 
+ Must exist on PW.PROCESS.DEFINITION table
+ 
+</desc>
+</t>
+<t>
+<field>OPPOR.WORKFLOW</field>
+<desc>
+        <p>
+ The workflow that will be used, in conjunction with the channel. The opportunity will employ different workflows for each channel used. 
+ An opportunity workflow can be appended to both an inbound and an outbound communication. However, only an outbound communication will automatically generate a PW Process. 
+ An inbound opportunity will generate an outbound opportunity if the customer indicates that they are interested in the opportunity.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ 
+ Must exist on PW Process table.
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>QUAL.RULE</field>
+<desc>
+        <p>
+ Rule(s) to be applied applied, using contexts as specified above, to determine whether the customer qualifies for this opportunity. If this rule is passed, a PW_Process record will be generated to handle the next stage of the process.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ 
+ Must be a valid record on EB.RULES, which will return a ‘True’ or ‘False’ value.
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>RT.DURATION</field>
+<desc>
+        <p>Duration of the days for which a particular opportunity will be available for the customer.
+</p>
+    </desc>
+</t>
+<t>
+<field>COMMUNICATION</field>
+<desc>
+
+  <p>Phase 2 Enhancement.Reserved for future use.</p>
+ 
+</desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+
+  <p>Text description of this template – describe the opportunity being tested for, and any other details to distinguish this opportunity.</p>
+ 
+</desc>
+</t>
+<t>
+<field>DIRECTION</field>
+<desc>
+        <p>
+ Campaigns may only reference Outbound opportunities. Propensities may only reference Inbound opportunities.
+ Indicates whether this is an inbound opportunity, only to be communicated when the customer talks to the bank, or an outbound opportunity, where the bank initiates the communication
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ 
+ Options are : Inbound or Outbound. 
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>OFS.SOURCE</field>
+<desc>
+        <p>
+ OFS source ID that is used to create Process Workflow. 
+ Field FIELD.VAL on OFS.SOURCE record should not be set to YES.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 
+ Must be a valid id on OFS.SOURCE table
+ 
+</p>
+    </desc>
+</t>
+
+
+<t>
+<field>PRODUCT.GRP</field>
+<desc>
+        <p>
+ Product group that this Opportunity relates to.
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 
+ Must be a valid id on AA.PRODUCT.GROUP table.
+ Input Allowed only when PRODUCT or CATEGORY field is null.
+ It will be defaulted as OPPOR.DEF.ID field value if it is a AA.PRODUCT.GROUP Id-GROUP.
+</p>
+    </desc>
+</t>
+
+<t>
+<field>CATEGORY</field>
+<desc>
+        <p>
+ Category that this Opportunity relates to.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 
+ Must be a valid id on CATEGORY table.
+ Input Allowed only when PRODUCT or PRODUCT.GRP field is null and OPPOR.DEF.ID is free text.
+
+</p>
+    </desc>
+</t>
+
+<t>
+<field>DEFAULT.STATUS</field>
+<desc>
+        <p>
+ This will be first status that is set for the opportunity when it is first created,
+ OPPOR.STATUS field on CR.OPPORTUNITY will inherit the value entered on this field.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 
+ Mandatory Input.
+ Must be a valid id on CR.OPPORTUNITY.STATUS table.
+
+</p>
+    </desc>
+</t>
+
+<t>
+<field>REJECT.STATUS</field>
+<desc>
+        <p>
+ Multi value field will hold all the statuses which will be considered as ‘Rejected’ for Opportunity.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 
+ Mandatory Input.
+ Must be a valid id on CR.OPPORTUNITY.STATUS table.
+
+</p>
+    </desc>
+</t>
+
+<t>
+<field>OPP.DURATION</field>
+<desc>
+        <p>
+  This field is used to calculate the End date of the CR.OPPORTUNITY created.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 
+ Mandatory Input.
+ Only a valid period will be allowed for input in this field.
+
+</p>
+    </desc>
+</t>
+</menu>
+</t24help>

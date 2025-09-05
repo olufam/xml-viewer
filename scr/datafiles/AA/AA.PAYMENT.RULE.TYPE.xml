@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>AA</product>
+        <title>Payment rule type</title>
+        <table>AA.PAYMENT.RULE.TYPE</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>The application is used to define the rule for how payment should be split among the Bills/properties. This definition is used in PAYMENT.RULES condition which also defines the order of repayment. </p>
+        </ovdesc>
+    </overview>
+    <menu>
+        <t>
+            <field>BILL.TYPE</field>
+            <desc>
+                <p>Bill Type would be picked from EB.LOOKUP instead of the hard-coded values of PAYMENT, EXPECTED, PR.CHARGE, ACT.CHARGE</p>
+                <p>Note: DEF.CHARGE would also be available</p>
+                <p>However all the options would not be available for this field within this Table, it would not be possible to define INFO as one of the value within this Table. Other user defined values may be given</p>
+                <p/>
+                <p/>
+                <p>Validations:</p>
+                <p>•	Standard lookup field</p>
+                <p>•	Maximum number of characters is restricted to 15</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>CALC.ROUTINE</field>
+            <desc>
+                <p>A local API may be attached to indicate how much should be settled to the UNC balance. This field would only be allowed if the PAYMENT.RULE.TYPE is stated as PAY.IN.ADVANCE. The remaining amount, if any, would behave in the similar way as excess payment and would follow the REMAINDER.ACTIVITY route.</p>
+                <p/>
+                <p>The routine has 3 arguments:</p>
+                <p/>
+                <p>Incoming:</p>
+                <p/>
+                <p>Total Advance Balance - Which indicates the total amount which can be allocated to UNC balance from the total repaid amount</p>
+                <p/>
+                <p>Current Advance amount - which indicates the current balance in UNC balance type</p>
+                <p/>
+                <p>Outgoing:</p>
+                <p/>
+                <p>New Settlement amount - The amount that should be allocated to UNC balance</p>
+                <p/>
+                <p>Validation:</p>
+                <p/>
+                <p>Allowed only if PAYMENT.RULE.TYPE is PAY.IN.ADVANCE.</p>
+                <p>Should be a valid entry in EB.API</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>DESCRIPTION</field>
+            <desc>
+                <p>A sensible description of the rule type.</p>
+            </desc>
+        </t>
+        <t>
+            <field>FWD.BILL.SETTLE</field>
+            <desc>
+                <p>When an early repayment of a bill component has to be included for updating delinquency amount of subsequent bills (as there is no outstanding bill whose delinquency amount could be reduced), this attribute should be configured to YES. It should be noted that this attribute will be meaningful only when the overdue condition has the required setup for delinquency processing.</p>
+                <p/>
+                <p>When the option “YES” is selected, on making an early repayment, the repayment amount will be updated in activity balances.  During subsequent make due processing of any scheduled bill, system will reduce the delinquency amount to the extent of repayment amount. Any ageing processing will continue to happen based on the outstanding delinquency amount. In case the outstanding delinquency amount is 0 or within tolerance, ageing status of the bill will be marked as SETTLED during make due activity of the bill,</p>
+                <p/>
+                <p>When the option is not selected, during early repayment, no details will be captured in activity balances. During subsequent make due processing of any scheduled bill, both the outstanding total amount and outstanding delinquency amount will have the same values.</p>
+                <p/>
+                <p>Allowed Options - YES or Null</p>
+            </desc>
+        </t>
+        <t>
+            <field>PAYMENT.METHOD</field>
+            <desc>
+                <p>Indicates the Payment is Due from the Customer or is it Payable to the customer. </p>
+                <p/>
+                <p>ALLOWED OPTIONS - DUE, PAY </p>
+                <p>Mandatory field</p>
+                <p>Cannot be modified after authorisation</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PAYMENT.RULE</field>
+            <desc>
+                <p>The Id to the Payment rule type. User may define their own rule types. Temenos releases 3 rule types:</p>
+                <p/>
+                <p>BILL.DATE</p>
+                <p>BILL.PROPERTY</p>
+                <p>CURRENT</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PAYMENT.RULE.TYPE</field>
+            <desc>
+                <p>This field is used to specify how the payment rules will apply to an arrangement.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>This can have any of the below five options.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>Current: Payment will be applied on arrangement's current balances. (e.g. current principal, accrued interest, etc.). This will settle the current balances and doesn’t look at application order. Input to application order will not be allowed for Current Balance repayments.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>Bill Property: For product with bills and due amounts, payment to the due amounts will be Property wise(e.g. all Principal amounts followed by all Interest amounts, etc.) </p>
+                <p/>
+                <p/>
+                <p/>
+                <p>Bill Date: For product with bills and due amounts, payment to the due amounts will be bill date wise (e.g., all amount on bill 1 followed by all amounts of bill 2, etc.). </p>
+                <p/>
+                <p/>
+                <p/>
+                <p>Pay.In.Advance : Indicates the amount should go into the UNC balance.</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>Advance: If chosen, the payment amount will be applied only on the current balances of Interest, account properties and advance due balances for the charge properties</p>
+                <p> During this settlement, System will raise future bills in advance and these bills will either be in "SETTLED" or "ADVANCED" status.</p>
+                <p> Advance field should be set only for the "Payment" Bill types and valid only for the "DUE" Payment method.</p>
+                <p> Valid for future schedules if the properties belong to the system calculated payment types CONSTANT, PROGRESSIVE and ACTUAL/OTHER (Any charges).</p>
+                <p> Also valid for any bills in Issued status(even for LINEAR/INTEREST.ONLY type). Otherwise, the definition will be void and the repayment amount will be passed to the remainder activity.</p>
+            </desc>
+        </t>
+        <t>
+            <field>VD.CALC.API</field>
+        </t>
+    </menu>
+</t24help>

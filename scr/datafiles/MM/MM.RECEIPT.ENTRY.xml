@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>MM</product>
+<table>MM.RECEIPT.ENTRY</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The Receipt Entry is an on-line application whereby the user instructs the system to process a receipt for a Money Market contract. </p>
+            <p>This application is only available for Asset Type contracts, that is, Placement (excluding Fiduciary Placements) Loans and Account Receivable and should be used when funds are to be received on any date other than the normal sheduled action due dates defined on a transaction.  Money Market contracts are always liquidated automatically on scheduled due dates and so it only makes sense to use this application PRIOR to the due dates to register for example, a prepayment of principal. </p>
+            <p>In the Commercial Loans Application the user has a choice on whether or not contracts should be liquidated automatically on due dates and so, for loans loaded with manual liquidation, this function can also be used to acknowledge receipts AFTER due dates. </p>
+            <p>Following validation/authorisation all necessary files are updated, accounting/limit entries are passed and the delivery system is called to send an appropriate advice/confirmation where necessary. </p>
+            <p>It must be noted that once a receipt entry has been authorised, it cannot be changed.  Any error will need to be corrected by the Reversal of the receipt entry and a new input with the correct information.  Only the last entry receipt can be reversed. </p>
+            <p>This application will not allow the processing of receipt entries for contracts which have been defined with the INTEREST BASIS equal to 'S'. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>PRINCIPAL.OUTS</field>
+<desc>
+            <p>Specifies the amount of principal outstanding on an Asset type contract as of the Run date. </p>
+            <p>This field displays the amount of principal outstanding on a contract as of the Run date. </p>
+            <p>In the Money Market application, this field represents the amount of principal which will be automatically liquidated by the system on the MATURITY DATE  if no manual receipt is entered into the system.  Any possible previous receipt of principal will have been taken into account. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (standard amount format) characters plus a decimal point. This is a no input field. The system will automatically insert the outstanding principal amount by referring to the contract.</p>
+        </desc>
+</t>
+<t>
+<field>INT.CCY</field>
+<desc>
+            <p>Indicates the currency in which interest is to be paid/accrued for this contract. </p>
+            <p>This field will automatically be defaulted to field 82 INT.CCY on the MM.MONEY.MARKET file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 type SSS (uppercase alpha) characters. This is a no input field as the system will automatically default to the interest currency of the contract.</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.RECEIVED</field>
+<desc>
+            <p>Identifies the amount of interest that is being received. </p>
+            <p>The User will employ this field to specify that amount which is to be received on the contract as an interest amount. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (standard amount format) characters plus a decimal point. Mandatory input if INT RECEIPT CODE = 'Y'; Otherwise not allowed.</p>
+            <p>The interest amount input in this field plus the principal amount input in PRINCIPAL RECEIVED (Field 6) must be equal to the TRANSACTION AMOUNT (Field 3).</p>
+            <p>The interest amount input in this field cannot be greater than the 'TOT INTEREST AMT' as shown in the contract.</p>
+        </desc>
+</t>
+<t>
+<field>PRIN.ACCT.NO</field>
+<desc>
+            <p>This is the number of the account where the principal receipt is to be debited. </p>
+            <p>The User may identify the source of the principal receipt by using this field to insert an account number which may relate to a customer account, a nostro account or an internal account. </p>
+            <p>When the receipt entry record is first displayed on the screen after having been identified by the contract number, the system will have already inserted the principal liquidation account number from the original contract at this field.  If the User wishes to define a different account from that specified on the contract then he simply overwrites the default account number with the required account number. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Account Format. Optional input.  The system will automatically display the principal liquidation account as defined in the principal liquidation account field on the contract. If no other input is done by the User, this account will be automatically debited with the amount entered in PRINCIPAL RECEIVED.</p>
+            <p>Any inactive account will request an override.</p>
+            <p>Any account with posting restrictions will request an override.</p>
+            <p>If the amount entered in PRINCIPAL RECEIVED is greater than the balance of this account, an overdraft message will appear and an override will be required.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.AMT.RECEIVED</field>
+<desc>
+            <p>This is the sum of all those individual amounts entered by the User in the Receipt Entry. </p>
+            <p>This is a no input field.  The system will automatically total the individual amounts entered by the User on the receipt entry record, and will then insert the total amount to be paid at this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (standard amount format) characters plus a decimal point. This is a no input field.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.5</field>
+<desc>
+            <p>Reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>PRIN.RECEIPT.CODE</field>
+<desc>
+            <p>The User will specify here whether or not a principal amount is to be received. </p>
+            <p>If part, or all, of the amount inserted at field 3 - TRANSACTION AMOUNT - is in respect of principal, then the User should insert 'Y' at this field to instruct the system that a receipt of principal amount is to be executed.  Conversely, if none of the amount identified in field 3 corresponds to principal then the User should insert 'N' here thus instructing the system that no principal amount is to be received.  In the absence of any input by the User in this field the system will automatically default at validation as follows: </p>
+            <p>(i)        'N' if an amount is not entered in field 6 (PRINCIPAL            RECEIVED). </p>
+            <p>(ii)       'Y' if an amount is entered in field 6 (PRINCIPAL            RECEIVED). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The following values will be accepted: 'Y' :A principal receipt is being made. 'N' :The current transaction does not include receipt of principal amount.  It concerns a receipt of Interest only. (Optional input;  Default value = 'N').</p>
+            <p>Input of 'N' will not be allowed unless the next field (PRINCIPAL RECEIVED) has a value.</p>
+            <p>Input of 'Y' will not be allowed unless the next field (PRINCIPAL RECEIVED) does not have a value.</p>
+        </desc>
+</t>
+<t>
+<field>CUST.REMARKS</field>
+<desc>
+            <p>This field is for User/Counterparty information purposes and will contain any specific notes or text that you want to include on any advice sent to your customer. </p>
+            <p>This multivalue field will allow specific text or set of remarks to be included on any advice that is sent to the customer. </p>
+            <p>Note:      The MM.RECEIPT.ENTRY Application only produces            2 advices: </p>
+            <p>           .    One advice resulting from the activity code                 1050 i.e. Early Liquidation, </p>
+            <p>           .    One customer remarks advice if input has                 been done in this field and the ALONE MERGE                 IND is equal to 'A' (lone).  This advice is                 produced by the activity code 2080. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>35 type A (alphanumeric) characters for free format text. Multivalue field (maximum of 4 lines).</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.OUTS</field>
+<desc>
+            <p>Specifies the amount of interest to be received on a Loan or Placement contract on the MATURITY DATE (fixed maturity date contracts) or the next INT DUE DATE (Call/Notice contracts). </p>
+            <p>In the Money Market application, this field represents the amount of Interest which will be automatically liquidated by the system on the MATURITY DATE (fixed maturity date contracts) or the next INT DUE DATE (Call/Notice contracts) if no manual receipt is entered into the system. Any possible previous receipt of interest will have been taken into account. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (standard amount format) characters plus a decimal point. This is a no input field.  The system will automatically insert the interest amount due for the particular contract.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.4</field>
+<desc>
+            <p>Reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>PRIN.RECEIVED</field>
+<desc>
+            <p>Identifies the amount of principal that is being received. </p>
+            <p>The User will employ this field to specify that amount which is to be received on the contract as a principal amount. </p>
+            <p>Note:      It is obvious that any principal receipt with a VALUE            DATE smaller than the contract MATURITY DATE or            the next INT DUE DATE will have an effect on the            interest amount of the transaction which will be            recalculated to take into account this repayment of            principal. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (standard amount format) characters plus a decimal point. Mandatory Input if PRIN RECEIPT CODE = 'Y'; Otherwise not allowed.</p>
+            <p>The amount inserted at this field must not exceed the total amount of principal outstanding on the contract whether that amount is due or not.</p>
+            <p>The principal amount input in this field plus the interest amount input in INTEREST RECEIVED (Field 10) must be equal to the TRANSACTION AMOUNT (Field 3).</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.AMNT.OUTS</field>
+<desc>
+            <p>This is the total amount outstanding on the contract in respect of principal and interest. </p>
+            <p>This is a no input field as the system will have calculated automatically each individual amount due in respect of principal and interest and will have produced automatically a total which it will insert at this field.  This field will be the sum of PRINCIPAL OUTS (Field 4) and INTEREST OUTS (Field 8). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (standard amount format) characters plus a decimal point. This is a no input field.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDES</field>
+<desc>
+            <p>Contains all the overrides messages which the User agreed to during input. </p>
+            <p>During the validation stage of of a receipt entry record the system may provide the User with a series of screen override messages to indicate an anomaly, for example that the value date of the proposed receipt is not a working day. </p>
+            <p>In the event that the User confirms the override the full text of the actual override message will be stored, for reference purposes only, in this multivalue field. </p>
+            <p>If, subsequently, the receipt entry record is either fully displayed on the screen or printed, then all override messages will be present.  Thus if a more senior officer wishes to authorise data which has been input his attention will be drawn immediately to any unusual aspects of the deal which will be reflected in these override messages. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>TRANSACTION.AMOUNT</field>
+<desc>
+            <p>Contains the total amount of all receipts to be executed on the contract on the given value date identified in the previous field. </p>
+            <p>Any receipt or receipts made on the contract on a given value date will fall into one of the following classifications: </p>
+            <p>             i) Principal             ii) Interest            iii) Principal and Interest </p>
+            <p>No matter how the receipt amounts are distributed among these two classifications on the contract in question the total amount to which the individual amounts add up must be entered at this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (standard amount format) characters plus a decimal point. Mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.3</field>
+<desc>
+            <p>Reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.1</field>
+<desc>
+            <p>Reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.2</field>
+<desc>
+            <p>Reserved for future use. </p>
+        </desc>
+</t>
+<t>
+<field>STMT.NO</field>
+<desc>
+            <p>A number generated automatically by the system which identifies a statement entry in respect of the receipt being processed. </p>
+            <p>The system will automatically insert a number into this field which will correspond to the statement entry generated by the receipt being processed.  It must be noted that the MM.RECEIPT. ENTRY facility will never generate a CATEG.ENTRY for Money Market transactions. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>INT.RECEIPT.CODE</field>
+<desc>
+            <p>The User will specify here whether or not an interest amount is to be received. </p>
+            <p>If part, or all, of the amount inserted at field 3 - TRANSACTION AMOUNT - is in respect of interest, then the User should insert 'Y' at this field to instruct the system that a receipt of interest amount is to be executed.  Conversely, if none of the amount identified in field 3 corresponds to interest then the User should insert 'N' here thus instructing the system that no interest amount is to be received.  In the absence of any input by the User the system will automatically default at validation as follows: </p>
+            <p>(i)        'N' if an amount is not entered in field 10 (INTEREST            RECEIVED). </p>
+            <p>(II)       'Y' if an amount is entered in field 10 (INTEREST            RECEIVED). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The following values will be accepted: 'Y' :An Interest receipt is being made. 'N' :The current transaction does not include receipt of interest amount.  It concerns a receipt of Principal only. (Optional input;  Default value = 'N').</p>
+            <p>Input of 'N' will not be allowed unless the next field (INTEREST RECEIVED) has a value.</p>
+            <p>Input of 'Y' will not be allowed when the next field (INTEST RECEIVED) does not have a value.</p>
+        </desc>
+</t>
+<t>
+<field>TIME.DATE.STAMP</field>
+<desc>
+            <p>Confirmation that receipt entry details have been passed over (where necessary) to the E.B.S. Delivery Module for onward communication to the counterparty. </p>
+            <p>The Money Market's call to the T24 Delivery Module is acknowledged by the latter sending back the ID that it has generated for the message. This ID takes the following form: </p>
+            <p>           D19860409-392226 </p>
+            <p>where D means a message is to be delivered, 1986 is the year, 04 is the month, 09 is the day and then the code 392226 is the number of hundred of seconds since Midnight on that day. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Internal field.  Input is automatically generated by the system and consists of delivered marker in conjunction with a date and time stamp.</p>
+        </desc>
+</t>
+<t>
+<field>OUR.REMARKS</field>
+<desc>
+            <p>This field is for in-house User information purposes only and will only contain relevant comments about the contract or customer.  Such remarks will never be printed on any external document. </p>
+            <p>These remarks are purely for internal use and will not be the subject of any output despatched by the bank, either as telegraphic or printed matter. </p>
+            <p>The main purpose of the field is to maintain a record of special instructions or restrictions which apply to the receipt entry or the placement contract to which it corresponds such as the name and telephone extension number of the person dealing with the subject etc... </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>35 type A (alphanumeric) characters for free format text. Multivalue field (maximum of 15 lines).</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>Contains the value date applicable to the receipt entry. </p>
+            <p>This field is where the User will specify the value date of the receipt amount to be made on the contract.  In the absence of input by the User the system will default to the Run date. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 9 type D (date format in the range 1950 - 2049) characters. Optional input. Default value = Run date.</p>
+            <p>The date entered must be greater than or equal to the value date of the contract.</p>
+            <p>The date entered here must not exceed the RUN date i.e. input of a forward value date receipt will not be allowed.</p>
+            <p>Any back-value date inserted here must be greater than or equal to the value date of the last receipt.</p>
+            <p>Any back-value date inserted here must be greater than the last increase date of principal on the contract.</p>
+            <p>Any back-value inserted in this field must be equal to or greater than the start date of the current interest period.</p>
+        </desc>
+</t>
+<t>
+<field>INT.ACCT.NO</field>
+<desc>
+            <p>This is the number of the account where the interest receipt is to be debited. </p>
+            <p>The User may identify the source of the interest receipt by using this field to insert an account number which may relate to a customer account, a nostro account or an internal account. </p>
+            <p>When the receipt entry record is first displayed on the screen after having been identified by the contract number, the system will have already inserted the interest liquidation account number from the original contract at this field.  If the User wishes to define a different account from that specified on the contract then he simply overwrites the default account number with the required account number. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Account Format. Optional input.  The system will automatically display the interest liquidation account as defined in the interest liquidation account field on the contract.  If no other input is done by the User, this account will be automatically debited with the amount entered in INTEREST RECEIVED.</p>
+            <p>Any inactive account will request an override.</p>
+            <p>Any account with posting restrictions will request an override.</p>
+            <p>If the amount entered in INTEREST RECEIVED is greater than the balance of this account, an overdraft message will appear and an override will be required.</p>
+        </desc>
+</t>
+<t>
+<field>ACTIVITY</field>
+<desc>
+            <p>Each advice related activity within the Money Market and Loans and Deposits Modules is identified by a numeric code which is hard-coded within the program.  The appropriate code is automatically inserted at this field by the system. </p>
+            <p>This field is linked to the LMM.ACIVITY file which is a list of advice related activities used by the Money Market Module. </p>
+            <p>Each activity has been assigned a numeric code all of which are themselves hard-coded in the program.  These codes/activities must be loaded by the User in the LMM.ACTIVITY file. </p>
+            <p>These codes are transparent to the User except in the LMM.ACTIVITY and LMM.ADVICES tables, i.e. the system recognises when an event occurs.  Thus the field would contain an advice related activity code that may have been passed to the E.B.S. Delivery Module as a result of the receipt entry in question. </p>
+            <p>The field is multi-value to allow for multiple entries. </p>
+            <p>The only activity codes generated by the MM.RECEIPT. ENTRY are: </p>
+            <p>           1050 = Early Liquidation            2080 = Separate Customer Remarks advice </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4 digit numeric code.  Internal field. This is a no input field.</p>
+        </desc>
+</t>
+<t>
+<field>ALONE.MERGE.IND</field>
+<desc>
+            <p>Specifies whether the information contained in CUST REMARKS (Field 14.1) is to be sent as part of any standard advice/confirmation or whether it is to be sent as a separate communication. </p>
+            <p>The inclusion of this field allows the User additional flexibility in respect of communication of text to the counterparty. Two values are defined for this field. </p>
+            <p>(1)        Input of 'A' will mean that any text inserted at the            previous field will be sent to the counterparty as an            entirely separate communication i.e. the advice            generated according to the activity code 2080. </p>
+            <p>(2)        Input of 'M' will mean that any text inserted at the            previous field will be included on any standard form            of confirmation/advice that would normally have been            sent in connection with the receipt entry record in            question i.e. the advice generated according to the            activity code 1050. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Single character input.  The only input allowed is A (alone) or M (merge). Optional Input; Default value = 'M'</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.NO.</field>
+<desc>
+            <p>This field represents the reference number which uniquely identifies a particular contract. </p>
+            <p>When a User wishes to execute a receipt entry on an existing contract then he must identify that contract at this field by input of the contract ID.   When the receipt entry input screen is displayed, a 2 digit participant number will be added to the ID. In the Money Market Application, this number will always be '00'. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The contract number is a 10 digit number  in the following format:- YY  DDD  99999 where:- YY    = Current Year DDD    = Julian Day 99999    = Sequence Number</p>
+            <p>If the contract is subject to SPECIAL interest conditions, i.e. INTEREST BASIS method 'S' is employed, then it cannot be processed by MM.RECEIPT.ENTRY.</p>
+            <p>If the contract is a deposit or the placement side of a fiduciary depost, then it cannot be processed by MM.RECEIPT.ENTRY.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY.CODE</field>
+<desc>
+            <p>Indicates the currency of the contract. </p>
+            <p>This field indicates the currency of the contract and, in the Money Market Module, will be the same as the currency of the various accounts where any accounting movements in respect of the contract will be debited or credited. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 type SSS (uppercase alpha) characters. This is a no input field as the system will automatically default to the currency of the contract.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

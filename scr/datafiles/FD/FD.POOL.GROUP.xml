@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FD</product>
+<table>FD.POOL.GROUP</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This file holds the details of the fiduciary pooling groups, and there is one record for each pooling group. </p>
+            <p>This record holds details such as the currency, value date and maturity date of the group as well as the total amount and the group status. </p>
+            <p>For each order in the group, details of the amount of the order and that orders status are held. </p>
+            <p>The placement transaction reference number (when this is relevant) is also held on this record. </p>
+            <p>Refer to helptext for the FD.FID.ORDER application for details on the pooling process. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>The value date of the pool group is held in this field and corresponds to the value date of the placement. </p>
+            <p>In the case of NOTICE contracts where it is possible to pool orders into an existing placement contract this field holds the value date of the original orders which made the placement - i.e. the value date of the original placement. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 date field. 11 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>GROUP.NO</field>
+<desc>
+            <p>This is the key to the records on this file and is used to uniquely identify each record on the file. The group number consists of a five numeric digit Julian date followed by a five digit sequence number. </p>
+            <p>This group number is automatically assigned by the FIDUCIARY application and is referenced on both the FD.FID.ORDER records and on the FD.FIDUCIARY records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>10 numeric characters. Five character Julian date followed by a five character sequence number.</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.AMT</field>
+<desc>
+            <p>This fields holds the principal of the FD.FID.ORDER record which is referenced in the related field ORDER.NO </p>
+            <p>Fields ORDER.NO to DEALER.NOTES form a related multi value set. </p>
+        </desc>
+</t>
+<t>
+<field>POOLING.FIELDS</field>
+<desc>
+            <p>Fields POOLING.FIELDS to EVAL.POOL.FLDS form a related multi value set. Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 25 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.STATUS</field>
+<desc>
+            <p>The status of the related FD.FID.ORDER contract referenced in the related field ORDER.NO is held in this field. The following values will be used: </p>
+            <p>OPEN ==== The order is currently open and awaiting approval by the dealer. </p>
+            <p>APPROVED ======== The order has been approved by the dealer. </p>
+            <p>EXIST APPROVED ============== When an order has this status, the order has been added to this pool group after the placement has been created and the order has been approved by the dealer. However, only when the order is approved on the fiduciary placement will the status of the order be set to APPROVED. </p>
+            <p>Fields ORDER.NO to DEALER.NOTES form a related multi value set. </p>
+        </desc>
+</t>
+<t>
+<field>FIDUCIARY.NO</field>
+<desc>
+            <p>When all of the orders in the pool group have been approved the placement contract will be created. The key to the placement contract is held in this record. </p>
+        </desc>
+</t>
+<t>
+<field>MANUAL</field>
+<desc>
+            <p>If the pooling group was created as a MANUAL pool group this field will contain the value YES, otherwise this field will be set to NO. When this field is set to YES the pool group will not be included in the automatic pooling process. </p>
+        </desc>
+</t>
+<t>
+<field>ORDER.NO</field>
+<desc>
+            <p>This fields holds the transaction reference of the FD.FID.ORDER contract to which the fields ORDER.AMT and ORDER.STATUS refer. </p>
+            <p>Fields ORDER.NO to DEALER.NOTES form a related multi value set. </p>
+        </desc>
+</t>
+<t>
+<field>GROUP.STATUS</field>
+<desc>
+            <p>The status of the pooling group is held in this field and will hold one of the following values: </p>
+            <p>OPEN ==== When all the orders in the pool group are open (i.e. they have not yet been approved) the GROUP.STATUS is set to OPEN. At this stage further orders may be pooled into this group. </p>
+            <p>APPROVED ======== When at least one, but not all, orders have been approved the GROUP.STATUS is set to APPROVED. At this stage further orders may NOT be pooled into this group. </p>
+            <p>CLOSED ====== When all the orders in the group have been approved and the placement record created the GROUP.STATUS is set to CLOSED, and no further orders may be pooled in to this group. </p>
+            <p>EXIST ===== For notice contracts, where it is possible to pool orders into an existing placement (as set in FD.PARAMETER), the GROUP.STATUS is set to EXIST and further orders may be pooled into the group providing the order is not backvalued and that the value date of the order is greater than, or equal to, the value date of the group. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be one of OPEN, APPROVED, CLOSED or EXIST.</p>
+        </desc>
+</t>
+<t>
+<field>MATURITY.DATE</field>
+<desc>
+            <p>The maturity date of the pool group is held in this field. </p>
+            <p>In the case of notice contracts the number of days notice is held in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 date field, 11 numeric characters  OR  Number of days notice.</p>
+        </desc>
+</t>
+<t>
+<field>FURTHER.POOLING</field>
+<desc>
+            <p>This field details whether or not further orders can be pooled into this pool group or not. </p>
+            <p>When this field is set to YES this group record will be referenced on the FD.POOL.GROUP.XREF file and as such further orders may be pooled into the group. </p>
+            <p>When this field is set to NO then this group is not referenced on the FD.POOL.GROUP.XREF file and as such will not be available to the pooling process. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be either YES or NO.</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT</field>
+<desc>
+            <p>The total amount of the pool group is held in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 amount field.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>The currency of the fiduciary pool group is held in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 currency field.</p>
+        </desc>
+</t>
+<t>
+<field>DEALER.NOTES</field>
+<desc>
+            <p>This field holds any special instructions from the dealer for the FD.FID.ORDER detailed in the related field ORDER.NO. </p>
+            <p>Fields ORDER.NO to DEALER.NOTES form a related multi value set. </p>
+        </desc>
+</t>
+<t>
+<field>EVAL.POOL.FLDS</field>
+<desc>
+            <p>Fields POOLING.FIELDS to EVAL.POOL.FLDS form a related multi value set. Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 25 characters may be entered.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>AA</product>
+        <table>AA.ACCOUNT.DETAILS.HIST</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p/>
+            <p>                  This is a central file which gives an overview of the account based arrangement. The information that is stored in this file </p>
+            <p>                 are start date, maturity date, drawdown date, bills generated for a date, status of these bills, payment information, aging status etc.</p>
+            <p/>
+            <p>                  This is a live file and is created when a new arrangement is created. Every activity updates related information in the file. </p>
+        </ovdesc>
+    </overview>
+    <menu>
+        <t>
+            <field>BILL.DATE</field>
+            <desc>
+                <p>This field identifies the bill creation date for the associated bill reference. It can be different from the due date in case BILL.DAYS is specified for the payment type and will always be less or equal to the due date.</p>
+            </desc>
+        </t>
+        <t>
+            <field>BILL.ID</field>
+            <desc>
+                <p>Identifies the unique reference id for the bill.</p>
+            </desc>
+        </t>
+        <t>
+            <field>BILL.PAY.DATE</field>
+            <desc>
+                <p>This field identifies the due date of the bill associated. The deliquent processing starts from this date and not from bill creation date. It also identifies the date from when the payment amounts are due.</p>
+            </desc>
+        </t>
+        <t>
+            <field>BILL.STATUS</field>
+            <desc>
+                <p>This field identifies the status of the bill associated. The status can be,</p>
+                <p/>
+                <p>                1. Issued  The bill is generated and a bill notice is issued to the customer</p>
+                <p>                2. Due       The payments associated with the bill has reached the due date and are due from the customer</p>
+                <p>                3. Age       The payments associated with the bill are overdue and aging process has started, the actual</p>
+                <p>                                   aging status is updated in AGING.STATUS field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>BILL.TYPE</field>
+            <desc>
+                <p>Defaulted to PAYMENT as of now and is reserved for future use.</p>
+            </desc>
+        </t>
+        <t>
+            <field>BILLS.SETTLED.CNT</field>
+            <desc>
+                <p>This field denotes the number of settled bills (Bills with BILL.STATUS = SETTLED and CAPITALISE) and it is used by AA bill processing to trigger archival process. </p>
+                <p>The number of bills to be maintained in live file (AA.ACCOUNT.DETAILS and AA.BILL.DETAILS) has to be mentioned in I_AA.ARCHIVE.COMMON. </p>
+                <p>When the bills settled count breaches twice the threshold value, system will trigger archival process. </p>
+                <p>This count would be incremented for each bill that gets SETTLED or CAPITALISED and would be recalculated if bills are archived.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CANCEL.DATE</field>
+            <desc>
+                <p>The date on which the contract would get cancelled. Linked to the CANCEL.PERIOD stated in TERM.AMOUNT property. When the deposit is not funded/loan is not disbursed before this date, then the arrangement would be automatically cancelled. Would not be populated if CANCEL.PERIOD is not used.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHARGEOFF.BILL.ID</field>
+            <desc>
+                <p> This field will be updated with bill reference which is charged off while triggering the increase charge off activity. </p>
+            </desc>
+        </t>
+        <t>
+            <field>CHARGEOFF.DATE</field>
+            <desc>
+                <p>This field denotes the charge off date of the arrangement. It is updated when user triggers the increase charge off activity.  It will be effective date of activity. </p>
+            </desc>
+        </t>
+        <t>
+            <field>CHARGEOFF.REFERENCE</field>
+            <desc>
+                <p> This field will be updated with activity reference of very first increase charge off activity.  If any due or age bills are charged off further then it will be updated  with Activity reference – Date.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACT.PAY.DATE</field>
+            <desc>
+                <p>This field represent the actual payment date. The payments dates will be calendar days, if the payment date happens to be a holiday. </p>
+                <p/>
+                <p>  Standard T24 date field</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHASER.DATE</field>
+            <desc>
+                <p>This field identifies the date when the next chaser advice is scheduled for the bill associated.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CONTRACT.DATE</field>
+            <desc>
+                <p/>
+                <p>                   This field denotes the date the start date of the arrangement.  This field is updated when a new arrangement is created for the lending product line.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>COOLING.DATE</field>
+            <desc>
+                <p/>
+                <p> Updates the end date of cooling period by adding the COOLING.PERIOD specified in the TERM.AMOUNT property with the first funding date of the arrangement.  Accrued interest will be reversed in case of redemption of the arrangement during the COOLING.PERIOD.  </p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>DEFER.DATE</field>
+            <desc>
+                <p>The date on which customer will see this bill in his statement. This will be normally ‘X’ days after the original cycled date of the Bill. On this date, the actual Make due/Capitalise activity is going to happen for the bill. </p>
+            </desc>
+        </t>
+        <t>
+            <field>DORMANCY.DATE</field>
+            <desc>
+                <p>The date in which the respective dormancy status is marked</p>
+            </desc>
+        </t>
+        <t>
+            <field>DORMANCY.PROCESS</field>
+            <desc>
+                <p>This field represent the current mode of operation of the system with respect to dormancy procesing</p>
+                <p>supported values are AUTO and MANUAL</p>
+            </desc>
+        </t>
+        <t>
+            <field>DORMANCY.STATUS</field>
+            <desc>
+                <p>Multivalued field contains the history of dormancy statuses of the arrangement</p>
+            </desc>
+        </t>
+        <t>
+            <field>DRAWDOWN.END.DATE</field>
+            <desc>
+                <p>Reserved for future use.</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIN.PAY.DATE</field>
+            <desc>
+                <p>This field represents the financial date of the payment. This field represents the value date of the accounting entries raised during the payment.</p>
+                <p>  This date can be cycled forward or backward to the next working day if the payment date falls on a holiday. This depends on the fields DATE.CONVENTION and DATE.ADJUSTMENT in the PAYMENT.SCHEDULE property.</p>
+                <p/>
+                <p>  Standard T24 date field</p>
+            </desc>
+        </t>
+        <t>
+            <field>HOL.PAYMENT.TYPE</field>
+        </t>
+        <t>
+            <field>ACTIVITY.REF</field>
+            <desc>
+                <p>This field holds the Arrangement Activity ID of Issue Bill activity for the arrangement.</p>
+            </desc>
+        </t>
+        <t>
+            <field>HOL.START.DATE</field>
+        </t>
+        <t>
+            <field>HOLIDAY.DATE</field>
+        </t>
+        <t>
+            <field>INTERIM.DATE</field>
+            <desc>
+                <p>This field represents the last interim capitalisation date. Standard T24 date field</p>
+            </desc>
+        </t>
+        <t>
+            <field>LAST.RENEW.DATE</field>
+            <desc>
+                <p/>
+                <p>            This field denotes that when the last renewal was happened. This field is updated when we trigger any Renewal Activities(like ROLLOVER, REST and CHANGE.PRODUCT)</p>
+            </desc>
+        </t>
+        <t>
+            <field>MATURITY.DATE</field>
+            <desc>
+                <p/>
+                <p>                  This field denotes the maturity date of the arrangement. The maturity date is calculated based on start date and the term. In certain cases the maturity date can be defined directly in the TERM,AMOUNT property. This field is updated when a new arrangement is created. It can change when the activity LENDING-CHANGE.TERM-TERM.AMOUNT is triggered on a arrangement to change either the term or maturity date.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>NUM.PAYMENTS</field>
+            <desc>
+                <p>This field identifies the number of times the associated payment has been processed, i.e. crossed payment date / made due. It is used in relation with NUM.PAYMENTS in Payment Schedule property class to identify number of remaining payments to be processed in future for the payment type.</p>
+            </desc>
+        </t>
+        <t>
+            <field>NXT.AGE.DATE</field>
+            <desc>
+                <p>This field identifies the date when the bill would be processed for deliquency as part of Aging activity.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ONLINE.CAPITALISE</field>
+            <desc>
+                <p>This field would get update whenever we set or reset the field  ONLINE.CAPITALISE in PAYMENT.SCHEDULE condition.</p>
+                <p>When this field is set to YES, capitalise bill would be created online as part of online service. </p>
+                <p>However the accounting for the capitalise amount would still be raised during scheduled capitalise activity processing during COB.</p>
+            </desc>
+        </t>
+        <t>
+            <field>OVERDRAFT.STATUS</field>
+        </t>
+        <t>
+            <field>PAY.METHOD</field>
+            <desc>
+                <p>This field identifies the payment method associated for the bill, it is updated as,</p>
+                <p/>
+                <p>               1. DUE - When the associated bill (payments) is made due, i.e. expecting payments</p>
+                <p>               2. CAPITALISE - When the associated bill (payment) is capitalised</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACTUAL.RENEW.DATE</field>
+        </t>
+        <t>
+            <field>PAYMENT.DATE</field>
+            <desc>
+                <p>This field represents the payment date. Standard T24 date field</p>
+            </desc>
+        </t>
+        <t>
+            <field>PAYMENT.END.DATE</field>
+            <desc>
+                <p>The final date on which scheduled payments happen. This is computed from the Payment schedule definition of the frequency and is also governed by the tenor of the contract. Would not be populated if schedules are not involved.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PAYMENT.START.DATE</field>
+            <desc>
+                <p>This field identifies the first payment date for the Arrangement contract based on the definition in Payment Schedule property class.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PRIMARY.OD.DATE</field>
+        </t>
+        <t>
+            <field>RENEWAL.DATE</field>
+            <desc>
+                <p>This field denotes that when the next renewal is going to happened. This field is updated during the New Arrangement(If Change Product Property is attached to the Product)</p>
+            </desc>
+        </t>
+        <t>
+            <field>REPAY.REFERENCE</field>
+            <desc>
+                <p>The field uniquely identifies the repayment references made against the Arrangement contract, it is maintained as the combination of activity reference (Id) and the activity effective date.</p>
+            </desc>
+        </t>
+        <t>
+            <field>REPORT.END.DATE</field>
+            <desc>
+                <p>REPORT.END.DATE</p>
+                <p>This field will be updated by the system in the following order:</p>
+                <p/>
+                <p>1)         If Renewal Date (CHANGE.DATE or converted CHANGE.PERIOD of CHANGE.PRODUCT property class) is present then this value will be used.</p>
+                <p>2)         If MATURITY.DATE is present then this value will be used.</p>
+                <p>3)         If neither of the above then a NULL value will be assigned indicating a call notice contract.</p>
+                <p/>
+                <p>For reporting purpose this field will be utilized in the building of CONSOLIDATE.ASST.LIAB keys.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>RPY.ACTUAL.DATE</field>
+        </t>
+        <t>
+            <field>RPY.BILL.ID</field>
+            <desc>
+                <p>This is an associated field with REPAY.REFERENCE and is updated with the bill references against which any repayment amount has been allocated.</p>
+            </desc>
+        </t>
+        <t>
+            <field>RPY.BILL.ID.BANK</field>
+            <desc>
+                <p>This is an associated field with REPAY.REFERENCE and is updated with the bill references against which any repayment made against BANK amount has been allocated.</p>
+            </desc>
+        </t>
+        <t>
+            <field>AGING.STATUS</field>
+            <desc>
+                <p>This field identifies the deliquent status of the Bill associated. The deliquent status is updated as part of Aging activity and is based on the definition in Overdue property class for overdue bills.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>RPY.REFERENCE</field>
+            <desc>
+                <p>This field is updated with the activity reference of the apply payment activity when repayment done against bill. </p>
+            </desc>
+        </t>
+        <t>
+            <field>SCHEDULE.TYPE</field>
+        </t>
+        <t>
+            <field>SET.STATUS</field>
+            <desc>
+                <p>This field maintains the settlement status of the associated bill, it can be,</p>
+                <p/>
+                <p>              a. UNSETTLED - When the bill is just been made due</p>
+                <p>              b. REPAID - When all associated due amounts with the bill is repaid</p>
+                <p>              c. SETTLED - When the bill amount associated with the bill is capitalised</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>START.DATE</field>
+            <desc>
+                <p>This Field denotes the drawdown date of the arrangement.  This Field is updated when a first disbursement activity is triggered for the lending product line.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>STATIC.UPDATE</field>
+            <desc>
+                <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+            </desc>
+        </t>
+        <t>
+            <field>SUSP.DATE</field>
+            <desc>
+                <p>This field identifies the effective date of when there is a change in SUSP.STATUS field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>SUSP.STATUS</field>
+            <desc>
+                <p>This field is updated as "SUSPEND" when the Arrangement contract moves to a deliquent status when the interest accrued is to be suspended.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SUSPENDED</field>
+            <desc>
+                <p>This field is updated as "YES" when the contract reaches the deliquent status when the interest accrued / earned on the contract is to be suspended, i.e. P&amp;L reversed and posted as suspense.</p>
+            </desc>
+        </t>
+        <t>
+            <field>VALUE.DATE</field>
+            <desc>
+                <p>This field identifies the start date of the Arrangement contract and is updated only for Account based products, i.e. where Product Line constituents Account property class as mandatory.</p>
+                <p/>
+                <p>              The effective date of the "New" arrangement activity would be updated as start date of the Arrangement in this field.</p>
+            </desc>
+        </t>
+        <t>
+            <field>WOF.ACTIVITY.REF</field>
+        </t>
+        <t>
+            <field>ALL.AGE.STATUS</field>
+            <desc>
+                <p>This field is set to "YES" when the aging status of a bill results in setting aging status of all the bills to this status.</p>
+                <p/>
+                <p>                In Overdue property class if AGE.ALL.BILLS is flagged for an associated status, on reaching this status for a bill the status of all the bills would be moved to this status and ALL.AGE.STATUS would be set to "YES" to indicate all the bills moved status because of AGE.ALL.BILLS setting and not through normal deliquent processing.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>WOF.AMOUNT</field>
+        </t>
+        <t>
+            <field>WOF.BALANCE.NAME</field>
+        </t>
+        <t>
+            <field>WOF.BILL.REF</field>
+        </t>
+        <t>
+            <field>WOF.PROPERTY</field>
+        </t>
+        <t>
+            <field>ARR.AGE.STATUS</field>
+            <desc>
+                <p>This field identifies the overall deliquent status of an Arrangement contract. It would indicate the worst status of all the bills.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ARR.DORMANCY.STATUS</field>
+            <desc>
+                <p>This field contains the current dormancy status of the arrangement</p>
+            </desc>
+        </t>
+        <t>
+            <field>ARRANGEMENT.ID</field>
+            <desc>
+                <p>This field identifies the main Arrangement Contract number.</p>
+            </desc>
+        </t>
+        <t>
+            <field>BASE.DATE</field>
+            <desc>
+                <p> This field denotes the Base date of the arrangement.  This field is updated when a new arrangement is created for the lending product line.</p>
+                <p/>
+            </desc>
+        </t>
+    </menu>
+</t24help>

@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>AM</product>
+<table>AM.DYNAMIC.MODEL</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Dynamic Model.</p>
+            <p />
+            <p>         This table is used to describe a hierarchical asset model.  The members of the model can be either asset types or other dynamic models.</p>
+            <p />
+            <p>         Dynamic Model records are valid when their VALIDITY.DATE matches that in the corresponding AM.DYNAMIC.NODE.NAME record and the field ACTIVE is set to 'Yes'.</p>
+            <p />
+            <p>         This application does not allow reversal, deletion or copy functions as this would affect links between the records.  To copy the nodes, the application AM.DYNAMIC.MODEL.COPY should be used instead.  To make the nodes inactive, the ACTIVE field on the currently valid AM.DYNAMIC.MODEL record should be set to 'No'.</p>
+            <p />
+            <p>         Related files:  AM.DYNAMIC.PORT.NODE, AM.DYNAMIC.NODE.NAME &amp; AM.DYNAMIC.MODEL.COPY.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>DUMMY.NUM.05</field>
+<desc>
+            <p>Dummy field - not used by T24 Core system</p>
+        </desc>
+</t>
+<t>
+<field>ROOT.NODE</field>
+<desc>
+            <p>Indicates whether this is a root node or not.</p>
+            <p />
+            <p>                  This field cannot be set to 'Yes' if this node has any PARENT.NODES.</p>
+            <p />
+            <p>                  This is a mandatory field.</p>
+        </desc>
+</t>
+<t>
+<field>DUMMY.NUM.04</field>
+<desc>
+            <p>Dummy field - not used by T24 Core system</p>
+        </desc>
+</t>
+<t>
+<field>CHILD.NODE</field>
+<desc>
+            <p>Dynamic Model "child" record which belongs to this Dynamic Model record.</p>
+            <p />
+            <p>                 Mandatory if ASSET.TYPE is 'Node', otherwise, must be blank.</p>
+            <p />
+            <p>                 Must be a valid AM.DYNAMIC.MODEL id.</p>
+            <p>                 Cannot be a cyclical reference (i.e. cannot be a parent of this node or this node itself).</p>
+            <p>                 Cannot be a root node.</p>
+            <p>                 Must share the REFERENCE.CURRENCY and VALUE.TYPE of this record.</p>
+        </desc>
+</t>
+<t>
+<field>PARENT.NODES</field>
+<desc>
+            <p>Node Names of Dynamic Model records which directly reference this node.  The NODE.NAMEs of any AM.DYNAMIC.MODEL records which contain this record's NODE.NAME as a CHILD.NODE appear here.</p>
+            <p />
+            <p>                 This is a system field for information only.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Override messages generated during input.</p>
+            <p />
+            <p>                 This is a system field for information only.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Description of this Dynamic Model.  Defaulted from the AM.DYNAMIC.PORT.NODE record if it exists.</p>
+            <p />
+            <p>                  Accepts alphanumeric input up to 50 characters.</p>
+        </desc>
+</t>
+<t>
+<field>DUMMY.NUM.03</field>
+<desc>
+            <p>Dummy field - not used by T24 Core system</p>
+        </desc>
+</t>
+<t>
+<field>OVERLAY</field>
+<desc>
+            <p>This field contains the ID of AM.SEGMENTED.HIERARCHY by using this field value, model is generated </p>
+            <p>This field cannot be modified, populated from AM.NEW.MODEL</p>
+        </desc>
+</t>
+<t>
+<field>SEGMENT.LABEL</field>
+<desc>
+            <p>Segment Label to which these assets or child nodes belong, within the chosen SEGMENT.</p>
+            <p />
+            <p>                 This must be a valid SEGMENT.LABEL within the AM.SEGMENTS record defined in SEGMENT.</p>
+            <p />
+            <p>                 Field is effectively mandatory as data input (including null value) must be a valid SEGMENT.</p>
+        </desc>
+</t>
+<t>
+<field>REF.PRICE</field>
+<desc>
+            <p>System price used for weighting calculations of the asset on the VALIDITY.DATE.  Does not change.  This is not applicable to 'Node' asset types.</p>
+            <p />
+            <p>                 This is a system field for information only.</p>
+        </desc>
+</t>
+<t>
+<field>REFERENCE.CCY</field>
+<desc>
+            <p>The reference currency for the node.currency.</p>
+            <p />
+            <p>                Must be a valid currency (i.e. a valid CURRENCY record id).</p>
+            <p>                All nodes within this hierarchy must share the same reference currency.</p>
+            <p />
+            <p>                Once this has been input it cannot be changed.</p>
+        </desc>
+</t>
+<t>
+<field>VALIDITY.DATE</field>
+<desc>
+            <p>Date for which this instance of the node is valid.  Corresponds to the last part of the record id.</p>
+            <p />
+            <p>                  This is a system field for information only.</p>
+        </desc>
+</t>
+<t>
+<field>LAST.CHANGE.DATE</field>
+<desc>
+            <p>System date on which this node was last changed.  This may differ from the validity date.</p>
+        </desc>
+</t>
+<t>
+<field>PCT.AST.ALOC</field>
+<desc>
+            <p>Percentage Asset Allocation.  Describes percentage of the PORTFOLIO.VALUE in the root node that is to be allocated to this asset.</p>
+            <p />
+            <p>                 This field is mandatory if the VALUE.TYPE is 'Percentage', otherwise this field must be left blank.</p>
+            <p>                 Must total 100 over the whole record.</p>
+        </desc>
+</t>
+<t>
+<field>DUMMY.NUM.02</field>
+<desc>
+            <p>Dummy field - not used by T24 Core system</p>
+        </desc>
+</t>
+<t>
+<field>UPPER.TOL</field>
+<desc>
+            <p>Upper tolerance percentage for PCT.AST.ALOC.  Expressed in terms of percentage deviation upwards of value of current holdings compared to required value as per model percentage of total value.  Upper tolerance of 10% means that suggestion to sell not generated until current holdings become 10% higher in value than recommended holdings as per model.</p>
+            <p />
+            <p />
+            <p>                 This field is mandatory if the VALUE.TYPE is 'Percentage' and the ASSET.TYPE is 'Security'.  Otherwise must be left blank.</p>
+        </desc>
+</t>
+<t>
+<field>DYNAMIC.MODEL.ID</field>
+<desc>
+            <p>The key for the AM.DYNAMIC.MODEL record.  This is comprised of the Node Name and the Validity Date.</p>
+            <p />
+            <p>                  Node name is an alphanumeric key up to 26 characters.</p>
+            <p>                  Validity date is a valid date in the format yyyymmdd.</p>
+            <p />
+            <p>                  If the date is omitted, the current system date is defaulted into the id. Can therefore just enter the node name as the id to create or retrieve the instance of the Dynamic model for the current system date.</p>
+            <p />
+            <p>                  Takes the form NODE.NAME * VALIDITY.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>PORTFOLIO.VALUE</field>
+<desc>
+            <p>Total value of the portfolio specified in PORTFOLIO.ID which should be invested against this dynamic model hierarchy.  Percentage Asset Allocation figures within the Dynamic Model records in this hierarchy will then split down this value to give the recommended values to invest and therefore determine the associated buy/sell orders.</p>
+            <p />
+            <p>                  Mandatory for root nodes where the VALUE.TYPE has been set as 'Percentage'.  Otherwise should be left blank.</p>
+        </desc>
+</t>
+<t>
+<field>SECURITY</field>
+<desc>
+            <p>Security that is to be invested in as part of this model.</p>
+            <p />
+            <p>                 Mandatory if ASSET.TYPE is 'Security', otherwise, must be blank.</p>
+            <p />
+            <p>                 Must be a valid SECURITY.MASTER id which should also belong to the SEGMENT.LABEL already specified.</p>
+        </desc>
+</t>
+<t>
+<field>CCY</field>
+<desc>
+            <p>This field is not currently used.</p>
+        </desc>
+</t>
+<t>
+<field>ASSET.TYPE</field>
+<desc>
+            <p>Type of asset defined in the following related set of fields.  This can be either 'Security' or 'Node'.</p>
+            <p />
+            <p>                 Security:  A valid security has been chosen</p>
+            <p>                 Node: A Child node has been chosen (another AM.DYNAMIC.MODEL record).</p>
+        </desc>
+</t>
+<t>
+<field>REASON</field>
+<desc>
+            <p>Reason for the error flag in the MODEL.STATUS field.  Gives the errors returned (if any) from the validation service.  If a root node has been made inactive because of a child node, this field will contain the id of the inactive child node.</p>
+            <p />
+            <p>                  This is a system field for information only.</p>
+        </desc>
+</t>
+<t>
+<field>BUILD.MODEL.FLG</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>DUMMY.NUM.01</field>
+<desc>
+            <p>Dummy field - not used by T24 Core system</p>
+        </desc>
+</t>
+<t>
+<field>NOMINAL</field>
+<desc>
+            <p>When used in conjunction with an ASSET.TYPE of Security this is Number of the security that is to be allocated.</p>
+            <p />
+            <p>   When used in conjunction with an ASSET.TYPE of Node this is the Number of the Node to be allocated to this model. Hence this will act as a multiplier for the Node and all Securitues and sub Nodes that it contains.</p>
+            <p />
+            <p />
+            <p>   This field is mandatory if the VALUE.TYPE is 'Nominal' and the ASSET.TYPE is 'Security'. </p>
+            <p>   If the ASSET.TYPE is Node it will default to 1.</p>
+        </desc>
+</t>
+<t>
+<field>SEGMENT</field>
+<desc>
+            <p>Segment to which this Dynamic Model record belongs.</p>
+            <p />
+            <p>                  This is a mandatory field and must contain a valid AM.SEGMENTS id.</p>
+        </desc>
+</t>
+<t>
+<field>MODEL.STATUS</field>
+<desc>
+            <p>The status of this Dynamic Model record.  This will be either 'Active', 'Inactive', 'Error' or 'To Be Validated':</p>
+            <p />
+            <p>                  Active:  This record has been checked by the validation service and is active.</p>
+            <p>                  Inactive:  This record has been deactivated by use of the ACTIVE field.</p>
+            <p>                  Error:  An error has been detected in this record by the validation service.</p>
+            <p>                  To Be Validated:  Notifies the validation service that this record has been input or changed and the model hierarchy needs to be checked by the validation service.</p>
+            <p />
+            <p>                  This is a system field for information only.</p>
+        </desc>
+</t>
+<t>
+<field>MODEL.PRICE</field>
+<desc>
+            <p>System price used for weighting calculations of the asset on the START.DATE.  This value is carried through all validity dates from the first instance and does not change.  This is not applicable to 'Node' asset types.</p>
+            <p />
+            <p>                 This is a system field for information only.</p>
+        </desc>
+</t>
+<t>
+<field>MODEL.TYPE</field>
+<desc>
+            <p>Options could be DYNAMIC or STATIC </p>
+            <p>This field describes type of the model to be generated</p>
+        </desc>
+</t>
+<t>
+<field>NODE.NAME</field>
+<desc>
+            <p>The initial part of the record id.</p>
+            <p />
+            <p>                 This is a system field for information only.</p>
+        </desc>
+</t>
+<t>
+<field>ACTIVE</field>
+<desc>
+            <p>Can be set to 'Yes' or 'No'.</p>
+            <p />
+            <p>         If set to 'Yes' this Dynamic Model record is made active (pending check by the validation service).  If set to 'No', this record and any parent root nodes will become inactive.</p>
+        </desc>
+</t>
+<t>
+<field>AMEND.PRICE</field>
+<desc>
+            <p>A user inputtable price at which to buy the sepcified security.</p>
+            <p />
+            <p>         Defaults to the Ref Price and cannot be zero.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AMEND.RATE</field>
+<desc>
+            <p>A user specified exchange rate between the reference currency and the security currency which is used to specify how much security currency we have to spend for percentage type nodes. Note that the security transfer is done at the current rate.</p>
+            <p />
+            <p>         If left null this will default to the reference rate of the validity date.</p>
+            <p />
+            <p>         Must be one when the two currencies are the same and cannot be zero.</p>
+        </desc>
+</t>
+<t>
+<field>ASSET.PATH</field>
+<desc>
+            <p>This field contains the hierarchy of the model</p>
+            <p>This field cannot be modified, populated from AM.NEW.MODEL </p>
+            <p>ex: if OVERLAY = EQUITY then this field contain GEN.CASH OR GEN.BOND OR GEN.STOCK, GEN is the MODEL.ID given in AM.NEW.MODEL</p>
+        </desc>
+</t>
+<t>
+<field>PORTFOLIO.ID</field>
+<desc>
+            <p>Portfolio to which this root node belongs.  The rest of the hierarchy under this root node is implicitly linked to this portfolio.</p>
+            <p />
+            <p>                  This field is mandatory if ROOT.NODE has been set to 'Yes', otherwise must be left blank.  It should contain a valid SEC.ACC.MASTER id corresponding to a portfolio which has not already been assigned to a different node (a portfolio can only conform to one model).</p>
+        </desc>
+</t>
+<t>
+<field>START.DATE</field>
+<desc>
+            <p>Validity date of the first instance of this node (i.e. the VALIDITY.DATE of the first AM.DYNAMIC.MODEL created which shared the same ROOT.NODE as this record).</p>
+            <p />
+            <p>                  This is a system field for information only.</p>
+        </desc>
+</t>
+<t>
+<field>REF.RATE</field>
+<desc>
+            <p>System exchange rate against reference currency as used for weighting calculations of the asset on the VALIDITY.DATE.  Does not change.  This is not applicable to 'Node' asset types.</p>
+            <p />
+            <p>                 This is a system field for information only.</p>
+        </desc>
+</t>
+<t>
+<field>LOWER.TOL</field>
+<desc>
+            <p>Lower tolerance percentage for PCT.AST.ALOC.  Expressed in terms of percentage deviation downwards of value of current holdings compared to required value as per model percentage of total value.  Lower tolerance of 10% means that suggestion to buy not generated until current holdings become 10% lower in value than recommended holdings as per model.</p>
+            <p />
+            <p>                 This field is mandatory if the VALUE.TYPE is 'Percentage' and the ASSET.TYPE is 'Security'.  Otherwise must be left blank.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.TYPE</field>
+<desc>
+            <p>The Node Value Type for this record.  This can be either 'Nominal' or 'Percentage' and determines the way in which the individual components (assets) of the model are apportioned.</p>
+            <p />
+            <p>                 If the Value Type is set to 'Nominal', absolute values are used for each asset, as set in NOMINAL.  If the Value Type is set to 'Percentage', percentages as set in PCT.AST.ALOC are used against the individual assets which break down the PORTFOLIO.VALUE as set in the root node.</p>
+            <p />
+            <p>                 This field is mandatory and all nodes in a hierarchy must share the same Value Type.</p>
+        </desc>
+</t>
+<t>
+<field>MODEL.RATE</field>
+<desc>
+            <p>System exchange rate against reference currency as used for weighting calculations of the asset on the START.DATE.  This rate is carried through all validity dates from the first instance and does not change.  This is not applicable to 'Node' asset types.</p>
+            <p />
+            <p>                 This is a system field for information only.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

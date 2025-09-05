@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>CHEQUE.CHARGE</table>
+</header>
+<overview>
+<ovdesc>
+<p>This table holds details of the charging structure to be applied to all cheque types for issues and periodic usage charges. </p><p>For each cheque type it is possible to define individual transaction codes for debit and credit and a profit/loss category for charges. Issue and periodic charges can then be set up on a band or level basis. Flat amounts can be defined for each or a zero amount entered to effectively waive charges by default if required. </p><p>In this way a flat amount may be defined for issue or issues may be charged band or level based on the current holding of the account in the cheque type concerned. This is best illustrated by the examples given later. </p><p>Similarly periodic usage charges may be based on a flat amount or on the number of cheques used during the charging period. </p><p>The issue charging period and the usage charging period may be different since they are based on seperate frequency fields. </p><p /><p>Issue Example (a): </p><p>Cheques are issued in books of 25. Customers are to be charged a flat amount of 5 GBP per cheque book issue up to a maximum of 8 cheque books per year. After this, ie beyond 200 cheques per year, each cheque issued will carry an additional charge of 10 pence making the total charge for issue of a ninth cheque book 5 + 2.5 = 7.50 GBP. Fields would be entered as follows: </p><p>4         FLAT.ISSUE.CHG.... 5.00 5         ISSUE.BAND.LEVEL.. BAND 6.1       ISSUE.UPTO...... 200 7.1       ISSUE.CHG.AMT... 0.00 6.2       ISSUE.UPTO...... 7.2       ISSUE.CHG.AMT... 0.10 8         ISSUE.START.DATE.. 1501 9         ISSUE.CHG.FQU..... M1215 </p><p>Here the flat issue charge is set to 5.00 so this amount will be charged for each issue regardless of the holding details. The charging period cycles every 12 months on the 15th (M1215) and begins again on the 15th of January each year (purposely not the first so as to minimise end of year charge processing). Thus up to 200 cheques may be issued between 15th Jan 1991 and 14th Jan 1992 and each issue will raise charges of 5.00 GBP. The current holding is taken from the ISSUED.THIS.PD field of the appropriate record on the CHEQUE.REGISTER file. This field is updated automatically at authorisation of each issue. The ninth issue will report this as 200 so charges will move into the next band and 25 will be charged at 0.10 plus the flat amount of 5.00 giving 7.50 total for the issue. </p><p>Issue Example (b): </p><p>Eurocheques are issued in blocks of 10. They are charged at 0.50 GBP per cheque for holdings of upto 50 but beyond this become less expensive at 0.40 GBP per cheque. There are no flat charges for issue.  The charging period is quarterly. Fields are entered as follows: </p><p>4         FLAT.ISSUE.CHG.... 0.00 5         ISSUE.BAND.LEVEL.. BAND 6.1       ISSUE.UPTO...... 50 7.1       ISSUE.CHG.AMT... 0.50 6.2       ISSUE.UPTO...... 7.2       ISSUE.CHG.AMT... 0.40 8         ISSUE.START.DATE.. 1501 9         ISSUE.CHG.FQU..... M0315 </p><p>Here the flat charge is zero. Charging is banded so that each cheque issued is charged at 0.50 GBP until there have been 50 issued to the account during the charging period. Issues after this time will charge 0.40 GBP per cheque. The charging period will reset every three months on the 15th of the month. </p><p>Periodic charges can be raised for the usage of cheques during a given period. If it is desired charges can therefore be defined for both issue and usage. This may be the case for Eurocheques but would be less usual for other common types of cheques. The calculation of charges and their definition is the same as those for issue except that the number involved is taken as the number used during the charging period. Note that no charges will be applied unless there has been a cheque used during the charging period. This includes the flat amount per period if defined. </p></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>TRANSACTION.CR</field>
+<desc><p>Specifies the transaction code for credit entries produced by the charging process. </p>
+<p><p>Validation Rules:</p></p>
+<p> 1-10(Max Value) numeric characters Transaction Code. (Mandatory Input)</p>
+<p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p>   
+<p> Mandatory input.  Transaction code entered must exist on the TRANSACTION table.</p></desc>
+</t>
+<t>
+<field>PERIOD.UPTO</field>
+<desc><p>Defines the band or level cutoff points over which charges move to the next band or level during periodic usage charging. </p><p>This field defines the limits of each band or level in the charging structure. A detailed explanation of the difference between banded and level charging is given in the previous field PERIOD.BAND.LEVEL. </p><p>It should be noted that the periodic usage charging of cheques is based on the number used during the charging period for the account and for the type of cheques concerned. </p><p><p>Validation Rules:</p></p><p>1-5 numeric characters.  Multivalue associated with PERIOD.CHG.AMT.  The last value must be blank to represent the catchall uppermost limit.</p></desc>
+</t>
+<t>
+<field>PERIOD.BAND.LEVEL</field>
+<desc><p>Specifies whether periodic charges will be calculated on a banded or on a level basis. </p><p>Charges may be calculated on either a band or level basis.  The principle used is common to many other T24 modules. Band charging raises a different charge for each number of cheques falling into rising bands, level charging locates the level the number falls within and charges all cheques at that level. This is best illustrated with several examples as follows: </p><p>In the following configuration a flat charge has not been defined (if it were, it would be added to the result of the band/level charges). Also the example uses ascending charges for larger numbers of cheques, descending bands and levels are equally possible and would in fact be more commonly used in practice. </p><p>11 PERIOD.BAND.LEVEL.. BAND 12.1 PERIOD.UPTO...... 75 13.1 PERIOD.CHG.AMT... 0.10 12.2 PERIOD.UPTO...... 150 13.2 PERIOD.CHG.AMT... 0.15 12.3 PERIOD.UPTO...... 13.3 PERIOD.CHG.AMT... 0.20 </p><p>The periodic usage of cheques would be charged at 0.10 GBP per cheque for the first 75 used during the charging period whereupon the charge per cheque would become 0.15 GBP and so on up the band structure. Note the last band is always empty to imply a ceiling above which all cheques are charged at this maximum band rate. So for the use of the first 25 cheques the charge would be: </p><p>25 x 0.10 GBP = 2.50 GBP </p><p>If a further four cheque books of 25 cheques were subsequently used completely they would be charged at: </p><p>50 x 0.10 GBP =  5.00 GBP 50 x 0.15 GBP =  7.50 GBP                 12.50 GBP </p><p>The next 100 would be charged: </p><p>25 x 0.15 GBP =  3.75 GBP 75 x 0.20 GBP = 15.00 GBP                 18.75 GBP </p><p>A further 150 would be simply: </p><p>150 x 0.20 GBP = 30.00 GBP </p><p>If the same configuration were used on a LEVEL charging basis the total number used would fall within a certain level of usage. The charge raised would be the amount per cheque associated with this level times the number of cheque used during the usage period. </p><p><p>Validation Rules:</p></p><p>5 alphanumeric characters.  Mandatory input.  Must be either BAND or LEVEL only.</p></desc>
+</t>
+<t>
+<field>FLAT.PERIOD.CHG</field>
+<desc><p><p>Validation Rules:</p></p><p>A maximum of 019 characters may be entered.</p></desc>
+</t>
+<t>
+<field>PERIOD.CHG.FQU</field>
+<desc><p>Defines the frequency at which the usage charging period resets. </p><p>This field is used to define the frequency at which usage charges will be calculated and raised. When charges for the period defined by PERIOD.CHG.CYCLE have been processed the number used is set back to zero in the cheque register. </p><p><p>Validation Rules:</p></p><p>5 alphanumeric characters.  Optional input.  Standard frequency field.</p></desc>
+</t>
+<t>
+<field>ISSUE.UPTO</field>
+<desc><p>Defines the band or level cutoff points over which charges move to the next band or level. </p><p>This field defines the limits of each band or level in the charging structure. A detailed explanation of the difference between banded and level charging is given in the previous field ISSUE.BAND.LEVEL. </p><p>It should be noted that the issue of cheques is based on the current holding of the account for the type of cheques concerned. Thus the amount issued will be charged depending on this holding plus the number being issued. </p><p><p>Validation Rules:</p></p><p>1-5 numeric characters.  Multivalue associated with ISSUE.CHG.AMT.  The last value must be blank to represent the catchall uppermost limit.</p></desc>
+</t>
+<t>
+<field>PERIOD.CHG.CYCLE</field>
+<desc><p>Specifies the charging cycle for the calculation of usage charges. </p><p>This field defines the start date for the charging period related to the usage of cheques of this type along with the extent or length of the charging period. </p><p>When the usage period resets the number of cheques used is set back to zero and the periodic charges are raised. The processing of usage charges is dependent on the charging frequency defined in the PERIOD.CHG.FQU field. </p><p><p>Validation Rules:</p></p><p>17 alphanumeric characters.  Standard date frequency.</p></desc>
+</t>
+<t>
+<field>TRANSACTION.DR</field>
+<desc><p>Specifies the transaction code for debit entries produced by the charging process. </p>
+<p><p>Validation Rules:</p></p>
+<p> 1-10(Max Value) numeric characters Transaction Code. (Mandatory Input)</p>
+<p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p>   
+<p> Mandatory input.  Transaction code entered must exist on the TRANSACTION table.</p></desc>
+</t>
+<t>
+<field>ISSUE.CHG.AMT</field>
+<desc><p>Specifies the amount per cheque issued to be charged for cheques which fall within this band or level in the charging structure. </p><p>This field defines the charge amount per cheque of each band or level in the charging structure. A detailed explanation of the difference between banded and level charging is given in the previous field ISSUE.BAND.LEVEL. </p><p>It should be noted that the issue of cheques is based on the current holding of the account for the type of cheques concerned. Thus the amount issued will be charged depending on this holding plus the number being issued. </p><p><p>Validation Rules:</p></p><p>1-19 numeric characters.  Multivalue associated with ISSUE.UPTO.</p></desc>
+</t>
+<t>
+<field>ISSUE.START.DATE</field>
+<desc><p>Specifies the start date for the issue charging period. </p><p>This field defines the start date for the charging period related to the issue of cheques of this type. The frequency with which the charging period resets is defined in the next field ISSUE.CHG.FQU. </p><p>The charging bands and levels all refer to the amount of cheques being issued plus the number already issued during the current charging period when calculating charges to be raised for a cheque issue. This number issued is reset to zero at the end of each issue charging period. </p><p><p>Validation Rules:</p></p><p>4 numeric characters Mandatory input</p></desc>
+</t>
+<t>
+<field>ISSUE.CHG.FQU</field>
+<desc><p>Defines the frequency at which the issue charging period resets. </p><p>This field is used to define the period over which issues will be charged. The charging period for the issue of cheques will run from the issue start date to the issue start date plus this frequency. </p><p><p>Validation Rules:</p></p><p>5 alphanumeric characters.  Optional input.  Standard frequency field.</p></desc>
+</t>
+<t>
+<field>FLAT.ISSUE.CHG</field>
+<desc><p>Specifies a flat charge amount to be applied to each cheque issue regardless of the number of cheques involved or already held by the account. </p><p>The flat amount will be charged per issue regardless of the number of cheques involved or the current holding of the account. If a band or level structure is also defined then the charges arising will be added to this flat charge. Charges are always raised in local currency. </p><p><p>Validation Rules:</p></p><p>1-19 numeric characters.  Optional input.</p></desc>
+</t>
+<t>
+<field>PL.CATEGORY</field>
+<desc><p>Specifies the profit and loss category code to which the charges raised by the cheque control system for this type of cheques will be booked. </p><p><p>Validation Rules:</p></p><p>1-5 numeric characters.  Mandatory input.  Category entered must exist on the CATEGORY table.</p></desc>
+</t>
+<t>
+<field>CHARGE.CODE</field>
+<desc><p>Specify the charges for the cheque status which will be defaulted in cheque issue process.</p><p><p>Validation Rules:</p></p><p /><p>Must be a valid entry in FT.COMMISSION.TYPE or FT.CHARGE.TYPE</p></desc>
+</t>
+<t>
+<field>CHEQUE.STATUS</field>
+<desc><p>Specify the cheque status for calculating the charges </p><p><p>Validation Rules:</p></p><p /><p>Must be a valid entry in CHEQUE.STATUS </p><p>Multivalue entry to specify the charges for various cheque status</p></desc>
+</t>
+<t>
+<field>CHEQUE.TYPE</field>
+<desc><p /><p>Defines the type of cheques for which the charging structure is to apply. The ID should be one of the cheque types defined on CHEQUE.TYPE such as:</p><p>"CURR" Current Account Cheques, </p><p>"EURO" Euro Cheques.</p><p><p>Validation Rules:</p></p><p /><p>1-4 alpha-numeric characters. Cheque Type entered  must exist on the CHEQUE.TYPE table</p></desc>
+</t>
+<t>
+<field>CURRENCY.MARKET</field>
+<desc><p><p>Defines the currency market for the purpose of exchange rate used in calculation of foreign currency charges.</p></p><p><p>Validation Rules:</p></p><p /><p>Standard T24 numeric field.</p><p>A maximum of 2 characters may be entered.</p><p>Must be the key to a valid entry on the CURRENCY.MARKET file.</p></desc>
+</t>
+<t>
+<field>ISSUE.BAND.LEVEL</field>
+<desc><p>Specifies wether charges will be calculated on a banded or on a level basis. </p><p>Charges may be calculated on either a band or level basis.  The principle used is common to many other T24 modules. Band charging raises a different charge for each number of cheques falling into rising bands, level charging locates the level the number falls within and charges all cheques at that level. This is best illustrated with several examples as follows: </p><p>In the following configuration a flat charge has not been defined (if it were, it would be added to the result of the band/level charges). Also the example uses ascending charges for larger numbers of cheques, descending bands and levels are equally possible and would in fact be more commonly used in practice. </p><p>5 ISSUE.BAND.LEVEL.. BAND 6.1 ISSUE.UPTO...... 75 7.1 ISSUE.CHG.AMT... 0.10 6.2 ISSUE.UPTO...... 150 7.2 ISSUE.CHG.AMT... 0.15 6.3 ISSUE.UPTO...... 7.3 ISSUE.CHG.AMT... 0.20 </p><p>The issue of cheques would be charged at 0.10 GBP per cheque until the number issued during the charging period exceeds 75 whereupon the charge per cheque would become 0.15 GBP and so on up the band structure. Note the last band is always empty to imply a ceiling above which all cheques are charged at this maximum band rate. So for the issue of the first 25 cheques the charge would be: </p><p>25 x 0.10 GBP = 2.50 GBP </p><p>If a further four cheque books of 25 cheques were subsequently issued they would be charged at: </p><p>50 x 0.10 GBP =  5.00 GBP 50 x 0.15 GBP =  7.50 GBP                 12.50 GBP </p><p>The next four book issue would be charged: </p><p>25 x 0.15 GBP =  3.75 GBP 75 x 0.20 GBP = 15.00 GBP                 18.75 GBP </p><p>A further 6 books would be simply: </p><p>150 x 0.20 GBP = 30.00 GBP </p><p>If the same configuration were used on a LEVEL charging basis the first 25 cheques would be charged at 0.10 GBP per cheque. The next issue of 100 would be charged at the next higher level of 0.15 per cheque since 100 exceeds the first level of 75. The next 100 would also be charged at 0.15 per cheque as would the last. Only an issue of more than six books would invoke the highest defined band charge of 0.20 GBP per cheque. </p><p><p>Validation Rules:</p></p><p>1-5 alphanumeric characters.  Mandatory input.  Must be either BAND or LEVEL only.</p></desc>
+</t>
+<t>
+<field>PERIOD.CHG.AMT</field>
+<desc><p>Specifies the amount per cheque used to be charged for cheques which fall within this band or level in the charging structure. </p><p>This field defines the charge amount per cheque of each band or level in the charging structure. A detailed explanation of the difference between banded and level charging is given in PERIOD.BAND.LEVEL. </p><p>It should be noted that the periodic usage charging of cheques is based on the number used during the charging period for the account and for the type of cheques concerned. </p><p><p>Validation Rules:</p></p><p>1-19 numeric characters.  Multivalue associated with PERIOD.UPTO.</p></desc>
+</t>
+<t>
+<field>RATE.TYPE</field>
+<desc><p>Denotes rate which is to be used for charges calculation.</p><p><p>Validation Rules:</p></p><p /><p>Valid values "BUY" , "SELL" , "MID" </p></desc>
+</t>
+</menu>
+</t24help>
+

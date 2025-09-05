@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t24help>
+<header>
+<product>CD</product>
+<table>CRS.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+        <p>CRS.PARAMETER table is used to record the details of the institution’s agreement with the regulation, for example the effective date of the CRS provisions, participating jurisdictions and certain default conditions.</p>
+        <p>CRS.PARAMETER is a customer company level parameter table.</p>
+    </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CRS.PARAMETER.ID</field>
+<desc>
+        <p>ID is the company code for which the record belongs.</p>
+        <p>The CRS.PARAMETER table is a customer level company table. The item id to the parameter record must exist as a valid company code on the company file</p>
+        <p>Validation rules </p>
+        <p>Up to 11 Alphanumeric characters. Should be a valid Company Code.</p>
+    </desc>
+</t>
+<t>
+<field>EFFECTIVE.DATE</field>
+<desc>
+        <p>Field to identify the effective date of the CRS regulation.</p>
+        <p>Used to identify the customers as existing or new based on this date.</p>
+        <p>Validation rules </p>
+        <p>Mandatory field.</p>
+        <p>Standard date format -(YYYYMMDD)</p>
+    </desc>
+</t>
+<t>
+<field>PARTNG.JURIDICTION</field>
+<desc>
+        <p>Field specifies the countries which are participating with the regulatory requirements.</p>
+        <p>Associate multi-value field with the TELEPHONE.CODE field and either both the field values should be present or blank.</p>
+        <p>Validation rules </p>
+        <p>Should be a valid country present in the T24 COUNTRY table.</p>
+        <p>If value is present in this field, then the corresponding country TELEPHONE.CODE is mandatory.</p>
+    </desc>
+</t>
+<t>
+<field>TELEPHONE.CODE</field>
+<desc>
+        <p>Field to hold the telephone code of the corresponding PARTNG.JURIDICTION.</p>
+        <p>Associate multi-value field with the PARTNG.JURIDICTION field and either both the field values should be present or blank.</p>
+        <p>Validation rules </p>
+        <p>Should start with '+' or '00'.</p>
+        <p>If value is present in this field, then the corresponding PARTNG.JURIDICTION country is mandatory.</p>
+    </desc>
+</t>
+<t>
+<field>INDICIA.CALC.RTN</field>
+<desc>
+        <p>The logic to calculate the Indicia required or not along with the reportable jurisdiction will be built into the API that is specified in this field.</p>
+        <p>However, if the banks want to use a different logic, then they can plug in their local APIs.</p>
+        <p> If no routine is attached here, the INDICIA, REPORTABLE.JUR and CRS.STATUS will not be calculated.</p>
+        <p>Validation rules </p>
+        <p>Should be a valid EB.API record.</p>
+    </desc>
+</t>
+<t>
+<field>CLOSE.REL.BAL.TYP</field>
+<desc>
+        <p>Field to decide whether the previous day customer balances should be calculated when the CRS.STATUS is changed to INACTIVE in CRS.CUST.SUPP.INFO table.</p>
+        <p>By default system calculates balance aggregation every month end.</p>
+        <p>If set as none or previous month, then system uses the default calculated balance.</p>
+        <p>Validation rules </p>
+        <p>Allowed values are PREVIOUS.MONTH, PREVIOUS.DAY.</p>
+    </desc>
+</t>
+<t>
+<field>REPORTING.CCY</field>
+<desc>
+        <p>Field to specify the currency to be used for Balance aggregation process.</p>
+        <p>If no value is specified, system calculates the aggregation balance in local currency of the corresponding company.</p>
+        <p>Validation rules </p>
+        <p>Should be a valid currency.</p>
+    </desc>
+</t>
+<t>
+<field>INITIAL.AGGR.BUILT</field>
+<desc>
+        <p>Field to identify whether the initial balance aggregation process is performed for all the existing customers.</p>
+        <p>System will update this field as 'YES', once the initial aggregation is completed.</p>
+        <p>Once the field is set, then the subsequent aggregation process will be performed only for the customer having CRS.CUST.SUPP.INFO records.</p>
+        <p>Validation rules </p>
+        <p>No input field.</p>
+    </desc>
+</t>
+<t>
+<field>AUTO.STATUS.UPD</field>
+<desc>
+        <p>Field to specify whether to recalculate the INDICIA, REPORTABLE.JUR and CRS.STATUS in CRS.CUST.SUPP.INFO, whenever there is a change in PARTICIPANT.JUD or TELEPHONE.CODE of CRS.PARAMETER.</p>
+        <p>Only when set to 'YES', status will get recalculated for all the CRS.CUST.SUPP.INFO records.</p>
+        <p>Validation rules </p>
+        <p>Allowed values are YES, NO.</p>
+    </desc>
+</t>
+<t>
+<field>ACCOUNT.TYPE</field>
+<desc>
+        <p>Field to specify the different account types which are used for the classification of existing accounts.</p>
+        <p>Fields ACCOUNT.TYPE, ACCOUNT.SUB.TYPE, BAL.AMT.AGGR.FROM, BAL.AMT.AGGR.TO, DUE.DILIGENCE.DATE, REPORTING.DATE form an associated multi-value set.</p>
+        <p>Validation rules </p>
+        <p>Allowed values are NEW.INDIVIDUAL, NEW.ENTITY, PRE-EXISTING.INDIVIDUAL PRE-EXISTING.ENTITY</p>
+    </desc>
+</t>
+<t>
+<field>ACCOUNT.SUB.TYPE</field>
+<desc>
+        <p>Field to specify the further classification of the account type such as HIGH or LOW. Based on this, balance aggregation will be performed.</p>
+        <p>Fields ACCOUNT.SUB.TYPE, BAL.AMT.AGGR.FROM, BAL.AMT.AGGR.TO, DUE.DILIGENCE.DATE and REPORTING.DATE form an associate sub-value set.</p>
+        <p>Validation rules </p>
+        <p>Allowed values are HIGH, LOW.</p>
+        <p>Allowed to define only for PRE-EXISTING account types.</p>
+    </desc>
+</t>
+<t>
+<field>BAL.AMT.AGGR.FROM</field>
+<desc>
+        <p>Used to hold the lower range of the aggregation amount for the corresponding ACCOUNT.TYPE, which will be used during account classification for the existing accounts.</p>
+        <p>Validation rules </p>
+        <p>Allowed to define only for PRE-EXISTING account types.</p>
+    </desc>
+</t>
+<t>
+<field>BAL.AMT.AGGR.TO</field>
+<desc>
+        <p>Used to hold the upper range of the aggregation amount for the corresponding ACCOUNT.TYPE, which will be used during account classification for the existing accounts.</p>
+        <p>Validation rules </p>
+        <p>Allowed to define only for PRE-EXISTING account types.</p>
+    </desc>
+</t>
+<t>
+<field>DUE.DILIGENCE.DATE</field>
+<desc>
+        <p>Field to specify the Due-diligence dates for the account types PRE-EXISTING.INDIVIDUAL.LOW, PRE-EXISTING.INDIVIDUAL.HIGH, PRE-EXISTING.ENTITY.HIGH.</p>
+        <p>Flexibility is given to define different Due Diligence Dates as and when Financial Institution residing in a particular jurisdiction comes under the purview of the regulation</p>
+        <p>Validation rules </p>
+        <p>Standard date and frequency to be given.</p>
+    </desc>
+</t>
+<t>
+<field>REPORTING.DATE</field>
+<desc>
+        <p>Field to specify the Reporting Date for the account types.</p>
+        <p>Validation rules </p>
+        <p>Allowed to define standard date and frequency.</p>
+    </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+        <p>This is a multi valued field. Standard T24 alphanumeric field. </p>
+        <p>
+           <p>Validation Rules:</p>
+        </p>
+        <p> A maximum of 35 characters may be entered.</p>
+    </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+        <p>This is a multi valued field. </p>
+        <p>Contains details of any override applicable to this record.</p>
+        <p>
+           <p>Validation Rules:</p>
+        </p>
+        <p> A maximum of 35 characters may be entered. This is a NOINPUT field.</p>
+    </desc>
+</t>
+</menu>
+</t24help>

@@ -1,0 +1,933 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>PT</product>
+<table>SY.FX.FORWARDS</table>
+</header>
+<overview>
+<ovdesc>
+            <p>FX Participating Forward (PF) is an OTC contract to buy or sell the underlying currency periodically at a pre-fixed exchange rate. </p>
+            <p />
+            <p>A participating forward transaction allows the investor to </p>
+            <p />
+            <p>(i) Under a bullish structure, buy a pre-fixed amount of the underlying currency (the "Currency Amount") on each periodic settlement date at a discounted exchange rate of the currency pair (being set as the Strike Price) compared to the exchange rate of the currency pair on the trade date. </p>
+            <p />
+            <p>(ii) Under a bearish structure, sell the pre-fixed Currency Amount of the underlying currency on each periodic settlement date at a premium exchange rate of the currency pair (being set as the Strike Price) compared to the exchange rate of the currency pair on the trade date. </p>
+            <p />
+            <p>Provided no Knock-out Event has occurred prior to the expiration time on the last expiration date, an investor is obliged to buy (under a bullish structure) or sell (under a bearish structure) a pre-fixed Currency Amount of the underlying currency at the Strike Price on each settlement date. </p>
+            <p />
+            <p>TARKO - is an OTC contract which is similar to the Participating Forward.  The only difference is that the Knock Out barrier is not an exchange rate but rather the intrinsic value of the accumulated profits. In other words, the contract will get Knocked out if the intrinsic value of the accumulated profits reaches a pre - determined amount. </p>           
+            <p />
+            <p>These products being OTC products, the bank is acting as a principal. Typically the booking model would be as below : </p>
+            <p>Client vs Bank's Own Book  - This is the client leg of the deal.</p>
+            <p>Bank's own book vs counterparty - This is the street leg of the deal.</p>
+            <p>These two deals are linked together by the field B2B reference. Both deals would have the same value in this field,  the system would then recognize these as linked deals.</p>
+            <p>The field COUNTERPARTY.TRADE needs to be set to 'Yes' in the street leg, indicating to the system that this is the street leg.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>FX.FORWARD.ID</field>
+<desc>
+            <p>This is the Record ID for the application. The ID is of the format 'SYFXFTJJJJJSSSSS', Where SYFXFT is the prefix ,JJJJJ is the Julian date , SSSSS is the sequence number. </p>
+            <p>Example : SYFXFT00021500001 - This the first contract input on 2nd Jan 2015. </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>VARIANT</field>
+<desc>
+            <p>If the contract refers to a particular variant, then the variant can be linked in this field. Once linked, the parameters and configurations defined for the variant would be used in processing the life cycle of the contract. </p>
+            <p>If this field is NULL, the parameters defined in SY.PRODUCT.DEFINTION for FXFORWARDS would be applied. </p>            
+            <p>No change field if SUPPRESS.UNDERLYING is set to 'No'. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>                Only variants with prefix as 'FXFORWARDS_' will be accepted. </p>            
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>This is a free text field and can be used to record the description of the contract.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.STATUS</field>
+<desc>
+            <p>The status of the contract is updated in this field. When the contract is created , the status will be  'ACTIVE',  subsequently  as the contract undergoes various life cycle events, the status is updated as below.</p>
+            <p>ACTIVE - The  contract is active. </p>
+            <p>MATURED - The  contract is matured. i.e. the contract has completed its full life cycle. </p>
+            <p>KNOCKOUT - The contract is knocked out, i.e. the knock out barrier price is breached. </p>
+            <p>UNWOUND - The contract is terminated early - before the maturity date. </p>            
+            <p />
+            <p>No change field if SUPPRESS.UNDERLYING is set to 'No'. </p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY.BOUGHT</field>
+<desc>
+            <p>This field holds the currency that the customer buys. </p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY.SOLD</field>
+<desc>
+            <p>This field holds the currency that the customer sells. </p>
+        </desc>
+</t>
+<t>
+<field>BUY.CCY.CALENDAR</field>
+<desc>
+            <p>The holiday calendar to be used for "CURRENCY.BOUGHT". Accepts a valid country or region. If country code is input, default region (00) would be used. </p>                        
+        </desc>
+</t>
+<t>
+<field>SELL.CCY.CALENDAR</field>
+<desc>
+            <p>The holiday calendar to be used for "CURRENCY.SOLD". Accepts a valid country or region. If country code is input, default region (00) would be used. </p>
+        </desc>
+</t>
+<t>
+<field>DAY.CONVENTION</field>
+<desc>
+            <p>This field is used in defaulting the fixing date if the fixing date generated by the fixing frequency falls on a holiday. </p>
+            <p />
+            <p>Allowed values - </p>
+            <p>'FWD' - Next working day will be defaulted. </p>
+            <p>'BWD' - Previous working day will be defaulted. </p>            
+        </desc>
+</t>
+<t>
+<field>SUPPRESS.UNDERLYING</field>
+<desc>
+            <p>If this field is set to 'Yes',  system will not create the underlying transactions when the contract is committed. It is expected that the underlying transactions will be created manually or interfaced from a different system and the contract can be linked to FSFORWARDS using SY.DX.REFERENCE.</p>
+            <p>For such contracts, life cycle events of the contract such as fixing undo fixing etc. should be managed externally (Manually or interfaced from an external system).</p>
+            <p>If this field is set to 'No', underlying transactions will be created by the system. The life cycle events of the contract will be processed by the system. </p>
+            <p>This field will be defaulted from SY.PRODUCT.VARIANT. If SY.PRODUCT.VARIANT is not defined, then the value will be defaulted from SY.PRODUCT.DEFINITION. </p>
+            <p>The option fields which are involved in creating the underlying DX.TRADES's would be made "No Change" if SUPPRESS.UNDERLYING field is set to 'No'</p>
+        </desc>
+</t>
+<t>
+<field>INCL.VANILLA.OPTION</field>
+<desc>
+            <p>A value of 'BUY' in this field indicates that this contract includes a vanilla option component. The field will be defaulted from SY.PRODUCT.VARIANT if VARIANT is given else it will be defaulted from SY.PRODUCT.DEFINITION. </p>
+            <p>No change field if SUPPRESS.UNDERLYING is set to 'No'.</p>
+        </desc>
+</t>
+<t>
+<field>DX.CONTRACT.CODE</field>
+<desc>
+            <p>This field will hold a valid DX.CONTRACT.MASTER ID. The underlying option trades would be booked with this contract master. The contract should have maturity type as daily and it should FXOTC option contract. </p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.CCY</field>
+<desc>
+            <p>Contract currency is captured in this field. This would be the currency in which the contract would be valued in the portfolio.</p>
+        </desc>
+</t>
+<t>
+<field>SPOT.PRICE</field>
+<desc>
+            <p>The current exchange rate between CURRENCY.BOUGHT and CURRENCY.SOLD is captured here for reference.</p>
+        </desc>
+</t>
+<t>
+<field>BASE.CCY</field>
+<desc>
+            <p>The base currency within the currency pair (CURRENCY.BOUGHT and CURRENCY.SOLD) is updated in this field. </p>
+        </desc>
+</t>
+<t>
+<field>TRADE.DATE</field>
+<desc>
+            <p>Holds the trade date of the contract. Trade date cannot be forward dated and should fall between the FIRST.DATE and LAST.DATE of the corresponding product definition record. </p>
+            <p>The date given should be working day in BUY.CCY.CALENDAR and SEL.CCY.CALENDAR. No change field if SUPPRESS.UNDERLYING is set to 'No'.</p>
+        </desc>
+</t>
+<t>
+<field>TRADE.TIME</field>
+<desc>
+            <p>This field will be defaulted with TRADE time. </p>
+            <p>No change field if SUPPRESS.UNDERLYING is set to 'No'.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>This field will hold the value date of the contract and it will be defaulted considering BUY.CCY.CALENDAR and SEL.CCY.CALENDAR of the contract. Value date cannot be earlier than the trade date. </p>            
+            <p>No change field if SUPPRESS.UNDERLYING is set to 'No'. </p>
+        </desc>
+</t>
+<t>
+<field>TERM</field>
+<desc>
+            <p>This field holds the tenor of the contract. The Tenor can be expressed as a number of Days, Weeks or Months. Input in this field has to be in the format nnnD, nnnM or nnnW where nnn is represents the numeric component. D signifies Days (working days) ,M signifies Months and W signifies Weeks </p>
+        </desc>
+</t>
+<t>
+<field>MATURITY.DATE</field>
+<desc>
+            <p>Maturity date is the termination date of the contract.  Maturity date will be defaulted based on TERM and VALUE.DATE. Either TERM or MATURITY.DATE is mandatory.</p>
+        </desc>
+</t>
+<t>
+<field>FINAL.SETT.DATE</field>
+<desc>
+            <p>This field will hold the final settlement date of the contract and it will be defaulted considering SPOT.DAY from FX.PARAMETERS and BUY.CCY.CALENDAR and SEL.CCY.CALENDAR of the contract. </p>
+            <p>Final settlement date can't be less than maturity date. No change field if SUPPRESS.UNDERLYING is set to 'No'. </p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER</field>
+<desc>
+            <p>This field records the investor for this contract. For the client trade, this would be the customer, for the counterparty trade, this would be the DEALER.BOOK. </p>
+            <p>The customer should be defined in DX.CUSTOMER. </p>
+            <p>No change field if SUPPRESS.UNDERLYING is set to 'No'. </p>
+        </desc>
+</t>
+<t>
+<field>PORTFOLIO</field>
+<desc>
+            <p>This field will hold the portfolio of the customer for this contract. When left blank, the first portfolio of the CUSTOMER will be defaulted.</p>
+            <p>No change field if SUPPRESS.UNDERLYING is set to 'No'.</p>
+        </desc>
+</t>
+<t>
+<field>COUNTERPARTY</field>
+<desc>
+            <p>The counterparty for the contract is  updated in this field. In the client trade, COUNTERPARTY would be the dealer book and it would be the external counterparty for the back to back or counterparty trade. </p>
+            <p>The counterparty should be defined in DX.CUSTOMER. Either counter party or customer should be a dealer book. No change field if SUPPRESS.UNDERLYING is set to 'No'. </p>
+        </desc>
+</t>
+<t>
+<field>CPARTY.PORTFOLIO</field>
+<desc>
+            <p>This field will hold the portfolio of the counterparty. If portfolio exist for the counterparty, then this field will be defaulted with the first portfolio of the counterparty. Not mandatory for counterparty trade. </p>
+            <p>No change field if SUPPRESS.UNDERLYING is set to 'No'. </p>
+        </desc>
+</t>
+<t>
+<field>CU.BUY.CCY.ACCT</field>
+<desc>
+            <p>Customer's account in CURRENCY.BOUGHT will be defaulted in this field. This field is mandatory if customer is not a dealer book and input is not allowed for a dealer book. </p>
+        </desc>
+</t>
+<t>
+<field>CU.SELL.CCY.ACCT</field>
+<desc>
+            <p>Customer's account in CURRENCY.SOLD will be defaulted in this field. This field is mandatory if customer is not a dealer book and input is not allowed for a dealer book. </p>
+        </desc>
+</t>
+<t>
+<field>CPARTY.BUY.CCY.ACCT</field>
+<desc>
+            <p>Counterparty's account in CURRENCY.BOUGHT will be defaulted in this field. This field is mandatory if customer is not a dealer book and input is not allowed for a dealer book </p>
+        </desc>
+</t>
+<t>
+<field>CPARTY.SELL.CCY.ACCT</field>
+<desc>
+            <p>Counterparty's account in CURRENCY.SOLD will be defaulted in this field. This field is mandatory if customer is not a dealer book and input is not allowed for a dealer book </p>
+        </desc>
+</t>
+
+<t>
+<field>COUNTERPARTY.TRADE</field>
+<desc>
+            <p>This field needs to be set to 'Yes' in the street leg or counterparty deal.</p>
+        </desc>
+</t>
+<t>
+<field>PREMIUM.PAY.RECEIVE</field>
+<desc>
+            <p>This field will say whether the customer have to pay/receive the premium amount</p>
+        </desc>
+</t>
+<t>
+<field>PREMIUM.CCY</field>
+<desc>
+            <p>This field will hold the currency in which premium is specified. Input allowed only if PREMIUM.PAY.RECEIVE is set.</p>
+        </desc>
+</t>
+<t>
+<field>PREMIUM.PRICE</field>
+<desc>
+            <p>Premium price would be used to calculate the premium amount. Premium amount  = premium price * Notional amount.</p>
+        </desc>
+</t>
+<t>
+<field>PREMIUM.AMT</field>
+<desc>
+            <p>This field will hold the premium amount which has to be payed or received. Input allowed only if PREMIUM.PAY.RECEIVE is set.</p>
+        </desc>
+</t>
+<t>
+<field>PREMIUM.ACC</field>
+<desc>
+            <p>The premium amount will be debited or credited to this account based on the value in PREMIUM.PAY.RECEIVE.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.NOTIONAL.SELL.CCY</field>
+<desc>
+            <p>This field holds the notional amount in CURRENCY.SOLD. Calculated as sum of S.TOTAL.CALL.AMT and VB.TOTAL.PUT.AMOUNT multivalue fields. </p>
+        </desc>
+</t>
+<t>
+<field>TOT.NOTIONAL.BUY.CCY</field>
+<desc>
+            <p>This field holds the notional amount in the CURRENCY.BOUGHT. Calculated as sum of S.TOTAL.PUT.AMT and VB.TOTAL.CALL.AMT multivalue fields. </p>
+        </desc>
+</t>
+<t>
+<field>RUN.NOTIONAL.SELL.CCY</field>
+<desc>
+            <p>Running notional in CURRENCY.SOLD is updated in this field. While contract commences this field will be defaulted with Initial notional amount as updated in TOT.NOTIONAL.SELL.CCY. </p>
+            <p>During the life cycle of the contract, the notional changes as the option gets exercised (i.e) as part of fixing, the notional amount for the remaining tenure is updated in this field. </p>
+            <p>If sell option is knocked out then remaining schedule put amount of buy and vanilla option will be updated in this field and on each fixing the notional amount will be reduced. </p>            
+        </desc>
+</t>
+<t>
+<field>RUN.NOTIONAL.BUY.CCY</field>
+<desc>
+            <p>Running notional in CURRENCY.BOUGHT is updated in this field. While contract commences this field will be defaulted with Initial notional as updated in TOT.NOTIONAL.BUY.CCY </p>
+            <p>During the life cycle of the contract, the notional changes as the option gets exercised (i.e) as part of fixing, the notional amount for the remaining tenure is updated in this field. </p>
+            <p>If sell option is knocked out then remaining schedule call amount of buy and vanilla option will be updated in this field and on each fixing the notional amount will be reduced. </p>
+        </desc>
+</t>
+<t>
+<field>EXTERNAL.REF</field>
+<desc>
+            <p>External references such as a reference from an upstream system can be stored in this field. This used for information purposes. </p>
+        </desc>
+</t>
+<t>
+<field>SY.DX.REFERENCE</field>
+<desc>
+            <p>This is the  unique reference that will bind the structure (FXFORWARDS contract) with all its underlying transactions.</p>
+            <p>For example, when an SY.FX.FORWARDS contract is created, the underlying option is created in DX.TRADE. As the contract gets fixed (periodic settlement), the settlement happens through a FOREX transaction. All three transactions , SY.FX.FORWARDS contract, DX.TRADE and FOREX will be updated with this reference.</p>
+            <p>This reference can be input by user, if left blank, the contract id would be populated</p>
+        </desc>
+</t>
+<t>
+<field>B2B.REFERENCE</field>
+<desc>
+            <p>FX participating forwards and Tarko contracts are booked as two transactions. The Client transacts with the bank (dealer book). The bank then covers or hedges this position by entering into a back to back transaction with the counterparty. </p>
+            <p>Both the client leg and the counterparty leg transaction would have the same value in this field, thereby conveying to the system that this two contracts are linked.</p>
+        </desc>
+</t>
+<t>
+<field>TRANSACTION.REF</field>
+<desc>
+            <p>This field will hold SY.TRANSACTION ID. No input field. </p>
+        </desc>
+</t>
+<t>
+<field>DEALER.DESK</field>
+<desc>
+            <p>This field will hold DEALER.DESK of the contract. The value given here will be mapped to SY.TRANSACTION. </p>
+        </desc>
+</t>
+<t>
+<field>SETTLEMENT.METHOD</field>
+<desc>
+            <p>This field will hold the settlement method  of the underlying option. The underlying option can be cash settled or physically settled. The field will be defaulted from DX.CONTRACT.MASTER. </p>
+            <p>For physical settlement, at the time of exercise, an FX spot deal would be generated. For cash settlement, a cash entry would be generated for the cash difference between the spot exchange rate and strike exchange rate.</p>
+        </desc>
+</t>
+<t>
+<field>FX.PAYOUT.CCY</field>
+<desc>
+            <p>This field holds the FX Payout currency for the currency pair. The cash settlement would happen in this currency. Input allowed only when SETTLEMENT.METHOD is set to CASH </p>
+        </desc>
+</t>
+<t>
+<field>FEE.CCY</field>
+<desc>
+            <p>The field will hold currency in which the fees will be collected</p>
+        </desc>
+</t>
+<t>
+<field>FEE.AMT</field>
+<desc>
+            <p>Fee amount for the transaction is captured in this field. This amount is denominated in the FEE.CCY and it is posted to the FEE.PL.CATEG defined in SY.PRODUCT.DEFINITION. </p>
+        </desc>
+</t>
+<t>
+<field>FEE.ACCT</field>
+<desc>
+            <p>The field will hold the customer account from which the fees will be debited.</p>
+        </desc>
+</t>
+<t>
+<field>UNWIND</field>
+<desc>
+            <p>The contract can be pre-closed or terminated before the maturity date. Early closure is also referred to as "Unwinding" of the contract. </p>
+            <p>A penalty charge (unwind charge) can also be applied for early termination.</p>            
+        </desc>
+</t>
+<t>
+<field>UNWIND.CHG.CCY</field>
+<desc>
+            <p>This field will record the currency in which unwind charge be collected.</p>
+        </desc>
+</t>
+<t>
+<field>UNWIND.CHG.AMT</field>
+<desc>
+            <p>Early termination or unwind may attract a  penalty charge (known as unwind charge). The penalty amount can be input in this field.</p>
+        </desc>
+</t>
+<t>
+<field>UNWIND.CHG.ACC</field>
+<desc>
+            <p>The unwinding charges would be collected from this account. The account should be in the currency specified in UNWIND.CHG.CCY</p>
+        </desc>
+</t>
+<t>
+<field>UNWIND.EFF.DATE</field>
+<desc>
+            <p>This field holds the effective date for 'Unwind'. Defaults to 'Today'.  Cannot be changed once authorized. </p>            
+        </desc>
+</t>
+<t>
+<field>ACCR.INTRINSIC.VAL</field>
+<desc>
+            <p>This field is used to store the accumulated intrinsic value for TARKO Contracts. The accumulated intrinsic profit may change during each fixing and the same needs to be captured for information purposes. </p>
+            <p>This field needs to be updated manually and there is no system calculation. Used only for information purposes. </p>            
+        </desc>
+</t>
+<t>
+<field>B.OPTION.STYLE</field>
+<desc>
+            <p>This field holds the option style for the buy option. OPTION.STYLE will be defaulted from DX.CONTRACT.MASTER. Allowed values are 'AMERICAN', 'EUROPEAN','CARRIBEAN'. </p>
+        </desc>
+</t>
+<t>
+<field>B.OPTION.TYPE</field>
+<desc>
+            <p>This field will say the option type of the underlying buy option that is getting created. The value will be defaulted to 'CALL'. </p>
+        </desc>
+</t>
+<t>
+<field>B.STRIKE.PRICE</field>
+<desc>
+            <p>Strike price for the buy option is keyed in this field. </p>
+        </desc>
+</t>
+<t>
+<field>B.CALL.CCY</field>
+<desc>
+            <p>This field will hold the call currency of the buy option. This will be populated with CURRENCY.BOUGHT</p>
+        </desc>
+</t>
+<t>
+<field>B.CALL.AMT</field>
+<desc>
+            <p>The Call amount (amount bought ) is updated in this field. If the B.CALL.CCY is equl to BASE.CCY,  user needs to input the amount, otherwise system will derive the amount  from  B.PUT.AMT and B.STRIKE.PRICE. </p>
+        </desc>
+</t>
+<t>
+<field>B.PUT.CCY</field>
+<desc>
+            <p>This field holds the put currency of the buy option. The value in CURRENCY.SOLD is updated in this field. </p>
+        </desc>
+</t>
+<t>
+<field>B.PUT.AMT</field>
+<desc>
+            <p>The put amount (amount sold) is updated in this field. If B.PUT.CCY is equal to BASE.CCY, user need to input the value, otherwise the value is derived by the system from B.CALL.AMT and B.STRIKE.PRICE. </p>
+        </desc>
+</t>
+<t>
+<field>B.DIFFERENT.AMT</field>
+<desc>
+            <p>This field needs to be set to 'Yes', if the B.CALL.AMT and B.PUT.AMT is not constant for all fixing periods.  Once the flag is set , the user can change the amount for specific fixings. </p>
+        </desc>
+</t>
+<t>
+<field>B.FIXING.FREQUENCY</field>
+<desc>
+            <p>This field can be used to specify the fixing frequency for the buy option. Based on the fixing frequency, the fixing schedule will be generated.</p>
+            <p>The exercise or expiration of the underlying option would happen on the respective B.FIXING.DATE</p>
+        </desc>
+</t>
+<t>
+<field>B.FIXING.PERIODS</field>
+<desc>
+            <p>This field will hold the number of fixing periods in the buy option life cycle. This field is optional field, if given then specified number of fixing cycles will be generated and the last fixing cycle will be defaulted as maturity date.</p>
+            <p>If the number of periods is not mentioned then based on the MATURITY.DATE the fixing cycles will be populated.</p>
+        </desc>
+</t>
+<t>
+<field>B.MATURITY.DATE</field>
+<desc>
+            <p>The field holds the maturity date of the  buy option and it should not be greater than MATURITY.DATE of the contract. The last FIXING.DATE of the option will be defaulted to MATURITY.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>B.TOTAL.CALL.AMT</field>
+<desc>
+            <p>This field holds the total amount of currency bought for the buy option. This would be sum of the call amount(B.SCHEDULE.CALL.AMT) for each fixing.</p>
+        </desc>
+</t>
+<t>
+<field>B.TOTAL.PUT.AMT</field>
+<desc>
+            <p>This field holds the total amount of the currency sold for the buy option. This woulld be sum of the put amount(B.SCHEDULE.PUT.AMT) for each fixing.</p>
+        </desc>
+</t>
+<t>
+<field>B.KNOCK.IN</field>
+<desc>
+            <p>When this field is set to 'Yes', it indicates to the system that the buy option is knocked in. If there is a 'B.KNOCKIN.PRICE' defined, then this field needs to be set to 'Yes' , before the option can be exercised. </p>
+        </desc>
+</t>
+<t>
+<field>B.KNOCKIN.PRICE</field>
+<desc>
+            <p>If this field is not null, then the option would be deemed to have a knock in barrier. Only when B.KNOCK.IN is set to yes then the option can be exercised.</p>
+        </desc>
+</t>
+<t>
+<field>B.KNOCK.OUT</field>
+<desc>
+            <p>When this field is set to 'Yes', it indicates to the system that the buy option is knocked out. Once it is Knocked out, the option cannot be exercised. </p>
+        </desc>
+</t>
+<t>
+<field>B.KNOCKOUT.PRICE</field>
+<desc>
+            <p>The Knock out barrier price field can be defined in this field.</p>
+        </desc>
+</t>
+<t>
+<field>B.KNOCKOUT.INTRINSIC</field>
+<desc>
+            <p>For the TARKO variant , the target redemption (accumulated intrinsic value of the contract) is captured in this field. </p>
+        </desc>
+</t>
+<t>
+<field>B.RUN.CURRENT.FIXING</field>
+<desc>
+            <p>When this field is set to 'Yes', and  B.KNOCKOUT is set to 'Yes', then the current fixing is effected before the option is knocked out. </p>
+        </desc>
+</t>
+<t>
+<field>B.UNDO.FIXING</field>
+<desc>
+            <p>Yes or No field. Yes Indicates that fixing needs to be undone. Only the latest fixing can be undone. The accounting entries would be reversed. Option nominal would be reinstated but the underlying FX deal needs to be manually adjusted.</p>
+        </desc>
+</t>
+<t>
+<field>B.UNDO.KNOCKOUT</field>
+<desc>
+            <p>Yes or No field. Yes indicates that knock out needs to be undone. The accounting entries would be reversed and option nominal would be reinstated. Underlying FX deal needs to be manually adjusted. </p>
+        </desc>
+</t>
+<t>
+<field>B.DX.REFERENCE</field>
+<desc>
+            <p>This field will hold the reference of the underlying buy option contract (DX.TRADE ID). </p>
+        </desc>
+</t>
+<t>
+<field>B.FIXING.DATE</field>
+<desc>
+            <p>The fields from the B.FIXING.DATE to B.FIXING.STATUS are part of a multi value set. The value in this field will be populated based on the FIXING.FREQUENCY and FIXING.PERIODS.</p>
+            <p>The first fixing date can't be greater than B.MATURITY.DATE and also the final fixing date should  always be equal to B.MATURITY.DATE. </p>
+            <p>The fixing date will be populated considering BUY.CCY.CALENDAR, SEL.CCY.CALENDAR and the local region. </p>
+        </desc>
+</t>
+<t>
+<field>B.SETTLEMENT.DATE</field>
+<desc>
+            <p>For each fixing date the settlement date will be populated considering the spot days and spot currency defined in FX.PARAMETERS along with BUY.CCY.CALENDAR and SEL.CCY.CALENDAR defined in the contract. </p>
+        </desc>
+</t>
+<t>
+<field>B.SCHEDULE.CALL.AMT</field>
+<desc>
+            <p>This field holds the call amount for this fixing period. This will default from B.CALL.AMT and can be modified if B.DIFFERENT.AMT is set to 'Yes'. </p>
+            <p>When the option is knocked out(B.KNOCKOUT is set to yes) then for the this period, the B.SCHEDULE.CALL.AMT can be adjusted to cater to TARKO variants such as adjusted strike TARKO. </p>
+            <p>In such cases, for the fixing period in which the knock out occured, the B.SCHEDULE.CALL.AMT and B.SCHEDULE.PUT.AMT need not be based on the B.STRIKE.PRICE. </p>
+        </desc>
+</t>
+<t>
+<field>B.SCHEDULE.PUT.AMT</field>
+<desc>
+            <p>This field holds the put amount for this fixing period. This will default from B.PUT.AMT and can be modified if B.DIFFERENT.AMT is set to 'Yes'. </p>
+            <p>When the option is knocked out(B.KNOCKOUT is set to yes) then for the this period, the B.SCHEDULE.PUT.AMT can be adjusted to cater to TARKO variants such as adjusted strike TARKO. </p>
+            <p>In such cases, for the fixing period in which the knock out occured, the B.SCHEDULE.CALL.AMT and B.SCHEDULE.PUT.AMT need not be based on the B.STRIKE.PRICE. </p>
+        </desc>
+</t>
+<t>
+<field>B.SPOT.EXCHANGE.RATE</field>
+<desc>
+            <p>This field holds the spot exchange rate at the time of fixing. This field would be used to calculate the settlement amount for cash settled contracts.</p>
+        </desc>
+</t>
+<t>
+<field>B.SETTLEMENT.AMT</field>
+<desc>
+            <p>If the contract is cash settled, then the value in the field will be settled. This field will not be calculated automatically, and the field is mandatory for cash settlement. </p>
+        </desc>
+</t>
+<t>
+<field>B.FIXING</field>
+<desc>
+            <p>This field holds the trigger to exercise or expire the buy option. When set to 'Exercise', the underlying buy option is exercised. When set to 'Expire', the underlying option would be expired. </p>
+            <p>This trigger needs to be updated by the user,  and if this field is left blank, the fixing event will not run. </p>
+        </desc>
+</t>
+<t>
+<field>B.FIXING.STATUS</field>
+<desc>
+            <p>This field will specify the status of the fixing periods. If this is null then it means it is yet to be fixed, if the value is FIXED, then the corresponding fixing period is processed and fixed. </p>
+            <p>If the contract is knocked out then it will be updated as KNOCKED.OUT and if the contract is unwound it will be updated as UNWOUND. </p>
+        </desc>
+</t>
+<t>
+<field>S.OPTION.STYLE</field>
+<desc>
+            <p>This field holds the option style for the sell option. OPTION.STYLE will be defaulted from DX.CONTRACT.MASTER. Allowed values are 'AMERICAN', 'EUROPEAN','CARRIBEAN'. </p>
+        </desc>
+</t>
+<t>
+<field>S.OPTION.TYPE</field>
+<desc>
+            <p>This field will say the option type of the underlying sell option that is getting created. The value will be defaulted to 'PUT'.</p>
+        </desc>
+</t>
+<t>
+<field>S.STRIKE.PRICE</field>
+<desc>
+            <p>Strike price for the sell option is keyed in this field.</p>
+        </desc>
+</t>
+<t>
+<field>S.CALL.CCY</field>
+<desc>
+            <p>This field hold the call currency of the sell option. This will be populated with CURRENCY.SOLD. </p>
+        </desc>
+</t>
+<t>
+<field>S.CALL.AMT</field>
+<desc>
+            <p>The Call amount (amount bought ) is updated in this field. If the S.CALL.CCY is equl to BASE.CCY,  user needs to input the amount, otherwise system will derive the amount from S.PUT.AMT and S.STRIKE.PRICE. </p>
+        </desc>
+</t>
+<t>
+<field>S.PUT.CCY</field>
+<desc>
+            <p>This field holds the put currency of the sell option. The value in CURRENCY.BOUGHT is updated in this field. </p>
+        </desc>
+</t>
+<t>
+<field>S.PUT.AMT</field>
+<desc>
+            <p>The put amount (amount sold) is updated in this field. If S.PUT.CCY is equal to BASE.CCY, user need to input the value, otherwise the value is derived by the system from S.CALL.AMT and S.STRIKE.PRICE. </p>
+        </desc>
+</t>
+<t>
+<field>S.DIFFERENT.AMT</field>
+<desc>
+            <p>This field needs to be set to 'Yes', if the S.CALL.AMT and S.PUT.AMT is not constant for all fixing periods.  Once the flag is set , the user can change the amount for specific fixings.</p>
+        </desc>
+</t>
+<t>
+<field>S.FIXING.FREQUENCY</field>
+<desc>
+            <p>This field can be used to specify the fixing frequency for the sell option. Based on the fixing frequency, the fixing schedule will be generated. </p>
+            <p>The exercise or expiration of the underlying option would happen on the respective S.FIXING.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>S.FIXING.PERIODS</field>
+<desc>
+            <p>This field will hold the number of fixing periods in the sell option life cycle. This field is optional field, if given then specified number of fixing cycles will be generated and the last fixing cycle will be defaulted as maturity date.</p>
+            <p>If the number of periods is not mentioned then based on the MATURITY.DATE the fixing cycles will be populated.</p>
+        </desc>
+</t>
+<t>
+<field>S.MATURITY.DATE</field>
+<desc>
+            <p>The field holds the maturity date of the sell option and it should not be greater than MATURITY.DATE of the contract. The last FIXING.DATE of the option will be defaulted to MATURITY.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>S.TOTAL.CALL.AMT</field>
+<desc>
+            <p>This field holds the total amount of currency bought for the sell option. This would be sum of the call amount(S.SCHEDULE.CALL.AMT) for each fixing.</p>
+        </desc>
+</t>
+<t>
+<field>S.TOTAL.PUT.AMT</field>
+<desc>
+            <p>This field holds the total amount of the currency sold for the sell option. This woulld be sum of the put amount(S.SCHEDULE.PUT.AMT) for each fixing.</p>
+        </desc>
+</t>
+<t>
+<field>S.KNOCK.IN</field>
+<desc>
+            <p>When this field is set to 'Yes', it indicates to the system that the sell option is knocked in. If there is a 'S.KNOCKIN.PRICE' defined, then this field needs to be set to 'Yes' , before the option can be exercised. </p>
+        </desc>
+</t>
+<t>
+<field>S.KNOCKIN.PRICE</field>
+<desc>
+            <p>If this field is not null, then the option would be deemed to have a knock in barrier. Only when S.KNOCK.IN is set to yes then the option can be exercised. </p>
+        </desc>
+</t>
+<t>
+<field>S.KNOCK.OUT</field>
+<desc>
+            <p>When this field is set to 'Yes', it indicates to the system that the sell option is knocked out. Once it is Knocked out, the option cannot be exercised. </p>
+        </desc>
+</t>
+<t>
+<field>S.KNOCKOUT.PRICE</field>
+<desc>
+            <p>The Knock out barrier price field can be defined in this field.</p>
+        </desc>
+</t>
+<t>
+<field>S.KNOCKOUT.INTRINSIC</field>
+<desc>
+            <p>For the TARKO variant , the target redemption (accumulated intrinsic value of the contract) is captured in this field. </p>
+        </desc>
+</t>
+<t>
+<field>S.RUN.CURRENT.FIXING</field>
+<desc>
+            <p>When this field is set to 'Yes', and  S.KNOCKOUT is set to 'Yes', then the current fixing is effected before the option is knocked out. </p>
+        </desc>
+</t>
+<t>
+<field>S.UNDO.FIXING</field>
+<desc>
+            <p>	Yes or No field. Yes Indicates that fixing needs to be undone. Only the latest fixing can be undone. The accounting entries would be reversed. Option nominal would be reinstated but the underlying FX deal needs to be manually adjusted.</p>
+        </desc>
+</t>
+<t>
+<field>S.UNDO.KNOCKOUT</field>
+<desc>
+            <p>Yes or No field. Yes indicates that knock out needs to be undone. The accounting entries would be reversed and option nominal would be reinstated. Underlying FX deal needs to be manually adjusted. </p>
+        </desc>
+</t>
+<t>
+<field>S.DX.REFERENCE</field>
+<desc>
+            <p>This field will hold the reference of the underlying sell option contract (DX.TRADE ID). </p>
+        </desc>
+</t>
+<t>
+<field>S.FIXING.DATE</field>
+<desc>
+            <p>The fields from the S.FIXING.DATE to S.FIXING.STATUS are part of a multi value set. The value in this field will be populated based on the FIXING.FREQUENCY and FIXING.PERIODS. </p>
+            <p>The first fixing date can't be greater than S.MATURITY.DATE and also the final fixing date should  always be equal to S.MATURITY.DATE. </p>
+            <p>The fixing date will be populated considering BUY.CCY.CALENDAR, SEL.CCY.CALENDAR and the local region. </p>
+        </desc>
+</t>
+<t>
+<field>S.SETTLEMENT.DATE</field>
+<desc>
+            <p>For each fixing date the settlement date will be populated considering the spot days and spot currency defined in FX.PARAMETERS along with BUY.CCY.CALENDAR and SEL.CCY.CALENDAR defined in the contract. </p>
+        </desc>
+</t>
+<t>
+<field>S.SCHEDULE.CALL.AMT</field>
+<desc>
+            <p>This field holds the call amount for this fixing period. This will default from S.CALL.AMT and can be modified if S.DIFFERENT.AMT is set to 'Yes'. </p>
+            <p>When the option is knocked out(S.KNOCKOUT is set to yes) then for the this period, the S.SCHEDULE.CALL.AMT can be adjusted to cater to TARKO variants such as adjusted strike TARKO.</p>
+            <p>In such cases, for the fixing period in which the knock out occured, the S.SCHEDULE.CALL.AMT and S.SCHEDULE.PUT.AMT need not be based on the S.STRIKE.PRICE. </p>
+        </desc>
+</t>
+<t>
+<field>S.SCHEDULE.PUT.AMT</field>
+<desc>
+            <p>This field holds the put amount for this fixing period. This will default from S.PUT.AMT and can be modified if S.DIFFERENT.AMT is set to 'Yes'. </p>
+            <p>When the option is knocked out(S.KNOCKOUT is set to yes) then for the this period, the S.SCHEDULE.PUT.AMT can be adjusted to cater to TARKO variants such as adjusted strike TARKO. </p>
+            <p> In such cases, for the fixing period in which the knock out occured, the S.SCHEDULE.CALL.AMT and S.SCHEDULE.PUT.AMT need not be based on the S.STRIKE.PRICE. </p>
+        </desc>
+</t>
+<t>
+<field>S.SPOT.EXCHANGE.RATE</field>
+<desc>
+            <p>This field holds the spot exchange rate at the time of fixing. This field would be used to calculate the settlement amount for cash settled contracts. </p>
+        </desc>
+</t>
+<t>
+<field>S.SETTLEMENT.AMT</field>
+<desc>
+            <p>This field holds the settlement amount for cash settled contracts. </p>
+        </desc>
+</t>
+<t>
+<field>S.FIXING</field>
+<desc>
+            <p>This field holds the trigger to exercise or expire the sell option. When set to 'Exercise', the underlying sell option is exercised. When set to 'Expire', the underlying option would be expired. </p>
+            <p>This trigger needs to be updated by the user,  and if this field is left blank, the fixing event will not run.</p>
+        </desc>
+</t>
+<t>
+<field>S.FIXING.STATUS</field>
+<desc>
+            <p>This field will specify the status of the fixing periods. If this is null then it means it is yet to be fixed, if the value is FIXED, then the corresponding fixing period is processed and fixed. </p>
+            <p>If the contract is knocked out then it will be updated as KNOCKED.OUT and if the contract is unwound it will be updated as UNWOUND. </p>
+        </desc>
+</t>
+<t>
+<field>VB.OPTION.STYLE</field>
+<desc>
+            <p>OPTION.STYLE will be defaulted from DX.CONTRACT.MASTER. This field is for information purpose. </p>
+        </desc>
+</t>
+<t>
+<field>VB.OPTION.TYPE</field>
+<desc>
+            <p>This field holds the option style for the vanilla buy option. OPTION.STYLE will be defaulted from DX.CONTRACT.MASTER. Allowed values are 'AMERICAN', 'EUROPEAN','CARRIBEAN'. </p>
+        </desc>
+</t>
+<t>
+<field>VB.STRIKE.PRICE</field>
+<desc>
+            <p>Strike price for the vanilla option is keyed in this field. </p>
+        </desc>
+</t>
+<t>
+<field>VB.CALL.CCY</field>
+<desc>
+            <p>This field hold the call currency of the vanilla option. This will be populated with CURRENCY.BOUGHT</p>
+        </desc>
+</t>
+<t>
+<field>VB.CALL.AMT</field>
+<desc>
+            <p>The Call amount (amount bought ) is updated in this field. If the VB.CALL.CCY is equl to BASE.CCY, user needs to input the amount, otherwise system will derive the amount from VB.PUT.AMT and VB.STRIKE.PRICE. </p>
+        </desc>
+</t>
+<t>
+<field>VB.PUT.CCY</field>
+<desc>
+            <p>This field holds the put currency of the buy option. The value in CURRENCY.SOLD is updated in this field. </p>
+        </desc>
+</t>
+<t>
+<field>VB.PUT.AMT</field>
+<desc>
+            <p>The put amount (amount sold) is updated in this field. If VB.PUT.CCY is equal to BASE.CCY, user need to input the value, otherwise the value is derived by the system from VB.CALL.AMT and VB.STRIKE.PRICE. </p>
+        </desc>
+</t>
+<t>
+<field>VB.DIFFERENT.AMT</field>
+<desc>
+            <p>This field needs to be set to 'Yes', if the VB.CALL.AMT and VB.PUT.AMT is not constant for all fixing periods.  Once the flag is set , the user can change the amount for specific fixings. </p>
+        </desc>
+</t>
+<t>
+<field>VB.FIXING.FREQUENCY</field>
+<desc>
+            <p>This field can be used to specify the fixing frequency for the vanilla option. Based on the fixing frequency, the fixing schedule will be generated. </p>
+            <p>The exercise or expiration of the underlying option would happen on the respective VB.FIXING.DATE. </p>
+        </desc>
+</t>
+<t>
+<field>VB.FIXING.PERIODS</field>
+<desc>
+            <p>This field will hold the number of fixing periods in the vanilla buy option life cycle. This field is optional field, if given then specified number of fixing cycles will be generated and the last fixing cycle will be defaulted as maturity date.</p>
+            <p>If the number of periods is not mentioned then based on the MATURITY.DATE the fixing cycles will be populated.</p>
+        </desc>
+</t>
+<t>
+<field>VB.MATURITY.DATE</field>
+<desc>
+            <p>The field holds the maturity date of  the vanilla buy option and it should not be greater than MATURITY.DATE of the contract. The last FIXING.DATE of the option will be defaulted to MATURITY.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>VB.TOTAL.CALL.AMT</field>
+<desc>
+            <p>This field holds the total amount of currency bought for the vanilla option. This would be sum of the call amount(VB.SCHEDULE.CALL.AMT) for each fixing.</p>
+        </desc>
+</t>
+<t>
+<field>VB.TOTAL.PUT.AMT</field>
+<desc>
+            <p>This field holds the total amount of the currency sold for the vanilla option. This woulld be sum of the put amount(VB.SCHEDULE.PUT.AMT) for each fixing.</p>
+        </desc>
+</t>
+<t>
+<field>VB.UNDO.FIXING</field>
+<desc>
+            <p>Yes or No field. Yes Indicates that fixing needs to be undone. Only the latest fixing can be undone. The accounting entries would be reversed. Option nominal would be reinstated but the underlying FX deal needs to be manually adjusted.</p>
+        </desc>
+</t>
+<t>
+<field>VB.DX.REFERENCE</field>
+<desc>
+            <p>This field will hold the reference of the underlying buy option contract (DX.TRADE ID). </p>
+        </desc>
+</t>
+<t>
+<field>VB.FIXING.DATE</field>
+<desc>
+            <p>The fields from the VB.FIXING.DATE to VB.FIXING.STATUS are part of a multi value set. The value in this field will be populated based on the FIXING.FREQUENCY and FIXING.PERIODS. </p>
+            <p>The first fixing date can't be greater than VB.MATURITY.DATE and also the final fixing date should  always be equal to VB.MATURITY.DATE. </p>
+            <p>The fixing date will be populated considering BUY.CCY.CALENDAR, SEL.CCY.CALENDAR and the local region. </p>
+        </desc>
+</t>
+<t>
+<field>VB.SETTLEMENT.DATE</field>
+<desc>
+            <p>For each fixing date the settlement date will be populated considering the spot days and spot currency defined in FX.PARAMETERS along with BUY.CCY.CALENDAR and SEL.CCY.CALENDAR defined in the contract. </p>
+        </desc>
+</t>
+<t>
+<field>VB.SCHEDULE.CALL.AMT</field>
+<desc>
+            <p>This field holds the call amount for this fixing period. This will default from VB.CALL.AMT and can be modified if VB.DIFFERENT.AMT is set to 'Yes'. </p>
+        </desc>
+</t>
+<t>
+<field>VB.SCHEDULE.PUT.AMT</field>
+<desc>
+            <p>This field holds the put amount for this fixing period. This will default from VB.PUT.AMT and can be modified if VB.DIFFERENT.AMT is set to 'Yes'. </p>
+        </desc>
+</t>
+<t>
+<field>VB.SPOT.EXCHANGE.RATE</field>
+<desc>
+            <p>This field holds the spot exchange rate at the time of fixing. This field would be used to calculate the settlement amount for cash settled contracts. </p>
+        </desc>
+</t>
+<t>
+<field>VB.SETTLEMENT.AMT</field>
+<desc>
+            <p>If the contract is cash settled, then the value in the field will be settled. This field will not be calculated automatically, and the field is mandatory for cash settlement. </p>
+        </desc>
+</t>
+<t>
+<field>VB.FIXING</field>
+<desc>
+            <p>This field will say whether to exercise or expire the amount for the current fixing period. System will not automatically do fixing until a value is given in this field. This field will accept the value 'EXERCISE' 'EXPIRE' </p>
+        </desc>
+</t>
+<t>
+<field>VB.FIXING.STATUS</field>
+<desc>
+            <p>This field will specify the status of the fixing periods. If this is null then it means it is yet to be fixed, if the value is FIXED, then the corresponding fixing period is processed and fixed. </p>
+            <p>If contract is unwound it will be updated as UNWOUND. </p>
+        </desc>
+</t>
+<t>
+<field>STMT.NOS</field>
+<desc>
+            <p>Standard T24 statement number field</p>
+        </desc>
+</t>
+</menu>
+</t24help>

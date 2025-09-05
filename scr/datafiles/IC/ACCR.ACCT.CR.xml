@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>IC</product>
+<table>ACCR.ACCT.CR</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This is an internal file containing details of the calculation of Credit Interest for accrual (updating Profit and Loss). </p>
+            <p>  Interest is accrued at every monthend (on the day specified in the MTH.END.UPTO.DAY field in the ACCOUNT.ACCRUAL table) and whenever it is capitalised. </p>
+            <p>  ACCR.ACCT.CR records contain details of credit interest which has been accrued but not yet capitalised (booked to the Customer's Account). At each month end the interest accrued since the last capitalisation is recalculated, the appropriate Profit and Loss entries are generated and a new ACCR.ACCT.CR record is written, replacing the one generated the previous month. When the interest is capitalised, a STMT.ACCT.CR record is written and the ACCR.ACCT.CR record is deleted. </p>
+            <p>  Interest is calculated on the value dated balances stored in the ACCT.ACTIVITY file, taking into account all entries over the Account up to and including the day of processing. </p>
+            <p>  The first balance included in the calculation is the day after the last Credit Interest Capitalisation, as stored in the ACCOUNT record (in the CAP.DATE.CR.INT field). </p>
+            <p>  The last balance included is the one with Value Date equal to the month end date specified in the MTH.END.UPTO.DAY in the ACCOUNT.ACCRUAL record. The month end accrual calculations are always inclusive of the balance on the month end day. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CR.INT.DATE</field>
+<desc>
+            <p>The start date of a period, during which the ACCOUNT has been in credit and credit interest has been calculated.  Associated fields show the number of days of the calculation, the applicable rate, the balance and the calulated amount of interest. If either the rate or the balance change, a further set of associated fields will be generated. </p>
+            <p>  Any change to the interest calculation will cause the generation of a new set of multivalue field range CR.INT.DATE to CR.INT.AMT.  These changes include: </p>
+            <p>             Change to Balance            Interest Rate            Interest Days Basis            Minimum/Daily/Average Balance </p>
+            <p>  Where different interest rates are applicable to "Bands" of the balance, separate sets of field range CR.INT.DATE to CR.INT.AMT are generated for each Band of the Balances on which interest is calculated. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  9 date characters DD MMM YYYY. Multivalue field associated with field range CR.INT.DATE to CR.INT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>ICA.DIST.TYPE</field>
+<desc>
+            <p>ICA (Interest compansation account hiearchy_ interest is not accrued so not relevant to this table. Field present to maintatin compatibilty with STMT.ACCT.CR and CORR.ACCT.CR.</p>
+        </desc>
+</t>
+<t>
+<field>MANUAL.ADJ.AMT</field>
+<desc>
+            <p>The manual accrual adjustment amount for the period.</p>
+        </desc>
+</t>
+<t>
+<field>CR.INT.TAXTRSCR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CR records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.LAST.DATE</field>
+<desc>
+            <p>Specifies the value date of the last balance on which the interest has been calculated. </p>
+            <p>  Interest is calculated on the value dated balances stored in the ACCT.ACTIVITY file, taking into account all entries over the ACCOUNT up to and including the last end of day processing. </p>
+            <p>  The calculation includes all balances from the day after the last credit interest capitalisation, as stored in the ACCOUNT record (in the CAP.DATE.CR.INT field) up to and including the month end accrual date specified in the MTH.END.UPTO.DAY field in the ACCOUNT.ACCRUAL file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  9 date characters DD MMM YYYY.</p>
+        </desc>
+</t>
+<t>
+<field>CR.VAL.BALANCE</field>
+<desc>
+            <p>The credit balance on which the Interest Amount, shown in corresponding field CR.INT.AMT, has been calculated. </p>
+            <p>  The value dated balances on which interest is calculated are held in the ACCT.ACTIVITY file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range CR.INT.DATE to CR.INT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>ICA.POST.INTEREST</field>
+<desc>
+            <p>ICA (Interest compansation account hiearchy_ interest is not accrued so not relevant to this table. Field present to maintatin compatibilty with STMT.ACCT.CR and CORR.ACCT.CR.</p>
+        </desc>
+</t>
+<t>
+<field>CR.INT.RATE</field>
+<desc>
+            <p>The Credit Interest Rate used to calculate the Interest Amount shown in corresponding field CR.INT.AMT. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 10 numeric characters plus a decimal point. Up to 6 integers. Up to 9 decimals. Standard rate format. Multivalue field associated with field range CR.INT.DATE to CR.INT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>CR.INT.TAX.AMT</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CR records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>CR.MIN.WAIVE</field>
+<desc>
+            <p>Indicates whether credit interest is set to zero if it is less than the minimum value. Set to "YES" is interest below the minimum value is to be waived.</p>
+        </desc>
+</t>
+<t>
+<field>CORRECTION.NUMBER</field>
+<desc>
+            <p>Not relevant to accruals, included to maintain compatability witht eh CORR.ACCT.CR and STMT.ACCT.CR tables</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ICA.TR.AC</field>
+<desc>
+            <p>ICA (Interest compansation account hiearchy_ interest is not accrued so not relevant to this table. Field present to maintatin compatibilty with STMT.ACCT.CR and CORR.ACCT.CR.</p>
+        </desc>
+</t>
+<t>
+<field>CR.INT.TAX.CODE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CR records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>CORRECTION.ID</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.FIRST.DATE</field>
+<desc>
+            <p>Specifies the value date of the first balance on which the interest has been calculated. </p>
+            <p>  This is the day after the last credit interest application (Capitalisation) as stored in the CAP.DATE.CR.INT field in the ACCOUNT record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  9 date characters DD MMM YYYY.</p>
+        </desc>
+</t>
+<t>
+<field>CR.INT.CATEG</field>
+<desc>
+            <p>Identifies the Category code to be assigned to Profit and Loss entries generated when credit interest is accrued. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  4 or 5 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>CR.MIN.VALUE</field>
+<desc>
+            <p>Indicates that the minimum amount of credit interest has been applied. If the calculated amount of interest was less than the minimum value then this will be applied, assuming that the amount is not to be waived.</p>
+        </desc>
+</t>
+<t>
+<field>ICA.SUB.INT</field>
+<desc>
+            <p>ICA (Interest compansation account hiearchy_ interest is not accrued so not relevant to this table. Field present to maintatin compatibilty with STMT.ACCT.CR and CORR.ACCT.CR.</p>
+        </desc>
+</t>
+<t>
+<field>LIQUIDITY.CCY</field>
+<desc>
+            <p>Identifies the currency of the liquidity account which may be present on this file. </p>
+            <p>  The currency may not necessarally be the currency of the main account. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  3 type SSS (uppercase alpha) characters   or 1-3 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>ICA.MAIN.ACCT</field>
+<desc>
+            <p>ICA (Interest compansation account hiearchy_ interest is not accrued so not relevant to this table. Field present to maintatin compatibilty with STMT.ACCT.CR and CORR.ACCT.CR.</p>
+        </desc>
+</t>
+<t>
+<field>ICA.TR.PL</field>
+<desc>
+            <p>ICA (Interest compansation account hiearchy_ interest is not accrued so not relevant to this table. Field present to maintatin compatibilty with STMT.ACCT.CR and CORR.ACCT.CR.</p>
+        </desc>
+</t>
+<t>
+<field>DB.NETTING.AMT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>CR.INT.TR.PL</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Profit and Loss entries generated when credit interest is accrued. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  1-10(Max Value) numeric characters Transaction Code. </p>
+            <p>  The Maximum value is specified in EB.OBJECT for TRANSACTION. </p>
+        </desc>
+</t>
+<t>
+<field>CR.INT.TAX.RATE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CR records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.INTEREST</field>
+<desc>
+            <p>Total amount of Interest calculated. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 14 numeric characters plus a decimal point. Standard amount format.</p>
+        </desc>
+</t>
+<t>
+<field>INT.POST.DATE</field>
+<desc>
+            <p>Not relevant to account interest accruals, field is persent to provide compatibilty with CORR.ACCT.CR and ACCR.ACCT.CR tables.</p>
+        </desc>
+</t>
+<t>
+<field>ICA.DIST.RATIO</field>
+<desc>
+            <p>ICA (Interest compansation account hiearchy_ interest is not accrued so not relevant to this table. Field present to maintatin compatibilty with STMT.ACCT.CR and CORR.ACCT.CR.</p>
+        </desc>
+</t>
+<t>
+<field>CR.INT.AMT</field>
+<desc>
+            <p>The amount of Credit Interest calculated at the rate shown in corresponding field CR.INT.RATE on the balance shown in corresponding field CR.VAL.BALANCE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range CR.INT.DATE to CR.INT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>CR.NO.OF.DAYS</field>
+<desc>
+            <p>The number of days for which the Interest Amount shown in corresponding field CR.INT.AMT has been calculated. </p>
+            <p>  The number of days is calculated according to the Basis (360/360, 366/360, 366/365, or 360/365) on which the interest calculation is to be made. Where the Basis is 360/360 or 360/365, the number of days is calculated as if there are 30 days in each month.  This is achieved by ignoring the 30th if there are 31 days in each month and assuming 3 days on the 28th of February or 2 days on the 29th of February.  If the Basis is 366/360 or 366/365, the number of days is the actual number of days. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  1-3 numeric characters. Multivalue field associated with field range CR.INT.DATE to CR.INT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>GRAND.TOTAL</field>
+<desc>
+            <p>Total interest accrued since last capitalisation. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 14 numeric characters plus a decimal point. Standard amount format.</p>
+        </desc>
+</t>
+<t>
+<field>LIQUIDITY.ACCOUNT</field>
+<desc>
+            <p>Where Credit Interest is to be passed to an alternative ACCOUNT, the number of the ACCOUNT is shown by this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Standard account format.</p>
+        </desc>
+</t>
+<t>
+<field>ICA.MAIN.INT</field>
+<desc>
+            <p>ICA (Interest compansation account hiearchy_ interest is not accrued so not relevant to this table. Field present to maintatin compatibilty with STMT.ACCT.CR and CORR.ACCT.CR.</p>
+        </desc>
+</t>
+<t>
+<field>CR.INT.TAXTRSDR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CR records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>CR.INT.TR.AC</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Account entries generated when credit interest is capitalised. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  1-10(Max Value) numeric characters Transaction Code. </p>
+            <p>  The Maximum value is specified in EB.OBJECT for TRANSACTION. </p>
+        </desc>
+</t>
+<t>
+<field>WITHHELD.INT.AMT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.NUMBER</field>
+<desc>
+            <p>Specifies the ACCOUNT on which interest has beencalculated (or the main account of a combined group, see details). </p>
+            <p>  When the balances of several accounts are to be consolidated for Interest purposes the main account number has to be entered in the INTEREST.COMP.ACCT field in the ACCOUNT records of each of the 'sub' accounts. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Standard account format     or 3-10 character Account mnemonic.</p>
+        </desc>
+</t>
+<t>
+<field>ADJ.INT.AMT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>ADJ.TAX.AMT</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>COMPENS.ACCOUNT</field>
+<desc>
+            <p>Where two or more Accounts are to be netted for the purpose of calculating interest and charges, the various sub-account numbers are shown in this multivalue field. The Account Number shown in the Record id of this file is the major Account number of the group. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Standard account format. Multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.FOR.BANK</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CR records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>CR.INT.TAXCATEG</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CR records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>ICA.INT.CATEG</field>
+<desc>
+            <p>ICA (Interest compansation account hiearchy_ interest is not accrued so not relevant to this table. Field present to maintatin compatibilty with STMT.ACCT.CR and CORR.ACCT.CR.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.FOR.CUSTOMER</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CR records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.EXCH.RATE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CR records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Null.</p>
+        </desc>
+</t>
+<t>
+<field>UNADJ.TOTAL.INT</field>
+<desc>
+            <p>The unadjusted calculated total interest amount.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>INT.NO.BOOKING</field>
+<desc>
+            <p>If credit interest is to be calculated for information purposes only and not passed to the account or if accrued interest is to be suspended and not posted to Profit and Loss, this is shown by this field. </p>
+            <p>  The information in this field comes from the equivalent field in the ACCOUNT record. </p>
+            <p>  If this field contains 'SUSPENSE', interest will be booked to the Customer's Account but no Profit and Loss entries will be generated, instead, the amount which would have been accrued will be stored in a Suspense Amount field in the Account record. </p>
+            <p>  If this field contains 'Y', interest is calculated for information only, no entries will be posted either to Profit and Loss or to the Customer's Account.  e.g. for Nostro Accounts. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  'SUSPENSE', 'Y' or nothing.</p>
+        </desc>
+</t>
+<t>
+<field>CORRECTION.DATE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>WAIVE.AMT</field>
+<desc>
+            <p>The minimum waive amount in the currency of the account if the waive currency is different to the currency of the account</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Standard amount format.</p>
+        </desc>
+</t>
+<t>
+<field>WIAVE.RATE</field>
+<desc>
+            <p>The exchange rate used for the conversion of minimum waive amount in account currency</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Standard rate format.</p>
+        </desc>
+</t>
+<t><field>WAIVE.RATE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

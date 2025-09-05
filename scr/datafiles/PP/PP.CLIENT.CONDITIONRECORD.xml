@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>PP</product>
+        <title>PP.CLIENT.CONDITIONRECORD</title>
+        <table>PP.CLIENT.CONDITIONRECORD</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>This table is used to specify special condition or possible options for the clients and each condition is represented by a clientcondition id.  This table will be peeled off to determine the client condition id based on the characteristics of the payment. We can define the Client Conditions at various levels; at one end it could be very generic and can be defined at the product level so that all payments with that product will use those client conditions; on the other end these could be very specific to a particular client requirements and accordingly defined at the most specific level (Product/Source/Business Line/Client Id/ Account/Currency). This means that order in which Client Conditions are retrieved is very important. Peeling off mechanism is nothing but defining the order in which Client Conditions should be read. </p>
+        </ovdesc>
+    </overview>
+    <menu>
+        <t>
+            <field>AuthoriserDateTime</field>
+        </t>
+        <t>
+            <field>BillingIndicator</field>
+            <desc>
+                <p>Dropdown field having values Y (Yes) and N (No).</p>
+                <p/>
+                <p>Possible Values:</p>
+                <p>Y= Yes, Billing is preferred </p>
+                <p>N=  No,  Billing  is  not  preferred </p>
+                <p/>
+                <p>Default Value is N(No)</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>BusinessLine</field>
+            <desc>
+                <p>This is the business line to which the client belongs in the T24.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Up to 3 A(Alphanumeric) characters.</p>
+                <p>2. If left blank then this should be wild carded as *. </p>
+            </desc>
+        </t>
+        <t>
+            <field>CCValidityEndDate</field>
+            <desc>
+                <p>This is the date till which respective record will be active.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. End Date must be greater than Start Date</p>
+            </desc>
+        </t>
+        <t>
+            <field>CCValidityStartDate</field>
+            <desc>
+                <p>This is the date from which respective record will be active </p>
+                <p>Validation Rules:</p>
+                <p>1. 11 characters Date format should be entered.</p>
+                <p>2. Default value defined as Current Business Date</p>
+            </desc>
+        </t>
+        <t>
+            <field>ChargeAccountCompanyID</field>
+            <desc>
+                <p>Indicates the company ID of the ChargeAccountNumber defined.  This should be a valid record in the PPT.COMPANY.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Input mandatory when Separate charge Account Indicator is set to Yes</p>
+                <p>2. Not allowed to input when Separate charge Account Indicator is set to No</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ChargeAccountCurrency</field>
+            <desc>
+                <p>This field indicates the currency of the ChargeAccountNumber defined. This should be a valid currency code.  If left blank, this will be wildcarded</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Input mandatory when Separate charge Account Indicator is set to Yes</p>
+                <p>2. Not allowed to input when Separate charge Account Indicator is set to No</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ChargeAccountNumber</field>
+            <desc>
+                <p>Indicates the account number from which the charges has to be collected.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Input mandatory when Separate charge Account Indicator is set to Yes</p>
+                <p>2. Not allowed to input when Separate charge Account Indicator is set to No</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ChargeAccTransactionCCY</field>
+            <desc>
+                <p>This field indicates the currency of the transaction. If left blank, this will be wildcarded</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Input mandatory when Separate charge Account Indicator is set to Yes</p>
+                <p>2. Not allowed to input when Separate charge Account Indicator is set to No</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ChargePostingDetail</field>
+            <desc>
+                <p>This field indicates whether the charges are to be posted in detail and accordingly additional PostingLines for each change should be configured or not.This will take the following values Y=post in detail; N= post detail.  If left blank, it will be defaulted to Y. PSD product will always have Y as an option</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>Not Allowed to input field when ChargePostingSeparately is set to No or Null</p>
+            </desc>
+        </t>
+        <t>
+            <field>AccountCompanyID</field>
+            <desc>
+                <p>Indicates company code of the Account defined.  This should be a valid id in the PPT.COMPANY table.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. If left blank then this should be wild carded </p>
+                <p>2. If entered should be same as CompanyID field</p>
+            </desc>
+        </t>
+        <t>
+            <field>ChargePostingSeparately</field>
+            <desc>
+                <p>This field indicates whether the charges for the payment are to be posted separately or not. PSD product will always have Y as an option</p>
+                <p>Y - Charge separate </p>
+                <p>N - Do not charge separate.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. If left blank then this will be defaulted to Y</p>
+            </desc>
+        </t>
+        <t>
+            <field>ClientChargeAccountID</field>
+            <desc>
+                <p>System generated id for the corresponding child table PPL_CLIENTCHARGEACCOUNT. This is a system id and is autogenerated</p>
+                <p/>
+                <p>A new Client Conditions Charge Account record will be created only if Separate chargeAccount Indicator is set to Yes</p>
+            </desc>
+        </t>
+        <t>
+            <field>ClientCondAdviceConfID</field>
+            <desc>
+                <p>System generated id for the table PPL_ClientCondAdviceConf.  This is a system id and is autogenerated</p>
+                <p>A new Client Conditions Advice conf  record should be created only if Advice Indicator is set to Yes.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ClientConditionProduct</field>
+            <desc>
+                <p>This would indicate the source group from where payment has been originated. Valid/Allowed values can only be a valid ClientConditionProduct for the company as per PPT.ClientConditionProduct table. If left blank then this should be wildcarded</p>
+            </desc>
+        </t>
+        <t>
+            <field>ClientConditionsID</field>
+            <desc>
+                <p>System generated id for the table PP.CLIENT.CONDITIONRECORD. This is a system id and is autogenerated</p>
+            </desc>
+        </t>
+        <t>
+            <field>ClientID</field>
+            <desc>
+                <p>This is the Client ID for whom the condition is being set up for. </p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Input mandatory when AccountNumber exists</p>
+                <p>2. If left blank then this will be wild carded. </p>
+            </desc>
+        </t>
+        <t>
+            <field>ClientLeadID</field>
+            <desc>
+                <p>System generated id for the table PPL_ClientCondLeadTime. </p>
+            </desc>
+        </t>
+        <t>
+            <field>CompanyID</field>
+            <desc>
+                <p>Indicates the company ID for which the record is created. </p>
+                <p>Example : BNK,GB1</p>
+                <p>Validation Rules:</p>
+                <p>1. 3 alphanumeric characters.</p>
+                <p>2. The value links to the field ‘CompanyID’ in PPT.COMPANY</p>
+            </desc>
+        </t>
+        <t>
+            <field>CreditFloat</field>
+            <desc>
+                <p>This field defines the number of business days to adjust the Credit Value Date (CVD) into the future, potentially adding float to the transaction. This is applicable to the credit client.</p>
+                <p>Validation Rules:</p>
+                <p>3 Numeric characters, representing the number of days.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CreditSpecialInstructions</field>
+            <desc>
+                <p>This field is used to specify special Credit instructions</p>
+                <p/>
+                <p>128 Characters (Alpha Numeric and special characters)</p>
+            </desc>
+        </t>
+        <t>
+            <field>AccountCurrency</field>
+            <desc>
+                <p>Three character currency code of the Account Number.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. If left blank then this should be wild carded as *.</p>
+                <p>2. Valid entry in PPT_Currency table</p>
+            </desc>
+        </t>
+        <t>
+            <field>CRStatementFormat</field>
+            <desc>
+                <p>Should be valid from Table PPT_StatementFormat table.</p>
+                <p/>
+                <p>Validation Rules</p>
+                <p>30 ANY(AlphaNumeric or Special) characters</p>
+            </desc>
+        </t>
+        <t>
+            <field>CurrencyCode</field>
+            <desc>
+                <p>Three character currency code.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. If left blank then this should be wild carded as *.</p>
+                <p>2. Valid entry in PPT_Currency table</p>
+            </desc>
+        </t>
+        <t>
+            <field>CurrentID</field>
+            <desc>
+                <p>Used for internal purpose.Holds the ID of the current live record of store table. </p>
+                <p>This field can hold upto 65 alphanumeric characters and the value is not editable by the user.</p>
+            </desc>
+        </t>
+        <t>
+            <field>DebitCreditAdvice</field>
+            <desc>
+                <p>Indicates whether a debit or credit or Charge Advice confirmation needs to be generated. </p>
+                <p>Possible values are </p>
+                <p>D(debit) </p>
+                <p>C(credit) </p>
+                <p>CH(Charge Advice)</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Mandatory field if Advice Indicator is Yes</p>
+                <p>2. Not Allowed to input when Advice Indicator is No</p>
+            </desc>
+        </t>
+        <t>
+            <field>DebitCreditIndicator</field>
+            <desc>
+                <p>Denotes the transaction is Debit or Credit or Both</p>
+                <p>Possible Values are </p>
+                <p>C - Credit Transactions</p>
+                <p>D - Debit Transactions</p>
+                <p>A - All Transactions</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>Field is Mandatory When Separate Charge Account Indicator is set to Yes</p>
+            </desc>
+        </t>
+        <t>
+            <field>DebitFloat</field>
+            <desc>
+                <p>Number of days the bank can take debit float on the payment.</p>
+            </desc>
+        </t>
+        <t>
+            <field>DebitSpecialInstructions</field>
+            <desc>
+                <p>Possible to give special Debit instructions for the operator.</p>
+                <p/>
+                <p>128 Characters (Alpha Numeric and special characters)</p>
+            </desc>
+        </t>
+        <t>
+            <field>DeliveryMethod</field>
+            <desc>
+                <p>Indicates through which channel advice send to customer</p>
+                <p/>
+                <p>Possible Values:</p>
+                <p>SWIFT / POST/ EMAIL / PHONE / FAX / SMS </p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Mandatory field if Advice Indicator is 'Yes'</p>
+                <p>2. Input not allowed if Advice Indicator is not 'Yes'</p>
+            </desc>
+        </t>
+        <t>
+            <field>Discount</field>
+            <desc>
+                <p>Only numerals should be allowed to enter and should be stored as percentage in DB. </p>
+                <p/>
+                <p>Validation Rules: </p>
+                <p>1. Field is Mandatory if FXDiscountIndicator is set to Yes</p>
+                <p>2. Input not allowed when FXDiscountIndicator is set to No</p>
+            </desc>
+        </t>
+        <t>
+            <field>DrStatementFormat</field>
+            <desc>
+                <p>Should be valid from Table PPT_StatementFormat table.</p>
+                <p/>
+                <p>Validation Rules</p>
+                <p>30 ANY(AlphaNumeric or Special) characters</p>
+            </desc>
+        </t>
+        <t>
+            <field>AccountNumber</field>
+            <desc>
+                <p>Indicates account number to the Client Conditions.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Up to 35 A (Alphanumeric) characters.</p>
+                <p>2. If left blank then this should be wild carded as *.</p>
+                <p>2. Input mandatory when Account CompanyID exist.</p>
+            </desc>
+        </t>
+        <t>
+            <field>EmailID</field>
+            <desc>
+                <p>Holds Email address to send advices to customer through Email</p>
+                <p>256 Characters Alphanumeric with an ‘@’sign.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Mandatory field if Advice Indicator is Y and Delivery Method is 'EMAIL'</p>
+                <p>2. Not Allowed to input if Advice Indicator is not 'Yes' or Delivery Method is not 'EMAIL'</p>
+            </desc>
+        </t>
+        <t>
+            <field>EndDateClientConditionRecord</field>
+            <desc>
+                <p>Specifies the date until which the record is to be considered as active for payments processing.Post this date, the record will be set as Inactive by the payments hub.</p>
+            </desc>
+        </t>
+        <t>
+            <field>FAX</field>
+            <desc>
+                <p>Holds Fax Machine Number to send advices to customer through FAX.</p>
+                <p/>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. 20 Characters Numerals &amp;amp; special characters (+, -)</p>
+                <p>2. Mandatory field if Advice Indicator is 'Yes' and Delivery Method is 'FAX'</p>
+                <p>3. Not Allowed to input if Advice Indicator is not 'Yes' or Delivery Method is not 'FAX'</p>
+            </desc>
+        </t>
+        <t>
+            <field>FXDiscountID</field>
+            <desc>
+                <p>System generated id for the table PPL_ClientFXDiscount.</p>
+            </desc>
+        </t>
+        <t>
+            <field>FXDiscountIndicator</field>
+            <desc>
+                <p>Dropdown field having values Y (Yes) and N (No).  </p>
+                <p>Default Value is N (No).</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>A new Client FX discount should be created only if FXDiscountIndicator is set to Yes.</p>
+            </desc>
+        </t>
+        <t>
+            <field>FXNonSTPAmount</field>
+            <desc>
+                <p>20 Digit numeric amount field.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>Field mandatory when FXNonSTPIndicator exist</p>
+            </desc>
+        </t>
+        <t>
+            <field>FXNonSTPIndicator</field>
+            <desc>
+                <p>Indicates Payment on behalf of customer is STP or NON STP.</p>
+                <p>1 character (alphanumeric). </p>
+                <p>Possible Values – C / D / Y / N</p>
+            </desc>
+        </t>
+        <t>
+            <field>ID</field>
+            <desc>
+                <p>System generated id for the table PP_ClientConditionRecord.</p>
+            </desc>
+        </t>
+        <t>
+            <field>IncomingCutOffLeadTime</field>
+            <desc>
+                <p>Lead time taken into consideration by Dates.</p>
+            </desc>
+        </t>
+        <t>
+            <field>LanguageID</field>
+            <desc>
+                <p>If no language chosen, then the Default language of the Company the Client  belongs to will be chosen.</p>
+            </desc>
+        </t>
+        <t>
+            <field>AccountSubstitution</field>
+            <desc>
+                <p>Possible values: Y (Yes) or N (No)</p>
+            </desc>
+        </t>
+        <t>
+            <field>MailLine1</field>
+            <desc>
+                <p>Holds the street address1</p>
+                <p>Client Conditions generate advices and then will send these advices through Postal </p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Mandatory field if Advice Indicator is 'Yes' and Delivery Method is 'POST'</p>
+                <p>2. At least one mail line should be input if Delivery method is 'POST'</p>
+                <p>3. Not Allowed to input if Advice Indicator is not 'Yes' or Delivery Method is not 'POST'</p>
+            </desc>
+        </t>
+        <t>
+            <field>MailLine2</field>
+            <desc>
+                <p>Holds the street address2.</p>
+                <p>Client Conditions generate advices and then will send these advices through Postal </p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Mandatory field if Advice Indicator is 'Yes' and Delivery Method is 'POST'</p>
+                <p>2. At least one mail line should be input if Delivery method is 'POST'</p>
+                <p>3. Not Allowed to input if Advice Indicator is not 'Yes' or Delivery Method is not 'POST'</p>
+            </desc>
+        </t>
+        <t>
+            <field>MailLine3</field>
+            <desc>
+                <p>Holds the street address3.</p>
+                <p>Client Conditions generate advices and then will send these advices through Postal </p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Mandatory field if Advice Indicator is 'Yes' and Delivery Method is 'POST'</p>
+                <p>2. At least one mail line should be input if Delivery method is 'POST'</p>
+                <p>3. Not Allowed to input if Advice Indicator is not 'Yes' or Delivery Method is not 'POST'</p>
+            </desc>
+        </t>
+        <t>
+            <field>MailLine4</field>
+            <desc>
+                <p>Holds the street address4.</p>
+                <p>Client Conditions generate advices and then will send these advices through Postal </p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Mandatory field if Advice Indicator is 'Yes' and Delivery Method is 'POST'</p>
+                <p>2. At least one mail line should be input if Delivery method is 'POST'</p>
+                <p>3. Not Allowed to input if Advice Indicator is not 'Yes' or Delivery Method is not 'POST'</p>
+            </desc>
+        </t>
+        <t>
+            <field>NonSTPIndicator</field>
+            <desc>
+                <p>It is Dropdown field having values Y, N, C &amp; D</p>
+                <p/>
+                <p>Y - Non STP for all transactions;  </p>
+                <p>N - STP for all transactions;  </p>
+                <p>C - Non STP for all credit transactions</p>
+                <p>D - Non STP for all debit transactions.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>OldID</field>
+            <desc>
+                <p>Used for internal purpose. Holds the ID of the previous live record of store table. </p>
+                <p>This field can hold upto 65 alphanumeric characters and the value is not editable by the user.</p>
+            </desc>
+        </t>
+        <t>
+            <field>OutgoingCutOffLeadTime</field>
+            <desc>
+                <p>Lead time taken into consideration by R&amp;S.</p>
+            </desc>
+        </t>
+        <t>
+            <field>OVERRIDE</field>
+            <desc>
+                <p>Contains all the override messages which the user agreed to during Input. During the validation of a transaction, the system may provide the user with a series of screen override messages to indicate an anomaly.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PhoneConfirmation</field>
+            <desc>
+                <p>20  Characters  Numerals  &amp;  special characters (+, -).</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Mandatory field if Advice Indicator is 'Yes' and Delivery Method is 'Phone'</p>
+                <p>3. Not allowed to input if Advice Indicator is not 'Yes' or Delivery Method is not 'Phone'</p>
+            </desc>
+        </t>
+        <t>
+            <field>RAC</field>
+            <desc>
+                <p>"Record Activation Code generated for the record by the payment's hub. </p>
+                <p>Possible values:</p>
+                <p>N - Not active</p>
+                <p>A -  Active</p>
+                <p>H - History</p>
+                <p>F - Future</p>
+                <p>C - Not active future</p>
+                <p>Validation Rules:</p>
+                <p>19 alphanumeric characters.</p>
+                <p>The value is not editable by the user."</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>Action</field>
+            <desc>
+                <p>Used for internal purpose. Value of this field determines values of fields, 'RAC' and 'RSC'.</p>
+                <p>Possible values:</p>
+                <p>N - New</p>
+                <p>M - Modified </p>
+                <p>R -  Reverse</p>
+                <p>This field can hold upto 1 alphanumeric character and the value is not editable by the user.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ReleaseTime</field>
+            <desc>
+                <p>Holds the TIMESTAMP value.</p>
+            </desc>
+        </t>
+        <t>
+            <field>RSC</field>
+            <desc>
+                <p>"Record Status Code generated for the record by the payments hub.</p>
+                <p>Possible values:</p>
+                <p>L - Live</p>
+                <p>U - Unapproved</p>
+                <p>R - Reversed</p>
+                <p>Validation Rules:</p>
+                <p>1 alphanumeric character.</p>
+                <p>The value is not editable by the user."</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SeparatechargeAccountIndicator</field>
+            <desc>
+                <p>Dropdown field having values Y (Yes) and N (No).  </p>
+                <p>Default Value is N(No).</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. If SeparatechargeAccountIndicator is set to YES, then at least one charge Account Record needs to be created.</p>
+                <p>2. A new Client Conditions Charge Account should be created only if   SeparatechargeAccountIndicator is set to Yes</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SequenceNumber</field>
+            <desc>
+                <p>It system generated (updated based on the multivalued position)</p>
+            </desc>
+        </t>
+        <t>
+            <field>SMS</field>
+            <desc>
+                <p>Holds Phone number to send advices to customer as SMS</p>
+                <p>20 Characters Numerals &amp;amp; special characters (+, -)</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Mandatory field if Advice Indicator is 'Yes' and Delivery Method is 'SMS'</p>
+                <p>2. Not Allowed to input if Advice Indicator is not 'Yes' or Delivery Method is not 'SMS'</p>
+            </desc>
+        </t>
+        <t>
+            <field>SourceProduct</field>
+            <desc>
+                <p>Indicate the source group from where payment has been originated. Valid/allowed values can only be a valid SourceProduct as per Product table. </p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. If left blank then this should be wild carded as *. </p>
+                <p>2. DropDown from the Table PPT_SourceProductGroup</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>Swift</field>
+            <desc>
+                <p>allowed 35 Characters Valid BIC.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. Mandatory when Delivery method is Swift.</p>
+                <p>2. Not allowed to input if Delivery Method is not SWIFT.</p>
+            </desc>
+        </t>
+        <t>
+            <field>TransactionCurrency</field>
+            <desc>
+                <p>Three character currency code of the Account Number.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>1. If left blank then this should be wild carded as *.</p>
+                <p>2. Valid entry in PPT_Currency table</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>VATOnCharge</field>
+            <desc>
+                <p>Dropdown field having values Y (Yes) and N (No).  </p>
+                <p>Y - Apply VAT on Charges</p>
+                <p>N - Don't apply VAT on Charges</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>VatPrincipal</field>
+            <desc>
+                <p>This would be the percentage indicated in nn.nnnn (up to 4 decimal places).</p>
+                <p/>
+                <p>Default value defined as zero.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>AdviceIndicator</field>
+            <desc>
+                <p>Dropdown field having values Y (Yes) and N (No).  </p>
+                <p>Default Value is N (No).  </p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>If Advice Indicator is set to YES, then one Advice Record created in PPL_ClientCondAdviceConf table.</p>
+            </desc>
+        </t>
+        <t>
+            <field>AdviceTxnLowerLimit</field>
+            <desc>
+                <p>Indicates the field transaction amount above which an SMS/Email alerts needs to be triggered.  The amount mentioned here is against the Home currency.  </p>
+                <p/>
+                <p>Only applicable for Single Confirmations and is applicable only for DeliveryMethod SMS and EMAIL.  </p>
+            </desc>
+        </t>
+        <t>
+            <field>AdviceType</field>
+            <desc>
+                <p>Indicates whether a Single or Group advice needs to be generated. </p>
+                <p>Possible values are </p>
+                <p>Single</p>
+                <p>Group </p>
+                <p>This is applicable only for DeliveryMethod EMAIL and SMS</p>
+            </desc>
+        </t>
+        <t>
+            <field>Attention</field>
+            <desc>
+                <p>Indicates useful information related to the Delivery information.</p>
+                <p/>
+                <p>Validation Rules:</p>
+                <p>Up to 128 A (Alphanumeric) characters</p>
+            </desc>
+        </t>
+        <t>
+            <field>ThresholdAmount</field>
+  			<desc>
+  				<p>This field is an output value of the client condition record.</p>
+  				<p>The amount specified here is the amount in Home currency of the company. If the transaction amount is greater than this amount specified in this field, then the payment will be moved to manual repair queue with a due to  exceeding the transaction amount threshold specified></p>
+			</desc>
+        </t>
+    </menu>
+</t24help>

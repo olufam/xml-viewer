@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EU</product>
+<table>EU.CONVERSION.PARAM</table>
+</header>
+<overview>
+<ovdesc>
+
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>RELATED.FIELD</field>
+<desc>
+            <p>If the field to be converted contains an exchange rate to the old local currency (STD.CONV.TYPE of RATE) then this field must contain the name of the field containing the currency to be converted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input.  Part of multivalued association of fields FIELD.NAME to FLD.CONV.ROUTINE.  If input then STD.CONV.TYPE must be set to RATE.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED3</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RECORD.VERIFY.RTN</field>
+<desc>
+            <p>Specifies a routine to perform specific verfication checks for a record before converting the record. </p>
+            <p>A routine may be required to check that certain conditions are true before the conversion takes place. </p>
+            <p />
+            <p>Routine Details --------------- </p>
+            <p>The routine has no arguments, details are passed using the local common area defined in I_EU.COMMON. Any error conditions which will prevent the conversion from taking place should be returned in C$EU.CONV.ERROR. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input - must be defined in PGM.FILE as TYPE S.</p>
+        </desc>
+</t>
+<t>
+<field>SELECTION</field>
+<desc>
+            <p>Defines either the WITH clause of a uniVerse SELECT statement for the file being converted, or a subroutine to perform the selection. </p>
+            <p>For example the STMT.ENTRY record contains the following SELECTION statement: </p>
+            <p>              WITH @ID UNLIKE 'F...' </p>
+            <p>This means select all statement entries which are not forward.  The actual statement executed would be to select the actual files per company, e.g. </p>
+            <p>              SELECT FBNK.STMT.ENTRY WITH @ID UNLIKE 'F...' </p>
+            <p>It is possible that on sites with very large numbers of statement entries that the select list may be so large that available memory is exceeded or that it is simply more efficient to process several smaller lists as opposed to one very large list. </p>
+            <p>If during the test conversion process these problems arise then one possible solution would be to split the processing as follows </p>
+            <p>RECORD                      SELECTION ======                      ========= </p>
+            <p>STMT.ENTRY1                 WITH BOOKING.DATE GE 19980101 STMT.ENTRY2                 WITH BOOKING.DATE GE 19970101 AND LE 19971231 STMT.ENTRY3                 WITH BOOKING.DATE LE 19961231 </p>
+            <p>The actual dates chosen should have the effect of splitting the entries into roughly equal groups.  A group size of 200,000 has been found to be effective. </p>
+            <p>If a subroutine is required then it must be prefixed with the @ character. The select subroutine must have one argument which will contain a list of record keys separated by field marks. </p>
+            <p>In addition to including the normal inserts I_COMMON and I_EQUATE the routine should also include I_EU.COMMON. </p>
+            <p>The common variable C$EU.MORE.TO.PROCESS can be set to 1 to indicate that the routine will split the list of keys into groups, the parent routine will continue calling the select routine after processing each list until C$EU.MORE.TO.PROCESS is reset to ''. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input.</p>
+            <p>Multivalued field.</p>
+            <p>If a select statement clause is entered which is greater than 35 characters then the multi value can be expanded.</p>
+            <p>If a conversion routine is being called then it must be prefixed with @.</p>
+            <p>If no input is made then the entire file being converted will be selected.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED2</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>SELECT.VALUE</field>
+<desc>
+            <p>Fields SELECT.FIELD to SELECT.VALUE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 35 characters may be entered.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+            <p>This is a multi valued field. Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.NAME</field>
+<desc>
+            <p>Identifies the field to be converted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input.  Part of multivalued association of fields FIELD.NAME to FLD.CONV.RTN.  Must be defined on the Standard Selection record for the field.</p>
+        </desc>
+</t>
+<t>
+<field>RUN.INFO</field>
+<desc>
+            <p>Contains any information relvant to the conversion, for example the number of records converted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.  Part of multivalued association of fields CONVERSION.COMP to RUN.INFO.</p>
+        </desc>
+</t>
+<t>
+<field>PRE.CONVERSION.RTN</field>
+<desc>
+            <p>Specifies the name of the routine which will perform any required actions prior to conversion of the defined FILE.NAME. </p>
+            <p>A routine can be written to perform any processing required before any conversion of the file takes place. This could perform checks, setup certain required data or take a copy of the file to be converted for example. </p>
+            <p />
+            <p>Details of routine ------------------ No arguments are required for the routine, details are passed using the common block defined in I_EU.COMMON. The routine is called for EACH company and file suffix, before any other processing takes place. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field - must be defined in PGM.FILE as a TYPE S program.</p>
+        </desc>
+</t>
+<t>
+<field>CONVERT.SUFFIX</field>
+<desc>
+            <p>Specifies which file types are to be converted. Possible types are: </p>
+            <p>             LVE - the LIVE file              HIS - The history file              NAU - The unauthorised file              ARC - The archive file </p>
+            <p>The requirements for processing may be such that only certain types of file should be converted. For example when the local currency is converted only the live and unauthorised files will require conversion. At a later date it may be that the history should be converted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory input - must be LVE, HIS, NAU or ARC.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED1</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RECORD.CONV.RTN</field>
+<desc>
+            <p>Identifies a conversion routine which will convert an entire record. If necessary, more than one conversion routine can be called, in order of entry. </p>
+            <p>It is used when the conversion required cannot be accomplished by the standard conversions. </p>
+            <p>The routine must be defined as a TYPE S program on the PGM.FILE. </p>
+            <p>The routine should include as a minimum the following inserts: </p>
+            <p>      I_COMMON       I_EQUATE       I_EU.COMMON </p>
+            <p>The record will be contained in the field C$R.EU.REC. </p>
+            <p>If an error is found then the variable C$EU.CONV.ERROR. </p>
+            <p>Please refer to the EURO user guide for more details regarding conversion routines. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input.  If input must be defined on PGM.FILE as a type S program.  Multivalued field, if more than one routine is entered then the routines will be called in order of entry.</p>
+        </desc>
+</t>
+<t>
+<field>SELECT.FILE</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 35 characters may be entered.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>SELECT.OPERAND</field>
+<desc>
+            <p>Fields SELECT.FIELD to SELECT.VALUE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 2 characters may be entered.</p>
+            <p>This is a NOINPUT field.</p>
+            <p>The following values are permitted:       EQ      GE      GT      LE      LK      LT      NE      UL      NR      RG</p>
+        </desc>
+</t>
+<t>
+<field>FILE.NAME</field>
+<desc>
+            <p>Name of the file to be converted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory field - must be defined in File Control.</p>
+        </desc>
+</t>
+<t>
+<field>STD.CONV.TYPE</field>
+<desc>
+            <p>Three types of standard conversion are possible. </p>
+            <p>RATE      -  where the field being converted is an exchange rate to the              old local currency.  In this case the RELATED.FIELD must              contain the name of a field which contains the currency code              relevant to the amount being converted. </p>
+            <p>LOCAL.AMT -  where the field being converted contains a local currency              equivalent. </p>
+            <p>ACCOUNT   -  where the field being converted contains an account number              which is to be converted to a new account number for the              account in the conversion currency. The new account number              will be supplied by the conversion routines. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input.</p>
+            <p>Part of multivalued association of fields FIELD.NAME to FLD.CONV.RTN.</p>
+            <p>If no input is made then FLD.CONV.RTN must be populated.</p>
+            <p>If input is made then input must be either RATE, LOCAL.AMT or ACCOUNT.</p>
+            <p>If RATE is input then RELATED.FIELD must be populated.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED4</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>NOTES</field>
+<desc>
+            <p>This field should contain any specific instructions and details to be observed when running the conversion described in this record. </p>
+        </desc>
+</t>
+<t>
+<field>RUN.ERROR</field>
+<desc>
+            <p>A value other than zero indicates that a covnersion error occurred. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.  Part of multivalued association of fields CONVERSION.COMP to RUN.INFO.</p>
+        </desc>
+</t>
+<t>
+<field>UPDATE.AUDIT.FILE</field>
+<desc>
+            <p>When set to Y an audit record will be written for each field conversion, containing the conversion type, application, record and field name together with the old and new values. </p>
+            <p>An example follows: </p>
+            <p>     AUDIT.KEY......... 239  -------------------------------------------------------------------------    1 CONV.TYPE......... LOCAL    2 CONV.FILE......... FBNK.FOREX    3 CONV.REC.ID....... FX0010300004    4 FIELD.NAME........ SPOT.LCY.AMOUNT    5. 1. 1 OLD.VALUE... 570000.00    6. 1. 1 NEW.VALUE... 456000.00 </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input - permissable values are '' (Null), NO, or Y.</p>
+        </desc>
+</t>
+<t>
+<field>VOC.FILE.NAME</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>CONVERSION.TYPE</field>
+<desc>
+            <p>Specifies the type of conversion process which this record describes. </p>
+            <p>The conversion type may be: </p>
+            <p>LOCAL   - The process to convert the local currency of the company to the           Fixed currency. </p>
+            <p>ACCOUNT - The process of converting an account currency to the fixed           currency and renumbering the national currency account. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory field - must be LOCAL or ACCOUNT.</p>
+        </desc>
+</t>
+<t>
+<field>SELECT.FIELD</field>
+<desc>
+            <p>Fields SELECT.FIELD to SELECT.VALUE form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 35 characters may be entered.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>This is a multi valued field. Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 50 characters may be entered.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>FILE.ROUTINE</field>
+<desc>
+            <p>Specifies the name of the routine which will perform the entire conversion process for the file. If specified the routine must perform the selection and all conversion processing for the file. </p>
+            <p />
+            <p>Routine Details --------------- </p>
+            <p>The routine has no arguments, details are passed in the local EU common area in I_EU.COMMON. As mentioned the routine must perform the selection, and actual conversion of the file. The routine will be called for EACH company and each file suffix. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input - must be defined in PGM.FILE as type S.</p>
+        </desc>
+</t>
+<t>
+<field>CONV.DATE.TIME</field>
+<desc>
+            <p>Contains the date and time that the file conversion took place. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.  Part of multivalued association of fields CONVERSION.COMP to RUN.INFO.</p>
+        </desc>
+</t>
+<t>
+<field>CONV.FILE.NAME</field>
+<desc>
+            <p>This multivalued information only field contains the full file name of each file converted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.  Part of multivalued association of fields CONVERSION.COMP to RUN.INFO.</p>
+        </desc>
+</t>
+<t>
+<field>CONV.KEY</field>
+<desc>
+            <p>Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 30 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>CONVERSION.COMP</field>
+<desc>
+            <p>This multivalued information only field contains the company code for each company where the conversion has run. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.  Part of multivalued association of fields CONVERSION.COMP to RUN.INFO.</p>
+        </desc>
+</t>
+<t>
+<field>FLD.CONV.RTN</field>
+<desc>
+            <p>Used to define a field conversion routine to perform a conversion other than the standard type. </p>
+            <p>The routine must accept two arguments: </p>
+            <p>     IN.VALUE     - the original field value      OUT.VALUE    - the converted value </p>
+            <p>The following inserts should normally be included: </p>
+            <p>     I_COMMON      I_EQUATE      I_EU.COMMON </p>
+            <p>If an error is encountered then the common variable C$EU.CONV.ERROR can be set with an error message. </p>
+            <p>If this field is input then STD.CONV.TYPE must be left blank. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input.  Part of multivalued association of fields FIELD.NAME to FLD.CONV.RTN.  If input then STD.CONV.TYPE must be left blank.</p>
+        </desc>
+</t>
+<t>
+<field>VERIFICATION.RTN</field>
+<desc>
+            <p>Specifies a routine to perform specific verfication checks for a file before converting the file. </p>
+            <p>A routine may be required to check that certain conditions are true before the conversion takes place. </p>
+            <p />
+            <p>Routine Details --------------- </p>
+            <p>The routine has no arguments, details are passed using the local common area defined in I_EU.COMMON. Any error conditions which will prevent the conversion from taking place should be returned in C$EU.CONV.ERROR. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input - must be defined in PGM.FILE as TYPE S.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED5</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>PST.CONVERSION.RTN</field>
+<desc>
+            <p>Defines a subroutine to be executed after a conversion has been run. </p>
+            <p>The routine must be defined as a TYPE S field on the PGM.FILE. </p>
+            <p>An example relates to the conversion of the SECURITY.TRANS file where a routine is called to recalculate the security positions based on the new local currency. </p>
+            <p>The following inserts should be included: </p>
+            <p>        I_COMMON         I_EQUATE         I_EU.COMMON </p>
+            <p>The common variable C$EU.CONV.ERROR can be set with any error condition encountered. </p>
+            <p>Please refer to the EURO User Guide for more information regarding conversion subroutines. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional input.  If input must be defined on the PGM.FILE as a TYPE S program.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Description of parameter record </p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

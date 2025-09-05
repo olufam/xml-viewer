@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>IC</product>
+<table>ACCOUNT.CREDIT.INT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The Account Credit Interest table allows special Credit Interest conditions to be defined for individual Accounts when the corresponding Group Credit Interest conditions are not suitable.</p>
+            <p>   To avoid unnecessary work, Account Credit Interest records should only be set up in special cases.</p>
+            <p>   The Account Credit Interest Table allows for a specific Account:</p>
+            <p>   - Interest to be calculated on a Daily, Average, or Minimum balance basis using value dated balances.</p>
+            <p>   - Rates to be fixed or linked to Basic Rates plus or minus a Margin.</p>
+            <p>   - Different rates to be specified for different balance levels which may be linked to the same or different Basic Rates. The rates can apply to the whole of the balance or to the part            between two balance levels.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CR.ZERO.INT.BAL</field>
+<desc>
+            <p>This field indicates that credit interest will not be paid for the entire capitalisation period if the balance of the account falls below this value.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Optional input</p>
+            <p>   1-14 numeric characters plus a decimal point and commas</p>
+        </desc>
+</t>
+<t>
+<field>CR.MIN.BAL.ED.DTE</field>
+<desc>
+            <p>This field represents the last day number to which the minimum balance should be calculated to.  The date is used only in conjunction with the BALANCE.TYPE set to MINIMUM.</p>
+            <p>   If a range of days is set then the interest over the accrue period will be calculated on a month to month basis rather than on the entire accrual period.</p>
+            <p>   For example: If the Start date is set to the 10th and the End date set to 31st, then the calculation for interest will be based on the minimum balance on the account between these days for the month.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   A numeric number between 1 and 31.</p>
+            <p>   The last day will not overlap into the next accrue period.</p>
+            <p>   Input only allowed if the BALANCE.TYPE is set to MINIMUM.</p>
+            <p>   If the corresponding CR.MIN.BAL.ST.DTE is set then this field will default to 31 if left blank.</p>
+        </desc>
+</t>
+<t>
+<field>CR.MIN.RATE</field>
+<desc>
+            <p>Reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>   No Input</p>
+        </desc>
+</t>
+<t>
+<field>CR2.BALANCE.TYPE</field>
+<desc>
+            <p>Identifies the Balance (Average, Daily or Minimum), on which interest calculations are to be made. (CR2 fields specify a second interest which may be paid).</p>
+            <p>   The Average or Minimum Balance is calculated for the period of time from one application to the next.  (Application dates are specified in Group or Acct. Capitalisation records.)</p>
+            <p>   Average is the sum total of credit balances (assume 0 if the balance is in debit) for each day of the period of calculation, divided by the number of days in the period.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   AVERAGE, DAILY or MINIMUM, or any abbreviation thereof. (Optional input.  Not allowed if INTEREST.DAY.BASIS contains NONE or GENERAL.)</p>
+        </desc>
+</t>
+<t>
+<field>CR2.ZERO.INT.BAL</field>
+<desc>
+            <p>This field indicates that credit interest 2 will not be paid for the entire calculation period if the balance of the account falls below this value.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Optional input</p>
+            <p>   1-14 numeric characters plus a decimal point and commas</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CR2.MARGIN.OPER</field>
+<desc>
+            <p>Field range CR2.BASIC.RATE to CR2.LIMIT.AMT are used to specify rates applicable to different balance limits.  Determines the method by which the Rate specified in corresponding fields CR2.BASIC.RATE or CR2.INT.RATE is adjusted by the Margin specified in corresponding field CR2.MARGIN.RATE. (CR2 fields specify a second interest which may be calculated.)</p>
+            <p>   If the Rate specified in CR2.BASIC.RATE or CR2.INT.RATE is to be adjusted by a Margin, this field specifies whether the Margin Rate is to be added to, subtracted from, or multiplied with the Basic Rate to arrive at the effective interest rate.</p>
+            <p>   If Multiply is specified the final rate is (100 + M) percent of the Rate from CR2.BASIC.RATE or CR2.INT.RATE, where M is the Margin Rate percentage from CR2.MARGIN.RATE.</p>
+            <p>   For examples see CR.BASIC.RATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   ADD, SUBTRACT or MULTIPLY, or any abbreviation thereof.  Multivalue field associated with field range CR2.BASIC.RATE to CR2.LIMIT.AMT.  (Optional input.  Only allowed if corresponding field CR2.BASIC.RATE or CR2.INT.RATE is input.)</p>
+        </desc>
+</t>
+<t>
+<field>CR2.MINIMUM.BAL</field>
+<desc>
+            <p>Specifies the Minimum credit Balance, below which interest is not paid. (CR2 fields specify a second interest which may be calculated).</p>
+            <p>   The amount on which interest is to be calculated, (depending on CR2.BALANCE.TYPE), is compared with this field, if less, no interest is calculated.</p>
+            <p>   For example if the minimum balance to be maintained is USD 1,000.00 the value in this field should be set at USD 999.99. This is to maintain consistency with band/level fields where the same logic is used.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Up to 14 type AMT (standard amount format) numeric characters.  (Optional input.  Not allowed if INTEREST.DAY.BASIS, contains NONE or GENERAL.)  Amount entered should be 1 unit  or 1 decimal unit under the amount which will attract interest (depending on the number of decimal units in the currency).  e.g  Enter USD 999.99 for minimum balances of USD 1,000.00  Enter ITL 49,999 for minimum balances of ITL 50,000</p>
+        </desc>
+</t>
+<t>
+<field>CR.CALCUL.TYPE</field>
+<desc>
+            <p>Determines whether the calculation will be performed up to the credit balance Level or in Bands (where the interest calculation employed is dependent upon the size of credit balance).</p>
+            <p>   If more than one set of field range CR.BASIC.RATE to CR.LIMIT.AMT are input, this indicates that a different interest rate is applicable depending on the size of the credit balance.  CR.CALCUL.TYPE specifies whether separate calculations are to be made for each Band of the credit balance or one is to be made on the entire balance, dependent on the Level of the balance.</p>
+            <p>   Example:</p>
+            <p>   Assume a credit balance of 15,000 and an Account Credit Interest record which specifies an applicable rate of 10 per cent up to 10,000 and 15 per cent above 10,000.</p>
+            <p>   If Band is specified, 2 calculations will be performed, i.e.</p>
+            <p>   10 per cent on 10,000 15 per cent on  5,000</p>
+            <p>   If Level is specified, 1 calculation will be performed, i.e.</p>
+            <p>   15 per cent on 15,000.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   BAND or LEVEL or any abbreviation thereof.  (Mandatory input if more than one set of field range CR.BASIC.RATE to CR.LIMIT.AMT are specified, otherwise optional.  Not allowed if INTEREST.DAY.BASIS contains NONE or GENERAL.)</p>
+        </desc>
+</t>
+<t>
+<field>NET.TAX</field>
+<desc>
+            <p>Defines whether debit interest should be netted against the credit interest prior to calculating tax.</p>
+            <p>   f this is set to Y (yes) then the debit interest due in the capitalisation period will be offset against the credit interest when tax is calculated. Note CR will be netted with DR and CR2 with DR2 and tax calculated individually. Also the debit interest capitalisation frequency must match the credit in order for the netting to take place.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   1 Alphabetic character, Y or N</p>
+        </desc>
+</t>
+<t>
+<field>CR2.INT.RATE</field>
+<desc>
+            <p>Field range CR2.BASIC.RATE to CR2.LIMIT.AMT are used to specify rates applicable to different balance limits.  Specifies a fixed Rate of interest that can be used instead of a Basic Rate.  (CR2 fields specify a second interest which may be paid).</p>
+            <p>   For examples see CR.BASIC.RATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Up to 10 type R (standard rate format) numeric characters. Multivalue field associated with field range CR2.BASIC.RATE to CR2.LIMIT.AMT.  (Optional input.  Not allowed if corresponding field CR2.BASIC.RATE is input or if INTEREST.DAY.BASIS, contains NONE or GENERAL.)</p>
+            <p>   Not more that 6 integers may be entered.</p>
+            <p>   Not more that 9 decimals may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>CR2.ACCR.CLOSE.AC</field>
+<desc>
+            <p>This field denotes whether the Account should receive any interest for the month, if the account was closed after the specified start date for the MINIMUM balance type.</p>
+            <p>   If set to NO, then no interest will be applied if the account was closed before the start date. Setting the field to Yes will allow the Account to receive interest up to the closure date according to the minimum balance criteria, effectively making the closure date the end date for the minimum balance requirements.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Optional input. Yes or No.</p>
+            <p>   Can only be set to NO if the BALANCE.TYPE is set to MINIMUM.</p>
+            <p>   Default = Blank = Yes</p>
+        </desc>
+</t>
+<t>
+<field>CR2.CALCUL.TYPE</field>
+<desc>
+            <p>Determines whether the calculation will be performed up to the credit balance Level or in Bands (where the interest calculation employed is dependent upon the size of credit balance).  (CR2 fields specify a second interest which may be paid).</p>
+            <p>   If more than one set of field range CR2.BASIC.RATE to CR2.LIMIT.AMT are input, this indicates that a different interest rate is applicable depending on the size of the credit balance.  CR2.CALCUL.TYPE specifies whether separate calculations are to be made for each Band of the credit balance or one is to be made on the entire balance, dependent on the Level of the balance.</p>
+            <p>   Example:   Assume a credit balance of 15,000 and an Account Credit Interest record which specifies an applicable rate of 10 per cent up to 10,000 and 15 per cent above 10,000.</p>
+            <p>   If Band is specified, 2 calculations will be performed, i.e.</p>
+            <p>   10 per cent on 10,000 15 per cent on  5,000</p>
+            <p>   If Level is specified, 1 calculation will be performed, i.e.</p>
+            <p>   15 per cent on 15,000.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   BAND or LEVEL or any abbreviation thereof.  (Mandatory input if more than one set of field range CR2.BASIC.RATE to CR2.LIMIT.AMT are input, otherwise optional.  Not allowed if INTEREST.DAY.BASIS, contains NONE or GENERAL.)</p>
+        </desc>
+</t>
+<t>
+<field>CR.MIN.VALUE</field>
+<desc>
+            <p>The minimum credit interest value that will be posted to an account.</p>
+            <p>The amount should be precede with currency. If the currency is not given then system default the account currency</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Amount should be precede with currency. For example INR 1000, this will indicate 1000 Indian Rupees</p>
+        </desc>
+</t>
+<t>
+<field>CR2.ACCR.OPEN.AC</field>
+<desc>
+            <p>This field denotes whether the Account should receive any interest for the month, if the account was opened within the dates specified for Minimum balance type.</p>
+            <p>   If set to NO, then no interest will be applied if the account was opened after the start date and before the end date. Setting the field to Yes will allow the Account to receive interest according to the minimum balance criteria.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Optional input. Yes or No.</p>
+            <p>   Can only be set to NO if the BALANCE.TYPE is set to MINIMUM.</p>
+            <p>   Default = Blank = Yes</p>
+        </desc>
+</t>
+<t>
+<field>CR.MINIMUM.BAL</field>
+<desc>
+            <p>Specifies the Minimum credit Balance, below which interest is not paid. (CR fields specify a second interest which may be calculated).</p>
+            <p>   The amount on which interest is to be calculated, (depending on CR.BALANCE.TYPE), is compared with this field, if less, no interest is calculated.</p>
+            <p>   For example if the minimum balance to be maintained is USD 1,000.00 the value in this field should be set at USD 999.99. This is to maintain consistency with band/level fields where the same logic is used.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Up to 14 type AMT (standard amount format) numeric characters.  (Optional input.  Not allowed if INTEREST.DAY.BASIS, contains NONE or GENERAL.)  Amount entered should be 1 unit  or 1 decimal unit under the amount which will attract interest (depending on the number of decimal units in the currency).  e.g  Enter USD 999.99 for minimum balances of USD 1,000.00  Enter ITL 49,999 for minimum balances of ITL 50,000</p>
+        </desc>
+</t>
+<t>
+<field>CR.INT.RATE</field>
+<desc>
+            <p>Field range CR.BASIC.RATE to CR.LIMIT.AMT are used to specify rates applicable to different balance limits.  Specifies a fixed Rate of interest that can be used instead of a Basic Rate.</p>
+            <p>   For examples see CR.BASIC.RATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Up to 10 type R (standard rate format) numeric characters plus a decimal point.  Multivalue field associated with field range CR.BASIC.RATE to CR.LIMIT.AMT.  (Optional input.  Not allowed if corresponding CR.BASIC.RATE is input or if INTEREST.DAY.BASIS contains NONE or GENERAL.)</p>
+            <p>   Not more than 6 integers may be entered.</p>
+            <p>   Not more than 9 decimals may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>CR2.OFFSET.ONLY</field>
+<desc>
+            <p>Specifies that credit interest is to be calculated only for offset against the second debit interest (DR2) and not for crediting the Customers Account.  (CR2 fields specify a second interest which may be calculated).</p>
+            <p>   nput to this field has no effect unless the second debit (DR2) and second credit (CR2) capitalisation dates are the same.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Y - For offset only or blank - For application to the Account  (Optional input.  Not allowed if INTEREST.DAY.BASIS contains NONE or GENERAL.)</p>
+        </desc>
+</t>
+<t>
+<field>CR.BASIC.RATE</field>
+<desc>
+            <p>Field range CR.BASIC.RATE to CR.LIMIT.AMT are used to specify rates applicable to different balance limits.  Specifies a floating Basic Rate which is held on the BASIC.INTEREST (Ref: General Tables) rate table.</p>
+            <p>   Rates can be fixed or linked to Basic Rates plus or minus a Margin.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   1-4 numeric characters. Multivalue field associated with field range CR.BASIC.RATE to CR.LIMIT.AMT.  (Optional input.  Not allowed if corresponding CR.INT.RATE, is input or if INTEREST.DAY.BASIS, contains NONE or GENERAL.)  There must be a record in the BASIC.INTEREST table (Ref: General Tables) with a key consisting of this code, the Currency of the Account and an effective date which is less than or equal to the date specified in ID. Examples:  The rate or rates of interest which will be applied are defined by the following multivalue group of fields: BASIC RATE INT RATE MARGIN OPER MARGIN RATE LIMIT AMOUNT Examples of their use is as follows: 1)   If the interest rate is to be equal to a floating Basic Rate,      only enter the following field:      BASIC RATE - Code of the applicable Basic Rate. 2)   If the interest rate is to be fixed, only enter the      following field:      INT RATE - the actual rate of interest. 3)   If the interest rate is to be equal to a floating Basic Rate      minus a Margin, enter the following fields:      BASIC RATE  - Code of the applicable Base Rate      MARGIN OPER - SUBTRACT      MARGIN RATE - the Marginal Rate. 4)   If the interest rate is to be equal to a floating Basic Rate      plus a Percentage of the floating Basic Rate, enter the      following fields:      BASIC RATE  - Code of the applicable Basic Rate      MARGIN OPER - MULTIPLY      MARGIN RATE - Percentage to be added 5)   If the interest rate is to be equal to a floating Basic Rate,      minus a margin up to a limiting amount and a floating Basic      Rate, minus a different margin above that limiting amount,      enter the following fields:      BASIC RATE  - Code of the applicable Basic Rate      MARGIN OPER - SUBTRACT      MARGIN RATE - Rate to be subtracted      LIMIT AMOUNT- The limit amount for the above defined rate      BASIC RATE  - Code of the applicable Basic Rate      MARGIN OPER - SUBTRACT      MARGIN RATE - Rate to be subtracted</p>
+        </desc>
+</t>
+<t>
+<field>CR2.MIN.RATE</field>
+<desc>
+            <p>Reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>   No input.</p>
+        </desc>
+</t>
+<t>
+<field>CR2.ZERO.INT.OC</field>
+<desc>
+            <p>Input into this field will determine whether any accounts opened or closed during the capitalisation period will have interest 2 paid. No or Null input will result in no interest being paid. Yes input will result in interest 2 being paid, obviously dependent upon the value in CR2.ZERO.INT.BAL.</p>
+            <p>   Input only allowed if CR2.ZERO.INT.BAL is populated</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   3 alphabetic YES, NO or Null</p>
+        </desc>
+</t>
+<t>
+<field>TAX.KEY</field>
+<desc>
+            <p>Identifies either a Tax record (defined in TAX table) or Tax.Type.Condition record with a "*" symbol prefixed to a valid tax.type.condition which specifies the calculation and processing of tax, applicable to credit interest. If tax rate is given then tax is calculated for the account on the given tax rate. If a Tax Type Condition Identifier is specified, the system will derive the applicable TAX.CODE from the TAX.TYPE.CONDITION based on the customer grouping.Input of tax.type.condition will deduct tax at applicable rate for the customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>   1-2 numeric characters. (Optional input. Not allowed if INTEREST.DAY.BASIS contains NONE or GENERAL.)</p>
+            <p>   There must be an existing record for this code on the TAX table (Ref: General Tables) with an effective date not later than the effective date of this record.</p>
+            <p>   For computation of tax JOINT HOLDER wise for an account based on their tax   status, only a valid TAX.TYPE.CONDITION ID has to be specified along with a local routine in CALC.ROUTINE field. eg. *CGT has to be specified.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CR.OFFSET.ONLY</field>
+<desc>
+            <p>Specifies that credit interest is to be calculated only for offset against debit interest and not for crediting the Customer's Account.</p>
+            <p>   Input to this field has no effect unless the debit and credit capitalisation dates are the same.</p>
+            <p>   Note: Only the second type of Credit Interest (specified in the CR2 Fields) may be used to offset the second type of Debit Interest (DR2).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Y - for offset only or blank - for application to the Account.  (Optional input.  Not allowed if INTEREST.DAY.BASIS contains NONE or GENERAL.)</p>
+        </desc>
+</t>
+<t>
+<field>CR.MIN.WAIVE</field>
+<desc>
+            <p>A setting of Yes indicates that credit interest amounts below the minimum value, specified in CR.MIN.VALUE, are to be waived. If HIST options are selected then during correction the system uses the mid reval rate on correction period end to convert the minimum amount</p>
+            <p>If this field is set to No or Null, the minimum value in CR.MIN.VALUE, should be posted to the account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed values are YES, NO, YES-HIST, NO-HIST or NULL.</p>
+        </desc>
+</t>
+<t>
+<field>CR2.MAX.RATE</field>
+<desc>
+            <p>This field defines the maximum rate for credit interest to be applied to the CR2 balance type. If the derived rate exceeds this rate then the interest rate will be capped by this rate.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Rate field.</p>
+            <p>   Numeric input.</p>
+            <p>   Optional Field.</p>
+        </desc>
+</t>
+<t>
+<field>CR2.BASIC.RATE</field>
+<desc>
+            <p>Field range CR2.BASIC.RATE to CR2.LIMIT.AMT are used to specify rates applicable to different balance limits.  Specifies a Basic Rate which is held on the BASIC.INTEREST (Ref: General Tables) rate table.  (CR2 fields specify a second interest which may be calculated).</p>
+            <p>   Rates can be fixed or linked to Basic Rates plus or minus a Margin.</p>
+            <p>   For examples see CR.BASIC.RATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   1 to 4 numeric characters. Multivalue field associated with field range CR2.BASIC.RATE to CR2.LIMIT.AMT.  (Optional input.  Not allowed if corresponding CR2.INT.RATE, is input or if INTEREST.DAY.BASIS contains NONE or GENERAL.)  There must be a record in the BASIC.INTEREST table (Ref: General Tables) with a key consisting of this code, the Currency of the Account and an effective date which is less than or equal to the date specified in ID.</p>
+        </desc>
+</t>
+<t>
+<field>CR2.MARGIN.RATE</field>
+<desc>
+            <p>Field range CR2.BASIC.RATE to CR2.LIMIT.AMT are used to specify rates applicable to different balance limits.  Specifies the amount by which the rate specified in CR2.BASIC.RATE or CR2.INT.RATE, is to be adjusted to arrive at the actual interest rate applicable.  (CR2 fields  specify a second interest which may be paid).</p>
+            <p>   For examples see CR.BASIC.RATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Up to 10 type R (standard rate format) numeric characters plus a decimal point.  Multivalue field associated with field range CR2.BASIC.RATE to CR2.LIMIT.AMT.  (Mandatory input if corresponding CR2.MARGIN.OPER, is input. Otherwise not allowed.)</p>
+            <p>   Not more than 6 integers may be entered.</p>
+            <p>   Not more than 9 decimals may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>CR.MIN.BAL.ST.DTE</field>
+<desc>
+            <p>This field represents the starting day number to which the minimum balance should be calculated from.  The date is used only in conjunction with the BALANCE.TYPE set to MINIMUM.</p>
+            <p>   If a range of days is set then the interest over the accrue period will be calculated on a month to month basis rather than on the entire accrual period.</p>
+            <p>   For example: If the Start date is set to the 10th and the End date set to 31st, then the calculation for interest will be based on the minimum balance on the account between these days for the month.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   A numeric number between 1 and 31.</p>
+            <p>   The starting day will not overlap into the previous accrue period.</p>
+            <p>   Input only allowed if the BALANCE.TYPE is set to MINIMUM.</p>
+            <p>   If the corresponding CR.MIN.BAL.ED.DTE is set then this field will default to 1 if left blank.</p>
+        </desc>
+</t>
+<t>
+<field>CR.BALANCE.TYPE</field>
+<desc>
+            <p>Identifies the Balance (Average, Daily or Minimum), on which interest calculations are to be made.</p>
+            <p>   The Average or Minimum balance is calculated for the period of time from one application to the next. (Application dates are specified in Group or Acct. Capitalisation records.)</p>
+            <p>   Average is the sum total of credit balances (assume 0 if the balance is in debit) for each day of the period of calculation, divided by the number of days in the period.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   AVERAGE, DAILY or MINIMUM, or any abbreviation thereof.  (Input not allowed if INTEREST.DAY.BASIS contains NONE or GENERAL - otherwise mandatory)</p>
+        </desc>
+</t>
+<t>
+<field>CR.MARGIN.RATE</field>
+<desc>
+            <p>Field range CR.BASIC.RATE to CR.LIMIT.AMT are used to specify rates applicable to different balance limits.  Specifies the amount by which the Rate specified in CR.BASIC.RATE or CR.INT.RATE is to be adjusted to arrive at the actual interest rate applicable.</p>
+            <p>   For examples see CR.BASIC.RATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Up to 10 type R (standard rate format) numeric characters plus a decimal point.  Multivalue field associated with field range CR.BASIC.RATE to CR.LIMIT.AMT.   Mandatory input if corresponding CR.MARGIN.OPER is input. Otherwise not allowed).</p>
+            <p>   Not more than 6 integers may be entered.</p>
+            <p>   Not more than 9 decimals may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>NEGATIVE.RATES</field>
+<desc>
+            <p>There are 3 options (YES, BLOCK.MARGIN and NO/Blank)</p>
+            <p>   Blank or NO </p>
+            <p>   Indicates that negative rates cannot be input and if a rate becomes negative as a result of the application of a margin  the rate will be set to zero</p>
+            <p>   YES</p>
+            <p>   Indicates that negative rates can be input and if the application margin makes the rate more negative </p>
+            <p>   then the more negative rate will be used.</p>
+            <p>   BLOCK.MARGIN </p>
+            <p>   Indicates that negative rates can be used but the following conditions apply</p>
+            <p>   -  If the rate is positive and the margin makes the rate negative then the rate will be set to zero</p>
+            <p>   -  If the rate is negative and the margin makes the rate more negative then the margin will be ignored  and the original negative rate is used</p>
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CR2.MIN.BAL.ED.DTE</field>
+<desc>
+            <p>This field represents the last day number to which the minimum balance should be calculated to.  The date is used only in conjunction with the BALANCE.TYPE set to MINIMUM.</p>
+            <p>   If a range of days is set then the interest over the accrue period will be calculated on a month to month basis rather than on the entire accrual period.</p>
+            <p>   For example: If the Start date is set to the 10th and the End date set to 31st, then the calculation for interest will be based on the minimum balance on the account between these days for the month.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   A numeric number between 1 and 31.</p>
+            <p>   The last day will not overlap into the next accrue period.</p>
+            <p>   Input only allowed if the BALANCE.TYPE is set to MINIMUM.</p>
+            <p>   If the corresponding CR2.MIN.BAL.ST.DTE is set then this field will default to 31 if left blank.</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.TAX.MIN</field>
+<desc>
+            <p>Defines the amount of interest which can be earned tax free.</p>
+            <p>   If the amount of credit interest earned in a capitalisation period is greater than this amount then tax, if defined, will be deducted. Note the interest minimum will be applied for CR and CR2 individually not for the sum of the two.</p>
+            <p>   Debit interest can be used to offset the tax - see NET.TAX field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   19 Numeric (Optional)</p>
+        </desc>
+</t>
+<t>
+<field>CR2.MIN.BAL.ST.DTE</field>
+<desc>
+            <p>This field represents the starting day number to which the minimum balance should be calculated from.  The date is used only in conjunction with the BALANCE.TYPE set to MINIMUM.</p>
+            <p>   If a range of days is set then the interest over the accrue period will be calculated on a month to month basis rather than on the entire accrual period.</p>
+            <p>   For example: If the Start date is set to the 10th and the End date set to 31st, then the calculation for interest will be based on the minimum balance on the account between these days for the month.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   A numeric number between 1 and 31.</p>
+            <p>   The starting day will not overlap into the previous accrue period.</p>
+            <p>   Input only allowed if the BALANCE.TYPE is set to MINIMUM.</p>
+            <p>   If the corresponding CR2.MIN.BAL.ST.DTE is set then this field will default to 1 if left blank.</p>
+        </desc>
+</t>
+<t>
+<field>CR2.MIN.WAIVE</field>
+<desc>
+            <p>A setting of Yes indicates that credit interest amounts below the minimum value, specified in CR2.MIN.VALUE, are to be waived. If HIST options are selected then during correction the system uses the mid reval rate on correction period end to convert the minimum amount</p>
+            <p>If this field is set to No or Null, the minimum value in CR2.MIN.VALUE, should be posted to the account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed values are YES, NO, YES-HIST, NO-HIST or NULL.</p>
+        </desc>
+</t>
+<t>
+<field>CR.MARGIN.OPER</field>
+<desc>
+            <p>Field range CR.BASIC.RATE to CR.LIMIT.AMT are used to specify rates applicable to different balance limits.  Determines the method by which the Rate specified in CR.BASIC.RATE or CR.INT.RATE is to be adjusted by the Margin specified in CR.MARGIN.RATE.</p>
+            <p>   If the Rate specified in CR.BASIC.RATE or CR.INT.RATE is to be adjusted by a Margin, this field specifies whether the Margin Rate is to be added to, subtracted from, or multiplied by the Basic Rate to arrive at the effective interest rate.</p>
+            <p>   If Multiply is specified the final rate is (100 + M) percent of the Rate from CR.BASIC.RATE or CR.INT.RATE, where M is the Margin Rate percentage from CR.MARGIN.RATE.</p>
+            <p>   For examples see CR.BASIC.RATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   ADD, SUBTRACT or MULTIPLY, or any abbreviations thereof.  Multivalue field associated with field range CR.BASIC.RATE to CR.LIMIT.AMT. (Optional input. Only allowed if corresponding CR.BASIC.RATE or CR.INT.RATE.</p>
+        </desc>
+</t>
+<t>
+<field>CR.LIMIT.AMT</field>
+<desc>
+            <p>Specifies the balance limit up to and including which the rates specified in corresponding field range CR.BASIC.RATE to CR.MARGIN.RATE apply.</p>
+            <p>   For examples see CR.BASIC.RATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Up to 14 type AMT (standard amount format) numeric characters.  Multivalue field associated with field range CR.BASIC.RATE to CR.LIMIT.AMT.  (Mandatory input if more than one set of field range CR.BASIC.RATE to CR.LIMIT.AMT are specified but not allowed for last set or if only one set is input.) Where more than one CR Limit Amount is input, these must be in ascending sequence.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.NO.DATE</field>
+<desc>
+            <p>This is an Account number and date, which identifies the Account Credit Interest record and the date from which it applies.</p>
+            <p>   The corresponding CONCAT record in the file ACCOUNT.DATE will be updated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   a)   2-14 numeric character Account number or 3-10 character Account mnemonic. b)   '-' (Mandatory if date entered, otherwise not input). Prime Sites '.' c)   1-9 date characters.  (Optional input.  Default is today's      date).</p>
+            <p>   The Account number/mnemonic must have an associated record present on the Account file.</p>
+            <p>   If month or year is not entered then the current month and/or year is assumed.</p>
+        </desc>
+</t>
+<t>
+<field>COMPOUND.TYPE</field>
+<desc>
+            <p>Optional values of DAILY, WEEKn, Mnn or Nnn can be input to specify the</p>
+            <p>   number of compounding periods per year.</p>
+            <p>   If left blank, no compounding will occur.</p>
+        </desc>
+</t>
+<t>
+<field>COMPOUND.YIELD.METHOD</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>CR.ACCR.CLOSE.AC</field>
+<desc>
+            <p>This field denotes whether the Account should receive any interest for the month, if the account was closed after the specified start date for the MINIMUM balance type.</p>
+            <p>   If set to NO, then no interest will be applied if the account was closed before the start date. Setting the field to Yes will allow the Account to receive interest up to the closure date according to the minimum balance criteria, effectively making the closure date the end date for the minimum balance requirements.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Optional input. Yes or No.</p>
+            <p>   Can only be set to NO if the BALANCE.TYPE is set to MINIMUM.</p>
+            <p>   Default = Blank = Yes</p>
+        </desc>
+</t>
+<t>
+<field>CR.ACCR.OPEN.AC</field>
+<desc>
+            <p>This field denotes whether the Account should receive any interest for the month, if the account was opened within the dates specified for Minimum balance type.</p>
+            <p>   If set to NO, then no interest will be applied if the account was opened after the start date and before the end date. Setting the field to Yes will allow the Account to receive interest according to the minimum balance criteria.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Optional input. Yes or No.</p>
+            <p>   Can only be set to NO if the BALANCE.TYPE is set to MINIMUM.</p>
+            <p>   Default = Blank = Yes</p>
+        </desc>
+</t>
+<t>
+<field>CR2.LIMIT.AMT</field>
+<desc>
+            <p>Specifies the balance limit up to and including which the rates specified in the corresponding field range CR2.BASIC.RATE to CR2.MARGIN.RATE apply. (CR2 fields specify a second interest which may be paid).</p>
+            <p>   For examples see CR.BASIC.RATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Up to 14 type AMT (standard amount format) numeric characters. Multivalue field associated with field range CR2.BASIC.RATE to CR2.LIMIT.AMT.  (Mandatory input, if more than one set of field range CR2.BASIC.RATE to CR2.LIMIT.AMT are specified but not allowed for last set or if only one set is input.)  Where more than one CR2 Limit Amount is input, these must be in ascending sequence.</p>
+        </desc>
+</t>
+<t>
+<field>CR2.MIN.VALUE</field>
+<desc>
+            <p>The minimum second credit interest value that will be posted to an account.</p>
+            <p>The amount should be precede with currency. If the currency is not given then system default the account currency</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Amount should be precede with currency. For example INR 1000, this will indicate 1000 Indian Rupees</p>
+            </desc>
+</t>
+<t>
+<field>CR.ZERO.INT.OC</field>
+<desc>
+            <p>Input into this field will determine whether any accounts opened or closed during the capitalisation period will have interest paid. No or Null input will result in no interest being paid. Yes input will result in interest being paid, obviously dependent upon the value in CR.ZERO.INT.BAL.</p>
+            <p>   Input only allowed if CR.ZERO.INT.BAL is populated</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   3 alphabetic YES, NO or Null</p>
+        </desc>
+</t>
+<t>
+<field>CR.MAX.RATE</field>
+<desc>
+            <p>This field defines the maximum rate for credit interest to be applied to the CR balance type. If the derived rate exceeds this rate then the interest rate will be capped by this rate.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Rate field.</p>
+            <p>   Numeric input.</p>
+            <p>   Optional Field.</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.DAY.BASIS</field>
+<desc>
+            <p>Defines the method of determining the number of days used for credit interest calculations. If not entered, the Basis specified on the CURRENCY table (Ref: General Tables) will be used. If no credit interest is to be calculated on this Account, NONE should be entered. By entering GENERAL it is possible to specify a return to Group Credit interest calculation with effect from the date in ID.</p>
+            <p>   Where G is entered, this is expanded to GENERAL and is used to indicate that on the date specified by ID, the Account should revert to the GROUP.CREDIT.INT record for details of credit interest calculations.</p>
+            <p>   Can accept the following types:</p>
+            <p />
+            <p />
+            <p>   For illustrations of all supported INTEREST.BASIS types see: INTEREST.BASIS</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>   1-9 characters A, B, C, D, E, F, GENERAL or NONE. (Optional input; default from CURRENCY table.)</p>
+            <p>   If NONE or GENERAL is entered, all other fields must be blank.</p>
+            <p>   If GENERAL is entered, there must be an existing GROUP.CREDIT.INT record for the appropriate Currency and Condition Group,         with effective date less than or equal to the effective         date of this record.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

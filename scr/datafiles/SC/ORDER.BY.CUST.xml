@@ -1,0 +1,1288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SC</product>
+<table>ORDER.BY.CUST</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The Order by Cust Application, is a front end Securities Open Order generation routine. Based on input selection criteria, the application will select the required portfolios, and apportion the nominal to be purchased or sold, based on the order criteria. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>SECURITY.NO.CR</field>
+<desc>
+            <p>Identifies the Security for the purchase side of order. </p>
+            <p>
+                <p>Validation Rules</p>
+            </p>
+            <p>            Any numeric input will be converted to the Security Format specified on the SC.PARAMETER file and validated against the SECURITY.MASTER file. Any alphanumeric input will be validated against the MNEMONIC.SECURITY file. The result must be a valid ID on the SECURITY.MASTER file.</p>
+            <p>            Mandatory Input if the order is a PURCHASE or SWITCH.</p>
+            <p>            Input only allowed for if the order is a PURCHASE or SWITCH order as identified in the ORDER.TYPE field.</p>
+        </desc>
+</t>
+<t>
+<field>EXT.CUSTODIAN</field>
+<desc>
+            <p>To identify the external custodian where position is held.</p>
+        </desc>
+</t>
+<t>
+<field>DEPOSITORY</field>
+<desc>
+            <p>For Sale Orders - This is the Depository of the existing Security.Position </p>
+            <p>
+                <p>Validation Rules</p>
+            </p>
+            <p>            NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>INC.ACCRD.INT</field>
+<desc>
+            <p>This field, when set to 'ALL', will calculate the proceeds of the sale of a bond instrument to include accrued interest. This requires PRICE.TYPE, PRICE.BASIS to be set to 'EXC.ACCR'.</p>
+        </desc>
+</t>
+<t>
+<field>NOMINAL</field>
+<desc>
+            <p>Modified Nominal taking into account of the Rounding Factor. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This field may be modified by the user but additional sub-values may not be added to the suggested orders. Only an existing value may be modified, new sub-values/multi-values cannot be entered.</p>
+        </desc>
+</t>
+<t>
+<field>THEOR.NOM</field>
+<desc>
+            <p>Fields SECURITY.NO to CASH.BALANCE form a related multi value set. Standard T24 amount field. </p>
+            <p>            CASH Transactions - This field will be populated with the amount of nominal that the CASH amount entered in field CASH.AMOUNT could purchase excluding any charges or fees.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            A maximum of 18 characters may be entered.</p>
+            <p>            This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>MARKET.VALUE</field>
+<desc>
+            <p>Market Value of the Order Nominal </p>
+            <p>NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>PERCENTAGE</field>
+<desc>
+            <p>This is the Percentage Value to be used in conjunction with the order type. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            Percentage input will result in the generation of Nominals to this Percentage depending on the order type, e.g. Total Holding to equal input percentage </p>
+            <p>            Optional Input. Must be entered if ORDER.NOMINAL, GROSS.AMOUNT or CASH.AMOUNT is not entered.</p>
+        </desc>
+</t>
+<t>
+<field>SECURITY.CCY.DB</field>
+<desc>
+            <p>Specifies the currency of the sell side Security (SECURITY.DB)</p>
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p>       No Input </p>
+            <p>       Automatic default is to the currency of the Security as per the Security.  Master record Field  SECURITY.CURRENCY.  </p>
+        </desc>
+</t>
+<t>
+<field>DEPT.ACCT.OFF</field>
+<desc>
+            <p>Department Account Officer Selection Criteria </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Multi Valued to allow more than one Acct Officer Optional Input Must be Input if Field Select (2) is not entered</p>
+        </desc>
+</t>
+<t>
+<field>MAXIMUM.LOT.CR</field>
+<desc>
+            <p>Allows the user to specify the Maximum nominal that will be allotted to a single portfolio. This field will be used to amend the calculated theoretical nominal field to ensure that the order nominal is not greater than this figure. If nominal calculated is greater than MAXIMUM.LOT.CR then nominal becomes MAXIMUM.LOT.CR value</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Optional Input. </p>
+            <p>  Input should be positive and exactly divisable by the ROUNDING.FACTOR.CR</p>
+            <p>  Anything input into this field must be greater than value in the MINIMUM.LOT.CR field, if input has been made into both.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ROUNDING.TYPE</field>
+<desc>
+            <p>For NOMINAL based orders this field will determine how the surplus/deficit is allocated.</p>
+            <p>          Proportional will spread the surplus/deficit based on the portfolio valuation as a proportion of the whole, thereby allocating or removing based on the strength of the portfolio.</p>
+            <p />
+            <p>         For HIGH.LOW method. If there is a surplus it will remove, one trading unit at a time from the highest initial allocation. If there is a deficit it will add, one trading unit at a time, to the lowest allocation.</p>
+        </desc>
+</t>
+<t>
+<field>TRADE.CCY</field>
+<desc>
+            <p>The trade currency for the ORDER.BY.CUST. Will be defaulted from the ORDER.TYPE and the security field SECURITY.CURRENCY.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            If the order type is PURCHASE then this will be set from the       SECURITY.NO.CR record</p>
+            <p>            If the order type is SELL or SWITCH then this will be set from the       SECURITY.NO.DB record</p>
+            <p>            Otherwise it will be set from SECURITY.NO</p>            
+        </desc>
+</t>
+<t>
+<field>CU.CHRGS.DEF</field>
+<desc>
+            <p>Determines how charges are applied to cash transactions only for calculating the Nominal amount.</p>
+            <p>            If set to GROSS the nominal is calculated then the charges are added to the CASH.AMOUNT. If set to NET the nominal is calculated so that the CASH.AMOUNT includes all charges.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            Mandatory Input if CASH.AMOUNT field is used.</p>
+            <p>            NET or GROSS</p>
+        </desc>
+</t>
+<t>
+<field>MARKET.PRICE.CR</field>
+<desc>
+            <p>Standard T24 rate field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            A maximum of 12 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>EXPIRY.DATE.CR</field>
+<desc>
+            <p>This field specifies the validity of the Limit, i.e. how long is it to remain in force.</p>
+            <p />
+            <p>       The validity of that date will depend very much on work and local practices.</p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p />
+            <p>       Standard Date field</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DEAL.STATUS</field>
+<desc>
+            <p>Current status of the order.</p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p />
+            <p>       Values allowed are TRANSMITTED, TRADED, NULL</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CASH.CHRGS</field>
+<desc>
+            <p />
+            <p>            This field will be defaulted automatically to the same value as the CU.CHRGS.DEF field if it is populated the AUTO.SELECT option is used.</p>
+            <p>            NET - The nominal will be calculated so that when the charges are added to the trade, the total value of the trade matches the CASH.AMOUNT. GROSS - The nominal is calculated then the charges are added to the CASH.AMOUNT.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TRADER.DESC</field>
+<desc>
+            <p>Specifies the description on field TRADE.CODE.</p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p>      Multi Value No Input field which is used to store any comments or free format narrative concerning the customer or the transaction. Free Format narrative text. Up to 35 maximum characters per line.</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.PRICE.DB</field>
+<desc>
+            <p>The Price at which the security defined in this multi value set is to be sold.</p>
+            <p />
+            <p>       This can be used in conjunction with field SOO.ORDER.TYPE to inform the Dealers of a Limit price to be reached before the transaction should be executed.</p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p />
+            <p>       Optional field</p>
+            <p />
+            <p>       1-15 numeric characters (0-6 integers 0-9 decimals) plus a .</p>
+            <p>       If this field is entered the following field EXPIRY.DATE.DB becomes Mandatory.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CALC.CHRGS</field>
+<desc>
+            <p>            This field will be defaulted automatically to YES if the CU.CHRGS.DEF field is populated the AUTO.SELECT option is used.</p>
+            <p>            This field can be modified with the following results YES - CU.COMM, CU.COMM.TAX, CU.STAMP.TAX, CU.EBV.FEES will be recalculated. If CU.CHRGS.DEF is set to NET the nominal will be recalculated. NO - No charge/commissions will be recalculated, however, if CU.CHRGS.DEF is set to NET there are any values in CU.BRKR.COMM, CU.FOR.FEE, CU.COMM, CU.COMM.TAX, CU.STAMP.TAX, CU.EBV.FEES, CU.FEES.MISC or CU.DISC.PCNT then the nominal will be recalculated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>MAXIMUM.LOT.DB</field>
+<desc>
+            <p>Allows the user to specify the Maximum nominal that will be allotted to a single portfolio. This field will be used to amend the calculated theoretical nominal field to ensure that the order nominal is not greater than this figure. If nominal calculated is greater than MAXIMUM.LOT.DB then nominal becomes MAXIMUM.LOT.DB value</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Optional Input. </p>
+            <p>  Input should be positive and exactly divisable by the ROUNDING.FACTOR.DB</p>
+            <p />
+            <p>  Value input in this field must be greater than value in the MINIMUM.LOT field, if values have been provided in both these fields.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>PORT.PERCENT</field>
+<desc>
+            <p>The percentage of the portfolio valuation of the order nominal. </p>
+            <p>NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.NOMINAL</field>
+<desc>
+            <p>This is the Total Nominal to be Purchased or Sold .</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            Optional Input Must be entered if GROSS.AMT, PERCENTAGE or CASH.AMOUNT is not entered.</p>
+        </desc>
+</t>
+<t>
+<field>COM.TAX.XRTE</field>
+<desc>
+            <p>This field is populated only when the transaction is for CASH order.</p>
+            <p>            Customer commissions in ORDER.BY.CUST are defaulted from the CUSTOMER.CHARGE record for the customer using the SC.APPLICATION set of fields. It will use the set of fields linked to SC.TRADING if they are present and default to ALL otherwise. From there the system links to the SCTR.GROUP.CONDITION application and then onto the SCTR.CHARGE.PARAMETER application to get the actual FT.COMMISSION.TYPE record used. Some commissions have a tax code associated with them which is used to charge tax on the commission. </p>
+            <p>            If Tax is raised on the customer commission then the amount is calculated in the local currency of the system and recorded in the COM.TAX.BCUR field. This field will contain the exchange rate used between the local currency of the system and the trade currency of the ORDER.BY.CUST, used in calculating the amount of tax in the Local currency. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            No input field automatically updated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>SECURITY.CCY.CR</field>
+<desc>
+            <p>Specifies the currency of the buy side Security (SECURITY.CR)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       No Input </p>
+            <p>       Automatic default is to the currency of the Security as per the Security.  Master record Field  SECURITY.CURRENCY.  </p>
+        </desc>
+</t>
+<t>
+<field>ROUNDING.FACTOR</field>
+<desc>
+            <p>This is is the Minimum Lot Size of the suggested Nominal for each portfolio. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            If not enetered, will default Trading.Units from Security.Master.</p>
+        </desc>
+</t>
+<t>
+<field>CU.CASH.AMT</field>
+<desc>
+            <p />
+            <p>            This field will be defaulted automatically if the AUTO.SELECT option is used from the CASH.AMOUNT field.</p>
+            <p>            This field can be manually modified.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>            Mandatory if transaction is CASH order</p>
+        </desc>
+</t>
+<t>
+<field>CU.STAMP.TAX</field>
+<desc>
+            <p>Records the Stamp Tax amount charged to the Customer for the trade. </p>
+            <p>            Automatically populated when the CU.CALC.CHRGS field is set to YES</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            Field length is 1-15 numeric characters with 0-9 decimal         places </p>
+            <p>            The number of decimal places is dependant on the number         of decimal places stated on the CURRENCY file for the         TRADE.CCY </p>
+            <p>            Input will be carried forward into the subsequent field         on SEC.OPEN.ORDER record created</p>
+        </desc>
+</t>
+<t>
+<field>CU.DISC.AMT</field>
+<desc>
+            <p>This field is populated automatically when the transaction is cash is calculated using CU.DISC.PCENT </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.OPERATOR</field>
+<desc>
+            <p>Multi-valued field to be used in conjunction with the FIELD.SELECT and FIELD.OPERAND field to construct as selection sentence which will be executed on the SEC.ACC.MASTER file. At least one set of selection criteria must be used. </p>
+            <p>            Note; any field on the Standard Selection record for the SEC.ACC.MASTER file can be used in the FIELD.SELECT field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Valid input must be one of the following; EQ      - Equals NE      - Not Equal to GT      - Greater Than LT      - Less Than LIKE   - Value of FIELD.OPERAND must contain three dots UNLIKE - Value of FIELD.OPERAND must contain three dots</p>
+        </desc>
+</t>
+<t>
+<field>SECURITY.NO.DB</field>
+<desc>
+            <p>Identifies the Security for the sale side of order. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Any numeric input will be converted to the Security Format specified on the SC.PARAMETER file and validated against the SECURITY.MASTER file. Any alphanumeric input will be validated against the MNEMONIC.SECURITY file. The result must be a valid ID on the SECURITY.MASTER file.</p>
+            <p>            Mandatory Input if the ORDER.TYPE is a SELL or SWITCH.</p>
+            <p>            Input only allowed if the order is a SELL or a SWITCH as specified in the ORDER.TYPE field.</p>
+        </desc>
+</t>
+<t>
+<field>MINIMUM.LOT.DB</field>
+<desc>
+            <p>Allows the user to specify the Minimum nominal that will be allotted to a single portfolio. This field will be used to amend the calculated theoretical nominal field to ensure that the order nominal is not less than this figure. If nomimal calculated is less than MIMIMUM.LOT.DB then nominal becomes zero.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Optional Input.</p>
+            <p>  If no value entered it will default from MINIMUM.HOLDING field from SECURITY.MASTER</p>
+            <p>  Input should be positive and exactly divisable by the ROUNDING.FACTOR.DB</p>
+            <p>  Input value of this field must be less than value in the MAXIMUM.LOT.DB field if input has been made into both.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CU.WHT.TAX</field>
+<desc>
+            <p />
+            <p>            Specifies the amount of Tax on the Securities up to the Value Date of the trade. The calculation is used for Tax payable on any Bond / Share on Sale. </p>
+            <p />
+            <p />
+            <p>            The Tax rate to be applied is fetched from the field CU.WHT.PERC.</p>
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>            1-18       numeric characters (including up to 3 decimal places, dependant on       currency).</p>
+        </desc>
+</t>
+<t>
+<field>INVEST.PROG</field>
+<desc>
+            <p />
+            <p>            Fields SECURITY.NO to CASH.BALANCE form a related multi value set. Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            A maximum of 12 characters may be entered. This is a NOINPUT field. Must be the key to a valid entry on the INVESTMENT.PROGRAM file. </p>
+        </desc>
+</t>
+<t>
+<field>ORDER.TIME</field>
+<desc>
+            <p />
+            <p>            This is an optional field where you may record the time the order was arranged. If entered, the time will, upon successful verification, filter through to the resultant SEC.OPEN.ORDER transaction.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            Time is stored in HH:MM:SS format and may be entered in         that format. You may also enter the time in several         different formats.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEC.ORDER.KEY</field>
+<desc>
+            <p>Generated SEC.OPEN.ORDER record key </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>TRANS.TYPE.DB</field>
+<desc>
+            <p>The transaction type of the SALE side of the order </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Must exist on the SC.TRANS.NAME file.</p>
+            <p>            Must be defined on the SC.TRANS.TYPE field as a debit transaction.</p>
+        </desc>
+</t>
+<t>
+<field>TRADER.CODE</field>
+<desc>
+            <p>Specifies the dealer of the trading department for the order. This will get defaulted to SEC.OPEN.ORDER created for this order.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>      Should be a valid DEPT.ACCT.OFFICER</p>
+        </desc>
+</t>
+<t>
+<field>VALUE</field>
+<desc>
+            <p>Sub-valued field associated with the field SEC.ACC.NO to CASH.BALANCE to give details of orders. This field contains a different value depending on whether this segment of the total order refers to a portfolio buying or selling securities. If this refers a portfolio buying a security then it is the total value of the portfolio in the security currency of the security being bought. If this refers to a portfolio selling a security then it is the current nominal holding of the security being sold by the portfolio. For TARGET order types this will be the current nominal holding.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            No-Input field for information only.</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.DATE</field>
+<desc>
+            <p>This field may be used to enter a date should the date required differ from todays date. If a date is entered, then that date will filter through on verification of the ORDER.BY.CUST transaction and be recorded on the resultant SEC.OPEN.ORDER transaction field of the same name.</p>
+            <p>            If not entered, then following successful verification, the resultant SEC.OPEN.ORDER will contain the date on which the verification was performed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            Must be a valid date</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TRADE.UNITS.CR</field>
+<desc>
+            <p>Specifies the smallest nominal amount that may be traded, defaulted from </p>
+            <p>   SECURITY.MASTER. However, this can be overriden by the user at transaction level.</p>
+        </desc>
+</t>
+<t>
+<field>CASH.AVAIL.REQD</field>
+<desc>
+            <p>For Purchase Orders, the Customer Account Balance on any account in this currency will be looked at and used to calculate if the portfolio has enough cash for the order. If YES is input all currencies will be checked. If this field is left blank then no check against available cash will be made. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Optional Input</p>
+            <p>            Any input made must be a valid currency of YES.</p>
+            <p>            Default is blank, i.e. no cash availability check.</p>
+        </desc>
+</t>
+<t>
+<field>BROKER.NO.DB</field>
+<desc>
+            <p>Indicates the Broker with whom the trade has been placed for security belonging to this multi value set.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>           1 - 6 Numeric Customer code within the range 1 - 999999 or 3 - 10 type MNE</p>
+            <p>          Character Mnemonic Customer ID.</p>
+            <p>          (Optional Input).</p>
+            <p>          Must exist as a Customer type Broker on the Customer Security File.</p>
+        </desc>
+</t>
+<t>
+<field>COMM.CODE</field>
+<desc>
+            <p>This field is populated only when the transaction is for CASH order.</p>
+            <p>            Customer commissions in ORDER.BY.CUST are defaulted from the CUSTOMER.CHARGE record for the customer using the SC.APPLICATION set of fields. It will use the set of fields linked to SC.TRADING if they are present and default to ALL otherwise. From there the system links to the SCTR.GROUP.CONDITION application and then onto the SCTR.CHARGE.PARAMETER application to get the actual FT.COMMISSION.TYPE record used. </p>
+            <p>            When the customer commissions are worked out the FT.COMMISSION.TYPE code used is put in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            No input field automatically updated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>ROUND.FACTOR.CR</field>
+<desc>
+            <p>This is is the Minimum Lot Size of the suggested Nominal for each portfolio for given SECURITY.NO.CR. Value must be a multiple of TRADING.UNITS of SECURITY.MASTER</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  If not enetered, will default TRADING.UNITS from SECURITY.MASTER.</p>
+        </desc>
+</t>
+<t>
+<field>WHT.TAX.CODE</field>
+<desc>
+            <p />
+            <p />
+            <p>            Indicates the Tax code from the TAX.TYPE.CONDITION / TAX file. Defaults from the field SHARE.TAX / BOND.TAX from the file TXN.TAX.CODE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>            No       input field</p>
+        </desc>
+</t>
+<t>
+<field>GROSS.AMOUNT</field>
+<desc>
+            <p>This is the Total Value of the required order </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Optional Input Must be entered, if Order.Nominal or Percentage is not entered.</p>
+        </desc>
+</t>
+<t>
+<field>INC.OPEN.ORDERS</field>
+<desc>
+            <p>This option, if set to YES, will include the NET.OPEN.ORDER.VAL from SEC.ACC.MASTER in the valuation and include the NET.OPEN.ORDER.POS from SECURITY.POSITION in the calculations for nominal required to be bought or sold.</p>
+        </desc>
+</t>
+<t>
+<field>POLICY.AMT</field>
+<desc>
+            <p>Fields SECURITY.NO to CASH.BALANCE form a related multi value set. Standard T24 amount field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            A maximum of 18 characters may be entered.</p>
+            <p>            This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>TRANS.TYPE</field>
+<desc>
+            <p>Fields SECURITY.NO to CASH.BALANCE form a related multi value set. Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            A maximum of 6 characters may be entered.</p>
+            <p>            This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>CU.BRKR.COMM</field>
+<desc>
+            <p>Specifies the amount of Broker Commission charged to the Customer for the trade</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            Field length is 1-15 numeric characters with 0-9 decimal         places. </p>
+            <p>            The number of decimal places is dependant on the number         of decimal places stated on the CURRENCY file, for the         TRADE.CCY </p>
+            <p>            Input will be carried forward into the subsequent field         on SEC.OPEN.ORDER record created</p>
+        </desc>
+</t>
+<t>
+<field>CU.FOR.FEE</field>
+<desc>
+            <p>Records the Foreign Fee amount charged to the Customer for the trade.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            Field length is 1-15 numeric characters with 0-9 decimal         places </p>
+            <p>            The number of decimal places is dependant on the number         of decimal places stated on the CURRENCY file for the         TRADE.CCY </p>
+            <p>            Input will be carried forward into the subsequent field         on SEC.OPEN.ORDER record created</p>
+        </desc>
+</t>
+<t>
+<field>COMM.PERCENT</field>
+<desc>
+            <p>This field is populated only when the transaction is for CASH order</p>
+            <p>            Customer commissions in ORDER.BY.CUST are defaulted from the CUSTOMER.CHARGE record for the customer using the SC.APPLICATION set of fields. It will use the set of fields linked to SC.TRADING if they are present and default to ALL otherwise. From there the system links to the SCTR.GROUP.CONDITION application and then onto the SCTR.CHARGE.PARAMETER application to get the actual FT.COMMISSION.TYPE record used. </p>
+            <p>            When the customer commission is calculated the percentage used to calculate the commission will be recorded in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            No input field automatically updated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.SELECT</field>
+<desc>
+            <p>This field enables you to define one or more Order Selection Criteria.</p>
+            <p>            You may enter any valid field name or number from the SEC.ACC.MASTER (portfolio) application. </p>
+            <p>            All tests on a particular field must be made in consecutive entries. In this case, they will be combined in an OR relationship.</p>
+            <p>            For example : </p>
+            <p>            INVESTMENT.PROGRAM EQ 35</p>
+            <p>            INVESTMENT.PROGRAM EQ 47 when coupled with </p>
+            <p>            DEPT.ACCT.OFF EQ 320 will be translated as </p>
+            <p>            All SEC.ACC.MASTER accounts with INVESTMENT.PROGRAM EQ 35 OR 47 and with DEPT.ACCT.OFF EQ 320.</p>
+            <p>            The relationship between 1 and 2 is therefore OR</p>
+            <p>            The relationship between 1 OR 2 and 3 is AND (1 AND 3 and 2 AND 3)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            Field must exist on Standard Selection </p>
+            <p>            Either Field Number from SEC.ACC.MASTER or Field Name         from SEC.ACC.MASTER Standard Selection record</p>
+            <p>            Optional Input </p>
+            <p>            Must be entered if DEPT.ACCT.OFF not entered</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.PRESENT</field>
+<desc>
+            <p>This field determines the order of display for the suggested orders. If SECURITY is selected then orders will be shown in SECURITY order, i.e. field SECURITY.NO will contain unique multi-values containing sub-values for each SEC.ACC.NO listing each portfolio. If the value is PORTFOLIO then the orders will be displayed in PORTFOLIO order, i.e. SECURITY.NO will be repeated for each portfolio and each portfolio will be listed as a sub-value within the SECURITY multi-value.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            The following values are permitted: SECURITY or PORTFOLIO</p>
+        </desc>
+</t>
+<t>
+<field>EXCH.RATE.DB</field>
+<desc>
+            <p>Exchange rate to be used between the security currency and the settlement currency when calculating order nominals when selling securities. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            WIll only be used by SELL and SWITCH orders.</p>
+        </desc>
+</t>
+<t>
+<field>MINIMUM.LOT</field>
+<desc>
+            <p>For Purchase Orders, allows the user to specify the Minimum nominal that will be allotted to a single portfolio. This field will be used to amend the calculated theoretical nominal field to ensure that the order nominal is not less than this figure. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Does not apply for PURCHASE.INCR order types where the current position is zero.</p>
+            <p>Optional Input.</p>
+            <p>Input should be positive and exactly divisable by the ROUNDING.FACTOR</p>
+            <p>Anything input into this field must be less than any input in the MAXIMUM.LOT field if input has been made into both.</p>
+        </desc>
+</t>
+<t>
+<field>MAXIMUM.LOT</field>
+<desc>
+            <p>For Purchase Orders, allows the user to specify the Maximum nominal that will be allotted to a single portfolio. This field will be used to amend the calculated theoretical nominal field to ensure that the order nominal is not greater than this figure. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Optional Input.</p>
+            <p>            Input should be positive and exactly divisable by the ROUNDING.FACTOR</p>
+            <p>            Anything input into this field must be greater than any input in the MINIMUM.LOT field if input has been made into both.</p>
+        </desc>
+</t>
+<t>
+<field>CU.WHT.PERC</field>
+<desc>
+            <p />
+            <p>            Multi-valued field detailling the percentage </p>
+            <p>            Tax rate in percentage terms. This tax rate will be defaulted from the TAX record associated with </p>
+            <p>            the customer / depository</p>
+            <p>            . </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>            No       input field</p>
+        </desc>
+</t>
+<t>
+<field>SELECTION</field>
+<desc>
+            <p>Transaction/record id.</p>
+        </desc>
+</t>
+<t>
+<field>ROUND.FACTOR.DB</field>
+<desc>
+            <p>This is is the Minimum Lot Size of the suggested Nominal for each portfolio for given SECURITY.NO.DR. Value must be a multiple of TRADING.UNITS of Security Master</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  If no value is entered, will default TRADING.UNITS from SECURITY.MASTER.</p>
+        </desc>
+</t>
+<t>
+<field>POLICY.REQD</field>
+<desc>
+            <p>For Purchase Order, the Portfolio Policy Parameter will be taken into account. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Reserved For Future Use</p>
+        </desc>
+</t>
+<t>
+<field>COM.TAX.CODE</field>
+<desc>
+            <p>This field is populated only when the transaction is for CASH order.</p>
+            <p>            Customer commissions in ORDER.BY.CUST are defaulted from the CUSTOMER.CHARGE record for the customer using the SC.APPLICATION set of fields. It will use the set of fields linked to SC.TRADING if they are present and default to ALL otherwise. From there the system links to the SCTR.GROUP.CONDITION application and then onto the SCTR.CHARGE.PARAMETER application to get the actual FT.COMMISSION.TYPE record used. Some commissions have a tax code associated with them which is used to charge tax on the commission. </p>
+            <p>            If Tax is raised on the customer commission then the Tax Code used (from the TAX file) to calculate the tax on the commission is recorded in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            No input field automatically updated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>SECURITY.NO</field>
+<desc>
+            <p>The Security Number of the Order to be Generated </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Must be a valid Security.Master code</p>
+        </desc>
+</t>
+<t>
+<field>SETTLE.CCY.DB</field>
+<desc>
+            <p>The Settlement Currency to be used in any trades generated that sell securities. Any amounts used to calculate the amount of securities to be sold will be calculated in this security. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Will default to the security currency of the security in the SECURITY.NO.DB field if this is a SELL or SWITCH order.</p>
+            <p>            Will default to the reference currency of the portfolio is the order is a CASH order.</p>
+            <p>            If the order is a SWITCH order then the credit settlement currency must equal the debit settlement currency.</p>
+        </desc>
+</t>
+<t>
+<field>CASH.BALANCE</field>
+<desc>
+            <p>This is the Current Account Balance of the account used if Cash Availabilty has been requested. </p>
+            <p>            If a currency has been input into the CASH.AVAIL.REQD field then this will be in that currency. Otherwise it will be in the currency entered into the SETTLE.CCY.CR field. </p>
+            <p>            Only used when buying securities. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>SPLIT.CHRGS</field>
+<desc>
+            <p>            Only available if the transaction is SWITCH the AUTO.SELECT option has been used.</p>
+            <p>            NULL - If this field is left blank then any commission calculated will be charged on both the purchase the sale at the full rate. XX% - The percentage of the charges to be applied to the trade when the SEC.OPEN.ORDER record is created (NOTE: On a switch transaction there are two sides to the transaction, the sale the purchase, therefore you may need to make modifications to both parts of the transaction)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>STOCK.EXCH.DB</field>
+<desc>
+            <p>Refers to the Stock Exchange at which the Security belonging to this multi value set is normally traded. Defaulted from SECURITY.MASTER that can be overridden by user.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must exist in the STOCK.EXCHANGE file.</p>
+        </desc>
+</t>
+<t>
+<field>PERCENTAGE.DB</field>
+<desc>
+            <p>This is the Percentage Value to be used in conjunction with the order type.</p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p />
+            <p>       Values can range between 1 to 100</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SOO.ORDER.TYPE</field>
+<desc>
+            <p>This input details the type of Order being passed to the dealers.  Whether buy or sell at BEST or at MARKET price.</p>
+            <p>       A buy or sell instruction to a dealer with the at Market flag signifies that there is no limit or restriction on the price at which he can execute the transaction. The client or investment manager is happy with the market price.</p>
+            <p>       Best price indicates that the dealer ought really to shop around for his price as there may be a lot of activity and consequently differing prices to be achieved.</p>
+            <p>       Price indicates that the price input within field 9 is a minimum or maximum price to be paid or received for the securities stipulated.</p>
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p>       Should be a valid record in SC.ORDER.TYPE.</p>
+            <p>       CASH type order is not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>CU.FEES.MISC</field>
+<desc>
+            <p>Records the amount of Miscellaneous Fees charged to the Customer for the trade. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            Field length is 1-15 numeric characters with 0-9 decimal         places </p>
+            <p>            The number of decimal places is dependant on the number         of decimal places stated on the CURRENCY file for the         TRADE.CCY </p>
+            <p>            Input will be carried forward into the subsequent field         on SEC.OPEN.ORDER record created</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.NOMINAL</field>
+<desc>
+            <p>A system calculated field. Will display the total of all NOMINAL.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            A NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>CASH.PCENT.LIMIT</field>
+<desc>
+            <p>For Purchase Orders, the user can specify how much of the portfolio balance is to remain as cash. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Optional Input</p>
+            <p>            Input will only be allowed in this field if the CASH.AVAIL.REQD field has had something entered into it.</p>
+            <p>            Input must be in the range 0 - 100</p>
+        </desc>
+</t>
+<t>
+<field>TRADE.UNITS.DB</field>
+<desc>
+            <p>Specifies the smallest nominal amount that may be traded, defaulted from  SECURITY.MASTER. However, this can be overriden by the user at transaction level. </p>
+        </desc>
+</t>
+<t>
+<field>EXTERNAL.TXN</field>
+<desc>
+            <p>Determine whether external transaction is allowed. Allowed value is YES</p>
+        </desc>
+</t>
+<t>
+<field>MARKET.PRICE</field>
+<desc>
+            <p>This is the market price for the security sell side of the order. It will relate to the security entered into the SECURITY.NO.DB field. Input only valid for SWITCH or SELL type Orders. If the order is a SWITCH type order this is the price that will be used to calculate the amount available for the buy side of the order. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            If not entered, the price contained in the LAST.PRICE field from the SECURITY.MASTER record for the security entered in the SECURITY.NO.DB field will default.</p>
+        </desc>
+</t>
+<t>
+<field>INC.UNSETTLED</field>
+<desc>
+            <p>This option, if set to YES, will not deduct the UNSETTLED.NOM.CR from the nominal figure in CLOSING.BAL.NO.NOM in SECURITY.POSITION when calculating the nominal held by the portfolio.</p>
+            <p>The resulting figure is used when calculating the nominal required to be purchased or sold depending on what is currently held.</p>
+            <p>For TARGET and PURCHASE.INCR this will default to YES.</p>
+        </desc>
+</t>
+<t>
+<field>EXCH.RATE.CR</field>
+<desc>
+            <p>The exchange rate between the security currency and the settlement currency to be used when working out order nominals when buying securities. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Only used if the order is a PURCHASE of SWITCH order,</p>
+        </desc>
+</t>
+<t>
+<field>STOCK.EXCHANGE</field>
+<desc>
+            <p>If this transaction is CASH then this field will be populated automatically from the SECURITY.MASTER record.</p>
+            <p>            If the transaction is </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Must exist on the STOCK.EXCHANGE file.</p>
+        </desc>
+</t>
+<t>
+<field>MINIMUM.LOT.CR</field>
+<desc>
+            <p>Allows the user to specify the Minimum nominal that will be allotted to a single portfolio. This field will be used to amend the calculated theoretical nominal field to ensure that the order nominal is not less than this figure. If nomimal calculated is less than MIMIMUM.LOT.CR then nominal becomes zero.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Optional Input.</p>
+            <p>  If no value entered it will default from MINIMUM.HOLDING field from SECURITY.MASTER</p>
+            <p>  Input should be positive and exactly divisable by the ROUNDING.FACTOR.CR</p>
+            <p>  Value input in this field must be less than value in the MAXIMUM.LOT.CR field, if input has been made into both.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CASH.AMOUNT</field>
+<desc>
+            <p>The cash amount entered here will be applied to each portfolio selected will be used to determine the amount of nominal to trade.</p>
+            <p>            If field CU.CHRGS.DEF is set to GROSS then the system will take the cash amount, calculate the nominal then add any charges in addition to the CASH.AMOUNT. If field CU.CHRGS.DEF is set to NET then the system will take the cash amount work out the nominal based on all the charges being included in the CASH.AMOUNT.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Optional Input. Must be entered if ORDER.NOMINAL, GROSS.AMOUNT     or PERCENTAGE is not entered.</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.OPERAND</field>
+<desc>
+            <p>Order Selection Criteria Value of Selection Field entered in Field Select </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Optional Input Must be entered if Field Select entered.</p>
+        </desc>
+</t>
+<t>
+<field>STOCK.EXCH.CR</field>
+<desc>
+            <p>Refers to the Stock Exchange at which the Security belonging to this multi value set is normally traded. Defaulted from SECURITY.MASTER that can be overridden by user.</p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p />
+            <p>Must exist in the STOCK.EXCHANGE file.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TARGET</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            A maximum of 3 characters may be entered.</p>
+            <p>            The following values are permitted:       YES      NO</p>
+        </desc>
+</t>
+<t>
+<field>CU.COMM</field>
+<desc>
+            <p>Automatically calculated when entering a cash transaction using the AUTO.SELECT option or setting the CALC.CHRGS field to YES. The CU.COMM.TAX will also be populated when this field is updated.</p>
+            <p>            Records the Commission amount charged to the Customer for the trade. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            Field length is 1-15 numeric characters with 0-9 decimal         places </p>
+            <p>            The number of decimal places is dependant on the number         of decimal places stated on the CURRENCY file for the         TRADE.CCY </p>
+            <p>            Input will be carried forward into the subsequent field         on SEC.OPEN.ORDER record created</p>
+        </desc>
+</t>
+<t>
+<field>SETTLE.CCY.CR</field>
+<desc>
+            <p>The Settlement Currency to be used in any trades generated that buy securities. Any amounts used to calculate the amount of securities to be bought will be calculated in this currency. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Will default to the security currency of the security in the SECURITY.NO.CR field.</p>
+            <p>            If the order is a SWITCH order then the credit settlement currency must equal the debit settlement currency.</p>
+        </desc>
+</t>
+<t>
+<field>BROKER.NO.CR</field>
+<desc>
+            <p>Indicates the Broker with whom the trade has been placed for security belonging to this multi value set.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>           1 - 6 Numeric Customer code within the range 1 - 999999 or 3 - 10 type MNE</p>
+            <p>          Character Mnemonic Customer ID.</p>
+            <p>          (Optional Input).</p>
+            <p>          Must exist as a Customer type Broker on the Customer Security File.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>NOMINAL.ROUNDING</field>
+<desc>
+            <p>If this field is left blank or set to NATURAL it will perform the natural rounding method, i.e. greater than or equal 0.5 goes up to 1, less than 0.5 goes down.</p>
+            <p>           UNDER will ensure that all nominal allocations are rounded down to the previous trading unit.</p>
+            <p>           OVER will ensure that all nominal allocations are rounded up to the next trading unit.</p>
+            <p />
+            <p>         If not set NATURAL will be used</p>
+        </desc>
+</t>
+<t>
+<field>TRANS.TYPE.CR</field>
+<desc>
+            <p>The transaction type of the PURCHASE side of the order </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Must exist on the SC.TRANS.NAME file.</p>
+            <p>            Must be defined on the SC.TRANS.TYPE application as a credit transaction.</p>
+        </desc>
+</t>
+<t>
+<field>SEC.ACC.NO</field>
+<desc>
+            <p>The Porfolio Number of the Order to be generated The portfolio numbers are are automatically selected depending on the input selection criteria. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The Porfolio number can either be altered or deleted. Only an existing value may be modified, new sub-values/multi-values cannot be entered.</p>
+        </desc>
+</t>
+<t>
+<field>PERCENTAGE.CR</field>
+<desc>
+            <p>This is the Percentage Value to be used in conjunction with the order type.</p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p>       Values can range between 1 to 100</p>
+            <p>       For switch order, when SECURITY.CR is multi valued, PERCENTAGE.CR can sum to less than or equal to 100, unused cash will remain on the customers cash account.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ADJUST.COMMISSION</field>
+<desc>
+            <p>If the CASH.ROUNDING field is set to EXACT then this field becomes active to determine whether to reduce the commission in order to make the total trade match the cash amount exactly.</p>
+            <p>            If set to YES and the value of the total trade does not match the cash amount, the system will check to see if there is enough commission to cover the difference between the two figures. If there is the system will reduce of commission (and tax on commission) to make the values match. If there is not enough commission to achieve this an error message will be displayed the user will have to choose another option if they require the trade to proceed. If set to NO and the value of the total trade does not match the cash amount an error message will be displayed the user will have to choose another option if they require the trade to proceed.  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            MANDATORY field if the CASH.ROUNDING field is set to EXACT otherwise a NOINPUT field.</p>
+            <p>            YES or NO</p>
+        </desc>
+</t>
+<t>
+<field>ALL.VIEW</field>
+<desc>
+            <p>This field is used to show or hide suggested orders with a zero nominal. If YES or not set then zero nominal orders will be shown.</p>
+            <p />
+            <p>Optional Input, Default is YES</p>
+        </desc>
+</t>
+<t>
+<field>ARBITRAGE</field>
+<desc>
+            <p>This field is used to generate a Arbitage Order using the customers and order value. of a previous Sell Order.By.Cust </p>
+        </desc>
+</t>
+<t>
+<field>AUTO.SELECT</field>
+<desc>
+            <p>Input of Y, will generate/re-generate portfolios with suggested nominals to complete the Total Order </p>
+            <p>           SERVICE option will generate the order via a service.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Option Input If this field is not entered - For New Input - No Portfolios will be generated For Amend Input - previously generated porfolios and nominals will not be altered.</p>
+        </desc>
+</t>
+<t>
+<field>COM.TAX.BCUR</field>
+<desc>
+            <p>This field is populated only when the transaction is for CASH order.</p>
+            <p>            Customer commissions in ORDER.BY.CUST are defaulted from the CUSTOMER.CHARGE record for the customer using the SC.APPLICATION set of fields. It will use the set of fields linked to SC.TRADING if they are present and default to ALL otherwise. From there the system links to the SCTR.GROUP.CONDITION application and then onto the SCTR.CHARGE.PARAMETER application to get the actual FT.COMMISSION.TYPE record used. Some commissions have a tax code associated with them which is used to charge tax on the commission. </p>
+            <p>            If Tax is raised on the customer commission then the amount of tax raised in the local currency of the system is recorded in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            No input field automatically updated by the system.</p>
+        </desc>
+</t>
+<t>
+<field>CU.DISC.PCNT</field>
+<desc>
+            <p>Optional input field detailling the percentage customer discount in percentage terms. This discount will be defaulted from the SCTR.GROUP.CONDITION record associated with the customer. It will feed through to the CU.DISC.PCENT field on the subsequent SEC.OPEN.ORDER record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            Optional numeric input.</p>
+        </desc>
+</t>
+<t>
+<field>CU.EBV.FEES</field>
+<desc>
+            <p>Records the amount of EBV Fees charged to the Customer for the trade. </p>
+            <p>            Automatically populated when the CU.CALC.CHRGS field is set to YES</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            Field length is 1-15 numeric characters with 0-9 decimal         places </p>
+            <p>            The number of decimal places is dependant on the number         of decimal places stated on the CURRENCY file for the         TRADE.CCY </p>
+            <p>            Input will be carried forward into the subsequent field         on SEC.OPEN.ORDER record created</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.PRICE.CR</field>
+<desc>
+            <p>The Price at which the security defined in this multi value set is to be Purchased.</p>
+            <p />
+            <p>       This can be used in conjunction with field SOO.ORDER.TYPE to inform the Dealers of a Limit price to be reached before the transaction should be executed.</p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p />
+            <p>       Optional field</p>
+            <p />
+            <p>       1-15 numeric characters (0-6 integers 0-9 decimals) plus a .</p>
+            <p />
+            <p>       If this field is entered the following field EXPIRY.DATE.CR becomes Mandatory.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXPIRY.DATE.DB</field>
+<desc>
+            <p>This field specifies the validity of the Limit, i.e. how long is it to remain in force.</p>
+            <p />
+            <p>       The validity of that date will depend very much on work and local practices.</p>
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p />
+            <p>       Standard Date field</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CU.COMM.TAX</field>
+<desc>
+            <p>This is the tax amount based on the commision charged.</p>
+            <p>            This field is automatically updated when the CU.COMM field is populated or the CU.CASH.AMT is modified.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            NOINPUT field</p>
+        </desc>
+</t>
+<t>
+<field>CASH.ROUNDING</field>
+<desc>
+            <p />
+            <p>            Each time the NET option is used the system always tries to match the cash amount exactly, however, sometimes this is not possible this field determines what to do with the transaction.</p>
+            <p>            If set to UNDER/OVER the system will calculate to the nearest trading unit under the cash amount for a purchase to the nearest trading unit over the cash amount for a sale. If set to EXACT the system will then allow the user to use the ADJUST.COMMISSION field to determine whether to adjust the commission down to make the total trade equal the cash amount.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ORDER.TYPE</field>
+<desc>
+            <p />
+            <p>            Type of order. Currently four type of order can be specified with ORDER.BY.CUST. </p>
+            <p />
+            <p>            PURCHASE</p>
+            <p>            create order(s) for the purchase of 1 security </p>
+            <p />
+            <p>            SELL</p>
+            <p>            create order(s) for the sale of 1 security</p>
+            <p />
+            <p>            SWITCH</p>
+            <p>            create orders for the sale of one or more securities and the purchase of one or more other securities with the anticipated proceeds of the sale. Note ; Both the buy and sell sides of the order will be specificed on a single ORDER.BY.CUST record. </p>
+            <p />
+            <p>            CASH</p>
+            <p>            Create an order to specify the sale of all securities to a given percentage to generate cash for the portfolio concerned. </p>
+            <p />
+            <p>           TARGET</p>
+            <p>           Create orders to ensure that the holding for the specified security is the PERCENTAGE specified of the valuation amount. You will either BUY or SELL to achieve that percentage.</p>
+            <p />
+            <p>           PURCHASE.INCR</p>
+            <p>           Increase the holdings of the specified security by the PERCENTAGE specified.</p>
+            <p />
+            <p>           SELL.PERC</p>
+            <p>           Sell the PERCENTAGE of the valuation amount in the specified security. If this value is greater than the holdings in the security, SELL all that is held.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>            Mandatory input.</p>
+            <p>            Input must be one of the above order types</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>This is a multi valued field. Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules</p>
+            </p>
+            <p>            This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>PARENT.CHILD</field>
+<desc>
+<p>This field is used to generate parent child SEC.OPEN.ORDERS and will accept a value YES.</p>
+<p> Parent order will be generated for each security and all the portfolio under that security will be individual child orders.</p>
+<p>
+                <p>Validation Rules</p>
+                </p>  
+                <p>Alphabetical characters</p>          
+</desc>
+</t>
+<t>
+<field>PARENT.REFERENCE</field>
+<desc>
+<p>The parent reference provided in this field will form part of the common reference between parent and child.</p>
+                <p>
+                <p>Validation Rules</p>
+                </p>  
+                <p>Alphabetical characters</p>          
+                <p>A maximum of 21 characters may be entered</p>
+</desc>
+</t>
+</menu>
+</t24help>
+

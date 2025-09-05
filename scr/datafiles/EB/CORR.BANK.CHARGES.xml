@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>CORR.BANK.CHARGES</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This application is used to define Correspondent Bank Charges/Commission which will default in FT, when FT.APPL.DEFAULT, field DEF.CORR.BANK.CHGS is set as "Yes".</p>
+            <p>To default charges applicable for the Receiver (Outward) / Sender (Inward)  of MT103 message, Commission / Charge details can be specified here. i.e. To collect charges based on the Correspondent involved  (Customer of Credit Customer if Receiver Bank not specified or Valid Customer is given in Receiver Bank for Outward &amp; Sender for Inward messages) in the FT Application. For  "OTxx" type of transaction, irrespective of the Message type correspondent bank charges are defaulted based on Debit Customer.</p>
+            <p>In this application, Charges can be defined for the Correspondent Customer for each Currency with Optional FT.Txn.Type to default charges based on customer or "DEFAULT" with optional Txn type for others.</p>
+            <p>The order of defaulting of Correspondent charges as per the following- when the charge/commission is defined in the Contract Currency.</p>
+            <p>1. Customer - Txn.type</p>
+            <p>2. Customer</p>
+            <p>3.Default-Txn.type</p>
+            <p>4 Default</p>
+            <p>Defaulting is based on exact match if found for the Currency otherwise next level.</p>
+            <p>Incase a record exists with above order but the Charge/Commission is not defined for the Contract Currency-then nothing is populated.</p>
+            <p>Forexample : Record has been defined for Customer 100170 And Currency USD &amp; DEFAULT record with USD &amp; GBP-then if an incoming message is processed with Currency GBP for Customer 100170-then No charge is defaulted even through the DEFAULT is available.</p>
+            <p>Specify atleast one Commission or Charges details for a currency.</p>
+            <p>Based on the above setup, Correspondent Charges are defaulted in FT as follows:-</p>
+            <p>Outward MT103.</p>
+            <p>At the Funds.Transfer Applciation level, BEN.OUR.CHARGES is given as "OUR" then based on the charges defined in CORR.BANK.CHARGES application (for the  Credit Customer if Receiver Bank is not specified or Valid Customer given in Receiver Bank /Default ) for the Credit Currency, system defaults  the charge details along with CHARGE.FOR as "RECEIVER" and these details mapped to Tag 71g of Outward MT103 Message. The amount to be remitted (tag 32) is arrived by adding the Credit Amount PLUS Receiver Charges (Tag 71g).</p>
+            <p>Irrespective of BEN.OUR.CHARGES field based on the Debit Customer/Default , system also defaults the charges from this application with CHARGE.FOR as "SENDER".</p>
+            <p>Inward MT103.</p>
+            <p>While processing Inward MT103 message, if charge to be taken by the Receiver of inward MT103 is not specified in tag 71G, then Receiver charge details are defaulted from CORR.BANK.CHARGES (as defined for the Sender Customer/Default) irrespective of details of Charges (Ben/Our/Sha)</p>
+            <p>Incase the charges are not defaulted through this application then Charges as defined in FT.TXN.TYPE.CONDITION for the Txn.Type will be defaulted. Refer to FUNDS.TRANSFER user guide for more details.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>RESERVED15</field>
+<desc>
+            <p>Specify the Currency for which the Commission are defined.</p>
+            <p>Field Comm.Currency to Comm.Amt.Lcl forms a Multivalue set and for every record at least for one currency &amp; Comm type is mandatory.</p>
+            <p>The Basis for defaulting Correspondent Charges based on currency is determined from FT's Credit Currency for Outward MT103 Message &amp; Debit Currency for MT103 Inward Message.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory field   </p>
+            <p>Should be a valid record from CURRENCY Application</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED14</field>
+<desc>
+            <p>Defines all the default Commission Types applicable for the Currency.</p>
+            <p>Commission type entered here is mapped to COMMISSION.TYPE in FT application.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>2 type A (alphanumeric) character Commission type. Multivalue field.     (Optional input.)   </p>
+            <p>The Commission Type(s) input in this field must exist on the     FT.COMMISSION.TYPE   </p>
+            <p>Duplicate / Null values not allowed</p>
+        </desc>
+</t>
+<t>
+<field>CUST.TXN.TYPE</field>
+<desc>
+            <p>Id of this application can be either a Valid Customer Number with optional FT.Txn.Type to default Correspondent Bank Commission/ Charges for a Customer or can be "DEFAULT" with optional FT.Txn.Type to default the charges for customer where there is no definition at the customer level.</p>
+            <p>The order of defaulting of Correspondent charges as per the following- when the charge/commission is defined in the Contract Currency.</p>
+            <p>1. Customer - Txn.type</p>
+            <p>2. Customer</p>
+            <p>3.Default-Txn.type</p>
+            <p>4 Default</p>
+            <p>Incase a record exists with above order but the Charge/Commission is not defined for the Contract Currency-then nothing is populated.</p>
+            <p>Forexample : Record has been defined for Customer 100170 And Currency USD &amp; DEFAULT record with USD &amp; GBP-then if an incoming message is processed with Currency GBP for Customer 100170-then No charge is defaulted even through the DEFAULT is available.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Valid Values - "Customer "-" Optional Txn.type" or     "DEFAULT"-"Optional Txn.type"</p>
+            <p>Customer is entered it should be a valid T24 Customer</p>
+            <p>If Txn.type is given then it should be a valid Txn.type from     FT.TXN.TYPE.CONDITION.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHG.CURRENCY</field>
+<desc>
+            <p>Specify the Currency for which the charge are defined.</p>
+            <p>Field Chg.Currency to Chg.Amt.Lcl forms a Multivalue set and for every record at least for one currency &amp; charge type is mandatory.</p>
+            <p>The Basis for defaulting Correspondent Charges based on currency is determined from FT's Credit Currency for Outward MT103 Message &amp; Debit Currency for MT103 Inward Message.</p>
+            <p>Defaulting of Correspondent charges happens only when the setup is available for the Customer -Txn Type combination for the Currency given in FT then otherwise no defaulting is done.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory field   </p>
+            <p>Should be a valid record from CURRENCY Application</p>
+        </desc>
+</t>
+<t>
+<field>COMM.AMT</field>
+<desc>
+            <p>Specify the Commission amount applicable for the currency.</p>
+            <p>Incase the Commission amount is not entered then the Commission amount is defaulted here from FT.COMMISSION.TYPE , when the FLAT.AMT is given for that commission code. </p>
+            <p>If the Commission to be calculated using a percentage, then this field should be left as null and during FT processing the commission Amount is calculated using the percentage and FT amount. </p>
+            <p>Incase Commission amt is given here then same is mapped to FT. </p>
+            <p>When the Commission amount involves Currency other than local currency then the amount is arrived by applying exchange rate for the currency market specified in Ccy.Market and stored in next field (applicable only for FLAT Amt).</p>
+            <p>Amount available here is directly mapped to COMMISSION.AMT in FT application.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional field   </p>
+            <p>If not entered defaulted from FT.COMMISSION.TYPE (For FLAT.AMT only)</p>
+        </desc>
+</t>
+<t>
+<field>COMM.CODE</field>
+<desc>
+            <p>Defines all the default Commission Types applicable for the Currency.</p>
+            <p>Commission type entered here is mapped to COMMISSION.TYPE in FT application.</p>
+            <p>Atleast one commission / Charge code details for a Currency  has to be defined here for a customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>2 type A (alphanumeric) character Commission type. Multivalue field.     (Optional input.)   </p>
+            <p>The Commission Type(s) input in this field must exist on the     FT.COMMISSION.TYPE   </p>
+            <p>Duplicate / Null values not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>COMM.CURRENCY</field>
+<desc>
+            <p>Specify the Currency for which the Commission detail is defined.</p>
+            <p>Field Comm.Currency to Comm.Amt..Lcl forms a Multivalue set and for every record at least for one currency &amp; Charge or Commission type is mandatory.</p>
+            <p>The Basis for defaulting Correspondent Charges based on currency is determined from FT's Credit Currency for Outward MT103 Message &amp; Debit Currency for MT103 Inward Message.</p>
+            <p>Defaulting of Correspondent charges happens only when the setup is available for the Customer -Txn Type combination for the Currency given in FT then otherwise no defaulting is done.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory field   </p>
+            <p>Should be a valid record from CURRENCY application.</p>
+        </desc>
+</t>
+<t>
+<field>COMM.AMT.LCL</field>
+<desc>
+            <p>Incase the Commission currency is different from the Local currency, then the local currency amount is computed using the Ccy.Market specified and same is stored here.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input field</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Give the short description for this Correspondent charge record.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-35 type A (alphanumeric) characters. Multilanguage field. (Mandatory     input).</p>
+        </desc>
+</t>
+<t>
+<field>CCY.MARKET</field>
+<desc>
+            <p>Specify the Currency Market from where the Exchange Rate to be obtained when the Chg.Currency is specified other than the Local currency.</p>
+            <p>Charge amount will be arrived using the exchange rate applicable for the Currency market as defined here.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional field- Defaulted to Currency market '1'   </p>
+            <p>If entered, must be a valid record from CURRENCY.MARKET Application.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.AMT</field>
+<desc>
+            <p>Specify the charge amount applicable for the currency.</p>
+            <p>Incase the Charge amount is not entered then based on the charge type, amount is defaulted here. Incase the charge amount involves other than local currency then the amount is arrived by applying exchange rate for the currency market specified in Ccy.Market and stored in next field.</p>
+            <p>Amount available here is directly mapped to CHARGE.AMT in FT application.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional field   </p>
+            <p>If not entered defaulted from FT.CHARGE.TYPE.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.AMT.LCL</field>
+<desc>
+            <p>Incase the charge currency is different from the Local currency, then the local currency amount is computed using the Ccy.Market specified and same is stored here.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>No input field</p>
+        </desc>
+</t>
+<t>
+<field>CHG.CODE</field>
+<desc>
+            <p>Defines all the default Charge Types applicable for the Currency.</p>
+            <p>Charge type entered here is mapped to CHARGE.TYPE in FT application.</p>
+            <p>Atleast one Commission or Charge code details for a currency is mandatory for a record here.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory when Currency is given.   </p>
+            <p>The Charge Type(s) input in this field must exist on the FT.CHARGE.TYPE   </p>
+            <p>Duplicate / Null values not allowed.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

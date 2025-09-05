@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>TT</product>
+<table>TFS.TRANSACTION</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>TFS.TRANSACTION is the transaction type definition table for TELLER.FINANCIAL.SERVICES (TFS). TFS captures user input data regarding multiple transactions and creates individual TT/FT/DC deals in the back-ground.</p>
+            <p>This table allows us to create transaction types and indicate what should happen when this transaction type is chosen by the user on the deal input screen.</p>
+            <p>By allowing to simply define what the underlying module and the transaction type is, it eliminates the need to configure rules/constraints for each transaction type all over again instead of just inheriting from the underlying module.</p>
+            <p />
+            <p>It also includes a full set of fields related to currency conversion/rate preferences all of which, when left blank, the preferences defined at TFS.PARAMETER level will take effect.</p>
+            <p />
+            <p>However, if these fields are defined at this level, then these preferences will take precedence over what is defined at TFS.PARAMETER level. </p>
+            <p />
+            <p>It also allows definition of a Version of the underlying application. What it means is that when using this particular transaction, a version different from what is defined in TFS.PARAMETER will be used by TFS allowing transaction specific Version level customisation (specific version APIs etc)</p>
+            <p />
+            <p />
+            <p />
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CR.CATEG</field>
+<desc>
+            <p>Noinput field. Used by System during run-time. </p>
+        </desc>
+</t>
+<t>
+<field>INTERFACE.AS</field>
+<desc>
+            <p>This field forms part of the Interface parameters. This is used to map the transaction type of the underlying module. A transaction which charges the underlying must not be used. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Mandatory Input if INTERFACE.TO is FT or TT. Otherwise Input not allowed.</p>
+            <p />
+            <p>If INTERFACE.TO is FT, then input in this field must be a valid record in FT.TXN.TYPE.CONDITION.</p>
+            <p>If INTERFACE.TO is TT, then input in this field must be a valid record in TELLER.TRANSACTION.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DR.TXN.CODE</field>
+<desc>
+            <p>If this transaction type corresonds to DC, then this field is used to define the transaction code to be used when creating the Debit leg of DC.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Mandatory input if the underlying (INTERFACE.TO) is DC. Otherwise, Input not allowed.</p>
+            <p>Input must be a valid record in TRANSACTION table. The field DEBIT.CREDIT.IND in TRANSACTION must be set to DEBIT.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXC.FROM.TXN.LIMIT</field>
+<desc>
+            <p>The TFS.TRANSACTION type that needs to be excluded from transaction limit validation(where the system will validate the transaction amount</p>
+            <p>against a pre-set limit and raise an override if the transaction breaches the limit), this field can be set to YES.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional input.</p>
+            <p>Allowed Values: YES or NULL</p>
+            <p>Default Value: NULL</p>
+        </desc>
+</t>
+<t>
+<field>DR.DENOM.TYPE</field>
+<desc>
+            <p>Noinput field. Used by System during run-time. </p>
+        </desc>
+</t>
+<t>
+<field>CR.TXN.CODE</field>
+<desc>
+            <p>If this transaction type corresonds to DC, then this field is used to define the transaction code to be used when creating the Credit leg of DC.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Mandatory input if the underlying (INTERFACE.TO) is DC. Otherwise, Input not allowed.</p>
+            <p>Input must be a valid record in TRANSACTION table. The field DEBIT.CREDIT.IND in TRANSACTION must be set to CREDIT.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CR.CURR.MKT</field>
+<desc>
+            <p>Noinput field. Used by System during run-time. </p>
+        </desc>
+</t>
+<t>
+<field>OFS.VERSION</field>
+<desc>
+            <p>This field forms part of the Interface Parameters. This field holds the Version that needs to be used when interfacing with the underyling application defined in the associated INTERFACE.TO field.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>The value in this field overrides the setup in the corresponding field in TFS.PARAMETER. If not setup here, then TFS will use the setup defined in TFS.PARAMETER.</p>
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>=================</p>
+            <p />
+            <p />
+            <p>Optional Input. </p>
+            <p />
+            <p>Input must be a valid record in VERSION table.</p>
+            <p />
+            <p>If the associated INTERFACE.TO is FT, then this should be a valid version for FUNDS.TRANSFER Application</p>
+            <p />
+            <p>If the associated INTERFACE.TO is TT, then this should be a valid version for TELLER Application</p>
+            <p />
+            <p>If the associated INTERFACE.TO is DC, then this should be a valid version for DATA.CAPTURE Application.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>LCY.LIMIT</field>
+<desc>
+            <p>This is the same as in TFS.PARAMETER.If this field is set at the TFS.TRANSACTION level, then it will take precedence</p>
+            <p>over the setup in TFS.PARAMETER, but only when this TFS Transaction type is used.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>MKT.EXCH.PROFIT</field>
+<desc>
+            <p>This field forms part of the Currency Conversion Parameters. When cross currency transactions are done, TELLER application calculates market exchange profit. This field allows to define if market exchange profit should be calculated.</p>
+            <p />
+            <p />
+            <p />
+            <p>Value in this field overrides the setup in the corresponding field in TFS.PARAMETER. If not setup here, then TFS will use the setup defined in TFS.PARAMETER.</p>
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>=================</p>
+            <p />
+            <p>Allowed Values: YES or NO.</p>
+            <p>Default Value: Blank - so that TFS inherits the setup defined in TFS.PARAMETER.</p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>CCY.LIMIT</field>
+<desc>
+            <p>This is the same as in TFS.PARAMETER.If this field is set at the TFS.TRANSACTION level, then it will take precedence</p>
+            <p>over the setup in TFS.PARAMETER, but only when this TFS Transaction type is used.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p>If this field is specified, then LIMIT.CCY field must have a Value</p>
+            <p>Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>INTERFACE.TO</field>
+<desc>
+            <p>This field forms part of the Interface parameters. Defines the underlying modules that TFS can interface to.</p>
+            <p />
+            <p />
+            <p />
+            <p>Input in this field will be validated against, at the time of setting up TFS.TRANSACTION.</p>
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>=================</p>
+            <p />
+            <p />
+            <p />
+            <p>Allowed Values: FT, TT and DC.</p>
+            <p />
+            <p>Mandatory Input.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DR.CATEG</field>
+<desc>
+            <p>Noinput field. Used by System during run-time. </p>
+        </desc>
+</t>
+<t>
+<field>CHARGE</field>
+<desc>
+            <p>Noinput field. Used by System during run-time. </p>
+        </desc>
+</t>
+<t>
+<field>TXN.CCY.TO.CR.CCY</field>
+<desc>
+            <p>This field forms part of the Currency Conversion Parameters. The CURRENCY field in TELLER.FINANCIAL.SERVICES is the Currency of the 'Transaction' itself and need not be either the Debit or the Credit Currency.</p>
+            <p />
+            <p />
+            <p />
+            <p>A hypothetical example would be a Customer wanting to transfer USD 100 from his/her GBP account to his/her EUR Account.</p>
+            <p />
+            <p />
+            <p />
+            <p>This means that there is a 3rd currency involved. </p>
+            <p />
+            <p />
+            <p />
+            <p>This field allows to define the rate preferences on how the Credit Currency equivalent should be arrived at from the Transaction Currency.</p>
+            <p />
+            <p />
+            <p>Value in this field overrides the setup in the corresponding field in TFS.PARAMETER, but only when this transaction type is used. If left blank, then TFS will use the setup defined in TFS.PARAMETER.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>=================</p>
+            <p />
+            <p />
+            <p />
+            <p>Allowed Input: BUY.SELL, MID.REVAL</p>
+            <p>Default Value: NULL </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TXN.REV.DC.CR</field>
+<desc>
+            <p>This field forms part of DATA.CAPTURE Related parameters. </p>
+            <p />
+            <p>When trying to reverse a TFS leg which has the underlying as TELLER or FUNDS.TRANSFER in History, TFS would undo the entries by creating offsetting DATA.CAPTURE transactions.</p>
+            <p />
+            <p />
+            <p />
+            <p>It will attempt to use the same TRANSACTION codes as in the accounting entries used by the original underlying TELLER or FUNDS.TRANSFER albeit with the REVERSAL.MARK in DC set to Y. However if those transaction codes are not enabled for use in DATA.CAPTURE module (DATA.CAPTURE field in TRANSACTION table must be set to Y), then it needs a default alternate code that it can use for the Credit Reversal Entry.</p>
+            <p />
+            <p>Setup in this field overrides the setup in the corresponding field in TFS.PARAMETER, but only when this transaction type is used. If left blank, then TFS uses the setup defined in TFS.PARAMETER.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>=================</p>
+            <p />
+            <p />
+            <p />
+            <p>Mandatory Input.</p>
+            <p />
+            <p>Input must be a valid record in TRANSACTION table.</p>
+            <p />
+            <p>The DEBIT.CREDIT.IND in TRANSACTION must be set to CREDIT.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>SURROGATE.AC</field>
+<desc>
+            <p>In the normal course of operations, a teller might be required to do a Cash deposit, Cheque deposit, A/C to A/C transfer between two accounts of the Customer. </p>
+            <p>However, except for the A/C to A/C transfer, the other two transactions above require input in only one of the Account fields, by the user. The internal accounts corresponding to the Till or Cheque suspense are hidden from the user/screen.</p>
+            <p />
+            <p>In TELLER.FINANCIAL.SERVICES (TFS), all these transactions mentioned above will be done on the same screen. However it is not possible to hide a particular field for one multi-value set and show it for another multi-value set (each multi-value set refers to one transaction type - Cash deposit, Cheque Deposit, Transfer etc).</p>
+            <p />
+            <p>To overcome this constraint, TFS has what is called as a 'Surrogate Account' - a temporary place holder and this is the only field that will be displayed on screen. For transaction types like Cash deposit or Cheque deposit, the Surrogate Account field will be automatically defaulted by TFS with the Primary Account - indicating that that is the account to which the transaction will be posted.</p>
+            <p />
+            <p>For account to account transfer, it needs to assume that one side of the transaction is the Primary Account and needs to require the user to input the other account in the Surrogate Account field. In order for it to recognise that a transaction type requires input of another account by the user, this field SURROGATE.AC in TFS.TRANSACTION is used. </p>
+            <p />
+            <p>It tells TFS whether the account input in Surrogate Account field on TFS screen should be treated as the Debit or Credit account of the corresponding TFS Leg.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Optional Input. </p>
+            <p>Allowed Values: ACCOUNT.DR, ACCOUNT.CR or NULL.</p>
+            <p />
+            <p>Recommendation:</p>
+            <p>================</p>
+            <p />
+            <p>Instead of having one transaction type as 'Account Transfer', there will be two transaction types 'FROM' and 'TO' (although, both pointing to the same underlying module and its transaction code).</p>
+            <p />
+            <p>The transaction type FROM will have this field set to ACCOUNT.DR and the transaction type TO will have this field set to ACCOUNT.CR</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DR.ALLOWED.AC</field>
+<desc>
+            <p>Noinput field. Used by System during run-time. </p>
+        </desc>
+</t>
+<t>
+<field>DR.CURR.MKT</field>
+<desc>
+            <p>Noinput field. Used by System during run-time. </p>
+        </desc>
+</t>
+<t>
+<field>CR.DENOM.TYPE</field>
+<desc>
+            <p>Noinput field. Used by System during run-time. </p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Holds the literal that describes this transaction type. Used for enrichment purposes in TFS Transaction screen.</p>
+        </desc>
+</t>
+<t>
+<field>CONSOL.EXCLUDE</field>
+<desc>
+            <p>Even if Consolidation is enabled, it is possible to specify a particular transaction type to be excluded from Consolidation by setting this field to YES.</p>
+            <p />
+            <p>TFS will simply not consider any Legs that have this TFS Transaction type when it consolidates the legs. These TFS legs would directly hit the Customer account.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional Input.</p>
+            <p>Allowed Values: YES or NO</p>
+            <p>Default Value: NO</p>
+            <p />
+            <p>If the implementation uses T24 Cheque Collection process to manage the life of the cheque (configured via CQ.PARAMETER), then this field needs to be set to YES for those TFS.TRANSACTION records used for recording Collection or Clearing Cheques. This is because we need the CHEQUE.COLLECTION record to have the Primary Account and not the Washthru Account.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TT.SIDE.1</field>
+<desc>
+            <p>Noinput field. Used by System during run-time. </p>
+        </desc>
+</t>
+<t>
+<field>TRANS.TYPE</field>
+<desc>
+            <p>This is the key to TFS.TRANSACTION table. In TELLER.FINANCIAL.SERVICES, each transaction (like a Cash deposit or Cheque deposit) is input as one Leg. Each leg is identified what it is by a field that points to this table.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+            </p>
+            <p />
+            <p>Alphanumeric. 15 Characters.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>LIMIT.CCY</field>
+<desc>
+            <p>This is the same as in TFS.PARAMETER.If this field is set at the TFS.TRANSACTION level, then it will take precedence</p>
+            <p>over the setup in TFS.PARAMETER, but only when this TFS Transaction type is used.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p>Input must be a valid record in CURRENCY table.</p>
+            <p>If this field is specified, then CCY.LIMIT field must have a Value</p>
+            <p>Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>CONSOL.NARR</field>
+<desc>
+            <p>If consolidation is enabled, TFS consolidates all the user input legs on a TFS Transaction Screen and automatically populates the statement narrative for the consolidated transaction based on information from the user input Legs. While doing so, it uses the description of the transaction type from this table. However, since the total length of the narrative is limited to 34 characters, using the literal in DESCRIPTION field may not be suitable. </p>
+            <p>This field is used to define a shorter text to be used in the narrative.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>=================</p>
+            <p />
+            <p>Optional input.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DR.ALLOWED.CCY</field>
+<desc>
+            <p>Noinput field. Used by System during run-time. </p>
+        </desc>
+</t>
+<t>
+<field>TXN.REV.DC.DR</field>
+<desc>
+            <p>This field forms part of DATA.CAPTURE Related parameters. </p>
+            <p />
+            <p>When trying to reverse a TFS leg which has the underlying as TELLER or FUNDS.TRANSFER in History, TFS would undo the entries by creating offsetting DATA.CAPTURE transactions.</p>
+            <p />
+            <p />
+            <p />
+            <p>It will attempt to use the same TRANSACTION codes as in the accounting entries used by the original underlying TELLER or FUNDS.TRANSFER albeit with the REVERSAL.MARK in DC set to Y. However if those transaction codes are not enabled for use in DATA.CAPTURE module (DATA.CAPTURE field in TRANSACTION table must be set to Y), then it needs a default alternate code that it can use for the Debit Reversal Entry.</p>
+            <p />
+            <p>Setup in this field overrides the setup in the corresponding field in TFS.PARAMETER, but only when this transaction type is used. If left blank, then TFS uses the setup defined in TFS.PARAMETER.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>=================</p>
+            <p />
+            <p />
+            <p />
+            <p>Mandatory Input.</p>
+            <p />
+            <p>Input must be a valid record in TRANSACTION table.</p>
+            <p />
+            <p>The DEBIT.CREDIT.IND in TRANSACTION must be set to DEBIT.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DENOM.FILTER</field>
+<desc>
+            <p>Noinput field. Used by System during run-time. </p>
+        </desc>
+</t>
+<t>
+<field>CR.ALLOWED.CCY</field>
+<desc>
+            <p>Noinput field. Used by System during run-time. </p>
+        </desc>
+</t>
+<t>
+<field>TXN.CCY.TO.DR.CCY</field>
+<desc>
+            <p>This field forms part of the Currency Conversion Parameters. The CURRENCY field in TELLER.FINANCIAL.SERVICES is the Currency of the 'Transaction' itself and need not be either the Debit or the Credit Currency.</p>
+            <p />
+            <p />
+            <p />
+            <p>A hypothetical example would be a Customer wanting to transfer USD 100 from his/her GBP account to his/her EUR Account.</p>
+            <p />
+            <p />
+            <p />
+            <p>This means that there is a 3rd currency involved. </p>
+            <p />
+            <p />
+            <p />
+            <p>This field allows to define the rate preferences on how the Debit Currency equivalent should be arrived at from the Transaction Currency.</p>
+            <p />
+            <p />
+            <p>Value in this field overrides the setup in the corresponding field in TFS.PARAMETER, but only when this transaction type is used. If left blank, then TFS will use the setup defined in TFS.PARAMETER.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>=================</p>
+            <p />
+            <p />
+            <p />
+            <p>Allowed Input: BUY.SELL, MID.REVAL</p>
+            <p>Default Value: NULL </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>COMMISSION</field>
+<desc>
+            <p>Noinput field. Used by System during run-time. </p>
+        </desc>
+</t>
+<t>
+<field>CR.ALLOWED.AC</field>
+<desc>
+            <p>Noinput field. Used by System during run-time. </p>
+        </desc>
+</t>
+<t>
+<field>AUTO.DENOMINATE</field>
+<desc>
+            <p>Noinput field. Used by System during run-time. </p>
+        </desc>
+</t>
+<t>
+<field>BUY.FCY.SELL.FCY</field>
+<desc>
+            <p>This field forms part of the Currency Conversion parameters for this transaction type. </p>
+            <p />
+            <p>In a TFS transaction, if in a Leg, the debit side is Foreign Currency and the Credit Side is also Foreign Currency, the system needs to arrive at a deal rate.</p>
+            <p />
+            <p>This field allows to define the rate preferences for such a transaction - only when this transaction type is used in TFS.</p>
+            <p />
+            <p>Value in this field overrides the setup in the corresponding field in TFS.PARAMETER. If not setup here, then TFS will use the preferences defined in TFS.PARAMETER.</p>
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>Allowed Values: BUY.SELL, MID.REVAL</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>BUY.FCY.SELL.LCY</field>
+<desc>
+            <p>This field forms part of the Currency Conversion parameters for this transaction type. </p>
+            <p />
+            <p>In a TFS transaction, if in a Leg, the debit side is Foreign Currency and the Credit Side is Local Currency, the system needs to arrive at a deal rate.</p>
+            <p />
+            <p>This field allows to define the rate preferences for such a transaction - only when this transaction type is used in TFS.</p>
+            <p />
+            <p>Value in this field overrides the setup in the corresponding field in TFS.PARAMETER. If not setup here, then TFS will use the preferences defined in TFS.PARAMETER.</p>
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>Allowed Values: BUY.SELL, MID.REVAL</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>BUY.LCY.SELL.FCY</field>
+<desc>
+            <p>This field forms part of the Currency Conversion parameters for this transaction type. </p>
+            <p />
+            <p>In a TFS transaction, if in a Leg, the debit side is Local Currency and the Credit Side is Foreign Currency, the system needs to arrive at a deal rate.</p>
+            <p />
+            <p>This field allows to define the rate preferences for such a transaction - only when this transaction type is used in TFS.</p>
+            <p />
+            <p>Value in this field overrides the setup in the corresponding field in TFS.PARAMETER. If not setup here, then TFS will use the preferences defined in TFS.PARAMETER.</p>
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>Allowed Values: BUY.SELL, MID.REVAL</p>
+            <p />
+            <p />
+        </desc>
+</t>
+</menu>
+</t24help>
+

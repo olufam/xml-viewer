@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>CONDITION.PRIORITY</table>
+</header>
+<overview>
+<ovdesc>
+<p>The purpose of this table is to specify, for each Application, which data elements in the Customer record in addition to the product Category code are used to determine Condition groups and which General Condition takes Priority when more than one of the General Condition requirements are met.</p><p /><p /><p>For each Application, the User will need to choose the data elements which will be used to determine the Condition Groups applicable to the Application. </p><p /><p>The priority of each data elements is the order in which they appear in the multi value sets. This is to identify which Condition takes priority if more than one of the General conditions defined for this application are met by the product/transaction.  The priority 1 will obviously have the highest priority.</p><p /><p>The following example will clarify the user of this table and its relation with the General Condition table (see ACCT.GEN.CONDITION in ACCOUNTS). </p><p /><p>Example: </p><p>Let us suppose that the conditions applicable to current accounts vary per Currency according to: </p><p>(1) The Sector code of the Customer, e.g. it is required to define     different conditions for Banks, Corporate Customer, Private Customer,     Staff, etc. </p><p>(2) The Residence of the Customer, i.e. it is required to define     different conditions for Residents and Non-Residents. </p><p>For these conditions the Condition Priority table would be defined as follows: </p><p>           Sector      : 1 (i.e. Priority 1)            Residence   : 2 (i.e. Priority 2) </p><p>When General conditions are created for the Account application, only these two data elements will be available to define the Group Conditions. Let us then suppose the following in the ACCT.GEN.CONDITION table: </p><p>General Condition 1           General Condition 2 </p><p>Sector Code: 1234             Sector Code:  - Residence  :  -               Residence  : BE </p><p>Then, if an Account is opened with a Sector code 1234 and Residence code BE, the General condition 1 will be selected for the Account since it has a sector code which is priority 1. </p><p>If General Conditions 3 and 4 are defined as: </p><p>General Condition 3           General Condition 4 </p><p>Sector Code: 1234             Sector Code: 1234 Residence  : BE               Residence  : GB </p><p>In this case, the previous Account will then receive the General condition 3 because this Condition represents the best match for the Account.  The General condition 4 would be ignored in all cases because the Account does not satisfy the Residence Condition of that General condition. </p><p /><p /><p>If the user wishes to change the condition priority table, he/she may do so by simply creating a new condition priority record for the specific application. The key to this new record will have an effective date with it. This has been explained below in the KEY part of the helptext. </p></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>OVERRIDE</field>
+<desc></desc>
+</t>
+<t>
+<field>KEY</field>
+<desc><p /><p /><p /><p>The purpose of this table is to specify, for each Application, which data elements in the Customer, Account and SEC.ACC.MASTER records are used to determine Condition groups and which General Condition takes Priority when more than one of the General Condition requirements are met. </p><p /><p>The layout of the Condition Priority file is  now changed so that the any field for the allowed applications can be used.</p><p /><p>The Condition Priority file is now a CUS level file.</p><p /><p /><p /><p>It is now possible to define different records for different companies by adding an optional company to the key. </p><p /><p>If there is no specific record for the company being processed, then the overall one without the company code will be used.</p><p /><p>The layout of the Gen Conditions files will be changed so that instead of having a variable number of fields dependent on the CONDITION.PRIORITY file, there will a fixed number of fields. These fields will contain the information from the CONDITION.PRIORITY record at the multi value level.</p><p>Now we can </p><p /><p /><p>define     groups at a company level</p><p /><p /><p>define     charges for groups at a company level</p><p /><p /><p>enter     conditions for individual customers</p><p /><p /><p>in     a shared customer, multi- company environment, define adhoc charges for a     customer at a company level</p><p /><p /><p>define     the conditions at country level.</p><p /><p><p>Validation Rules:</p></p><p /><p /><p /><p>Presently the following Application names will be accepted: </p><p /><p /><p /><p>ACCOUNT - STATEMENT - FUNDS.TRANSFER - LETTER.OF.CREDIT - TAX - SC.MANAGEMENT - SC.SAFE - SC.TRADING - SC.SAFEKEEPING - FIDUCIARY</p><p /><p /><p /><p>These can be followed by an optional Company code the separation will be a hyphen</p><p /><p>Also to cater for New Conditions a date can be enter. This will be the date on which the new conditions apply. The separation will be a hyphen. </p><p /><p>e.g.</p><p /><p>ACCOUNT</p><p /><p /><p>ACCOUNT-NE0010001</p><p /><p /><p>ACCOUNT-NE0010001-20030331</p><p /><p /><p>ACCOUNT--20030331</p><p /><p /><p> CONDITION.PRIORITY - If an amendement to FX.MARGIN is needed, the ID in Condition.Priority table can be specified as  FX.MARGIN--DATE
+
+</p><p /><p /><p /><p /></desc>
+</t>
+<t>
+<field>PRTY.VALIDATION</field>
+<desc>
+            <p>Optional field that allow the value entered in XX.GEN.CONDITION field to be validated against.</p>x
+            <p>This can be a field from another file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Should be a valid field name entry in the file specified in       PRIORITY.ITEM field.</p>
+            <p>If a routine is attached , it should have an entry in PGM.FILE with type       as S. </p>
+        </desc>
+</t>
+<t>
+<field>PRIORITY.ITEM</field>
+<desc><p>Multi Valued field which defines the order in which fields are used , when matching conditions against values specified in the XX.GEN.CONDITION records.</p><p /><p>Any field (including I-descriptors defined in SS) for the file can be specified </p><p /><p>The format is FILE&gt;FIELD.NAME</p><p /><p /><p><p>Validation Rules:</p></p><p /><p>Should be a valid field name from the files specifed in APPS.ALLOWED       field.</p><p>Can be I descriptor defined in the  STANDARD.SELECTION record of the files specified in the APPS.ALLOWED field.</p><p>Format should be  FIELD.NAME&gt;APPLICATION    ex       ACCOUNT&gt;CATEGORY</p><p /><p /><p /><p /><p /></desc>
+</t>
+<t>
+<field>APPS.ALLOWED</field>
+<desc><p>Multi value field which indicates which files can be used for setting Priority conditions.</p><p>Fields from the files specified above only can be used in PRIORITY.ITEM field.</p><p>The allowed applications are : CUSTOMER , ACCOUNT, SEC.ACC.MASTER,FATCA.CUSTOMER.SUPPLEMENTARY.INFO</p><p>CUSTOMER file can be used for all the CONDITION. PRIORITY records.</p><p>ACCOUNT file can be used for ACCOUNT &amp; STATEMENT records.</p><p>SEC.ACC.MASTER can be used for FX.MARGIN and all SC related CONDITION.PRIORITY records.</p><p>FATCA.CUSTOMER.SUPPLEMENTARY.INFO can be used for TAX related CONDITION.PRIORITY records.</p><p><p>Validation Rules:</p></p><p /><p>Must have an entry in PGM.FILE.</p></desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc><p>Describes the Condition Priority and is used for the enrichment of the code. </p><p>This field can be expanded to allow the User to enter the Description of the Condition Priority in various languages.  Each expansion of the field will correspond to a new language as defined in the LANGUAGE table and will indicate to the User the language in which the Description must be entered. </p><p><p>Validation Rules:</p></p><p>Up to 35 type A (alphanumeric) characters.  Multilanguage field.  (Optional input.  No default value.)</p></desc>
+</t>
+<t>
+<field>GEN.COND.KEEP</field>
+<desc><p /><p>This field will hold </p><p> the key of the XX.GEN.CONDITION records that are to be kept for the new structure. It is expected that only the default record will be kept , others will need to be changed. </p><p /><p /><p>This field can only be entered for CONDITION.PRIORITY records that have a date in the key.</p><p /><p><p>Validation Rules:</p></p><p /><p>Should be a valid XX.GEN.CONDITION record.  For ex  , if the       RECORD ID  is ACCOUNT , then any valid id from ACCT.GEN.CONDITION can be input.</p><p>Can be input for RECORD ID with date only.</p></desc>
+</t>
+<t>
+<field>GROUP.COND.KEEP</field>
+<desc><p /><p>This will be the key of the XX.GROUP.CONDITION records that are to be kept for the new structure. </p><p /><p> As these are the actual charges etc   these records may not need to be changed thus it will be possible to enter ALL otherwise the keys for individual records will need to be entered</p><p><p>Validation Rules:</p></p><p /><p>Should be a valid entry in XX.GROUP.CONDITION record . For example , if       RECORD ID is ACCOUNT  , any id from ACCT.GROUP.CONDITION can be       input.</p><p>Should be input for RECORD ID with date only.</p><p>ALL is allowed.</p><p>If left null , ALL is defaulted.</p><p>ALL is not allowed along with any other  XX.GROUP.CONDITION in the       multi valued set.</p></desc>
+</t>
+</menu>
+</t24help>
+

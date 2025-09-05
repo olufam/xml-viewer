@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>AA</product>
+        <table>AA.SIM.PAYMENT.RULES</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>The PAYMENT RULES Property Class is used by any products which have amounts billed and made due from the customer.</p>
+            <p>         An arrangement may have several bills outstanding and each bill may be comprised of multiple amounts (e.g. principal, principal interest, penalty, tax, charges, etc.). When a customer makes a payment, the entire due amount may not be satisfied. The PAYMENT RULES Property Class is used to define the method by which a single payment will be applied to multiple bills and multiple amount types.</p>
+        </ovdesc>
+    </overview>
+    <menu>
+        <t>
+            <field>DEFAULT.ATTR.OPTION</field>
+            <desc>
+                <p>Optional field - Allowed Values are RESETTING and NON-RESETTING.</p>
+                <p/>
+                <p> RESETTING - During any Renewal Activities (for eg : change.product, rollover or reset) the property conditions will be reset from the product.</p>
+                <p/>
+                <p> NON-RESETTING - During any Renewal Activities property conditions will be maintained from the Arrangement level.</p>
+                <p/>
+                <p> Not used in Arrangement/Sim level.</p>
+                <p/>
+                <p> Leaving the field blank sets NON-RESETTING as the default option.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>DEFAULT.NEGOTIABLE</field>
+            <desc>
+                <p>Not used for arrangement level conditions</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>FINANCIAL.STATUS</field>
+        </t>
+        <t>
+            <field>ID.COMP.1</field>
+            <desc>
+                <p>Contains the arrangement number, extracted from the first component of the id</p>
+                <p>System updated field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.2</field>
+            <desc>
+                <p>Contains the name of the property that this arrangement level condition relates to</p>
+                <p>Name is defined in AA.PRORERTY table</p>
+                <p>System maintained field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.3</field>
+            <desc>
+                <p>Contains the Effective Date of this property condition</p>
+                <p>System updated field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.4</field>
+            <desc>
+                <p>Reserved for future use</p>
+                <p>System field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.5</field>
+            <desc>
+                <p>Reserved for future use</p>
+                <p>System field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ID.COMP.6</field>
+            <desc>
+                <p>Reserved for future use</p>
+                <p>System field no input allowed</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>MAKE.BILL.DUE</field>
+            <desc>
+                <p>In the case where billed amounts exist but the due date has not yet been reached, users can determine that the billed amounts can be made due up to the amount of any remaining payment.  This allows for the processing of bill payments which are received prior to the due date.</p>
+                <p/>
+                <p>       It can accept either YES or NO.</p>
+                <p/>
+                <p>   Ex:</p>
+                <p/>
+                <p>           Repayrule 1:</p>
+                <p/>
+                <p>     Application Order – Oldest Last</p>
+                <p>     Application Type – Bill Date</p>
+                <p>     Sequence – 1, 2</p>
+                <p>     Property – Loaninterest, Loanaccount.</p>
+                <p>     Make Bill Due – Yes</p>
+                <p>     Remainder Activity  - LENDING-APPLYPAYMENT-REPAYRULE2</p>
+                <p/>
+                <p>           Repayrule 2:</p>
+                <p/>
+                <p>     Application Order – Oldest Last</p>
+                <p>     Application Type – Bill Date</p>
+                <p>     Sequence – 1, 2</p>
+                <p>     Property – Prinincreasecharge, Disbursecharge</p>
+                <p>     Remainder Activity – LENDING-APPLYPAYMENT-CURRENT</p>
+                <p/>
+                <p>           Bill Details</p>
+                <p/>
+                <p>    Bill 1 – Scheduled Bill</p>
+                <p>    Bill Amount - 10000</p>
+                <p>    Issue Date = 10 Jan 2008</p>
+                <p>    Due Date = 10 Jan 2008</p>
+                <p/>
+                <p>    Bill 2 – Activity Charge bill raised because of Principal Increase</p>
+                <p>    Bill Amount - 1000</p>
+                <p>    Issue Date = 1 Jan 2008</p>
+                <p>    Due Date = 20 Jan 2008</p>
+                <p/>
+                <p>    Bill 3 – Activity Charge bill raised because of Disbursement</p>
+                <p>    Bill Amount - 1500</p>
+                <p>    Issue Date – 5 Jan 2008</p>
+                <p>    Due Date – 20 Jan 2008</p>
+                <p/>
+                <p>    Repayment Amount – 12500</p>
+                <p>    Repayment Date – 15 Jan 2008</p>
+                <p/>
+                <p>   Order of settling</p>
+                <p/>
+                <p>   Repayrule1 will settle 10000 for Bill1 and will DUE the activity charge bills so that repayrule2 can settle bills related to activity charges</p>
+            </desc>
+        </t>
+        <t>
+            <field>ACTION</field>
+            <desc>
+                <p>The activity that caused this arrangement property to be updated.</p>
+                <p>The activity is taken from the underlying AA.ARRANGEMENT.ACTIVITY request that caused the record to be modified</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>NEGOTIATED.FLDS</field>
+            <desc>
+                <p>No input and multi value field that lists the attributes on the arrangement property record that have been fixed and/or negotiated. These are stored when the arrangement level record is committed. When the arrangement level record is next used all items in the NEGOTIATED.FIELDS list will be maintained</p>
+                <p>Once an attribute has been fixed or negotiated it will remain in negotiated field list on all subsequent dated versions of the property.</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.ATTRIBUTE</field>
+            <desc>
+                <p>System field - not used for arrangement conditions</p>
+                <p/>
+                <p/>
+                <p>System Field NoINPUT allowed -</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.MESSAGE</field>
+            <desc>
+                <p>System field - not used for arrangement conditions</p>
+                <p/>
+                <p/>
+                <p>System Field NoINPUT allowed -</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.OPTIONS</field>
+            <desc>
+                <p>System field - not used for arrangement conditions</p>
+                <p/>
+                <p/>
+                <p>System Field NoINPUT allowed -</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.RESERVED1</field>
+            <desc>
+                <p>System Field - Reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>NR.RESERVED2</field>
+            <desc>
+                <p>System Field - Reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>NR.STD.COMP</field>
+            <desc>
+                <p>Not used for Arrangement Conditions</p>
+                <p/>
+                <p/>
+                <p/>
+                <p>Input not allowed</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.TYPE</field>
+            <desc>
+                <p>System field - not used for arrangement conditions</p>
+                <p/>
+                <p/>
+                <p>System Field NoINPUT allowed -</p>
+            </desc>
+        </t>
+        <t>
+            <field>NR.VALUE</field>
+            <desc>
+                <p>System field - not used for arrangement conditions</p>
+                <p/>
+                <p/>
+                <p>System Field NoINPUT allowed -</p>
+            </desc>
+        </t>
+        <t>
+            <field>OVERRIDE</field>
+            <desc>
+                <p>Standard Override field containing override messages generated by amendments to this property</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ACTIVITY</field>
+            <desc>
+                <p>The activity that caused this arrangement property to be updated.</p>
+                <p>The activity is taken from the underlying AA.ARRANGEMENT.ACTIVITY request that caused the record to be modified</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PR.APP.METHOD</field>
+            <desc>
+                <p>This field denotes the application method that needs to be applied to the periodic rule charges.</p>
+                <p>Allowed values are</p>
+                <p>Due - The periodic rule charges are made due</p>
+                <p>Capitalise - The periodic rule charges are capitalised</p>
+                <p>Not inputtable at arrangement level</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PR.APP.PERIOD</field>
+            <desc>
+                <p>This field denotes the application period for the given periodic rule charges.</p>
+                <p>The periodic rule charges will be applied at the end of the period. If the value defined is zero, then the charges are applied immediately.</p>
+                <p>Standard T24 period field.</p>
+                <p>Not inputtable at arrangement level</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PR.ATTRIBUTE</field>
+            <desc>
+                <p>These are set of Attributes which define the names of the rule, which will be applied on certain attributes of property classes over a period of time</p>
+                <p/>
+                <p/>
+                <p>Input must be a valid record from AA.PERIODIC.ATTRIBUTE</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.BRK.CHARGE</field>
+            <desc>
+                <p>Not used for arrangement level conditions</p>
+                <p/>
+                <p/>
+                <p>Input not allowed.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.BRK.MSG</field>
+            <desc>
+                <p>Based on the PR.BRK.RES option selected, this will hold either an OVERRIDE or EB.ERROR id. By default the ids will be picked from the associated EB.COMPARISON.TYPE record. If CAP or FLOOR values are given, then the underlying AA.PERIODIC.ATTRIBUTE.CLASS should have this type defined in it</p>
+                <p/>
+                <p/>
+                <p>Input must be a valid OVERRIDE ID or EB.ERROR ID</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.BRK.RES</field>
+            <desc>
+                <p>When a rule is broken what action needs to be taken is defined here. Currently, the various options available are </p>
+                <p/>
+                <p>Error block further processing</p>
+                <p>Override Give an override</p>
+                <p>Information  Record details only</p>
+                <p>CAP the rule value is to be used as a CAP if the rule is broken</p>
+                <p>FLOOR the rule value is to be used as a FLOOR if the rule is broken</p>
+                <p/>
+                <p/>
+                <p>Should be one of the above valid options</p>
+            </desc>
+        </t>
+        <t>
+            <field>PR.RESERVED.1</field>
+        </t>
+        <t>
+            <field>PR.RESERVED.2</field>
+        </t>
+        <t>
+            <field>PR.RESERVED.3</field>
+        </t>
+        <t>
+            <field>PR.VALUE</field>
+            <desc>
+                <p>This is the actual rule value, which will be applied on certain attributes of the property classes over a period of time.</p>
+                <p/>
+                <p/>
+                <p>Input must be a valid data type defined in the corresponding</p>
+                <p>AA.PERIODIC.ATTRIBUTE.CLASS record.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ADVANCE.PAYMENT.METHOD</field>
+            <desc>
+                <p> This field denotes how the repaid amount should be applied to produce the future scheduled bills in advance. This field will hold either one of the 2 values PARTIAL,FULL and they are mandatory for the ADVANCE Payment rule type. </p>
+                <p/>
+                <p>Example</p>
+                <p> On 28th Dec, a repayment is made for $900 which can settle 2 future CONSTANT schedules each of $500 on 02-Jan fully & 07-Jan partially </p>
+                <p> If the repayment is 100 against the current interest if accrued (ACCLOANINTEREST) & the rest 800 could be allocated against the principal (CURPRINCIPAL).</p>
+                <p> FULL - Denotes the payment rules is applicable only if the amount can fully settle future scheduled bills. System will raise "SETTLED" bills for these future schedules with full repayment date as the financial date</p>
+                <p> System will raise bills only if the repayment settles the entire bill amount. In this case, system will generate and settle bill for 02-Jan while remaining $400 will be processed by its remainder activity.</p>
+                <p> 02 Jan - Bill 1 - $500 will be OR.TOTAL.AMOUNT and OS.TOTAL.AMOUNT will be 0 and the Bill date, payment date will be 02 Jan and the financial date will be 28th Dec, Bill statuses are Advanced, Settled</p>
+                <p/>
+                <p> PARTIAL - Denotes the repaid amount is eligible to settle future scheduled bills even if it settles only partial amount. System will raise an "ADVANCED" bill for this schedule with original financial date as the financial date</p>
+                <p> Example - PARTIAL </p>
+                <p> For the same example provided above, system will raise a bill in addition to '02 Jan' Bill, as the amount could also settle a future schedule in partial </p>
+                <p> 07 Jan - Bill 2 - $400 will be allocated fully towards the ACCOUNT, and  INTEREST portion will be 0 . In Bill the OR.TOTAL.AMOUNT will be 500, with financial date as 07th Jan and then system will update the Bill status as Advanced. </p>
+                <p> 07 Jan - Bill 2 - The remaining $100 will be made due on its original payment date against the principal amount and update the bill status as "DUE"</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>PRE.BILL.ACTIVITY</field>
+            <desc>
+                <p>This field is reserved for future use</p>
+            </desc>
+        </t>
+        <t>
+            <field>PROP.APPL.TYPE</field>
+            <desc>
+                <p/>
+                <p>  This field represents the balance to be paid for the defined property. The values allowed at present are CURRENT and NULL. If PROP.APPL.TYPE is null, the due balance in the bill for the property is settled according to the type defined in the field Application.Type. </p>
+                <p>  If PROP.APPL.TYPE is current, the current balance of the property is settled. (e.g. current principal, accrued interest, etc). </p>
+                <p>   This field allows us to settle current balance along with the due balances. </p>
+                <p>  If the field APPLICATION.TYPE has a value CURRENT, value in the field PROP.APPL.TYPE should also be CURRENT for all the properties defined.</p>
+                <p>   This field forms a associated multivalue set with property and sequence</p>
+            </desc>
+        </t>
+        <t>
+            <field>PROPERTY</field>
+            <desc>
+                <p>This field along with sequence can be used to specify the sequence in which the balances can be settled</p>
+            </desc>
+        </t>
+        <t>
+            <field>REMAINDER.ACTIVITY</field>
+            <desc>
+                <p>When a payment is made which satisfies all of the due and overdue amounts and there is a remainder of funds (i.e. an overpayment), then this field can be used to handle remainder of funds.</p>
+                <p/>
+                <p>       This is handled by specifying the Activity to be processed for the remainder of the payment.  This will be subject to any Transaction Rules.  Should the transaction fail, the remainder amount will be processed by the Default Activity specified in Accounting.</p>
+                <p/>
+                <p>   Ex 1: </p>
+                <p/>
+                <p>    Bill Due Amount – 10000</p>
+                <p>    Remainder Activity – LENDING-APPLYPAYMENT-CURRENT</p>
+                <p>    Repayment Amount – 15000</p>
+                <p/>
+                <p>    Settlement Method</p>
+                <p/>
+                <p>                      Bill due amount will be settled with 10000 and the remaining 5000 will be used for settling current balances</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SEQUENCE</field>
+            <desc>
+                <p>This field is used to specify the property sequence in which the balances will be affected during repayment. This field is associated with PROPERTY field.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SETTLE.UNEARNED.INTEREST</field>
+            <desc>
+                <p>This attribute is related to advance payment and a value “YES” denotes that we can pay more than the accrued interest as well. This is currently applicable only for Fixed Interest Method where the total profit amount for the contract is known. And the system will ensure that accrual happens for the profit amount during the life of the contract for Fixed Interest method. The reason why this is disabled for conventional type of Interest is that there is a probability that the source balance can become 0 enabling a mismatch between the accrual and collected interest amount.</p>
+                <p>Validation:</p>
+                <p>•	Applicable for Fixed Interest Method</p>
+                <p>•	Applicable for ADVANCE type of payments</p>
+            </desc>
+        </t>
+        <t>
+            <field>STMT.NOS</field>
+            <desc>
+                <p>Contains the key to the accounting entries raised by the activity being applied to this arrangement property</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE1</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE2</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE3</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ADVANCE.PAYMENT.RESTRICTION</field>
+			<desc>
+                <p>This field will have the following options</p>
+				<p> - NULL - Current Bill + Create and Settle Bills until all the payment amount is utilized</p>
+				<p> - BILLED - Current Bill, remaining to remainder activity</p>
+				<p> - # (1 to N) - Current Bill + N Bills, remaining to remainder activity</p>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE4</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE5</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE6</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SYS.RESERVE7</field>
+            <desc>
+                <p>System field - reserved for future use</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>TARGET.PRODUCT</field>
+            <desc>
+                <p>This field denotes the target classic product of the given property class</p>
+                <p/>
+                <p>The already existing T24 products are mapped using AA infrastructure</p>
+                <p>These are called classic products</p>
+                <p>These products are mapped to different property clases</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>APPLICATION.ORDER</field>
+            <desc>
+                <p>For billed amounts, in addition to specifying whether Properties or Dates will be given priority, the user must decide in which order multiple bills will be processed.  This field can be used to specify the order in which multiple bills has to be procesed.</p>
+                <p/>
+                <p>       This field can accept</p>
+                <p/>
+                <p>       1. Oldest First - Order of processing will start from first bill.</p>
+                <p>       2. Oldest Last - Order of processing will start from last bill.</p>
+                <p/>
+                <p>       If APPLICATION.TYPE is CURRENT then input is not allowed in this field. </p>
+            </desc>
+        </t>
+        <t>
+            <field>APPLICATION.TYPE</field>
+            <desc>
+                <p>This field is used to specify how the payment rules will apply to an arrangement.</p>
+                <p/>
+                <p>       This can have any of the below three values.</p>
+                <p/>
+                <p>       Current: Payment will be applied on arrangement's current balances. (e.g. current principal, accrued interest, etc.). This will settle the current balances and doesn’t look at application order. Input to application order will not be allowed for Current Balance repayments.</p>
+                <p/>
+                <p>       Bill Property: For product with bills and due amounts, payment to the due amounts will be Property wise(e.g. all Principal amounts followed by all Interest amounts, etc.) </p>
+                <p/>
+                <p>       Bill Date: For product with bills and due amounts, payment to the due amounts will be bill date wise (e.g., all amount on bill 1 followed by all amounts of bill 2, etc.). </p>
+                <p/>
+                <p>   Ex1: Bill Property</p>
+                <p/>
+                <p>   Number of Bills         : Bill1 Bill2 Bill3</p>
+                <p>   Property in each Bill   : Bill1prop1, Bill1prop2, Bill2prop1, Bill2prop2, Bill3prop1, Bill3prop2</p>
+                <p/>
+                <p>   Order of settling if Application Order is Oldest First</p>
+                <p>            Bill1prop1, Bill2prop1, Bill3prop1, Bill1prop2, Bill2prop2, Bill3prop2</p>
+                <p/>
+                <p>   Order of settling if Application Order is Oldest Last</p>
+                <p>            Bill3prop1, Bill2prop1, Bill1prop1, Bill3prop2, Bill2prop2, Bill1prop2</p>
+                <p/>
+                <p>   Ex 2: Bill Date</p>
+                <p/>
+                <p>   Number of Bills         : Bill1 Bill2 Bill3</p>
+                <p>   Property in each Bill   : Bill1prop1, Bill1prop2, Bill2prop1, Bill2prop2, Bill3prop1, Bill3prop2</p>
+                <p/>
+                <p>   Order of settling if Application Order is Oldest First</p>
+                <p>            Bill1prop1, Bill1prop2, Bill2prop1, Bill2prop2, Bill3prop1, Bill3prop2</p>
+                <p/>
+                <p>   Order of settling if Application Order is Oldest Last</p>
+                <p>            Bill3prop1, Bill3prop2, Bill2prop1, Bill2prop2, Bill1prop1, Bill1prop2 </p>
+            </desc>
+        </t>
+        <t>
+            <field>ARRANGEMENT.KEY</field>
+            <desc>
+                <p>The key to the arrangement property condition. The key is comprised of the following components (delimited by a "-"):</p>
+                <p>Arrangement Id</p>
+                <p>Property name&gt;</p>
+                <p>Effective Date</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>BALANCE.TYPE</field>
+            <desc>
+                <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHANGED.FIELDS</field>
+            <desc>
+                <p>No input and multi value field lists all fields that have been negotiated for each dated version of the property. For a subsequently dated property, the attributes listed in this field will appear in "Negotiated.Fields" and only newly negotiated fields will appear on "Changed.Fields"</p>
+                <p/>
+                <p/>
+            </desc>
+        </t>
+    </menu>
+</t24help>

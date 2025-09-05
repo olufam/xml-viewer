@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DD</product>
+<table>DD.DDI</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This application is used to capture the mandate information like Customer Bank sort code, Customer Account name, Account number, clearing reference, mandate status etc.</p>
+            <p />
+            <p>The ID to this application is a valid Globus Internal / Customer account for which Direct Debit mandate is received. Currently mandate can be given only for account whose currency is equal to company's local currency.</p>
+            <p>This mandate can be linked to MORTGAGE application when the Status is "AVAILABLE" or "ACTIVE" and based on MG schedule date, claim is raised automatically.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>IBAN.DEST.ACCT</field>
+<desc>
+        <p>Holds IBAN of the DEST.ACCT.NO	</p>
+        <p>If value is entered, it will be validated against IN.IBAN.STRUCTURE file, else an equivalent IBAN will be retrieved from a destination account record with alternate account type set as “T24.IBAN”</p>
+    </desc>
+</t>
+<t>
+<field>IBAN.INWARD.ACCT</field>
+<desc>
+        <p>Holds IBAN of the INWARD.ACCOUNT</p>
+        <p>	If value is entered, it will be validated against IN.IBAN.STRUCTURE file, else an equivalent IBAN will be retrieved from an inward account record with alternate account type set as “T24.IBAN”</p>
+    </desc>
+</t>
+<t>
+<field>STATUS.DATE</field>
+<desc>
+            <p>Contains the system date on which the mandate status is changed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No Input field-Update by System</p>
+            <p>Valid date format.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY.MARKET</field>
+<desc>
+            <p>Specify the Currency market which is to be used in STMT.ENTRY while generating the forward &amp; actual entry.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory</p>
+            <p>Must be a valid record in CURRENCY.MARKET.</p>
+        </desc>
+</t>
+<t>
+<field>OVR.CARRIER</field>
+<desc>
+            <p>For Future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.NO</field>
+<desc>
+            <p>This field contains the Customer for whom the mandate is received. Mandate account's Customer Number is defaulted here when the ID has a Valid Customer Account otherwise when an Internal account is used in ID -this field is mandatory.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Default's Mandate account Customer Number when it is a Customer Account Other wise mandatory</p>
+            <p>Should be a valid record from Customer.</p>
+        </desc>
+</t>
+<t>
+<field>DELIVERY.REF</field>
+<desc>
+            <p>For Future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field</p>
+        </desc>
+</t>
+<t>
+<field>FUTURE.FREQUENCY</field>
+<desc>
+            <p>Defines the next date and frequency (in extended format)</p>
+            <p>1.It is an optional input. Fields FUTURE FREQUENCY to</p>
+            <p>2.Since it is an associated multi value set, FUTURE .FR</p>
+        </desc>
+</t>
+<t>
+<field>COMBINE.DD.ITEMS</field>
+<desc>
+            <p>Claims for a mandate when it falls due on a same value date can be combined as a single claim and claim file can be sent with single claim instead of multiple claims.</p>
+            <p>When this field is set to "Yes", then the DD.ITEMs created for the same DD.DDI will be merged together while generating the Outward claim file and sent as a single claim entry with the details from the first DD.ITEM.</p>
+            <p>Please note the Claim generation, reversal, return and accounting entries are raised for each item under the mandate. Only during file generation process, based on the COMBINE.DD.ITEMS field, Claim amounts are combined and single claim is sent. To combine the items during file generation process the DD.SAMPLE.ROUTINE has to attached in DD.OUT.FORMAT for the Amount data field.</p>
+            <p>Refer to DD user guide - DD.OUT.FORMAT section more details.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>Valid value "Yes" or Null.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>Defaults to the currency of the mandate account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field-Updated by System with the Currency of the ID account.</p>
+        </desc>
+</t>
+<t>
+<field>OVR.DEL.ADDR</field>
+<desc>
+            <p>For Future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field</p>
+        </desc>
+</t>
+<t>
+<field>RET.REASON</field>
+<desc>
+            <p>Specify the return reason with which the mandate is returned by the Customer's Bank.</p>
+            <p>Either this field or Return.code is mandatory for status "RETURNED"</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>Mandatory when DDI.Status is "RETURNED"</p>
+            <p>1-35 Alphanumeric character's</p>
+        </desc>
+</t>
+<t>
+<field>MSG.CLASS.NO</field>
+<desc>
+            <p>For Future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field</p>
+        </desc>
+</t>
+<t>
+<field>STATUS</field>
+<desc>
+            <p>Specify the status of the Mandate and this status is used to control the mandate for linking to Mortgage &amp; file generation process.</p>
+            <p>Mandate which has a status as "AVAILABLE" or "ACTIVE" can only be linked to MORTGAGE application in DD.MANDATE.REF.</p>
+            <p>For file generation process, DD.ITEM which has a Status as "NEW.ITEM" or "RESUBMITTED.ITEM" and the mandate status as "ACTIVE" are alone included.</p>
+            <p>Currently following status are valid for DD.DDI.</p>
+            <p />
+            <table>
+                <tr>
+                    <td>
+                        <p>STATUS</p>
+                    </td>
+                    <td>REMARKS</td>
+                </tr>
+                <tr>
+                    <td>NEW</td>
+                    <td>
+                        <p>New Mandate created/Entered</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>ADVISED</td>
+                    <td>
+                        <p>Mandate sent to Customer's Bank for approval</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>HOLD</td>
+                    <td>
+                        <p>Mandate put on hold because of some problem</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>AVAILABLE</td>
+                    <td>
+                        <p>Customer's Bank approved the Mandate &amp; Ready for use*</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>RETURNED</td>
+                    <td>
+                        <p>Mandate returned with a reason </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>ACTIVE</td>
+                    <td>
+                        <p>First claim Sent or Claim already sent to Customer's Bank *</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>CANCELLED</td>
+                    <td>
+                        <p>Mandate cancelled</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%" align="center" colspan="2">
+                        <p>
+                            <p>* "AVAILABLE" &amp; "ACTIVE" is updated by the system and rest of the status can be updated manually.</p>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+            <p />
+            <p />
+            <p>Status in DD.DDI can be changed from old status to next status as per the following.</p>
+            <p />
+            <table>
+                <tr>
+                    <td>
+                        <p>OLD STATUS (CHANGE FROM)</p>
+                    </td>
+                    <td>
+                        <p>NEXT DDI STATUS (CHANGE TO)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>NEW</td>
+                    <td>ADVISED ,AVAILABLE, HOLD, CANCELLED.</td>
+                </tr>
+                <tr>
+                    <td>ADVISED</td>
+                    <td>AVAILABLE, HOLD, RETURNED, ACTIVE, CANCELLED</td>
+                </tr>
+                <tr>
+                    <td>HOLD</td>
+                    <td>ADVISED, CANCELLED</td>
+                </tr>
+                <tr>
+                    <td>AVAILABLE</td>
+                    <td>ACTIVE, HOLD, CANCELLED</td>
+                </tr>
+                <tr>
+                    <td>RETURNED</td>
+                    <td>HOLD, CANCELLED</td>
+                </tr>
+                <tr>
+                    <td>ACTIVE</td>
+                    <td>HOLD, CANCELLED</td>
+                </tr>
+            </table>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory field</p>
+            <p>Must be a valid record in DD.EVENTS </p>
+            <p>Status can be changed only as per above-otherwise Error is raised.</p>
+        </desc>
+</t>
+<t>
+<field>CYCLE.FREQUENCY</field>
+<desc>
+            <p>Identifies the Date &amp; Frequency of the Standalone DD for execution.</p>
+            <p>The claim value date is the date component of this field. Hence the date &amp; the frequency has to be given after considering the Claim value date as given in DD.PARAMETER. </p>
+            <p>The date is cycled with the given frequency and this mandate reference is updated in DD.STANDALONE.FQU.LIST with the next execution date.</p>
+            <p>Whenever the frequency is modified, then the underlying claim (DD.ITEM) is marked as "DELETED" and new claim is raised for the given frequency. Incase the Claim is already sent(DD.ITEM status is "CLAIMSENT"), then override is raised. However the DD.ITEM will not be marked as "DELETED" as claim file is already generated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory when STAND.ALONE.DDI set to Yes </p>
+            <p>This field is sub-divided into two elements: 1. Date 1-9 type D (date format in range 1950-2049) characters. 2. Optional Frequency 1-5 type SS (uppercase alpha or numeric, first character alpha) characters. (Mandatory input)</p>
+            <p>The date input or generated will correspond to the first execution of the Standalone DD.</p>
+            <p>Using the date &amp; frequency in case given , DD.STANDALONE.FQU.LIST is updated with the next execution date.</p>
+            <p>An override will be required if the date input is a non-working day.</p>
+            <p>Date entered should be greater than today and should not be more than Termination date.</p>
+        </desc>
+</t>
+<t>
+<field>CREATE.DATE</field>
+<desc>
+            <p>This contains the date on which the mandate is created.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field updated by System.</p>
+        </desc>
+</t>
+<t>
+<field>TERMINATION.DATE</field>
+<desc>
+            <p>The date on which the Standalone will be terminated is specified here. </p>
+            <p>This field can be used when the Bank has received from the Customer clear instructions which stipulate that the Standalone Direct Debit claim must only be executed during a determined period of time. In this case, the User will enter in this Field the date of the last execution of the Standalone DD.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input allowed only when STAND.ALONE.DDI set to Yes</p>
+            <p>Up to 9 type D Date characters (date format in range 1950-2049). (Optional input)</p>
+            <p>This field should only be input by the User when the Customer has provided the bank with a specific end date for the Standalone DD itself or for the current amount and currency specified in the previous fields.</p>
+            <p>The date input must be greater than or equal to the first date input or calculated by the current frequency</p>
+        </desc>
+</t>
+<t>
+<field>FUTURE.END.DATE</field>
+<desc>
+            <p>The end date for the associated FUTURE.FREQUENCY.</p>
+            <p>Validation rules:</p>
+            <p>1.It is an optional input. Fields FUTURE FREQUENCY t</p>
+            <p>2.The value in this field should not be less than the term</p>
+        </desc>
+</t>
+<t>
+<field>MESSAGE.TYPE</field>
+<desc>
+            <p>For Future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field</p>
+        </desc>
+</t>
+<t>
+<field>DIRECTION</field>
+<desc>
+            <p>Specify the direction of the Direct debit claim for which mandate is received.</p>
+            <p>The Claim can be "Outward" ie. Claim is sent to the Customer's Bank or Inward Claim ie. other Bank submit their claim.</p>
+            <p>Currently the Outward claim processing is supported through DD module &amp; for Inward claim has to be handled through local interface.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory field-Value allowed "OUTWARD"</p>
+        </desc>
+</t>
+<t>
+<field>SEND.MESSAGE</field>
+<desc>
+            <p>For Future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field</p>
+        </desc>
+</t>
+<t>
+<field>SIGNATORY</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>RETURN.CODE</field>
+<desc>
+            <p>Specify the return code with which the mandate is returned by the Customer's Bank.</p>
+            <p>Either this field or Ret.Reason is mandatory for status "RETURNED"</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>Mandatory when the Status is "RETURNED"</p>
+            <p>1-35 Alphanumeric character's</p>
+        </desc>
+</t>
+<t>
+<field>PARAM.ID</field>
+<desc>
+            <p>Specify the parameter to which this mandate is linked and all the details given in the parameter is used when this mandate is processed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory field</p>
+            <p>Must be a valid record in DD.PARAMETER</p>
+            <p>No change after authorisation.</p>
+        </desc>
+</t>
+<t>
+<field>ORIGIN</field>
+<desc>
+            <p>Specify the mode through which this particular mandate is created. A mandate can be created by giving the instruction over Phone/Internet/Post etc and that details can be captured here.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>1-35 Alpha Numeric character's</p>
+        </desc>
+</t>
+<t>
+<field>DEST.ACCT.NO</field>
+<desc>
+            <p>Specify the Destination account number which is to be debited for the Direct Debit claim.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>1-35 Alpha Numeric Character's </p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Description related to this DD.DDI can be specified here &amp; same is used for enrichment which it is used in other applications.</p>
+            <p>This field can be expanded to allow the User to enter the Description of the Transaction Type in various languages. Each expansion of the field will correspond to a new Language as defined in the Language table, and will indicate to the User the Language in which the Description must be entered.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-35 type A (alphanumeric) characters. Multilanguage field. (Mandatory input).</p>
+        </desc>
+</t>
+<t>
+<field>DEST.ACCT.NAME</field>
+<desc>
+            <p>Specify the Account name of the account which is mentioned in the previous field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>1-35 AlphaNumeric Character's</p>
+        </desc>
+</t>
+<t>
+<field>STAND.ALONE.DDI</field>
+<desc>
+            <p>Specify whether the mandate created here is for Standalone alone purpose.</p>
+            <p>When a mandate is register to collect amounts on a adhoc basis , the frequency and the amount can be mentioned here</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid Values Yes or Null</p>
+            <p>"Yes" can be set only when the DD.PARAMETER is set to Accept standalone DDI</p>
+        </desc>
+</t>
+<t>
+<field>STATUS.HIST</field>
+<desc>
+            <p>This has the pervious status of the mandate along with the date when the status is changed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field -Updated by system</p>
+        </desc>
+</t>
+<t>
+<field>DD.DDI</field>
+<desc>
+            <p>Id for the application is an account for which mandate is given, prefixed with "D-" and suffixed with ".Sequence Number".</p>
+            <p>ID can be given just as an Account Number and system formats the Accounts number with a prefix of "D-" &amp; suffix  ".Sequence Number".</p>
+            <p>Reversal function is not allowed for this application and DDI can be marked as Inactive by changing the the Status of DDI to "CANCELLED.DDI".</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard numeric Account number or 3-10 character Account Mnemonic (uppercase alpha, numeric or .) - type MNE. or 6-12 character Internal Account Number (uppercase alpha or numeric) - type SS.</p>
+            <p>Account currency should be equal to Local currency.</p>
+            <p>Format is "D-""Account Number"".Sequence Number wherein Input of Account number is mandatory. </p>
+        </desc>
+</t>
+<t>
+<field>INWARD.CREATED</field>
+<desc>
+            <p>This field holds the values as YES when an INWARD mandate is created by the system on CLAIM date while processing an INTERNAL OUTWARD DD.ITEM.</p>
+            <p>No Input field. Update by System for INTERNAL DD.DDI.</p>
+        </desc>
+</t>
+<t>
+<field>STAND.ALONE.AMT</field>
+<desc>
+            <p>Specify the amount for which the Standalone DD to be created. This amount is mapped to amount field in STMT.ENTRY  while creating the forward entry &amp; same is mapped to Amount field in DD.ITEM also.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (standard amount format) characters plus a decimal point.</p>
+            <p>Mandatory when STAND.ALONE.DDI set to "YES"  </p>
+        </desc>
+</t>
+<t>
+<field>REQUEST.TYPE</field>
+<desc>
+            <p>This field will have the value as INTERNAL when it is an Internal DD.That is, when the BC.SORT.CODE of the BANK matches with that given in this DD.DDI then it’s an INTERNAL DD processing.</p>
+            <p>Value as EXTERNAL can be input when direction is INWARD. This indicates that the DD.DDI is input to hold mandate details as reference which will be validated during incoming claim processing by 3rd party</p>
+                    <p>
+                <p>Validation Rules:</p>
+            </p>
+                        <p>Optional field</p>
+            <p>Input allowed as EXTERNAL when Direction is INWARD</p>
+        </desc>
+</t>
+<t>
+<field>FUTURE.AMOUNT</field>
+<desc>
+            <p>The future DD amount to a standalone DDI to be used fo</p>
+            <p>Validation rules:</p>
+            <p>1.It is an optional input.</p>
+            <p>2.Fields FUTURE FREQUENCY to FUTURE.END.DATE</p>
+        </desc>
+</t>
+<t>
+<field>INWARD.ACCOUNT</field>
+<desc>
+            <p>Specify the Inward account which is to debited in case of Inward claim.</p>
+            <p>Currently there is no functionality attached to this field and can be used during inward claim processing using local interface.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>1-15 Alpha Numeric character's</p>
+        </desc>
+</t>
+<t>
+<field>ACCT.FOR.INT.REQ</field>
+<desc>
+            <p>This field holds a valid T24 account number which will be debited on CLAIM date.</p>
+            <p>Mandatory field when REQUEST.TYPE field is INTERNAL otherwise no input allowed in this field.</p>
+        </desc>
+</t>
+<t>
+<field>ACTIVITY.CODE</field>
+<desc>
+            <p>For future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input field.</p>
+        </desc>
+</t>
+<t>
+<field>BC.SORT.CODE</field>
+<desc>
+            <p>Specify the Bank sort code to which the Direct debit claim to be sent. </p>
+            <p>This sort code refers to the Bank where the Customer is having account and which should be debited for the Claim.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>Must be a valid record in BC.SORT.CODE.</p>
+        </desc>
+</t>
+<t>
+<field>CLEAR.SYS.REF</field>
+<desc>
+            <p>Specify the clearing reference which is to be used while sending this claim to the other Bank.</p>
+            <p>This is the reference which can be understand by both Originator of Direct debit &amp; the Customer's Bank.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>1-35 Alpha-Numeric Character's</p>
+        </desc>
+</t>
+<t>
+<field>CREDITOR.ID</field>
+<desc>
+            <p>Specify the creditor details reference which is to be validated during incoming claim processing from other Bank.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>1-35 Alpha-Numeric Character's</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

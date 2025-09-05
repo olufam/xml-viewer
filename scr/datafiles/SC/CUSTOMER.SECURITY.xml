@@ -1,0 +1,983 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SC</product>
+<table>CUSTOMER.SECURITY</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This static table is used to record additional information necessary for the Securities module to identify the capacity in which a counterparty is acting.</p>
+            <p>              There are five different categories of bank "Customer" which the system will recognise.</p>
+            <p>              The concept of this table is to restrict and control these "Customers" to specific transactions within the operating sphere of the Securities' module.</p>
+            <p>              The "Customer" may well act as one of the following:</p>
+            <p>              Customer: Client: Broker: Counterparty: Depository:</p>
+            <p>              Whenever a securities transaction is entered, T24 will first check within this table to ensure that the bank "Customer" has been opened in accordance with the capacity in which he is acting.</p>
+            <p>              This allows the management to specify and control their approved list of brokers and depositories for example.</p>
+            <p>              A portfolio account (SEC.ACC.MASTER) cannot be opened for a "Customer" unless this table has been updated with the value "Customer".</p>
+            <p>              "Client", "Broker" &amp; "Counterparty" are to all intents and purposes equal when it comes to processing transactions. However the text of any output (Advices,Telexs etc) can be customised in accordance with local regulations thanks to the different values which can be attributed against these "Customers".</p>
+            <p>              For example the wording on documents can be set up to highlight the difference between principal and agency type transactions.</p>
+            <p>              The main application for buying and selling securities within this module is SEC.TRADE, this can best be divided into three distinct areas.</p>
+            <p>              The first is concerned with the security being traded.</p>
+            <p>              The second part of the transaction is dedicated to buying and selling securities for a portfolio customer.</p>
+            <p>              The agent with whom this is done can belong to one of the three categories already mentioned.</p>
+            <p>              Whilst the second part of the SEC.TRADE is dedicated to a clients' portfolio holding it is not a prerequisite to settle a trade.</p>
+            <p>              A trade can be entered between a "Broker" and a "Client" for example and providing the amount of securities being sold is equivalent to the amount being bought then the integrity of the system is maintained and the deal will be accepted.</p>
+            <p>              Local practice will however restrict this type of operation and insist on securites being booked into and out of trading accounts.</p>
+            <p>              It has always been the action of the customer which has decided the type of transaction being entered on the Broker side.</p>
+            <p>              The system is happy to accept the fact that a purchase of securities for a client involves adding charges, commissions etc., to the gross cost of the transaction.</p>
+            <p>              The corresponding sale of securites by the "Broker" still involves commissions and charges being added to the gross amount to be paid.</p>
+            <p>              Even though we now could have a situation where we have entered a "Client" selling shares in the second part of the SEC.TRADE application the system will now consider him as the agent doing the selling and will deduct charges and commissions from the net amount due to be paid to him. Likewise the counterparty who will be buying the shares involved in this transaction will deduct commissions and charges from the amount that he will pay.</p>
+            <p>              The third and probably most important component of a banks' relationship with its "Customers" is that of the "Depository". Which is responsible for the safecustody and delivery of a banks' securities.</p>
+            <p>              Within T24 each individual client holding is linked to a depository record.</p>
+            <p>              When processing a transaction the system will validate that there are sufficient holdings in any one particular security by customer/depository. If not it will prompt the user with an override message. Depending on his level of access in accordance with the SMS facility the user may accept the override.</p>
+            <p>              It is important to understand the consequences of such actions on an integrated system such as T24. On authorisation of the transaction delivery and receipt instructions will be generated via several mediums; Telex, Swift, Euclid, Clearstream etc. Insufficient securites will cause the settlement to fail and will lead to interest claims and additional work in correcting the mistake. T24 will prevent this, and the eventuality of short positions being created.</p>
+            <p>              It is the depository which generates the settlement instructions to the numerous clearing agencies used world wide. This is why we maintain the importance of this relationship with individual customer holdings when processing transactions.</p>
+            <p>              This static table is used to record additional information necessary for the Securities module to identify the capacity in which a counterparty is acting; whether as a "Customer", "Broker" or "Depository". A client could well act in all three capacities and there is suitable allowance made for this by means of multi valued fields within the same file.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>GEN.SETT.DEL</field>
+<desc>
+            <p>Specifies whether MT544-547 Confirmation of Delivery advice should be generated for the Customer. This field should be set to 'YES', to activate the generation of Outbound Confirmation messages for this Customer.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Single value field which will accept only ‘YES' as a valid value.</p>
+            <p>    Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>AUTO.CONVERSION</field>
+<desc>
+            <p>Enables the automatic settlement of unsettled transactions in the original security,</p>
+            <p>        while processing corporate events where one security is being converted to another.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>        Input allowed only for records with CUSTOMER.TYPE set to 'DEPOSITORY'.</p>
+            <p>        Allowed values are 'YES' / 'NO'</p>
+            <p>        'NO' indicates Auto Conversion is not required</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>OUR.ACCOUNT</field>
+<desc>
+            <p>If the entity is a fund management company, this reflects the fund account maintained with the Agent.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Must be a Valid Nostro Account</p>
+            <p>            Input allowed only if AGENT is set to 'Y'</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXT.ACCT.CCY</field>
+<desc>
+            <p>The currency of the external account.</p>
+            <p>
+                <p>Validation Rules:</p>.</p>
+            <p>            Must be a valid CURRENCY code.</p>
+            <p>            Fields EXT.ACCT.NO to EXT.ACCT.CCY would be associated and multi valued. This would allow specification of different accounts for different currency.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BOND.BR.COMM.TYPE</field>
+<desc>
+            <p>This contains a valid key to the FT.COMMISSION.TYPE table.  In accordance with the values detailed therein T24 will default the commission which individual brokers as defined by CUSTOMER.TYPE will charge on brokerage transactions dealt with them.</p>
+            <p>              There are a variety of ways in which commissions and brokerage can be applied within the Securities module.  They can be applied by STOCK.EXCHANGE, by CUSTOMER (portfolio) and/or by broker/counterparty.</p>
+            <p>              The system will initially check the CUSTOMER.SECURITY record for the client (portfolio) and/or the broker involved.  If it finds no link at this level to the FT.COMMISSION.TYPE file it then checks the STOCK.EXCHANGE record (CALC.COUNTRY field).  The system will then access the relevant stock exchange calculation record and will default the values as set up within that table (e.g. STK.EXC.CH Record ID. "CH").</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              0 - 11 alphnumeric characters. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>BR.SEC.TYPE</field>
+<desc>
+            <p>Field associated with BR.DEF.DEPO and BR.SEC.DEPOT.AC to default the broker depository and sec depot account for debit transactions. The accepted values are a valid security as defined in SECURITY.MASTER, SUB ASSET TYPE (Prefixed by S-), ASSET TYPE (prefixed by A-) or ALL.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> Mandatory when Broker depository is defined.</p>
+            <p> Input allowed only for customer types Broker/Client/Counterparty</p>
+        </desc>
+</t>
+<t>
+<field>TRADE.AGGREGATION</field>
+<desc>
+            <p>This field will enable trade aggregation for broker.</p>
+        </desc>
+</t>
+<t>
+<field>SHOW.DEPO</field>
+<desc>
+            <p>The field is used in conjunction with stock record report generation where SETTLE.METHOD in SC.PARAMETER is set to Yes.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>              YES/NO field.</p>
+        </desc>
+</t>
+<t>
+<field>CHRG.CODE</field>
+<desc>
+            <p>Agent’s commission if the CHRG.BASIS is a percentage. This would be calculated on the transaction value and would be the agent’s fees</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Valid FT.COMMISSION.TYPE . Input allowed only if CHRG.BASIS is PERCENTAGE</p>
+            <p />
+            <p>            Fields FUND.ID to CHRG.CODE would be associated. Fields CHRG.TYPE to CHRG.CODE would be associated sub value fields. Fields FUND.ID to CHRG.CODE would be allowed input only if AGENT is set to Y.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEC.ACC.DEF</field>
+<desc>
+            <p>Multivalue field used for defaulting the portfolio number within which non Securities transactions are to be picked up and valued.</p>
+            <p>              When entering a FOREX, FRA, MONEY MARKET or LOAN type transaction the facility exists to enter the portfolio number within which the transaction is to be entered.</p>
+            <p>              The user can, if so desired, change this portfolio number.</p>
+            <p>              There is an alternative manner in which the system will identify the portfolio into which one of these transactions will be entered.  This is by using a combination of these multi value fields within this record.</p>
+            <p>              17.1  Determines into which portfolio FOREX transactions will default.</p>
+            <p>              17.2  Determines into which portfolio MONEY.MARKET transactions will       default.</p>
+            <p>              17.3  Determines into which portfolio LOANS.AND.DEPOSITS transactions will       default.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              1-3 numeric character portfolio code. (Optional input)  Must exist as a valid SEC.ACC.MASTER suffix number relating to the customer as defined in the key to this CUSTOMER.SECURITY record.</p>
+        </desc>
+</t>
+<t>
+<field>BR.DEF.DEPO</field>
+<desc>
+            <p>The default broker depository to be used in trade for debit transactions. The field can be extended upto 4 lines.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>              Mandatory when BR.SEC.TYPE or BR.SEC.DEPOT.AC is defined.</p>
+        </desc>
+</t>
+<t>
+<field>FX.COMM.GROUP.ID</field>
+<desc>
+            <p>Specifies the ID of FX.COMM.GROUP record related to the customer</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SUB.ACCT.STMT</field>
+<desc>
+            <p>Yes/No field used in conjunction with statement frequency field for generation of statement of holdings by sub account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>              Input allowed only when frequency is specified.</p>
+        </desc>
+</t>
+<t>
+<field>FUND.ID</field>
+<desc>
+            <p>Id of the fund or fund family or All funds, to which the linked rebates/fees are applicable. If the Fund ID is specified here, the rebate given below would only be applicable to that fund.</p>
+            <p>            Allowed values are 'ALL' or 'A-' followed by an ASSET.TYPE or 'S-' followed by a SUB.ASSET.TYPE or a specific MF.FUND.MASTER ID.</p>
+            <p>            Input allowed only if AGENT is set to 'Y'</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>INTERNAL.FREQ</field>
+<desc>
+            <p>Specifies the frequency a particular report is to be produced for internal purposes.  The type of reports are detailed in INTERNAL.REPS.</p>
+            <p>              Note : This is a default frequency it is to be used in conjunction with        the multi valued INTERNAL.REPS field to define the various reports        required by a particular client, and the frequency of those        reports.</p>
+            <p>              By defining internal and external reports the user is able to print        all external reports on high quality statement paper (possibly        pre-printed for this precise purpose).  Different printers can be        attributed to these reports to avoid unnecessary paper and time        wastage.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              Must comply with the rules as laid down for the frequency tables. (Optional input)</p>
+            <p>              Must exist as a valid frequency on the frequency table.</p>
+        </desc>
+</t>
+<t>
+<field>INTERNAL.REPS</field>
+<desc>
+            <p>Multi-value field used to record the reports, valuations, etc. required by internal sources (i.e. the account executives).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              Up to 5 alphanumeric characters. (Optional input)</p>
+            <p>              Report ID must exist on the SC.REPORT.TYPE table.</p>
+        </desc>
+</t>
+<t>
+<field>CONSOLIDATE.EXEC</field>
+<desc>
+            <p> This field is used only for inward message processing. Allowed value YES. Creation of trade will happen only on full execution of order though multiple MT513 are received.</p>
+        </desc>
+</t>
+<t>
+<field>CHRG.REBATE</field>
+<desc>
+            <p>Percentage of rebate on applicable charge. This would be the agent’s fees.</p>
+            <p>            Input should be between 1-100. Input allowed only if CHRG.BASIS is REBATE.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BOND.COMM.TYPE</field>
+<desc>
+            <p>The CUSTOMER.SECURITY table contains default information at customer and/or portfolio level concerning reports, valuations and commissions.</p>
+            <p>              Potentially customers may have more than one portfolio and details of each of these portfolios and the commissions applicable are contained in the related multi-value fields SEC.ACC.SUFF, SHARE.COMM.TYPE, BOND.COMM.TYPE, DIV.COMM.TYPE, RED.COMM.TYPE and STOCK.COMM.TYPE.</p>
+            <p>              SEC.ACC.SUFF contains the portfolio suffix number to which the commission rates within fields SHARE.COMM.TYPE and BOND.COMM.TYPE etc., would apply. This field refers to the processing of bonds and allows for complex calculations.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              11 (alphanumeric) character keys.  (Mandatory only if field SEC.ACC.SUFF entered)</p>
+            <p>              Must be a valid entry on the FT.COMMISSION.TYPE table.</p>
+        </desc>
+</t>
+<t>
+<field>OPENING.DATE</field>
+<desc>
+            <p>The date on which this security account is opened.</p>
+        </desc>
+</t>
+<t>
+<field>EXEC.CUT.OFF</field>
+<desc>
+            <p>This field is used as a part of inward message process and will hold the Cut off time for the execution of orders after which trade will be created using service.</p>
+        </desc>
+</t>
+<t>
+<field>NOMINEE.CUS.ID</field>
+<desc>
+            <p>Field used to record Nominee Customer ID. </p>
+            <p>            ID of CUSTOMER record.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SUB.DEPOT</field>
+<desc>
+            <p>The field is only used in Stock reconciliation to build the MT535 that will be used to create the 'P' (T24 Position) records in SR.HOLDINGS.</p>
+            <p>              When the Stock reconciliation process builds the T24 position and the setting of ACTUAL.SETTLEMENT in SC.PARAMETER is YES then the list of sub-depositories is obtained from CUSTOMER.SECURITY field SUB.DEPOT, otherwise the list of sub-depositories is obtained from SC.DEPOT.ROUTING field TRANSFER.DEPOT. This list of sub-depositories is then used to build the combined position for the main depository and the sub-depositories.</p>
+            <p>              So you only need to set this field up if ACTUAL.SETTLEMENT is YES.</p>
+            <p>              So if a depository has multiple sub-depositories then they should be setup here in the CUSTOMER.SECURITY field SUB.DEPOT, for example Bank of New York is the custodian/depository but the securities are held by the national branches of Bank of New York. i.e. Paris, Berlin, Madrid etc. These national branches should be added to SUB.DEPOT for Bank of New York.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>              Must be a valid entry in CUSTOMER.SECURITY</p>
+            <p>              Must be a DEPOSITORY CUSTOMER.TYPE</p>
+        </desc>
+</t>
+<t>
+<field>EXCL.TRAIL.FEE</field>
+<desc>
+            <p>This field is to restrict some of the customer from the trailer fee calculation. </p>
+            <p>Valid input - YES or NO</p>
+            <p>If this field is set to Yes for a customer, then the SC.TRAIL.FEES.EXTRACT record will not be updated and the holdings held with this customer will not be considered for the trailer fee calculation.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SHARE.BR.COMM.TYPE</field>
+<desc>
+            <p>This contains a valid key to the FT.COMMISSION.TYPE table.  In accordance with the values detailed therein T24 will default the commission which individual brokers as defined by CUSTOMER.TYPE will charge on share transactions dealt with them.</p>
+            <p>              There are a variety of ways in which commissions and brokerage can be applied within the Securities module.  They can be applied by STOCK.EXCHANGE, by CUSTOMER (portfolio) and/or by broker/counterparty.</p>
+            <p>              The system will initially check the CUSTOMER.SECURITY record for the client (portfolio) and/or the broker involved.  If it finds no link at this level to the FT.COMMISSION.TYPE file it then checks the STOCK.EXCHANGE record (Field 3 "CALC.COUNTRY").  The system will then access the relevant stock exchange calculation record and will default the values as set up within that table (e.g. STK.EXC.CH Record ID 'CH').</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              0-11 alphnumeric characters. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>CEDEL.CODE</field>
+<desc>
+            <p>This field contains the CEDEL counterparty number of the T24 Client.</p>
+            <p>              For a complete description of the clearing mechanism within the T24 Securities module see "Securities Delivery" manual.</p>
+            <p>              A T24 user may set up several "Clearing Systems" within the Securities module. Two such examples are CEDEL and EUROCLEAR.</p>
+            <p>              The manner and format of any interface between these clearing houses and the T24 user would obviously have to be defined and possibly additional programming included. As T24 is SWIFT dedicated the possibility of using EUROCLEAR SWIFT to settle via CEDEL already exists.</p>
+            <p>              As there are numerous components required within any SWIFT message it is important that, wherever possible, default information is available and can be used when processing transactions.</p>
+            <p>              Recognising CEDEL as a clearing agent, T24 creates the type of message defined for that transaction. This may have been a delivery "Free of Payment" or "Against Payment".</p>
+            <p>              T24 needs to inform CEDEL of the ID of the counterparty within CEDEL along with other CEDEL related information e.g. the CEDEL code number the security. If it cannot find either of these two pieces of information then it will advise the user at transaction level.</p>
+            <p>              It should be part of the implementation strategy to include both pieces of information when setting-up the initial database and any subsequent data.</p>
+            <p>              SEC.TRADE is an "intelligent" transaction processor and has validation rules concerning the various types of deals being entered; for a fuller explanation of these validation rules see the "Securities Delivery" manual.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>              The only allowable formats are; '5 Numerics', '1 alpha 4         numerics', '1numeric1alpha 3numerics' or '1numeric 1alpha         1numeric 1 alpha 1numeric.' (Optional input) Standard         CEDEL counterparty code which must be unique.</p>
+        </desc>
+</t>
+<t>
+<field>BROK.SUSP.CR</field>
+<desc>
+            <p>This field will be allowed to INPUT only if ACTUAL.SETTLEMENT is set to "YES" in SC.PARAMETER.  The Category code entered here will determine the Account to which the Broker side Suspense Credit entries will be posted.  Input will be allowed only if the CUSTOMER.TYPE is set to "BROKER"  <p>Validation Rules:</p></p>
+            <p />
+            <p />
+            <p>              Categories between 10000 to 19999</p>
+        </desc>
+</t>
+<t>
+<field>BROK.SUSP.DR</field>
+<desc>
+            <p>This field will be allowed to INPUT only if ACTUAL.SETTLEMENT is set to "YES" in SC.PARAMETER.  The Category code entered here will determine the Account to which the Broker side Suspense Debit entries will be posted.</p>
+            <p>              Input will be allowed only if the CUSTOMER.TYPE is set to "BROKER"</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>              Categories between 10000 to 19999</p>
+        </desc>
+</t>
+<t>
+<field>BR.SET.ACC</field>
+<desc>
+            <p>The default for broker settlement account for trade is specified here. The default would be based on the delivery instruction is specified. In case of DVP trades, the settlement account is defaulted from the default account specified for the depository else it is defaulted to the default account specified for the broker.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>              Must be a valid nostro account.</p>
+            <p>              Input allowed only for customer types Broker/Client/Counterparty</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.TYPE</field>
+<desc>
+            <p>This field illustrates the capacity in which a client is acting.  A client may well act in one or all of these capacities, hence the multi valued field to cater for this eventuality.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              Only 'CUSTOMER', 'BROKER', 'DEPOSITORY', 'CLIENT', 'COUNTERPARTY', 'ASSOC.MEMBER', 'MEMBERSWX' and 'OTHERTRADER' may be entered.  However the values ASSOC.MEMBER, MEMBERSWX and OTHERTRADER are not used by the core system and should not be used.</p>
+            <p>              (Mandatory input)</p>
+            <p>              At least one of the above customer types must be entered.</p>
+            <p>              Duplicates are not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>STATEMENT.FREQ</field>
+<desc>
+            <p>Records the statement frequency desired by the client (monthly, quarterly, half yearly etc). </p>
+            <p />
+            <p>     Example: B = Next working day. Format is date BSNSS</p>
+            <p>     Note : This is a default frequency and is to be used in conjunction with the multivalue EXTERNAL.REPS field to define the various reports required by a particular client and the frequency of those reports, except in the case of depository type customers described below.</p>
+            <p>     By defining internal and external reports the user is able to print all external reports on high quality statement paper (possibly pre-printed for this precise purpose). Different printers can be attributed to these reports to avoid unnecessary paper and time wastage.</p>
+            <p>     For DEPOSITORY type customers, the input of a frequency indicates to the System that a statement of holdings is required. This will cause the production during the EOD of statement of holdings based on trade or value date positions comprising all security trades using this particular depository.</p>
+            <p>     If you do not require a statement of holdings to be produced then you should ensure this field is left blank.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>     17 characters frequency code. (Optional input)</p>
+            <p>     Must be a standard frequency</p>
+        </desc>
+</t>
+<t>
+<field>CONF.TOL.PERC</field>
+<desc>
+            <p>Tolerance percentage used to calculate TOLERANCE.AMOUNT in SP.RECONCILIATION.</p>
+        </desc>
+</t>
+<t>
+<field>EXTERNAL.REPS</field>
+<desc>
+            <p>While STATEMENT.FREQ dictates when and how often a client desires a report or statement, this multi value field records the various types of reports and statements requested.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              Up to 5 alpha numeric characters. (Optional input)</p>
+            <p>              Report ID must exist on the SC.REPORT.TYPE table.</p>
+        </desc>
+</t>
+<t>
+<field>DEPO.INSTR.TYPE</field>
+<desc>
+            <p>This field is used to determine whether MT540, 541, 542 or 543 type settlement instruction need to be sent to the Depository</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>  540-543 or Null.</p>
+            <p />
+            <p>      If a Null value is specified then specific delivery setup / method must be created.</p>
+        </desc>
+</t>
+<t>
+<field>SEGA.NO</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>              Upto 4 character numeric code (optional input).</p>
+        </desc>
+</t>
+<t>
+<field>BNB.CODE</field>
+<desc>
+            <p>This identifies the Kassenverin ID of the counterparty within T24.</p>
+            <p>              As yet no links into the Kassenverein delivery system are available through T24.</p>
+            <p>              This field is reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              6 or 9 character numeric code. (Optional Input)</p>
+        </desc>
+</t>
+<t>
+<field>MAX.TAX.RATE</field>
+<desc>
+            <p>Captures the maximum tax rate applicable for a DEPOSITORY.</p>
+            <p>              Input allowed only when field CUSTOMER.TYPE is set as DEPOSITORY.</p>
+        </desc>
+</t>
+<t>
+<field>EUROCLEAR.CODE</field>
+<desc>
+            <p>This field contains the EUROCLEAR counterparty number of the T24 Client.</p>
+            <p>              For a complete description of the clearing mechanism within the T24 Securities Mode see "Securities Delivery" Manual.</p>
+            <p>              A T24 user may set up several "Clearing Systems" within the Securities module.  Two such examples would be CEDEL and EUROCLEAR.</p>
+            <p>              The manner and format of any interface between these clearing houses and the T24 user would obviously have to be defined, and possibly additional programming included.  As T24 is SWIFT dedicated the possibility of using EUROCLEAR SWIFT to settle via EUROCLEAR already exists.</p>
+            <p>              As there are numerous components required within any SWIFT message it is important that, wherever possible, default information is available and can be used when processing transactions.</p>
+            <p>              Recognising EUROCLEAR as a clearing agent, T24 creates the type of message defined for that transaction.  This may have been a delivery "Free of Payment" or "Against Payment".</p>
+            <p>              T24 needs to inform EUROCLEAR of the ID of the counterparty within EUROCLEAR along with other EUROCLEAR related information e.g. the EUROCLEAR code number of the security.  If it cannot find either of these two pieces of information then it will advise the user at transaction level.</p>
+            <p>              It should be part of the implementation strategy to include both pieces of information when setting-up the initial database and any subsequent data.</p>
+            <p>              SEC TRADE is an "intelligent" transaction processor and has validation rules concerning the various types of deals being entered; for a fuller explanation of these validation rules see the "Securities Delivery" manual.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              5 numeric character EUROCLEAR code. (Optional input)  Standard EUROCLEAR counterparty code which must be unique.</p>
+        </desc>
+</t>
+<t>
+<field>COMMISSION.TYPE</field>
+<desc>
+            <p>Commission Type used for processing Commission charges for the corresponding DIARY.TYPE event defined in the previous field.</p>
+            <p>              Mandatory field if DIARY.TYPE field is entered with and must exist in FT.COMMISSION.TYPE file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              Mandatory input of 11 alphanumeric characters.</p>
+            <p>              Must exist in FT.COMMISSION.TYPE file.</p>
+        </desc>
+</t>
+<t>
+<field>EFFEKTENHAENDLER</field>
+<desc>
+            <p>This field is used to store "Effektenhaendler" codes, and is introduced for the Swiss Market only.</p>
+            <p>              An Effecktanhandler is a stock handler, a special type of customer who does not pay stamp tax.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              5 character numeric beginning with '9'. (Optional input)</p>
+            <p>              Must be numeric.</p>
+            <p>              Must begin with 9.</p>
+            <p>              Must be five characters long.</p>
+        </desc>
+</t>
+<t>
+<field>DIARY.TYPE</field>
+<desc>
+            <p>Commission codes can be defined at DIARY.TYPE level for each customer. While processing commissions, system will read CUSTOMER.SECURITY file to retrieve the COMMISSION.TYPE (next field) for the corresponding DIARY.TYPE. If this does not exist then the default commission type from the DIARY.TYPE file will be taken into consideration.</p>
+            <p>              The Diary Type entered in this field will be validated in DIARY.TYPE file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              Optional input of 0-15 alphanumeric characters.</p>
+            <p>              Must be a valid DIARY.TYPE in DIARY.TYPE file.</p>
+        </desc>
+</t>
+<t>
+<field>SHARE.COMM.TYPE</field>
+<desc>
+            <p>The CUSTOMER.SECURITY table contains default information at customer and/or portfolio level concerning reports, valuations and commissions.</p>
+            <p>              Potentially customers may have more than one portfolio, details of each of these portfolios and the commissions applicable are contained in the related multivalue fields SEC.ACC.SUFF, SHARE.COMM.TYPE, BOND.COMM.TYPE, DIV.COMM.TYPE, RED.COMM.TYPE and STOCK.COMM.TYPE.</p>
+            <p>              SEC.ACC.SUFF contains the portfolio suffix number to which the commission rates within fields SHARE.COMM.TYPE and BOND.COMM.TYPE etc. applies. This field refers to the processing of shares and allows for complex commission calculations.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              11 (alphanumeric) character keys. (Mandatory only if field SEC.ACC.SUFF entered)</p>
+            <p>              Must be a valid entry on the FT.COMMISSION.TYPE table.</p>
+        </desc>
+</t>
+<t>
+<field>AUTO.CUST.SETT</field>
+<desc>
+            <p>Enables the automatic settlement of the nominal and cash for the Customers who have a contractual agreement with the Bank.</p>
+            <p>              This facility is available for those CUSTOMER.SECURITY records whose CUSTOMER.TYPE field is set to 'CUSTOMER' only.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>              Yes, No or Null. A Null is equivalent to NO</p>
+        </desc>
+</t>
+<t>
+<field>UPDATE.EXCEP.LOG</field>
+<desc>
+            <p> If this field is  set  to NO, EXCEPTION.LOG will not get updated for </p>
+            <p>               override TRADING WITH UNAUTHORISED BROKER </p>
+        </desc>
+</t>
+<t>
+<field>SEC.ACC.SUFF</field>
+<desc>
+            <p>The CUSTOMER.SECURITY table contains default information at customer and/or portfolio level concerning reports, valuations and commissions.</p>
+            <p>              Potentially customers may have more than one portfolio, therefore details of each of these portfolios and the commissions applicable are contained in the related multivalue fields SEC.ACC.SUFF, SHARE.COMM.TYPE, BOND.COMM.TYPE, DIV.COMM.TYPE, RED.COMM.TYPE and STOCK.COMM.TYPE.</p>
+            <p>              SEC.ACC.SUFF contains the portfolio suffix number to which the commission rates within fields SHARE.COMM.TYPE, BOND.COMM.TYPE, DIV.COMM.TYPE, RED.COMM.TYPE and SHARE.COMM.TYPE would apply.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              1-3 numeric character Portfolio number or 'ALL'. (Optional input)</p>
+            <p>              Must be a valid SEC.ACC.MASTER suffix number relating to the customer as defined in the key to this CUSTOMER.SECURITY record.</p>
+        </desc>
+</t>
+<t>
+<field>SETT.TOL.AMT</field>
+<desc>
+            <p>The value associated with SETT.TOL.CCY within which settlement tolerance postings will occur for any transaction.</p>
+            <p>              Can only be set for DEPOSITORY type records.</p>
+            <p>              Used in conjunction with the field SETT.TOL.CATEG in SC.PARAMETER to determine to which account or P&amp;L category the posting will be made to. If the field is not set in SC.PARAMETER then no postings will be made.</p>
+        </desc>
+</t>
+<t>
+<field>BRANCH.CODE</field>
+<desc>
+            <p>The branch to which customer is attached.</p>
+            <p>            Valid DEPT.ACCT.OFFICER ID</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHRG.BASIS</field>
+<desc>
+            <p>To specify whether this charge is a rebate on the linked charge applicable (for subscriptions, this would be a rebate on front load, for redemptions, this would be a rebate on exit load and for switches, this would be a rebate on switch) or a percentage of the value of the transaction</p>
+            <p>            Allowed values are REBATE / PERCENTAGE</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>NOMINEE.ADDR</field>
+<desc>
+            <p>Nominee address is recorded here in case no customer record exists for the Nominee.</p>
+            <p>            Multi-value field. Free format text.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BR.DEL.INSTR</field>
+<desc>
+            <p>The field is used to specify the default delivery instruction for broker.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>              Must be a valid delivery instruction record.</p>
+            <p>              Input allowed only for customer types Broker/Client/Counterparty</p>
+        </desc>
+</t>
+<t>
+<field>SETTLE.AGGREGATION</field>
+<desc>
+            <p>In case of individual trades, This field will have effect only if trade aggregation is set.
+In case of parent child trades, This field will be used to send consolidated messages for different depositories (i.e. Main depository and customer depository). If this field is not set, aggregation
+would not be updated and message will be generated from individual trade.</p>
+        </desc>
+</t>
+<t>
+<field>DEPOSITORY.ACC</field>
+<desc>
+            <p>If the "CUSTOMER.TYPE" is a "DEPOSITORY" this field identifies the financial account for this customers depository.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              Account number format. (Optional input)</p>
+            <p>              Must exist as a valid ACCOUNT for this particular customer.</p>
+            <p>              If entered this field will be used as the default financial account for the DIV.COUP.CUS, REDEMPTION.CUS and STOCK.DIV.CUS applications.</p>
+        </desc>
+</t>
+<t>
+<field>ODD.LOT.CONSOLID</field>
+<desc>
+            <p>This field is set to:</p>
+            <p>              - NO : Position cannot be automatically consolidated. Odd lot cannot be sold.</p>
+            <p>              - YES : Odd lot can be sold.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>SUB.ACC.EXT.ID</field>
+<desc>
+            <p>The ID of the sub account at the depository.</p>
+            <p>              It is linked with the SUB.ACCOUNT field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>RED.COMM.TYPE</field>
+<desc>
+            <p>The CUSTOMER.SECURITY table contains default information at customer and/or portfolio level concerning reports, valuations and commissions.</p>
+            <p>              Potentially customers may have more than one portfolio and details of each of these portfolios and the commissions applicable are contained in the related multivalue fields SEC.ACC.SUFF, SHARE.COMM.TYPE, BOND.COMM.TYPE, DIV.COMM.TYPE, RED.COMM.TYPE and STOCK.COMM.TYPE.</p>
+            <p>              SEC.ACC.SUFF contains the portfolio suffix number to which the commission rates within fields SHARE.COMM.TYPE and BOND.COMM.TYPE etc., would apply. This field refers to the processing of redemptions and allows for complex commission calculations.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              11 (alphanumeric) character keys.  (Mandatory only if field SEC.ACC.SUFF entered).</p>
+            <p>              Must be a valid entry on the FT.COMMISSION.TYPE table.</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.DEPOSITORY</field>
+<desc>
+            <p>Customer default depository level.</p>
+            <p>              If this field is populated and no default depository is specified in the SEC.ACC.MASTER then this depository will default over any depositories specified in the SECURITY.MASTER and the current holding functionality in (SEC.OPEN.ORDER).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>              Input is optional</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DAY.TRADE</field>
+<desc>
+            <p> This field is used only for inward message processing. Allowed Value YES. Enable single trade creation for a day.Creation of trade will happen at the end of day before COB after the cut off time specified in EXEC.CUT.OFF.</p>
+        </desc>
+</t>
+<t>
+<field>RECON.FREQ</field>
+<desc>
+            <p>For DEPOSITORY type customers only, the input of a frequency indicates to the System that statement request production is required. This will produce the required statement request for all sub-accounts and all securities. The depository will return a statement of holdings to the bank which will be reconciled against the T24 SECURITY.POSITION application.</p>
+            <p>              If you do not require the system to produce statement request messages automatically then this field should be left blank and the applciation SR.STATEMENT.REQUEST can be used ad-hoc.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>              17 characters frequency code. (Optional input)</p>
+            <p>              Must be a standard frequency</p>
+        </desc>
+</t>
+<t>
+<field>CORPORATE.ACTIONS</field>
+<desc>
+            <p>This field controls whether holdings in this depository are to be included in Corporate Actions. If this field is set to NO then SECURITY.POSITION records that relate to this depository will not be included in selection of positions for Corporate Actions.</p>
+            <p>              Default value is YES. Input allowed only if the record is for a Depository.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              Allowed values are 'Y'ES/'N'O only.  Mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>SUB.ACCOUNT</field>
+<desc>
+            <p>Specifies sub accounts for this depository.</p>
+            <p>              Input only allowed if the CUSTOMER.TYPE contains 'DEPOSITORY'</p>
+            <p>              No duplicates allowed.</p>
+            <p>              Multi valued field associated with the filed SUB.ACC.EXT.ID</p>
+            <p>              Optional field</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>              1-16 numeric characters</p>
+        </desc>
+</t>
+<t>
+<field>DIV.COMM.TYPE</field>
+<desc>
+            <p>The CUSTOMER.SECURITY table contains default information at customer and/or portfolio level concerning reports, valuations and commissions.</p>
+            <p>              Potentially customers may have more than one portfolio and details of each of these portfolios and the commissions applicable are contained in the related multi value fields SEC.ACC.SUFF, SHARE.COMM.TYPE, BOND.COMM.TYPE, DIV.COMM.TYPE, RED.COMM.TYPE and STOCK.COMM.TYPE.</p>
+            <p>              SEC.ACC.SUFF contains the portfolio suffix number to which the commission rates within fields SHARE.COMM.TYPE and BOND.COMM.TYPE etc., would apply. This field refers to the processing of dividends and allows for complex commission calculations.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              11 (alphanumeric) character keys. (Mandatory only if field SEC.ACC.SUFF entered)</p>
+            <p>              Must be a valid entry on the FT.COMMISSION.TYPE table.</p>
+        </desc>
+</t>
+<t>
+<field>MT515.CUT.OFF.TIME</field>
+<desc>
+            <p> Cut off time after which execution of orders will not update the Aggregation and Reconciliation table.</p>
+        </desc>
+</t>
+<t>
+<field>EXT.ACCT.BANK</field>
+<desc>
+            <p>Name of bank with whom customer maintains an account.Customer ID of the bank needs to be specified here.</p>
+            <p>
+                <p>Validation Rules:</p>.</p>
+            <p>            Valid CUSTOMER ID of bank</p>
+            <p>            Fields EXT.ACCT.NO to EXT.ACCT.CCY would be associated and multi valued. This would allow specification of different accounts for different currency.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHRG.TYPE</field>
+<desc>
+            <p>Field to specify whether the associated charges are applicable to subscriptions/redemptions or switches.</p>
+            <p>            Allowed values are SUBSCRIPTION / REDEMPTION / SWITCH / ALL</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXT.ACCT.NO</field>
+<desc>
+            <p>Field used to record the external account number of the customer if the customer does not maintain an account with the entity.</p>
+            <p>            Free Format Alpha numeric.</p>
+            <p>            Fields EXT.ACCT.NO to EXT.ACCT.CCY would be associated and multi valued. This would allow specification of different accounts for different currency.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SWIFT.IN.TRANS.REF</field>
+<desc>
+            <p>Specifies the Qualifier from which the transaction Id should be taken to process the settlement based on the Inward 544-547 messages.        </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>    Single value field which will accept either ‘SEME’ or ‘RELA’ as a valid value.</p>
+            <p>    Optional input. If not specified, the transaction reference will be taken from the 'RELA' Qualifier.</p>
+        </desc>
+</t>
+<t>
+<field>MF.TRAIL.FEE.CALC</field>
+<desc>
+            <p>If this field is checked :- </p>
+            <p>MF.AGENT.POSITION is built to enable calculation of Trailer Fees for MF Agent where BUSINESS.MODEL BOTH/FMC in MF.PARAMETER.</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER.CODE</field>
+<desc>
+            <p>A unique customer number which must exist as a valid ID on the CUSTOMER file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              Is determined by the rules laid down, governing the opening and maintenance of customer ID's.</p>
+            <p>              Must be a valid CUSTOMER in T24.</p>
+            <p>              An entry must exist in this table prior to the customer operating in any capacity within the Securities module.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.TYPE</field>
+<desc>
+            <p>If the underlying customer is a DEPOSITORY and there is a frequency entered in the STATEMENT.FREQ or RECON.FREQ field, thereby indicating that SWIFT statement of holdings output is required, then you may enter either TRADE or VALUE.</p>
+            <p>              The statement of holdings output may be produced to comprise all holdings whose underlying transactions have been traded (TRADE) up to and including the statement date OR holdings comprising all transactions traded for value date (VALUE) up to and including the statement date.</p>
+            <p>              The TRADE setting indicates the statement will be generated from a trade date basis</p>
+            <p>              The VALUE setting indicates the statement will be generated from a value date basis</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>              Optional field, default is TRADE</p>
+            <p>              Only input of TRADE or VALUE allowed at present</p>
+        </desc>
+</t>
+<t>
+<field>NOMINEE.NAME</field>
+<desc>
+            <p>Nominee name is specified here. In case, no customer record exists for the nominee, the nominee name is recorded here.</p>
+            <p>            Free format text.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>SETT.TOL.CCY</field>
+<desc>
+            <p>When set will allow settlement tolerances postings to occur for transactions in this currency.</p>
+            <p>              Can only be set for DEPOSITORY type records.</p>
+            <p>              Used in conjunction with the field SETT.TOL.CATEG in SC.PARAMETER to determine to which account or P&amp;L category the posting will be made to. If the field is not set in SC.PARAMETER then no postings will be made.</p>
+        </desc>
+</t>
+<t>
+<field>CHRG.PL.CATG</field>
+<desc>
+            <p>If the agent’s fee is to be set as a rebate on the load applicable, the PL category to which the rebate would be posted is specified here. Input allowed only if CHRG.BASIS is REBATE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Must be a valid PL category code in the range 50000 - 59999.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MT548.IN.TXN.REF</field>
+<desc>
+            <p>Specifies the Qualifier from which the transaction Id should be taken to process the Inbound MT548 message.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>   Single value field which will accept either ‘SEME’ or ‘RELA’ as a valid value.</p>
+            <p>   Optional input. If not specified, the transaction reference will be taken from the 'RELA' Qualifier.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>STOCK.COMM.TYPE</field>
+<desc>
+            <p>The CUSTOMER.SECURITY table contains default information at customer and/or portfolio level concerning reports, valuations and commissions.</p>
+            <p>              Potentially customers may have more than one portfolio and details of each of these portfolios and the commissions applicable are contained in the related multivalue fields SEC.ACC.SUFF, SHARE.COMM.TYPE, BOND.COMM.TYPE, DIV.COMM.TYPE, RED.COMM.TYPE and STOCK.COMM.TYPE.</p>
+            <p>              SEC.ACC.SUFF contains the portfolio suffix number to which the commission rates within fields SHARE.COMM.TYPE and BOND.COMM.TYPE etc., would apply. This field refers to the processing of stocks and allows complex commission calculations.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>              11 (alphanumeric) character keys. (Mandatory only if field SEC.ACC.SUFF entered)</p>
+            <p>              Must be a valid entry on the FT.COMMISSION.TYPE table.</p>
+        </desc>
+</t>
+<t>
+<field>CU.CLASSIFICATION</field>
+<desc>
+            <p>Field used to define whether customer is a major or minor</p>
+            <p>            Accepted values are MAJOR / MINOR</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>BR.SEC.DEPOT.AC</field>
+<desc>
+            <p>Defines the default BR.SEC.DEPOT.AC to be used in trade for debit transactions.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXEC.CUT.OFF.TIME</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>AGENT.CODE</field>
+<desc>
+            <p>The agent linked to the customer.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>            Must be a valid CUSTOMER.SECURITY record with AGENT flag set to 'Y'</p>
+        </desc>
+</t>
+<t>
+<field>AGENT</field>
+<desc>
+            <p>Field to identify the customer as an agent</p>
+            <p>            The CUSTOMER.TYPE must be set to both 'BROKER' and 'DEPOSITORY'</p>
+            <p>            Y' is the only allowed value.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>AUTHORISED.BROKER</field>
+<desc>
+            <p>Determines if the Broker or CounterParty is authorised for trade or not.</p>
+            <p>              Only valid for a Customer who is identified as a Broker or Counterparty in CUSTOMER.SECURITY.</p>
+            <p>              If this field is set to 'NO' then an Override Message is generated for any transaction in T24 with this Unauthorised Broker or Counterparty, reminding the user of the Unauthorised status. If this Message is overridden, details of that transaction are recorded in EXCEPTION.LOG File.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>              Input is optional.</p>
+            <p>              Input can be (Y)es or (N)o.</p>
+            <p>              Input is allowed only if the CUSTOMER.TYPE is specified         as Broker or Counterparty.</p>
+        </desc>
+</t>
+<t>
+<field>AUTO.BROK.SETT</field>
+<desc>
+            <p>Enables the automatic settlement of the nominal and cash for the Brokers who have a contractual agreement with the Bank. This facility is available for those CUSTOMER.SECURITY records where the CUSTOMER.TYPE field is set to BROKER, "CLIENT" or "COUNTERPARTY" only.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>              Yes, No or Null. A Null is equivalent to "NO"</p>
+        </desc>
+</t>
+<t>
+<field> NOSTRO.AGGREGATION </field>
+<desc>
+            <p> Allowed value is YES </p>
+            <p> Field to determine whether consolidated nostro entry should be generated. Nostro aggregation cannot be set as yes without trade and settle aggregation in order to cater for full reconciliation. Setting of Nostro reconciliation will create aggregated trade between aggregated portfolio setup in SC.STD.SEC.TRADE and actual broker. Entry will be raised between aggregated suspense account and broker nostro. </p>
+        </desc>
+</t>
+<t>
+<field>STK.EXC.AGGREGATE</field>
+<desc>
+            <p> Allowed value is YES </p>
+            <p> When STK.EXC.AGGREGATE is set as YES then the fields  TRADE.AGGREGATION, SETTLE.AGGREGATION and NOSTRO.AGGREGATION will be set as YES if they are null. This field will determine whether aggregation setup in stock exchange should also be checked. If this field is not set, Aggregation will be performed if set at broker level. If this field is set to yes, Aggregation will be performed  only if aggregation is also enabled at stock exchange level.</p>
+        </desc>
+</t>
+<t>
+<field>EXE.HLT</field>
+<desc>
+<p>Allowed option are YES or NULL . YES will indicate whether the execution should be flagged for halt.</p>
+</desc>
+</t>
+<t>
+<field>TRADE.HLT</field>
+<desc>
+<p>Allowed option are YES or NULL . YES will indicate if the authorisation of the trade should be halted.</p>
+</desc>
+</t>
+<t>
+<field>REFERENCE.CURRENCY</field>
+<desc>
+<p>This field will indicate the reference currency of the customer, and this field is only for information purpose.</p>
+</desc>
+</t>
+<t>
+<field>BROKER.REMIT</field>
+<desc>
+<p>Accepted value is 'YES' or NULL.If this field is blank,it is assumed FTT(Financial Transaction Tax) will be remitted directly by the bank to the authorities.</p>
+</desc>
+</t>
+<t>
+<field>BROKER.FTT</field>
+<desc>
+<p>Allowed option is YES or NULL.System will check whether the broker side FTT is applicable.Option 'YES' is allowed only when BROKER.REMIT Field is not set.</p>
+</desc>
+</t>
+</menu>
+</t24help>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>DE</product>
+<table>DE.PRODUCT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Product information is used by the Outward Message Formatting routine when expanding a header for the copies of a message required.  Product information consists of the Status (Normal, Hold or Delete) and Priority (Normal, Priority or Urgent) that a message must be set to.  It also specifies for each Carrier/Delivery Address, which version of the format should be used, and how many copies should be made. </p>
+            <p>After a header has been expanded (Disposition is FORMATTED) the Product file is not read again if the message returns to the Unformatted Queue (RESUBMITted).  Therefore, it is necessary instead to use REROUTE to change the Language, Format or copies. </p>
+            <p>Product records may be specified for: </p>
+            <p>           a particular company            a customer            an account </p>
+            <p>and each of the above may be specified for: </p>
+            <p>           all message types            specific message types            all banking applications            a specific application. </p>
+            <p>If a record for a particular customer, message type, application, etc. does not exist a more general record must be available. </p>
+            <p />
+            <p>Example: </p>
+            <p>For company 'X', type 100 messages normally go by Telex, except for Funds Transfer messages to customers 20000 and 30000 which go by SWIFT.  The following records are required to define these conditions: </p>
+            <p>Field 0:  X.100.ALL         CARRIER.ADDR NO:  TELEX.1 Field 0:  C-20000.100.FT    CARRIER.ADDR NO:  SWIFT.1 Field 0:  C-30000.100.FT    CARRIER.ADDR NO:  SWIFT.1 </p>
+            <p />
+            <p>Note: </p>
+            <p>Product can set both Status and Priority for a specific Company, Customer or Account, but far greater flexibility is available if DE.DISP.CONTROL is used as Status and Priority can then be set according to the values in many different fields in the message header. </p>
+            <p>In order to hold output for a customer/account a carrier should be chosen with with HOLD.OUTPUT set to 'Y', (see DE.ADDRESS for details). </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>MESSAGE.STATUS</field>
+<desc>
+            <p>Specifies the status that a message matching this product key should be set to. </p>
+            <p>During formatting, if delete is specified on the product record, the message record is checked to see if delete is allowed for the message type currently being processed.  If delete is not allowed, the status of 'DELETE' on the product record is ignored. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'HOLD'  'DELETE' or nothing. (Optional input)</p>
+            <p>If the product record is for a specific message type and delete is not allowed for the message type, 'DELETE' cannot be entered.</p>
+        </desc>
+</t>
+<t>
+<field>LANGUAGE</field>
+<desc>
+            <p>Specifies the language to be used to select an appropriate record from the DE.FORMAT.PRINT table. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 type A (alphanumeric) characters. (A valid language mnemonic.)  CARRIER.ADDR.NO, LANGUAGE, FORMAT and COPIES form a multivalue set.  (Optional input  If it is not entered the 1st language in the LANGUAGE table will be used when formatting printout.)  If entered it must be a key to the LANGUAGE table.  Must be blank if carrier is EUCLID.</p>
+        </desc>
+</t>
+<t>
+<field>PRIORITY</field>
+<desc>
+            <p>Specifies the Priority that a message matching this product key should be set to. </p>
+            <p>Urgent ('U') is the highest priority, and requires immediate confirmation of delivery if this can be provided by the carrier. </p>
+            <p>Priority ('P') has a lower priority than 'U'. </p>
+            <p>Everything else is Normal ('N'). </p>
+            <p>Note : The priority defined in this table will increase the priority of a        message but will never decrease it, e.g. a product record is set up        with a priority of 'P'.  If a message matching the product key has        a priority of 'U' it will remain unchanged.  However, if a message        has a priority of 'N', it will be changed to 'P'. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'U', 'P' or nothing. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Contains all the override messages which the user has</p>
+            <p>confirmed during input.</p>
+            <p>At validation,the system may generate a series of screen</p>
+            <p>override messages to indicate some anomaly within the</p>
+            <p>transaction (e.g. maturity date is not a working day for</p>
+            <p>this currency). User may change the data or override the</p>
+            <p> message. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(System generated. Multivalue field.)</p>
+            <p>This is a NOINPUT field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MDR.CUSTOMER</field>
+<desc>
+            <p>This field is used to specify other customers for whom a copy of the message needs to be printed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Value in this field is acceptable only for the PRINT carrier.</p>
+            <p>For the SWIFT carrier the value in this field is allowed only if IX product is installed.</p>
+            <p>Value in this field can be specified only when the product is set up for a customer or an account.</p>
+            <p>If the customer or account set up for this DE.PRODUCT is not related to the customers listed in this field, either through the RELATION.CODE of the CUSTOMER record or through the JOINT.HOLDER field of the ACCOUNT record, an override will be produced.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CARRIER.ADDR.NO</field>
+<desc>
+            <p>Specifies the carrier to be used, and the version of the address. </p>
+            <p>Although a record may exist on the Product Table to send all messages to a particular customer by TELEX and PRINT for example, if copies are not allowed for a particular message type (copies on the message table is 'NO'), only the first carrier will be used when the message is formatted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Can be entered as either   carrier.address-no  or just   carrier</p>
+            <p>Carrier must reference a record on the carrier definition file, DE.CARRIER.</p>
+            <p>The carrier module, as defined in the field CARRIER.MODULE on the DE.CARRIER record, must be in the list of outward carriers on DE.PARM.</p>
+            <p>If address version number is entered, it must be 1-3 numeric characters.</p>
+            <p>Address number defaults to 1.</p>
+            <p>If the Product record is for a customer or a company and the carrier is not Euclid, an address must exist on the Address file for the Carrier Address number.  The ADDRESS field from the carrier record (DE.CARRIER) is used for looking-up the address file.  Example: If record ID is C-1234.ALL.ALL and TELEXP.2 is specified, there must be an address on file for C-1234.TELEX.2, since the address field for TELEXP on the carrier file is TELEX.</p>
+            <p>CARRIER.ADDR NO, LANGUAGE, FORMAT and COPIES form a multivalue set.</p>
+            <p>Mandatory input</p>
+        </desc>
+</t>
+<t>
+<field>COPIES</field>
+<desc>
+            <p>Specifies the number of copies of a message required. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric characters</p>
+            <p>CARRIER.ADDR NO, LANGUAGE, FORMAT and COPIES form a multivalue set.</p>
+            <p>Optional input</p>
+            <p>Default 1</p>
+            <p>Not valid for formatting carrier module of 'SWIFT'.</p>
+            <p>Must be blank if the formatting carrier module is EUCLID.</p>
+        </desc>
+</t>
+<t>
+<field>FORMAT</field>
+<desc>
+            <p>Specifies the format version to be used, and must always be '1' if the formatting module (obtained from the carrier file) is SWIFT or TELEXF. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric characters.</p>
+            <p>CARRIER.ADDR NO, LANGUAGE, FORMAT and COPIES form a multivalue set.</p>
+            <p>Optional input Default '1') If entered for SWIFT, TELEX or TELEXF, must be 1. Must be blank if carrier is EUCLID.</p>
+            <p>Default '1'</p>
+            <p>If entered for formatting module of SWIFT or TELEXF, must be 1.</p>
+            <p>Must be blank if carrier is EUCLID.</p>
+        </desc>
+</t>
+<t>
+<field>ID</field>
+<desc>
+            <p>Identifies a Company, Customer or Account, Message Type or Report Mnemonic, and Application Mnemonic whose messages are controlled by this record. </p>
+            <p>When the ID is a Customer or Account number a Company Code can be allowed to default when building the key of this file. If the Delivery System is 'Resident' (as specified in the DE.PARM file) mnemonics may be used for Company, Customer and Account. </p>
+            <p>When inputting to this table the Company Code used will be for the Company the user signed on to. When a Customer file is shared care must be taken to sign onto the Company where the Customers are held. </p>
+            <p>When the Outward Message Formatting routine looks up a Delivery Product record it uses </p>
+            <p>  -  the CUS COMPANY field at the Customer level  </p>
+            <p>  -  the COMPANY CODE field at account level </p>
+            <p>  -  default definition at COMPANY CODE and if not found, DEFAULT.FINAN.COM is used. </p>
+            <p>The format of the id is as follows: </p>
+            <p>1) 9 type A (alphanumeric) characters. (This must be the sign-on Company, which defaults when the next part of the key is 'C-' or 'A-'.) </p>
+            <p>2) '.' (entered only if company code is entered) </p>
+            <p>3) Either 'C-' followed by 1-10 numeric character customer number or 'C-' followed by 1-10 alphanumeric customer mnemonic. or 'A-' followed by 1-16 numeric character account number. or 'A-' followed by 1-10 alphanumeric account mnemonic or nothing (if the record is to apply to the whole company). </p>
+            <p>4) '.' </p>
+            <p>5) Either 1-4 (entered if 3) is entered) numeric character Message Type or up to 10 type 'MNE' characters. Report Mnemonic. or 'ALL' </p>
+            <p>6) '.' </p>
+            <p>7) Either 'FX' 'FT' 'MM' 'LD' 'AC' 'EF' 'SC' 'BD' or 'ALL' or XXYY where XX is a valid application code (such as AC) and YY is set by the Application (eg. ACN1 which is used to produce a Nostro statement). </p>
+            <p>See the appropriate section of the User Guide for further details for each specific application.</p>
+            <p>When the Delivery Product file is used by Outward Message Formatting it looks for a record specific to the message being processed before searching for more general records. </p>
+            <p>It uses the Account Number, Customer Number, Cus Company and Company Code from the Message Header to search for keys in the following sequence; NOTE : Message type may indicate the report mnemonic: </p>
+            <p>Company Code.A-Account.Message Type.Application inc. Product Code Company Code.A-Account.Message Type.Application Company Code.A-Account.Message Type.ALL Company Code.A-Account.ALL.Application inc. Product Code Company Code.A-Account.ALL.Application Company Code.A-Account.ALL.ALL Cus Company.C-Customer.Message Type.Application inc. Product Code Cus Company.C-Customer.Message Type.Application Cus Company.C-Customer.Message-Type.ALL Cus Company.C-Customer.ALL.Application inc. Product Code Cus Company.C-Customer.ALL.Application Company Code.C-Customer.ALL.ALL Company Code.Message Type.Application inc. Product Code Company Code.Message Type.Application Company Code.Message Type.ALL Company Code.ALL.Application inc. Product Code Company Code.ALL.Application Company Code.ALL.ALL </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>(See also 'Details') 1) Company Code or Mnemonic. This         can be allowed to default for Customer or Account level         records. 2) 'C-' and Customer Number or Mnemonic or 'A-'         and Account Number or Mnemonic (Not present for Company         level records.) 3) Message Type, or Report Mnemonic or         'ALL' (Mandatory.) 4) Application, or 'ALL' (Mandatory.)</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

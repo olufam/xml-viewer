@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SL</product>
+<table>SL.CHARGE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p />
+            <p>This application enables the user to take charges for a FACILITY or a LOAN.</p>
+            <p />
+            <p>On input of a CHG.ACTIVITY in this application, the pre-defined charges for the activity are defaulted by the system in to this table, with the possibility of user intervention for addition or deletion.</p>
+            <p />On committing the record, calculations are done and the charge amounts are populated.<p />Apart from the charge amounts, the amounts that are due to each participant is arrived at and written into the appropriate fields, depending on the value in the field APPLY.TO.ALL being YES. <p /><p>Charges due to the T24 Bank could be amortised or recognised immediately in P&amp;L. </p><p /></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CHG.CALC.BASIS</field>
+<desc>
+            <p>This field is meant for the user to define the basis of calculation of the charge. Depending on the value in this field, the system will derive the CHG.BASE.AMT. In other words, the value in this field will determine the base amount on which the charge is to be calculated.  </p>
+            <p>Accepted values are FACILITY.ORIG/FACILITY.OS/LOAN.ORIG/LOAN.OS/PART.SHARE /ADHOC. </p>
+            <p>FACILITY.ORIG would mean that charges would be calculated on the original facility amount.</p>
+            <p>FACILITY.OS would mean that charges would be calculated on the outstanding facility amount or in other words the undrawn portion of the facility. </p>
+            <p>LOAN.ORIG would mean that charges would be calculated on the original loan amount.</p>
+            <p>LOAN.OS would mean that charges would be calculated on the outstanding loan amount.</p>
+            <p>PART.SHARE would mean that charges would be calculated participant wise taking the paticipant's share as the base amount.</p>
+            <p>ADHOC would mean that the charges would be calculated based on the amount input by the user. The system would not derive any amount for calculation when this option is chosen and the user input of  a CHG.BASE.AMT is mandatory.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Allowed inputs are FACILITY.ORIG, FACILITY.OS, LOAN.ORIG, LOAN.OS,       PART.SHARE, ADHOC.</p>
+            <p>If ADHOC is given, the CHG.BASE.AMT is mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.END.DATE</field>
+<desc>
+            <p>Field to hold the date on which the defined charge is to be taken for the last time. Input in this field is mandatory if the field CHARGE.FQY has a value. Input is not allowed if the field CHARGE.FQY is null.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Input not allowed if CHARGE.FQY is null.</p>
+            <p>Mandatory if CHARGE.FQY has a value.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.CODE</field>
+<desc>
+            <p />
+            <p>Field to hold the ID of the CHARGE CODE. System default will be done  all charges defined for the activity given in field no. 2 will be defaulted. User allowed to add/delete a particular charge.</p>
+            <p />
+            <p>For activity 999 no defaults will be made and the user to define the charges, which has to be a valid record in  FT.COMMISSION/CHARGE type table .</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System defaulted for all activity codes except 999.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TAX.ACC.AMT</field>
+<desc>
+            <p>Reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Rule 1</p>
+            <p>Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>MANUAL</field>
+<desc>
+            <p>This field will be a system written field to understand whether the charges have been calculated by the system &amp; populated or the charges have been input by the user.</p>
+            <p>Charges are calculated &amp; populated by the system when the record is committed at the input stage. If the user manually inputs a charge amount, this field would be written with the value YES, which will be an indicator to the system not to recalculate the charges at the time of committing the contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System written.</p>
+            <p>No input field.</p>
+        </desc>
+</t>
+<t>
+<field>NXT.CHG.DTE</field>
+<desc>
+            <p>For a frequency based charge this is a system written field. This field will hold the date on which the defined charge will be taken next, along with the frequency.  User allowed to modify this field. The change to this field by user can be done only if the process date is greater than the charge start date ie. once the charge start date has become no input field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>User modification permitted only when process date is greater than the       start date.</p>
+        </desc>
+</t>
+<t>
+<field>PART.TAX.AMT</field>
+<desc>
+            <p>Reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Rule 1</p>
+            <p>Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>MSG.CLASS</field>
+<desc>
+            <p>Forms a part of the multi value set of delivery related fields.  This field is system written and is used to determine whether message is to be sent to BORROWER or PARTICIPANT.  </p>
+            <p>At present the values allowed are ADVICEBORR  and  ADVICEPART, which are defined in the EB.MESSAGE.CLASS file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Values now used are ADVICEBORR and ADVICEPART.</p>
+        </desc>
+</t>
+<t>
+<field>AMORT.PERIOD</field>
+<desc>
+            <p>Field to accept the period up to which the charge is to be amortized. This field can be input only if amortization is set to YES. System defaulted from SL.CHARGE.ACTIVITY and user allowed to modify.</p>
+            <p>For eg.</p>
+            <p> if the charge is to be amortized over a period of 6 months, a value 6M is to be input in this field ; if the charge is to be amortized over a period of 2 years, a value 2Y is to be input in this field  and in case the user desires to amortize the charge over the life of the contract a value "C" is to be input in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Can be input only if amortization is set to YES.</p>
+            <p>Accepted values are  1M,2M....11M,  1Y, 2Y.... and      "C" in case the amortization is to be done for the entire life of     the contract.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>STMT.NO</field>
+<desc>
+            <p> Holds the references of STMT and CATEG entries raised from the application</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System Written</p>
+        </desc>
+</t>
+<t>
+<field>CHG.ACC.AMT</field>
+<desc>
+            <p>Reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Rule 1</p>
+            <p>Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>PRIOR.DAYS</field>
+<desc>
+            <p>Reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Rule 1</p>
+            <p>Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>CHG.FQY</field>
+<desc>
+            <p>Field to hold the frequency at which the charge is to be taken. Will be defaulted from the SL.ACTIVITY table. User allowed to modify.  Currently only monthly frequency is allowed. Input allowed in the format of M0131, where M01 indicates every month, 31 indicates the next date for which the charge is to be cycled. Based on the frequency and date, the system will cycle and arrive at the next date on which the charge is to be taken again. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>At present only monthly frequency is allowed.</p>
+        </desc>
+</t>
+<t>
+<field>ROUNDING.RULE</field>
+<desc>
+            <p>This field will hold contract level rounding rule for charge calculations. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Should be a valid EB.ROUNDING.RULE id. </p>
+            <p>No change permitted after first authorization </p>
+            <p> For detailed options on different rounding options help text on EB.ROUNDING.RULE file can be referred. </p>
+        </desc>
+</t>
+<t>
+<field>DELIVERY.CUST</field>
+<desc>
+            <p>The ID of the customer who is the addressee of the message is system written in this field. </p>
+            <p>This field is the first of the set of multi value fields which contain the delivery related information.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System written.</p>
+        </desc>
+</t>
+<t>
+<field>CUSTOMER</field>
+<desc>
+            <p />
+            <p>Customer No. from the SL.FACILITY</p>
+            <p />table.  <p /><p>Will be defaulted by the system. On input of the ID, the system will read the SL.FACILITY</p><p />and populate the customer number of the SL in this field. Will be system defaulted and user changeable.  <p><p>Validation Rules:</p></p><p /><p>Mandatory input  System will default. User can change.</p></desc>
+</t>
+<t>
+<field>MSG.DATE</field>
+<desc>
+            <p>The date on which the message will be generated is system written in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System written.</p>
+        </desc>
+</t>
+<t>
+<field>PART.ID</field>
+<desc>
+            <p>Whenever the charges are to be distributed among all the participants, this field, which forms a part of a multi-value set will hold the participant ID.  This is a system written field.</p>
+            <p>System would create as many multi-values as the number of participants in the facility or loan and populate the participant related information in these fields.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System written associated multi-value set.     </p>
+        </desc>
+</t>
+<t>
+<field>CHG.XCHANGE</field>
+<desc>
+            <p>Meant for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Rule 1</p>
+            <p>Rule 2</p>
+        </desc>
+</t>
+<t>
+<field>CHG.ACTIVITY</field>
+<desc>
+            <p />
+            <p>A valid activity code in the SL.CHARGE.ACTIVITY file.  On input of the activity code, the charge/commission types defined for the particular activity will be defaulted.</p>
+            <p>Validation Rule</p>
+            <p>Mandatory user input.</p>
+            <p>Should be a valid record in the SL.CHARGE.ACTIVITY file.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.CURRENCY</field>
+<desc>
+            <p>The currency in which the charge is calculated is held in this field. This will default to Facility or Loan currency as the case may be. User allowed to alter this.  Once authorised this field is NO CHANGE field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System written  Either Facility or Loan currency.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.CODE</field>
+<desc>
+            <p>The tax code pertaining to the charge code will be system written in this associated multi-value field.  The tax code will be ascertained from the FT.COMMISSION or FT.CHARGE type record and written in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System written.</p>
+            <p>User input disallowed.</p>
+        </desc>
+</t>
+<t>
+<field>DELIVERY.REF</field>
+<desc>
+            <p>System written and maintained field.</p>
+            <p>Contains the delivery keys used for the generation of the advices.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System written.   </p>
+            <p>User input not allowed</p>
+        </desc>
+</t>
+<t>
+<field>CHG.LCY.AMT</field>
+<desc>
+            <p>Local currency equivalent of the charge amount is held in this field. This will be system written. The charge amount will be converted at MID RATE into the Local currency and the equivalent will be written to this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System written field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MSG.TYPE</field>
+<desc>
+            <p>The type of the message produced for this activity is system written in this field. Forms a part of the multi value set of delivery related fields</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System Written   </p>
+            <p>Will be a valid record in the DE.MESSAGE file.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.ID</field>
+<desc>
+            <p />
+            <p>The @ID of this application is the FACILITY/SL.LOANS ID  DATE  RUNNING SERIAL NUMBER.</p>
+            <p />
+            <p>When a charge is taken at FACILITY level, the ID would typically look as below: SL010010000101-20020101-01 where the first part is the facility ID, second part is the date and the third part is the running serial number.</p>
+            <p />The same holds good for charges taken at LOAN level. <p>If the user input Facility ID or SL.LOANS ID, the system would form the full ID by suffixing the date and serial number. The user may also use the Facility or SL.LOAN  mnemonic.</p><p /><p /></desc>
+</t>
+<t>
+<field>CHG.AMOUNT</field>
+<desc>
+            <p>The amount of charge calculated by the system is held in this field.  When left blank the system calculates and populates the charge based on the definitions in FT.COMM.TYPE/FT.CHARGE.TYPE record. Whenever there is an user input in this field, that is taken by the system as the charge amount and no calculations are done.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System calculated when no user input is there.</p>
+            <p>Any user input is retained.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.ACCOUNT</field>
+<desc>
+            <p>This field will hold the account to be used for debiting the charges. System will default the first account in the relevant CUSTOMER.ACCOUNT file for the CHG.CURRENCY  User can change this account provided the currency of the account is same as CHG.CURRENCY.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Currency of the account is to be same as CHG.CURRENCY</p>
+            <p>System defaulted and user changeable.</p>
+        </desc>
+</t>
+<t>
+<field>OVR.CARRIER</field>
+<desc>
+            <p>An integral part of the Delivery multi value set, this field enables the user to override the defaulted carrier for a particular message type and select a new carrier.</p>
+            <p>For example : If a specific message is generated by SWIFT, the user is able to override this by choosing other available options from the CARRIER table, eg TELEX or PRINT.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid record in the DE.CARRIER application.</p>
+        </desc>
+</t>
+<t>
+<field>ACTIVITY.CODE</field>
+<desc>
+            <p>System written field.  Forms part of the multi-value set of delivery related fields.</p>
+            <p>This field holds the 4 digit activity code generated by the system and written in the form SL-....</p>
+            <p>Each of the 4 digits are arrived at as below :</p>
+            <p>The first digit indicates the application for which the activity has been generated. Presently it has three values  viz. 1 -  PRE    2 - FACILITY and  3 - SL.LOAN</p>
+            <p>The second digit indicates the operation done under each application.  Presently it has six values viz.       0 - OTHERS     1 - INPUT     2 - AMENDMENT     3 - NOTICE      4 - CONFIRMATION           5 - REVERSAL</p>
+            <p>The third digit indicates the component for which the message is being generated viz. Principal or Interest or commitment fee etc.  Presently it has five values viz.   0 - OTHERS   1 - PRINCIPAL                         2 - COMMITMENT FEE     3 - INTEREST     4 - CHARGES</p>
+            <p>The fourth digit indicates to whom the message is being generated, whether to the participant or to the borrower  or  to both.  Presently it has three values viz.  1 -  PARTICIPANT ONLY                             2 - PARTICIPANT AND BORROWER    3 - BORROWER ONLY</p>
+            <p>For example when a facility level charge is taken and advice is to be sent to borrower, the activity generated would be SL-2143 meaning 2-FACILITY, 1-INPUT, 4-CHARGES and 3-BORROWER.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System generated   </p>
+            <p>Four digits will be prefixed by SL-</p>
+        </desc>
+</t>
+<t>
+<field>ACTIVITY.DATE</field>
+<desc>
+            <p>The date on which the activity is generated is system written in this field</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>AMORT.CHARGE</field>
+<desc>
+            <p>Field to say whether the charge is to be amortized or not. System defaulted from SL.CHARGE.ACTIVITY table. User can modify.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>AMORT.FREQ</field>
+<desc>
+            <p>Field to accept the frequency at which the charge taken is to be amortized. This is a standard frequency field. Input accepted only if amortization is set to YES. Input is to be in the form of M0131 where M denotes Monthly,  01 denotes  every month,  and  31 denotes the date of amortization. System defaulted from SL.CHARGE.ACTIVITY table. User allowed to modify.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Input allowed only if amortization is set to YES.</p>
+            <p>Currently only monthly frequency is allowed eg. M0131</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CHG.STRT.DTE</field>
+<desc>
+            <p>This field will hold the date on which the defined charge is taken for the first time. System will default to the process date and user allowed to modify to a future date. Backdated start date is not allowed. Will be made no input/no change field once the process date is greater than the date in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Date prior to process date not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>APPLY.TO.ALL</field>
+<desc>
+            <p>Field to say whether the charge taken is to be split among the participants or not.</p>
+            <p>For value 'YES' the charge will be split among all the participants in the ratio of participation in the FACILITY or LOAN as the case may be.</p>
+            <p>For value 'NO' the entire charge will be taken for the agent.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Values 'YES' or 'NO' only accepted.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.AMT</field>
+<desc>
+            <p>The amount of tax calculated by the system in the tax currency will be written by the system in this field. The amount of tax will be calculated using the TAX CODE defaulted.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System written field.</p>
+        </desc>
+</t>
+<t>
+<field>SEND.MSG</field>
+<desc>
+            <p>Acting as part of the delivery multivale set, this field provides the user with the ability to decide whether to send or withhold sending the delivery of any message produced under the contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Options available are (Y)es - Send Message or (N)o - Do Not Send Message     </p>
+            <p>Default is YES.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.LCY.AMT</field>
+<desc>
+            <p>The amount of tax in local currency is held in this field. </p>
+            <p>System will convert the tax amount into Local currency using the MID RATE and populate this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System written.</p>
+        </desc>
+</t>
+<t>
+<field>CHG.BASE.AMT</field>
+<desc>
+            <p>The amount on which the charge defined will be calculated is held in this field. System will default the appropriate amount applicable for the CHG.CALC.BASIS  (Refer to the helptext of the field CHG.CALC.BASIS also).  This field is mandatory for the CHG.CALC.BASIS - ADHOC.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System written field.</p>
+            <p>Mandatory which CHG.CALC.BASIS is  ADHOC.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.CCY</field>
+<desc>
+            <p>System written field. Will be the same as the charge currency.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System written.</p>
+        </desc>
+</t>
+<t>
+<field>PART.CHG.AMT</field>
+<desc>
+            <p>Participant's share of the charge amount is held in this field. The total charge will be split by the system in the ratio of the participant's share and written in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System written.</p>
+        </desc>
+</t>
+<t>
+<field>PART.SHARE</field>
+<desc>
+            <p>This field will hold the percentage of  participant's share in the charge amount.  The  percentage will be  arrived at by the system in accordance with the ratio of participant's share in the facility or loan, as the case may be.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System written.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

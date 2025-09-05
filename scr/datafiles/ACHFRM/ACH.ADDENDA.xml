@@ -1,0 +1,813 @@
+<t24help>
+<header>
+<product>ACHFRM</product>
+<title>ACH.ADDENDA
+</title><table>
+ACH.ADDENDA</table>
+ </header>
+ <overview>
+<ovdesc>
+<p>This table is used to capture the outward transaction details and also information that is  carried by the Addenda type record for incoming file, that is the one with the file type indicator '7'. This record is optional and the availability and number of records depends on the SEC codes for which the transaction was made.</p> 
+<p>The details on the record include additional information related to the entry raised.                                                                                                                                                                                                                                              </p>
+<p>For the incoming entries, the table is updated by retreiving details from the incoming file and the same is updated and used to construct the NACHA compliant output file in case of outward entries and returned entries.                                                                                                         </p>
+</ovdesc>
+<ovimage>
+</ovimage>
+ </overview>
+<menu>
+ <t><field>
+ID
+</field>
+<desc>
+<p>The key of this table is the same as the ACH.ENTRY table in case of incoming entries and  in case of an outgoing transaction, it is the same as the FT transaction id. </p>
+<p>Validation Rule :                                                                                                                                                      </p>
+<p><p> <p> Upto 85 alphanumeric characters </p>
+</desc>
+</t>
+<t><field>
+MSG.TYPE
+</field>
+<desc>
+<p>Specifies whether the entry is posted for either incoming or outgoing messages.</p> 
+<p><p> Validation Rule: </p>                                                               </p>
+<p>Allowed values are OUTWARD and INWARD</p>
+</desc>
+</t>
+<t><field>
+STANDARD.ENTRY.CLASS
+</field>
+<desc>
+<p>The field carries the standard entry class code type which uniquely identifies the class of the ACH transactions made.  </p>
+<p>The following are the various SEC codes                                                                                    </p>
+<p>ARC - Accounts receivable conversion.                                                                                      </p>
+<p>BOC - Back office conversion.                                                                                              </p>
+<p>CBR - Corporate cross-border payment.                                                                                      </p>
+<p>CCD - Cash Concentration or Disbursement.                                                                                  </p>
+<p>CIE - Customer Initiated Entries.                                                                                          </p>
+<p>CTX - Corporate trade exchange.                                                                                            </p>
+<p>DNE - Death notification entry.                                                                                            </p>
+<p>IAT - International ACH transaction.                                                                                       </p>
+<p>MTE - Machine Transfer Entry                                                                                               </p>
+<p>POP - Point-of-purchase.                                                                                                   </p>
+<p>POS - Point-of-sale.                                                                                                       </p>
+<p>PPD - Prearranged payment and deposits.                                                                                    </p>
+<p>RCK - Represented check entries.                                                                                           </p>
+<p>TEL - Telephone-initiated entry.                                                                                           </p>
+<p>WEB - Web-initiated entry.                                                                                                 </p>
+<p>XCK - Destroyed check entry.                                                                                               </p>
+<p><p> Validation Rule: </p>                                                                                                           </p>
+<p>These are picked up from the EB.LOOKUP table and hence needs an entry in the same.</p>
+</desc>
+</t>
+<t><field>
+INWARD.DATA
+</field>
+<desc>
+<p><p> Validation Rule: </p>
+<p> Maximum of 94 characters</p>
+</desc>
+</t>
+<t><field>
+OUTWARD.DATA
+</field>
+<desc>
+<p><p> Validation Rule: </p>
+<p> Maximum of 94 characters</p>
+</desc>
+</t>
+<t><field>
+RECORD.TYPE.CODE
+</field>
+<desc>
+<p>Identifies the type of the record. As per the NACHA format, the file structure has different types of records which are identified by the codes as given below. </p>
+<p>1 - File Header Record                                                                                                                                          </p>
+<p>5 - Batch Header Record                                                                                                                                         </p>
+<p>6 - Entry Detail Record                                                                                                                                         </p>
+<p>7 - Entry Detail Addenda Record                                                                                                                                 </p>
+<p>8- Batch Control Total                                                                                                                                          </p>
+<p>9 - File Control Total                                                                                                                                          </p>
+<p><p> Validation Rule: </p>                                                                                                                                                </p>
+<p><p> Maximum of 1 character, as the table carries the addenda record, the value is always 7.</p>                                                                     </p>
+</desc>
+</t>
+<t><field>
+ADDENDA.TYPE.CODE
+</field>
+<desc>
+<p>The field carries the addenda type code which helps in identifying the type of information contained in the addenda record. </p>
+<p>The possible values are                                                                                                     </p>
+<p>02 - Used for the POS, MTE and SHR standard                                                                                 </p>
+<p>entry classes. The Addenda information is used for                                                                          </p>
+<p>terminal location information.                                                                                              </p>
+<p>05 - Used for CCD, CTX and PPD standard entry                                                                               </p>
+<p>classes. The Addenda information contains                                                                                   </p>
+<p>additional payment related information.                                                                                     </p>
+<p>98 - Used for Notification of Change entries. The                                                                           </p>
+<p>addenda record contains the correct information.                                                                            </p>
+<p>99 - Used for Return Entries.                                                                                               </p>
+<p><p> Validation Rule: </p>                                                                                                            </p>
+<p>Multivalue set associated with RECORD.TYPE.CODE</p>
+</desc>
+</t>
+<t><field>
+PAYMENT.INFO
+</field>
+<desc>
+<p>Information related to payment is updated in this field. </p>
+<p><p> Validation Rule: </p>                                            </p>
+<p>Multi value field, <p> <p> Upto 80 characters</p>
+</desc>
+</t>
+<t><field>
+ADDENDA.SEQ.NO
+</field>
+<desc>
+<p>Indicates the sequence of the addenda record attached to the entry being processed. The first addenda record is given the value of 1, followed by 2,3 etc sequentially.</p>
+<p><p> Validation Rule: </p></p>
+<p><p> Maximum of 4 characters</p>
+</desc>
+</t>
+<t><field>
+ENTRY.SEQ.NO
+</field>
+<desc>
+<p>Entry sequence number is the same as the last 7 digits of the Trace number of the related entry detail record. This helps in tracing the addenda records pertaining to the detail record. </p>
+<p><p> Validation Rule: </p></p>
+<p><p> Maximum of 7 characters</p>
+</desc>
+</t>
+<t><field>
+TXN.TYPE.CODE
+</field>
+<desc>
+<p>For future use</p>
+</desc>
+</t>
+<t><field>
+FOREIGN.PAYMENT.AMT
+</field>
+<desc>
+<p>When a transaction between two different currencies is processed, the amount for which the entry is to be received is updated in the Foreign Payment amount field, expressed in terms of the destination currency.</p>
+<p><p> Validation Rule: </p></p>
+<p>Standard Amount format</p>
+</desc>
+</t>
+<t><field>
+FOREIGN.TRACE.NO
+</field>
+<desc>
+<p>For future use</p>
+</desc>
+</t>
+<t><field>
+RECEIVING.CO.NAME
+</field>
+<desc>
+<p>Identifies the receiver of the transaction. This could either be the receiving company's name or an identification number of the same. The field is useful for descriptive purposes. </p>
+<p><p> Validation Rule: </p></p>
+<p><p> Maximum of 35 characters</p>
+</desc>
+</t>
+<t><field>
+ADDENDA.RESERVED1
+</field>
+<desc>
+<p>This is a reserved field</p>
+</desc>
+</t>
+<t><field>
+ORIGINATOR.NAME
+</field>
+<desc>
+<p>The field contains the name of the originator of the transaction. </p>
+<p> Validation Rule: </p>
+<p> <p> Upto 35 characters</p>
+</desc>
+</t>
+<t><field>
+ORIGINATOR.ADDRS
+</field>
+<desc>
+<p>Contains the address of the Originator of the transaction. </p>
+<p> Validation Rule: </p>
+<p> <p> Upto 35 characters</p>
+</desc>
+</t>
+<t><field>
+ORIGINATOR.CITY
+</field>
+<desc>
+<p>Contains the name of the city to which the Originator of the transaction belongs. </p>
+<p> Validation Rule: </p>
+<p> <p> Upto 35 characters</p>
+</desc>
+</t>
+<t><field>
+ORIGINATOR.CO.POST
+</field>
+<desc>
+<p>For future use</p>
+</desc>
+</t>
+<t><field>
+ORIGINATOR.DFINAME
+</field>
+<desc>
+<p>Carries the name of the Originating DFI. </p>
+<p> Validation Rule: </p>
+<p> <p> Upto 35 characters</p>
+</desc>
+</t>
+<t><field>
+ODFI.ID.QUALIFIER
+</field>
+<desc>
+<p>This field contains the code that identifies the numbering scheme used in the orgiinating DFI identification number field.</p>
+<p>The possible values are              </p>
+<p>01 - National Clearing System Number </p>
+<p>02 - BIC code                        </p>
+<p>03 -IBAN                             </p>
+<p> Validation Rule: </p>
+<p><p> Maximum of 2 characters</p>
+</desc>
+</t>
+<t><field>
+ODFI.ID
+</field>
+<desc>
+<p>The field contains the routing number of the DFI Originiting the entries. </p>
+<p> Validation Rule: </p>
+<p> <p> Upto 34 characters</p>
+</desc>
+</t>
+<t><field>
+ODFI.BRANCH.COCODE
+</field>
+<desc>
+<p>Carries the code of the country in which the originator is located. The two charactered code, approved by the International Organisation for Standardization (ISO) identifies the country.</p>
+<p> Validation Rule: </p>
+<p> <p> Upto 3 characters</p>
+</desc>
+</t>
+<t><field>
+RECEIVING.DFINAME
+</field>
+<desc>
+<p>Contains the name of the Receiving Depository Financial Institution.</p>
+<p> Validation Rule: </p>
+<p> Maximum of 35 characters </p>
+</desc>
+</t>
+<t><field>
+RDFI.ID.QUALIFIER
+</field>
+<desc>
+<p>This field contains the code that identifies the numbering scheme used in the receiving DFI identification number field.</p>
+<p>The possible values are                                                                                                 </p>
+<p>01 - National Clearing System Number                                                                                    </p>
+<p>02 - BIC code                                                                                                           </p>
+<p>03 -IBAN                                                                                                                </p>
+<p> Validation Rule: </p>
+<p> Maximum of 2 characters</p>
+</desc>
+</t>
+<t><field>
+RDFI.ID
+</field>
+<desc>
+<p>The field contains the routing number of the DFI in which the receiver holds an account. </p>
+<p> Validation Rule: </p>
+<p> <p> Upto 34 characters</p>
+</desc>
+</t>
+<t><field>
+RDFI.BRANCH.COCODE
+</field>
+<desc>
+<p>Carries the code of the country in which the receiving bank is located. The two charactered code, approved by the International Organisation for Standardization (ISO) identifies the country.</p>
+<p> Validation Rule: </p>
+<p> <p> Upto 3 characters</p>
+</desc>
+</t>
+<t><field>
+RECEIVER.ID
+</field>
+<desc>
+<p>Identifies the receiver and is used for descriptive purposes. 
+<p> Validation Rule: </p>
+<p> Upto 15 characters</p>
+</desc>
+</t>
+<t><field>
+RECEIVER.ADDRESS
+</field>
+<desc>
+<p>Holds information on the address of the receiver. </p>
+<p> Validation Rule: </p>
+Maxiumum 35 characters</p>
+</desc>
+</t>
+<t><field>
+RECEIVER.CITY
+</field>
+<desc>
+<p>Holds information on the city / town / province to which the receiver belongs. </p>
+<p> Validation Rule: </p>
+Maxiumum 35 characters</p>
+</desc>
+</t>
+<t><field>
+RECEIVER.CO.POST
+</field>
+<desc>
+<p>Holds information on the country and the postal code of the receiver. </p>
+<p> Validation Rule: </p>
+<p> <p> Upto 35 characters</p>
+</desc>
+</t>
+<t><field>
+FGNCB.BANK.NAME
+</field>
+<desc>
+<p>The field carries the name of the Foreign Correspondent Bank Name. </p>
+<p> Validation Rule: </p>
+<p> <p> Upto 35 characters</p>
+</desc>
+</t>
+<t><field>
+FGNCB.ID.QUALIFIER
+</field>
+<desc>
+<p>This field contains the code that identifies the numbering scheme used in the Foreign Correspondent Bank identification number field.</p>
+The possible values are 
+01 - National Clearing System Number
+02 - BIC code
+03 -IBAN 
+<p> Validation Rule: </p>
+<p> Maximum of 2 characters</p>
+</desc>
+</t>
+<t><field>
+FGNCB.ID
+</field>
+<desc>
+<p>This field contains the bank identification number of the Foreign Correspondent Bank</p>
+<p> Validation Rule: </p>
+<p> <p> Upto 34 characters</p>
+</desc>
+</t>
+<t><field>
+FGNCB.BRANCH.CODE
+</field>
+<desc>
+<p>Carries the code of the country in which the Foreign Correspondent bank is located. The two charactered code, approved by the International Organisation for Standardization (ISO) identifies the country.</p>
+<p> Validation Rule: </p>
+<p> <p> Upto 3 characters</p>
+</desc>
+</t>
+<t><field>
+TXN.DESCRIPTION
+</field>
+<desc>
+<p>For future use</p>
+</desc>
+</t>
+<t><field>
+NETWORK.ID.CODE
+</field>
+<desc>
+<p>This field aids in identifying an ATM network in order to allow processing of entries between DFIs belonging to a different network.</p>
+<p> Validation Rule: </p>
+<p> Maximum of 3 characters</p>
+</desc>
+</t>
+<t><field>
+TERMINAL.ID.CODE
+</field>
+<desc>
+<p>The terminal ID code is unique to the Electronic terminal and allows a terminal owner or a switching network to identify the origination terminal of the entries. 
+<p> Validation Rule: </p>
+<p> Maximum of 6 characters</p>
+</desc>
+</t>
+<t><field>
+TXN.SERIAL.NO
+</field>
+<desc>
+<p>Holds the  sequential number that is assigned by the terminal at the time of transaction generation.</p>
+<p> Validation Rule: </p>
+<p> Maximum of 6 characters</p>
+</desc>
+</t>
+<t><field>
+TXN.DATE
+</field>
+<desc>
+<p>The date on which the transaction occurred. </p>
+<p> Validation Rule: </p>
+<p>4 characters, Date format is MMDD</p>
+</desc>
+</t>
+<t><field>
+TXN.TIME
+</field>
+<desc>
+<p>The time at which the transaction originated for the day is updated in the TXN.TIME field. </p>
+<p> Validation Rule: </p>
+<p>6 characters, Time format is HHMMSS</p>
+</desc>
+</t>
+<t><field>
+TERMINAL.LOCATION
+</field>
+<desc>
+<p>The field identifies the specific location of the terminal.</p>
+<p> Validation Rule: </p>
+<p> <p> Upto 27 characters</p>
+</desc>
+</t>
+<t><field>
+TERMINAL.CITY
+</field>
+<desc>
+<p>This field identifies the city, town, village or township in which an Electronic terminal is located. In case of inward entries, the value for the field is received from the incoming file. </p>
+<p> Validation Rule: </p> 
+<p> <p> Upto 4 characters</p>
+</desc>
+</t>
+<t><field>
+TERMINAL.STATE
+</field>
+<desc>
+<p>This field identifies the state of the United States in which an Electronic terminal is located. In case of inward entries, the value for the field is received from the incoming file. </p>
+<p> Validation Rule: </p>
+<p> <p> Upto 2 characters</p>
+</desc>
+</t>
+<t><field>
+TRACE.NUMBER
+</field>
+<desc>
+<p>The field carries a trace number assigned by the Bank. This number is unique to every transaction and can be used to identify a transaction in case of an inquiry.</p>
+<p> Validation Rule: </p>
+<p> <p> Upto 15 characters</p>
+</desc>
+</t>
+<t><field>
+REF.INFO1
+</field>
+<desc>
+<p>Additional reference field to identify transactions with numbers or codes. </p>
+<p> Validation Rule: </p>
+<p> Maximum of 7 characters</p>
+</desc>
+</t>
+<t><field>
+REF.INFO2
+</field>
+<desc>
+<p>Additional reference field to identify transactions with numbers or codes. </p>
+<p> Validation Rule: </p>
+<p> Maximum of 3 characters</p>
+</desc>
+</t>
+<t><field>
+AUTHCODE.CARD.DATE
+</field>
+<desc>
+<p>For future use</p>
+</desc>
+</t>
+<t><field>
+CHANGE.CODE
+</field>
+<desc>
+<p>For future use</p>
+</desc>
+</t>
+<t><field>
+ADDENDA.RESERVED2
+</field>
+<desc>
+<p>This is a reserved field</p>
+</desc>
+</t>
+<t><field>
+ORIG.ENTRY.TRACENO
+</field>
+<desc>
+<p>Incase of returned entries, the addenda record carries the trace number of the original entries. This is useful in case of inquiry to trace transactions. </p>
+<p> Validation Rule: </p>
+<p> Maximum of 15 characters</p>
+</desc>
+</t>
+<t><field>
+CORRECTED.DATA1
+</field>
+<desc>
+<p>This field is not used currently.</p>
+</desc>
+</t>
+<t><field>
+ORIGINAL.RDFI.ID
+</field>
+<desc>
+<p>Incase of returned entries, the field is updated with the identification of the original receiving DFI which was originally included in the entries. </p>
+<p> Validation Rule: </p>
+<p> <p> Upto 8 characters</p>
+</desc>
+</t>
+<t><field>
+REFUSED.COR.CODE
+</field>
+<desc>
+<p>For future use</p>
+</desc>
+</t>
+<t><field>
+COR.TRACE.SEQ.NO
+</field>
+<desc>
+<p>For future use</p>
+</desc>
+</t>
+<t><field>
+MULTI.REC.TYPE
+</field>
+<desc>
+<p>For future use</p>
+</desc>
+</t>
+<t><field>
+MULTI.ADD.TYPE
+</field>
+<desc>
+<p>For future use</p>
+</desc>
+</t>
+<t><field>
+MULTI.PAY.INFO
+</field>
+<desc>
+<p>For future use</p>
+</desc>
+</t>
+<t><field>
+MULTI.ADD.SEQ
+</field>
+<desc>
+<p>For future use</p>
+</desc>
+</t>
+<t><field>
+MULTI.ENTRY.SEQ
+</field>
+<desc>
+<p>For future use</p>
+</desc>
+</t>
+<t><field>
+ACH.TXN
+</field>
+<desc>
+<p>Identifies the various types of debit and credit entries. The possible values are </p>
+<p>22 - Demand credit                                                                   </p>
+<p>27 - Demand Debit                                                                    </p>
+<p>32 - Savings Credit                                                                  </p>
+<p>37 - Savings Debit                                                                   </p>
+<p>52 -  Loan Accoutn Credit
+<p> Validation Rule: </p> 
+Mandatory field, <p> <p> Upto 3 characters is allowed</p>
+</desc>
+</t>
+<t><field>
+ACH.ABA
+</field>
+<desc>
+<p>Holds the value of the sort code of the bank through which clearing is being done. Incase of the inward entries, the value is received from the incoming file and for the outward entries, the value for this field is fetched from the application BC.SORT.CODE</p>
+<p> Validation Rule: </p>
+<p> <p> Upto 20 characters</p>
+</desc>
+</t>
+<t><field>
+ACH.BEN.NAME
+</field>
+<desc>
+<p>Holds the name of the beneficiary of the transaction. </p>
+<p> Validation Rule: </p>
+<p> <p> Upto 22 characters</p>
+</desc>
+</t>
+<t><field>
+DFI.ACCOUNT.NO
+</field>
+<desc>
+<p>Holds the receiver's account number at their financial institution.</p>
+<p> Validation Rule: </p>
+Mandatory field, <p> <p> Upto 17 characters</p>
+</desc>
+</t>
+<t><field>
+VALUE.DATE
+</field>
+<desc>
+<p>For future use</p>
+</desc>
+</t>
+<t><field>
+SERIAL.OR.ROUTING.NO
+</field>
+<desc>
+<p>This field is used for outward entries, where the addenda details have to be given. Used for the sec type ADV.</p>
+<p>Holds the value of the sort code of the bank through which clearing is being done. Incase of the inward entries, the value is received from the incoming file and for the outward entries, the value for this field is fetched from the application BC.SORT.CODE</p>
+<p> Validation Rule: </p>
+<p> <p> Upto 9 characters</p>
+</desc>
+</t>
+<t><field>
+ENT.ADV.FILE.ID
+</field>
+<desc>
+<p>This field is used for outward entries, where the addenda details have to be given. Used for the sec type ADV</p>
+<p>Holds the value of the key of the record ACH.FILE file for which the entries are posted. This is also the first part of the @ID of the ACH.ENTRIES file itself.</p>
+<p> Validation Rule: </p>
+<p> <p> Upto 5 alphanumeric characters</p>
+</desc>
+</t>
+<t><field>
+ENT.ADV.ACH.OP.RTN.DAT
+</field>
+<desc>
+<p>For future use</p>
+</desc>
+</t>
+<t><field>
+ENT.CHK.SER.OR.RTN.NO
+</field>
+<desc>
+<p>This field is used for outward entries, where the addenda details have to be given. Used for the sec type POP</p>
+<p>This field carries the check serial number from the eligible source document to which the entry relates to.</p>
+<p> Validation Rule: </p>
+<p> <p> Upto 9 characters</p>
+</desc>
+</t>
+<t><field>
+ENT.CARD.EXP.DATE
+</field>
+<desc>
+<p>This field is used for outward entries, where the addenda details have to be given. Used for the sec type SHR.</p>
+<p>Holds the expiry date of the card. This is useful in verifying the validity of the card for various security and authorisation procedures.</p>
+<p> Validation Rule: </p>
+Date format</p>
+</desc>
+</t>
+<t><field>
+ENT.SHR.DOC.REF.NO
+</field>
+<desc>
+<p>This field is used for outward entries, where the addenda details have to be given. Used for the sec type .</p>
+</desc>
+</t>
+<t><field>
+ENT.SHR.CARD.AC.NO
+</field>
+<desc>
+<p>This field is used for outward entries, where the addenda details have to be given. Used for the sec type </p>
+</desc>
+</t>
+<t><field>
+ENT.SHR.CARD.TXN.CODE
+</field>
+<desc>
+<p>This field is used for outward entries, where the addenda details have to be given. Used for the sec type </p>
+</desc>
+</t>
+<t><field>
+ENT.TRN.CHK.SER.NO
+</field>
+<desc>
+<p>This field is used for outward entries, where the addenda details have to be given. Used for the sec type ACK,ATX, XCK,RCK, ARC, TRC</p>
+<p>This field carries the check serial number from the eligible source document to which the entry relates to.</p>
+<p> Validation Rule: </p>
+<p> <p> Upto 15 characters</p>
+</desc>
+</t>
+<t><field>
+ENT.TRN.CONTROL.NO
+</field>
+<desc>
+<p>This field is used for outward entries, where the addenda details have to be given. Used for the sec type TRC</p>
+<p>Carries the optional code which is used to identify the document type.</p> 
+<p> Validation Rule: </p>
+<p> <p> Upto 6 characters</p>
+</desc>
+</t>
+<t><field>
+ENT.TRN.RESEARCH.NO
+</field>
+<desc>
+<p>This field is used for outward entries, where the addenda details have to be given. Used for the sec type TRC</p>
+<p>Contains the MICR locator number for Check item research.</p>
+<p> Validation Rule: </p>
+<p> <p> Upto 16 characters</p>
+</desc>
+</t>
+<t><field>
+ENT.TRN.INDICATOR
+</field>
+<desc>
+<p>This field is used for outward entries, where the addenda details have to be given. Used for the sec type TRC</p>
+<p>This field carries the code that indicates the type of items being truncated.</p>
+<p> Validation Rule: </p>
+<p> <p> Upto 2 characters</p>
+</desc>
+</t>
+<t><field>
+RECEIVING.COMP.NAME.OTHER
+</field>
+<desc>
+<p>This field is used for outward entries, where the addenda details have to be given. Used for the sec type CTX, ENR, TRX, CCD, ATX.</p>
+<p>Identifies the receiver of the transaction. This could either be the receiving company's name or an identification number of the same. The field is useful for descriptive purposes. </p>
+<p> Validation Rule: </p>
+<p> Maximum of 16 characters </p>
+</desc>
+</t>
+<t><field>
+ENT.RCK.INDV.NAME
+</field>
+<desc>
+<p>This field is used for outward entries, where the addenda details have to be given. Used for the sec type RCK,ARC, BOC</p>
+</p>Identifies the receiver of the transaction. This could either be the receiving company's name or an identification number of the same. The field is useful for descriptive purposes. </p>
+<p> Validation Rule: </p>
+<p> Maximum of 22 characters</p>
+</desc>
+</t>
+<t><field>
+ENT.WEB.PAY.TYPE.CODE
+</field>
+<desc>
+<p>For future use</p>
+</desc>
+</t>
+<t><field>
+ADDENDA.RESERVED3
+</field>
+<desc>
+<p>Reserved Field</p>
+</desc>
+</t>
+<t><field>
+ADDENDA.RESERVED4
+</field>
+<desc>
+<p>Reserved Field</p>
+</desc>
+</t>
+<t><field>
+ADDENDA.RESERVED5
+</field>
+<desc>
+<p>Reserved Field</p>
+</desc>
+</t>
+<t><field>
+ADDENDA.RESERVED6
+</field>
+<desc>
+<p>Reserved Field</p>
+</desc>
+</t>
+<t><field>
+ADDENDA.RESERVED7
+</field>
+<desc>
+<p>Reserved Field</p>
+</desc>
+</t>
+<t><field>
+CORRECTED.DATA2
+</field>
+<desc>
+<p>This field is not used currently.</p>
+</desc>
+</t>
+<t><field>
+ADDENDA.INDICATOR
+</field>
+<desc>
+<p>The field indicates whether an addenda record is available for the transaction. If there is no addenda available then the value is '0' and if there is an addenda record available then the value updated is '1'. </p>
+<p> Validation Rule: </p>
+Possible values are 0 and 1</p>
+</desc>
+</t>
+<t><field>
+DISCRETIONARY.DATA
+</field>
+<desc>
+<p>This field is updated for company's internal use if required. 
+<p> Validation Rule: </p>
+Though not specified with any particular format, allowed <p> <p> Upto 2 characters</p>
+</desc>
+</t>
+</menu> 
+</t24help>

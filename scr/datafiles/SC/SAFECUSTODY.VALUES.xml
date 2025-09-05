@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SC</product>
+<table>SAFECUSTODY.VALUES</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>                  SAFECUSTODY.VALUES </p>
+            <p />
+            <p>       This table contains the details of the safecustody charges and management fee structures to be levied on each portfolio when the charges module is run. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>OTHER.ASSET</field>
+<desc>
+            <p>Multi-valued per Charge Type to allow inclusion of non-securities assets in calculation of custody fees. Only permits Product Code AC, only valid with charge type SC.</p>
+        </desc>
+</t>
+<t>
+<field>DAY.BASIS</field>
+<desc>
+            <p>Multi-valued per Charge Type. Determines how daily accrual calculates day counts with previous month end method. The supported values for this field are: 366/360 and 366/366.</p>
+        </desc>
+</t>
+<t>
+<field>DEP.CHG.CR.CODE</field>
+<desc>
+            <p>Specifies the transaction code to be used in respect of Depository charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       1-10(Max Value) numeric characters Transaction Code.(Mandatory Input) </p>
+            <p>       The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+            <p>       Must exist on the TRANSACTION table.</p>
+        </desc>
+</t>
+<t>
+<field>INT.ROUND.UP</field>
+<desc>
+            <p>Multivalued field associated with the CHARGE.TYPE to indicate whether or not the calculated fees are rounded up to the nearest whole unit in the local currency or not. </p>
+            <p>       If this field is set to Y then the calculated fees are rounded to the nearest whole unit. If this field is set to NO then the calculated fees are formatted according to the definition of the local currency on the CURRENCY file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Only input of Y or NO allowed.</p>
+            <p>       Will default to NO.</p>
+        </desc>
+</t>
+<t>
+<field>DEP.CHG.CATEG.CODE</field>
+<desc>
+            <p>Specifies the category code to which the Depository charge is to be posted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       5 numeric characters. (Mandatory Input)</p>
+            <p>       Must exist on the CATEGORY table.</p>
+            <p>       Must be in the range 50000 to 59999</p>
+        </desc>
+</t>
+<t>
+<field>POST.CHARGES</field>
+<desc>
+            <p>Specifies whether clients accounts are to be automatically debited with safe custody or advisory charges. </p>
+            <p>Safekeeping and Advisory Charges are posted to customer accounts only when T24 has been specifically requested to do so. This method gives the Custodian and Account Officers an opportunity to review the system calculated fees prior to their being posted to the clients financial accounts. </p>
+            <p>This field is used in conjunction with the VALUE.DATE field, which specifies the value date for the accouting entries. </p>
+            <p>If this field is YES when the fees are calculated then the clients accounts will be automatically debited during the next COB with the charges before the production of the respective report. </p>
+            <p>If this field is NO or blank when fees are calculated then the clients accounts will only be updated when either the online service is run or this field together with the VALUE DATE field are set up then the COB run will post the accounting entries. </p>
+            <p>The online services are for Safekeeping fees SC.SAFE.FEES.POST and for Management fees SC.ADV.FEES.POST. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Only Y(es) or N(o) or blank allowed. </p>
+        </desc>
+</t>
+<t>
+<field>DAILY.EXTRACT</field>
+<desc>
+            <p>This field is associated with the CHARGE.TYPE field. The field indicates whether or not the system will perform an extract to the corresponding extract files SC.ASSET.BAL or SAFECUSTODY.EXTRACT on a daily basis or not. If the field is set to YES then the system will perform the extract on the day the portfolio moves in the security. If the field is set to NO then the system will perform the extract only at the month end. In order for the system to be able to calculate the charges based on the months average balance the extract needs to be performed on a daily basis. This means that this field cannot be set back to NO from a YES if any of the SCPM/SCSF.CHARGE.PARAMETER records have the field AVERAGE.CLOSING set to a value of MONTH.AVERAGE</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>       Valid values of YES or NO</p>
+            <p>       Cannot be set back to NO from a YES if any of the SCPM/SCSF.CHARGE.PARAMETER records have the field AVERAGE.CLOSING set to a value of MONTH.AVERAGE</p>
+        </desc>
+</t>
+<t>
+<field>INCL.NO.POSN</field>
+<desc>
+            <p>       For Management Fees.</p>
+            <p>       Controls whether to include portfolios for which there are no associated records in the file SC.ASSET.BAL.</p>
+            <p>       If set to NO then portfolios which have been opened, but which do not yet have any positions, will be ignored by the fee processing jobs. Consequently they will not be subject to any minimum fee which may have been defined via the applications FT.COMMISSION.TYPE or SCPM.GROUP.CONDITION.  For the MONTHLY fee accrual method, this is the default behaviour if no value is defined in this field.</p>
+            <p>       If set to YES then portfolios which have been opened, but which do not yet have any positions, will be included by the fee processing jobs. Consequently they will be subject to any minimum fee which may have been defined in the aforementioned applications. For the DAILY fee accrual method, this is the default behaviour if no value is defined in this field.</p>
+            <p />
+            <p>       For Safe Custody Fees.</p>
+            <p>       Controls whether to include portfolios for which there are no associated records in the file SAFECUSTODY.EXTRACT.</p>
+            <p>       If set to NO then portfolios which have been opened, but which do not yet have any positions, will be ignored by the fee processing jobs. Consequently they will not be subject to any minimum fee which may have been defined via the applications FT.COMMISSION.TYPE or SCSK.GROUP.CONDITION.  This is the default behaviour if no value is defined in this field. For the MONTHLY fee accrual method, this is the default behaviour if no value is defined in this field.</p>
+            <p>       If set to YES then portfolios which have been opened, but which do not yet have any positions, will be included by the fee processing jobs. Consequently they will be subject to any minimum fee which may have been defined in the aforementioned applications. For the DAILY fee accrual method, this is the default behaviour if no value is defined in this field.</p>
+            <p />
+            <p>       If nothing is entered NO will be assumed.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.FREQ</field>
+<desc>
+            <p>Specifies the frequency at which the charges will be made. </p>
+            <p>       This field consists of two components as follows - </p>
+            <p>                 1)    Next Statement Date: 1-9 Date characters. The default value calculated by the system depending on the frequency. </p>
+            <p>                 2)    Frequency: 1-5 type SS (uppercase alpha or numeric, first character alpha) characters. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       This field is in 2 parts. See below for further deatils. 1)    Next Statement Date: 2)    Frequency: (Mandatory Input)</p>
+        </desc>
+</t>
+<t>
+<field>DAILY.ACCR.TYPE</field>
+<desc>
+            <p>Multi-valued per Charge Type. Determines how daily accrual calculates with previous month end method.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>Specifies the value date to be attached to the accounting entries. </p>
+            <p>       Safekeeping and Advisory Charges are posted to customer accounts only when T24 has been specifically requested to do so. This method gives the Custodian and Account Officers an opportunity to review the system calculated fees prior to their being posted to the clients financial accounts. </p>
+            <p>       This field is used in conjunction with the POST CHARGES field, which specifies if the accounting entries are to be posted as part of the calculation run or at a later date. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Upto 9 type D characters  (Standard Date format in range 1950 - 2049) Mandatory if POST CHARGES set to Y.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.VALUE.DATE</field>
+<desc>
+            <p>Multi-valued field (associated with the CHARGE.TYPE field) controlling whether or not the VALUE.DATE will be defaulted on SC.ADVISORY.CHG or SAFEKEEP.HOLDING (depending on the value of the CHARGE.TYPE field) when the record is created (i.e. when the charges are calculated. </p>
+            <p>       If this field is YES then the value date will be defaulted on creation of the charges record. </p>
+            <p>       If this field is NO or left blank then the value date will not be updated until the charges are posted. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Multi-valued mandatory field.</p>
+            <p>       Only input of YES or No allowed.</p>
+            <p>       If no input is made then the system will default NO.</p>
+        </desc>
+</t>
+<t>
+<field>LAST.RUN.DATE</field>
+<desc>
+            <p>Records the date on which charges were last calculated. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Internally generated field. Multi value field - usually one each for safekeeping and advisory fee runs.</p>
+        </desc>
+</t>
+<t>
+<field>MAN.ACC.CALC</field>
+<desc>
+            <p>Specifies the type of MANAGED.ACCOUNT as defined on the SEC.ACC.MASTER that will have Management/Advisory charges applied to them. Note that portfolios will not be excluded from the calculation of Safekeeping Fees based on the values specified in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       1 - 6 numeric characters (Optional Input) Multi value field associated with fields 1-11 and 13 and sub value field associated with field 13.1.1.</p>
+            <p>       Must exist on the MANAGED.ACCOUNT table.</p>
+        </desc>
+</t>
+<t>
+<field>DEBIT.TXN.CODE</field>
+<desc>
+            <p>Specifies the transaction code to be used when creating a debit posting entry for charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       1-10(Max Value) numeric characters Transaction Code.(Mandatory Input) </p>
+            <p>       The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+            <p>       Must exist on the TRANSACTION table.</p>
+        </desc>
+</t>
+<t>
+<field>DELIV.END</field>
+<desc>
+            <p>Field allowing the user to specify the end date printed on any delivery produced by fees charged for the period type defined in the associated CALC.TYPE field. </p>
+            <p>       This is done using the characters -,+,L,C and O together with numeric input where; O represents the date of the portfolio opening. L represents the date of the Last Fees Run. C represents todays system date. </p>
+            <p>       Thus C-1 is the calendar date before today. O+1 is the calendar date after the opening date of the portfolio. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Only input of a number or the characters -,+,L,C or O allowed.</p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.START</field>
+<desc>
+            <p>Field allowing the user to specify the start of the fee charging period for the period type defined in the associated CALC.TYPE field. This is done using the characters -,+,L,C and O together with numeric input where; O represents the date of the portfolio opening. L represents the date of the Last Fees Run. C represents todays system date. </p>
+            <p>       Thus C-1 is the calendar date before today. O+1 is the calendar date after the opening date of the portfolio. </p>
+            <p>       The safecustody fees system works on a month basis, so if the user wants to have the safecustody fees calculated from the last run date up and including the current date, input should be made as follows: </p>
+            <p>       PERIOD.START L+1 </p>
+            <p>       PERIOD.END C </p>
+            <p>       This is because of the monthly calculation. For example, if the current working date is 31/03/99 and the last run was done on 31/12/98 then the values of the variables are L = 199812 and C = 199903. As the system takes the last run date to be the first of the month, this translates a period.start of L and a period.end of C as the period 01/12/98 to 31/03/99 which is 4 months. Whereas the period.start of L+1 and a period.end of C gives a period of 01/01/99 to 31/03/99 and hence a period of 3 months.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Only input of a number or the characters -,+,L,C or O allowed.</p>
+            <p>       Note that where PERFORM.ACCRUAL is set to DAILY this field is not referenced and the charge period for the SC and IC CHARGE.TYPE is assumed to commence one day after the portfolio start date.</p>
+        </desc>
+</t>
+<t>
+<field>NO.OF.MONTHS</field>
+<desc>
+            <p>Field allowing the user to specify the number of months in the period for the period type defined in the associated CALC.TYPE field. This is done using the characters -,+,L,C and O together with numeric input where; O represents the date of the portfolio opening. L represents the date of the Last Fees Run. C represents todays system date. </p>
+            <p>       Thus C-1 is the calendar date before today.      O+1 is the calendar date after the opening date of the          portfolio. </p>
+            <p>       e.g. for PERIODIC.NORMAL this field will typically contain C-L. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Only input of a number or the characters -,+,L,C or O allowed.</p>
+        </desc>
+</t>
+<t>
+<field>REV.CUT.OFF</field>
+<desc>
+            <p>Cut off period before which no reversals will be allowed.</p>
+            <p>       Format will be Year and month </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Value entered cannot be greater that current year and current month</p>
+        </desc>
+</t>
+<t>
+<field>DAILY.POST.DATE</field>
+<desc>
+            <p>Multi-valued per Charge Type. Day number for appearance of fees, only valid when using daily accruals and if company calc is set to Y.</p>
+        </desc>
+</t>
+<t>
+<field>SEL.FIELD</field>
+<desc>
+            <p>Used in conjunction with other asset to include other assets in custody fees.</p>
+        </desc>
+</t>
+<t>
+<field>OPERATION</field>
+<desc>
+            <p>Used in conjunction with other asset to include other assets in custody fees.</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.VALUE</field>
+<desc>
+            <p>Used in conjunction with other asset to include other assets in custody fees.</p>
+        </desc>
+</t>
+<t>
+<field>CR.CATEG.CODE</field>
+<desc>
+            <p>Specifies the commission CATEGORY to which the credit posting should be passed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       5 numeric characters. (Mandatory Input)</p>
+            <p>       Must exist on the CATEGORY table.</p>
+            <p>       Must be in the range 50000-59999.</p>
+        </desc>
+</t>
+<t>
+<field>FEE.GROUP</field>
+<desc>
+            <p>Multi-valued per Charge Type. Local reference field attached to either SECURITY.MASTER or ACCOUNT used to identify the fee group of the asset.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EXT.RECORD.BY</field>
+<desc>
+            <p>Specifies whether the calculations should be performed based on the average of the individual security positions. </p>
+            <p>       This field is no longer used it has been replaced with the facilities available using CUSTOMER CHARGE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Only SEC (Security Position) Default = SEC (Mandatory Input).</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.TYPE</field>
+<desc>
+            <p>Specifies the type of charges the values in fields 2-13 relate to. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Only SC (safekeeping charge) or IC (Investment Advisory charge) (Mandatory Input).</p>
+        </desc>
+</t>
+<t>
+<field>REV.CATEG.CODE</field>
+<desc>
+            <p>Safe custody and advisory charge reversals will be debited from the category specified in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Must be a valid PL category record.</p>
+        </desc>
+</t>
+<t>
+<field>COMPANY.CALC</field>
+<desc>
+            <p>Multi-valued field associated with the CHARGE.TYPE field to indicate whether the fees are calculated on a Company Wide basis or at an individual portfolio basis. </p>
+            <p>       The bank has a choice of defining a single fees calculation frequency on the SAFECUSTODY.VALUES record (in the CHARGE.FREQ field) for each type of fees or defining an individual fees frequency for each type of fees on the SEC.ACC.MASTER for each portfolio (using the SAFECUSTODY.FREQ and ADVISORY.FREQ fields) to which fees are to be charged. </p>
+            <p>       If this field is set to Y then the SAFECUSTODY.FREQ and ADVISORY.FREQ fields on the SEC.ACC.MASTER application will be no input fields and will always be equal to the CHARGE.FREQ field from the SAFECUSTODY.VALUES record for the Company. Thus the calculation of Safecustody or Advisory Fees will take place for all the portfolios in the company on the same date. </p>
+            <p>       If this field is set to NO then the user will have to input a charging frequency for each individual portfolio in the SAFECUSTODY.FREQ and ADVISORY.FREQ fields of the SEC.ACC.MASTER for each portfolio to which fees are to be charged. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Only input of Y or NO allowed.</p>
+            <p>       Will default to Y.</p>
+        </desc>
+</t>
+<t>
+<field>CREDIT.TXN.CODE</field>
+<desc>
+            <p>Specifies the transaction code to be used when creating a credit posting entry for charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       1-10(Max Value) numeric characters Transaction Code.(Mandatory Input) </p>
+            <p>       The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+            <p>       Must exist on the TRANSACTION table.</p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.END</field>
+<desc>
+            <p>Field allowing the user to specify the end of the fee charging period for the period type defined in the associated CALC.TYPE field. This is done using the characters -,+,L,C and O together with numeric input where; O represents the date of the portfolio opening. L represents the date of the Last Fees Run. C represents todays system date. </p>
+            <p>       Thus C-1 is the calendar date before today. O+1 is the calendar date after the opening date of the portfolio. </p>
+            <p>       The safecustody fees system works on a month basis, so if the user wants to have the safecustody fees calculated from the last run date up and including the current date, input should be made as follows: </p>
+            <p>       PERIOD.START L+1 </p>
+            <p>       PERIOD.END C </p>
+            <p>       This is because of the monthly calculation. For example, if the current working date is 31/03/99 and the last run was done on 31/12/98 then the values of the variables are L = 199812 and C = 199903. As the system takes the last run date to be the first of the month, this translates a period.start of L and a period.end of C as the period 01/12/98 to 31/03/99 which is 4 months. Whereas the period.start of L+1 and a period.end of C gives a period of 01/01/99 to 31/03/99 and hence a period of 3 months.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Only input of a number or the characters -,+,L,C or O allowed.</p>
+            <p>       Note that where PERFORM.ACCRUAL is set to DAILY this field is not referenced.</p>
+        </desc>
+</t>
+<t>
+<field>PRODUCT.CATEGORY</field>
+<desc>
+            <p>Allow the specification of the product category under which the accounting entries will be raised. If not specified will default to 22000.</p>
+            <p>NOINPUT field, reserved for future use.</p>
+        </desc>
+</t>
+<t>
+<field>PERFORM.ACCRUAL</field>
+<desc>
+            <p>This field is associated with the CHARGE.TYPE.  You should only set this field to either DAILY or MONTHLY if you require accrual of the associated fees at that selected frequency. Please refer to your User Guide for details of this process.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Valid values of MONTHLY , DAILY or NO</p>
+            <p />
+            <p>       If set to a value of MONTHLY then the ACCRUAL.CATEG must also be set.</p>
+            <p />
+            <p>      DAILY is only valid if all associated charge parameter application has all records set to use the PREV.MONTH.CLOSE method.</p>
+        </desc>
+</t>
+<t>
+<field>DELIV.START</field>
+<desc>
+            <p>Field allowing the user to specify the start date printed on any delivery produced by fees charged for the period type defined in the associated CALC.TYPE field. </p>
+            <p>       This is done using the characters -,+,L,C and O together with numeric input where; O represents the date of the portfolio opening. L represents the date of the Last Fees Run. C represents todays system date. </p>
+            <p>       Thus C-1 is the calendar date before today.      O+1 is the calendar date after the opening date of the          portfolio. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Only input of a number or the characters -,+,L,C or O allowed.</p>
+        </desc>
+</t>
+<t>
+<field>COMPANY.ID</field>
+<desc>
+            <p>Specifies the COMPANY to which the parameter record relates.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>9 Alphanumeric characters in the format "CCGGGLLLL" where: CC is a 2 alpha character COUNTRY code. GGG is a 3 numeric character COMPANY code. LLLL is a 4 numeric character local code or 2-3 numeric company mnemonic characters or 2-3 uppercase alpha numeric company mnemonic characters. (Mandatory Input)</p>
+        </desc>
+</t>
+<t>
+<field>VAL.WORKING.DAY</field>
+<desc>
+            <p>Multi-valued field (associated with the CHARGE.TYPE field) controlling whether or not the value date defaulted on creation of the SC.ADVISORY.CHG or SAFEKEEP.HOLDING record has to be a working day or not. </p>
+            <p>       If the associated DEF.VALUE.DATE field is NO then this field will have no effect as no value date will be defaulted. </p>
+            <p>       If this field is set to YES then the value date defaulted will be equal to the system date of the end of day when the charges record is created. </p>
+            <p>       If this field is set to NO then the value date defaulted will be equal to the frequency date of the portfolio charge calculation. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Mandatory multi-valued field.</p>
+            <p>       Only input of YES or NO allowed.</p>
+            <p>       If no input is made then NO will be defaulted.</p>
+            <p>       If the associated DEF.VALUE.DATE is NO then this field must be NO as no value date will be defaulted.</p>
+        </desc>
+</t>
+<t>
+<field>COMPANY.POST</field>
+<desc>
+            <p>Multi-valued field associated with the CHARGE.TYPE field to indicate whether fees are posted on a Company wide of individual portfolio basis. </p>
+            <p>       The bank has the choice of using the POST.CHARGES flag on the SAFECUSTODY.VALUES application to post the outstanding fees charges for all portfolios in a single posting (during COB) or to use the applications SC.ADV.FEES.POST (for advisory fees) and SC.SAFE.FEES.POST (for Safecustody fees) to select which portfolios fees have been reviewed and are ready for posting. </p>
+            <p>If this field is set to Y then the posting will take place on a company wide basis. </p>
+            <p>If this field is set to NO then the posting of fees will take place on a portfolio by portfolio basis. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Only input of Y or NO allowed.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DISCOUNT.PL</field>
+<desc>
+        <p>Description</p>
+        <p>Profit loss category for discount posting. </p>
+    </desc>
+</t>
+<t>
+<field>ACCRUAL.CATEG</field>
+<desc>
+            <p>This is the category code of the internal account number that holds the accrual balance for the safekeeping fees or the portfolio advisory fees depending on whether it is associated with the CHARGE.TYPE </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Must be a valid category code in the range 11000-19999</p>
+            <p>Must be input ONLY if the corresponding PERFORM.ACCRUAL is set to MONTHLY.</p>
+        </desc>
+</t>
+<t>
+<field>ADV.EXCL.EXT.POS</field>
+<desc>
+            <p> 3 character alpha numeric input </p>
+            <p>Field to determine whether advisory charges are to be excluded for external positions. Value of YES  will exclude from calculation.</p>
+        </desc>
+</t>
+<t>
+<field>CALC.TYPE</field>
+<desc>
+            <p>Sub valued field associated with a multi-valued CHARGE.TYPE and then with all the fields to DELIV.END at sub.valued level. </p>
+            <p>       This field along with its associated sub-valued fields allow the user to specify the different date ranges for the four different types of date range that can occur when calculating Safecustody or Management Fees. </p>
+            <p>       These four ranges are </p>
+            <p>       PERIODIC.OPEN Used when the Charges run is an automatic charging run controlled by the frequency in the CHARGE.FREQ field and the portfolio was opened since the last automatic run. </p>
+            <p>       PERIODIC.NORMAL Used when the charges run is an automatic charging controlled by the frequency in the CHARGE.FREQ field and the portfolio was open at the time of the last fee run. </p>
+            <p>       CLOSURE.NORMAL Used when the fees are being calculated because a portfolio is being closed and the portfolio was open at the time of the last fees run. </p>
+            <p>       CLOSURE.OPEN Used when the fees are being calculated because a portfolio is being closed and the portfolio has been opened since the last fee run. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>       Input must be PERIODIC.NORMAL, PERIODIC.OPEN,         CLOSURE.NORMAL or CLOSURE.OPEN.</p>
+            <p>       Mandatory Input.</p>
+            <p>       Note that these fields relate to MONTHLY fee accrual and are not referenced where PERFORM.ACCRUAL is assigned to DAILY.</p>
+        </desc>
+</t>
+<t>
+<field>CALC.ZERO.BASIS</field>
+<desc>
+            <p>       Controls whether to calculate fees for portfolios for which the charge basis amount is zero. The method of deriving the charge basis amount is controlled by the settings within SCPM.GROUP.CONDITION and SCPM.CHARGE.PARAMETER(For Management Fees) and SCSK.GROUP.CONDITION and SCSF.CHARGE.PARAMETER(For Safe Custody Fees). This parameter will also become relevant for flat positions, where all holdings for the relevant asset(s) have been sold.</p>
+            <p>       If set to NO then no calculation will be performed where the charge basis amount is zero. As a consequence, any OVERALL.MIN.AMOUNT defined in the application FT.COMMISSION.TYPE will be disregarded. This is the default behaviour if no value is defined in this field.</p>
+            <p>       If set to YES then a calculation will be performed for the relevant asset(s) where the charge basis amount is zero. As a consequence, any OVERALL.MIN.AMOUNT defined in the application FT.COMMISSION.TYPE will become effective.</p>
+            <p>       Note that where the fee calculation method is set to TOTAL, then a single charge basis amount is calculated for all assets, whereas for the DETAIL method each asset is considered separately. The new parameter described here is referenced for both of these calculation methods.</p>
+            <p />
+            <p>       If nothing is entered NO will be assumed.</p>
+            <p>Special note regarding portfolios with no positions: It will only be possible to impose a minimum fee via FT.COMMISSION.TYPE&gt;OVERALL.MIN.AMOUNT in such cases for MONTHLY accrual where the calculation method defined on SCxx.GROUP.CONDITION is TOTAL. In this instance, the calculation will be performed using the TOT.COMM.CODE and TOT.PERCENT specified on SCxx.GROUP.CONDITION. If DETAIL method is specified then T24 will be unable to establish the required Commission Code/Percent where no assets at all are held. DAILY accrual does not support FT.COMMISSION.TYPE&gt;OVERALL.MIN.AMOUNT functionality for such portfolios.                </p>
+        </desc>
+</t>
+<t>
+<field>GROUP.ACCRUAL</field>
+<desc>
+        <p>Enables to post Accruals of the child portfolios in the SC.FEE.GROUP under parent portfolio. </p>
+        <p>Can be input only if PERFORM.ACCRUAL field in the associated set is set as MONTHLY.</p>
+    </desc>
+</t>
+<t>
+<field>COUNTRY.CHECK</field>
+<desc>
+     <p>   Not a Mandatory field.</p>
+     <p>   Multi value per charge type. The country code to be used either from  SECURITY.MASTER or STOCK.EXCHANGE to identify the fee group of the asset.</p>
+     <p>   If the value is set as SEC.DOM, Security Domicile from Security Master will be used to identify the fee group.</p>
+     <p>   If the value is set as SEC.COM.DOM, Company Domicile from Security Master will be used to identify the fee group.</p>
+     <p>   If the value is set as STK.DOM, Domicile from Stock Exchange linked to the security master will be used to identify the fee group.</p>
+     <p>
+           <p>Validation Rules:</p>
+     </p>
+     <p />
+     <p> Allowed values are SEC.DOM, SEC.COM.DOM, STK.DOM.</p>
+     </desc>
+     </t>
+</menu>
+</t24help>
+

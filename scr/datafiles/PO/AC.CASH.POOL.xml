@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>PO</product>
+<table>AC.CASH.POOL</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The AC.CASH.POOL application is used to record 'rules' which will be checked against to see if a transfer of funds needs to be made from one account to another.</p>
+            <p>The record id is an Account number, which is one of the Accounts involved in the transfer, it can be a feeder type Account when surplus type sweeps are defined (meaning any surplus is taken from this account and fed to another); it can be a fed account when a maintenance sweep is defined (meaning any shortfall is taken from the other account). It can also be both if the sweep type is a two-way type (meaning it will take funds when required or give funds - this is the same as a maintenance and sweep in one rule).</p>
+            <p>The record is multi-valued so several rules can be applied to the record id Account. For example a daily sweep can be made to take surplus funds to a higher level Account on a daily basis, but at the end of each month the Account needs to maintain a certain balance for payments to be made.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>LINK.ACCT</field>
+<desc>
+            <p>The account which with the source account (the cash pool key) has the sweep relationship. Depending on the rule entered ,  the 'link' (LINK.ACCT) will either debit or credit the source account. There are 3 basic types of sweep; the surplus, the maintenance and the two-way. Surplus sweeps will debit the 'source' account and credit the 'link'; maintenance sweeps will credit the 'source' and debit the 'link'; whilst two-way will debit the 'link' if funds are needed or credit the 'link' if a surplus is present.</p>
+            <table border="1" width="100%" bgcolor="#FFFFFF" bordercolor="#000000">
+                <tr>
+                    <td width="20%">Sweep type</td>
+                    <td width="18%"> Debit Account </td>
+                    <td width="18%">Credit Account</td>
+                    <td width="44%">Condition</td>
+                </tr>
+                <tr>
+                    <td width="20%">SURPLUS   </td>
+                    <td width="18%" align="center"> 'source'  </td>
+                    <td width="18%" align="center">'link' </td>
+                    <td width="44%">When a surplus exists on 'source'</td>
+                </tr>
+                <tr>
+                    <td width="20%">MAINT</td>
+                    <td width="18%" align="center">'link' </td>
+                    <td width="18%" align="center">'source'  </td>
+                    <td width="44%">When the 'source' is below defined amount</td>
+                </tr>
+                <tr>
+                    <td width="20%">TWO-WAY</td>
+                    <td width="18%" align="center"> 'source'  </td>
+                    <td width="18%" align="center">'link' </td>
+                    <td width="44%">When a surplus exists on 'source'</td>
+                </tr>
+                <tr>
+                    <td width="20%">TWO-WAY</td>
+                    <td width="18%" align="center">'link' </td>
+                    <td width="18%" align="center">'source'  </td>
+                    <td width="44%">When the 'source' is below defined amount</td>
+                </tr>
+            </table>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid ID on the ACCOUNT file</p>
+            <p>The account must be of the same currency as the group.</p>
+            <p>At least one link account must be present on the cash pool record</p>
+        </desc>
+</t>
+<t>
+<field>SUSP.START.DATE</field>
+<desc>
+            <p>Holds the start date for suspending the sweep.  No sweep will be done between this date and the date defined in SUSP.END.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>INT.LIQ.ACCT</field>
+<desc>
+            <p>NOINPUT field. This field is not used at present.</p>
+        </desc>
+</t>
+<t>
+<field>CATEGORY</field>
+<desc>
+            <p>NOINPUT field. This field is not used at present.</p>
+        </desc>
+</t>
+<t>
+<field>FREQUENCY</field>
+<desc>
+            <p>Standard Frequency which defines when the rule will be run.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 frequency  e.g. 101101BSNSS , 150701WEEKLY</p>
+        </desc>
+</t>
+<t>
+<field>RULE</field>
+<desc>
+            <p>This determines what type of sweeping will occur within the pool between the source account and the link account. The value entered is the id of an AC.SWEEP.TYPE record which is user configurable, the actual type is set within that record. However, they must be based on one of four types of rules used within cash pooling:</p>
+            <p>MAINTENANCE</p>
+            <p>If the source account balance falls below the specified amount in the minimum amt field then the link account is debited and the source account credited with the amount required (subject to user controlled conditions) or with the funds available.</p>
+            <p>SURPLUS</p>
+            <p>If the balance in the source account is above the amount specified in the  maximum amt field then the surplus is debited from the source account and credited to the link account.</p>
+            <p>TWO-WAY</p>
+            <p>This is like a combination of the two above. First the balances are checked for a maintenance sweep. If the specified balance is not below the minimum amount then it will then be checked for a surplus amount.</p>
+            <p>CASHFLOW</p>
+            <p>A cash flow type rule will only occur between those accounts linked to the   main master account. It is similar to the two way rule but with a restriction   on the amount of money that the Main Master (MM) account can pass down to the   account below it. Basically when a pool is being set up a limit will be set on   the maximum amount that the main master will pass down. This is held in the   CASHFLOW.AMT field. There is an additional check on how much money has been   passed up to the MM. This running total of monies transferred is held in the   AGREGATE.BAL field. The available amount is the net of the CASHFLOW.AMT and   AGREGATE.AMT fields.</p>
+            <p>Example</p>
+            <p>A cashflow limit of USD 100,000.00 is set in field CASHFLOW.AMT. The link account is credited today with USD 50,000.00 and is automatically transferred up to the higher level account. On the next day the fields will show:</p>
+            <p>CASHFLOW.AMT     100,000.00</p>
+            <p>AGREGATE.BAL        50,000.00</p>
+            <p>This means that the amount that can be taken to cover shortfalls is now USD 150,000.00 i.e. the net amount of the two fields. The next transaction causes an overdraft on the link account of USD 200,000.00 so ideally it would need that amount to bring the balance to zero (it's minimum balance). However, as only USD 150,000.00 is allowed that amount is transferred down. The next day the fields will then show:</p>
+            <p>CASHFLOW.AMT     100,000.00</p>
+            <p>AGREGATE.BAL     -100,000.00</p>
+            <p>So now the net amount is zero so no further funds can be taken until there have been more transfers to the higher level account to change the AGREGATE.BAL value. Note the CASHFLOW.AMT is not changed by the system and would remain as USD 100,000.00.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid ID on the AC.SWEEP.TYPE file.</p>
+            <p>If GROUP.ID has BACK.VALUE.ADJ as YES in AC.CP.GROUP.PARAM, then   CASHFLOW rule not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENT.BALANCE</field>
+<desc>
+            <p>A non input system generated field that shows the balance for this cash pool account. The balance shown depends on the BALANCE.TO.USE field set in the pools corresponding group parameter record.</p>
+            <p>If this pool record is seen via the input function then the balance shown will be its current balance.</p>
+            <p>If it is viewed via the See function then it will be the balance of the account , the last time the pool record was updated , either online or during the end of day run.</p>
+            <p>It is merely a visual aid only.</p>
+        </desc>
+</t>
+<t>
+<field>EXCH.RATE.SPREAD</field>
+<desc>
+            <p>This field specifies the spread to be applied on the exchange rate.</p>
+            <p>This will be defaulted from AC.CP.GROUP.PARAM.</p>
+        </desc>
+</t>
+<t>
+<field>SCHEDULE</field>
+<desc>
+            <p>Indicates where this pool may be run :</p>
+            <p>INTRA  It will be picked up through the online application INTRA.DAY.SWEEP. If not run during the day then it may be picked up during EOD in which case the sweep does not take place but the frequency dates will cycle.</p>
+            <p>EOD  If INTRA.DAY.SWEEP is run for this pools corresponding group then this record will not be included in the sweep. This sweep will only occur during end of day.</p>
+            <p>If blank then the pool may be processed both on-line and during the end of day processing.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Can be either Intra , Eod or blank</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.KEY</field>
+<desc>
+            <p>NOINPUT field. This field is not used at present.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE.AMT</field>
+<desc>
+            <p>An override amount can be invoked to calculate the amount to be transferred between the id account and the linked account.</p>
+            <p>It should be noted that the override amount is only triggered once the rule conditions have been met. </p>
+            <p>For example a SURPLUS rule with a maximum amount set at 100.00 would be run whenever the account is in credit by more than USD100.00. Setting this field to 90.00 would cause the transfer amount to be USD90.00 no matter how large the surplus was. If the account only had a USD50.00 balance the rule, and therefore the override amount, would not be triggered.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 amount field</p>
+        </desc>
+</t>
+<t>
+<field>MINIMUM.AMT</field>
+<desc>
+            <p>This amount field (MINIMUM.AMT) is used in conjunction with either a Cashflow, Maintenance or Two Way sweep rule. It controls the minimum amount that needs to be in place on the account. Should the minimum not be there (shortfall) then rule will be triggered and sufficient funds (subject to availability or Limit settings) will be transferred to bring the account up to this amount.</p>
+            <p>Use of the OVERRIDE.AMT, OVERRIDE.PERCNT or AMT.ROUTINE may change the amount to be transferred if there is a shortfall.</p>
+            <p>Tip: Where a zero amount is required enter as 0.00</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only allowed with CASHFLOW, TWO WAY or MAINTENANCE type sweep rules</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE.PERCNT</field>
+<desc>
+            <p>An override percentage can be invoked to calculate the amount to be transferred between the id account and the linked account.</p>
+            <p>It should be noted that the override percentage is only triggered once the rule conditions have been met. </p>
+            <p>For example a SURPLUS rule with a maximum amount set at 100.00 would be run whenever the account is in credit by more than USD100.00. Setting this field to 90% would cause the transfer amount to be 90% of the balance instead. If the account only had a USD50.00 balance the rule, and therefore the percentage amount, would not be triggered.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 percentage field</p>
+            <p>If the cash pool belongs to a group with shared balances then this field but used to make the whole balance available . i.e It must be 100%</p>
+        </desc>
+</t>
+<t>
+<field>SWEEP.CANCEL.DATE</field>
+<desc>
+            <p>Holds the end date for the sweep record.  The record will become inactive after this date, which means that no sweep will be executed after this date.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.CODE</field>
+<desc>
+            <p>Defines the charge that is to be collected for setting up the sweep instruction.  Accepts valid record ID of FT.CHARGE.TYPE/FT.COMMISSION.TYPE.</p>
+            <p>Note - Care must be taken to define a fixed charge amount either in FT.CHARGE.TYPE or FT.COMMISSION.TYPE.  Otherwise, charge amount is a mandatory input.</p>
+            <p>After collecting the charge amount, field is set to null.</p>
+            <p>Optional field.</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.SPREAD</field>
+<desc>
+            <p>NOINPUT field. This field is not used at present.</p>
+        </desc>
+</t>
+<t>
+<field>LEVEL.NO</field>
+<desc>
+            <p>System updates the level or hierarchy of Cash pool in the group when a record is added.</p>
+            <p>For future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input     -Internal field</p>
+            <p>Updated by     System.</p>
+        </desc>
+</t>
+<t>
+<field>RULE.PRIORITY</field>
+<desc>
+            <p>The priority level that this link has over other links in this pool. It is used to decide which link will be processed should two links fall on the same day. 1 being the highest priority.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 numeric field</p>
+            <p>Only used when the corresponding GROUP.PARAM record is set to use priorities</p>
+        </desc>
+</t>
+<t>
+<field>LAST.MAINT.DATE</field>
+<desc>
+            <p>Holds the date on which the AC.CASH.POOL record got created or changed.</p>
+            <p>If a live AC.CASH.POOL record is changed, then new cash pool link will be created with the latest details. In such case, for those links, any transaction done with a back value date before the maintained date will not get processed and no adjustment entries will be raised.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input- Internal field</p>
+        </desc>
+</t>
+<t>
+<field>UP.TO.PERCENT</field>
+<desc>
+            <p>This field specifies the percentage of Sweep Amount applicable for the Link Account.This percentage will be debited/credited from the Link Account based on the Sweep type.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> This can be input by the user. The sum of 'UP.TO.PERCENT' of all the Link accounts should be 100. Input allowed with multiple link account only and not for single link account.</p>
+        </desc>
+</t>
+<t>
+<field>LINK.BAL.TYPE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>GROUP.ID</field>
+<desc>
+            <p>This mandatory field defines which group this Account is to be included in, this will be used for checking the Account currency and the options set in the AC.CP.GROUP.PARAM. If the related field SUB.GROUP has been entered then this field will automatically default since the relationship already exists.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid id on the AC.CP.GROUP.PARAM file</p>
+        </desc>
+</t>
+<t>
+<field>MULTI.RULE</field>
+<desc>
+            <p>Value as given in Multi rule in the respective cash pool group parameter is defaulted here. Cash pool with multi-rule is created to handle the cases where there is a restriction on the number of entries to Accounts.</p>
+            <p>When multi-rule is set to "Yes" - then the cash pool should be created with two links-consists of Surplus and  maintenance sweep rules and the frequency component for the maintenance should be greater than surplus sweep. </p>
+            <p>For example surplus is mentioned as "BSNSS-Daily" then the Maintenance sweep should be either "Weekly" or "Monthly".</p>
+            <p>Also the rules priority should be given at the cash pool level to prioritize the execution of cash pool links. Refer to multi-rule field at group level and AI-Accounts, Interest and  Charges user guide related to Cash pool section for more details.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input-updated by System.</p>
+        </desc>
+</t>
+<t>
+<field>NARRATIVE</field>
+<desc>
+            <p>Text field for insertion of details or comments regarding the cashpool entered. This text field is used for comments at the record level. There are separate fields for the debit and credit entry texts.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 narrative field</p>
+        </desc>
+</t>
+<t>
+<field>DR.NARR.TXT</field>
+<desc>
+            <p>Narrative to be used on the debit entries for this rule.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Free format text</p>
+        </desc>
+</t>
+<t>
+<field>SWEEP.CHG.CODE</field>
+<desc>
+            <p>Defines the charge code associated with the charge that is to be collected for each successful sweep.</p>
+            <p>Value is defaulted from AC.CP.GROUP.PARAM which can be amended by the user.</p>
+            <p>Optional field.</p>
+        </desc>
+</t>
+<t>
+<field>MAIN.DEPOSIT</field>
+<desc>
+            <p>NOINPUT field. This field is not used at present.</p>
+        </desc>
+</t>
+<t>
+<field>WAIVE.CHARGES</field>
+<desc>
+            <p>Defines whether charge is to be collected or not, for each successful sweep</p>
+        </desc>
+</t>
+<t>
+<field>UP.TO.AMOUNT</field>
+<desc>
+            <p>For most sweep types the amount to be transferred is the surplus or shortfall on an account. This field will put a ceiling on the amount that is transferred. If no more than say USD 5Million should be transferred then setting that value in this field will ensure if a surplus of USD10 million was present only USD5 Million would be passed on. Or for a shortfall of USD 20Million only USD5Million would be requested.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 amount format</p>
+        </desc>
+</t>
+<t>
+<field>MAIN.MASTER</field>
+<desc>
+            <p>The Account that is defined as the Main Master on AC.CP.GROUP.PARAM. The field is defaulted by the system on entering the GROUP.ID and is not user accessible.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No user input</p>
+        </desc>
+</t>
+<t>
+<field>CASHFLOW.AMT</field>
+<desc>
+            <p>This field is used in conjunction with CASHFLOW type rules. These are essentially the same as a Two Way sweep rule except there is a controlling limit on how much can be taken from higher level account.</p>
+            <p>This limit and the AGREGATE.BAL field control how much can be taken from the higher level account. There is no limit on how much can be transferred to the higher level account.</p>
+            <p>An example is given in the AGREGATE.BAL field helptext explaining how the two fields control the amount that can be debited.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only valid for CASHFLOW rule types.</p>
+        </desc>
+</t>
+<t>
+<field>MIN.TFR.DR</field>
+<desc>
+            <p>This field used to restrict the creation of sweep amount for a small amount.</p>
+            <p>The amount entered here will get validated against the sweep amount and only when the sweep amount is greater than this, sweep takes place.</p>
+            <p>For example:</p>
+            <p>An account with a maximum balance of USD 1,000.00 could trigger a sweep of USD 0.01 if the balance of the account was increased to USD 1,000.01. If we specify USD10.00 as MIN.TFR.DR, then sweep will take place only when the sweep amount is more than or equal to USD10.00 (ie when the Balance is more than or equal to USD1010.00).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Allowed only for Surplus type     of Sweep.</p>
+            <p>Allowed Numeric values</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.AMOUNT</field>
+<desc>
+            <p>Defines the fixed charge amount associated with the CHARGE.CODE field.</p>
+        </desc>
+</t>
+<t>
+<field>SEQUENCE</field>
+<desc>
+            <p>The sequence in which this cash pool record will be processed within the group. There is the option to sequence automatically via the SEQUENCING field on the AC.CP.GROUP.PARAM record. If this is set then this field becomes no input.</p>
+            <p>Typical input would be low sequence number for the top of the group and higher numbers for those lower in the pyramid. The processing is in descending order, so the rules in the lowest part of the pyramid usually get effected first (as they usually have higher sequence numbers).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Mandatory when SEQUENCING = MANUAL</p>
+        </desc>
+</t>
+<t>
+<field>SWEEP.CHG.AMOUNT</field>
+<desc>
+            <p>Defines the fixed charge amount to be collected for each sweep.  System calculated, if not input by the user.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.ACCOUNT</field>
+<desc>
+            <p>Defines the account from which the charge is to be collected.</p>
+        </desc>
+</t>
+<t>
+<field>CR.NARR.TXT</field>
+<desc>
+            <p>Narrative to be used on the credit entries for this rule.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Free format text</p>
+        </desc>
+</t>
+<t>
+<field>AC.CASH.POOL.ID</field>
+<desc>
+            <p>The ID of this file is a T24 Account number. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid T24 ACCOUNT record</p>
+        </desc>
+</t>
+<t>
+<field>ADJ.START.DATE</field>
+<desc>
+            <p>Holds the oldest back value date done for the ID account.</p>
+            <p>Whenever any back value dated transaction done to the Cash pool account (ID Account), this field will get updated with the oldest back value date and after processing back value dated adjustment this field will be made cleared.l</p>
+            <p>Applicable only for cash pool groups where Back.value.adj is set to "YES"</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No Input-Internal field</p>
+            <p>Updated by system when there is a back value dated entries.</p>
+        </desc>
+</t>
+<t>
+<field>AGREGATE.BAL</field>
+<desc>
+            <p>This field is used in conjunction with CASHFLOW type rules. These are essentially the same as a Two Way sweep rule except there is a controlling limit on how much can be taken from higher level account.</p>
+            <p>The CASHFLOW.AMT and AGREGATE.BAL fields control how much can be taken from  the higher level account. There is no limit on how much can be transferred to the higher level account.</p>
+            <p>Example</p>
+            <p>A cashflow limit of USD 100,000.00 is set in field CASHFLOW.AMT. The link account is credited today with USD 50,000.00 and is automatically transferred up to the higher level account. On the next day the fields will show:</p>
+            <p>CASHFLOW.AMT     100,000.00</p>
+            <p>AGREGATE.BAL        50,000.00</p>
+            <p>This means that the amount that can be taken to cover shortfalls is now USD 150,000.00 i.e. the net amount of the two fields. The next transaction causes an overdraft on the link account of USD 200,000.00 so ideally it would need that amount to bring the balance to zero (it's minimum balance). However, as only USD 150,000.00 is allowed that amount is transferred down. The next day the fields will then show:</p>
+            <p>CASHFLOW.AMT     100,000.00</p>
+            <p>AGREGATE.BAL     -100,000.00</p>
+            <p>So now the net amount is zero so no further funds can be taken until there have been more transfers to the higher level account to change the AGREGATE.BAL value. Note the CASHFLOW.AMT is not changed by the system and would remain as USD 100,000.00.</p>
+            <p>For take-on purposes the AGREGATE.BAL field can be given a starting value at first input only, once authorised the field is no longer changeable by the user.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only valid for CASHFLOW rule types.</p>
+            <p>Initial input allowed, no change to authorised records.</p>
+        </desc>
+</t>
+<t>
+<field>AMT.ROUTINE</field>
+<desc>
+            <p>A user sub-routine which can be invoked to calculate the amount to be transferred between the id account and the linked account.</p>
+            <p>A PGM.FILE record will be required before the sub-routine name can be input.</p>
+            <p>It should be noted that the sub-routine is only triggered once the rule conditions have been met. </p>
+            <p>For example a SURPLUS rule with a maximum amount set at 100.00 would be run whenever the account is in credit by more than USD100.00. Instead of transferring the surplus the sub-routine could provide the amount to transfer based on its own criteria. If the account only had a USD50.00 balance the rule, and therefore the sub-routine, would not be triggered.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be present on PGM.FILE</p>
+        </desc>
+</t>
+<t>
+<field>ID.BAL.TYPE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>NEXT.RUN.DATE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>RTN.WITH.SW.AMT</field>
+<desc>
+            <p>If set to YES then the system expects the local routine to have 4 parameters in the following order:</p>
+            <p>1. Balance of TO account</p>
+            <p>2. Balance of FROM account</p>
+            <p>3. Sweep amount calculated by system4. </p>
+            <p>Cash pool link record.Except paremeter 3, all the other parameters are input parameters and are not supposed to be modified by the local routine. Sweep amount is an input/output parameter and the modified value from the local routine will be used by the system as the final sweep amount.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be either YES or blank</p>
+        </desc>
+</t>
+<t>
+<field>ALLOCATE.SWEEP.AMT</field>
+<desc>
+            <p>When there are multiple link accounts, this option allows to treat the Sweeps as a Single sweep or Multiple Sweeps.</p>
+            <p>If this option is Checked (Y), the sweep will be treated as a Single Sweep. Only one record will be generated in AC.CASH.POOL.LINK</p>
+            <p>If this option is left blank, then it means NO and sweep for each of the link accounts will be treated as a separate sweep. Records will be generated in AC.CASH.POOL.LINK based on the number of link accounts.</p>
+            <p>Example : If there are 3 Link accounts and Allocate Sweep is Y, a single record will be generated in AC.CASH.POOL.LINK. The debit/credit from/to the Main Account will be showed as a single entry.In the same case, if Allocate Sweep is N, 3 records will be generated in AC.CASH.POOL.LINK. The debit/credit from/to the Main Account will be shown as 3 different entries.</p>
+            <p>
+            <p>Validation Rules:</p>
+            </p>
+            <p>Amendment not allowed after authorization</p>
+                   
+        </desc>
+</t>
+<t>
+<field>SUSP.END.DATE</field>
+<desc>
+            <p>Holds the end date for suspending the sweep.   No sweep will be done between the date defined in SUSP.START.DATE and this date,</p>
+        </desc>
+</t>
+<t>
+<field>SUB.GROUP</field>
+<desc>
+            <p>The sub group that this pool belongs to. A group may be split into many subgroups to enable a subgroup to be processed separately via the on line application INTRA.DAY.SWEEP.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be a valid ID on the AC.CP.GROUP.PARAM file</p>
+            <p>Must have been defined as a sub group on the AC.CP.GROUP.PARAM file.</p>
+        </desc>
+</t>
+<t>
+<field>LINKS.PRODUCED</field>
+<desc>
+            <p>When the AC.CASH.POOL record is authorised it creates one or more AC.CASH.POOL.LINK records with details of each rule from the AC.CASH.POOL, detailing the run dates etc. These are then used for in-line and eod processing.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field, no user input.</p>
+        </desc>
+</t>
+<t>
+<field>MIN.TFR.CR</field>
+<desc>
+            <p>This field used to restrict the creation of sweep amount for a small amount.</p>
+            <p>The amount entered here will get validated against the sweep amount and only when the sweep amount is greater than this, sweep takes place.</p>
+            <p>For example</p>
+            <p>An account with a Minimum balance of USD 1,000.00 could trigger a sweep of USD 1 if the balance of the account was decreased to USD 999.00. If we specify USD10.00 as MIN.TFR.CR, then sweep will take place only when the sweep amount is more than or equal to USD 10.00 (ie when the Balance is less than or equal to USD 990.00).</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Allowed only for Maintenance  type of Sweep.</p>
+            <p>Numeric value</p>
+        </desc>
+</t>
+<t>
+<field>MAXIMUM.AMT</field>
+<desc>
+            <p>This amount field (MAXIMUM.AMT) is used in conjunction with either a Cashflow,Surplus or Two Way sweep rule. It controls the maximum amount that can be in place on the account. Should the maximum be exceeded (excess) then rule will be triggered and excess funds will be transferred to bring the account down to this amount.</p>
+            <p>Use of the OVERRIDE.AMT, OVERRIDE.PERCNT or AMT.ROUTINE may change the amount to be transferred if there is a excess.</p>
+            <p>Tip: Where a zero amount is required enter as 0.00</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Only allowed with CASHFLOW, TWO WAY or SURPLUS type sweep rules</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.RATE</field>
+<desc>
+            <p>NOINPUT field. This field is not used at present.</p>
+        </desc>
+</t>
+<t><field>TAX.AMOUNT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>STMT.NOS</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>EXCH.RATE.SPR</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

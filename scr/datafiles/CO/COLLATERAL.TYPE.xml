@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>CO</product>
+<table>COLLATERAL.TYPE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This file is used to define classes of collateral object such as buildings, stocks, guarantees (or subdivisions thereof). </p>
+            <p>The information on this file is used to determine, for each type, how the collateral value is established, revalued and linked to other applications. </p>
+            <p />
+            <p>APPLICATION INPUT &amp; APPLICATION </p>
+            <p>Defines whether input to the collateral main file field APPLICATION.ID is mandatory, optional or not allowed, and, if so, which application(s) are permitted. </p>
+            <p />
+            <p>NOMINAL, EXECUTION, THIRD PARTY, GENERAL LEDGER &amp; CENTRAL BANK VALUES </p>
+            <p>These fields correspond to the fields of the same names in the collateral main file. </p>
+            <p>The value, in each case, determines firstly whether the corresponding field is to be entered by the user or calculated from another value on the record or fed from one of the application main records. </p>
+            <p>In the case of user-input, the value here signifies whether that input is required or optional. </p>
+            <p />
+            <p>REVALUATION DATE, FREQUENCY &amp; RATE </p>
+            <p>These fields determine the cycle and rate of revaluation of collateral held under this code. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>REVALUATION.DATE</field>
+<desc>
+            <p>The date of the next revaluation of the execution values attached to collateral of this type. </p>
+            <p>The content of this field determines the date of the next revaluation of (all) collateral records belonging to this type. </p>
+            <p>This date may be updated by the user when required or may be cycled automatically by the system according to a frequency specified in the next field, REVALUATION.FQU. </p>
+            <p>The revaluation process is performed either by applying the rate specified under REVALUATION.RATE or by updating the values fed from an application main file. Input is therefore not allowed when there are no suitable values defined. </p>
+            <p>A past date in this field indicates the date of the last revaluation. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 type D characters. (Optional input)</p>
+            <p>Input is not allowed when EXECUTION.VALUE is 'N' and NOMINAL.VALUE is not 'F'.</p>
+        </desc>
+</t>
+<t>
+<field>GEN.LEDGER.VALUE</field>
+<desc>
+            <p>Determines whether the general ledger value on the collateral main file is to be entered by the user or calculated from another value on the record. In the case of user-input, the value here signifies whether that input is required or optional. </p>
+            <p>This field corresponds to the field of the same name on the collateral main file and determines how input to that field is to be interpreted by the system. </p>
+            <p>When a collateral record belonging to this type is entered, the input to GEN.LEDGER.VALUE must be made in accordance with the definition in this field as follows: </p>
+            <p>M=MANDATORY - the general ledger value of the collateral must be input               by the user; </p>
+            <p>O=OPTIONAL  - the general ledger value of the collateral is an optional               input field; </p>
+            <p>N=NONE      - no input of a general ledger value is permitted; </p>
+            <p>n%E=n% EXECUTION VALUE the general ledger value of the collateral may not be input; it is always calculated automatically by the system as a fixed percentage of the (net) execution value. </p>
+            <p>n%N=n% NOMINAL VALUE the general ledger value of the collateral may not be input; it is always calculated automatically by the system as a fixed percentage of the nominal value. </p>
+            <p>Example: </p>
+            <p>The collateral type represents a securities portfolio. The general ledger value is always the same as the execution value (100%E). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'M', 'O', 'N', n'%E' or n'%N' where n is numeric in the range 1 to 100.</p>
+            <p>Mandatory input; default value of n is 100.</p>
+            <p>The value n'%E' is not allowed when EXECUTION.VALUE is 'N'.</p>
+            <p>The value n'%N' is not allowed when NOMINAL.VALUE is 'N'.</p>
+        </desc>
+</t>
+<t>
+<field>REVALUATION.RATE</field>
+<desc>
+            <p>The rate of revaluation of the execution values attached to collateral of this type. </p>
+            <p>The content of this field determines the rate of revaluation of (all) collateral records belonging to this type. </p>
+            <p>Normally, a revaluation rate is mandatory when the fields determining a revaluation cycle have been entered, i.e. REVALUATION.DATE and the optional REVALUATION.FQU. On the date so defined, the rate will be applied to the execution value of each collateral main file record belonging to this type. </p>
+            <p>However, the rate may be omitted when the collateral type has an application-fed value defined under EXECUTION.VALUE or NOMINAL.VALUE. In this case, the revaluation is performed by applying the current balance of the contract or account to the collateral value field(s) and no explicit rate is therefore required. </p>
+            <p>A rate may still be entered when application-fed values are defined. It will be applied to the execution value if either (a) only the nominal value is defined as fed or (b) no application reference exists on the collateral main file record. </p>
+            <p />
+            <p>Note : A rate of one may be entered. This will instruct the system to        perform the revaluation, but will not have any impact on the        execution value of the collateral records.  However, any        calculated values will be recalculated in the normal way. This        gives the capability to apply, to existing collateral records,        any change in the rules for the calculation of derived values. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>5 numeric characters including decimals. (Optional input)</p>
+            <p>Input is not allowed when REVALUATION.DATE is absent.</p>
+            <p>Input is mandatory when REVALUATION.DATE is present and there in no value 'F' in either the NOMINAL.VALUE or the EXECUTION.VALUE.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Description of the type of collateral. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 characters free text.  Multi-language field. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>THIRD.PARTY.VALUE</field>
+<desc>
+            <p>Determines whether the third party value on the collateral main file is to be entered by the user and whether that input is required or optional. </p>
+            <p>This field corresponds to the field of the same name on the collateral main file and determines how input to that field is to be interpreted by the system. </p>
+            <p>When a collateral record belonging to this type is entered, the input to THIRD.PARTY.VALUE must be made in accordance with the definition in this field as follows: </p>
+            <p>M=MANDATORY - the third party value of the collateral must be input by               the user; </p>
+            <p>O=OPTIONAL  - the third party value of the collateral is an optional               input field; </p>
+            <p>N=NONE      - no input of a third party value is permitted; </p>
+            <p>Example: </p>
+            <p>The collateral type represents a guarantee for which there can be no second right of security (N=NONE). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'M', 'O', or 'N'. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>ONLINE.UPDATE</field>
+<desc>
+            <p>This field controls online update of cash collateral along with the online update field in the limit record. If cash collateral such as account, deposits (LD, MM), securities and fiduciary are attached to a limit record; any change in these collateral value are updated during the End of Day process. If such collaterals value to be updated online then this field is to be marked as "Y". (LIMIT record where the cash collateral are attached, also to be marked "Y" in the online update field along with Online update field marked "Y" in COLLATERAL.PARAMETER) In such cases the collateral is recalculated when the limit reference is drawn. If the field is marked "N" or left blank then no online update is done.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Optional Input field </p>
+            <p>Input can be Y,N or null </p>
+            <p>Input allowed only if the execution value(field 5) contains value F (FED)</p>
+            <p>Online update of cash collateral is done only when online update fields in </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>COLLATERAL.PARAMETER, COLLATERAL.TYPE &amp; LIMIT records are marked "Y"</p>
+        </desc>
+</t>
+<t>
+<field>RISK.TYPE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>NOMINAL.VALUE</field>
+<desc>
+            <p>Determines whether the nominal value on the collateral main file is to be entered by the user or fed from one of the application main records. In the case of user-input, the value here signifies whether that input is required or optional. </p>
+            <p>This field corresponds to the field of the same name on the collateral main file and determines how input to that field is to be interpreted by the system. </p>
+            <p>When a collateral record belonging to this type is entered, the input to NOMINAL.VALUE must be made in accordance with the definition in this field as follows: </p>
+            <p>M=MANDATORY - the nominal value of the collateral must be input by the               user; </p>
+            <p>O=OPTIONAL  - the nominal value of the collateral is an optional input               field; </p>
+            <p>N=NONE      - no input of a nominal value is permitted; </p>
+            <p>F=FED       - the nominal value of the collateral is automatically fed               from the application main record belonging to the               collateral; </p>
+            <p>FM=FED/MARGIN the nominal value of the collateral is automatically fed from the application main record belonging to the collateral, using the margin value calculated by the application. </p>
+            <p>Example: </p>
+            <p>The collateral type represents goods. The market value of the goods, which may be greater than their accepted value as collateral, is to be recorded when known (O=OPTIONAL). </p>
+            <p />
+            <p>Note : If the nominal value is defined as fed (F=FED or FM=FED/MARGIN) and        the value of APPLICATION.INPUT is 'O' (O=OPTIONAL), it becomes        possible to enter collateral records of this type without linking        them to an application main file record. Under these circumstances,        input to the collateral field NOMINAL.VALUE will be treated as        mandatory. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'M', 'O', 'N', 'F' or 'FM'. (Mandatory input)</p>
+            <p>The value 'F' is not allowed when APPLICATION.INPUT is 'N'.</p>
+            <p>The value 'FM' is not allowed unless the application 'SC' (Securities module) is defined under APPLICATION.</p>
+        </desc>
+</t>
+<t>
+<field>SUB.ASSET.TYPE</field>
+<desc>
+            <p>The sub-asset type to which the collateral type corresponds. </p>
+            <p>Refers to a record on the SUB.ASSET.TYPE file, or to a range of keys on this file. </p>
+            <p>The SUB.ASSET.TYPE keys defined in this field are used when a range of sub-assets belonging to a portfolio are pledged as collateral.  If a portfolio number is quoted on the collateral record, the system will examine the COLLATERAL TYPE to which the record belongs.  If this record refers to a range of sub-asset type and/or asset types, then the COLLATERAL record will automatically take the value of only those parts of the portfolio which belong to one of the types listed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 5 alphanumeric character sub-asset type code        or a range specified by up to 5 characters; '-'; up to 5 characters.  (Optional input)  Multi-value field.</p>
+            <p>Input is not allowed when APPLICATION.INPUT is 'N'.</p>
+            <p>Input is only allowed when APPLICATION is 'SC'.</p>
+            <p>If a discreet value is entered, it must be a valid key to a record on the SUB.ASSET.TYPE file.</p>
+        </desc>
+</t>
+<t>
+<field>EXECUTION.VALUE</field>
+<desc>
+            <p>Determines whether the execution value on the collateral main file is to be entered by the user or calculated from the nominal value or fed from one of the application main records. In the case of user-input, the value here signifies whether that input is required or optional. </p>
+            <p>This field corresponds to the field of the same name on the collateral main file and determines how input to that field is to be interpreted by the system. </p>
+            <p>When a collateral record belonging to this type is entered, the input to EXECUTION.VALUE must be made in accordance with the definition in this field as follows: </p>
+            <p>M=MANDATORY - the execution value of the collateral must be input by               the user; </p>
+            <p>O=OPTIONAL  - the execution value of the collateral is an optional               input field; </p>
+            <p>N=NONE      - no input of a execution value is permitted; </p>
+            <p>F=FED       - the execution value of the collateral is automatically fed               from the application main record belonging to the               collateral; </p>
+            <p>FM=FED/MARGIN the nominal value of the collateral is automatically fed from the application main record belonging to the collateral, using the margin value calculated by the application. </p>
+            <p>n%N=n% NOMINAL VALUE the execution value of the collateral may not be input; it is always calculated automatically by the system as a fixed percentage of the nominal value. </p>
+            <p>Example: </p>
+            <p>The collateral type represents a deposit recorded in the Loans &amp; Deposits module. The execution value is always defaulted from the current principal on the deposit (F=FED). </p>
+            <p />
+            <p>Note : If the execution value is defined as fed (F=FED or FM=FED/MARGIN)        and the value of APPLICATION.INPUT is 'O' (O=OPTIONAL), it becomes        possible to enter collateral records of this type without linking        them to an application main file record. Under these circumstances,        input to the collateral field EXECUTION.VALUE will be treated as        mandatory. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'M', 'O', 'N', 'F', 'FM' or n'%N' where n is numeric in the range 1 to 100.</p>
+            <p>Mandatory input; default value of n is 100.</p>
+            <p>The value 'F' is not allowed when APPLICATION.INPUT is 'N'.</p>
+            <p>The value 'FM' is not allowed unless the application 'SC' (Securities module) is defined under APPLICATION.</p>
+            <p>The value n'%N' is not allowed when NOMINAL.VALUE is 'N'.</p>
+        </desc>
+</t>
+<t>
+<field>REVALUATION.FQU</field>
+<desc>
+            <p>The frequency of revaluation of the execution values attached to collateral of this type. </p>
+            <p>The content of this field determines the frequency of revaluation of (all) collateral records belonging to this type. In conjunction with the REVALUATION.DATE, this field may be used to define a cycle of revaluation of collateral values. </p>
+            <p>The permitted values of the frequency code are as follows: </p>
+            <p>BSNSS - business (working) days; date is to be cycled each business day; </p>
+            <p>DAILY - date is to be cycled daily (i.e. each calendar day); </p>
+            <p>WEEKn - where n is a number in the range 1 to 9; date is to be cycled         every n weeks; </p>
+            <p>TWMTH - twice monthly; date cycles twice monthly on the 15th and last         day of each month; </p>
+            <p>Mmmdd - where mm is a number in the range 1 to 12 and dd is a number         in the range 1 to 31; describes a cycle on a particular day (dd)         each month or every mm months. </p>
+            <p>These frequency codes correspond to the equivalent codes contained in the standard date/frequency combined format. </p>
+            <p />
+            <p>Note : The REVALUATION.DATE is always cycled forward (when due) to the        next future date. In other words, more than one cycle may be        performed at a time.  In the context of this field, therefore,        DAILY and BSNSS frequencies are equivalent to one another. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>5 alphanumeric characters. (Optional input)</p>
+            <p>Input is not allowed when REVALUATION.DATE is absent.</p>
+        </desc>
+</t>
+<t>
+<field>COLLATERAL.TYPE</field>
+<desc>
+            <p>Unique identification of collateral type. </p>
+            <p>The number by which the collateral type is identified and by which it is recorded on the collateral main file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 digit numeric.</p>
+        </desc>
+</t>
+<t>
+<field>APPLICATION</field>
+<desc>
+            <p>Defines which applications may be referenced by the field APPLICATION.ID on the collateral main file. </p>
+            <p>The values entered in this field determine which applications may be used when a collateral record belonging to this type is linked to a contract or account record elsewhere in the system. </p>
+            <p>When a collateral record belonging to this type is entered, the input to APPLICATION.ID must be made in accordance with the definition in this field as follows: </p>
+            <p>AC - collateral belonging to this type may be represented by a credit balance recorded in the Account module; </p>
+            <p>BL - collateral belonging to this type may be represented by a Bill Contract with OPERATION as COLLATERAL recorded in the Bills module; </p>
+            <p>FD - collateral belonging to this type may be represented by a deposit (order) recorded in the Fiduciary module; </p>
+            <p>LCE - collateral belonging to this type may be a Letter of Credit Export order.</p>
+            <p>LCI - collateral belonging to this type may be a Letter of Credit Import order.</p>
+            <p>LD - collateral belonging to this type may be represented by a deposit recorded in the Loans &amp; Deposits module; </p>
+            <p>MD - collateral belonging to this type may be represented by a record of a contingent asset in the Miscellaneous Deals module; </p>
+            <p>MM - collateral belonging to this type may be represented by a placement recorded in the Money Market module; </p>
+            <p>SC - collateral belonging to this type may be represented by a securities portfolio or by a group of sub-assets within a portfolio. </p>
+            <p>More than one of the above values may be entered in combination. </p>
+            <p>Examples: </p>
+            <p>(a) The collateral type is a credit balance on an account recorded in the Account module (AC). </p>
+            <p>(b) The collateral type is either a deposit or a Money Market placement (LD and MM). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>'AC', 'BL', 'FD', 'LCE', 'LCI', 'LD', 'MD', 'MM' or 'SC'.         Multi-value field.</p>
+            <p>Mandatory input when APPLICATION.INPUT is 'M' or 'O',         otherwise not allowed.</p>
+            <p>This is a NOINPUT field when APPLICATION.INPUT is 'N'.         Otherwise input is mandatory.</p>
+            <p>Values may not be duplicated.</p>
+        </desc>
+</t>
+<t>
+<field>APPLICATION.INPUT</field>
+<desc>
+            <p>Defines whether input to APPLICATION.ID on the collateral main file is mandatory, optional or not allowed. </p>
+            <p>The value entered in this field determines whether or not a collateral record belonging to this type may be linked to a contract or account record elsewhere in the system. </p>
+            <p>When a collateral record belonging to this type is entered, the input to APPLICATION.ID must be made in accordance with the definition in this field as follows: </p>
+            <p>M=MANDATORY - collateral belonging to this type must always be represented               by a credit balance or deposit recorded elsewhere in the               system; </p>
+            <p>O=OPTIONAL  - collateral belonging to this type may either be represented               by a credit balance or deposit elsewhere in the system, or               by an external object; </p>
+            <p>N=NONE      - collateral belonging to this type is always an external               object. </p>
+            <p>Examples: </p>
+            <p>    (a)       The collateral type is a credit balance on an account               recorded in the Account module. The account id must always               be given when the collateral record is entered               (M=MANDATORY). </p>
+            <p>    (b)       The collateral type is a deposit. However, the right of               security may refer to a customer's deposit recorded in the               Loans &amp; Deposits module or to a deposit at another bank               (O=OPTIONAL). </p>
+            <p>    (c)       The collateral type is a building (ie. mortgage). No               application reference may be given on the collateral               record (N=NONE). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'M', 'O' or 'N'. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>ASSET.TYPE</field>
+<desc>
+            <p>The asset type to which the collateral type corresponds. </p>
+            <p>Refers to a record on the ASSET.TYPE file, or to a range of keys on this file. </p>
+            <p>The ASSET.TYPE keys defined in this field are used when a range of assets belonging to a portfolio are pledged as collateral.  If a portfolio number is quoted on the collateral record, the system will examine the COLLATERAL.TYPE to which the record belongs.  If this record refers to a range of asset type and/or sub-asset types, then the COLLATERAL record will automatically take the value of only those parts of the portfolio which belong to one of the types listed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 digit numeric asset type code       or a range specified by 1 to 3-digits; '-'; 1 to 3-digits.  (Optional input)</p>
+            <p>Multi-value field.</p>
+            <p>Input is not allowed when APPLICATION.INPUT is 'N'.</p>
+            <p>Input is only allowed when APPLICATION is 'SC'.</p>
+            <p>If a discreet value is entered, it must be a valid key to a record on the ASSET.TYPE file.</p>
+        </desc>
+</t>
+<t>
+<field>CENTRAL.BANK.VALUE</field>
+<desc>
+            <p>Determines whether the central bank value on the collateral main file is to be entered by the user or calculated from another value on the record. In the case of user-input, the value here signifies whether that input is required or optional. </p>
+            <p>This field corresponds to the field of the same name on the collateral main file and determines how input to that field is to be interpreted by the system. </p>
+            <p>When a collateral record belonging to this type is entered, the input to CENTRAL.BANK.VALUE must be made in accordance with the definition in this field as follows: </p>
+            <p>M=MANDATORY - the central bank value of the collateral must be input by               the user; </p>
+            <p>O=OPTIONAL  - the central bank value of the collateral is an optional               input field; </p>
+            <p>N=NONE      - no input of a central bank value is permitted; </p>
+            <p>n%E=n% EXECUTION VALUE the central bank value of the collateral may not be input; it is always calculated automatically by the system as a fixed percentage of the (net) execution value. </p>
+            <p>n%N=n% NOMINAL VALUE the central bank value of the collateral may not be input; it is always calculated automatically by the system as a fixed percentage of the nominal value. </p>
+            <p>Example: </p>
+            <p>The collateral type represents a building (i.e. mortgage). The central bank value is, by rule, taken as 75% of the true execution value of the property (75%E). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'M', 'O', 'N', n'%E' or n'%N' where n is numeric in the range 1 to 100.</p>
+            <p>Mandatory input; default value of n is 100.</p>
+            <p>The value n'%E' is not allowed when EXECUTION.VALUE is 'N'.</p>
+            <p>The value n'%N' is not allowed when NOMINAL.VALUE is 'N'.</p>
+        </desc>
+</t>
+<t>
+<field>CASH.COLLATERAL</field>
+<desc>
+            <p>This field is used to define whether the collateral is cash collateral or not</p>
+            <p>Yes or No field</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Optional field</p>
+            <p>Input can be Y,N or null </p>
+        </desc>
+</t>
+<t>
+<field>ALLOWED.ACT.BAL</field>
+<desc>
+            <p>Determines whether the Nominal value on the collateral main file allows a positive or negative value or both for AC application</p>
+            <p>
+            </p>
+            <p>Validation Rules:</p>
+            <p>Input is allowed only when the APPLICATION has AC</p>
+            <p>Possible values are </p>
+			<p>1. PLUS, 2. MINUS, 3. BOTH</p>
+             
+        </desc>
+</t>
+</menu>
+</t24help>
+

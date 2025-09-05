@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>AM</product>
+<table>AM.COMPOSITE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This file enables to create and parameterise a composite.</p>
+            <p>It contains two types of attributes that define a composite:</p>
+            <p />
+            <p>composite identifiers that directly identify a     composite, such as REFERENCE.CURRENCY and INVESTMENT.PROGRAM.</p>
+            <p />
+            <p>Portfolio criteria attributes that are used to exclude     linked portfolios for a limited period,</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>START.DATE</field>
+<desc>
+            <p>The start date is a multivalued field associated with "PLUG.DATE", "PLUG.NARR", "CLOSE DATE", UNPLUG DATE", "UNPLUG NARRATIVE" and "EXCL.END.DATE". The start date signifies the date the portfolio was linked to the composite. Multiple values are permitted as it is possible to remove a portfolio from the composite by closing the link, and then re-opening the link at a later date.</p>
+            <p>e.g. if a portfolio changes it's INVESTMENT.PROGRAM it will be removed from the current composite and linked to another. If at a later date the investment program is changed back to the old INVESTMENT.PROGRAM the portfolio can be relinked to the composite by opening a new multi value and entering the new start date.</p>
+            <p>The start date is used by T24 to determine the PLUG.DATE (the plug date is the first day the portfolio will be considered for inclusion in a composite).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format YYYYMMDD (Mandatory)</p>
+            <p>The start date must be greater than the current date.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Contains all the Override messages which the user agreed to during Input.</p>
+            <p>In the event that the user confirms the Override, the full text of the actual Override Message will be stored, for reference purposes only, in this multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>EXCL.CASHFLOW.DUR</field>
+<desc>
+            <p>The excluded cashflow duration determines the number of month a portfolio will be excluded from the composite calculation if the portfolio breaks the cashflow tolerance level set. If no duration or a zero value is set the portfolio will not be excluded from the current months composite calculation, however details of it breaking the limit will be recorded in the AM.COMPOSITE.HIST.EXCL file, (information purposes only). A period greater than 1 will exclude the portfolio from the composite performance calculation.</p>
+            <p>If a period of 1 month is set the portfolio will be excluded from the current months figures. A period of 2 months will exclude the portfolio from the following months as well. The maximum exclusion period is 24 months.</p>
+            <p>e.g.</p>
+            <p>case 1: If no exclusion period is set then the portfolio will not be excluded from any composite calculation, but should it break the tolerance level set, a note of this is recorder in the AM.COMPOSITE.HIST.EXCL file.</p>
+            <p>case 2: An exclusion period of 1 month is set. If a portfolio breaks the cashflow tolerance level during the month of June 2001 it will not be included in June 2001's figures.</p>
+            <p>case 3: If an exclusion period of 2 months is set. If a portfolio fbreaks the cashflow tolerance level during the month of June 2001 it will not be included in June 2001 or July 2001's figures.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 2 Numeric characters, format 0 - 24 (compulsory if a limit is set)</p>
+        </desc>
+</t>
+<t>
+<field>MINIMUM.PTF.VALUE</field>
+<desc>
+            <p>The minimum portfolio value determines the market level, based on the composite reference currency, below which a portfolio will not be included in the composite.</p>
+            <p>At the end of each month the EOD process will calculate the composite performance figures. During this process it will check the market value of the portfolio on the 1st of the month and if it is below the minimum portfolio value the portfolio will be excluded from the composite. The amount of time a portfolio will be excluded from the composite is determined by the excluded valuation duration field (11) and whether or not the market value of the portfolio has risen above the minimum limit at the end of the following month.</p>
+            <p>e.g. if on the 1st June 2001 the market value of a portfolio is $950,000 and the limit on the Composite is $1,000,000. This portfolio will be excluded from the composite calculation for the month of May 2001. If the excluded valuation duration is set to 1 month, the portfolio will not be included in the composite calculation for June 2001 either. If the portfolio was above $1,000,000 on the 1st July it will be included in July 2001s' composite figures.</p>
+            <p>In the above example if no excluded valuation period was set the portfolio would be included in Junes' composite figures.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters (optional field)</p>
+        </desc>
+</t>
+<t>
+<field>MAXIMUM.PTF.VALUE</field>
+<desc>
+            <p>The maximum portfolio value determines the market level, based on the composite reference currency, above which a portfolio will not be included in the composite.</p>
+            <p>At the end of each month the EOD process will calculate the composite performance figures. During this process it will check the market value of the portfolio on the 1st of the month and if it is above the maximum portfolio value the portfolio, it will be excluded from the composite. The amount of time a portfolio will be excluded from the composite is determined by the excluded valuation duration (field 11) and whether or not the market value of the portfolio has fallen below the maximum limit at the end of the following month.</p>
+            <p>e.g. if on the 1st June 2001 the market value of a portfolio is $1,050,000 and the limit on the Composite is $1,000,000. This portfolio will be excluded from the composite calculation for the month of May 2001. If the excluded valuation duration is set to 1 month, the portfolio will not be included in the composite calculation for June 2001 either. If the portfolio was below $1,000,000 on the 1st July it will be included in July 2001s' composite figures.</p>
+            <p>In the above example if no excluded valuation period was set the portfolio would be included in Junes' composite figures.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-13 numeric characters, format 9,999,999,999.99 (optional field)</p>
+        </desc>
+</t>
+<t>
+<field>COMP.CODE.ID</field>
+<desc>
+            <p>This is the composite identifier.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 10 characters (Mandatory input).</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.TOLERANCE</field>
+<desc>
+            <p>The tolerance percentage for limits determines the percentage difference applied to the minimum and maximum limits. The portfolio will be excluded from the composite when the limits, adjusted to include the tolerance percentage, have been bypassed. The reference value used for this check is the end of month market value. The amount of time a portfolio will be excluded from the composite is determined by the excluded valuation duration (field 11).</p>
+            <p>Calculation rule: The limit including the tolerance for a market value of $1,000,000 and a tolerance of 10% is calculated as 1,000,000 - (10% x 1,000,000) = 990,000.</p>
+            <p>e.g a tolerance of 10 (pct) on a minimum limit of $1,000,000 means that should the market value of the portfolio fall to $991,000 it will still be included in the composite calculation. If the value falls to less than $990,000.00 it will be excluded.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>0 - 8 Numeric characters, format 999.9999 (optional field)</p>
+        </desc>
+</t>
+<t>
+<field>SP.EXCL.DUR</field>
+<desc>
+            <p>Specifies the duration of the exclusion in months.</p>
+            <p>Valid values for this field are 0 or 1.</p>
+        </desc>
+</t>
+<t>
+<field>INVESTMENT.PROGRAM</field>
+<desc>
+            <p>Identifies the investment strategy to be managed by the composite.</p>
+            <p>Note: This field is used to control the portfolios that are linked to the composite. A portfolio must follow the same Investment program as the composite.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 5 characters (Mandatory input). Must exist on the INVESTMENT.PROGRAM file.</p>
+        </desc>
+</t>
+<t>
+<field>EXCL.VAL.DUR</field>
+<desc>
+            <p>The excluded valuation duration determines the period of time, in months, that a portfolio will be excluded from the composite. If a portfolio valuation limit has been entered, a number between 0 and 12 must be entered.</p>
+            <p>If 0 is entered the portfolio will not be excluded from the composite performance calculation. Details that the portfolio has broken the valuation limits will still be recorded in the AM.PORTFOLIO.HIST.EXCL.</p>
+            <p>If a value of 1 is entered then the portfolio will be excluded for the current months calculation only.</p>
+            <p>For values greater than 1, the portfolio will be excluded for additional months composite performance calculations.</p>
+            <p>e.g. for an exclusion period of 4 months a portfolio will be excluded for the current month and the following 3 months.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Integer between 0 and 12</p>
+        </desc>
+</t>
+<t>
+<field>SP.EXCL.P3.V</field>
+<desc>
+            <p>This field contains the label defining parameter 3 for the corresponding specific exclusion rule.</p>
+            <p>This will be passed in to the exclusion routine specified in the AM.COMPOSITE.SP.EXCL record as parameter 3.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Format - C (35)</p>
+        </desc>
+</t>
+<t>
+<field>SP.EXCL.P1.V</field>
+<desc>
+            <p>This field contains the label defining parameter 1 for the corresponding specific exclusion rule.</p>
+            <p>This will be passed in to the exclusion routine specified in the AM.COMPOSITE.SP.EXCL record as parameter 1.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Format - C (35)</p>
+        </desc>
+</t>
+<t>
+<field>SP.EXCL.P2.V</field>
+<desc>
+            <p>This field contains the label defining parameter 2 for the corresponding specific exclusion rule.</p>
+            <p>This will be passed in to the exclusion routine specified in the AM.COMPOSITE.SP.EXCL record as parameter 2.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Format - C (35)</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Details the name of the Composite.</p>
+            <p>This field may be expanded to allow the user to enter the composite name in various languages. Each expansion of the field will correspond to a new language on the LANGUAGE table and will indicate to the user the language in which the composite name is to be entered.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 35 Alphanumeric characters, free format description. Multilanguage     field. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>BENCHMARK</field>
+<desc>
+            <p>A valid entry in the AM.BENCHMARK table</p>
+        </desc>
+</t>
+<t>
+<field>CASHFLOW.TOLERANCE</field>
+<desc>
+            <p>The cashflow tolerance is an exclusion value, expressed as a percentage, which when applied to the market value of the portfolio (based on the portfolio reference currency) returns the absolute value above which a flow, investment or withdrawal, will exclude the portfolio from the composite performance calculation. This test is applied during the EOD AM.COMP.BATCH batch and checks each days flows for the month under consideration for the composite calculation, if there is a flow which breaks the cashflow tolerance on any one day during the month, then the portfolio is excluded from that months composite performance calculation.</p>
+            <p>The amount of time a portfolio will be excluded from the composite is determined by the excluded cashflow duration (field 13) and whether or not there have been other flows breaking this tolerance in the following month.</p>
+            <p>e.g</p>
+            <p>if the portfolios market value is $1,000,000 on the 15th July 2001 and the cashflow tolerance is set at 10%. Then an investment or withdrawal greater than $100,000 on the 15th of July 2001 will exclude the portfolio from inclusion in July 2001's composite performance calculation. If the portfolio's value on the 16th July 2001 is $950,000 then the investment/withdrawal limit for exclusion will be $95,000.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>0-8 numeric characters, format 999.9999 (optional field)</p>
+        </desc>
+</t>
+<t>
+<field>CLOSE.DATE</field>
+<desc>
+            <p>This is the end date of the composite and indicates the last day on which composite figures will be calculated.This date will be default to the first day of the month entered and can only be input when all links with the composite have been unplugged.</p>
+            <p>e.g.</p>
+            <p>-    Today is the 13th September 2001 and you enter 15th September 2001 the system will validate the entry and change it to the 1st September 2001.</p>
+            <p>-    Today is the 13th September 2001 and you enter 15th October 2001 the system will validate the entry and change it to the 1st October 2001.</p>
+            <p>-    Today is the 13th September 2001 and you enter 2st September 2001, the system will validate the entry and change it to the 1st September 2001.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Standard date format YYYYMMDD (optional)</p>
+            <p>The composite end date must be the 1st day of a Month. e.g. 01 May       2001.</p>
+            <p>Any dates between the 1st and 31st will be modified to the 1st of the       current month.</p>
+            <p>The end date must be greater than the start date.</p>
+            <p>The end date must be greater than or equal to the last date the monthly       composite figures were generated.</p>
+        </desc>
+</t>
+<t>
+<field>CLOSE.NARR</field>
+<desc>
+            <p>CLOSING NARRATIVE: Free text which can be used to detail reasons for the closure of the composite.</p>
+            <p>e.g. "Investment strategy no longer offered to public. No clients follow this strategy."</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Memo field (optional)</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY.REF</field>
+<desc>
+            <p>Specifies the reference currency of the Composite, all performance figures will be calculated and reported in this currency.</p>
+            <p>Only portfolios with the same reference currency as the composite reference currency can be linked to the composite.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 Alphanumeric characters (Mandatory input)</p>
+            <p>Must exist on CURRENCY Code table.</p>
+        </desc>
+</t>
+<t>
+<field>SP.EXCL.CODE</field>
+<desc>
+            <p>The specific exclusion codes that apply to this composite.</p>
+            <p>Must be a valid entry in the AM.COMPOSITE.SP.EXCL table.</p>
+        </desc>
+</t>
+<t>
+<field>ELIGIBILITY.PERIOD</field>
+<desc>
+            <p>The elegibility period determines the number of months a new portfolio will be excluded from the composite based on the portfolio's creation date. No entry or a zero value indicates that the portfolio will be included in the next full months figures.</p>
+            <p>e.g.</p>
+            <p>Case 1. If a portfolio was opened on the 15th April 2000 and the elegibility period was set to 2 months then the portfolio will not be included in the composite until the 1st July 2000.  (15th April + 2 months = 15th June. Next composite calculation start date would be the 1st July.)</p>
+            <p>Case 2. If a portfolio was opened on the 15th April 2000 and no eligibility period is set (or zero is set), then the portfolio will be included in May 2000's composite performance figures.</p>
+            <p>NOTE: If you start a portfolio on the 1st of a month and the eligibility period is not set or zero then the portfolio will be included in that months figures. e.g start date of 1st June entered portfolio included in Junes composite performance figures.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 Numeric characters, format 99, range permissable  0 - 24       (optional)</p>
+        </desc>
+</t>
+<t>
+<field>COMPOSITE.NARR</field>
+<desc>
+            <p>COMPOSITE NARRATIVE: Free text which can be used to detail the criteria set for including portfolios in this composite.</p>
+            <p>e.g. "Portfolios must follow the EUR BALANCED strategy, have no restrictions, have a market value greater than USD500,000 and follows a normal fee charge structure. No hedging is permitted on these accounts."</p>
+            <p>validation Rules</p>
+            <p>Memo field (optional)</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

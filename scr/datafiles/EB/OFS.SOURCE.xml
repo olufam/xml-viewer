@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>OFS.SOURCE</table>
+</header>
+<overview>
+<ovdesc></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>IN.QUEUE.NAME</field>
+<desc>
+            <p>Defines the name of a specific input file resident in the input directory to be processed when operating in a BATCH mode.</p>
+            <p>      A Batch OFS service can operate using either a specific record within the directory specified here, defined in IN.QUEUE.NAME, or can process any file within the directory if no specific name is specified.</p>
+            <p>      Each file may contain one or more records in specified OFS or GTS message format.</p>
+            <p>      Processed records are written to the directory specified in the OUT.QUEUE.DIR either to the specified OUT.QUEUE.NAME or the same name as the inward record.</p>
+            <p>      The batch interface will support both OFS and GTS format messages.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Mandatory if SOURCE.TYPE is BATCH</p>
+            <p>      Must be a type 1 or 19 file if an existing directory is defined.</p>
+        </desc>
+</t>
+<t>
+<field>PSWD.ENCRYPTED</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>GENERIC.USER</field>
+<desc>
+            <p>Identifies the T24 USER @ID used by the OFS.ONLINE.MANAGER phantom process.</p>
+            <p>      When T24 SMS checking is required, specified by IB.USER.CHECK, this user will provide the SMS profile for all transactions.</p>
+            <p>      If the SERVICE.TYPE is TELNET then the T24 USER must have security access to EB.PHANTOM.PH as defined in the user's APPLICATION field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Mandatory input when SERVICE.TYPE is TELNET</p>
+            <p>      Must be a valid T24 USER @ID.</p>
+            <p>      Mandatory if IB.USER.CHECK is set to Y</p>
+        </desc>
+</t>
+<t>
+<field>SOURCE.TYPE</field>
+<desc>
+            <p>Defines the type of communication used to exchange data with this service.</p>
+            <p>      OFS allows communication through a BATCH process where a directory is populated with records in either a particular file, or several files. When combined with the OO module, single messages may be passed to T24 through a TELNET connection. Records can be created in a T24 program or sub-routine using the T24 setting, whilst the new T24 broswer uses the SESSION option.</p>
+            <p>      BATCH</p>
+            <p>      A Batch connection will usually run as a background Phantom task initiated by the EB.PHANTOM application.</p>
+            <p>      This will examine a specified directory (the IN.QUEUE.FILE), either checking for a specific file (IN.QUEUE.NAME) or checking the entire directory for files to process. Each file may contain multiple records. The processed records will be written to the out directory (OUT.QUEUE.FILE), either to a specific file (OUT.QUEUE.NAME) or a file with the same name as the inward file.</p>
+            <p>      The batch connection will support GTS syntax messages or OFS syntax messages.</p>
+            <p>      TELNET</p>
+            <p>      The Telnet connection allows for messages to be passed using a simple communication mechanism. Each message sent to OFS will be processed, the results will be returned to the external source. The Telnet communication will be initiated automatically when the external source initiates a login using a specific id, defined in the field LOGIN.ID.</p>
+            <p>      The telnet connection will only accept OFS syntax messages and is only available when module OO is installed.</p>
+            <p>      T24</p>
+            <p>      This is used when calls to OFS.T24.MANAGER are set up in the T24 programs or user subroutines.</p>
+            <p>      SESSION</p>
+            <p>      Used for new T24 browser</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>      Mandatory Input</p>
+            <p />
+            <p />
+            <p>      Possible values are TELNET,                 BATCH, SESSION or T24</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+        </desc>
+</t>
+<t>
+<field>IB.USER.CHECK</field>
+<desc>
+            <p>Specifies whether each transaction supplied to T24 using this service requires the sign on name and password to be validated for external users.</p>
+            <p>      For external users the sign on name and passwords are controlled using the T24 applications IB.USER and IB.USER.PASSWORD. These applications allow specification of the individual sign on name and password, the associated CUSTOMER , ACCOUNT and PORTFOLIO numbers accessible to that external user, and the required language and amount formatting options for the user.</p>
+            <p>      When external users are defined a generic user profile is required to provide the overall security profile and link to SMS. If this field is defined as Y a GENERIC.USER must be specified.</p>
+            <p>      When this field is null or N, SMS checks the USER record for security profile.</p>
+            <p>      When field is Y - SMS checks the IB.USER record for security profile.</p>
+            <p>      The external user sign on name and password must be supplied with every OFS transaction / enquiry request to allow it to be processed successfully.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Optional input</p>
+            <p>      Valid values : Y N or Null</p>
+        </desc>
+</t>
+<t>
+<field>DET.PREFIX</field>
+<desc>
+            <p>Specifies the prefix to be used for the message details recorded when an audit trail is maintained or an offline capability is provided.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Mandatory input if OFFLINE.QUEUE or MAINT.MSG.DETS are set to Y.</p>
+            <p>      2 - 6 alpha characters</p>
+        </desc>
+</t>
+<t>
+<field>QUEUE.CLOSE.RTN</field>
+<desc>
+            <p>Allows a user defined routine to be specified for a particular service. The routine specified here will be executed when a batch service is started.</p>
+            <p>      Typically such a routine could intialise a common area or perform some initial communication.</p>
+            <p>      Routine Details</p>
+            <p>      Arguments : None</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Optional Input</p>
+            <p>      Must be defined in PGM.FILE as a type S program.</p>
+        </desc>
+</t>
+<t>
+<field>OFS.MESSAGE.DECRYPT</field>
+<desc>
+            <p>OFS.MESSAGE.DECRYPT is a flag set whether the incoming message is encrypted or not. If yes then this will be decrypted by the information given in DECRYPT.KEY</p>
+            <p />
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p>   1. An optional field.</p>
+            <p>   2. Length: Maximum of 17.</p>
+        </desc>
+</t>
+<t>
+<field>EOD.VALIDATE</field>
+<desc>
+            <p>If set to YES then OFS requests are allowed when the system is not online. Only</p>
+            <p>      If not set, then OFS requests made during offline processing are queued.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>      Blank or "YES"</p>
+        </desc>
+</t>
+<t>
+<field>RESTRICT.LINK</field>
+<desc>
+            <p>Used to control whether the service is currently open.</p>
+            <p>      The service can be closed for all on-line communication by specifying CLOSE, alternative enquiry only access can be provided by specifying ENQ.</p>
+            <p>      The system will not allow updates to take place during end of day processing, irrespective of the values defined here.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Optional Input</p>
+            <p>      Possible values CLOSE or ENQ</p>
+        </desc>
+</t>
+<t>
+<field>IN.DIR.RTN</field>
+<desc>
+            <p>Allows a user defined routine to be specified. The routine specified here will be executed when the input directory defined in IN.QUEUE.DIR is empty, i.e. there are no messages to process.</p>
+            <p>      Typically such a routine could be used to populate the input directory with OFS messages derived from a third party source.</p>
+            <p>      Routine Details</p>
+            <p>      Arguments : None</p>
+            <p>      Note at the point this routine is called the T24 common variables are available.</p>
+            <p>      The following common areas should be included in the routine</p>
+            <p>      I_EQUATES, I_COMMON and I_GTS.COMMON.</p>
+            <p>      The I_GTS.COMMON contains the following OFS information</p>
+            <p>      OFS$LOG.FILE.NAME Log file used for OFS processing</p>
+            <p>      OFS$SOURCE.ID          ID of the OFS source record</p>
+            <p>      OFS$SOURCE.REC      Parameter file read from OFS.SOURCE</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Optional Input</p>
+            <p>      Must be defined in PGM.FILE as a type S program.</p>
+        </desc>
+</t>
+<t>
+<field>MAINT.MSG.DETS</field>
+<desc>
+            <p>Specifies whether an audit record is to be maintained for each OFS message sent and received.#</p>
+            <p>      If this field is set to Y the file OFS.REQUEST.DETAIL will be updated with the progress and content of each OFS request. Each message will be allocated a separate id in the format:</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Xxxxxxjjjjjnnnn</p>
+            <p>      Where:</p>
+            <p>      Xxxxxx is a 2-6 character prefix defined in DET.PREFIX</p>
+            <p>      Jjjjj is the system julian date when the message was created</p>
+            <p>      Nnnnn is a serial number 1-99999</p>
+            <p>      Alternatively a specified message key can be supplied in the OFS message</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Optional Field</p>
+            <p>      Possible value Y</p>
+            <p>      Note: OFS.REQUEST.DETAIL will be updated when the OFS request contains a Message Id even if this field is not set to 'Y'    </p>
+        </desc>
+</t>
+<t>
+<field>LOGIN.ID</field>
+<desc>
+            <p>Specifies the UNIX or NT login that will automatically initiate the communication with the external source. The external source will initiate communications by issuing a login using the specified id. The system will automatically begin the communication process when this login is detected.</p>
+            <p>      Automatic processes initiated at login are stored in the EB.AUTO.PROCESS application. This table is updated automatically based on the values stored in this field. The status of automatic processes is monitored using the EB.PHANTOM application and enquiry EP.MONITOR. A specific EB.PHANTOM.ID can be allocated if required using the associated EB.PHANT.ID field.</p>
+            <p />
+            <p />
+            <p>      Unix machines can have mixed case alphanumeric Login id's so the if the id is</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>      Mandatory input when SOURCE.TYPE is TELNET.</p>
+            <p>      On Windows NT machines the id must be prefixed with the         Servername and a '/' character.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>LOG.FILE.DIR</field>
+<desc>
+            <p>Defines the name of the log file directory used to log OFS communications.</p>
+            <p>      The directory name here can be specified as a full Unix or NT path, note that in an NT environment the path should be specified using '/' characters instead of '\'.</p>
+            <p>      If no path is specified then the directory will be created automatically by the system at authorisation, otherwise the directory must already exist.</p>
+            <p>      The log file directory name is required if message logging is required. </p>
+            <p>      For example, a log file directory maintained in the "EB" directory of the data account could be defined as:</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      ../bnk.data/eb/ofslog</p>
+            <p>      Each on-line communication process will maintain a separate log file within the directory, the key to the log file will be the EB.PHANTOM key used to monitor the process.</p>
+            <p />
+            <p />
+            <p>      Using field INT.LOG.FILE in SPF, switch has been introduced to decide whether to log messages internally within T24 or to use TAFC level log file </p>
+            <p>      In SPF, if INT.LOG.FILE = YES meaning T24 level log is enabled and then messages will be logged into log file directory </p>
+            <p>              if INT.LOG.FILE = null (no input), meaning TAFC level log is enabled by default and then messages will be logged into TAFC log files </p>
+            <p>      Points to be noted: </p>
+            <p>         1. The log file directory should be specified if message logging is required at T24 level.</p>
+            <p>         2. The field LOG.FILE.DIR can have value even though the TAFC log is enabled but log messages will be routed to either T24/TAFC log files depends upon SPF setup.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Mandatory Input if LOG.DETAIL.LEVEL is specified.</p>
+            <p>      Must be a type 1 or 19 file if an existing file is defined.</p>
+        </desc>
+</t>
+<t>
+<field>OFFLINE.QUEUE</field>
+<desc>
+            <p>Specifies whether the service has an offline capability.</p>
+            <p>      OFS will allow processing of Enquiries during online and offline mode, entry of transactions is not possible when the system is off-line. If this field is set to Y the system will maintain a store and forward queue when transactions are submitted whilst the system is offline.</p>
+            <p>      Transactions can be processed when the system is back on-line by running an EB.PHANTOM process using the RUN.ROUTINE OFS.QUEUE.MANAGER.</p>
+            <p>      Details of transactions are held in the OFS.REQUEST.DETAIL application, each message will be allocated a standard T24 format id (XXXXjjjjjnnnnn) with a prefix defined in the DET.PREFIX field.</p>
+            <p>      Input not allowed when the Source.type is Batch.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>      Optional field</p>
+            <p>      Possible value Y.</p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>SOURCE.NAME</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>IN.QUEUE.DIR</field>
+<desc>
+            <p>Defines the name of the directory used to hold incoming batches of messages when operating in a BATCH mode.</p>
+            <p>      The UNIX or NT pathname for the directory can be specified with '/' separators (Note do not use '\' in an NT environment).</p>
+            <p>      If no path is specified the system will create a directory at authorisation if it does not exist, otherwise the directory must exist.</p>
+            <p>      A Batch OFS service can operate using either a specific record within the directory specified here, defined in IN.QUEUE.NAME, or can process any file within the directory if no specific name is specified. Each file may contain one or more records in specified OFS message format.</p>
+            <p>      Processed records are written to the directory specified in the OUT.QUEUE.DIR either to the specified OUT.QUEUE.NAME or the same name as the inward record.</p>
+            <p>      The batch interface will support both OFS and GTS format messages.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>      Mandatory if SOURCE.TYPE is BATCH</p>
+            <p>      Must be a type 1 or 19 file if an existing directory is         defined.</p>
+        </desc>
+</t>
+<t>
+<field>MAX.CONNECTIONS</field>
+<desc>
+            <p>Specifies the maximum number of on-line OFS connections for the specified service which can be active at any one time.</p>
+            <p>      Each OFS on-line session is a single UniVerse user, so the number specified here must be less than the maximum number of users (defined in SPF - NO.OF.USERS).</p>
+            <p>      When a new on-line session is started the system will create a new connection is required providing the maximum number of connections defined here has not been exceeded.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Numeric input, in the range 1 - 99,999</p>
+            <p>      Mandatory for TELNET SOURCE.TYPE</p>
+        </desc>
+</t>
+<t>
+<field>MSG.POST.RTN</field>
+<desc>
+            <p>Allows a user defined routine to be specified for a particular service. The routine specified here will be executed within the OFS processing after application update or execution of Enquiry.</p>
+            <p>      Typically such a routine could update additional local applications.</p>
+            <p>      Routine Details</p>
+            <p>      Arguments : OFS.MESSAGE</p>
+            <p>      Note the content of the message cannot be modified within this routine.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Optional Input</p>
+            <p>      Must be defined in PGM.FILE as a type S program.</p>
+        </desc>
+</t>
+<t>
+<field>LOG.DETAIL.LEVEL</field>
+<desc>
+            <p>Specifies the type of OFS message logging to be performed by OFS.</p>
+            <p>      The following levels of message logging are supported:</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      NONE - No message logging</p>
+            <p>      OPEN - Only initial start and stop for processes are logged</p>
+            <p>      EXCEPT - Only exceptions such as incorrect message syntax, invalid user details are reported.</p>
+            <p>      FULL - All message communications are fully logged.</p>
+            <p>      The use of FULL logging is only advised in testing or debugging communications due to the large size of log file that could be created.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Valid input NONE, OPEN, EXCEPT or FULL</p>
+            <p>      Mandatory Input</p>
+        </desc>
+</t>
+<t>
+<field>VERSION</field>
+<desc>
+            <p>Contains the name of a valid version record, which can be used in association with the routine specified in IN.DIR.RTN to create OFS.MESSAGES.</p>
+            <p>      For example a routine to process information for FUNDS.TRANSFER will have a valid FUNDS.TRANSFER version defined here.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Optional input</p>
+            <p>      Must be an existing VERSION record.</p>
+        </desc>
+</t>
+<t>
+<field>OUT.QUEUE.DIR</field>
+<desc>
+            <p>Defines the directory used to store output files, which contain details of completed transactions together with any validation errors or overrrides.</p>
+            <p>      The UNIX or NT pathname for the directory can be specified with '/' separators (Note do not use '\' in an NT environment).</p>
+            <p>      If no path is specified the system will create a directory at authorisation if it does not exist, otherwise the directory must exist.</p>
+            <p>      Each file may contain one or more records in specified OFS message format.</p>
+            <p>      Processed records are written to the directory specified in the OUT.QUEUE.DIR either to the specified OUT.QUEUE.NAME or the same name as the inward record.</p>
+            <p>      The batch interface will support both OFS and GTS format messages.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>      Mandatory if SOURCE.TYPE is BATCH</p>
+            <p>      Must be a type 1 or 19 file if an existing directory is         defined.</p>
+        </desc>
+</t>
+<t>
+<field>MSG.PRE.RTN</field>
+<desc>
+            <p>Allows a user defined routine to be specified for a particular service. The routine specified here will be executed within the OFS processing prior to application update or execution of Enquiry.</p>
+            <p>      Typically such a routine could update additional local applications.</p>
+            <p>      Routine Details</p>
+            <p>      Arguments : OFS.MESSAGE</p>
+            <p>      Note the content of the message cannot be modified within this routine.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Optional Input</p>
+            <p>      Must be defined in PGM.FILE as a type S program.</p>
+        </desc>
+</t>
+<t>
+<field>EB.PHANT.ID</field>
+<desc>
+            <p>Defines the name of a specific EB.PHANTOM record used to monitor the online communication when the associated LOGIN.ID is used.</p>
+            <p>      The record specified does not need to exist, it will be created when the communication begins. If no record is specified the system will allocate a record id automatically based on the SOURCE.NAME - connection number.</p>
+            <p>      The EB.PHANTOM record will show the following information when the communication process is in progress:</p>
+            <p>      RUN.MODE    - OFS</p>
+            <p>      STATUS          - ACTIVE set to CLOSED at end of communication</p>
+            <p>      RUN.STATUS - Source Id  Session started Date Time</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      RECEIVED date and time of last received msg</p>
+            <p>      REC MSG = extract of last received message</p>
+            <p>      TOTAL MSG REC = Total number of messages received</p>
+            <p>      SENT date and time of last message sent</p>
+            <p>      SENT MSG = extract of last sent message</p>
+            <p>      TOTAL MSG SENT = extract of last message sent</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Alphanumeric 1 -15 characters</p>
+        </desc>
+</t>
+<t>
+<field>INITIAL.ROUTINE</field>
+<desc>
+            <p>Allows a user defined routine to be specified for a particular service. The routine specified here will be executed when a service is started.</p>
+            <p>      Typically such a routine could intialise a common area or perform some initial communication.</p>
+            <p>      Routine Details</p>
+            <p>      Arguments : None</p>
+            <p>      Note at the point this routine is called NONE of the T24 common variables are available.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Optional Input</p>
+            <p>      Must be defined in PGM.FILE as a type S program.</p>
+        </desc>
+</t>
+<t>
+<field>SYNTAX.TYPE</field>
+<desc>
+            <p>Indicates the syntax type of the messages within batch files in the IN.QUEUE.DIR directory.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Must be either OFS or GTS</p>
+        </desc>
+</t>
+<t>
+<field>OUT.QUEUE.NAME</field>
+<desc>
+            <p>Defines the name of the directory used to hold outgoing batches of messages when operating in a BATCH mode.</p>
+            <p>      The UNIX or NT pathname for the directory can be specified with '/' separators (Note do not use '\' in an NT environment). The system will create a directory at authorisation if it does not exist.</p>
+            <p>      A Batch OFS service can operate using either a specific record within IN.QUEUE.DIR directory, defined in IN.QUEUE.NAME, or can process any file within the directory if no specific name is specified. Each file may contain one or more records in specified OFS message format.</p>
+            <p>      Processed records are written to the directory specified here either to the specific OUT.QUEUE.NAME or the same name as the inward record.</p>
+            <p>      The batch interface will support both OFS and GTS format messages.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Mandatory if SOURCE.TYPE is BATCH</p>
+            <p>      Must be a type 1 or 19 file if an existing directory is defined.</p>
+        </desc>
+</t>
+<t>
+<field>QUEUE.INIT.RTN</field>
+<desc>
+            <p>Contains the name of the file within the OUT.QUEUE.FILE directory used for Batches of OFS messages.</p>
+            <p>      If a file name is specified here all results from the processing of an inward batch of messages will be written to this name.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Optional Input.</p>
+            <p>      Up to 12 alphanumeric characters</p>
+        </desc>
+</t>
+<t>
+<field>FIELD.VAL</field>
+<desc>
+            <p>Specifies whether field validation is to take place on the message. Most applications repeat field validations at record commitment and do not need this option. A few older applications rely on the input being edited as it is entered online. OFS field validation can be used to stop certain invalid data getting through to authorised records.</p>
+            <p />
+            <p />
+            <p>      YES - - - - - Field validation takes place</p>
+            <p>      NO /</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>      YES, NO, or null</p>
+        </desc>
+</t>
+<t>
+<field>IN.MSG.RTN</field>
+<desc>
+            <p>This field usage is deprecated.  Recommend to use Integration Framework exits.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Description of the OFS SERVICE defined in this record.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Mandatory Input</p>
+            <p>      3 - 35 alphanumeric characters</p>
+        </desc>
+</t>
+<t>
+<field>OUT.MSG.RTN</field>
+<desc>
+            <p>This field usage is deprecated.  Recommend to use Integration Framework exits.</p>
+        </desc>
+</t>
+<t>
+<field>SAME.AUTHORISER</field>
+<desc>
+            <p>In the OFS message if the same user has to be used for inputting as well as authorising a transaction, this field can be set to YES. In other words, the check for the same inputter and authoriser will not be done during processing of this message when this field is set to YES</p>
+        </desc>
+</t>
+<t>
+<field>ATTRIBUTES</field>
+<desc>
+            <p> INTERFACE :         </p>
+            <p>     This attribute indicates the system to understand that the request comes via an interface.</p>
+            <p> SPECIAL.CHAR.CONV : </p>
+            <p>     If this is set, then the special characters '?', '^', and ',' used in OFS request will remain same in OFS response. The actual record in disk will always have converted characters as per character conversion rule.</p>
+            <p> USE.LOCAL.REF :     </p>
+            <p>     All local reference fields will use actual names rather than "LOCAL.REF" unless 'USE.LOCAL.REF' is set as an attribute.</p>
+            <p> ARC.VALIDATE :      </p>
+            <p>     Setting this attribute will not allow transactions in HOLD status to be edited by external users (through ARC-IB).  Error will be raised that stops transactions from editing</p>
+            <p> OVERRIDE.TWS.MSG :      </p>
+            <p>No. of Authorizer and GTS.CONTROL definition in VERSION overrides TWS message definition.  Setting up this attribute will always take Version definition into priority. </p>
+            <p>Incoming NO.OF.AUTH / GTS.CONTROL values from webservice request will be discarded </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>     optional multi value field </p>
+            <p>     Length : Maximum 20 alphanumeric characters are allowed </p>
+        </desc>
+</t>
+<t>
+<field>CHANNEL</field>
+<desc>
+            <p>A link to the EB.CHANNEL file. This file specifies a channel through which a request can come.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Mandatory Input</p>
+            <p>      Must a valid record in the USER application</p>
+        </desc>
+</t>
+<t>
+<field>CLOSE.ROUTINE</field>
+<desc>
+            <p>Allows a user defined routine to be specified for a particular service. The routine specified here will be executed when a service is closed.</p>
+            <p>      Typically such a routine could intialise a common area or perform some final communications.</p>
+            <p>      Routine Details</p>
+            <p>      Arguments : None</p>
+            <p>      Note at the point this routine is called NONE of the T24 common variables are available.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>      Optional Input</p>
+            <p>      Must be defined in PGM.FILE as a type S program.</p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DECRYPT.KEY</field>
+<desc>
+            <p>The ID of OFS.DECRYPT.KEY record, which will hold the information necessary for DECRYPTION</p>
+            <p />
+            <p />
+            <p>
+                <p>
+                    <p>Validation Rules:</p>:</p>
+            </p>
+            <p>   1. An optional field.</p>
+            <p>   2. If the OFS.MESSAGE.DECRYPTION field is set then this field should expect a value.</p>
+            <p>   3. This field has a check file validation to OFS.DECRYPT.KEY application.</p>
+            <p>   4. Length: Maximum of 35.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

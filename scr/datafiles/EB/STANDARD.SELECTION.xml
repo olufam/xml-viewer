@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>STANDARD.SELECTION</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This file defines the layout of the data dictionaries and the alternate indices for all files on the system. </p>
+            <p> The fields in the STANDARD.SELECTION record are split into two parts System and User defined. All the system (T24) defined fields begin with SYS and cannot be modified. The user defined fields begin with USR. </p>
+            <p> The dictionary and alternate indices for the data file are built when the STANDARD.SELECTION record is 'Authorised'. </p>
+            <p> Note: The building of alternate indices requires the EXCLUSIVE use of the data file and should only be carried out when there are no other users on the system. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>USR.IDX.FILE</field>
+<desc>
+            <p>Specifies to which version (Live or History) the alternate index is to apply. </p>
+            <p> If the USR ALT INDEX field (20.1) is set to 'Y' then specify here the types of files the alternate index should relate to i.e the History or Live version of the filename specified in FILE NAME (Field 0). </p>
+            <p> This field is sub-valued to allow the input of both LIVE and HISTORY. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-7 type A (alphanumeric) characters. HISTORY - History file. LIVE    - Live file</p>
+        </desc>
+</t>
+<t>
+<field>SYS.SINGLE.MULT</field>
+<desc>
+            <p>Specifies whether the data field is Single or Multi-valued. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> 1 type alpha character. S - Data field is single valued. M - Data field is multi-valued.</p>
+            <p> System maintained. No manual input.</p>
+        </desc>
+</t>
+<t>
+<field>SYS.CONVERSION</field>
+<desc>
+            <p>Specifies the conversion to be performed when the field is displayed using the various INFORM "List" and "Select"  statements. </p>
+            <p> This can contain any of the legal conversion specifications that are available with the Info/Basic OCONV function. It is used to convert the stored data value to a desired output format. </p>
+            <p> Example:  D2/E  -   Converts the internal date to dd/mm/yy format. </p>
+            <p> For further details on this field refer to the PRIME INFORM Reference Guide. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> 1-50 type A (alphanumeric) characters.</p>
+            <p> System maintained. No manual input.</p>
+        </desc>
+</t>
+<t>
+<field>SPARE.1</field>
+<desc>
+            <p>Reserved Field</p>
+            <p> No input allowed</p>
+        </desc>
+</t>
+<t>
+<field>SYS.ALT.INDEX</field>
+<desc>
+            <p>Indicates whether their is to be an alternate index associated with the field name specified in SYS FIELD NAME (Field 1.1) </p>
+            <p> If an alternate index is to be associated with the field name specified in  SYS FIELD NAME (Field 1.1) then this flag should be set to 'Y'. Otherwise it should be set to 'N'. </p>
+            <p> If an existing alternate index (i.e this field is currently set to 'Y') is to be deleted then 'N' should be specified here. </p>
+            <p> Note:     The creation/deletion of alternate indices is performed when the record is 'Authorised' and requires EXCLUSIVE use of the data file. So before 'Authorising' a record that creates/deletes alternate indices ensure no other users have the file open. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> 1 alpha character. N - No alternate index. Y - Create/Build alternate index.</p>
+            <p> System maintained. No manual input.</p>
+        </desc>
+</t>
+<t>
+<field>SYS.FIELD.NAME</field>
+<desc>
+            <p>Defines the field name by which the contents of FIELD 3.1.1 (SYS FIELD NO) will be identified. </p>
+            <p> The field name specified here will be used in application ENQUIRY.SELECT to display the fields available for selection. </p>
+            <p> If the entry in FIELD 2.1 (SYS TYPE) is 'D' or 'I' (i.e Data or I-type field) then this field name will also be written into the dictionary of the data file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> 1-18 type A (alphanumeric) characters.</p>
+            <p> System maintained. No manual input.</p>
+        </desc>
+</t>
+<t>
+<field>USR.FIELD.NO</field>
+<desc>
+            <p>Specifies the Concatfile name, Data Record field number, Dictionary I-type expression, Routine name or the field join specification depending on the field type specified in USR TYPE (Field 15.1) </p>
+            <p> The contents of this field is dependant on the field type specified in USR TYPE (Field 15.1), this can either be the Concatfile name, Data Record field number, Dictionary I-type expression, Routine name or the field join specification. </p>
+            <p> Field join enables data to be extracted from related files and used in the selection.  The syntax is FIELDA&gt;FILEA&gt;FIELDB, where FIELDA is a field in this standard selection record which is used as the key to FILEA and FIELDB is returned. FILEA may be an I-type on this record. This allows the fillename to be soft coded. For example, </p>
+            <p> 15. 5 USR.FIELD.NAME. CONTRACT.FILE 16. 5 USR.TYPE....... I 17. 5. 1 USR.FIELD.NO SUBR("PROCESS.SOFT.FILE",CONTRACT.ID) </p>
+            <p> Will return the file name of the file which originated the contract held in CONTRACT.ID to contract file. By setting up I-types on these applications for often used field names (e.g customer) it is possible to access the customer of a contract given that contacts id. </p>
+            <p> 15. 6 USR.FIELD.NAME. CUSTOMER 16.2. 6 USR.TYPE....... J 17. 6. 1 USR.FIELD.NO CONTRACT.ID&gt;CONTRACT.FILE&gt;CUSTOMER </p>
+            <p> Only field names, not field numbers, are accepted and the fields can be data fields, I-types or other field joins.  Multiple joins can be specified e.g. </p>
+            <p> 3.1.1...CUSTOMER.ID&gt;CUSTOMER&gt;ACCOUNT.OFFICER </p>
+            <p> 3.1.2...DEPT.ACCT.OFFICER&gt;NAME </p>
+            <p> Note:     This field is sub-valued to allow large I-type expressions to be split over multiple lines. </p>
+            <p> A concatfile definition can additionally specify fields to be saved when selecting the concatfile, rather than the id which is the default.  This is specified by the value 'SAVING' followed by the field name from the selected file to be saved eg: </p>
+            <p> FILE NAME FO.FIDUCIARY 2.1 TYPE C 3.1.1.    ....      FD.UNCONF.BROKER 3.1.2     ....      SAVING FIDUCIARY.NO </p>
+            <p> This will cause the system to select the file FD.UNCONF.BROKER file saving the values in the field FIDUCIARY.NO as items to select the FD.FIDUCIARY file.  The field FIDUCIARY.NO may be a field, or and I-descriptor on the file FD.UNCONF.BROKER. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-50 type A (alphanumeric) characters.</p>
+        </desc>
+</t>
+<t>
+<field>USR.CNV.TYPE</field>
+<desc>
+            <p>USER CONVERSION TYPE </p>
+        </desc>
+</t>
+<t>
+<field>SYS.FIELD.NO</field>
+<desc>
+            <p>Specifies the Concatfile name, Data Record field number, Dictionary I-type expression, Routine name or the field join specification depending on the field type specified in SYS TYPE (Field 2.1) </p>
+            <p> The contents of this field is dependant on the field type specified in SYS TYPE (Field 2.1), this can either be the Concatfile name, Data Record field number, Dictionary I-type expression, Routine name or the field join specification. </p>
+            <p> Field join enables data to be extracted from related files and used in the selection. The syntax is FIELDA&gt;FILEA&gt;FIELDB, where FIELDA is a field in this standard selection record which is used as the key to FILEA and FIELDB is returned. FILEA may be an I-type on this record. This allows the fillename to be soft coded. For example, </p>
+            <p> 1. 5 SYS.FIELD.NAME. CONTRACT.FILE </p>
+            <p> 2. 5 SYS.TYPE....... I </p>
+            <p> 3. 5. 1 SYS.FIELD.NO SUBR("PROCESS.SOFT.FILE",CONTRACT.ID) </p>
+            <p> Will return the file name of the file which originated the contract held in CONTRACT.ID to contract file. By setting up I-types on these applications for often used field names (e.g customer) it is possible to access the customer of a contract given that contacts id. </p>
+            <p> 1. 6 SYS.FIELD.NAME. CUSTOMER </p>
+            <p> 2. 6 SYS.TYPE....... J </p>
+            <p> 3. 6. 1 SYS.FIELD.NO CONTRACT.ID&gt;CONTRACT.FILE&gt;CUSTOMER </p>
+            <p> Only field names, not field numbers, are accepted and the fields can be data fields, I- types or other field joins. </p>
+            <p> Multiple joins can be specified e.g. </p>
+            <p> 3.1.1...CUSTOMER.ID&gt;CUSTOMER&gt;ACCOUNT.OFFICER </p>
+            <p> 3.1.2...DEPT.ACCT.OFFICER&gt;NAME </p>
+            <p> Note: This field is sub-valued to allow large I-type expressions to be split over multiple lines. </p>
+            <p> A concatfile definition can additionally specify fields to be saved when selecting the concatfile, rather than the id which is the default. This is specified by the value 'SAVING' followed by the field name from the selected file to be saved eg: </p>
+            <p> FILE NAME FO.FIDUCIARY </p>
+            <p> 2.1 TYPE C </p>
+            <p> 3.1.1. .... FD.UNCONF.BROKER </p>
+            <p> 3.1.2 .... SAVING FIDUCIARY.NO </p>
+            <p> This will cause the system to select the file FD.UNCONF.BROKER file saving the values in the field FIDUCIARY.NO as items to select the FD.FIDUCIARY file. The field FIDUCIARY.NO may be a field, or and I-descriptor on the file FD.UNCONF.BROKER. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> 1-50 type A (alphanumeric) characters.</p>
+            <p> System         maintained. No manual input.</p>
+        </desc>
+</t>
+<t>
+<field>USR.INDEX.NULLS</field>
+<desc>
+            <p>Indicates whether null alternate key values are to be indexed. </p>
+            <p> This field only applies if field USR ALT INDEX (field 20.1) has been set to 'Y'. </p>
+            <p> If null data values are to be maintained in the alternate index for the data field then this field should be set to 'Y'. Otherwise it should be set to 'N'. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1 type alpha character. N - Do not index null values. Y - Index null values.</p>
+        </desc>
+</t>
+<t>
+<field>SYS.CNV.TYPE</field>
+<desc>
+            <p>SYSTEM CONVERSION TYPE </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> System maintained, no manual input</p>
+        </desc>
+</t>
+<t>
+<field>USR.TYPE</field>
+<desc>
+            <p>Defines the field type. </p>
+            <p> This field specifies the type of the field that is to appear in USR FIELD NO (Field 16.1.1). It is used by the enquiry system to determine what type of selection is to be made. </p>
+            <p> C -       Concatfile containing list of keys to the main datafile. Note, wherever possible build an ALTERNATE INDEX for the data field instead of using a concatfile. </p>
+            <p> D -       Data field on the record. </p>
+            <p> I -       Dictionary I-type field. (See the PRIME Information INFORM Reference Guide for a description of I-types.) </p>
+            <p> R -       Info/Basic routine to perform the selection and return the list of keys. This should only be used for NOFILE type Enquiries. </p>
+            <p> J -       Field join specification.  Allows selection to be performed on data in related files - see SYS.FIELD.NO for specification syntax. </p>
+            <p> S -  Selection prompt for enquiry. An item can be supplied which does not refer to a true field in the enquiry and will not be used in the actual selection of the file. These items can be referenced by enquiry selection routines or can be used to pass constant information to an enquiry. Any item passesd to enquiry in the selection criteria can be extracted and be processed as any other field. </p>
+            <p> Note:     All fields specified as D or I will be created as field descriptors in the Dictionary file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1 type A (alphanumeric) character. C - Concatfile D - Data field I - Dictionary I-type  R - Called routine J - Field Join  S - Selection Prompt</p>
+        </desc>
+</t>
+<t>
+<field>SYS.INDEX.NULLS</field>
+<desc>
+            <p>Indicates whether null alternate key values are to be indexed. </p>
+            <p> This field only applies if field SYS ALT INDEX (field 7.1) has been set to 'Y'. </p>
+            <p> If null data values are to be maintained in the alternate index for the data field then this field should be set to 'Y'. Otherwise it should be set to 'N'. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> 1 type alpha character. N - Do not index null values. Y - Index null values.</p>
+            <p> System maintained. No manual input.</p>
+        </desc>
+</t>
+<t>
+<field>SYS.LANG.FIELD</field>
+<desc>
+            <p>Indicates whether the field is multi-valued in association with a language code. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> 1 type alpha character. N - No association with language code Y - Associated with a language code. S - Sub-valued language field.</p>
+            <p> System maintained. No manual input.</p>
+        </desc>
+</t>
+<t>
+<field>SYS.DISPLAY.FMT</field>
+<desc>
+            <p>Specifies the output format for the data when it is displayed. </p>
+            <p> The contents of this field specifies the length and justification for the data to be displayed. The general format for this field should be: </p>
+            <p> field.size [bkgnd] just [conv] [mask] </p>
+            <p> field.size-     Size (width) of the display field. </p>
+            <p> bkgnd     -     Field-padding character (default is blank). </p>
+            <p> just      -     Justification (R, L, or T) </p>
+            <p> conv      -     Conversion expression (for output). </p>
+            <p> mask      -     Output format pattern Example: 30L -Field size 30 with Left justification. </p>
+            <p> For further details refer to the PRIME INFORM Reference Guide. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> 1-50 type A (alphanumeric) characters.</p>
+            <p> System maintained. No manual input.</p>
+        </desc>
+</t>
+<t>
+<field>SPARE.4</field>
+<desc>
+            <p>Reserved Field</p>
+            <p> No input allowed</p>
+        </desc>
+</t>
+<t>
+<field>USR.LANG.FIELD</field>
+<desc>
+            <p>Indicates whether the field is multi-valued in association with a language code. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1 type alpha character. N - No association with language code Y - Associated with a language code S - Sub-valued language field</p>
+        </desc>
+</t>
+<t>
+<field>USR.DISPLAY.FMT</field>
+<desc>
+            <p>Specifies the output format for the data when it is displayed. </p>
+            <p> The contents of this field specifies the length and justification for the data to be displayed. The general format for this field should be: </p>
+            <p> field.size [bkgnd] just [conv] [mask] </p>
+            <p> field.size-     Size (width) of the display field. </p>
+            <p> bkgnd     -     Field-padding character (default is blank). </p>
+            <p> just      -     Justification (R, L, or T) </p>
+            <p> conv      -     Conversion expression (for output). </p>
+            <p> mask      -     Output format pattern </p>
+            <p> Example:  30L   -   Field size 30 with Left justification. </p>
+            <p> For further details refer to the PRIME INFORM Reference Guide. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-50 type A (alphanumeric) characters.</p>
+        </desc>
+</t>
+<t>
+<field>SPARE.3</field>
+<desc>
+            <p>Reserved Field</p>
+            <p> No input allowed</p>
+        </desc>
+</t>
+<t>
+<field>SYS.IDX.FILE</field>
+<desc>
+            <p>Specifies to which version (Live or History) the alternate index is to apply. </p>
+            <p> If the SYS ALT INDEX field is set to 'Y' then specify here the types of files the alternate index should relate to i.e the History or Live version of the filename specified in FILE NAME (Field 0). </p>
+            <p> This field is sub-valued to allow the input of both LIVE and HISTORY. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> 1-7 type A (alphanumeric) characters. HISTORY - History file. LIVE    - Live file</p>
+            <p> System maintained. No manual input.</p>
+        </desc>
+</t>
+<t>
+<field>SPARE.2</field>
+<desc>
+            <p>Reserved Field</p>
+            <p> No input allowed</p>
+        </desc>
+</t>
+<t>
+<field>USR.RESERVED</field>
+<desc>
+            <p>Reserved for future use. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> No input system field.</p>
+        </desc>
+</t>
+<t>
+<field>USR.VAL.PROG</field>
+<desc>
+            <p>Specifies the Info/Basic validation routine to be called to modify the user input prior to comparison. </p>
+            <p> The routine specified here will be used to modify the user input prior to the comparison stage in the ENQUIRY.SELECT application. </p>
+            <p> A standard 'T24' IN2 routine can be specified here (i.e to convert customer mnemonics etc.) by specifying IN2xxxx where xxxx is a valid IN2 suffix, i.e CUS, AMT etc. The remaining portion of the 'T' parameter can be specified by using '&amp;' as a field mark separator and a ']' as a value mark separator. </p>
+            <p> Example:  IN2AMT&amp;-  would allow the input of negative amounts. </p>
+            <p> This field is sub-valued to allow multiple conversions to be performed, where the result of the first conversion is supplied to the next one. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-50 type A (alphanumeric) characters.</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.ENRICH</field>
+<desc>
+            <p>Defines the field to be used to return an enrichment value if no other enrichment value is specified. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Must be a valid SYS.FIELD.NAME or USR.FIELD.NAME with a SYS.TYPE or USR.TYPE of D - DATA.</p>
+            <p> 1-18 type A (alphanumeric) characters.</p>
+            <p> Optional Input</p>
+        </desc>
+</t>
+<t>
+<field>FILE.NAME</field>
+<desc>
+            <p>Defines the datafile to which the dictionary field names will relate. This should be a filename without the "Fxxx" prefix. </p>
+            <p> The data filename specified here must be a valid entry on the F.FILE.CONTROL file. One exception to this rule is when the 'NOFILE.' prefix is used. </p>
+            <p> Use the 'NOFILE.' prefix when defining the details for Enquiries which do not use a data file for selection but instead use a routine to return the record keys. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-32 type A (alphanumeric) characters</p>
+        </desc>
+</t>
+<t>
+<field>REBUILD.SYS.FLDS</field>
+<desc>
+            <p>Flag to force the rebuild of the application defined fields and the dictionary. </p>
+            <p> To cause the rebuild of the application defined fields within the STANDARD.SELECTION record and a rebuild of the Dictionary associated with the file, specify any valid character here. </p>
+            <p> Note:     The application defined fields and the dictionary will only be rebuilt when this record has been 'Authorised'. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1 type A (alphanumeric) character.</p>
+        </desc>
+</t>
+<t>
+<field>USR.SINGLE.MULT</field>
+<desc>
+            <p>Specifies whether the data field is Single or Multi-valued. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1 type alpha character. S - Data field is single valued. M - Data field is multi-valued.</p>
+        </desc>
+</t>
+<t>
+<field>USR.REL.FILE</field>
+<desc>
+            <p>Identifies the related file which can be accessed using USR.FIELD.NAME as the key. </p>
+            <p> If the USR FIELD NAME field above can be used as the key to another file then that file should be specified here. It is used, primarily, by the SMS system to validate data held on a related file to the main application. Eg. STANDARD.SELECTION FUNDS.TRANSFER FIELD.NAME DEBIT.ACCOUNT RELATED.FILE ACCOUNT </p>
+            <p> SMS APPLICATION FUNDS.TRANSFER FIELD ACCOUNT&gt;ACCOUNT.OFFICER OPERAND EQ DATA.FROM 1 </p>
+            <p> This setup restricts the user to inputing funds transfer to accounts belonging to account officer 1. The link is established by the USR.REL.FILE field in FUNDS.TRANSFER. Hence SMS can test data in any file related to the application. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-24 type A (alphanumeric) characters.</p>
+            <p> Must be a valid id on FILE.CONTROL.</p>
+        </desc>
+</t>
+<t>
+<field>SPARE.5</field>
+<desc>
+            <p>Reserved Field</p>
+            <p> No input allowed</p>
+        </desc>
+</t>
+<t>
+<field>SYS.RESERVED</field>
+<desc>
+            <p>Reserved for future use. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> No Input system field</p>
+        </desc>
+</t>
+<t>
+<field>USR.ALT.INDEX</field>
+<desc>
+            <p>Indicates whether their is to be an alternate index associated with the field name specified in USR FIELD NAME (Field 14.1) </p>
+            <p> If an alternate index is to be associated with the field name specified in  USR FIELD NAME (Field 14.1) then this flag should be set to 'Y'. Otherwise it should be set to 'N'. </p>
+            <p> If an existing alternate index (i.e this field is currently set to 'Y') is to be deleted then 'N' should be specified here. </p>
+            <p> Note:     The creation/deletion of alternate indices is performed when the record is 'Authorised' and requires EXCLUSIVE use of the data file. So before 'Authorising' a record that creates/deletes alternate indices ensure no other users have the file open. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1 alpha character. N - No alternate index. Y - Create/Build alternate index.</p>
+        </desc>
+</t>
+<t>
+<field>SYS.TYPE</field>
+<desc>
+            <p>Defines the field type. </p>
+            <p> This field specifies the type of the field that is to appear in SYS FIELD NO (Field 3.1.1). It is used by the enquiry system to determine what type of selection is to be made. </p>
+            <p> 2          C -   Concatfile containing list of keys to the main datafile. Note, wherever possible build an ALTERNATE INDEX for the data field instead of using a concatfile. </p>
+            <p>           D -   Data field on the record. </p>
+            <p>           I -   Dictionary I-type field. (See the PRIME Information INFORM Reference Guide for a description of I-types.) </p>
+            <p>           R -   Info/Basic routine to perform the selection and return the list of keys. This should only be used for NOFILE type Enquiries. </p>
+            <p>           J -   Field join specification.  Allows selection to be performed on data in related files - see SYS.FIELD.NO for specification syntax. </p>
+            <p>           S -  Selection prompt for enquiry. An item can be supplied which does not refer to a true field in the enquiry and will not be used in the actual selection of the file. These items      can be referenced by enquiry selection routines or  can be used to pass constant information to an enquiry.  Any item passesd to enquiry in the selection criteria can  be extracted and be processed as any other field. </p>
+            <p>           P -  A pseudonym for an existing field. This type may be used if an existing field name is amended, the previous name should be defined as type P, the FIELD.NO should be set to  the new name. This will then ensure that exsiting enquiries  and versions still recognize the old name.  A pseudonym will assume all the attributes of the field it  is linked to in FIELD.NAME Note: All fields specified as D or I will be created as field descriptors in the Dictionary file. </p>
+            <p> V - Virtual field in the record</p>
+            <p>     These fields will not have dictionary and they are used to provide the lookup information. </p>
+            <p>     The Associated FIELD.NO for virtual field can accept the following values</p>
+            <p>     1) A valid I/J Desc field name</p>
+            <p>     2) A User defined subroutine with Arguments.The Arguments can be any hard-coded </p>
+            <p>          value or any valid field name in table as argument.</p>
+            <p>       eg:         S &lt;&lt;subroutine name&gt;&gt;,"Hardcodedvalue",&lt;&lt;Valid field name&gt;&gt;</p>
+            <p>                      S CONCAT,"SR",NAME.1</p>
+            <p>     3) A Local ref field name</p>
+            <p>          (Please refer user guide for further information)</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> 1 type A (alphanumeric) character. C - Concatfile D - Data field I - Dictionary I-type  R - Called routine J - Field Join S - Enquiry Prompt V - Virtual Field</p>
+            <p> System maintained. No manual input.</p>
+        </desc>
+</t>
+<t>
+<field>USR.FIELD.NAME</field>
+<desc>
+            <p>Defines the field name by which the contents of FIELD 16.1.1 (USRS FIELD NO) will be identified. </p>
+            <p> The field name specified here will be used in application ENQUIRY.SELECT to display the fields available for selection. </p>
+            <p> If the entry in FIELD 15.1 (SYS TYPE) is 'D' or 'I' (i.e Data or I-type field) then this field name will also be written into the dictionary of the data file. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-18 type A (alphanumeric) characters.</p>
+        </desc>
+</t>
+<t>
+<field>SYS.GENERATED</field>
+<desc>
+            <p>Indicates whether this field has been input manually or generated automatically from the program. </p>
+            <p> When this STANDARD.SELECTION record is authorised, then the application program (if one exists) that maintains the file specified in FILE NAME (field 0) is called to retrieve the application defined field names. The record is updated with these field names and this field is automatically set to 'Y' for each one. However for fields which do not belong to the application itself but have been input manually, 'N' should be specified here. </p>
+            <p> Note:     The application defined field names are updated each time the STANDARD.SELECTION record is authorised. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1 type alpha character. N - Input manually. Y - Generated automatically. (System maintained. No manual input)</p>
+        </desc>
+</t>
+<t>
+<field>SYS.REL.FILE</field>
+<desc>
+            <p>Identifies the related file which can be accessed using SYS.FIELD.NAME as the key. </p>
+            <p> If the SYS FIELD NAME field above can be used as the key to another file then that file should be specified here. It is used, primarily, by the SMS system to validate data held on a related file to the main application. Eg. STANDARD.SELECTION FUNDS.TRANSFER FIELD.NAME          DEBIT.ACCOUNT RELATED.FILE        ACCOUNT </p>
+            <p> SMS APPLICATION FUNDS.TRANSFER FIELD ACCOUNT&gt;ACCOUNT.OFFICER OPERAND   EQ DATA.FROM 1 </p>
+            <p> This setup restricts the user to inputing funds transfer to accounts belonging to account officer 1. The link is established by the SYS.REL.FILE field in FUNDS.TRANSFER. Hence SMS can test data in any file related to the application. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> 1-24 type A (alphanumeric) characters.</p>
+            <p> System maintained, no manual input</p>
+        </desc>
+</t>
+<t>
+<field>SYS.VAL.PROG</field>
+<desc>
+            <p>Specifies the Info/Basic validation routine to be called to modify the user input prior to comparison. </p>
+            <p> The routine specified here will be used to modify the user input prior to the comparison stage in the ENQUIRY.SELECT application. </p>
+            <p> A standard 'T24' IN2 routine can be specified here (i.e to convert customer mnemonics etc.) by specifying IN2xxxx where xxxx is a valid IN2 suffix, i.e CUS, AMT etc. The remaining portion of the 'T' parameter can be specified by using '&amp;' as a field mark separator and a ']' as a value mark separator. </p>
+            <p> Example:  IN2AMT&amp;-  would allow the input of negative amounts. </p>
+            <p> This field is sub-valued to allow multiple conversions to be performed, where the result of the first conversion is supplied to the next one. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> 1-50 type A (alphanumeric) characters.</p>
+            <p> System maintained. No manual input.</p>
+        </desc>
+</t>
+<t>
+<field>USR.CONVERSION</field>
+<desc>
+            <p>Specifies the conversion to be performed when the field is displayed using the various INFORM "List" and "Select"  statements. </p>
+            <p> This can contain any of the legal conversion specifications that are available with the Info/Basic OCONV function. It is used to convert the stored data value to a desired output format. </p>
+            <p> Example:  D2/E  -   Converts the internal date to dd/mm/yy format. </p>
+            <p> For further details on this field refer to the PRIME INFORM Reference Guide. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-50 type A (alphanumeric) characters.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

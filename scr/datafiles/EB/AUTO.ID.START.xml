@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>AUTO.ID.START</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>Initiates automatic key numbering for applications.</p>
+            <p />
+            <p> Through this application the start point for auto numbering is set up. This is particularly required where the key of the application file with auto numbering is not a straight numeric. </p>
+            <p />
+            <p> The details loaded in an AUTO.ID.START record consist of the application name, with optional department account officer code, and the key correctly formatted from which auto-numbering is to start. It must be run in all companies where this facility is required. </p>
+            <p />
+            <p> There are two options available which determine how the ID is to be incremented.  The first holds the julian date in the key and the increment is reset with each new working day. The other option will increment indefintely. </p>
+            <p />
+            <p> The former will be reset to the sequence number specified in the ID.START field each day. Hence, it is possible to have different starting points for companies and/or departments. </p>
+            <p />
+            <p> Key generation can be either the standard type which read and update a record on the LOCKING file to be able to produce sequential id's; or using UNIQUE.NO be created using a table of characters to produce an id unique enough to remove the need for a locking update.</p>
+            <p />
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>KEY</field>
+<desc>
+            <p>Identifies the different records maintained on this file. </p>
+            <p />
+            <p> This key is used to identify the different records on the AUTO.ID.START file and has no linkage to any other file. </p>
+            <p />
+            <p> Note reversal of the record will not reset any defined id generation settings. records have free format id's and it is possible to use more than one record to set the id structure for applications, the latest record authorised will update the system settings.</p>
+            <p />
+            <p> To reset values either change the existing record or create a new one with the original settings.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> Up to 14 SWIFT characters type 's'. </p>
+            <p />
+            <p> Mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>ID.START</field>
+<desc>
+            <p>Is the key of the Application file from which auto-numbering is to start. </p>
+            <p />
+            <p> This field contains the key, from which auto numbering is to start.  The details entered must be in the correct format for the file concerned. There are no checks that the data has been entered in the correct format. </p>
+            <p />
+            <p>  Where the key contains a date the date entered must be less than the current run date, for auto numbering to start correctly. The incremental number will be reset each working day as the julian date is contained within the key. </p>
+            <p />
+            <p> The format of the keys for the 'Contract' Application like Foreign Exchange and Money Market are as follows: </p>
+            <p>         4 digit -  Optional Sub-Application Identifier (used within the Securities Application) </p>
+            <p>         2 digit -  Application </p>
+            <p>         5 digit -  Date in the format YYDDD </p>
+            <p>         5 digit -  Sequence number from 00001 to 99999 </p>
+            <p />
+            <p> The format for each application must be obtained before entering data. </p>
+            <p />
+            <p> The sequence number entered here is used as the starting point for the next days contract ids. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Up to 35 alphanumeric characters. </p>
+            <p> Multivalue field associated with APPLICATION. </p>
+            <p> Mandatory field.</p>
+        </desc>
+</t>
+<t>
+<field>UNIQUE.NO</field>
+<desc>
+            <p>If set this will invoke the generation of transaction id's based on system generated values. A record will be written to the LOCKING file with a name like application.UNIQUE (application such as REPO would appear as REPO.UNIQUE). The presence of such a record will trigger the auto generation of sequences using default characters (1-9 and B-Z - excluding vowels). Dependent on the use of the BASE.TABLE and ID.LENGTH fields, the sequence generated will contain alpha, numeric or both in the key, subject to the length allowed.</p>
+            <p />
+            <p> The benefit of this is that there is no exclusive lock placed on the LOCKING file when the next available sequence is requested. The system will generate a value based on the criteria set and check if it is used, it wil retry until a unique value is found. With the correct settings a unique id will be found each time.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>  Optional input</p>
+            <p />
+            <p> Valid input is 'Yes' or 'Null' </p>
+        </desc>
+</t>
+<t>
+<field>APPLICATION</field>
+<desc>
+            <p>Indicates the Application for which the start point for Auto numbering is to be loaded.</p>
+            <p />
+            <p>  This can optionally be suffixed by a department account officer code. If a DAO code is specified then the start point entered in the field ID.START is used only for users with that DAO code. </p>
+            <p />
+            <p> This allows departments to have different starting ranges for transaction ids. Each day the first id allocated, when using [F3]/next id, will be the Application:JulianDate:ID.START. e.g: </p>
+            <p />
+            <p> An AUTO.ID.START records with the following information: </p>
+            <p>   APPLICATION :       SWAP-100 ID.START    :       SW9500101000 </p>
+            <p>   APPLICATION :       SWAP-200 ID.START    :       SW9500102000 </p>
+            <p>   APPLICATION :       SWAP ID.START          :       SW9500100001</p>
+            <p />
+            <p>  This means all users in Department 100 will create SWAP contracts starting from SWyyddd01000 and all user in Department 200 will create SWAP contracts staring from SWyyddd02000. All other users will start from SWyyddd00001. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  Up to 32 alphanumeric characters, type 'A'. Multivalue field associated with ID.START. Mandatory input.</p>
+            <p />
+            <p> Must be a valid APPLICATION with an optional DEPT.ACCT.OFFICER in the format:        APPLICATION-DEPT.ACCT.OFFICER  The Application name must be present on the PGM.FILE with a type of H, U or W.</p>
+            <p />
+            <p> No duplications allowed.</p>
+        </desc>
+</t>
+<t>
+<field>BASE.TABLE</field>
+<desc>
+            <p>List of characters that can be used in the building of the unique id. If left blank and UNIQUE.NO is set the system will use numbers in the range 1-9 and alpha characters in the range B-Z (vowels are excluded to avoid random or embarrasing words in the id being generated).</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> Can only be used if UNIQUE.NO is set.</p>
+            <p />
+            <p> Use of vowels in list is not allowed.</p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Free form narrative to indicate why the record has been set up. </p>
+            <p />
+            <p> This field is provided so that the user may load any notes that are useful about what the record is to be used for. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> Up to 35 alphanumeric characters, type 'A'. Multivalue field. Optional input.</p>
+        </desc>
+</t>
+<t>
+<field>ID.LENGTH</field>
+<desc>
+            <p>Used in conjunction with UNIQUE.NO to restrict the maximum length of any generated id.</p>
+            <p />
+            <p> Should be used with caution as the underlying application may expect id lengths to be of a certain definition and length.</p>
+            <p />
+            <p> If settings in UNIQUE.NO and BASE.TABLE are made it may be advisable to restrict the length of the id to the standard format of 12, 14 or 16 depending on the application. If left blank the UNIQUE.NO &amp; BASE.TABLE combination may extend the id length to provide sufficient unique id's.</p>
+            <p />
+            <p> It is advisable to contact Temenos before setting this field on T24 applications.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+</menu>
+</t24help>
+

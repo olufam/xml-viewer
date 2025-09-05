@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>CO</product>
+<table>COLLATERAL</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This file is used to record the details of collateral submitted by a customer, its value(s) and, optionally, to link it directly to a customer's supporting deal elsewhere in the system. </p>
+            <p>Each collateral object belongs to a collateral right.  This is implicit in the item-id structures of the file. </p>
+            <p />
+            <p>NOMINAL, EXECUTION, THIRD PARTY, GENERAL LEDGER &amp; CENTRAL BANK VALUES </p>
+            <p>There are five value fields associated with each collateral record. </p>
+            <p>The allowable forms of input to these fields are determined by the fields of the same name on the collateral type file. They make take different meanings in the context of different types of collateral. </p>
+            <p>User-input to them may be defined as mandatory, optional or not allowed. </p>
+            <p>If input is fed from another application these values are placed automatically by the system when the application id is given. </p>
+            <p>The third possible form of update to these fields is by calculation, in which case the appropriate values are placed by the system when the fields required for the calculation have been entered. </p>
+            <p />
+            <p>LOCAL REFERENCE </p>
+            <p>There are descriptive and notes fields on the collateral record. Since the other items of (descriptive) information regarding the collateral object itself are (a) not used in processing and (b) quite different depending on the type of collateral, these further details should be defined by the use of local reference tables (in conjunction with program versions). </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>THIRD.PARTY.VALUE</field>
+<desc>
+            <p>A value which represents a prior or third party right to the collateral. </p>
+            <p>One of five value fields attached to the collateral. </p>
+            <p>This value is a value attached to the collateral which is not available under the right itself. It usually represents a third party value in cases such as, for example, a second mortgage. </p>
+            <p>The value in this field is subtracted from the EXECUTION.VALUE in order to determine the net execution value. </p>
+            <p>The allowable form of input to this field is determined by the field of the same name on the collateral type file. </p>
+            <p>The third party value may be defined on this table as mandatory, optional or non-input. </p>
+            <p>Allows positive, negative or both balances depending on ALLOWED.ACT.BAL set in COLLATERAL.TYPE</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 19-digit numeric, inclusive decimal point (amount format).  (Optional input, depending on collateral type).</p>
+            <p>No input is allowed if the collateral type record contains the definition 'N' in THIRD.PARTY.VALUE.</p>
+            <p>Input is mandatory if the collateral type record contains the definition 'M' in THIRD.PARTY.VALUE.</p>
+            <p>An override is required if the value exceeds the EXECUTION.VALUE.</p>
+        </desc>
+</t>
+<t>
+<field>STATUS</field>
+<desc>
+            <p>The status of the collateral object. </p>
+            <p>The status of the collateral object is indicated in this field as follows: </p>
+            <p>FWD - forward status; validity date of the corresponding right is forward; </p>
+            <p>CUR - current status; expiry date of the corresponding right is forward &amp;       validity date is not; </p>
+            <p>LIQ - liquidated status; expiry date of either the corresponding right or       the object itself is past; </p>
+            <p>MAT - matured status; record occurs only on history file. </p>
+            <p>EXC - Excluded status; collateral is marked for exclusion i.e. the EXCLUSION.ID field is not null </p>
+            <p>In most cases, the status indicated against the collateral object will be the same as that belonging to the corresponding right. Exceptions are when a collateral object has an earlier expiry date than its corresponding right (in which case the object is considered expired whilst the right remains current) and when a collateral is marked for exclusion </p>
+            <p>This field is automatically maintained by the system by an end-of-day process and is updated in accordance with any changes to the dates and exclusion id defined on-line. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'FWD', 'CUR', 'LIQ', 'MAT' or 'EXC'.  Internal field.  This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>COLLATERAL.TYPE</field>
+<desc>
+            <p>Number identifying the type of collateral. </p>
+            <p>The content of this field must be a valid number defined on the collateral type file. </p>
+            <p>The value in this field must be defined under the collateral code to which the related collateral right belongs (exception=override). The first value so defined is taken as the default. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 digit numeric.  (Mandatory input, default value determined by collateral code).</p>
+        </desc>
+</t>
+<t>
+<field>EXECUTION.VALUE</field>
+<desc>
+            <p>The accepted or execution value of the collateral. </p>
+            <p>One of five value fields attached to the collateral. </p>
+            <p>This value is for processing purposes within the system. It is this value that is the subject of revaluation and which the system treats as the 'real' value of the collateral. </p>
+            <p>The allowable form of input to this field is determined by the field of the same name on the collateral type file. </p>
+            <p>The execution value may be defined on this table as user-input (mandatory or optional), non-input, calculated as a percentage of the nominal value or fed from an application main file record. </p>
+            <p>Allows positive, negative or both balances depending on ALLOWED.ACT.BAL set in COLLATERAL.TYPE</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 19-digit numeric, inclusive decimal point (amount format).  (Optional input, depending on collateral type).</p>
+            <p>No input is allowed if the collateral type record contains the definition 'N' or '%N' in EXECUTION.VALUE.</p>
+            <p>Input is mandatory if the collateral type record contains the definition 'M' in EXECUTION.VALUE.</p>
+        </desc>
+</t>
+<t>
+<field>GEN.LEDGER.VALUE</field>
+<desc>
+            <p>The collateral value for general ledger purposes. </p>
+            <p>One of five value fields attached to the collateral. </p>
+            <p>This value may be used to represent the general ledger value of the collateral. It is the value in this field which the system uses in the process of reallocation across general ledger report lines. </p>
+            <p>The allowable form of input to this field is determined by the field of the same name on the collateral type file. </p>
+            <p>The general ledger value may be defined on this table as user-input (mandatory or optional), non-input or calculated as a percentage of the nominal or (net) execution value. </p>
+            <p>Allows positive, negative or both balances depending on ALLOWED.ACT.BAL set in COLLATERAL.TYPE</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 19-digit numeric, inclusive decimal point (amount format).  (Optional input, depending on collateral type).</p>
+            <p>No input is allowed if the collateral type record contains the definition 'N', '%N' or '%E' in GEN.LEDGER.VALUE.</p>
+            <p>Input is mandatory if the collateral type record contains the definition 'M' in GEN.LEDGER.VALUE.</p>
+            <p>An override is required if the value exceeds the difference between the EXECUTION.VALUE and the THIRD.PARTY.VALUE.</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Description of the collateral. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 characters free text.  Multi-value field. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>REVALUED.AMOUNT</field>
+<desc>
+            <p>The execution value(s) prior to the most recent revaluation of the collateral. </p>
+            <p>The most recent revaluation(s) of the EXECUTION.VALUE. </p>
+            <p>Upon revaluation by the collateral end-of-day programs, a new value is placed by the system in EXECUTION.VALUE. The value which it replaces is recorded in this field together with the associated REVALUED.DATE. </p>
+            <p>The most recent information is stored by the system in the first value in this field. Subsequent values contain a history of previous values attached to the collateral. The number of values stored is determined by the collateral parameter file. </p>
+            <p>Multi-value field in association with REVALUED.DATE. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 19-digit numeric inclusive decimal point (amount format).  Multi-value field.</p>
+            <p>Internal field.  This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>COLLATERAL.CODE</field>
+<desc>
+            <p />
+            <p> Number identifying the type of collateral. </p>
+            <p>The content of this field must be a valid number defined on the collateral type file. </p>
+            <p>The value in this field must be defined under the collateral code to which the related collateral right belongs (exception = override). The first value so defined is taken as the default. </p>
+            <p>Any value specified here must be in the range of the collateral ID number specified in the filed COLLATERAL.TYPE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-3 digit numeric. (Mandatory input, default value determined by collateral code). </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>COUNTRY</field>
+<desc>
+            <p>The country where the collateral is held. </p>
+            <p>The country here represents the place of safekeeping of the collateral object. </p>
+            <p>This must be a valid code defined on the country code file. </p>
+            <p>When an APPLICATION.ID is present, the country defaults to the local country, otherwise to the country of the CURRENCY, local or otherwise. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 alphabetic characters (country code).  (Mandatory input, default value see details).</p>
+        </desc>
+</t>
+<t>
+<field>REVALUED.DATE</field>
+<desc>
+            <p>The date of the last revaluation of the collateral. </p>
+            <p>The date(s) of the most recent revaluation(s) of the EXECUTION.VALUE. </p>
+            <p>The most recent information is stored by the system in the first value in this field. Subsequent values contain a history of previous values attached to the collateral. The number of values stored is determined by the collateral parameter file. </p>
+            <p>Multi-value field in association with REVALUED.AMOUNT. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 type D (date format).  Multi-value field.</p>
+            <p>Internal field.  This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>NOTES</field>
+<desc>
+            <p>Notes. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 characters free text.  Multi-value field. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>COLL.RATING</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>This is a multi valued field. Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 35 characters may be entered.</p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+            <p>Local reference field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Defined by local table.  Multi-value field. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>REVIEW.DATE.FQU</field>
+<desc>
+            <p>The date and frequency of review of the collateral. </p>
+            <p>A combined date &amp; frequency field which is automatically cycled by the system as part of the collateral application's end-of-day. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>17 type FQU (combined date &amp; frequency code).  (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>CENTRAL.BANK.VALUE</field>
+<desc>
+            <p>The collateral value for central bank reporting purposes. </p>
+            <p>One of five value fields attached to the collateral. </p>
+            <p>This value may be used to represent the central bank value of the collateral. It is the value in this field which the system uses in the process of reallocation across central bank return lines. </p>
+            <p>The allowable form of input to this field is determined by the field of the same name on the collateral type file. </p>
+            <p>The central bank value may be defined on this table as user-input (mandatory or optional), non-input or calculated as a percentage of the nominal or (net) execution value. </p>
+            <p>Allows positive, negative or both balances depending on ALLOWED.ACT.BAL set in COLLATERAL.TYPE</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 19-digit numeric, inclusive decimal point (amount format).  (Optional input, depending on collateral type).</p>
+            <p>No input is allowed if the collateral type record contains the definition 'N', '%N' or '%E' in CENTRAL.BANK.VALUE.</p>
+            <p>Input is mandatory if the collateral type record contains the definition 'M' in CENTRAL.BANK.VALUE.</p>
+            <p>An override is required if the value exceeds the difference between the EXECUTION.VALUE and the THIRD.PARTY.VALUE.</p>
+        </desc>
+</t>
+<t>
+<field>VALUE.DATE</field>
+<desc>
+            <p>The date upon which the values in the preceding fields were established or accepted. </p>
+            <p>The date on which the collateral values were accepted and/or recorded in the system. </p>
+            <p>The date may be used for local requirements in connection with the management of collateral. It is not the subject of any further processing and is not updated by the system when a revaluation is performed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 type D (date format).  (Mandatory input, default value is today's date).</p>
+        </desc>
+</t>
+<t>
+<field>MAXIMUM.VALUE</field>
+<desc>
+            <p>The maximum execution value of the collateral. </p>
+            <p>An upper limit to the value which can be entered by the user or generated by the system in EXECUTION.VALUE. </p>
+            <p>This field should be used if the EXECUTION.VALUE of the item is of a variable nature but is only pledged up to a certain amount.  It represents the maximum pledged value of the item. </p>
+            <p>The system can be instructed to feed the EXECUTION.VALUE from a contract, account or portfolio elsewhere within T24.  If a MAXIMUM.VALUE has been entered in this field, the EXECUTION.VALUE which is taken from the T24 application record will never exceed this amount, regardless of the actual value attached to it at the time. </p>
+            <p>The same principle applies both to user-input of an EXECUTION.VALUE and to a periodic revaluation of the EXECUTION.VALUE (i.e. that the MAXIMUM.VALUE, if entered, cannot be exceeded). </p>
+            <p>Allows positive, negative or both balances depending on ALLOWED.ACT.BAL set in COLLATERAL.TYPE</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 19-digit numeric, inclusive decimal point (amount format).  (Optional input).</p>
+        </desc>
+</t>
+<t>
+<field>EXPIRY.DATE</field>
+<desc>
+            <p>The expiry date of the collateral values. </p>
+            <p>This field may be used to record an expiry date associated with the collateral. </p>
+            <p>The presence of a date in this field blocks the reallocation process for the collateral values (after such date has passed). </p>
+            <p>The status of the collateral (object) record becomes 'liquidated' when this date is reached. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 type D (date format).  (Optional input).</p>
+        </desc>
+</t>
+<t>
+<field>NOMINAL.VALUE</field>
+<desc>
+            <p>The overall, original or nominal value of the collateral. </p>
+            <p>One of five value fields attached to the collateral. </p>
+            <p>This value is for information purposes only and is not involved in any of the collateral processing which takes place in the system (i.e. revaluation, reallocation). </p>
+            <p>The allowable form of input to this field is determined by the field of the same name on the collateral type file. </p>
+            <p>The nominal value may be defined on this table as user-input (mandatory or optional), non-input or fed from an application main file record. </p>
+            <p>Allows positive, negative or both balances depending on ALLOWED.ACT.BAL set in COLLATERAL.TYPE</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 19-digit numeric, inclusive decimal point (amount format).  (Optional input, depending on collateral type).</p>
+            <p>No input is allowed if the collateral type record contains the definition 'N' in NOMINAL.VALUE.</p>
+            <p>Input is mandatory if the collateral type record contains the definition 'M' in NOMINAL.VALUE.</p>
+        </desc>
+</t>
+<t>
+<field>COLLATERAL.ID</field>
+<desc>
+            <p>Unique identification of collateral object. This item-id consists of the collateral right id followed by a sequence number. The two are separated by a period (full stop). </p>
+            <p>The item-id by which the collateral object is identified. </p>
+            <p>The item-id to the collateral file is made up of three components, separated by a period (full stop). </p>
+            <p>The first two components correspond to the collateral right to which the collateral object belongs, and consist of a customer id followed by a sequence number. </p>
+            <p>The third component identifies, where required, further items of collateral belonging to the right of security. The default value of this sequence number is one. </p>
+            <p>When the customer number has been entered by the user, the system will automatically append the default sequence numbers of '.1.1'. The user may subsequently enter only the third (suffix) part of the item-id to bring up further records belonging to that right (or only the last two parts to bring up further records belonging to that customer). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-10 digit numeric (customer id), period, 1-4 digit numeric (sequence number, collateral right), period, 1-4 digit numeric (sequence number, object).</p>
+            <p>The sequence number following the full stop may not be zero.</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>The currency of the collateral (values). </p>
+            <p>The currency is that in which the collateral values are expressed. </p>
+            <p>Any currency conversions relating to a collateral record which is not in local currency are made at the mid-rate effective at the time. </p>
+            <p>When the collateral is represented by an existing transaction, for example in the loans &amp; deposits application, the default value in this field is derived from the application record. </p>
+            <p>When this is not the case, the currency defaults to local currency. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 alphabetic characters (currency format).  (Mandatory input, default value see details).</p>
+        </desc>
+</t>
+<t>
+<field>INDUSTRY</field>
+<desc>
+            <p>Industry of the security collateral</p>
+            <p>It indicates the industry to which the security belongs </p>
+            <p>For the collaterals with Security master, the field will get defaulted from SECURITY.MASTER record</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-4 characters</p>
+            <p>Must be a valid record in SC.INDUSTRY file</p>
+        </desc>
+</t>
+<t>
+<field>ISSUER</field>
+<desc>
+            <p>The field defines the Issuer of the security collateral</p>
+            <p>For the collaterals with Security master, the field will get defaulted from SECURITY.MASTER record</p>
+            <p>When there are multiple issuers defined in SECURITY.MASTER record (for each company), all the issuers will get defaulted</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>10 digit multi-value field</p>
+        </desc>
+</t>
+<t>
+<field>COUNTERPARTY</field>
+<desc>
+            <p>Counterparty i.e. Customer of the collateral</p>
+            <p>This is applicable for both security and non-security collaterals</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>10 digit field</p>
+            <p>Valid customer record</p>
+        </desc>
+</t>
+<t>
+<field>EXCLUSION.ID</field>
+<desc>
+            <p>Id of COLLATERAL.EXCLUSION record under which the collateral falls</p>
+            <p>Collateral can be marked for exclusion to exclude the collateral value from liability allocation</p>
+            <p>The exclusion criteria can be Country, Currency, Security code (Security master id in APPLICATION.ID field), Industry and Counterparty</p>
+            <p>If the collateral matches with the exclusion criteria defined in COLLATERAL.EXCLUSION and the EXCLUDE.ALL field in COLLATERAL.EXCLUSION is marked as "Yes", then while committing the collateral record, the collateral exclusion id will be defaulted in this field</p>
+            <p>Can also be manually input</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>12 digit multi-value field</p>
+            <p>Valid record in COLLATERAL.EXCLUSION application</p>
+            <p>The collateral's criteria must match with the collateral exclusion's criteria</p>
+        </desc>
+</t>
+<t>
+<field>COMPANY</field>
+<desc>
+            <p>The company to which the application main file record under APPLICATION.ID belongs. </p>
+            <p>This field is intended for use in multi-company environments only. It indicates the company to which any contract or account id given in the next field belongs. </p>
+            <p>Input must be a valid company mnemonic defined on the company file. </p>
+            <p>The field is defaulted in a single-company environment to the value of the company mnemonic in use. </p>
+            <p>In a multi-company environment, the default value is determined by the appropriate field on the (signed-on) company record according to the content of the corresponding APPLICATION.ID. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 3 alphabetic characters (company mnemonic).  (Optional input; default value determined by signed-on company)</p>
+        </desc>
+</t>
+<t>
+<field>ADDRESS</field>
+<desc>
+            <p>The address of the collateral, if applicable. </p>
+            <p>Free text field in which to record the address, if applicable to the type of collateral, or any other required descriptive information. </p>
+            <p>It is possible to instruct the system, via the collateral parameter table, to automatically default details from the customer record into this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 characters free text.  Multi-value field. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>APPLICATION</field>
+<desc>
+            <p>The application to which the reference in APPLICATION.ID belongs. </p>
+            <p>If an application reference has been given under APPLICATION.ID, the system records, in this field, the short code of the module to which it belongs as follows: </p>
+            <p>          AC - Account </p>
+            <p>          FD - Fiduciaries </p>
+            <p>          LD - Loans &amp; Deposits </p>
+            <p>          MD - Miscellaneous Deals </p>
+            <p>          MM - Money Market </p>
+            <p>          SC - Securities </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'AC', 'FD', 'LD', 'MD', 'MM' or 'SC'.</p>
+            <p>Internal field.  This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>APPLICATION.ID</field>
+<desc>
+            <p>The contract or account id by which the collateral object is represented. </p>
+            <p>This field is used to link the collateral to a deposit or credit balance recorded elsewhere in the system. </p>
+            <p>Valid input is any contract/account number as follows: </p>
+            <p />
+            <p>account number; item-id to account file</p>
+            <p>bill contract number with OPERATION as COLLATERAL</p>
+            <p>fiduciary deposit (order) number </p>
+            <p />
+            <p>letter of credit transaction number</p>
+            <p />
+            <p>(loans &amp;) deposits contract number, </p>
+            <p />
+            <p>miscellaneous deal number, </p>
+            <p />
+            <p>money market contract number, </p>
+            <p />
+            <p>securities portfolio number, </p>
+            <p />
+            <p>sub-asset group within a portfolio, </p>
+            <p />
+            <p>security id within a sub-asset group within a portfolio. </p>
+            <p>If a deposit contract, contingent asset or account is referenced, the system will calculate its current value and place this in NOMINAL.VALUE and/or EXECUTION.VALUE of the COLLATERAL record according to the definition of fed &amp; fed/margin values. </p>
+            <p>If a portfolio number is entered, a similar action is taken, except that the system will first observe the definition of asset &amp; sub-asset types belonging to the COLLATERAL.TYPE. The rules for defining assets of a portfolio and for the system's calculation of their value is described below. </p>
+            <p>If the APPLICATION.ID in this field is entered in the format: customer number; '-'; portfolio number; '.'; sub-asset type; '.'; asset type;'*'; security number. The actual collateral value will be the margin value of the individual security. Validation ensures the security number is valid and that it is part of the portfolio. The security number can be entered as either a full security number, a mnemonic or as short form input. </p>
+            <p>If the APPLICATION.ID in this field is entered in the format: customer number; '-'; portfolio number; '.'; sub-asset type; '.'; asset type, then it forms the key to a record on the SC POS ASSET file. This refers to a particular group of assets within a portfolio (as defined by asset &amp; sub-asset type). In this case, the value of the collateral is calculated by taking the current value of the assets which belong to this group but not including any particular items which are defined elsewhere as collateral (i.e. individual accounts, deposits etc). </p>
+            <p>If the APPLICATION ID is entered in the format: customer number; '- '; portfolio number, then it refers to a record on the SEC.ACC.MASTER file and defines either the whole portfolio or a part of it according to the COLLATERAL.TYPE. The calculation of the associated value is described below. </p>
+            <p>If a SEC.ACC.MASTER id is entered, the system will check the COLLATERAL.TYPE record indicated by the content of field 1. If this record has a list or a range of asset &amp; sub-asset types associated with it, the system will assign the value of only those assets of the portfolio which correspond to one of the defined types or fall within one of the defined ranges. The value of any individual accounts or contracts which are defined separately as collateral items will not be taken into account. If an individual SC POS ASSET record belonging to the portfolio is separately defined as a collateral item, its value, too, will be disregarded. </p>
+            <p>Finally, if a complete portfolio is referenced, by SEC.ACC.MASTER id under a COLLATERAL.TYPE for which no asset groupings have been defined, the full value of the portfolio is calculated. However, the same rules apply to individually defined items at a lower level of detail. In other words, values of individual assets will be ignored if they are separately defined (either by direct reference, by SC.POS.ASSET id or by inclusion in an asset group defined at the level of COLLATERAL.TYPE). </p>
+            <p>In each case, the reference given should belong to the customer mentioned in the item-id to the collateral record. If this is not the case, an override condition must be accepted. </p>
+            <p>The collateral type determines whether input to this field is mandatory, optional or not allowed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 34 alphanumeric characters; exact format determined         by the application to which the reference belongs. (Optional         input, depending on collateral type)</p>
+            <p />
+            <p>Input is not permitted if the value of APPLICATION.INPUT         on the COLLATERAL.TYPE file is 'N'.</p>
+            <p />
+            <p>The reference must belong to one of the permitted         applications defined under APPLICATION on the COLLATERAL.TYPE         file.</p>
+            <p />
+            <p>MD.DEALS where the client of the contract and the         COLLATERAL id are the same must be Asset types</p>
+            <p> Allows both contingent and non-contingent accounts. Account must be contingent when ALLOWED.ACT.BAL field of COLLATERAL.TYPE is MINUS or BOTH</p> 
+        </desc>
+</t>
+<t><field>COLLATERAL.RIGHT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>SECURITY.CODE</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>EXC.ID</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

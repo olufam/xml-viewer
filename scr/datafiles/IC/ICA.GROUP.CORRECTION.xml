@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>IC</product>
+<table>ICA.GROUP.CORRECTION</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>ICA.GROUP.CORRECTION</p>
+            <p>The normal T24 end of day interest and charges processing updates this file whenever an ICA main account is subject to capitalisation correction.</p>
+            <p>This file is then used to drive the ICA group capitalisation and interest distribution processing.</p>
+            <p>It stores details of all ICA specific ACCT.ACTIVITY and STMT.ACCT.XX records used by the ICA end of day processing.</p>
+            <p>If a sub account was not a member of the group for the whole of the capitalisation period (partial member) then interest has to be calculated for only the time that the sub account was a group member. This requires special ACCT.ACTIVITY and STMT.ACCT.XX records with a key structure of MAIN.ACCOUNT*SUB.ACCOUNT-date.</p>
+            <p />
+            <p />
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>MAX.PROC.LEVEL</field>
+<desc>
+            <p>MAX.PROC.LEVEL</p>
+            <p>This field stores the highest number of links (or levels) between this account and the top of the ICA hierarchies it has been a member of. </p>
+            <p>An ICA hierarchy consists of linked groups of accounts, each group has a main account to which sub accounts are linked.</p>
+            <p>A main account in one group can be a sub account in another group.</p>
+            <p>The main account of the highest level group is the top account.</p>
+            <p>In order to calculate ICA group interest the combined balances of all in the group are used.</p>
+            <p>If a group contains sub accounts which are themselves main accounts of lower level groups then group interest is calculated using the group balances of the lower level group of which the sub account is the main account rather than the balance of the sub account itself.</p>
+            <p>The balances of each group are combined into special ACCT.ACTIVITY records, which contain the combined balances for the whole group.</p>
+            <p>This scenario requires that the lowest level groups in the hierarchy are processed first so that their combined balances are available for the group interest calculations of the higher level groups.</p>
+            <p>The structure of the ICA hierarchy can also change with time as group links can be moved from one level to another or even to different hierarchies.</p>
+            <p>The MAX.PROC.LEVEL field is used to store the lowest level that a group has been, (in fact the highest number of links between it and the top of a hierarchy) in order that the ICA group interest processing takes place in the correct order. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Numeric field</p>
+        </desc>
+</t>
+<t>
+<field>OLDEST.DATE</field>
+<desc>
+            <p>The oldest back value date for which ICA correction processing is required</p>
+        </desc>
+</t>
+<t>
+<field>MAIN.ACCTY.KEY</field>
+<desc>
+            <p>MAIN.ACCTY.KEY</p>
+            <p>Contains the key for the ACCT.ACTIVITY record/s that contains combined balances for the ICA group.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>START.DATE.CR</field>
+<desc>
+            <p>START.DATE.CR</p>
+            <p>Indicates the start date for the credit capitalisation period</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Date</p>
+        </desc>
+</t>
+<t>
+<field>PART.STMTD2</field>
+<desc>
+            <p>PART.STMT.D2</p>
+            <p>Contains a list of STMT.ACCT.DR2 record keys, which store the interest calculated using the ACCT.ACTIVITY record/s defined in PART.ACCTYS.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>START.DATE.DR</field>
+<desc>
+            <p>START.DATE.DR</p>
+            <p>Indicates the start date for the debit capitalisation period</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Date</p>
+        </desc>
+</t>
+<t>
+<field>PARTIAL.ACCOUNT</field>
+<desc>
+            <p>PARTIAL.ACCOUNT</p>
+            <p>Contains a list of sub accounts, which were partial members of the group during the capitalisation period, i.e. between the start and end dates of the capitalisation period.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Account numbers</p>
+        </desc>
+</t>
+<t>
+<field>PART.ACCTYS</field>
+<desc>
+            <p>PART.ACCTYS</p>
+            <p>Contains a list of ACCT.ACTIVITY keys for sub accounts, which contain balances only for the time that the account was a member of the group.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Sub valued associated with PARTIAL.ACCOUNT</p>
+        </desc>
+</t>
+<t>
+<field>PART.STMTC2</field>
+<desc>
+            <p>PART.STMT.C2</p>
+            <p>Contains a list of STMT.ACCT.CR2 record keys, which store the interest calculated using the ACCT.ACTIVITY record/s defined in PART.ACCTYS.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>PART.STMTCR</field>
+<desc>
+            <p>PART.STMT.CR</p>
+            <p>Contains a list of STMT.ACCT.CR record keys, which store the interest calculated using the ACCT.ACTIVITY record/s defined in PART.ACCTYS.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>START.DATE.CR2</field>
+<desc>
+            <p>START.DATE.CR2</p>
+            <p>Indicates the start date for the credit 2 capitalisation period</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Date</p>
+        </desc>
+</t>
+<t>
+<field>START.DATE.DR2</field>
+<desc>
+            <p>START.DATE.DR2</p>
+            <p>Indicates the start date for the debit 2 capitalisation period</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Date</p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.END</field>
+<desc>
+            <p>The period end date of the correction period</p>
+        </desc>
+</t>
+<t>
+<field>END.DATE</field>
+<desc>
+            <p>END.DATE</p>
+            <p>Indicates the end date of the current capitalisation period for the main account in the group.</p>
+            <p>I.e. when it was capitalised.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Date</p>
+        </desc>
+</t>
+<t>
+<field>GROUP.ID</field>
+<desc>
+            <p>The key to ICA.GROUP.DETAIL which is the main account for this ICA compensation group</p>
+        </desc>
+</t>
+<t>
+<field>INTEREST.CALC</field>
+<desc>
+            <p>INTEREST.CALC</p>
+            <p>Indicates the capitalisation interest calculations to perform.</p>
+            <p>Normally set to NYYYYG</p>
+            <p>Each character in the 6 character field means the following</p>
+            <p>N = no charge correction</p>
+            <p>YYYY = correct debit 1 debit 2 credit 1 and credit2 interest</p>
+            <p>G indicates that ICA group processing is taking place</p>
+            <p />
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>6 character alphabetic field</p>
+        </desc>
+</t>
+<t>
+<field>KEY</field>
+<desc>
+            <p>ICA.GROUP.CORRECTION.KEY</p>
+            <p>The main account number and capitalisation date, which has been subject to interest and charges correction processing.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Account number - date</p>
+        </desc>
+</t>
+<t>
+<field>RUN.DATE</field>
+<desc>
+            <p>RUN.DATE</p>
+            <p>Contains the system end of day date indicating when the group calculation was actually performed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Date</p>
+        </desc>
+</t>
+<t>
+<field>PART.STMTDR</field>
+<desc>
+            <p>PART.STMT.DR</p>
+            <p>Contains a list of STMT.ACCT.DR record keys, which store the interest calculated using the ACCT.ACTIVITY record/s defined in PART.ACCTYS.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

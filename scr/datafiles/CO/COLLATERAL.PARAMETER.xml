@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>CO</product>
+<table>COLLATERAL.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This file permits the company-level definition of system parameters. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>PARTIAL.BLOCK</field>
+<desc>
+            <p>This is used to control whether it is possible to enter multiple COLLATERAL records using the same item of collateral.</p>
+            <p>The default is empty (blank or null). This is a passive state indicating that the choice has not been defined, from there it is possible to allow multiples by setting to YES; or to disallow them by entering NO.</p>
+            <p>In processing NO and blank are treated as the same and multiple COLLATERAL records for the same item are not permitted.</p>
+            <p>When set to YES you may enter multiple COLLATERAL records setting the value of each as a percentage (or manually).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Once set to Yes or No cannot be changed</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DEFAULT.ADDRESS</field>
+<desc>
+            <p>Item-id to collateral type file. Indicates types of collateral for which the address is to be defaulted from the customer record. </p>
+            <p>Indicates to the system that the address fields from the customer record are to be used as default values in the address fields on the collateral main file. The types of collateral for which this facility is required are entered here. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 3-digit numeric. Multivalue field. (Optional input)</p>
+            <p>Values may not be duplicated.</p>
+        </desc>
+</t>
+<t>
+<field>ONLINE.UPDATE</field>
+<desc>
+            <p>This field controls online update of cash collaterals. If cash collateral such as account, deposits (LD, MM), securities and fiduciary are attached to a limit record; any change in these collateral value are updated during the End of Day process. If such collateral, if value to be updated online then this field is to be marked as "Y". (LIMIT record where the cash collateral are attached, also to be marked "Y" in the online update field along with Online update field marked "Y" in COLLATERAL.TYPE) In such cases the collateral is recalculated when the limit reference is drawn. If the field is marked "N" or left blank then no online update process is done.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Optional Input field </p>
+            <p>Input can be Y,N or null </p>
+            <p>Input allowed only if the execution value(field 5) contains value F (FED) </p>
+            <p>Online update of cash collateral is done only when online update fields in </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>COLLATERAL.PARAMETER, COLLATERAL.TYPE &amp; LIMIT records are marked "Y"</p>
+        </desc>
+</t>
+<t>
+<field>COVER.UNSEC.1ST</field>
+<desc>
+            <p>The portion of a LIMIT which is allowed unsecured by collateral may be allowed before any collateral is allocated or it may be allowed after an amount covered by collateral.</p>
+            <p>If this field is "Y" then the unsecured amount is allowed without any collateral being needed and only when the unsecured amount is exceeded is collateral allocated. If this field is "N" then an unsecured amount is allowed after no more collateral cover is available.</p>
+            <p>Blank is treated as "N".</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Y/N or blank</p>
+        </desc>
+</t>
+<t>
+<field>FX.RISK.MARGIN</field>
+<desc>
+            <p>COLLATERAL.PARAMETER </p>
+            <p>FX.RISK.MARGIN</p>
+            <p>Margin for the collateral currency defined in field COLLATERAL.CCY. When the user desires to cover the  Currency conversion risk factor in respect of collaterals in currencies different from the limit currency then this field can be used to define the desired margin.</p>
+            <p>E.g.</p>
+            <p>Take a limit 100053.400.01 in currency USD. For this limit a collateral in GBP50000 is taken. The execution value for this collateral is 100%N. If no margin is defined in this field for the Collateral currency GBP, then the SECURED.AMT under the corresponding COLLAT.RIGHT in the limit record 100053.400.01 will be updated with USD77875 (assuming Mid Reval rate for GBP to USD as 1.5575). If the user defines a FX.RISK.MARGIN as 95% in this field, then the SECURED.AMT in the limit will be USD73981.25(that is 50000*1.5575*95/100).</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Numeric up to 3 characters (0 to100)</p>
+            <p>Multi value field associated with field  COLLATERAL.CCY</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>LIMIT.INTERFACE</field>
+<desc>
+            <p>Reserved for future use.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>RETENTION.PERIOD</field>
+<desc>
+            <p>The retention period for liquidated collateral records. A period after the expiry date has been reached during which they remain on the 'live' file. </p>
+            <p>This parameter controls the first step in the cycle of archiving collateral records. </p>
+            <p>The content of the field specifies a period of time as follows: </p>
+            <table border="0">
+                <tr>
+                    <td>nnD</td>
+                    <td>nn days</td>
+                </tr>
+                <tr>
+                    <td>nnM</td>
+                    <td>nn months</td>
+                </tr>
+                <tr>
+                    <td>nnY</td>
+                    <td>nn years</td>
+                </tr>
+            </table>
+            <p>In each case, this period of time must elapse before a set of associated collateral records are moved from the live file and placed on the history file. </p>
+            <p>This elapsed period is taken from the date of the collateral right's EXPIRY DATE. </p>
+            <p>Any collateral main file (object) records are moved to history together with their associated right. The status of all records moved is set to 'MAT'. </p>
+            <p>This process is performed as part of the collateral application's end-of-day. The archiving of history records (their complete removal from disk) is handled by the Archiving module. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>2 to 3 alphanumeric characters; nnx where nn is a number         in the range 1 to 99 and x is either 'D', 'M' or 'Y'. (Optional         input)</p>
+        </desc>
+</t>
+<t>
+<field>STAT.REP.LINE.DESC</field>
+<desc>
+            <p>Identifies which descriptive field from the report lines file is used to enrich the source &amp; target line fields on the collateral allocation table. </p>
+            <p>The value of this field determines which of the values in the F.RE.STAT.REP.LINE field DESC is used to provide an enrichment to the collateral allocation fields SOURCE LINE &amp; TARGET LINE.</p>
+            <p>These source &amp; target fields are recorded on the collateral allocation table using the CRF line numbers (ie. those numbers which form the second part of the key to records on F.RE.STAT.REP.LINE). </p>
+            <p>In order to clarify the meaning of the line numbers on this table, this parameter may be used to instruct the system to display against them one of the available descriptive lines from the report lines file. </p>
+            <p>The number in this field indicates which value to use.</p>
+            <p>If no value is entered here, no descriptive enrichment appears. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>'1', '2' or '3'. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>REVALUATION.INFO</field>
+<desc>
+            <p>Determines to what extent a history of the revaluation of a collateral record is kept (ie. how many previous values). </p>
+            <p>A numeric parameter which determines how many values are stored on the collateral main file in REVALUED DATE &amp; REVALUED AMOUNT. </p>
+            <p>Each time the collateral is revalued, the system records the previous value of the EXECUTION VALUE and the date at which the revaluation took place in the fields mentioned above. </p>
+            <p>This parameter determines how much of this historical information is kept in the system by limiting the number of multivalues used. </p>
+            <p>When the maximum number of values defined in this field has been reached, the system automatically discards the oldest each time a new one is added. </p>
+            <p>Zero is allowed. If no value is given, the value one is assumed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1 to 2-digit numeric. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>ORDER.PRIORITY</field>
+<desc>
+            <p>Determines whether manual allocation of priority in COLLATERAL.RIGHT is allowed.</p>
+            <p>"NONE" or "MANUAL"</p>
+            <p>This value must be the same for all companies and so can only be changed via the LIMIT.CHANGE application. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System-maintained.</p>
+        </desc>
+</t>
+<t>
+<field>ALLOC.BY.PARAMETER</field>
+<desc>
+            <p>Determines whether the collateral allocation should be done as parameterized in CO.ALLOCATION.PARAMETER. </p>
+            <p>This is no input field which will be updated while authorization and reverse of CO.ALLOCATION.PARAMETER record. </p>
+            <p>When a new record is created in CO.ALLOCATION.PARAMETER, this field would be updated with YES if the field is null. </p>
+            <p>The field would be set to null when the last record in CO.ALLOCATION.PARAMETER is reversed. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System-maintained.</p>
+        </desc>
+</t>
+<t>
+<field>REALTIME.ALLOC</field>
+<desc>
+            <p>Determines whether the online collateral valuation to be performed or not. </p>
+            <p>This is USER input field which accepts YES, NO or numeric value 1 to 99. </p>
+            <p>YES - Collateral valuation should be performed online. </p>
+            <p>NO  - Collateral valuation should not performed online. </p>
+            <p>1 to 99 - Collateral valuation should be performed online on the specified time interval. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p></p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.BALANCE</field>
+<desc>
+            <p>Determines which balance field to be considered from EB.CONTRACT.BALANCES for accounts, to update the NOMINAL.VALUE, EXECUTION.VALUE, GEN.LEDGER.VALUE and CENTRAL.BANK.VALUE in the Collateral record.</p>
+            <p>Allowed values are 'W' Working balance or 'C' online Cleared balance or 'TD' Trade Dated GL balance</p>
+            <p>If no value is given, by default system considers online Cleared balance for updating the above balance fields.</p>
+            <p>If the balance from the above fields of ECB is negative, then the NOMINAL.VALUE, EXECUTION.VALUE, GEN.LEDGER.VALUE and CENTRAL.BANK.VALUE will be updated as zero.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>'W' or 'C' or 'TD'. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>COLLATERAL.CCY</field>
+<desc>
+            <p>COLLATERAL.PARAMETER </p>
+            <p>COLLATERAL.CCY</p>
+            <p>Collateral currency for which FX risk margin is to be specified. Multi value field associated with Field  FX.RISK.MARGIN.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Any valid Currency defined in the Currency table.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>COLLATERAL.LINK</field>
+<desc>
+            <p>Provides the user with a direct link from the input screen of the collateral right to the input of collateral objects belonging to it. </p>
+            <p>A parameter which determines whether the collateral right application links automatically to the input screen of the collateral object application. There is no automatic link unless a value is entered here. </p>
+            <p>The value '1ST' indicates normal processing, whereby input &amp; authorization of a new collateral right links directly into the same function on the corresponding object. </p>
+            <p>The value 'ALL' indicates that the same link is to be provided each time input (&amp; authorization) of a change is made to an existing collateral right. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'1ST' or 'ALL'. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>COMPANY.ID</field>
+<desc>
+            <p>The company for which the parameter record applies. </p>
+            <p>The collateral parameter table is a company-level table. The item-id to the parameter record must exist as a valid company code on the company file. </p>
+            <p>In a single-company environment, enter the id (or mnemonic) of the company record. </p>
+            <p>In a multi-company environment, separate parameter records may be entered for each company at which customer-level details are defined. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 11 alphanumeric characters (company id).</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+        <p>This is a multi valued field. Standard T24 alphanumeric field. </p>
+        <p>
+           <p>Validation Rules:</p>
+        </p>
+        <p> A maximum of 35 characters may be entered.</p>
+    </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+        <p>This is a multi valued field. </p>
+        <p>Contains details of any override applicable to this record.</p>
+        <p>
+           <p>Validation Rules:</p>
+        </p>
+        <p> A maximum of 35 characters may be entered. This is a NOINPUT field.</p>
+    </desc>
+</t>
+</menu>
+</t24help>
+

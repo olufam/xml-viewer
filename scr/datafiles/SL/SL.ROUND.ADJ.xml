@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SL</product>
+<table>SL.ROUND.ADJ</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The application SL.ROUND.ADJ is used to facilitate updating rounding adjustments to participant balances. This front end is available only if LIQUIDATION.MODE in the FACILITY / SL.LOANS (SLL) is set as INTERNAL. Rounding adjustments are enabled for</p>
+            <p> (a)</p>
+            <p />Commitment fee for Facility <p>(b)</p><p />Interest for SLL and   <![CDATA[ ]]><p>(c)</p><p />Tax for the above two <p>The agent of a facility would apportion the interest (or commitment fee) amongst the participants following a particular method of rounding. In case the borrower follows a different method of rounding the apportionment for interest (or commitment fee) and the tax thereon if any, would vary. This application allows the agent to re-apportion the dues to the participants in line with the borrower's calculation. </p><p>The purpose of this application is to handle rounding adjustments and in order to prevent input errors by the user, a permissible deviation value (from the existing calculation) may be defined in MAX.ROUNDING field in SL.PARAMETER. </p><p>System would perform validations to ensure that the amounts adjusted are within this allowed deviation. Adjustments are possible for interest, commitment fee and tax thereon. If T24 bank's share is adjusted accrual adjustment is handled ONLINE. </p><p>The @ID of SL.ROUND.ADJ may either be the</p><p /><p /><p />Facility ID plus a past Commitment fee due date (already cycled) or <p /><p /><p />SLL ID plus a past interest due date (already cycled). <p>There should be a valid SL.OD.DUES record (either Facility or SLL) with similar ID (Facility/SLL plus date) for user to do adjustment.</p><p>If T24 bank acts as only an Agent and does not participate in the Facility, while writing participant's information in fields Part.ID, Part.Share and  Revd.Share, T24 bank's reference is also added with Part.Share showing zero value. This is done to accommodate skimming adjustments where Revd.Share alone may be input with the amount of skim income. </p><p>In such scenario, accounting entries for the skim income would be raised ONLINE on authorising SL.ROUND.ADJ</p></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>RESERVE.03</field>
+<desc>
+            <p>reserved for future use</p>
+        </desc>
+</t>
+<t>
+<field>RESERVE.04</field>
+<desc>
+            <p>reserved for future use</p>
+        </desc>
+</t>
+<t>
+<field>PART.ID</field>
+<desc>
+            <p />
+            <p>ID of the participant of the FACILITY / SLL. System written, no input by user. </p>
+            <p />
+            <p>The due amount </p>
+            <p>is defaulted based on outstanding for respective asset type from the participant balances file in field Part.Share</p>
+            <p />
+            <p>This is the calculation that is available as per T24 bank books and the user may modify this amount by inputting in Revd.Share.</p>
+            <p />
+            <p>The difference in amounts between Part.Share and Revd.Share may not exceed the amount specified in MAX.ROUNDING field in SL.PARAMETER. Such validation is performed for all participants other than T24 bank</p>
+            <p />
+            <p>For T24 bank this validation is performed only for downward adjustment. For any upward adjustment in Revd.Share (if Revd.Share is greater than Part.Share) this validation is skipped in order accommodate skimming adjustments.</p>
+            <p />
+            <p>In case the borrower is charged a different rate than the one charged by the participants, the difference is skimmed by the agent. </p>
+            <p />
+            <p>Ex - Three participants to a facility whose current period commitment fee is 100. The individual share that has been worked out are </p>
+            <p />
+            <p>A (T24 bank) - 40</p>
+            <p />
+            <p>B (outside participant) - 30</p>
+            <p />
+            <p>C (outside participant) - 20</p>
+            <p />
+            <p>The difference of 10 is skimmed by A and so its share is to be adjusted to be 50 (from 40). In this case, TOT.DUE.AMT would be written for 100, with Part.Share for A, B and  C as 40, 30 and  20 respectively. User would input the Revd.Share for A as 50 to include the skim amount also. </p>
+            <p />
+            <p>If there are rounding differences (if aggregate of Part.Share does not equal Tot.Due.Amt) this record cannot be committed and SL.OD.SETTLE cannot be used to settle the dues.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System written. No input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVE.02</field>
+<desc>
+            <p>reserved for future use</p>
+        </desc>
+</t>
+<t>
+<field>RESERVE.05</field>
+<desc>
+            <p>reserved for future use</p>
+        </desc>
+</t>
+<t>
+<field>SL.ADJ.ID</field>
+<desc>
+            <p>The @ID of SL.ROUND.ADJ may either be the</p>
+            <p />
+            <p />
+            <p />Facility ID hyphenated by a past Commitment fee due date (already cycled) or <p /><p /><p />SLL ID hyphenated by a past interest due date (already cycled). <p>There should be a valid SL.OD.DUES record (either Facility or SLL) with similar ID (Facility/SLL plus date) for user to do adjustment.</p></desc>
+</t>
+<t>
+<field>REVD.SHARE</field>
+<desc>
+            <p>The revised share of the participant after adjusting the rounding differences is input here. </p>
+            <p>If no input is made, system defaults the Part.Share and hence input is required only in case of participants where adjustments are required. </p>
+            <p>The revised share as appearing in this field is written to participant balances file (old amounts are replaced).</p>
+            <p />
+            <p>The due amount </p>
+            <p>is defaulted based on outstanding for respective asset type from the participant balances file in field Part.Share</p>
+            <p />
+            <p>This is the calculation that is available as per T24 bank books and the user may modify this amount by inputting in Revd.Share.</p>
+            <p />
+            <p>The difference in amounts between Part.Share and Revd.Share may not exceed the amount specified in MAX.ROUNDING field in SL.PARAMETER. Such validation is performed for all participants other than T24 bank. If adjustments are done for T24 bank interest adjustment entries are posted ONLINE.</p>
+            <p />
+            <p>For T24 bank this validation is performed only for downward adjustment. For any upward adjustment in Revd.Share (if Revd.Share is greater than Part.Share) this validation is skipped in order accommodate skimming adjustments.</p>
+            <p />
+            <p>In case the borrower is charged a different rate than the one charged by the participants, the difference is skimmed by the agent. </p>
+            <p />
+            <p>Ex - Three participants to a facility whose current period commitment fee is 100. The individual share that has been worked out are </p>
+            <p />
+            <p>A (T24 bank) - 40</p>
+            <p />
+            <p>B (outside participant) - 30</p>
+            <p />
+            <p>C (outside participant) - 20</p>
+            <p />
+            <p>The difference of 10 is skimmed by A and so its share is to be adjusted to be 50 (from 40). In this case, TOT.DUE.AMT would be written for 100, with Part.Share for A, B and  C as 40, 30 and  20 respectively. User would input the Revd.Share for A as 50 to include the skim amount also. </p>
+            <p />
+            <p>If there are rounding differences (if aggregate of Part.Share does not equal Tot.Due.Amt) this record cannot be committed and SL.OD.SETTLE cannot be used to settle the dues.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Adjustments for value higher than MAX.ROUNDING in SL.PARAMETER not allowed     for participants</p>
+            <p>For T24 bank, adjustment downwards are checked for MAX.ROUNDING     validation</p>
+            <p>Optional input. System defaults Part.Share if no input is made</p>
+            <p>Aggregate of Revd.Share must equal TOT.DUE.AMT</p>
+            <p>\</p>
+        </desc>
+</t>
+<t>
+<field>RESERVE.01</field>
+<desc>
+            <p>reserved for future use</p>
+        </desc>
+</t>
+<t>
+<field>PART.SHARE</field>
+<desc>
+            <p />
+            <p>The due amount </p>
+            <p>is defaulted based on outstanding for respective asset type from the participant balances file in field Part.Share</p>
+            <p />
+            <p>This is the calculation that is available as per T24 bank books and the user may modify this amount by inputting in Revd.Share.</p>
+            <p />
+            <p>The difference in amounts between Part.Share and Revd.Share may not exceed the amount specified in MAX.ROUNDING field in SL.PARAMETER. Such validation is performed for all participants other than T24 bank</p>
+            <p />
+            <p>For T24 bank this validation is performed only for downward adjustment. For any upward adjustment in Revd.Share (if Revd.Share is greater than Part.Share) this validation is skipped in order accommodate skimming adjustments.</p>
+            <p />
+            <p>In case the borrower is charged a different rate than the one charged by the participants, the difference is skimmed by the agent. </p>
+            <p />
+            <p>Ex - Three participants to a facility whose current period commitment fee is 100. The individual share that has been worked out are </p>
+            <p />
+            <p>A (T24 bank) - 40</p>
+            <p />
+            <p>B (outside participant) - 30</p>
+            <p />
+            <p>C (outside participant) - 20</p>
+            <p />
+            <p>The difference of 10 is skimmed by A and so its share is to be adjusted to be 50 (from 40). In this case, TOT.DUE.AMT would be written for 100, with Part.Share for A, B and  C as 40, 30 and  20 respectively. User would input the Revd.Share for A as 50 to include the skim amount also. </p>
+            <p />
+            <p>If there are rounding differences (if aggregate of Part.Share does not equal Tot.Due.Amt) this record cannot be committed and SL.OD.SETTLE cannot be used to settle the dues.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System written. No input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVE.06</field>
+<desc>
+            <p>reserved for future use</p>
+        </desc>
+</t>
+<t>
+<field>TOT.DUE.AMT</field>
+<desc>
+            <p />
+            <p>Aggregate amount of fee or interest due on the respective due date. System written, no input by user.</p>
+            <p />
+            <p>This is the gross amount payable by the borrower. After adjustments are made the aggregate Revd.Share should equal the value in this field If the T24 bank is agent or agent cum participant.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System populated. No input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>DUE.CURRENCY</field>
+<desc>
+            <p>This field is updated with the due currency from the corresponding SL.OD.DUES record
+.</p>
+        </desc>
+</t>
+<t>
+<field>DUE.TYPE</field>
+<desc>
+            <p />
+            <p>Asset Type of due. For Facility the Commitment fee and for SLL,  interest would be populated. System written, no input by the user.</p>
+            <p />
+            <p>For easy understanding the words INT for interest on Loans, FEE for commitment fee and TAX for tax would be written. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System written. No input allowed.</p>
+        </desc>
+</t>
+<t>
+<field>LOC.REFERENCE</field>
+<desc>
+            <p>Contains any additional information that has been defined locally to meet a specific local requirement</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Upto 35 A alphanumeric characters</p>
+            <p>To be defined locally</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

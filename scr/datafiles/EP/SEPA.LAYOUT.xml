@@ -1,0 +1,555 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>EP</product>
+        <title>SEPA.LAYOUT</title>
+        <table>SEPA.LAYOUT</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>This ‘H’ type table defines the structure of each transaction type processed by the interface and is open to any new future destination without any modification in the core program.</p>
+            <p>       A SEPA file consists in a XML formatted message following the Global UNIFI ISO 20022 standard. </p>
+            <p>       The message caters for bulk and single financial instructions. </p>
+            <p/>
+            <p>      It consists of groups of elements:</p>
+            <p>       The first part is the ‘Group Header’ containing the information required for the processing of the entire message (e.g. number of transactions, instructing and instructed agent, settlement date).</p>
+            <p/>
+            <p>       The second, the ‘Transaction information’ is sequentially repeated as often as needed for the description of each transaction detail in the message.</p>
+            <p/>
+            <p>       An additional ‘Original Group information’ sequence is inserted between the two standard groups whenever the purpose of the message is to return, reject or reverse a previous transaction. It contains the failure reason along with the references of the initial message.</p>
+            <p/>
+            <p>       The definition of a SEPA message depends on:</p>
+            <p>       • Its nature: Direct Debit (DD) or Credit Transfer (CT),</p>
+            <p>       • Its sender/receiver: Bank to Bank (BB), Customer to Bank (CB) or Bank to customer (BC)</p>
+            <p>       • Its purpose: Original or follow up message: technical reject (REJ) by a PE-ACH, return (RET) or refund (REF) by the receiver agent or reversal (REV) / cancel (CXL) initiated by the sender.</p>
+            <p/>
+            <p>       Due to incompatibility between sender/receiver and purpose, not all combinations are allowed.</p>
+            <p/>
+            <p>       The key of the SEPA.LAYOUT table consists in the concatenation of these elements:</p>
+            <p>        INWARD/OUTWARD:’.’:aaa </p>
+            <p>       The operation code aaa is a free 3 digits code to be defined by the bank.</p>
+            <p>       The message XML formatting and mapping is done here after. A same tag may appear in different sequences and thus have a different signification. The correspondence with the destination T24 application fields in inward and the mapping from the generating T24 application in outward is also done here. Each of these different treatments requires its own entry in that table respectively prefixed with ‘INWARD’ and ‘OUTWARD’.</p>
+        </ovdesc>
+    </overview>
+    <menu>
+        <t>
+            <field>DELIVERY.ROUTINE</field>
+            <desc>
+                <p>This Field Specifies advice generation routine. A routine can be attached here for generation of advices during processing of message through this layout.</p>
+                <p/>
+                <p>     Validation Rules</p>
+                <p>    Routine name prefixed by &apos;@&apos;</p>
+                <p>    Value upto 35 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>DESCRIPTION</field>
+            <desc>
+                <p>This field contains the Short description for enrichment.</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Value upto 35 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.ARCHVE</field>
+            <desc>
+                <p>If this field is set to ‘Y’ and if the FIELD.DETAIL is left empty, the corresponding element will be recorded separately in a multi-value field of SEPA.INWARD or SEPA.OUTWARD archive files. </p>
+                <p>       If left empty, the element might not be used in a T24 enquiry based on these fields. </p>
+                <p/>
+                <p>     Validation Rules</p>
+                <p>    Value upto 1 and user can input only &apos;Y&apos; OR &apos;BLANK&apos;</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.DETAIL</field>
+            <desc>
+                <p>This field holds the Key to SEPA.FIELDS used to:</p>
+                <p>       Set the &apos;Inward&apos; original or modified content into SEPA.INWARD or SEPA.INWARD.FILES.</p>
+                <p>       Set the &apos;Outward&apos; original or modified content into SEPA.OUTWARD, SEPA.OUTWARD.FILES or SEPA.FOLLOW.UP.</p>
+                <p>       Retrieve the outward tag element mapping from a T24 application or an inward flat file. Calculate or default the content of any tag.</p>
+                <p/>
+                <p>     Validation Rules</p>
+                <p>    Value upto 40 type ANY(Any Character) and Associated Multi value Subset</p>
+                <p>    Must exist in SEPA.FIELDS application</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.EXTRCT</field>
+            <desc>
+                <p>This Field is Associated with one or more (with “,” as separator) MAP.FIELDS defined in SEPA.PARAMETER to the retrieved or extracted element.</p>
+                <p>       (e.g NARR2-3 for 3rd element concatenated on 2nd multi-value of field PAYMENT.DETAILS or TOLD3 for 3rd element of old transaction Id). </p>
+                <p/>
+                <p>     Validation Rules </p>
+                <p>    Value upto 40 type A(Alphanumeric) and Associated Multi value set of field FIELD.DETAIL to FIELD.ARCHVE</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.FORMAT</field>
+            <desc>
+                <p>This field holds the Key to corresponding UNIFI.XML.FORMAT. This field is part of Multi-Value set under each FILED.TAG.ID, that gets default value from the selected UNIFI.XML.MSG.ID.</p>
+                <p/>
+                <p>     Validation Rules</p>
+                <p>    Value upto 40 type ANY(Any Character) and Associated Multi value set of field FIELD.TAG.ID to FIELD.ARCHVE</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.NAME</field>
+            <desc>
+                <p>This Field contains the Short name for that element used as enrichment for a related log message. This field is part of Multi-Value set under each FILED.TAG.ID, that gets default value from the selected UNIFI.XML.MSG.ID.</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Value upto 40 type A(Alphanumeric) and Associated Multi value set of field FIELD.TAG.ID to FIELD.ARCHVE</p>
+                <p>     Defaults from the UNIFI.XML.MESSAGE and can be changed if required with free text description.</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.TAG.ALTER</field>
+            <desc>
+                <p>This field holds an Unique identification of alternative tags. </p>
+                <p/>
+                <p>     Validation Rules</p>
+                <p>     Value upto 40 type A(Alphanumeric) and Associated Multi value set of field FIELD.TAG.ID to FIELD.ARCHVE</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.TAG.ID</field>
+            <desc>
+                <p>This field holds an Unique identification of a basic tag as defined in the given UNIFI.XML.MESSAGE record. </p>
+                <p/>
+                <p>     Validation Rules</p>
+                <p>      Value upto 40 type A(Alphanumeric) and NOINPUT field gets defaulted from the selected UNIFI.XML.MSG.ID.</p>
+                <p>    Mandatory field and Multi value set</p>
+            </desc>
+        </t>
+        <t>
+            <field>FIELD.TAG.OCCUR</field>
+            <desc>
+                <p>This field is part of Multi-Value set under each FILED.TAG.ID, that gets default value from the selected UNIFI.XML.MSG.ID.</p>
+                <p/>
+                <p>     Number of occurrences for that TAG.</p>
+                <p>       0.0 : Not considered</p>
+                <p>       1.0 : One occurrence or none</p>
+                <p>       1.1 : Occurs only once</p>
+                <p>       n.0 : Any occurrence or none</p>
+                <p>       n.1 : Occurs at least once</p>
+                <p>       n.M : Occurs at least M times</p>
+                <p>       N.0 : Up to N occurrences or none.</p>
+                <p>       N.M : Occurs between M and N times.</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Value upto 4 type A(Alphanumeric) and Associated Multi value set of field FIELD.TAG.ID to FIELD.ARCHVE </p>
+                <p>     Defaults from the UNIFI.XML.MESSAGE and can be changed if required with any of the above specified values.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>AFTER.AUTH.RTN</field>
+            <desc>
+                <p>This Field Contains the name, prefixed by @, of routines to be executed after the whole processing of a transaction (but prior to the automatic validation of a return / refund of an inward one).</p>
+                <p>       This allows to modify both accept FT and refusal SEPA.FOLLOW.UP in inward as well as updating other local applications.</p>
+                <p>       These specific routines will be executed after these defined in the equivalent field of SEPA.PARAMETER.</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Routine name prefixed by &apos;@&apos;</p>
+                <p>     Value upto 35 type A(Alphanumeric) and individual Multi Value field</p>
+            </desc>
+        </t>
+        <t>
+            <field>GENERATED.OPER</field>
+            <desc>
+                <p>This field holds the Key to SEPA.LAYOUT. For a given C2B message, Id of the generated B2B message.</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Value upto 20 type A(Alphanumeric) and must exist in SEPA.LAYOUT application </p>
+                <p>     Multi Value set</p>
+            </desc>
+        </t>
+        <t>
+            <field>GENERATED.OPER.RTN</field>
+            <desc>
+                <p>This field is a Second Multi-value field to be defined for each GENERATED.OPER, if required. </p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Routine name (prefix with @) for the key attached to GENERATED.OPER field</p>
+                <p>     Value upto 30 type A(Alphanumeric) and Associated multi value set of field GENERATED.OPER</p>
+            </desc>
+        </t>
+        <t>
+            <field>MAPPING.KEY</field>
+            <desc>
+                <p>This field holds the Key to the DE.MAPPING used for the generation of a customer advice.</p>
+                <p/>
+                <p>    Validation Rules -</p>
+                <p>     Value upto 10 type A(Alphanumeric) and value should exist in DE.MAPPING </p>
+            </desc>
+        </t>
+        <t>
+            <field>MSG.NATURE</field>
+            <desc>
+                <p>This field holds the Key to the SEPA.NATURE concerned:</p>
+                <p>       DD: Direct debit</p>
+                <p>       CT: Credit Transfer</p>
+                <p>       NF: Non Financial Operation</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Value must be 2 type A(Alphanumeric) and must exist in SEPA.NATURE application </p>
+                <p>    Mandatory field</p>
+            </desc>
+        </t>
+        <t>
+            <field>NOSTRO.ACCT.NO</field>
+            <desc>
+                <p>This field contains the Nostro counterparty account for SEPA. May be an ACCOUNT.CLASS or a routine name prefixed by @ that returns either an ACCOUNT Id or an ACCOUNT.CLASS in the common variable COMI.</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Valid T24 NOSTRO ACCOUNT</p>
+                <p>     Value upto 35 type A(Alphanumeric) and must exist in ACCOUNT Application </p>
+            </desc>
+        </t>
+        <t>
+            <field>OFFSET.ACCT.NO</field>
+            <desc>
+                <p>This field contains the Account systematically substituted to the customer account for all transactions.</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Valid T24 INTERNAL ACCOUNT</p>
+                <p>     Value upto 16 type ANT(Account number) and must exist in ACCOUNT Application </p>
+            </desc>
+        </t>
+        <t>
+            <field>OVERRIDE</field>
+            <desc>
+                <p>This Field is defaulted with the Override message generated for this application.</p>
+                <p/>
+                <p>    Validation Rules </p>
+                <p>    value upto 35 type A(Alphanumeric) and NOINPUT field</p>
+            </desc>
+        </t>
+        <t>
+            <field>PEACH.ID</field>
+            <desc>
+                <p>This field contains the Peach Id in SEPA.PEACH</p>
+                <p/>
+                <p>     Validation Rules </p>
+                <p>    value upto 10 and must exist in SEPA.PEACH application </p>
+            </desc>
+        </t>
+        <t>
+            <field>PREVIOUS.OPER</field>
+            <desc>
+                <p>This Field holds the Key to SEPA.LAYOUT. List of original transactions that might be rejected, returned, refund or reversed by this one.</p>
+                <p>       This field is automatically updated. </p>
+                <p/>
+                <p>     Validation Rules</p>
+                <p>    Value upto 20 type A(Alphanumeric) and must exist in SEPA.LAYOUT application.</p>
+            </desc>
+        </t>
+        <t>
+            <field>PROCESS.TYPE</field>
+            <desc>
+                <p>This field Specifies process type for the transaction. </p>
+                <p>       ‘OFT’: Direct booking on the customer account/Internal account/Nostro account through FUNDS.TRANSFER.</p>                
+                <p>       ‘RET’ (BB) or ‘REJ’ (CB): (Inward only). Booking on a transit account and generation of a return / reject message via automatically authorized SEPA.FOLLOW.UP.</p>
+                <p>       ‘MAN’: Booking on a transit account and simultaneous non validated generation of a manual FUNDS.TRANSFER to accept and of a return/refund SEPA.FOLLOW.UP record. The manual validation of one of them will later remove the other one.</p>                
+                <p>       ‘’: Adoption of the default process type from the SEPA.PARAMETER table.</p>
+
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Value upto 3 characters and User can input only &apos;OFT&apos; &apos;RET&apos; and &apos;MAN&apos;</p>
+            </desc>
+        </t>
+        <t>
+            <field>ANSWER.POSSIBLE.RTN</field>
+            <desc>
+                <p>This Field specifies the Routine name (prefix with @) which decides whether the REJECT.OPER or REVERSE.OPER or RETURN.OPER or REFUND.OPER or CANCEL.OPER should be allowed or not. The main purpose of this routine is to restrict the generation of R- Messages after the specified time period in respective parameter records.</p>
+                <p/>
+                <p>    Validation Rules </p>
+                <p>     Routine name prefixed by &apos;@&apos;</p>
+                <p>     Value upto 50 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>PURPOSE</field>
+            <desc>
+                <p>This Field specifies the Purpose of the message:</p>
+                <p>       ORI: Original transaction,</p>
+                <p>       REJ: Technical reject from SEPA or Bank (CB),</p>
+                <p>       RET: Return by the receiver,</p>
+                <p>       REF: Refund by the receiver,</p>
+                <p>       REV: Reverse by the sender,</p>
+                <p>       CXL: Cancel by the sender.</p>
+                <p/>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Value must be 3 and nd User can input only &apos;CXL&apos; &apos;ORI&apos; &apos;REF&apos; &apos;REJ&apos; &apos;RET&apos; and &apos;REV&apos;</p>
+                <p>    Mandatory field</p>
+            </desc>
+        </t>
+        <t>
+            <field>REDUCTION.ALLOWED</field>
+            <desc>
+                <p>This Field contains only one Value which is ‘Y’ which specifies that the the amount can be splitted between acceptance and return/refund. </p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Value upto 1 and User can input only value &apos;Y&apos;</p>
+            </desc>
+        </t>
+        <t>
+            <field>REFUND.OPER</field>
+            <desc>
+                <p>This Field holds the Key to SEPA.LAYOUT. For a given message, Id of the refund message that could apply.</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>    Value upto 20 type A(Alphanumeric) and must exist in SEPA.LAYOUT application </p>
+            </desc>
+        </t>
+        <t>
+            <field>REJECT.OPER</field>
+            <desc>
+                <p>This Field holds the Key to SEPA.LAYOUT. For a given message, Id of the reject message that could apply.</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>    Value upto 20 type A(Alphanumeric) and must exist in SEPA.LAYOUT application </p>
+            </desc>
+        </t>
+        <t>
+            <field>RETURN.OPER</field>
+            <desc>
+                <p>This Field holds the Key to SEPA.LAYOUT. For a given message, Id of the return message that could apply.</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>    Value upto 20 type A(Alphanumeric) and must exist in SEPA.LAYOUT application </p>
+            </desc>
+        </t>
+        <t>
+            <field>REVERSE.OPER</field>
+            <desc>
+                <p>This Field holds the Key to SEPA.LAYOUT. For a given message, Id of the reverse message that could apply.</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>    Value upto 20 type A(Alphanumeric) and must exist in SEPA.LAYOUT application </p>
+            </desc>
+        </t>
+        <t>
+            <field>SENDER.RECEIVER</field>
+            <desc>
+                <p>This specifies the Sender and receiver concerned entities:</p>
+                <p>       BB: Bank to Bank, CB: Customer to Bank</p>
+                <p>       BC: Bank to Customer</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Value must be 2 type A(Alphanumeric) and User can input only &apos;BB&apos; &apos;CB&apos; and &apos;BC&apos;</p>
+                <p>    Mandatory field</p>
+            </desc>
+        </t>
+        <t>
+            <field>SEPA.LAYOUT.ID</field>
+            <desc>
+                <p>This field specifies the ID of this Application and this Id should be in the Format of &apos;INWARD&apos; or &apos;OUTWARD&apos; followed by a ‘.’ and the Operation code used</p>
+                <p/>
+                <p>    Validation Rules </p>
+                <p>    Input should be prefixed with &apos;INWARD/OUTWARD&apos; followed by &apos;.&apos; and followed by operation code </p>
+            </desc>
+        </t>
+        <t>
+            <field>SETTLEMENT.DAYS</field>
+            <desc>
+                <p>This field specifies the Number of days between presentation and settlement date.</p>
+                <p/>
+                <p>    Validation Rules </p>
+                <p>     Value upto 4 type A(Alphanumeric)</p>
+                <p/>
+                <p>  e.g. 2W (for two working days), 1W (one working day), 2C (two calendar days)</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>SUSPENS.ACCT.NO</field>
+            <desc>
+                <p>This Field  specifies the Technical account that will replace the customer account whenever a technical return is to be posted in the SEPA outward through the generation of a SEPA.FOLLOW.UP record.</p>
+                <p>       May be an ACCOUNT.CLASS or a routine name prefixed by @ that returns either an ACCOUNT Id or an ACCOUNT.CLASS in the common variable COMI.</p>
+                <p/>
+                <p>    Validation Rules </p>
+                <p>     Value upto 35 type A(Alphanumeric) and must exist in ACCOUNT Application </p>
+            </desc>
+        </t>
+        <t>
+            <field>APPLICATION.FORMAT</field>
+            <desc>
+                <p>This Field holds the Value of the APP.FORMAT field passed to the advice generation routine.</p>
+                <p/>
+                <p>    Validation Rules </p>
+                <p>     Value upto 4 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>TRANSACTION.TYPE</field>
+            <desc>
+                <p>This Field  holds the Key to FT.TXN.TYPE.CONDITION.</p>
+                <p>       Specific accounting conditions, if different from SEPA.PARAMETER defaulting (value date adjustment, fees, taxes, etc …). </p>
+                <p/>
+                <p>    Validation Rules </p>
+                <p>     Value upto 35 type A(Alphanumeric) and must exist in FT.TXN.TYPE.CONDITION application </p>
+            </desc>
+        </t>
+        <t>
+            <field>TRANSIT.ACCT.NO</field>
+            <desc>
+                <p>This Field specifies the Transit account for SEPA. </p>
+                <p>       May be an ACCOUNT.CLASS or a routine name prefixed by @ that returns either an ACCOUNT Id or an ACCOUNT.CLASS in the common variable COMI. </p>
+                <p/>
+                <p>    Validation Rules </p>
+                <p>     Value upto 35 type A(Alphanumeric) and must exist in ACCOUNT Application </p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>UNIFI.XML.MSG.ID</field>
+            <desc>
+                <p>This Field holds the Key to UNIFI.XML.MESSAGE issuing the multi-value fields below automatically. (no change)</p>
+                <p/>
+                <p>    Validation Rules </p>
+                <p>     Value upto 35 type A(Alphanumeric) and must exist in UNIFI.XML.MESSAGE</p>
+            </desc>
+        </t>
+        <t>
+            <field>VALIDATION.RTN</field>
+            <desc>
+                <p>This field Contains the name, prefixed by @, of validation routines to be executed prior to any booking entry. This allows to process to various checks and data update based on the T24 or any other environments.</p>
+                <p>       The ETEXT variable if returned produces an error message forcing the ‘MAN’ option. The COMI variable, if returned produces an override message that can also lead to the forcing of the ‘MAN’ option if the user cannot bypass it.</p>
+                <p>       These specific routines will be executed after these defined in the VALIDATE.RTN field of SEPA.PARAMETER.</p>
+                <p/>
+                <p>    Validation Rules </p>
+                <p>     Value upto 35 type A(Alphanumeric) and individual Multi Value field</p>
+            </desc>
+        </t>
+        <t>
+            <field>CANCEL.OPER</field>
+            <desc>
+                <p>This Field holds the Key to SEPA.LAYOUT. For a given message, Id of the cancel message that could apply. For example, the cancel operator for Outward CT message (OUTWARD.100) is OUTWARD.105.</p>
+                <p/>
+                <p>     Validation Rules</p>
+                <p>    Value upto 20 type A(Alphanumeric) and must exist in SEPA.LAYOUT application </p>
+            </desc>
+        </t>
+        <t>
+            <field>CB.FILE.POSTING</field>
+            <desc>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Value upto 5 and user can input only Value &apos;YES&apos; or &apos;NO&apos; ( values can be added using EB.LOOKUP application with key SEPA.CB.FILE.POSTING)</p>
+            </desc>
+        </t>
+        <t>
+            <field>CHARGE.CODE</field>
+            <desc>
+                <p>This Field specifies the charge code to be used.</p>
+                <p/>
+                <p>       Whenever that the customer account is replaced by an internal one, this value will be forced to ‘WAIVE’ forbidding any fee posting.</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Value upto 20 characters and User can input only &apos;CREDIT LESS CHARGES&apos; and &apos;DEBIT PLUS CHARGES_WAIVE&apos;</p>
+            </desc>
+        </t>
+        <t>
+            <field>COMMISSION.CODE</field>
+            <desc>
+                <p>This Field specified the commission code to be used. If the customer account is replaced by an internal one this value will be forced to ‘WAIVE’ forbidding thus any fee posting.</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Value upto 20 characters and User can input only &apos;CREDIT LESS CHARGES&apos; and &apos;DEBIT PLUS CHARGES_WAIVE&apos;</p>
+            </desc>
+        </t>
+        <t>
+            <field>CUSTOMER.SIGN</field>
+            <desc>
+                <p>This Field contains the Transaction sign for the customer, when processed a message through this Layout.</p>
+                <p/>
+                <p>    Validation Rules </p>
+                <p>     Value upto 2 and User can input only &apos;CR&apos; and &apos;DB&apos;</p>
+                <p>       ‘CR’  = Customer credit</p>
+                <p>       ‘DB’  = Customer debit</p>
+                <p>       ‘’  = Non financial operation</p>
+            </desc>
+        </t>
+        <t>
+            <field>CUT.OFF.TIME.DESC</field>
+            <desc>
+                <p>This Field contains description of the cut off time window.</p>
+		<p>     This is applicable for outward PACS generated after Inward PAIN Processing. </p>
+		<p>     For Inward Processing this field is not applicable. Inward value date will be changed only if the quoted value date in the message falls on holiday.</p>
+                <p/>                
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Value upto 35 type A(Alphanumeric)</p>
+            </desc>
+        </t>
+        <t>
+            <field>SETTLEMENT.DAYS</field>
+            <desc>
+                <p>This Field contains the Limit time allowing transactions to be posted on the input day. The processing date will be switched to the next working day (+1w) for any later transaction input.</p>
+                <p/>
+                <p>     For Inward Processing this field is not applicable. Inward value date will be changed only if the quoted value date in the message falls on holiday.</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Value upto 5 type TIME  </p>
+                <p>     Associated Multivalue set with the field CUT.OFF.TIME.DESC</p>
+            </desc>
+        </t>
+        <t>
+            <field>TIME.FROM</field>
+            <desc>
+                <p>This Field contains start time of the Cut off time window.</p>
+                <p/>               
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Value upto 5 type TIME  </p>
+                <p>     valid time in 24 hrs format E.g. 09:00,12:00, 23:00.. etc</p>
+       		<p>     Associated Multivalue set with the field CUT.OFF.TIME.DESC</p>
+            </desc>
+        </t>
+        <t>
+            <field>TIME.TILL</field>
+            <desc>
+                <p> This Field contains start time of the Cut off time window. This Field contains the time till the transaction is allowed to be posted on the input day. The processing date will be calculated to the next working day based on the days defined in SETTLEMENT.DAYS for any later transaction input.</p>
+                <p/>               
+                <p/>
+                <p>    Validation Rules</p>
+                <p>     Value upto 5 type TIME  </p>
+                <p>     valid time in 24 hrs format E.g. 09:00,12:00, 23:00.. etc</p>
+	        <p>     Associated Multivalue set with the field CUT.OFF.TIME.DESC</p>
+            </desc>
+        </t>
+		<t>
+            <field>CUT.OFF.TIME.LEVL</field>
+            <desc>
+                <p>     This field denotes at which level Date changes must happen.</p>
+                <p/>                
+                <p/>
+                <p>     Validation Rules</p>
+                <p>     Value upto 10 type A(Alphanumeric)</p>
+				<p>		Allowed values *At Xml File Generation - The Date change happens during Outward XML File generation</p>
+				<p>		*At Transaction Input - During transaction level in FT version</p>
+            </desc>
+        </t>
+		<t>
+            <field>FT.VERSION</field>
+            <desc>
+                <p>    This field holds the FT version ID used for OFS transactions in routines</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>    Value upto 70 type ANY(Any Character) and must exist in VERSION application.</p>
+            </desc>
+        </t>
+		<t>
+            <field>FUP.VERSION</field>
+            <desc>
+                <p>	   This field holds the SepaFollowUp version ID used for OFS transactions in routines</p>
+                <p/>
+                <p>    Validation Rules</p>
+                <p>    Value upto 70 type ANY(Any Character) and must exist in VERSION application.</p>
+            </desc>
+        </t>
+    </menu>
+</t24help>

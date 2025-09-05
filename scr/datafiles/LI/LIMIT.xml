@@ -1,0 +1,1838 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>LI</product>
+<table>LIMIT</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The Limit System is designed to monitor the availability and utilisation of Limits.  Customer Limits are monitored in real-time.  Back end reports are used to monitor Limits for Commodities, Countries, Country Groups and Currencies.  The design of the System is such that the definition of the simplest through to the most complex of Limits is catered for. </p>
+            <p style="font-weight: bold;">Limit Reference Table </p>
+            <p>A Limit Reference is a numeric code which defines a type of Limit.  For those cases where it may be necessary to sub-divide a Limit Reference, a hierarchy can be defined.  A hierarchy can consist of up to 3 levels i.e. Global Limit, Product Limit and Sub product Limit. </p>
+            <p>To define the Application which utilises a Limit Reference, the user will specify his own parameters and Limit checking conditions on the LIMIT.PARAMETER table. </p>
+            <p>REDUCING LIMIT field indicates whether or not a Limit is a Reducing Limit.  In other words, whether the Limit is Revolving or Non-Revolving.  A reducing or non-revolving Limit does not have its value restored when a Transaction is repaid. </p>
+            <p style="font-weight: bold;">Limit Parameter </p>
+            <p>Within this file are defined parameters which determine the way in which the Limit system operates.  These are as follows: </p>
+            <p>
+                <p value="1">        An indicator to specify whether Foreign Exchange            contracts are, or are not, to be netted before Limit            comparison. </p>
+                <p value="2">        A 'number of days' to define how many days prior to            Limit Expiry Date and Limit Review Date the approach of            these events is to be reported. </p>
+                <p value="3">        A date and cycle to indicate when the first revaluation            will occur and at what frequency thereafter. </p>
+                <p value="4">        A date and cycle to indicate when a full Central Liability            report (including those Liability numbers which did not            move) need to be produced in the back-end process. </p>
+                <p value="5">        A number of days (administrative extension days) which            defines the maximum number of days by which the            expiry date of a limit can be "administratively" extended            before a new expiry date is reassigned to the limit. </p>
+                <p value="6">        The Limit product definition according to the specific            requirements of the Bank.  The most important feature            of this file is that it allows the user, for each Financial            Application, to define the precise rules applicable to his            environment.  In this way, the Limit verification process            can be established by the user according to his own set            of rules without any program maintenance. </p>
+            </p>
+            <p style="font-weight: bold;">Limits </p>
+            <p>All Customer Limits are defined at the Liability Number level.  The simplest case is where a Limit, such as an Advance in Current Account is defined for a Liability number. </p>
+            <p>The Country of Risk of each Limit may be added to each Limit record. It is entered as a 2 character Country Code.  If it is not entered, the Country of Residence, from the Customer record of the Liability Number, is taken as default. </p>
+            <p>The Commodity (or Industry) in which the user of the Limit is involved, may be added to each Limit record. This is entered as a four character Commodity Code. If it is not entered, the Industry Code, from the Customer record of the Liability Number, is taken as default. </p>
+            <p>A Limit at the top level of the structure can be defined as a secured Limit. This Limit can then be defined as a 'variable' or a 'fixed' Limit. Details of the Collateral securing the Limit are entered in the T24 Collateral Module. The system will automatically maintain details of the current value of the supporting Collateral. In the case of a variable Limit, this information is used by the system to automatically adjust the on-line limit amount whenever the value of the underlying Collateral changes. In the case of a fixed limit, the same information about the underlying Collateral is maintained, but the on-line limit amount is never adjusted. This facility is not available for sub-limits within a credit line. </p>
+            <p>For Limits which have an associated Repayment schedule (for instance Term Loans), details of that schedule may be input.  Input of this information is optional. </p>
+            <p>It should be noted that all information held concerning Repayment Schedules is held for information purposes only.  The System makes no further use of the information. </p>
+            <p>To cater for the special requirements of Foreign Exchange, an additional field  - CLEAN RISK AMT is included.  The CLEAN RISK AMT is the maximum amount of Foreign Exchange contracts which can mature on a single maturity date. </p>
+            <p>Whenever a Limit is stated in one currency and transactions occur in other currencies, the Limit System will convert from the currency of the transaction to the currency of the Limit before any utilisation comparison is made.  This is achieved by using the latest available on-line, real-time, middle exchange rate from the currency table. For the Foreign Exchange application it is always the bought currency and amount which will be converted to the currency of the Limit. </p>
+            <p>An installation time option is whether gross or net Foreign Exchange transaction values are to be compared with Limits. </p>
+            <p>Except for Limits tied to the ACCOUNT module, the ON LINE LIMIT amount can be associated with a Time Code.  The purpose of this is to allow the specification of periods of time (measured in days), during which maximum aggregate transaction amounts must mature. </p>
+            <p>At the time of input of a transaction (Foreign Exchange, Letters of Credit etc.), the Limit System is asked for information concerning the existence and availability of a Limit.  If more than one Limit of the same type exists for the same customer (e.g. Product Limit &amp; Global Limit), the Application will automatically and exclusively update the Product Limit except if the Global Limit reference has been input at transaction level.  If 2 Global lines exist for the same customer with the same Limit Type, the Application will update the Global Limit with the lowest key number except if overridden by an input at transaction level. </p>
+            <p>Occasionally, the required Limit does not exist or is already fully utilised.  If it does not exist, the User must make a decision as to whether or not to generate a default Limit.  If the transaction will cause an excess, the User must decide whether the excess is to be allowed. </p>
+            <p>When the existence of a Limit has been established and any necessary overrides have been obtained, the Limit utilisation is updated.  At the time of maturity of a transaction, the Limit System relies upon the Application to provide notification of the event, in order to reset the utilisation figure. </p>
+            <p style="font-weight: bold;">Suballocations </p>
+            <p>Suballocations can be defined as the transfer of an amount to or from a Limit.  A Transfer from a Limit is known as a Suballocation Given and has the effect of reducing the available value of the Limit.  A transfer to a Limit is a Suballocation received and has the effect of increasing the available value of a Limit.  They are input to the Limit System via Application LIMIT.SUB.ALLOC. </p>
+            <p style="font-weight: bold;">Exposure Limits </p>
+            <p>Exposure Limits can be specified for Countries, Country Groups, Currencies, Commodity groups and Commodities.  Exposure Limit information is captured on-line.  Information about outstandings to be tracked under Exposure Limits is captured during the on-line day.  Each night, this information is collated and reports are prepared.   Collated information about the overnight position is available during the following on-line day. </p>
+            <p style="font-weight: bold;">Reporting </p>
+            <p>The overnight reports produced by the System, are as follows:- </p>
+            <p>           General Exception            Limits Approaching Review Date            Limits Approaching Expiry Date            Expired Limits            Moved Liability numbers            Full Central Liability Ledger Report            Country Limit Excesses            Commodity Excesses            Currency Limit Excesses </p>
+            <p>Limits in excess will be shown together with overdrawn accounts in a separate report (OVERDRAFT AND EXCESS REPORT) produced on a daily basis within the wide back-end. </p>
+            <p style="font-weight: bold;">Enquiries </p>
+            <p>Comprehensive enquiry facilities allow  the user to monitor on line and on a real time basis Liability and Customer exposure globally or at individual credit line level.</p>
+            <p>In addition to the individual limit, the group limits can be set to grant Limits for a Group of Customers. Definition of Group will happen through the application LIMIT.SHARING.GROUP. Group limits are currently allowed only for applications AC, MM, MD, LD, and AA.</p>
+            <p>If a Customer is part of a Group defined with an Overdraft Product, All the Account of the customer having Limit will be allowed to use the Group Limit as well. The Group Limits will have those Account references on the Limit record like an Individual Overdraft Limit. A single liability can utilize multiple sharing group limits and the utilization can happen directly with a group limit without an individual limit involved. The group limits will not be allowed to overdraw, any overdraw will be on the individual limit.</p>
+            <p>The group limits are not allowed for customer part of any liability group. Group limits will not be allowed with multiple time bands.</p>
+            <p>Intermediate cap to group limits can be setup by creating sub group limits. (For E.g. if there is a main group defined in LIMIT.SHARING.GROUP with Loan, Overdraft and Money market as allowed products and if cap needs to be set for only Loan and Overdraft product, a sub group can be created with loan and overdraft product with parent as the Main group key. Any utilization on the main group limit will also check the availability of the sub group limits. This is tracked by maintaining the sub group limits in the RELATIVE.LIMIT field of the Main group limit.)</p>
+            <p>Sub group limits will not have any hierarchy and cannot be created at customer level (For e.g. S000000001.100.01 is allowed but S000000001.100.01.100200 is not allowed).</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>AVAIL.AMT</field>
+<desc>
+            <p>Identifies the available amount for the corresponding Liability number and Limit reference.  This amount is always expressed in the currency of the limit as defined in LIMIT.CURRENCY. </p>
+            <p>Note:       (i) The amount generated automatically in this field will be                 calculated as follows: </p>
+            <p>                 Field 27.1 ONLINE LIMIT              +   Field 28.1 SUB ALLOC TAKEN              -   Field 29.1 SUB ALLOC GIVEN              -   Field 30.1 COMM AMT AVAIL              -   Field 31.1 TOTAL OS </p>
+            <p>             =  Field 32.1 AVAIL AMT </p>
+            <p>           (ii) Balances of accounts attached to this credit line will not                 be taken into account when calculating this available                 amount.  In this case, the user should refer to the                 enquiry facilities to view the net available amount. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (standard amount format) characters.  System generated.  Multivalue field associated with fields TIME.CODE to DATE.1ST.EXCESS.</p>
+        </desc>
+</t>
+<t>
+<field>COLLATERAL.CODE</field>
+<desc>
+            <p>Identifies classes of collateral for which a maximum secured amount and collateral required amount underlying a limit is allowed. </p>
+            <p>The collateral code in this field is associated with collateral required amount, collateral required percentage, up to period, period amount, period percentage and maximum secured amount (field 18 to 24). Together these fields define a collateral required amount, collateral required schedules and maximum secured amount per Collateral Code. </p>
+            <p>This secured amount places a maximum value on the amount of a particular class of collateral, which can be used as security for the limit. It enables the definition of a structure to the underlying collateral. </p>
+            <p>Example: </p>
+            <p>A limit is granted up to an overall maximum of GBP 100,000.00. The limit is secured and variable. The current value of the underlying collateral exactly equal to the overall total limit. It is made up of a mortgage, currently valued at GBP 80,000.00, plus guarantees worth GBP 20,000.00. </p>
+            <p>If field 18 (COLLATERAL CODE) is left blank, the limit record appears as follows: </p>
+            <p>17 FIXED.VARIABLE  VARIABLE </p>
+            <p>26 MAXIMUM.TOTAL 100,000.00 </p>
+            <p>28. 1. 1 COLLAT.RIGHT  12.1 MORTGAGES </p>
+            <p>29. 1. 1 SECURED.AMT 80,000.00</p>
+            <p>28. 1. 2 COLLAT.RIGHT 10 GUARANTEES </p>
+            <p>29. 1. 2 SECURED.AMT 20,000.00 </p>
+            <p>32. 1 ONLINE.LIMIT... 100,000.00 </p>
+            <p>If, however, this field has been used to limit the amount of any guarantees, which are acceptable as collateral to GBP 10,000.00, the limit record appears as follows: </p>
+            <p>17 FIXED.VARIABLE VARIABLE</p>
+            <p>18. 1 COLLATERAL.CODE 10 GUARANTEES </p>
+            <p>19. 1 MAXIMUM.SECURED10,000.00 </p>
+            <p>21 MAXIMUM.TOTAL 100,000.00 </p>
+            <p>23. 1. 1 COLLAT.RIGHT 12.2 GUARANTEES </p>
+            <p>24. 1. 1 SECURED.AMT 10,000.00 </p>
+            <p>23. 2. 1 COLLAT.RIGHT 12.1 MORTGAGES </p>
+            <p>24. 2. 1 SECURED.AMT 80,000.00 </p>
+            <p>27. 1 ONLINE.LIMIT... 90,000.00 </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>1 to 3-digit numeric Collateral Code. Multivalue field associated from field 18 to 24. No input is allowed unless a value is indicated in field 17, FIXED/VARIABLE. </p>
+            <p>In a variable limit if no collateral code is attached then an override is generated.</p>
+        </desc>
+</t>
+<t>
+<field>AMT.LAST.MOVED</field>
+<desc>
+            <p>Identifies the total movement on the date specified in the previous field DATE.LAST.MOVED.  This amount is always expressed in the currency of the limit as defined in LIMIT.CURRENCY. </p>
+            <p>This field does not include Account balances. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (standard amount format) characters.  System generated.  Multivalue field associated with fields TIME.CODE to DATE.1ST.EXCESS.</p>
+        </desc>
+</t>
+<t>
+<field>MAXIMUM.TOTAL</field>
+<desc>
+            <p>The maximum overall amount of the limit which may be granted. </p>
+            <p>Defines the overall maximum allowed amount of a limit. </p>
+            <p>In the case of an unsecured limit, or a secured but fixed limit, this field also defines the ONLINE LIMIT amount which will be made available. </p>
+            <p>In the case of a variable secured limit, the MAXIMUM TOTAL defines an upper limit to the value of the ONLINE LIMIT amount. The system will calculate the ONLINE LIMIT on the basis of the available underlying security and the 'rules' for the limit (fields 18 to 20), but the result of this calculation will never exceed the value in this field. </p>
+            <p>Example: </p>
+            <p>A limit is granted up to an overall maximum of GBP 100,000.00. The limit is secured and variable. The current value of the underlying collateral exactly equal to the overall total limit. It is made up of a mortgage, currently valued at GBP 80,000.00, plus guarantees worth GBP 20,000.00. However, the amount of any guarantees which are acceptable as collateral has been limited to GBP 10,000.00. There is also GBP 5,000.00 available under the limit without security. The limit record appears as follows: </p>
+            <p />
+            <p> 17 FIXED.VARIABLE.... VARIABLE </p>
+            <p />
+            <p>  18. 1 COLLATERAL.CODE 10     GUARANTEES </p>
+            <p />
+            <p>  19. 1 MAXIMUM.SECURED 10,000.00 </p>
+            <p />
+            <p>  20 MAXIMUM.UNSECURED. 5,000.00 </p>
+            <p />
+            <p>  21 MAXIMUM.TOTAL..... 100,000.00 </p>
+            <p />
+            <p>  23. 1. 1 COLLAT.RIGHT 12.2   GUARANTEES </p>
+            <p />
+            <p>  24. 1. 1 SECURED.AMT. 10,000.00 </p>
+            <p />
+            <p>  23. 2. 1 COLLAT.RIGHT 12.1   MORTGAGES </p>
+            <p />
+            <p>  24. 2. 1 SECURED.AMT. 80,000.00 </p>
+            <p />
+            <p>  27. 1 ONLINE.LIMIT... 95,000.00</p>
+            <p>If the overall maximum amount which is allowed under the limit is reduced to GBP 85,000.00, the value of the underlying collateral plus the unsecured part of the limit will then exceed this MAXIMUM TOTAL. The limit record appears as follows: </p>
+            <p />
+            <p> 17 FIXED.VARIABLE.... VARIABLE </p>
+            <p />
+            <p>  18. 1 COLLATERAL.CODE 10     GUARANTEES </p>
+            <p />
+            <p>  19. 1 MAXIMUM.SECURED 10,000.00 </p>
+            <p />
+            <p>  20 MAXIMUM.UNSECURED. 5,000.00 </p>
+            <p />
+            <p>  21 MAXIMUM.TOTAL..... 85,000.00 </p>
+            <p />
+            <p>  23. 1. 1 COLLAT.RIGHT 12.2   GUARANTEES </p>
+            <p />
+            <p>  24. 1. 1 SECURED.AMT. 10,000.00 </p>
+            <p />
+            <p>  23. 2. 1 COLLAT.RIGHT 12.1   MORTGAGES </p>
+            <p />
+            <p>  24. 2. 1 SECURED.AMT. 75,000.00 </p>
+            <p />
+            <p>  27. 1 ONLINE.LIMIT... 85,000.00</p>
+            <p>In this case, the unsecured amount has not been utilised at all. Only a part of the value of the mortgage has been utilised and the remainder is either ignored by the system or made available for allocation against a different limit belonging to the customer. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1 to 19 type AMT (standard amount format). (Mandatory input, default is the same value as field 15, INTERNAL AMOUNT)</p>
+            <p>The amount may not exceed the INTERNAL AMOUNT in field 15.</p>
+            <p>The amount may not be less than the MAXIMUM UNSECURED in field 20.</p>
+            <p>The amount may not be less than any MAXIMUM SECURED amount in field 19.</p>
+            <p>In a Cross Limit structure, Mandatory only for PRODUCT Limits.</p>
+        </desc>
+</t>
+<t>
+<field>RESTRICTED.CCY</field>
+<desc>
+            <p>Defines a specific currency which may NOT make use of the Limit. </p>
+            <p>Currency codes specified in this field cannot use the limit.  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard 1-3 numeric currency code or   3 character SWIFT currency code or   "*" follwed by 3-20 alphanumeric LIMIT.RANGE key Multi valued field Optional input</p>
+            <p>If currency codes are input, no duplicates are allowed.</p>
+            <p>If currency codes are input they must exist on the CURRENCY file.</p>
+            <p>If a LIMIT.RANGE key is entered, the LIMIT.RANGE record must have the field COMP.OR.CCY set to CURRENCY.</p>
+            <p>Only one LIMIT.RANGE key is allowed, and may not be combined with individual currency codes.</p>
+            <p>Both ALLOWED.CCY and RESTRICTED.CCY cannot be input.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.OF.EXCESS</field>
+<desc>
+            <p>Identifies the date of the last on-line excess.  Various dates could be displayed in connection with Time Bands. </p>
+            <p>When the credit line moves out of excess, this field will be reset to nil in the End of Day process.  No history will be kept on previous content. Note:      The relation between this field and DATE.1ST.EXCESS            (Field 45.1) is as follows: </p>
+            <p>             Ŀ                                                  During Day                                   EOD      EOD       New or                                                      Temporary                 Ĵ               DATE.OF.EXCESS     -   *(17) (20)      *                      DATE.1ST.EXCESS    -   *(17) (17)      -                      </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 type D (Date format in range 1950 - 2049) characters. System generated. Multivalue field associated with fields 25 to 45.</p>
+        </desc>
+</t>
+<t>
+<field>COMMODITY</field>
+<desc>
+            <p>Associates a Limit with a specific Industry or Industries.  Where more than one industry is specified, a percentage of the risk has to be defined in the Commodity Percentage field.  This information is used to produce the Industry exposure report. </p>
+            <p>If the Customers, within a Liability Group, are involved in a variety of different industries, then multiple entries of this sub-value field can be used to record this.  The associated field COMMODITY PCENT is used to specify the percentage involvement in each of the Industries. </p>
+            <p>Note:      The commodity (Industry) exposure report will detail            the utilisation (outstandings) according to the            industries and percentages defined in the associated            fields COMMODITY and COMMODITY PCENT (Fields 56.1            and 57.1). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-4 Numeric character Industry Code. (Optional input. Default to the Industry Code on the Customer record of the Liability Number.)</p>
+            <p>Only for Customer level Group Limits (For e.g. M0000000020.2000.01.10020) this field will be considered.</p>
+        </desc>
+</t>
+<t>
+<field>ALLOW.NETTING</field>
+<desc>
+            <p>This field will denote whether the customer for this liability can allow netting of both credit and debit accounts. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+                <p value="1">Valid input is 'Yes' or 'No'.  (Optional input)</p>
+                <p value="2">Default is 'No' (=Null).</p>
+                <p value="3">For sharing group limits this field is a no input field</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>TIME.CODE</field>
+<desc>
+            <p>Specifies time sub-divisions of a Limit, each of which is available for a different maturity period. </p>
+            <p>The theory behind the use of this field is that the further forward the maturity date of a transaction, the greater the associated risk.  The Limit is therefore approved on the basis that the whole Limit is available for the most immediate time slice.  The amount available then decreases as the maturity time slice increases. </p>
+            <p>Example: </p>
+            <p>A Money Market line of $100 million may be sub-divided into $60 million for maturity within 30 days, $30 million within 90 days, and the remaining $10 million within 180 days. </p>
+            <p>To enter the above limit, the overall $100 million should be entered with a 'blank' time code.  The associated multi-valued fields should be expanded to enter the sub-division as follows:            TIME.CODE          COMMITTED.AMOUNT </p>
+            <p>              30                  $60 million               90                  $30 million              180                  $10 million </p>
+            <p>The example above shows that the bands must be entered in ascending order. </p>
+            <p>If a transaction exceeds the specified period (in this case 180 days) and the referral message is overriden, the system will reduce the amount available in the latest band specified (180 days). </p>
+            <p>It should be noted that when a band is not fully utilised it becomes available for use at lower levels.  In the example, if only $8 million were used in the 180 day period, $32 million would be available for 90 day contracts. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 4 numeric characters in the range 1-9999. Multivalue field associated with fields 26.1 to 45.1. (Optional input.  No default value.)</p>
+            <p>Input can only be made where the FX.OR.TIME.BAND field on the associated Limit Reference record has a value of 'TB', 'FX' or 'BD'.  In other words the definition of time bands will be allowed for all types of Limit reference except the ones which are related to the application 'ACCOUNT'.</p>
+            <p>The total input to occurrences with an associated Time Code must equal the amount input to the occurrence without a Time Code.</p>
+            <p>The time codes, when defined, must be entered in ascending order.</p>
+            <p>Only Single time band allowed for group limits and Multiple time bands are restricted.</p>
+        </desc>
+</t>
+<t>
+<field>ONLINE.LIMIT</field>
+<desc>
+            <p>The limit amount which is actually available for use. </p>
+            <p>The amount available under the limit, against which all system limit checks are performed. The value of the ONLINE LIMIT is calculated by the system as described below. </p>
+            <p>If the limit is an unsecured limit, a sub-limit or a secured but fixed limit, the value in this field is always equal to the value in field 21, MAXIMUM TOTAL. </p>
+            <p>If the limit is a variable secured limit, the value in this field is equal to the lower of (a) the MAXIMUM TOTAL or (b) the sum of the SECURED AMT's in field 24 plus the MAXIMUM UNSECURED in field 20. </p>
+            <p>Note:      If time bands are in effect (field 25, TIME CODE), the            ONLINE LIMIT amount will reflect the split of the            available limit across these periods. In the case of an            unsecured limit, a sub-limit or a fixed secured limit,            this field will contain the same values as field 26, LIMIT            BAND.            In the case of a variable secured limit, this field will            contain either the same values as field 26, LIMIT BAND            or, if the total ONLINE LIMIT amount is lower than the            MAXIMUM TOTAL in field 21, the ONLINE LIMIT amount            apportioned pro-rata across the time bands in line with            the specified LIMIT BAND split. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 type AMT (standard amount format). (No input, system-generated field) Multivalue field associated with fields 25 to 45.</p>
+        </desc>
+</t>
+<t>
+<field>COUNTRY.PERCENT</field>
+<desc>
+            <p>Defines the percentage of the total risk associated with the Country defined by  COUNTRY OF RISK (Field 2.1). </p>
+            <p>Note:      The Country exposure report will detail the utilisation            (outstandings) according to the countries and            percentages defined in the associated fields            'COUNTRY.OF.RISK' and 'COUNTRY.PERCENT' (Fields            2.1 and 3.1).  This, however, can be overridden by            specifying a country code at the transaction level. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric characters in the range 1 to 100. Multivalue field associated with COUNTRY.OF.RISK (Field 2.1) (Optional input.  Default 100)</p>
+            <p>Where more than a single occurrence is present, input of COUNTRY.PERCENT field is mandatory to each occurrence.</p>
+            <p>The sum total of all occurrences must not exceed 999.</p>
+            <p>Only for Customer level Group Limits (For e.g. M0000000020.2000.01.10020) this field will be considered.</p>
+        </desc>
+</t>
+<t>
+<field>INCREASE.AMOUNT</field>
+<desc>
+            <p>This is the amount by which the ONLINE.LIMIT (Subject to availability of collateral in case of variable limits), MAXIMUM.TOTAL and INTERNAL.AMOUNT of the limit are enhanced when an INCREASING TYPE is specified, on the frequency dates defined in INCREASE.FREQ till the INCR.END.DATE is reached. </p>
+            <p>Input is mandatory if INCREASING.TYPE is specified.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard amount format.</p>
+            <p>Multi value field associated with fields INCREASE . FREQ, INCREASE . CCY     and INCR . END . DATE.</p>
+            <p>Mandatory if INCREASE . TYPE is given.</p>
+        </desc>
+</t>
+<t>
+<field>COUNTRY.OF.RISK</field>
+<desc>
+            <p>Defines the Country of Risk associated with the Limit. </p>
+            <p>If risk is associated with more than one country, then these may be entered as Multivalues.  In this case, the associated COUNTRY.PERCENT (Field 3.1) is used to record the percentage of the risk associated with each Country. </p>
+            <p>Note:      The Country exposure report will detail the utilisation            (outstandings) according to the countries and            percentages defined in the associated fields            'COUNTRY.OF.RISK' and 'COUNTRY.PERCENT' (Fields            2.1 and 3.1).  This, however, can be overridden by            specifying a country code at the transaction level. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 type AAA (Alpha) character Country code. Multivalue field associated with COUNTRY.PERCENT (Field 3.1) (Optional input.  Default to Country of Residence from the Customer record of the Liability Number.)</p>
+            <p>Only for Customer level Group Limits (For e.g. M0000000020.2000.01.10020) this field will be considered.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.LAST.REVAL</field>
+<desc>
+            <p>Identifies the date of the last revaluation. </p>
+            <p>This field is used in LIMIT.EOD.ERROR to find out whether the reason of the excess is due to revaluation or not. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 type D (Date format in range 1950 - 2049) characters. System generated.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED.1</field>
+<desc>
+            <p>Reserved for future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field, no input</p>
+        </desc>
+</t>
+<t>
+<field>S.AL.GVN.AMT</field>
+<desc>
+            <p>Identifies, together with the previous field S.AL.GVN.CCY the various sub allocation given outstanding amounts by currency.  The total of these various amounts for all currencies can be seen, expressed in the Limit currency, in the field 29.1 'SUB ALLOC GIVEN'. </p>
+            <p>Note:  (i) All amounts which are in a currency different than the            LIMIT CURRENCY (Field 1) are converted at the            currency table middle rate to generate the 'SUB ALLOC            GIVEN' (Field 29.1).  In accordance with the frequency            defined in the LIMIT.PARAMETER table, these amounts            will be revalued with the last currency table middle rate            to recalculate a new total SUB ALLOC GIVEN.  Any            excess of the ONLINE LIMIT amount due to the limit file            revaluation will be indicated as such in the OVERDRAFT            AND EXCESS report. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (standard amount format) characters. System generated. Subvalue field associated with Field 35.1.1.  It is also part of the association of fields 25 to 45.</p>
+        </desc>
+</t>
+<t>
+<field>NO.OF.SUB.ALLOCS</field>
+<desc>
+            <p>Each time a Suballocation is made which involves this Limit record then this count will be incremented by 1. It will be used by the system to ensure a credit line is not closed until all Suballocations have matured. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System generated.</p>
+        </desc>
+</t>
+<t>
+<field>SUB.ALLOC.GIVEN</field>
+<desc>
+            <p>Identifies the total Sub Allocation given from the corresponding Liability number and Limit reference. This amount is always expressed in the currency of the limit as defined in LIMIT CURRENCY (Field 1). </p>
+            <p>Note:      (i)  The amount generated automatically in this field                 is updated on a realtime basis by the                 LIMIT.SUBALLOC application.  Any                 suballocation done in a currency different than                 the LIMIT CURRENCY will be converted at the                 currency table middle rate. </p>
+            <p>           (ii) This amount will be subtracted to the ONLINE                 LIMIT amount when calculating the AVAILABLE                 AMOUNT (Field 32.1). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (Standard amount format) characters. System generated Multivalue field associated with fields 25 to 45.</p>
+        </desc>
+</t>
+<t>
+<field>COMMT.AMT.AVAIL</field>
+<desc>
+            <p>Identifies the total available (i.e. unused) amount of outstanding commitment contracts (from Commercial Loan application) which have been specified as 'Not subject to availability'.  This amount is always expressed in the currency of the limit as defined in 'LIMIT CURRENCY' (Field 1). </p>
+            <p>Note:      (i)  The amount generated automatically in this field                 is updated on a realtime basis by the Loans                 application whenever a commitment contract is                 created and is declared as 'Non subject to                 availability'.  When the customer actually makes                 a drawdown under this commitment the COMMT                 AMT AVAIL will then be reduced by the                 drawdown amount which in turn will now increase                 the field 31.1 'TOTAL OS'.  Any further                 drawdown under this commitment will be treated                 in the same way. </p>
+            <p>                For Non reducing Commitments (i.e. revolving),                 the inverse operation will take place when the                 customer reimburses part or all of the drawdown                 amount(s).  The field TOTAL OS will be reduced                 by the amount of the reimbursement while this                 field will be increased by the same amount. </p>
+            <p>           (ii) Any commitment contract done in a currency                 different than the LIMIT CURRENCY will be                 converted at the currency table middle rate. </p>
+            <p>           (iii)This amount will be subtracted from the ONLINE                 LIMIT amount when calculating the AVAILABLE                 AMOUNT (Field 32.1). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (Standard amount format) characters. System generated Multivalue field associated with fields 25 to 45.</p>
+        </desc>
+</t>
+<t>
+<field>S.AL.GVN.CCY</field>
+<desc>
+            <p>Identifies, together with the next field S.AL.GVN.CCY the various sub allocation given outstanding amounts by currency.  The total of these various amounts for all currencies can be seen, expressed in the Limit currency, in the field 29.1 'SUB ALLOC GIVEN'. </p>
+            <p>Note:  (i) All amounts which are in a currency different than the            LIMIT CURRENCY (Field 1) are converted at the            currency table middle rate to generate the 'SUB ALLOC            GIVEN' (Field 29.1).  In accordance with the frequency            defined in the LIMIT.PARAMETER table, these amounts            will be revalued with the last currency table middle rate            to recalculate a new total SUB ALLOC TAKEN.  Any            excess of the ONLINE LIMIT amount due to the limit file            revaluation will be indicated as such in the OVERDRAFT            AND EXCESS report. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 characters SWIFT currency code. System generated. Subvalue field associated with Field 36.1.1.  It is also part of the association of fields 25 to 45.</p>
+        </desc>
+</t>
+<t>
+<field>INCREASE.CCY</field>
+<desc>
+            <p>Defines the currency in which the increase will be made. No input field. Defaults to the limit currency.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1 to 3 numeric character Currency Code or 3 SWIFT characters.</p>
+            <p>Multi value field associated with fields INCREASE . FREQ, INCREASE .     AMOUNT and INCR . END . DATE.</p>
+            <p>No input field. Defaults to limit currency.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>ONLINE.UPDATE</field>
+<desc>
+            <p>This field controls online update of fed (cash) type of collateral. If cash collateral such as account, deposits (LD, MM), securities and fiduciary are attached to a limit record; any change in these collateral value are updated during the End of Day process. If such collaterals value is to be updated online then this field is to be marked as "Y". (Collateral.type record of the collateral to be marked "Y" in the online update field) In such cases the collateral is recalculated when the limit reference is drawn. If the field is marked "N" or left blank then no online update is done. Online update field in COLLATERAL.PARAMETER is to be marked "Y" for online update</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Optional input field </p>
+            <p>Input can be Y,N or null </p>
+            <p>No input field if field 17 (fixed/variable) is blank or has value fixed </p>
+            <p>Online update of cash collateral is done only when online update fields in </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>COLLATERAL.PARAMETER, COLLATERAL.TYPE &amp; LIMIT records are marked "Y".</p>
+        </desc>
+</t>
+<t>
+<field>FIXED.VARIABLE</field>
+<desc>
+            <p>Indicates, for a secured limit, whether the ONLINE LIMIT is a fixed or a variable amount. </p>
+            <p>A value in this field indicates that the limit is secured. The underlying collateral should be recorded in the T24 Collateral Module. </p>
+            <p>The system recognises two types of secured limit. A variable limit is one for which the system automatically allocates the value of any underlying collateral against the limit and calculates the ONLINE LIMIT amount on the basis of this secured amount. A fixed limit is similar, except that the value of the ONLINE LIMIT amount is never adjusted. In other words, the secured amount belonging to a fixed limit is calculated for information purposes but not for the system's limit checking. </p>
+            <p>The rules for the calculation of the ONLINE LIMIT amount belonging to a particular limit are specified in fields 18 to 21 on the limit record. </p>
+            <p>If this field is left blank, the system treats the limit as unsecured. </p>
+            <p>of underlying collateral are only recorded at the top-level of the limit structure, not for sub-limits. </p>
+            <p>Example: </p>
+            <p>A limit is granted up to an overall maximum of GBP 100,000.00. If this faciity is unsecured (in terms of the T24 Collateral Module), the limit record appears as follows: </p>
+            <p>17 FIXED.VARIABLE.... 21 MAXIMUM.TOTAL..... 100,000.00 23. 1. 1 COLLAT.RIGHT 24. 1. 1 SECURED.AMT. 27. 1 ONLINE.LIMIT... 100,000.00 </p>
+            <p>If, instead, the facility requires security, it must be indicated by the user whether the online limit is to be system-maintained (variable) or set to the full maximum total allowed and fixed at that level. The current value of this security is, in either case, indicated by the system. In this example, there is a mortgage, currently valued at GBP 80,000.00. </p>
+            <p>If the limit is fixed, the record appears as follows: </p>
+            <p>17 FIXED.VARIABLE.... FIXED 21 MAXIMUM.TOTAL..... 100,000.00 23. 1. 1 COLLAT.RIGHT 12.1 MORTGAGES 24. 1. 1 SECURED.AMT. 80,000.00 27. 1 ONLINE.LIMIT... 100,000.00 </p>
+            <p>If the limit is variable, the record appears as follows: </p>
+            <p>17 FIXED.VARIABLE.... VARIABLE 21 MAXIMUM.TOTAL..... 100,000.00 23. 1. 1 COLLAT.RIGHT 12.1 MORTGAGES 24. 1. 1 SECURED.AMT. 80,000.00 27. 1 ONLINE.LIMIT... 80,000.00 </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'FIXED' or 'VARIABLE'. Optional input for top-level limit. </p>
+        </desc>
+</t>
+<t>
+<field>COLLAT.CCY</field>
+<desc>
+            <p>Defines the Currency in which the Collateral is denominated. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric character Currency Code        or 3 character SWIFT Currency Code.  Associated with all fields prefixed 'COLLAT'.  [Optional input.  Default to Currency (Field 1) if input has been made to Collateral Code.]  Cannot be entered if input has not been made to Collateral Code.</p>
+        </desc>
+</t>
+<t>
+<field>FX.OR.TIME.BAND</field>
+<desc>
+            <p>Identifies if the limit reference defined in the ID refers to the Foreign Exchange Application, Account Application or allows Time Bands definition. </p>
+            <p>The following values will be generated automatically by the system and can be one of the following: </p>
+            <p>BD         :    When the LIMIT REFERENCE of the ID refers to                 the Bonds Application. </p>
+            <p>FX         :    when the LIMIT REFERENCE of the ID refers to                 the Foreign Exchange Application </p>
+            <p>TB         :    when the LIMIT REFERENCE of the ID allows                 Time Bands definition </p>
+            <p>Nill       :    when the LIMIT REFERENCE of the ID refers to                 the ACCOUNT Application. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The following values can be displayed: .    BD  = Bonds Application .    FX  = Forex Application .    TB  = Time Bands definition possible .    Nil = Account Application</p>
+        </desc>
+</t>
+<t>
+<field>GRADE.PERCENT</field>
+<desc>
+            <p>This field is associated with the LIMIT.GRADE field and shows the percentage attributed to each grade specified. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 3 numeric characters in the range 1-100. Multivalue field associated with LIMIT.GRADE. (Optional input. Default 100.)</p>
+            <p>If only one occurrence of the Multivalue fields LIMIT.GRADE and GRADE PERCENT is defined, input must be 100.</p>
+            <p>If more than one set of the Multivalue fields LIMIT GRADE and GRADE PERCENT are defined, input to each occurrence of the field GRADE PERCENT is mandatory.</p>
+            <p>If more than one occurrence is input, the sum total of all occurrences must be 100.</p>
+            <p>Only for Customer level Group Limits (For e.g. M0000000020.2000.01.10020) this field will be considered.</p>
+        </desc>
+</t>
+<t>
+<field>OS.AMT</field>
+<desc>
+            <p>Identifies, together with the previous field OS CCY the various outstanding amounts (actual utilisation) by currency.  The total of these various amounts for all currencies can be seen, expressed in the Limit Currency, in Field 31.1 ' TOTAL.OS'. </p>
+            <p>Note:      (i)  For the Foreign Exchange Application, it is the                 amount bought which is taken to update this                 field.                 All amounts which are in a currency different                 than the LIMIT CURRENCY (Field 1) are                 converted at the currency table middle rate to                 generate the TOTAL.OS (Field 31.1). </p>
+            <p>                In accordance with the frequency defined in the                 LIMIT.PARAMETER table, these amounts will be                 revalued with the last currency table middle rate                 to recalculate a new total outstanding.  Any                 excess of the ONLINE LIMIT amount due to the                 limit file revaluation will be indicated as such in                 the OVERDRAFT AND EXCESS report. </p>
+            <p>           (ii) For the Foreign Exchange Application where                 outstanding amounts are netted, only the net                 total outstanding will be shown in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (Standard amount format) characters. System generated Subvalue field associated with Field 39.1.1.  It is also part of the association of fields 25 to 45.</p>
+        </desc>
+</t>
+<t>
+<field>OFFERED.UNTIL</field>
+<desc>
+            <p>Specifies the date by which the customer must have accepted the facility.  It should be noted that no reports are produced at present showing facilities taken up. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>6 to 11 type D (date) characters. (Optional input. Default to APPROVAL.DATE (Field 4).)</p>
+        </desc>
+</t>
+<t>
+<field>CREDIT.LINE.NO</field>
+<desc>
+            <p>Provides a unique reference for each Limit.  It comprises a Liability number or Limit Sharing group key, Limit Reference code, a Serial Number and optionally a Customer number. </p>
+            <p>An example of an ID may be as follows: </p>
+            <p>           "123456.100" </p>
+            <p>Where "123456" is the Liability number for UK Bank Ltd and 100 is the Limit Reference of the required Limit (e.g. 100 is Foreign Exchange limit). </p>
+            <p>For group limits it will start with M or S to denote Main group or Sub group limits respectively. The group should be defined in LIMIT.SHARING.GROUP application.</p>
+            <p>If more than two Limits of the same variety exist, they will be differentiated by use of the Serial Number.  E.g if UK Bank Ltd had two "Loan" Limits and the Limit Reference for Loans is 400, the ID's for these would be:- </p>
+            <p>           "123456.400.01"            "123456.400.02" </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>a)   1-10 alpha numeric character Liability Number or sharing group key. b)   3-7 numeric character LIMIT.REFERENCE code. c)   2 numeric character Limit Serial number. d)   1-6 numeric character Customer number. a) b) c) and d) must be separated by '.'. a) and b) are mandatory.  c) defaults to 01, d) is optional - only used to specify a customer sub-limit.</p>
+            <p>The Liability number must be the valid code of a Customer record on which the Liability number is equal to the Customer Number. The sharing group key should be a valid record defined in LIMIT.SHARING.GROUP table.</p>
+            <p>The Limit Reference code must be a valid code on the LIMIT.REFERENCE table.</p>
+            <p>For group limits, the limit reference should be an allowed product or sub-product defined in the LIMIT.SHARING.GROUP application.</p>
+            <p>The Serial Number is optional.  If input, it must be in the range 1 to 99.</p>
+            <p>The Customer number is optional.  If input it must be a valid code of a Customer record on which the liability number is equal to the liability number in i) above. For sub group limits the customer number should not be specified.</p>
+        </desc>
+</t>
+<t>
+<field>NOTES</field>
+<desc>
+            <p>Allows any free format notes which the user wishes to input concerning the Limit. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 type A (alphanumeric) characters. Multivalue field. (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>ONLINE.LIMIT.DATE</field>
+<desc>
+            <p>Specifies the date on which the Limit becomes available for use.  This date will be used for all online limit checking. </p>
+            <p>The system will ask the User to override a warning message if any attempt is made to use the Limit before the date specified by this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>6 to 11 type D (date format in range 1950 - 2049) characters (Default to RUN Date)</p>
+            <p>The date input must be the same or later than the PROPOSAL.DATE and earlier than or the same as the Limit EXPIRY.DATE.</p>
+            <p>This date must be greater than or equal to the RUN date.</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.CURRENCY</field>
+<desc>
+            <p>Defines the Currency in which all amount fields specified as part of the Limit will be denominated.  This includes the INTERNAL AMOUNT, ADVISED AMOUNT, ONLINE LIMIT amount and CLEAN RISK AMOUNT. </p>
+            <p>Note:      System generated fields such as SUB.ALLOC.TAKEN            (Field 28.1), SUB.ALLOC.GIVEN (Field 29.1),            COMMITM.AMT (Field 38.1.1), TOTAL.OS (Field 31.1)            and AVAIL.AMT (Field 32.1) will also be expressed in            this currency.  In accordance with the frequency            defined in the LIMIT.PARAMETER table, these system            generated amounts will be revalued with the last            currency table middle rate to recalculate the new            applicable amounts. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-3 numeric character Currency code or     3 character SWIFT Currency code (Mandatory input.)</p>
+        </desc>
+</t>
+<t>
+<field>ALLOW.UNUTIL.CR</field>
+<desc>
+            <p>Indicates whether unutilised amount differences that would result in a credit to the UNUTIL.ACCT are allowed. </p>
+            <p>For example, if the available limit is exceeded, a setting of Y would indicate that the contingent account may go into credit.  If the setting is set to N, then the contingent account will have a balance of zero.</p>
+            <p />
+            <p>Can be defaulted from LIMIT.PARAMETER. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Allows Y(es) or N(o)</p>
+            <p>Update allowed only if UNUTIL.ACCT is populated.</p>
+        </desc>
+</t>
+<t>
+<field>UNUTIL.ACCT</field>
+<desc>
+            <p>The account to which the difference between the current and previous unutilised amounts is transferred on a daily basis. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>This must be a contingent account.</p>
+            <p>If account is in a different currency to the currency of the Limit, an override is generated.</p>
+        </desc>
+</t>
+<t>
+<field>APPROVAL.DATE</field>
+<desc>
+            <p>Defines the date on which the Limit was last approved by the Credit Committee of the bank. </p>
+            <p>When the limit is initially loaded, the OFFERED.UNTIL date must be later than the APPROVAL.DATE.  This does not need to be the case on subsequent amendments. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>6-11 type D (date format in range 1950-2049) characters.  (Optional input. Default to 'todays date'.)</p>
+            <p>The date input must be less than or equal to today.</p>
+            <p>If both APPROVAL.DATE and OFFERED.UNTIL date are being input or amended, then OFFERED.UNTIL date must be later than or on the same day as the APPROVAL.DATE.  If an amendment is being made, the APPROVAL.DATE can be amended to be later than the OFFERED.UNTIL date provided OFFERED.UNTIL date does not change.</p>
+        </desc>
+</t>
+<t>
+<field>CREDIT.LINE</field>
+<desc>
+            <p>This field will be used to show what the key of the top level Limit record, that this record is part of, is. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Limit record ID. System generated.</p>
+        </desc>
+</t>
+<t>
+<field>LIABILITY.NUMBER</field>
+<desc>
+            <p>This field is used by the system to ensure the grouping of all credit line details for one Liability or sharing group is possible. This is required for the enquiries and the End-Of-Day reports. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard Liability number or sharing group key. System generated.</p>
+        </desc>
+</t>
+<t>
+<field>REPAY.CCY</field>
+<desc>
+            <p>Defines the currency in which repayments are to be made. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 3 numeric character Currency Code or     3 SWIFT characters. Associated with all fields prefixed 'REPAY'. (Optional input.  Default to the Currency in Field 1. Input cannot be made if REPAY NUMBER has not been entered.</p>
+        </desc>
+</t>
+<t>
+<field>REPAY.NOTES</field>
+<desc>
+            <p>Describes the Repayment schedule. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 type A (alphanumeric) characters. Associated with all fields prefixed 'REPAY'. (Optional input.) Input cannot be made if REPAY NUMBER has not been entered.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED3</field>
+<desc>
+            <p>Reserved for future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field, no input.</p>
+        </desc>
+</t>
+<t>
+<field>RECORD.PARENT</field>
+<desc>
+            <p>This field will be used by the system to ensure a correct hierarchical link between credit lines, sub limits and customer utilisation records can be maintained. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard Limit record ID. System generated.</p>
+            <p>It could be possible to input  Record Parent in a Cross Limit structure   subject to the following  validations and restrictions:   </p>
+            <p />
+            <p>PRODUCT.ALLOWED specified in a CROSS Limit should have been specified as       a PRODUCT.ALLOWED in its  Record Parent.</p>
+            <p>ALLOWED.CUST  if specified (in a CROSS Limit or a SUB-PRODUCT       Limit) should have been specified as a ALLOWED.CUST  in their        Record Parent.</p>
+            <p>The Record Parent of a CROSS Limit should be another valid CROSS Limit       or PRODUCT Limit with same sequence no.</p>
+            <p>The Record Parent of a SUB-PRODUCT Limit should be a valid CROSS Limit       or PRODUCT Limit.</p>
+            <p>The Record Parent could not be modified after a transaction has updated       a Cross Limit structure.</p>
+            <p>For sub group limits the main group limit will be the parent limit. (For eg: When sharing sub group S000000001 created with parent group as M000000001, the RECORD.PARENT for the sub group limit  S000000001.2000.01 will be  M000000001.2000.01)</p>
+        </desc>
+</t>
+<t>
+<field>COLLAT.GRADE</field>
+<desc>
+            <p>Defines the quality of the collateral. </p>
+            <p>This field is based on CUSTOMER.STATUS and can be used to judge the reliability of the Collateral.  For instance, if Customer Status is measured as 'Excellent', 'Good' or 'Undesirable', any of these could be associated with the Collateral to give a similar meaning. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 4 numeric characters CUSTOMER.STATUS Code.  Associated with all fields prefixed 'COLLAT'.  (Mandatory input if COLLAT CODE entered; otherwise not allowed.)</p>
+            <p>Input cannot be made if Collateral Code has not been entered.</p>
+            <p>The code entered in this field must be a valid code on the CUSTOMER.STATUS table.</p>
+        </desc>
+</t>
+<t>
+<field>COLLAT.CODE</field>
+<desc>
+            <p>The collateral, which is held as security against a facility, is specified in the 'COLLAT' group of fields.  These fields are for information only and form the basis for a future Credit Register package.  The code entered must relate to an entry on the LIMIT.COLLAT table. </p>
+            <p>Input of the Collateral fields is for information purposes only. </p>
+            <p>If more than one type of Collateral is held, the associated fields can be expanded to record all of the types of Collateral. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4 numeric character Security Code.  This field is associated with all fields prefixed 'COLLAT'. (Optional input.)</p>
+            <p>The Collateral code entered in this field must have been previously defined on the LIMIT.COLLAT table.</p>
+            <p>Duplicates will not be allowed.</p>
+        </desc>
+</t>
+<t>
+<field>COLLAT.RIGHT</field>
+<desc>
+            <p>The underlying Collateral Right(s) belonging to the limit. </p>
+            <p>Indicates the Collateral Right(s) which underly the limit. This field is only maintained by the system for secured limits. It is updated whenever the relationship between the limit record and the collateral records is altered (for example by user-input of a new limit reference against the collateral, expiry of the collateral, etc). </p>
+            <p>The associated value of the underlying collateral is maintained under field 24, SECURED AMT. </p>
+            <p>Note:      The multivalues within this field correspond to the            multivalues in fields 18 &amp; 19, COLLATERAL CODE &amp;            MAXIMUM SECURED. The Collateral Right id's are            therefore grouped according to the defined set of            Collateral Codes for the secured limit, if any. Other            types of Collateral Right are shown seperately. Sub-            values in this field correspond to sub-groupings within            this arrangement. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 9-character Collateral Right id (1 to 6-digit Customer id; period; 1 to 2-digit sequence number). (No input, system-generated field) Multivalue &amp; sub-value field associated with field 24.</p>
+        </desc>
+</t>
+<t>
+<field>DISPO.OFFICER</field>
+<desc>
+            <p>Optional. The DISPO.OFFICER Id to be assigned to this LIMIT id when this limit is hit during input of transction,  if they are to have authorisation to approve dispo items.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Must be a valid dispo officer as defined in the DISPO.OFFICER file.       </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ALLOWED.CCY</field>
+<desc>
+            <p>Defines a specific currency which may make use of the Limit. </p>
+            <p>Currency codes specified in this field have exclusive use of the limit.  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard 1-3 numeric currency code          or 3 character SWIFT currency code             or "*" followed by 3-20 alphanumeric LIMIT.RANGE key.  Multi valued field.  Optional input.</p>
+            <p>If currency codes are input, no duplicates are allowed.</p>
+            <p>If currency codes are input they must exist on the CURRENCY file.</p>
+            <p>If a LIMIT.RANGE key is entered, the LIMIT.RANGE record must have the field COMP.OR.CCY set to CURRENCY.</p>
+            <p>Only one LIMIT.RANGE key is allowed, and may not be combined with individual currency codes.</p>
+            <p>Both ALLOWED.CCY and RESTRICTED.CCY cannot be input.</p>
+        </desc>
+</t>
+<t>
+<field>ALLOWED.AMT</field>
+<desc>
+            <p>Defines an amount as a ceiling for the currency which may make use of the limit. The system will generate an override whenever this amount is exceeded by the limit outstanding for the currency.</p>
+            <p>Example:</p>
+            <p>A limit is granted in USD with an Internal amount of 100000 in which ALLOWED.CCY is GBP and ALLOWED.AMT is 50000.The outstanding in GBP under the limit is -20000. Now, the limit is hit in GBP for -70000 and when the transaction is committed the system will generate an override 'Exceeds allowed amount for GBP by 40000 in limit XXXX'.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Optional.</p>
+            <p>Standard amount format.</p>
+            <p>Multi value field associated with the field ALLOWED.CCY.</p>
+            <p>Amount entered must not exceed INTERNAL. AMOUNT.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>REPAY.AMOUNT</field>
+<desc>
+            <p>Indicates the amount of repayments to be made on the dates given by Repayment Date/Cycle. </p>
+            <p>Once the LIMIT has been reduced to zero, reductions do not apply at higher levels in the LIMIT structure for a FULL reducing schedule. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (Standard amount format) characters. Associated with all fields prefixed 'REPAY'. (Optional input.)</p>
+            <p>Input cannot be made if REPAY.NUMBER has not been entered.</p>
+            <p>The number of decimal places must be in accordance with the Currency record defined by the field REPAY CCY.</p>
+        </desc>
+</t>
+<t>
+<field>RESTRICTED.COMP</field>
+<desc>
+            <p>Defines a specific company which may NOT make use of the Limit. </p>
+            <p>Company codes specified in this field cannot use the limit.  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard 2-3 company mnemonic or   9 character company code or   "*" follwed by 3-20 alphanumeric LIMIT.RANGE key Multi valued field Optional input</p>
+            <p>If company codes are input, no duplicates are allowed.</p>
+            <p>If company codes are input they must exist on the COMPANY file.</p>
+            <p>If company codes are input they must be financial company. Branches are not allowed</p>
+            <p>If a LIMIT.RANGE key is entered, the LIMIT.RANGE record must have the field COMP.OR.CCY set to COMPANY.</p>
+            <p>Only one LIMIT.RANGE key is allowed, and may not be combined with individual company codes.</p>
+            <p>Both ALLOWED.COMP and RESTRICTED.COMP cannot be input.</p>
+        </desc>
+</t>
+<t>
+<field>INCREASING.TYPE</field>
+<desc>
+            <p>Input in this field defines whether the online limit for the customer needs to be enhanced or not . If an input of 'FULL' is given then the INTERNAL.AMOUNT, ONLINE.LIMIT (subject to availability of collateral value in case of variable limits), AVAIL.AMT, MAXIMUM.TOTAL are increased in the parent limit records and then in the child limits . An input of 'SINGLE' in this field will increase the above mentioned amount fields only for that particular limit record . </p>
+            <p>Example : For limit record 100069.0000415.01 with an ONLINE.LIMIT of 1,00,000.00,the parent record is 100069.0000400.01 with an ONLINE.LIMIT of 2,00,000.00. </p>
+            <p>In 100069.0000415.01, if an INCREASING.TYPE of 'FULL' is given with INCREASE.FREQ as Week1 and INCREASE.AMOUNT as 50,000.00, then on the INCREASE.DATE, the parent record is first enhanced by the INCREASE.AMOUNT to become 2,50,000.00 and the child is then enhanced to become 1,50,000.00.The increase in this manner will keep happening till INCR.END.DATE is reached.     </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>For top level global and parent limits only input of 'SINGLE' is allowed   </p>
+            <p>Input can be either 'SINGLE' or 'FULL' for lower-level limits.</p>
+        </desc>
+</t>
+<t>
+<field>LIAB.NO</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>ALLOC.WORK.ID</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>CURR.UNUTIL.AMT</field>
+<desc>
+            <p />
+            <p>System updated. The current available amount on the limit. Includes the balances of any accounts linked to the limit, taking into consideration the ALLOW.NETTING flag</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System updated field. Noinput.</p>
+        </desc>
+</t>
+<t>
+<field>PREV.UNUTIL.AMT</field>
+<desc>
+            <p>System updated before the CURR.UNUTIL.AMT is set. Holds the previous days unutilised amount</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>EXPIRY.DATE</field>
+<desc>
+            <p>Specifies the date on which the Limit will expire. But if there are contracts against this limit,  then the limit will move to history only after the contracts mature. Any new drawings against this limit would raise overrides stating that the limit expires before the maturity date. </p>
+            <p>Warning of the approach of this date is given on the Limits Approaching Expiry Date overnight report. The number of days prior to Expiry Date that the warning starts to appear is defined by the Expiries Reporting field on the LIMIT.PARAMETER table.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>6 to 11 type D (date) characters. (Defaults to a year from the current run     date.) The date input must be greater than or equal to the Limit Review Date</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>REPAY.NUMBER</field>
+<desc>
+            <p>Defines the number of repayments where there is an associated repayment schedule. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 3 numeric characters in the range 1 to 999. Associated with all fields prefixed 'REPAY'. (Optional input.)</p>
+        </desc>
+</t>
+<t>
+<field>ALLOWED.COMP</field>
+<desc>
+            <p>Defines a specific company which may make use of the Limit. </p>
+            <p>Company codes specified in this field have exclusive use of the limit.  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Standard 2-3 alphanumeric compamy mnemonic     or 9 character company code                       or "*" followed by 3-20 alphanumeric LIMIT.RANGE key.  Multivalued field.  Optional input.</p>
+            <p>If company codes are input, no duplicates are allowed.</p>
+            <p>If a company code is entered, it must exist on the COMPANY file.</p>
+            <p>If company codes are input they must be financial company. Branches are not allowed</p>
+            <p>If a LIMIT.RANGE key is entered, the LIMIT.RANGE record must have the field COMP.OR.CCY set to COMPANY.</p>
+            <p>Only one LIMIT.RANGE key is allowed, and may not be combined with individual currency codes.</p>
+            <p>Both ALLOWED.COMP and RESTRICTED.COMP cannot be input.</p>
+        </desc>
+</t>
+<t>
+<field>INCREASE.DATE</field>
+<desc>
+            <p>This is the date from which the INCREASE.AMOUNT becomes effective . This date should not exceed the EXPIRY.DATE of the limit.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Date in format MMDDYY</p>
+            <p>Input mandatory if INCREASING.TYPE is populated</p>
+        </desc>
+</t>
+<t>
+<field>LAST.DRAW.DATE</field>
+<desc>
+            <p />
+            <p>FIELD NO.104 Last.Draw.Date: (From G13.1.00)</p>
+            <p>When a date is entered in this field, the value.date of each transaction/contract hitting the limit will be compared to this date. An override will be generated, if the transaction date is beyond this date.</p>
+            <p>For example</p>
+            <p>Last.Draw.Date 12 JAN 2001</p>
+            <p>Bank Date 10 JAN 2001</p>
+            <p>Contract Value Date 13 JAN 2001</p>
+            <p>In the above case an override will be generated at the time of committing the contract since the Value Date is beyond the Last.Draw.Date.</p>
+            <p>Last.Draw.Date 12 JAN 2001</p>
+            <p>Bank Date 25 JAN 2001</p>
+            <p>Contract Value Date 11 JAN 2001</p>
+            <p>In the above case the override will not be generated at the time of committing the contract since the contract Value Date is within the Last Draw Date.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 Date format</p>
+            <p>Optional Input</p>
+            <p>The date entered must be greater than or equal to the Bank Date</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.BAND</field>
+<desc>
+            <p>Specifies the split of the ONLINE LIMIT amount over the time bands in field 25, TIME CODE. </p>
+            <p>If the limit amount is to be made available over specified maturity periods (field 25, TIME CODE), this field is used to apportion the overall amount across those time bands. </p>
+            <p>It is the amount in field 21, MAXIMUM TOTAL, which should be apportioned. </p>
+            <p>The first multivalue in the set of associated fields (25 to 45) is used to record details of the entire limit amount and its utilisation. The amount in field 26, value 1 should therefore always be the same as the full MAXIMUM TOTAL in field 21. The amounts in field 26, values 2 onwards should add up to this same overall total but indicate the individual amounts available within each time period. </p>
+            <p>In the case of a variable secured limit, the MAXIMUM TOTAL in field 21 will not necessarily be the same as the allowed ONLINE LIMIT amount in field 27. The limit bands are, however, still specified in terms of the MAXIMUM TOTAL. The system automatically apportions the ONLINE LIMIT amount pro-rata. </p>
+            <p>The default value in 26.1 is the MAXIMUM TOTAL defined in field 21. The default value in 26.2 onwards is the difference between this total and the sum of the values occuring in the earlier multivalues. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 type AMT (standard amount format). (Mandatory input when time bands specified, otherwise not allowed; for default value see details) Multivalue field associated with fields 25 to 45.</p>
+            <p>No input is allowed unless field 75, FX.OR.TIME.BAND, is 'FX' or 'TB'.</p>
+            <p>No input is allowed unless time bands are specified (field 25, TIME CODE).</p>
+            <p>The first value must equal the MAXIMUM TOTAL in field 21.</p>
+            <p>Subsequent values may not exceed the MAXIMUM TOTAL in field 21, nor may their sum.</p>
+        </desc>
+</t>
+<t>
+<field>COLLAT.AMOUNT</field>
+<desc>
+            <p>Specifies the value of the Collateral. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (Standard amount format) characters.  Associated with all fields prefixed 'COLLAT'.  (Mandatory input if COLLAT CODE has been entered otherwise not allowed.)</p>
+            <p>Cannot be entered if input has not been made to Collateral code field.</p>
+            <p>The position of the decimal point must be in agreement with the number of decimal places quoted in the Currency table for the Currency involved.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.1ST.EXCESS</field>
+<desc>
+            <p>Identifies the starting date of the current excess period.  Various dates could be displayed in connection with Time Bands. </p>
+            <p>When the credit line moves out of excess, this field will be reset to nil in the End of Day process.  No history will be kept on previous content. </p>
+            <p>Note:      The relation between this field and DATE.OF.EXCESS            (Field 41.1) is as follows: </p>
+            <p>            Ŀ                                                 During Day                                  EOD      EOD       New or                                                     Temporary                Ĵ              DATE.OF.EXCESS     -   *(17) (20)      *                     DATE.1ST.EXCESS    -   *(17) (17)      -                     </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 type D (Date format in range 1950 - 2049) characters. System generated. Multivalue field associated with fields 25 to 45.</p>
+        </desc>
+</t>
+<t>
+<field>COLLAT.NOTES</field>
+<desc>
+            <p>A free format text field which can be used to describe the Collateral. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 type A (alphanumeric) characters.  Associated with all fields prefixed 'COLLAT'. (Optional input.)  Input cannot be made if Collateral Code has not been entered.</p>
+        </desc>
+</t>
+<t>
+<field>SUB.ALLOC.TAKEN</field>
+<desc>
+            <p>Identifies the total Sub Allocation Taken (i.e. received) for the corresponding Liability number and Limit reference.  This amount is always expressed in the currency of the limit as defined in 'LIMIT CURRENCY' (Field 1). </p>
+            <p>Note:      (i)  The amount generated automatically in this field                 is updated on a realtime basis by the                 LIMIT.SUBALLOC application.  Any                 suballocation done in a currency different than                 the LIMIT CURRENCY will be converted at the                 currency table middle rate. </p>
+            <p>           (ii) This amount will be added to the ONLINE LIMIT                 amount when calculating the AVAILABLE                 AMOUNT (Field 32.1). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (Standard amount format) characters. System generated Multivalue field associated with fields 25 to 45.</p>
+        </desc>
+</t>
+<t>
+<field>REPAY.FREQ</field>
+<desc>
+            <p>Indicates the first repayment date and the repayment cycle where a Limit has an associated repayment schedule. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The field must be a valid frequency format (up to 5 characters). Associated with all fields prefixed 'REPAY'. (Optional input.)</p>
+            <p>Input cannot be made when more than one limit band has been establised.</p>
+        </desc>
+</t>
+<t>
+<field>ALLOWED.CUST</field>
+<desc>
+            <p>Defines a specific Customer who can  make use of the Limit. If a Customer, or Customers, is input to this field, only these Customers can  make use of the Limit. </p>
+            <p>Use of this field is made in the following way. Suppose the following Liability group exists:- LiabilityCustomer Customer Number Number Name 123456 123456 UK Bank (London) 123456 564327 UK Bank (New York) 123456 985100 UK Bank (Paris) 123456 700346 UK Bank (Caracas) </p>
+            <p>If Customer Numbers 564327 and 985100 are entered to ALLOWED.CUST, the Limit will be available only to UK Bank (New York) and UK Bank (Paris). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-10     numeric character Customer Number or 1-10 character type MNE Customer     Mnemonic. Multivalue field. (Optional input.)</p>
+            <p>If a     Customer Number is input, it must be the number of a valid Customer record     on the Customer file.</p>
+            <p>If a     Customer Mnemonic is input, it must be the code of a valid Customer record     on the Customer file</p>
+            <p>The     customer defined must belong to the same Liability group as defined in the     ID of this record.</p>
+            <p>Value not     allowed in both the fields ALLOWED.CUST and RESTRICTED.CUST.</p>
+            <p>For sharing group limits this field is a no input field as the information for allowed customer is defined in LIMIT.SHARING.GROUP.</p>
+        </desc>
+</t>
+<t>
+<field>AVAILABLE.MARKER</field>
+<desc>
+            <p>Specifies whether or not the Limit is available for use. </p>
+            <p>The Availability marker must be set by the User when a Limit is created. It can be changed thereafter to either 'Y' or 'N' or 'R'.  If an Application attempts to make use of a Limit whilst it is not available, the Limit System will warn the user that this is the case.  The user may, if he so chooses, override the warning.  In this case, the fact will be reported on an Exception list produced overnight. </p>
+            <p>If this field is set to 'R', then when an application attempts to make use of a limit, limit system would warn the user that limit is unavailable, with a pending approval for using the limit from an account officer.</p>
+            <p>Note:      This facility can also be used when the bank wants to exclude a            customer out of the Liability group. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Y for available or N for not available or R for DISPO limit.  Mandatory input.</p>
+        </desc>
+</t>
+<t>
+<field>LIMITS.MODIFIED</field>
+<desc>
+            <p> Specifies the IDs of LIMIT records automatically updated  by the system, in a Cross Limit structure.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System updated field.</p>
+        </desc>
+</t>
+<t>
+<field>PREV.UTIL.AMT</field>
+<desc>
+            <p>(Field Added in G14.1)</p>
+            <p> Holds the previous days Utilised Amount</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Noinput field  system updated.</p>
+        </desc>
+</t>
+<t>
+<field>PREV.UTIL.ACCT</field>
+<desc>
+            <p>(Field Added in G14.1)</p>
+            <p>System updated. Holds the contingent account id used for populating the Utilised Limit amount, updated on the previous day.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Noinput field  system updated.       </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CREATED.FROM</field>
+<desc>
+            <p>Specifies the ID of the  LIMIT record  when input, had automatically updated  the current Limit record, in a Cross Limit structure.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p />
+            <p>System     updated field.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>DATE.LAST.MOVED</field>
+<desc>
+            <p>Identifies the date of the last transaction processing activity for the corresponding liability number and Limit Reference. </p>
+            <p>This field is used in the program LIMIT.EOD.ERROR to find out whether the reason for an excess is a Transaction processing activity or not (i.e. if it is due to Limit maintenance or Limit revaluation). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 type D (Date format in range 1950 - 2049). System generated. Multivalue field associated with fields 25 to 45.</p>
+        </desc>
+</t>
+<t>
+<field>S.AL.TKN.CCY</field>
+<desc>
+            <p>Identifies, together with the next field S.AL.TKN.AMT the various sub allocation taken outstanding amounts by currency.  The total of these various amounts for all currencies can be seen, expressed in the Limit currency, in the field 28.1 SUB ALLOC TAKEN. </p>
+            <p>Note:      (i)  All amounts which are in a currency different                 than the LIMIT CURRENCY (Field 1) are                 converted at the currency table middle rate to                 generate the 'SUB ALLOC TAKEN (Field 28.1).                 In accordance with the frequency defined in the                 LIMIT.PARAMETER table, these amounts will be                 revalued with the last currency table middle rate                 to recalculate a new total outstanding.  Any                 excess of the ONLINE LIMIT amount due to the                 limit file revaluation will be indicated as such in                 the OVERDRAFT AND EXCESS report. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 character SWIFT currency code. System generated. Sub-value field associated with Field 34.1.1. It is also part of the association of fields 25 to 45.</p>
+        </desc>
+</t>
+<t>
+<field>OTHER.SECURED</field>
+<desc>
+            <p>The portion of the limit which should be secured by classes of collateral other than those specified under field 18, COLLATERAL CODE. </p>
+            <p>The shortfall, if any, between the sum of the amounts in field 19, MAXIMUM SECURED and the portion of the limit which should be secured. This field is for information purposes and shows the amount of the limit which can be secured by classes of collateral other than those mentioned in field 18, COLLATERAL CODE. </p>
+            <p>If there are no restrictions on the classes of collateral which may be used to secure the limit, this field will reflect the full amount of the limit requiring coverage. </p>
+            <p>The system's calculation of the value in this field is as follows: </p>
+            <p>           max total - max unsecured - sum of max secured amounts            (field 21) - (field 20) - (field 19.1 + 19.2 ...) </p>
+            <p>provided that this yields a difference greater than zero. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 type AMT (standard amount format). (No input, system-generated field)</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>Contains all the override messages which the User agreed to during input. </p>
+            <p>During the validation stage of the Limit, the system may provide the User with a series of screen override messages to indicate an anomaly.  In the event of the User confirming the override, the full text of the actual override message will be stored, for reference purposes only, in this multivalue field. </p>
+            <p>For example, if the User tries to create a new limit with an amount smaller than the actual amount outstanding for the corresponding liability then, when the transaction is validated, a warning bell will sound and a message will appear at the foot of the screen which reads: 'EXCESS INCREASED TO .....' </p>
+            <p>This will draw the User's attention to the ONLINE LIMIT amount input which may be a mistake and can then be corrected.  On the other hand, the input may be correct and so the User confirms that this amount is intentional. </p>
+            <p>If, subsequently, the Limit record is either fully displayed or printed, then all override messages will be present. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>(Internal field) Multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>COMMITM.CCY</field>
+<desc>
+            <p>Identifies, together with the next field COMMITM AMT the various outstanding available commitment amounts by currency.  The total of these various amounts for all currencies can be seen, expressed in the Limit currency, in the Field 30.1 'COMMT.AMT.AVAIL'. </p>
+            <p>Note:  (i) All amounts which are in a currency different than the            LIMIT CURRENCY (Field 1) are converted at the            currency table middle rate to generate the            'COMMT.AMT.AVAIL' (Field 30.1).  In accordance with            the frequency defined in the LIMIT.PARAMETER table,            these amounts will be revalued with the last currency            table middle rate to recalculate a new total commitment            amount available.  Any excess of the ONLINE LIMIT            amount due to the limit file revaluation will be indicated            as such in the OVERDRAFT AND EXCESS report. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 characters SWIFT currency code. System generated. Subvalue field associated with Field 38.1.1.  It is also part of the association of fields 25 to 45.</p>
+        </desc>
+</t>
+<t>
+<field>COMMITM.AMT</field>
+<desc>
+            <p>Indentifies, together with the previous field COMMITM CCY the various outstanding available commitment amounts by currency.  The total of these various amounts for all currencies can be seen, expressed in the Limit currency, in the Field 30.1 'COMMT.AMT.AVAIL'. </p>
+            <p>Note:      (i)  All amounts which are in a currency different                 than the LIMIT CURRENCY (Field 1) are                 converted at the currency table middle rate to                 generate the 'COMMT.AMT. AVAIL' (Field 30.1).                 In accordance with the frequency defined in the                 LIMIT.PARAMETER table, these amounts will be                 revalued with the last currency table middle rate                 to recalculate a new total commitment amount                 available.  Any excess of the ONLINE LIMIT                 amount due to the limit file revaluation will be                 indicated as such in the OVERDRAFT AND                 EXCESS report. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (Standard amount format) characters. System generated Subvalue field associated with Field 37.1.1.  It is also part of the association of fields 25 to 45.</p>
+        </desc>
+</t>
+<t>
+<field>LINE.ID</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>INCREASE.FREQ</field>
+<desc>
+            <p>Indicates the first increase date and the increase cycle where a Limit has an associated increase type.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>The field must be a valid frequency format except  DAILY. Multi-value     field associated with fields INCREASE.CCY, INCREASE.AMOUNT and INCR.END.DATE. Input mandatory if     INCREASING.TYPE is present.   </p>
+            <p>Input cannot be made when more than one limit band has been established.</p>
+            <p>Date should be greater than Bank date but not greater than the limit     expiry date.</p>
+        </desc>
+</t>
+<t>
+<field>COLLAT.CUSTOMER</field>
+<desc>
+            <p>Indicates the Customer in whose name the Collateral is held. </p>
+            <p>Input of all Collateral fields is for information purposes only. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 6 numeric characters.  Associated with all fields prefixed 'COLLAT'.  (Optional input; Default = Liability number associated with the Line).</p>
+            <p>It must be the number of a valid Customer on the Customer file.</p>
+            <p>Cannot be input if Collateral Code has not been entered.</p>
+            <p>Only for Customer level Group Limits (For e.g. M0000000020.2000.01.10020) this field will be considered.</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.OS</field>
+<desc>
+            <p>Identifies the total outstanding amount for the corresponding Liability number and Limit reference. This amount is always expressed in the currency of the limit as defined in 'LIMIT CURRENCY' (Field 1). </p>
+            <p>Note:        (i)The amount generated automatically in this field                 is updated on a real time basis by the various                 transaction processing modules.  Any transaction                 in a currency different than the limit currency                 will be converted at the currency table middle                 rate.  For Foreign Exchange contracts it is the                 amount bought which is taken to update this                 field. </p>
+            <p>            (ii)Balances of accounts attached to this credit line                 will not be included in this total. In this case,                 the user should refer to the enquiry facilities to                 view the net total outstanding. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (standard amount format) characters. System generated. Multivalue field associated with fields 25 to 45.</p>
+        </desc>
+</t>
+<t>
+<field>S.AL.TKN.AMT</field>
+<desc>
+            <p>Identifies, together with the previous field S.AL.TKN.CCY the various sub allocation taken outstanding amounts by currency.  The total of these various amounts for all currencies can be seen, expressed in the Limit currency, in the field 28.1 'SUB ALLOC TAKEN'. </p>
+            <p>Note:  (i) All amounts which are in a currency different than the            LIMIT CURRENCY (Field 1) are converted at the            currency table middle rate to generate the 'SUB ALLOC            TAKEN' (Field 28.1).  In accordance with the frequency            defined in the LIMIT.PARAMETER table, these amounts            will be revalued with the last currency table middle rate            to recalculate a new total SUB ALLOC TAKEN.  Any            excess of the ONLINE LIMIT amount due to the limit file            revaluation will be indicated as such in the OVERDRAFT            AND EXCESS report. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (standard amount format) characters. System generated. Subvalue field associated with Field 33.1.1.  It is also part of the association of fields 25 to 45.</p>
+        </desc>
+</t>
+<t>
+<field>SER.NO</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED2</field>
+<desc>
+            <p>Reserved for future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field, no input</p>
+        </desc>
+</t>
+<t>
+<field>REF.NO</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>PREV.UNUTIL.ACCT</field>
+<desc>
+            <p>System updated. Holds the contingent account updated on the previous day.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>If populated, must contain contingent account</p>
+            <p>Noinput field  system updated.</p>
+        </desc>
+</t>
+<t>
+<field>COLL.REQD.PRCNT</field>
+<desc>
+            <p>Collateral required percentage is used to control minimum collateral required in fixed type limits. This field is used for defining the collateral required percentage for the collateral code specified in the multi-value set. If collateral required percentage is defined then, collateral required amount is automatically calculated. Collateral required percentage uses internal amount (field 15) for calculating collateral required amount. If collateral required amount is less than the collateral a override is generated during the utilization of the limit (Eg .coll.code.301,value of collateral 0, required collateral 100000.00) If multiple collaterals are entered then multiple overrides are generated. </p>
+            <p>Collateral required percentage in variable limits alters, the secured amount of the respective collateral right. If collateral value is 10000 and collateral required percentage is defined as 200% then secured amount for the related collateral right will populate 5000. </p>
+            <p>( ie  value of collateral / Collateral required percentage )</p>
+            <p>Eg (If value of collateral is 10000)</p>
+            <p>Collateral.Code - 301</p>
+            <p>Coll.Reqd.percnt - 200</p>
+            <p>Maximum Secured - 2500</p>
+            <p>Collateral.right - 100001.1</p>
+            <p>Secured amount - 2500</p>
+            <p>In above example if maximum secured is 10000 then secured amount is only 5000. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Input allowed only if collateral code is given (field 18) </p>
+            <p>No input allowed if collateral required amount is filled (either collateral required amount or collateral required percentage can be entered, both cannot be entered) </p>
+            <p>Input should be numeric </p>
+            <p>Input is taken as percentage (% sign not required in input) </p>
+            <p>Input not allowed if the related collateral right is allocated to two or more limit references ( In collateral.right record)</p>
+        </desc>
+</t>
+<t>
+<field>SECURED.AMT</field>
+<desc>
+            <p>The underlying secured amount(s) belonging to the limit. </p>
+            <p>Indicates the actual secured amounts which underly the limit. This field is only maintained by the system for secured limits. It is updated whenever the value of an underlying collateral changes in such a way as to impact the limit. In the case of user-input to the Collateral record, this update is performed on-line. In the case of balance movements on an account, changes to the value of a portfolio etc., the updated collateral values are registered at end-of-day. </p>
+            <p>The corresponding Collateral Right id is indicated in field 23, COLLAT RIGHT. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 type AMT (standard amount format). (No input, system-generated field) Multivalue &amp; sub-value field associated with field 23.</p>
+        </desc>
+</t>
+<t>
+<field>REPAY.END.DATE</field>
+<desc>
+            <p>Identifies the last date for the repayment frequency (REPAY.FREQ) to apply. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 11 type D (Numeric date code in the form of DDMMYY or DD-MMM-YYYY etc) characters. (Optional input)</p>
+            <p>Either REPAY.NUMBER or REPAY.FREQ may be defined.</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.PRODUCT</field>
+<desc>
+            <p>Reserved for future use. Reserved for future use. Reserved for future use. Reserved for future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field, no input FIELD82  RESERVED3 System field, no input. FIELD83  RESERVED2 System field, no input FIELD84  RESERVED1 System field, no input</p>
+        </desc>
+</t>
+<t>
+<field>PROPOSAL.DATE</field>
+<desc>
+            <p>Specifies the date on which the Limit was proposed to the bank's Credit Committee. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>6 to 11 type D (date format in range 1950 to 2049) characters.</p>
+            <p>It is defaulted to today if no value is assigned. It can be backdated but cannot be greater than the APPROVAL.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>REDUCING.LIMIT</field>
+<desc>
+            <p>Identifies if the Limit reference defined in the ID is a 'reducing' or 'non-reducing' limit type.  The value will be taken automatically from the LIMIT.REFERENCE table in accordance with the content of the field 'REDUCING LIMIT' (Field 3). </p>
+            <p>Note:      The alternative terminology, revolving (non-reducing)            and non-revolving (reducing) is sometimes used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'Y' for reducing 'N' for non-reducing System generated.</p>
+        </desc>
+</t>
+<t>
+<field>MAXIMUM.UNSECURED</field>
+<desc>
+            <p>The maximum amount of the limit which may be unsecured. </p>
+            <p>This field defines the unsecured portion of a limit. It is used when a limit is to be partially secured. </p>
+            <p>The value in this field will, if necessary, be added to the secured amount underlying the limit when the system calculates the ONLINE LIMIT amount. If there is sufficient security for the entire TOTAL MAXIMUM allowed amount of the limit, this secured amount will be taken and the unsecured amount in this field ignored. It may be the case that only a part of the MAXIMUM UNSECURED amount is required to bring the secured amount up to the MAXIMUM TOTAL. </p>
+            <p>Note: This field is not used for a limit which is wholly unsecured. Only an overall limit is specified under these circumstances (field 21, MAXIMUM TOTAL). </p>
+            <p>Example: </p>
+            <p>A limit is granted up to an overall maximum of GBP 100,000.00. The limit is secured and variable. The current value of the underlying collateral exactly equal to the overall total limit. It is made up of a mortgage, currently valued at GBP 80,000.00, plus guarantees worth GBP 20,000.00. However, the amount of any guarantees which are acceptable as collateral has been limited to GBP 10,000.00. </p>
+            <p>If there is no MAXIMUM UNSECURED amount in field 20, the limit record appears as follows: </p>
+            <p>17 FIXED.VARIABLE.... VARIABLE 18. 1 COLLATERAL.CODE 10 GUARANTEES 19. 1 MAXIMUM.SECURED 10,000.00 20 MAXIMUM.UNSECURED. 21 MAXIMUM.TOTAL..... 100,000.00 23. 1. 1 COLLAT.RIGHT 12.2 GUARANTEES 24. 1. 1 SECURED.AMT. 10,000.00 23. 2. 1 COLLAT.RIGHT 12.1 MORTGAGES 24. 2. 1 SECURED.AMT. 80,000.00 27. 1 ONLINE.LIMIT... 90,000.00 </p>
+            <p>If an unsecured portion of the limit is to be allowed, it can be specified in this field. If, for example, there is GBP 5,000.00 available under the limit without security, the limit record appears as follows: </p>
+            <p>17 FIXED.VARIABLE.... VARIABLE 18. 1 COLLATERAL.CODE 10 GUARANTEES 19. 1 MAXIMUM.SECURED 10,000.00 20 MAXIMUM.UNSECURED. 5,000.00 21 MAXIMUM.TOTAL..... 100,000.00 23. 1. 1 COLLAT.RIGHT 12.2 GUARANTEES 24. 1. 1 SECURED.AMT. 10,000.00 23. 2. 1 COLLAT.RIGHT 12.1 MORTGAGES 24. 2. 1 SECURED.AMT. 80,000.00 27. 1 ONLINE.LIMIT... 95,000.0 </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 type AMT (standard amount format). (Optional input for secured limit, otherwise not allowed). No input is allowed unless a secured limit is indicated (field 17, FIXED/VARIABLE). The amount may not exceed the INTERNAL AMOUNT in field 15. </p>
+        </desc>
+</t>
+<t>
+<field>CURR.UTIL.AMT</field>
+<desc>
+            <p>(Field Added in G14.1)</p>
+            <p>System updated. The current Utilised amount of the limit. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>System updated field. Noinput.       </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>COLL.REQD.AMT</field>
+<desc>
+            <p>Collateral required amount is used to control minimum collateral required in fixed type limits. This field is used for defining the collateral required amount for the collateral code specified in the multi-value set. If collateral required amount is less than the collateral a override is generated during the utilization of the limit (Eg .coll.code.301,value of collateral 0, required collateral 100000.00) If multiple collaterals are entered with collateral required amount then multiple overrides are generated.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Rule 1 Input allowed only for a fixed type limit (field 17 to be fixed)</p>
+            <p>Input allowed only if collateral code is given (field 18)</p>
+            <p>No input allowed if collateral required percentage is filled (either collateral required amount or collateral required percentage can be entered, both cannot be entered)</p>
+            <p>Input should be numeric and valid amount</p>
+        </desc>
+</t>
+<t>
+<field>AMT.LAST.EXCESS</field>
+<desc>
+            <p>Identifies the total excess amount (including account balances) existing as at the close of the previous day. This amount is only updated in the End of Day process. </p>
+            <p>This field is used in program LIMIT.EOD. ERROR to find out whether an excess is new, has decreased, increased, disappeared or was only a temporary excess during the day. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 type AMT (standard amount format) characters.  System generated.  Multivalue field associated with fields TIME.CODE to DATE.1ST.EXCESS.</p>
+        </desc>
+</t>
+<t>
+<field>CONSOL.KEY</field>
+<desc>
+            <p>Contains the key of the consolidation record (in the CONSOLIDATE.ASST.LIAB file), into which the details of this LIMIT are being consolidated. </p>
+            <p>Consolidation details are only held for limits at the top of the LIMIT structure. </p>
+            <p>There are two ASSET TYPES associated with LIMITs. These are :- </p>
+            <p>LINE       The amount of the Credit line allocated. This amount can            be taken from either the ONLINE.AMOUNT,            INTERNAL.AMOUNT, or ADVISED.AMOUNT on the            Limit record. This field is defined on the ASSET&amp;LIAB            record on the CONSOLIDATE.COND file in the field            LIMIT.TO.USE. </p>
+            <p>UTIL       The amount of the line utilized. The details are            extracted from the TOTAL.OS field on the LIMIT            record. In the case of an Excess, the total amount            utilized will be taken as the LINE amount. </p>
+            <p>Both LINE and UTIL are treated as Contingent types for reporting purposes. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Alpha numeric, as specified in the consolidation conditions file (CONSOLIDATE.COND). Internal field</p>
+        </desc>
+</t>
+<t>
+<field>COMMODITY.PCENT</field>
+<desc>
+            <p>Indicates the percentage involvement in the Commodity (Industry) defined by the associated COMMODITY field. </p>
+            <p>If the Customers, within a Liability Group, are involved in a variety of different industries, then multiple entries of this sub-value field can be used to record this.  This field is used to specify the percentage involvement in each of the Industries. </p>
+            <p>Note:      The commodity (Industry) exposure report will detail            the utilisation (outstandings) according to the            industries and percentages defined in the associated            fields COMMODITY and COMMODITY PCENT (Fields 56.1            and 57.1). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 3 numeric characters in the range 1 to 100. (Optional input.  Default to first occurrence 100. Mandatory input to all occurrences if more than one input.) The sum of all percentages must be 100.</p>
+            <p>Only for Customer level Group Limits (For e.g. M0000000020.2000.01.10020) this field will be considered.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED1</field>
+<desc>
+            <p>Reserved for future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field, no input</p>
+        </desc>
+</t>
+<t>
+<field>UTIL.ACCOUNT</field>
+<desc>
+            <p>(Field Added in G14.1)</p>
+            <p>The account to which the difference between the current and previous utilised amounts is transferred on a daily basis.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>This must be a contingent account.</p>
+            <p>If account belongs to a different customer to the customer of the Limit,       an override is generated.</p>
+            <p>If account is in a different currency to the currency of the Limit, an       override is generated.       </p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>RESERVED.2</field>
+<desc>
+            <p>Reserved for future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field, no input</p>
+        </desc>
+</t>
+<t>
+<field>DATE.CLRISK.EXC</field>
+<desc>
+            <p>Identifies the dates on which the clean risk limit is exceeded. </p>
+            <p>Note:      Every single date on which a clean risk excess has            occurred will be recorded in this multivalue field.  When            the outstanding amounts are moved out of clean risk            excess, this field will be reset to nil.  No history will be            kept on previous content. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>11 type D (Date format in range 1950 - 2049) characters. System generated. Multivalue field</p>
+        </desc>
+</t>
+<t>
+<field>COLLAT.LOCATION</field>
+<desc>
+            <p>Specifies the place where the Collateral is physically held. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>2 type SSS (uppercase alpha) character Country Code.  Associated with all fields prefixed 'COLLAT'.  (Mandatory input if COLLAT CODE entered; otherwise not allowed.)</p>
+            <p>Input cannot be made if Collateral Code has not been entered.</p>
+            <p>Must be a valid Country Code.</p>
+        </desc>
+</t>
+<t>
+<field>REVIEW.FREQUENCY</field>
+<desc>
+            <p>Specifies the next date on which the limit is to be reviewed.  The review period is entered in the standard T24 frequency format. The default is for the first review to take place one year from today's date and monthly thereafter up to the time the user updates the limit record with new review and expiry dates. </p>
+            <p>Warning of the approach of this date is given on the Limits Approaching Review Date overnight report.  The number of days prior to Review Date that the warning starts to appear is defined by the Expiries Reporting field on the LIMIT.PARAMETER table.  The date is then updated by one Frequency. </p>
+            <p>If the Review Date is passed before the Limit has been reviewed and the next Review Date indicated to the System, the Limit will remain available.  The Limit does not become unavailable until the Limit Expiry Date (Field 7). </p>
+            <p>Note:      If the user wants to include on a daily basis the limits            under review in the 'Limits approaching review' report,            he can do so by entering the appropriate frequencycode            ('D') after the review date. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard T24 frequency code.</p>
+            <p>The resulting date of the first review must be later than the APPROVAL.DATE and the OFFERED.UNTIL Date.  This rule applies even when Limit Review Date alone is being amended.</p>
+            <p>The first review date must not be later than the Limit EXPIRY.DATE.</p>
+        </desc>
+</t>
+<t>
+<field>REF.LEVEL</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>INCR.END.DATE</field>
+<desc>
+            <p>The date, on which the increasing schedule should cease to be effective, can be defined in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Mandatory if INCREASE . TYPE is specified.</p>
+            <p>Multi value field associated with fields INCREASE . FREQ, INCREASE . CCY     and INCREASE . AMOUNT.</p>
+            <p>Can not be less than the INCREASE . FREQ date or greater than the limit     expiry date.</p>
+            <p>Standard T24 date format.</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>REDUCING.SCHED</field>
+<desc>
+            <p>Indicates whether the system should automatically reduce the limit amount. </p>
+            <p>A value of 'SINGLE' will deonte that the reduction only applies to the limit record where the reduction schedule is defined. </p>
+            <p>A value of 'FULL' means the reduction will apply to all limits records in the limit structure. </p>
+            <p>Once the LIMIT has been reduced to zero, reductions do not apply at higher levels in the LIMIT structure for a FULL reducing schedule. </p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input: FULL or        SINGLE</p>
+            <p>(Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>PRODUCT.ALLOWED</field>
+<desc>
+            <p>Identifies, when the Limit defined in the ID is a Global Limit, which Limit products of that global line are allowed to be used by the customer for who the Limit is being created. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+                <p value="1">3 - 4 Limit product number. Multivalue field. Mandatory input when ID contains global line; otherwise not allowed.</p>
+                <p value="2">Input of at least one product is mandatory when the Limit defined in the ID is a global Limit.</p>
+                <p value="3">The product defined must exist on the global line as defined on the LIMIT.REFERENCE table.</p>
+                <p value="4">Input of at least one sub product is mandatory when the Limit defined in the ID is a PRODUCT Limit defined with children.</p>
+                <p value="5">No duplicates will be allowed.</p>
+                <p value="6">In a Cross Limit structure, mandatory for PRODUCT and CROSS Limits.</p>
+                <p value="7">For sharing group limits this field is a no input field as the information for allowed product is defined in LIMIT.SHARING.GROUP.</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>OS.CCY</field>
+<desc>
+            <p>Indentifies, together with the next field OS AMT the various outstanding (actual utilisation) amounts by currency.  The total of these various amounts for all currencies can be seen, expressed in the Limit currency, in the Field 31.1 'TOTAL.OS'. </p>
+            <p>Note: (i)        For the Foreign Exchange Application it is the currency            bought which is taken to update this field.            All amounts which are in a currency different that the            LIMIT CURRENCY  (Field 1) are converted at the            currency table middle rate to generate the 'TOTAL            OUTSTANDING' (Field 31.1).  In accordance with the            frequency defined in the LIMIT.PARAMETER table,            these amounts will be revalued with the last currency            table middle rate to recalculate a new total outstanding.            Any excess of the ONLINE LIMIT amount due to the limit            file revaluation will be indicated as such in the            OVERDRAFT AND EXCESS report. (ii)       For the Foreign Exchange Application where outstanding            amounts are netted, only the net total outstanding will            be shown in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 character SWIFT currency code System generated Subvalue field associated with Field 40.1.1.  It is also part of the association of fields 25 to 45.</p>
+        </desc>
+</t>
+<t>
+<field>ORIGINAL.LIMIT</field>
+<desc>
+            <p>Identifies the original amount of the credit line when this one has been defined as a 'REDUCING' Limit type. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (standard amount format) characters. Input only allowed when REDUCING = 'Y'; otherwise not allowed. Default = ONLINE LIMIT amount when Limit is REDUCING or 'Nil' when Limit is NOT REDUCING.</p>
+            <p>Input in this field will only be allowed when the credit line has been defined as 'REDUCING'.</p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.AMT</field>
+<desc>
+            <p>Period amount is used for defining collateral required amount for a future date (field 21). This amount is used for updating the collateral required amount on a future date as defined in up to period (field 21). Associated with the multi-value set from field 18 to 24 and associated with sub-value set from field 21 to 23 </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Input allowed only for a fixed type limit (field 17 to be fixed) </p>
+            <p>Input allowed only if collateral code is given (field 18) </p>
+            <p>Input allowed only if up to period is given (field 21) </p>
+            <p>No input allowed if period percentage (field 23) is filled (either period amount or period percentage can be entered, both cannot be entered)  </p>
+            <p>Input should be numeric and valid amount, 1 to 14 type amount</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+            <p>Identifies any additional element which has been defined locally to meet a particular requirement. </p>
+            <p>As in the majority of T24 Applications the User is allowed to define, in the Main Limit file, up to 999 local elements in addition to the standard fields previously specified.  These local elements should be defined by the User, where deemed necessary, according to local practice. </p>
+            <p>The name of the new element(s), as well as the Format and <p>Validation Rules:</p>, must be defined in the LOCAL.TABLE and LOCAL.REF.TABLE prior to their use in the Limit system. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 35 characters as defined in the LOCAL.TABLE definition for this local reference field. Multivalue field. (Optional or Mandatory input according to definition in LOCAL.TABLE for this Local Reference element.) As defined by the User within the individual LOCAL.TABLE.</p>
+        </desc>
+</t>
+<t>
+<field>LIMIT.GRADE</field>
+<desc>
+            <p>Specifies the grade of the risk.  The grade entered must appear on the CUSTOMER STATUS table.  This field is associated with the grade percentage field so that different portions of the risk may have different grades (eg 50% good, 50% bad). </p>
+            <p>Where a Limit is available to a Liability Group,  there may be a different risk rating associated with each Customer within the group. In this case, it is possible to enter several values of this field, each being a Risk Rating (or Customer Status) of a different member of the group.  The associated field 'GRADE PERCENT' can then be used to record a percentage of the risk at a particular Grade. For instance, assume that there are the following Limit Grades (Customer Status):- </p>
+            <p>           CODE     STATUS </p>
+            <p>           1        EXCELLENT            2        GOOD            3        POOR </p>
+            <p>If a Liability group is made up of two Customers, one Rated 'Excellent' and the other Rated 'Good', it is possible to record Limit Grades of 'Excellent' and 'Good' and to associate with them percentages of 50 and 50.  However, if one Customer makes much greater use of the Limit than the other, the percentages entered could be, say, 80 and 20. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 4 numeric character Customer Status code. Multivalue field associated with Grade percent. (Optional input.  A single occurrence will default to the Customer Status from the Customer Record of the Liability number.)</p>
+            <p>Only for Customer level Group Limits (For e.g. M0000000020.2000.01.10020) this field will be considered.</p>
+        </desc>
+</t>
+<t>
+<field>INTERNAL.AMOUNT</field>
+<desc>
+            <p>Specifies the amount actually approved or authorised by Management or the Credit Committee. This amount may be greater than the amount advised to the Customer or the amount used for the online Limit checking. </p>
+            <p>The Internal Amount will often be greater than the amount advised to the Customer. This is especially the case when dealing with organisations with whom additional business is being sought. If business is agreed, the bank would not want a delay to occur due to the credit approval process. For this reason, Limits may be approved for the level of business which it is being aimed for rather than the level which is being done. Indeed, it will sometimes happen that Limits are approved when no business is being done. An example of this might be the approval of an FX Limit for a Customer who currently only has a Loan. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1 to 14 type AMT (Standard amount format) characters.         (Optional input.)</p>
+            <p>The position of the decimal point must be in agreement         with the number of decimal places quoted in the Currency         table for the Currency input to Field 1.</p>
+            <p>Mandatory input when the field CHECK.LIMIT =         "Y".</p>
+            <p>In a Cross Limit structure, mandatory only for PRODUCT Limits.</p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.PRCNT</field>
+<desc>
+            <p>Period percentage is used for defining collateral required percentage for a future date (field 21). This percentage is used for updating the collateral required percentage on a future date as defined in up to period (field 21). Associated with the multi-value set from field 18 to 24 and associated with sub-value set from field 21 to 23 </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Input allowed only when fixed/variable type limit is defined </p>
+            <p>Input allowed only if collateral code is given (field 18) </p>
+            <p>Input allowed only if up to period is given (field 21) </p>
+            <p>No input allowed if period amount (field 22) is filled (either period amount or period percentage can be entered, both cannot be entered) </p>
+            <p>Input should be numeric </p>
+            <p>Input is taken as percentage (% sign not required in input)</p>
+        </desc>
+</t>
+<t>
+<field>CHECK.CUST</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>COLLAT.PERCENT</field>
+<desc>
+            <p>Indicates the percentage of the Limit which is covered by this Collateral. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 3 numeric characters plus a decimal point.  Associated with all fields prefixed 'COLLAT'.  (Mandatory input if COLLAT CODE has been entered; otherwise not allowed.)</p>
+            <p>Input cannot be made where there is no Collateral Code.</p>
+            <p>Where more than a single occurence is present, input of a COLLAT PERCENT is mandatory to each occurence.</p>
+            <p>The sum total may exceed 100 percent.</p>
+        </desc>
+</t>
+<t>
+<field>CHECK.LIMIT</field>
+<desc>
+            <p>Defines whether overrides should appear when default LIMIT records are used or defaulted. </p>
+            <p>Entry of Y in this field means that overrides will be given. </p>
+            <p>The value of this field must be the same throughout the LIMIT structure. The default value of this field is that of the parent record if present, otherwise the default is Y. </p>
+            <p>This field cannot be changed after authorisation. The value of the whole structure may be changed by using the LIMIT.CHANGE application. </p>
+            <p>If INTERNAL.AMOUNT is present and CHECK.LIMIT is set to N, an override will be given. </p>
+            <p> If SUPPRESS is selected, then limit processing will not be done. This can be selected when credit risk is checked by external system. In this case limit will be used only for information purpose.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Y or N or SUPPRESS.  Mandatory input.</p>
+            <p>The value must be the same as that on the parent record.</p>
+        </desc>
+</t>
+<t>
+<field>CUST.NO</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>MAXIMUM.SECURED</field>
+<desc>
+            <p>The maximum amount of the limit which may be secured by collateral of the class specified in field 18, COLLATERAL CODE. </p>
+            <p>The amount in this field is associated with a Collateral Code in field 18, COLLATERAL CODE. Together these fields define a maximum secured amount per Collateral Code. </p>
+            <p>This secured amount places a maximum value on the amount of a particular class of collateral which can be used as security for the limit. It enables the definition of a structure to the underlying collateral. </p>
+            <p>Example: </p>
+            <p>A limit is granted up to an overall maximum of GBP 100,000.00. The limit is secured and variable. The current value of the underlying collateral exactly equal to the overall total limit. It is made up of a mortgage, currently valued at GBP 80,000.00, plus guarantees worth GBP 20,000.00. If field 19 (MAXIMUM SECURED) is left blank, the limit record appears as follows: </p>
+            <p>17 FIXED.VARIABLE.... VARIABLE 21 MAXIMUM.TOTAL..... 100,000.00 23. 1. 1 COLLAT.RIGHT 12.1 MORTGAGES 24. 1. 1 SECURED.AMT. 80,000.00 23. 1. 2 COLLAT.RIGHT 12.2 GUARANTEES 24. 1. 2 SECURED.AMT. 20,000.00 27. 1 ONLINE.LIMIT... 100,000.00 </p>
+            <p>If, however, this field has been used to limit the amount of any guarantees which are acceptable as collateral to GBP 10,000.00, the limit record appears as follows: </p>
+            <p>17 FIXED.VARIABLE.... VARIABLE 18. 1 COLLATERAL.CODE 10 GUARANTEES 19. 1 MAXIMUM.SECURED 10,000.00 21 MAXIMUM.TOTAL..... 100,000.00 23. 1. 1 COLLAT.RIGHT 12.2 GUARANTEES 24. 1. 1 SECURED.AMT. 10,000.00 23. 2. 1 COLLAT.RIGHT 12.1 MORTGAGES 24. 2. 1 SECURED.AMT. 80,000.00 27. 1 ONLINE.LIMIT... 90,000.00 </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 19 type AMT (standard amount format). (Optional input for secured limit, otherwise not allowed) Multivalue field associated with field 18.1 No input is allowed unless a secured limit is indicated (field 17, FIXED/VARIABLE). No input is allowed without a value in field 18, COLLATERAL CODE. The amount may not exceed the INTERNAL AMOUNT in field 15. </p>
+        </desc>
+</t>
+<t>
+<field>UP.TO.PERIOD</field>
+<desc>
+            <p>Collateral up-to period acts as a schedule for changing the collateral required amount &amp; percentage. Collateral required amount or collateral required percentage (field 19 &amp; 20) could be changed in a future date either manually or automatically. For automatic change in the collateral required amount/percentage then a valid date can be input in this field. On the defined date during end-of-day the collateral required amount &amp; percentage fields are rewritten from period amount (field 22) period percentage (field 23). Up to period with period amount &amp; percentage can be sub-valued.</p>
+            <p>In variable type limits only up to percentage will be rewritten to collateral required percentage.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>Input must be a valid date. (Optional) </p>
+            <p>Date must be greater than today and lesser than the limit expiry date. </p>
+            <p>If collateral up-to period is filled then either period amount (field 22) or period percentage (field 23) must have input. </p>
+            <p>Multiple up to period dates can be specified</p>
+        </desc>
+</t>
+<t>
+<field>RESTRICTED.CUST</field>
+<desc>
+            <p>Defines a specific Customer who may not make use of the Limit.  If a Customer, or Customers, is input to this field, these Customers may not make use of the Limit. </p>
+            <p>Use of this field is made in the following way.  Suppose the following Liability group exists:-            Liability Customer  Customer             Number  Number    Name            123456   123456    UK Bank (London)            123456   564327    UK Bank (New York)            123456   985100    UK Bank (Paris)            123456   700346    UK Bank (Caracas) </p>
+            <p>If Customer Numbers 564327 and 985100 are entered to RESTRICTED.CUST, the Limit will be available only to UK Bank (London) and UK Bank (Caracas). </p>
+            <p>If a value of *ALL is specified in the field </p>
+            <p>RESTRICTED.CUST</p>
+            <p>, then the </p>
+            <p>LIMIT </p>would be restricted to all Customers, and if no value is specified in the field, then it would not be restricted to any Customer.  <p><p>Validation Rules:</p></p><p><p value="1">1-10 numeric character Customer Number or     1-10 character type MNE Customer Mnemonic. Multivalue field. (Optional input.)</p><p value="2">If a Customer Number is input, it must be the number of a valid Customer record on the Customer file.</p><p value="3">If a Customer Mnemonic is input, it must be the code of a valid Customer record on the Customer file.</p><p value="4">The customer defined must belong to the same Liability group as defined in the ID of this record.</p><p value="5">Value not allowed in both the fields ALLOWED.CUST and RESTRICTED.CUST.</p><p value="6">For sharing group limits this field is a no input field as the information for allowed customer is defined in LIMIT.SHARING.GROUP.</p></p></desc>
+</t>
+<t>
+<field>CLEAN.RISK</field>
+<desc>
+            <p>Specifies the maximum total value of contracts to mature on one day. When a transaction is loaded to the System and there is a Clean Risk Amt specified as part of the Limit, in e.g Forex, the value of the bought side of the Foreign Exchange transaction is converted to a value in the Currency specified by LIMIT.CURRENCY. The rate used in the conversion is the Middle Rate held in the currency table at the time that the Limit is being checked. The converted value is then added to the total value of existing transactions maturing on the same maturity date. This final total is then compared to the Clean Risk amount defined in this field. </p>
+            <p>Note: If this field is not input, no clean risk check will be performed by the Limit System transactions. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1 to 14 type AMT (Standard amount format) characters. </p>
+            <p>The position of the decimal point must be in agreement         with the number of decimal places quoted in the Currency         table entry for LIMIT.CURRENCY.</p>
+            <p>The Limit Application checks in the LIMIT.PARAMETER table         the Application relating to the Limit Reference record         defined in the ID. The input of a Clean Risk amount is         optional. </p>
+        </desc>
+</t>
+<t>
+<field>RELATIVE.LIMIT</field>
+<desc>
+        <p>This field takes up sub group Limit Keys which needs to be checked in addition to its RECORD.PARENT.</p>
+        <p>This field will be automatically updated by the system, contains the sub group limits keys. This field is updated only for main group limits when the corresponding sub group limit is created.</p>
+        <p>Validation Rules:</p>
+        <p>Valid limit key (1 to 10 Sub group id;period; 7-digit limit reference number; period; 2-digit limit serial number).  Multi-value field.</p>
+        <p>This is a no input field.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.3</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.4</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>RESERVED.5</field>
+<desc>
+        <p>This field is reserved for future use.</p>
+    </desc>
+</t>
+<t>
+<field>ACC.COMPANY</field>
+<desc>
+            <p>This multi-value field is associated with ACCOUNT and informs the Limit system which company file the account is in that has been attached to this credit line. </p>
+            <p>Note:      When maintaining the Account file, the inputter may specify in            LIMIT.REF a Limit reference and serial number.  By doing this            the account will be attached to a credit line within the Limit            system, providing one has been set up.  Any debit balances on            that account will then be covered by that Limit until the            ONLINE LIMIT amount is exceeded.  Any number of accounts may be            attached to the same Credit Line, providing the customers all            have the same Liability. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid MNEMONIC of the Company file.  System generated.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT</field>
+<desc>
+            <p>This multi-value field, is associated with ACC.COMPANY and informs the Limit System which accounts are attached to the Credit line. </p>
+            <p>Note:      When maintaining the Account file, the inputter may specify in            LIMIT.REF a Limit reference and serial number.  By doing this            the account will be attached to a credit line within the Limit            system, providing one has been set up.  Any debit balances on            that account will then be covered by that Limit until the            ONLINE LIMIT amount is exceeded.  Any number of accounts may be            attached to the same Credit Line, providing the customers all            have the same Liability. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid account record ID.  System generated.</p>
+        </desc>
+</t>
+<t>
+<field>ADM.EXTENSION.DATE</field>
+<desc>
+            <p>Specifies the Administrative Extension date checked by the online transaction processing when the EXPIRY DATE specified in the previous field has been reached. </p>
+            <p>The date input in this field will be used at limit time checking of transaction processing as follows: </p>
+            <p>    o      When the Administrative Extension date has been reached, a            corresponding override message will be issued online to the            user. </p>
+            <p>    o      When the expiry date has been reached but not the            Administrative Extension date, then this date will be included            as information in the override message presented to the user. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>6 to 11 type D (date format in range 1950-2049) characters.  (Optional input. No default value)</p>
+            <p>The date entered must be within a valid number of days of the EXPIRY DATE.  This valid number of days is defined on the LIMIT.PARAMETER table.</p>
+            <p>This date, when defined on the limit record, must always be greater than the EXPIRY DATE.</p>
+        </desc>
+</t>
+<t>
+<field>ADVISED.AMOUNT</field>
+<desc>
+            <p>Records, when applicable, the amount advised to the Customer. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 type AMT (Standard amount format) characters.  (Optional input. Default none)</p>
+            <p>The number of decimal places entered must be in accordance with the number specified by the Currency table entry for LIMIT CURRENCY.</p>
+            <p>The amount entered must not be greater than the INTERNAL.AMOUNT.</p>
+        </desc>
+</t>
+<t>
+<field>REDUCE.INT.AMT</field>
+<desc>
+            <p> When this field is set as YES, during repayments made on the dates given by Repayment Date/Cycle, Amounts given in the INTERNAL.AMOUNT and ADVISED.AMOUNT fields will also be reduced.</p>
+            <p>
+                <p>Validation Rules:</p>
+                <p>Option field with values "YES" or "NO". (Optional input. Default none)</p>
+            </p>
+        </desc>
+</t>
+<t><field>MARGIN.EVENT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>OD.COND.ACCOUNT</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t><t><field>MARGIN.LEVEL</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

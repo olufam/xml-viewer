@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>IC</product>
+<table>DEBIT.INT.ADDON</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The purpose of this table is to specify a supplementary flat percentage charge which is to be applied to the overdraft (Debit 1) interest amount calculated by the System on Capitalisation date.  No Debit Interest Addon is possible for Debit 2 interest. </p>
+            <p>'Debit Interest Addon' represents the same type of charge as 'HIGHEST.DEBIT' and for this reason they cannot both be specified for application to any one particular Account. </p>
+            <p>The applicable Debit Interest Addon rate is that ruling on the date of Debit 1 interest application. </p>
+            <p>Free, Minimum and Maximum Amounts of charge can be specified by Currency and default values can be input for Currencies not specified. </p>
+            <p>The GENERAL.CHARGE record referred to in the relevant GROUP.DEBIT.INT record or ACCOUNT.DEBIT.INT record specifies whether or not this charge is applicable to an Account. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>Describes the Debit Interest Addon Charge, and can be used for reporting. </p>
+            <p>The Description may be entered in each of the Languages defined in the LANGUAGE table (Ref: General Tables). </p>
+            <p>It will be displayed in the Language specified in the User record of the person using the System. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3-35 type A (alphanumeric) characters.  Multilanguage field. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>SEQUENCE.YEAR.MTH</field>
+<desc>
+            <p>This is the Debit Interest Addon code and effective date which form a key to which GENERAL.CHARGE records may be linked. </p>
+            <p>The date may be entered as: </p>
+            <p>           1)  YYYY-MM   year-month            2)  YYYYMM    yearmonth            3)  MM-YY     month-year            4)  MMYY      monthyear   or       5)  MM        month       (current year assumed) </p>
+            <p>The month may be 01-12 or 1-12. </p>
+            <p>It is always displayed formatted YYYY-MM.  For new input the date may not be earlier than today. </p>
+            <p>The Debit Interest Addon record which is in effect on the date of the debit interest capitalisation defines the calculation rules for the whole capitalisation period. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1)    1-2 numeric characters (Mandatory input).  2)    '-' (Mandatory input if date is input, otherwise no input).       Prime Sites '.'  3)    1-7 date characters, year and month (Optional input, default       is current year and month.)</p>
+        </desc>
+</t>
+<t>
+<field>K.PERCENTAGE</field>
+<desc>
+            <p>Specifies the rate used to calculate the Debit Interest Addon charge, as a Percentage of the Debit Interest applied. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-10 type R (standard rate format) characters plus a decimal point. (Mandatory input)</p>
+            <p>Not more than 6 integers may be entered.</p>
+            <p>Not more than 9 decimals may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>K.CURRENCY</field>
+<desc>
+            <p>Defines the Currency for which the Free, Minimum and Maximum Amounts in the associated fields CURRENCY to MAXIMUM.AMOUNT apply.  For Accounts in Currencies not specified in this Field, the Default Amounts specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT are used. </p>
+            <p>Field CURRENCY to MAXIMUM.AMOUNT are used to define Amounts for adjusting Debit Interest Addon Charges on Accounts in specific Currencies.  For any Accounts in Currencies not specified in CURRENCY, the Default (local currency equivalent) Amounts specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT are used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 type SSS (SWIFT) characters Currency code         or 1-3 numeric characters (will be converted to Currency code).  Multivalue Field associated with fields FREE.AMOUNT to MAXIMUM.AMOUNT.  (Mandatory Input if any input in associated fields FREE.AMOUNT to MAXIMUM.AMOUNT otherwise not allowed).  It must be a valid code on the CURRENCY table (Ref: General Tables).</p>
+        </desc>
+</t>
+<t>
+<field>PERCENTAGE</field>
+<desc>
+            <p>Specifies the rate used to calculate the Debit Interest Addon charge, as a Percentage of the Debit Interest applied. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-10 type R (standard rate format) characters plus a decimal point. (Mandatory input)</p>
+            <p>Not more than 6 integers may be entered.</p>
+            <p>Not more than 9 decimals may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>FREE.AMOUNT</field>
+<desc>
+            <p>Specifies the amount to be deducted from the total charge calculated subject to the Minimum and Maximum Amounts, for Accounts in the Currency specified in the associated K.CURRENCY field. </p>
+            <p>Fields K.CURRENCY to MAXIMUM.AMOUNT are used to define Amounts for adjusting Debit Interest Addon Charges in specific Currencies.  The Default Amounts specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT are used if there is no entry in K.CURRENCY for the Currency of the Account. </p>
+            <p>The Free Amount is subtracted from the calculated charge and further adjustments are made as specified in fields MIMIMUM.AMOUNT and MAXIMUM.AMOUNT. </p>
+            <p>Note :     (i) The result may be zero but not negative, i.e. the Customer                will not receive a credit. </p>
+            <p>          (ii) Even if the Free Amount is greater than or equal to the                calculated charge, any Minimum specified in MINIMUM.AMOUNT                is still applicable. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point.  Multivalue field associated with field range K.CURRENCY to MAXIMUM.AMOUNT.  (Input not allowed if Field 10 is not input.  Otherwise optional)  The number of decimals may not exceed the number for Currency in K.CURRENCY.</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.MIN.AMT</field>
+<desc>
+            <p>Specifies the Minimum Amount, in local currency equivalent, to be charged, if there is no entry in K.CURRENCY for the Currency of the Account. </p>
+            <p>Amounts for adjusting Debit Interest Addon Charges in specific Currencies can be specified in the multivalue associated field group K.CURRENCY to MAXMIMUM.AMOUNT.  The Default Amounts specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT are used if there is no entry in K.CURRENCY for the Currency of the Account. </p>
+            <p>The calculated amount is converted to local currency before making adjustments specified in fields DEFAULT.MIN.AMT and DEFAULT.MAX.AMT. </p>
+            <p>If after the Default Free Amount has been subtracted from the calculated local currency charge, the result is less than the Default Minimum Amount, the Default Minimum Amount is used.  Otherwise the Default Maximum Amount is checked.  The result is converted to the Currency of the Account. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point. (Optional input, default value is zero.) The number of decimals may not exceed the number for local currency.</p>
+        </desc>
+</t>
+<t>
+<field>TR.CODE.DR</field>
+<desc>
+            <p>Identifies the Transaction Code to be assigned to Account entries generated for Debit Interest Addon Charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  1-10(Max Value) numeric characters Transaction Code. </p>
+            <p>  The Maximum value is specified in EB.OBJECT for TRANSACTION. </p>
+            <p>It must be a valid code on the TRANSACTION table.</p>
+            <p>The Debit Credit Indicator in the Transaction record must be 'DEBIT'.</p>
+        </desc>
+</t>
+<t>
+<field>MINIMUM.AMOUNT</field>
+<desc>
+            <p>Specifies the Minimum Amount to be charged for Accounts in the Currency specified in the associated K.CURRENCY. </p>
+            <p>Fields K.CURRENCY to MAXIMUM.AMOUNT are used to define Amounts for adjusting Debit Interest Addon Charges in specific Currencies.  The Default Amounts specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT are used if there is no entry in K.CURRENCY for the Currency of the Account. </p>
+            <p>If after the Free Amount has been subtracted from the calculated charge the result is less than the Minimum Amount, the Minimum Amount is used. Otherwise the Maximum Amount is checked. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point.  Multivalue Field associated with field range K.CURRENCY to MAXIMUM.AMOUNT.  (Optional input only allowed if corresponding K.CURRENCY is input. Default is zero.)  The number of decimals may not exceed the number for Currency in K.CURRENCY.</p>
+        </desc>
+</t>
+<t>
+<field>MAXIMUM.AMOUNT</field>
+<desc>
+            <p>Specifies the Maximum Amount to be charged for Accounts in the Currency specified in the associated field K.CURRENCY. </p>
+            <p>Field range K.CURRENCY to MAXIMUM.AMOUNT are used to define Amounts for adjusting Debit Interest Addon Charges in specific Currencies.  The Default Amounts specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT are used if there is no entry in K.CURRENCY for the Currency of the Account. </p>
+            <p>If after the Free Amount has been subtracted from the calculated charge the result is greater than the Maximum Amount, the Maximum Amount is used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point.  Multivalue field associated with field range K.CURRENCY to MAXIMUM.AMOUNT.  (Optional input only allowed if corresponding K.CURRENCY is input.)  The number of decimals may not exceed the number for Currency in K.CURRENCY.</p>
+        </desc>
+</t>
+<t>
+<field>TAX.CODE</field>
+<desc>
+            <p>Specifies the Tax record containing details of the calculation and processing of Tax applicable to the Debit Interest Addon Charge. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 2 numeric characters. (Optional input)  There must be an existing record for this code on the TAX table (Ref: General Tables), with effective date less than or equal to the effective date of this record.</p>
+        </desc>
+</t>
+<t>
+<field>CATEGORY</field>
+<desc>
+            <p>Identifies the Category code to be assigned to Profit and Loss entries generated for Debit Interest Addon Charges. </p>
+            <p>It must be a valid code on the CATEGORY table (Ref: General Tables). </p>
+            <p>System Indicator in Category record must be 'PL'. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4 or 5 numeric characters. (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>Defines the Currency for which the Free, Minimum and Maximum Amounts in the associated fields CURRENCY to MAXIMUM.AMOUNT apply.  For Accounts in Currencies not specified in this Field, the Default Amounts specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT are used. </p>
+            <p>Field CURRENCY to MAXIMUM.AMOUNT are used to define Amounts for adjusting Debit Interest Addon Charges on Accounts in specific Currencies.  For any Accounts in Currencies not specified in CURRENCY, the Default (local currency equivalent) Amounts specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT are used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 type SSS (SWIFT) characters Currency code         or 1-3 numeric characters (will be converted to Currency code).  Multivalue Field associated with fields FREE.AMOUNT to MAXIMUM.AMOUNT.  (Mandatory Input if any input in associated fields FREE.AMOUNT to MAXIMUM.AMOUNT otherwise not allowed).  It must be a valid code on the CURRENCY table (Ref: General Tables).</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.FREE.AMT</field>
+<desc>
+            <p>Specifies the Free Amount, in local currency equivalent, to be deducted from the total charge calculated subject to the Minimum and Maximum Amounts, if there is no entry in F.CURRENCY for the Currency of the Account. </p>
+            <p>Amounts for adjusting Debit Interest Addon Charges in specific Currencies can be specified in the multivalue associated group of fields, K.CURRENCY to MAXIMUM.AMOUNT. The Default Amounts specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT are used if there is no entry in K.CURRENCY for the Currency of the Account. </p>
+            <p>The calculated amount is converted to local currency before making adjustments specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT. </p>
+            <p>The Default Free Amount is subtracted from the calculated local currency charge and further adjustments are made as specified in fields DEFAULT.MIN.AMT and DEFAULT.MAX.AMT. The result is converted to the Currency of the Account. </p>
+            <p>Note :     (i) The result may be zero, but not negative, i.e. the Customer                will not receive a Credit. </p>
+            <p>          (ii) Even if the Free Amount is greater than or equal to the                calculated charge, any Minimum specified in DEFAULT.MIN.AMT                is still applicable. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point. (Optional input)  The number of decimals may not exceed the number for local currency.</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.MAX.AMT</field>
+<desc>
+            <p>Specifies the Maximum Amount, in local currency equivalent, to be charged if there is no entry in K.CURRENCY for the Currency of the Account. </p>
+            <p>Amounts for adjusting Debit Interest Addon Charges in specific Currencies can be specified in the multivalue associated field group K.CURRENCY to MAXMIMUM.AMOUNT.  The Default Amounts specified in fields DEFAULT.FREE.AMT to DEFAULT.MAX.AMT are used if there is no entry in Field 10 for the Currency of the Account. </p>
+            <p>The calculated amount is converted to local currency equivalent before making adjustments specified in fields DEFAULT.MIN.AMT and DEFAULT.MAX.AMT. </p>
+            <p>If after the Default Free Amount has been subtracted from the calculated local currency charge, the result is greater than the Default Maximum Amount, the Default Maximum Amount is used.  The result is converted to the Currency of the Account. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-14 numeric characters plus a decimal point. (Optional input, default value is zero.)  The number of decimals may not exceed the number for local currency.</p>
+        </desc>
+</t>
+<t>
+<field>TR.CODE.CR</field>
+<desc>
+            <p>Identifies the Transaction Code to be assigned to Profit and Loss entries generated for Debit Interest Addon Charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  1-10(Max Value) numeric characters Transaction Code. </p>
+            <p>  The Maximum value is specified in EB.OBJECT for TRANSACTION. </p>
+            <p>It must be a valid code on the TRANSACTION table (Ref: General Tables).</p>
+            <p>The Debit Credit Indicator in the TRANSACTION record must be 'CREDIT'.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

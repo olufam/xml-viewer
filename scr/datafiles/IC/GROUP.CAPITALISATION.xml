@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>IC</product>
+<table>GROUP.CAPITALISATION</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The purpose of this table is to specify the next date and subsequent frequency of application of debit and credit interest, for a group of Accounts.</p>
+            <p>Interest may be applied any day of the month. Cycles may be different for debit and credit interest, (e.g. debit interest may be charged monthly and credit interest paid quarterly) unless credit interest is only to be calculated as an offset to debit interest.</p>
+            <p>The date of debit interest application is also used as the date of application of Interest Related Charges. (These are Debit Interest Addon, Government Margin, Highest Debit and Interest Statement charges.)</p>
+            <p>If the 'Last Day Inclusive' field in the ACCOUNT.ACCRUAL file contains 'Y', interest is calculated on balances with value up to and including the capitalisation date. The value date of the interest entry booked is the day after the capitalisation date.</p>
+            <p>If 'Last Day Inclusive' contains 'NO' only balances up to and including the previous working day are included. The value date of the interest entry booked is the day after the last balance included.</p>
+            <p>Interest entries are booked to the Customer Account on the day they are calculated, or on the next working day, depending on the Application Posting Day specified in the ACCOUNT.ACCRUAL record. If the capitalisation date falls on a non-working day, the application is processed on the previous working day, unless 'Last Day Inclusive' contains 'Y' and a month end accrual day falls before the capitalisation date, in which case the application is processed on the next working day. In either case, the calculation is up to the capitalisation date and the entries generated have the same value date as they would have had if they had been processed on that date.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>DR2.CAP.FREQUENCY</field>
+<desc>
+            <p>Specifies the next date and subsequent frequency of the application of the second debit interest to the associated group of Accounts. Second debit interest is charged when DR2 fields on the ACCOUNT.DEBIT.INT or GROUP.DEBIT.INT record have been completed.</p>
+            <p>The first part of the field specifies the next application date for the 2nd type of debit interest, the 2nd part specifies the frequency of the 2nd type of debit interest applications.</p>
+            <p>The next date is updated automatically by the system on each application day.</p>
+            <p>The allowable frequencies are:</p>
+            <p>FREQUENCY NEXT DATE</p>
+            <p>D(aily) Every day</p>
+            <p>B(snss) Every business day</p>
+            <p>T(wmth) Twice a month, 15th and last day</p>
+            <p>Wn Every n weeks</p>
+            <p>Mnndd Every nn months on the dd day</p>
+            <p>If there is no input in this field, DR2 interest is Capitalised on the dates specified for debit interest in field DR.CAP.FREQUENCY.</p>
+            <p>When amending this field manually, if the next date is omitted, the system automatically generates it as follows:</p>
+            <p>FREQUENCY NEXT DATE</p>
+            <p>D(aily) (Every day) Tomorrow</p>
+            <p>B(snss) (Every business day) Next working day after today</p>
+            <p>T(wmth) (Twice a month, 15th and last day) The next 15th or month end from today, whichever is sooner</p>
+            <p>Wn (Every n weeks) n weeks from today</p>
+            <p>Mnndd (Every nn months on the dd day) If today's date is less than dd, the next date is day dd in nn months from last month, otherwise it is day dd in nn months form the current month. If this date does not exist (e.g. 30th February) the previous day is assumed (28th or 29th February).</p>
+            <p>Note:</p>
+            <p>(i) When the date specified, or calculated by the System falls on a non-working day, the application is processed on the previous working day (or the next working day if 'Last Day Inclusive' = 'Y' and a month end accrual day falls before the date specified), calculating figures up to the date specified.</p>
+            <p>(ii) If Daily application frequency is specified, and the ACCOUNT.ACCRUAL record specifies that interest is calculated on balances including the capitalisation date (Last Day Inclusive = Y), separate entries are generated for each day, including non-working days.</p>
+            <p>(iii) In the above case, if the ACCOUNT.ACCRUAL record specifies that interest is booked to the Account on the next working day (Application Posting Day = NEXT), the entries generated before a weekend or other non-working day will cause automatic back-value corrections on the next working day.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This field is in two parts.</p>
+            <p>1) Next Application Date: 1-9 Date characters. Default value calculated by the system depending on application frequency. (Optional Input).</p>
+            <p>2) Application Frequency: 1-5 type SS (uppercase alpha or numeric, first character alpha) characters (Optional input)</p>
+            <p>If Date is entered, it must not be before today's date.</p>
+            <p>The Frequency must be one of those listed above.</p>
+        </desc>
+</t>
+<t>
+<field>SETTLE.ACCT.CLOSE</field>
+<desc>
+            <p>This is a flag specifying whether a settlement account is required at the time of closing an account.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 alphabetic character field . (Mandatory input)</p>
+        </desc>
+</t>
+<t>
+<field>START.OF.DAY.CAP</field>
+<desc>
+            <p>Indicates whether capitalisation is allowed in the start of day processing, Y indicates that it is allowed, NO or null inidcates that it is not.</p>
+            <p>If allowed start of day capitalisation will take place when there are processing days between the period end date of the EOD part of a COB and the next working day.</p>
+            <p>This will be for what is normally called a split month end.</p>
+            <p>For example if the end of the month is  Friday 31st and the first working day of the next month is Monday the 3rd, then any accounts set for capitalisation on the first or second of the month will be capitalised in the start of day processing of the COB starting on Friday 31st. If the account is not set for start of day capitalisation then the accounts due for capitalisation on the first or second will be capitalised during the EOD processing of the COB starting on Monday 3rd.</p>
+            <p>In a situation where the next working day is 1 day after the period end of the EOD portion of the COB accounts will be capitalised during the EOD processing of the COB running on the capitalisation date even if the account is set for start of day capitalisation. For example COB begins on Friday 15th, Period end is Sunday 17th, next working day is Monday 18th, then accounts set for start of day capitalisation and with a capitalisation date of the 18th will be capitalised in the EOD processing of the COB starting on the 18th.</p>
+            <p />
+            <p>Validation rules</p>
+            <p>1-2 alphabetic field, Y or NO, optional input</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>CONDITION.CODE</field>
+<desc>
+            <p>This is a code which identifies the GROUP.CAPITALISATION record.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-4 numeric character General Condition code. (Mandatory input) There must be an existing record with the same ID on the ACCT.GEN.CONDITION table.</p>
+        </desc>
+</t>
+<t>
+<field>CR.CAP.FREQUENCY</field>
+<desc>
+            <p>Specifies the next date and subsequent frequency of the application of credit interest to the associated group of Accounts. The first part of the field specifies the next application date for credit interest, the 2nd part specifies the frequency of credit interest applications. The next date is updated automatically by the system on each application day. If there is no input in this field, credit interest is capitalised on the dates specified for debit interest in field DR.CAP.FREQUENCY. The allowable frequencies are:</p>
+            <p>FREQUENCY NEXT DATE</p>
+            <p>D(aily) Every day</p>
+            <p>B(snss) Every business day</p>
+            <p>T(wmth) Twice a month, 15th and last day</p>
+            <p>Wn Every n weeks</p>
+            <p>Mnndd Every nn months on the dd day</p>
+            <p>When amending this field manually, if the next date is omitted, the system automatically generates it as follows:</p>
+            <p>FREQUENCY NEXT DATE</p>
+            <p>D(aily) (Every day) Tomorrow</p>
+            <p>B(snss) (Every business day) Next working day after today</p>
+            <p>T(wmth) (Twice a month, 15th and last day) The next 15th or month end from today, whichever is sooner</p>
+            <p>Wn (Every n weeks) n weeks from today</p>
+            <p>Mnndd (Every nn months on the dd day) If today's date is less than dd, the next date is day dd in nn months from last month, otherwise it is day dd in nn months form the current month. If this date does not exist (e.g. 30th February) the previous day is assumed (28th or 29th February).</p>
+            <p>Note:</p>
+            <p>(i) When the date specified, or calculated by the System falls on a non-working day, the application is processed on the previous working day (or the next working day if 'Last Day Inclusive' = 'Y' and a month end accrual day falls before the date specified), calculating figures up to the date specified.</p>
+            <p>(ii) If Daily application frequency is specified, and the ACCOUNT.ACCRUAL record specifies that interest is calculated on balances including the capitalisation date (Last Day Inclusive = Y), separate entries are generated for each day, including non-working days.</p>
+            <p>(iii) In the above case, if the ACCOUNT.ACCRUAL record specifies that interest is booked to the Account on the next working day (Application Posting Day = NEXT), the entries generated before a weekend or other non-working day will cause automatic back-value corrections on the next working day.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This field is in two parts.</p>
+            <p>1) Next Application Date: 1-9 Date characters. Default value calculated by the system depending on application frequency. (Optional Input).</p>
+            <p>2) Application Frequency: 1-5 type SS (uppercase alpha or numeric, first character alpha) characters (Optional input)</p>
+            <p>If Date is entered, it must not be before today's date.</p>
+            <p>The Frequency must be one of those listed above.</p>
+        </desc>
+</t>
+<t>
+<field>CR2.CAP.FREQUENCY</field>
+<desc>
+            <p>Specifies the next date and subsequent frequency of the application of second credit interest to the associated group of Accounts. Second credit interest is paid when the CR2 fields on the associated ACCOUNT.CREDIT.INT or GROUP.CREDIT.INT record have been completed.</p>
+            <p>The first part of the field specifies the next application date for the 2nd type of credit interest, the 2nd part specifies the frequency of the 2nd type of credit interest applications.</p>
+            <p>The next date is updated automatically by the system on each application day.</p>
+            <p>The allowable frequencies are:</p>
+            <p>FREQUENCY NEXT DATE</p>
+            <p>D(aily) Every day</p>
+            <p>B(snss) Every business day</p>
+            <p>T(wmth) Twice a month, 15th and last day</p>
+            <p>Wn Every n weeks</p>
+            <p>Mnndd Every nn months on the dd day</p>
+            <p>If there is no input in this field, credit 2 interest is capitalised on the dates specified for credit interest in field CR.CAP.FREQUENCY, or, if there is also no input in field CR.CAP.FREQUENCY, on the dates specified for debit interest in field DR.CAP.FREQUENCY.</p>
+            <p>When amending this field manually, if the next date is omitted, the system automatically generates it as follows:</p>
+            <p>FREQUENCY NEXT DATE</p>
+            <p>D(aily) (Every day) Tomorrow</p>
+            <p>B(snss) (Every business day) Next working day after today</p>
+            <p>T(wmth) (Twice a month, 15th and last day) The next 15th or month end from today, whichever is sooner</p>
+            <p>Wn (Every n weeks) n weeks from today</p>
+            <p>Mnndd (Every nn months on the dd day) If today's date is less than dd, the next date is day dd in nn months from last month, otherwise it is day dd in nn months form the current month. If this date does not exist (e.g. 30th February) the previous day is assumed (28th or 29th February).</p>
+            <p>Note:</p>
+            <p>(i) When the date specified, or calculated by the System falls on a non-working day, the application is processed on the previous working day (or the next working day if 'Last Day Inclusive' = 'Y' and a month end accrual day falls before the date specified), calculating figures up to the date specified.</p>
+            <p>(ii) If Daily application frequency is specified, and the ACCOUNT.ACCRUAL record specifies that interest is calculated on balances including the capitalisation date (Last Day Inclusive = Y), separate entries are generated for each day, including non-working days.</p>
+            <p>(iii) In the above case, if the ACCOUNT.ACCRUAL record specifies that interest is booked to the Account on the next working day (Application Posting Day = NEXT), the entries generated before a weekend or other non-working day will cause automatic back-value corrections on the next working day.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This field is in two parts.</p>
+            <p>1) Next Application Date: 1-9 Date characters. Default value calculated by the system depending on application frequency. (Optional Input).</p>
+            <p>2) Application Frequency: 1-5 type SS (uppercase alpha or numeric, first character alpha) characters (Optional input)</p>
+            <p>If Date is entered, it must not be before today's date.</p>
+            <p>The Frequency must be one of those listed above.</p>
+        </desc>
+</t>
+<t>
+<field>DR.CAP.FREQUENCY</field>
+<desc>
+            <p>Specifies the next date and subsequent frequency of the application of debit interest and 'Interest Related' charges to the associated group of Accounts and to Profit and Loss.</p>
+            <p>The first part of the field specifies the next application date for debit interest and related charges, the 2nd part specifies the frequency of debit interest applications.</p>
+            <p>The next date is updated automatically by the system on each application day.</p>
+            <p>The allowable frequencies are:</p>
+            <p>FREQUENCY NEXT DATE</p>
+            <p>D(aily) Every day</p>
+            <p>B(snss) Every business day</p>
+            <p>T(wmth) Twice a month, 15th and last day</p>
+            <p>Wn Every n weeks</p>
+            <p>Mnndd Every nn months on the dd day</p>
+            <p>When amending this field manually, if the next date is omitted, the system automatically generates it as follows:</p>
+            <p>FREQUENCY NEXT DATE</p>
+            <p>D(aily) (Every day) Tomorrow</p>
+            <p>B(snss) (Every business day) Next working day after today</p>
+            <p>T(wmth) (Twice a month, 15th and last day) The next 15th or month end from today, whichever is sooner</p>
+            <p>Wn (Every n weeks) n weeks from today</p>
+            <p>Mnndd (Every nn months on the dd day) If today's date is less than dd, the next date is day dd in nn months from last month, otherwise it is day dd in nn months form the current month. If this date does not exist (e.g. 30th February) the previous day is assumed (28th or 29th February).</p>
+            <p>Note:</p>
+            <p>(i) This field also specifies the date of application of Interest Related Charges i.e. Debt Interest Addon, Government Margin, Highest Debit and Interest Statement charges.</p>
+            <p>(ii) When the date specified, or calculated by the System falls on a non-working day, the application is processed on the previous working day (or the next working day if 'Last Day Inclusive' = 'Y' and a month end accrual day falls before the date specified), calculating figures up to the date specified.</p>
+            <p>(iii) If Daily application frequency is specified, and the Account Accrual record specifies that interest is calculated on balances including the capitalisation date (Last Day Inclusive = Y), separate entries are generated for each day, including non-working days.</p>
+            <p>(iv) In the above case, if the ACCOUNT.ACCRUAL record specifies that interest is booked to the Account on the next working day (Application Posting Day = NEXT), the entries generated before a weekend or other non-working day will cause automatic back-value corrections on the next working day.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This field is in two parts.</p>
+            <p>1) Next Application Date: 1-9 Date characters. Default value calculated by the system depending on application frequency. (Optional Input).</p>
+            <p>2) Application Frequency: 1-5 type SS (uppercase alpha or numeric, first character alpha) characters (Optional input)</p>
+            <p>If Date is entered, it must not be before today's date.</p>
+            <p>The Frequency must be one of those listed above.</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+        <p>This is a multi valued field. Standard T24 alphanumeric field. </p>
+        <p>
+           <p>Validation Rules:</p>
+        </p>
+        <p> A maximum of 35 characters may be entered.</p>
+    </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+        <p>This is a multi valued field. </p>
+        <p>Contains details of any override applicable to this record.</p>
+        <p>
+           <p>Validation Rules:</p>
+        </p>
+        <p> A maximum of 35 characters may be entered. This is a NOINPUT field.</p>
+    </desc>
+</t>
+</menu>
+</t24help>
+

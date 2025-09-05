@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>MG</product>
+<table>MG.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>MG.PARAMETER OVERVIEW</p>
+            <p />
+            <p>The MG.PARAMETER can accept a valid COMPANY.CODE as its record id. It  defines both the product types handled within the module and the system parameters that control the processing of  these products. This is the highest level file in the Mortgage module and must be set up before any data can be  entered to the module.</p>
+            <p>Because of the controlling nature of this record very few  fields may be changed once the record is authorised, although some of the multi valued groups may be expanded.</p>
+            <p>The data contained within this record can be considered in groups relating to their  function as follows:</p>
+            <p>1. Product definition. (fields CONTRACT.TYPE to  DEFAULT.INT.REVIEW).</p>
+            <p>Product types within the module are defined in relation to their  method of repayment. The allowable types of product are defined in this group of fields along with an assigned  range of product category codes for each type. Suffixes may be used with contract IDs in order to link related  contracts under a common ID. This group of fields defines the allowable product types, their associated category  codes, and the allowable suffix codes.</p>
+            <p>2. Additional payment types. (fields  ADD.PAY.TYPE to DR.TXN.CODE)</p>
+            <p>In addition to regular repayments of interest and  principal, other repayment elements may be required. This group of fields allows up to five additional repayment  types to be defined. Details regarding calculation method, third party information and transaction codes are  defined in these fields.</p>
+            <p>3. Interest &amp; penalty conditions. (fields  DEFAULT.PENALTY to                             FLOAT.ACCR.CYCLE)</p>
+            <p>These fields control  the date and frequency of interest accruals, the default rate of penalty interest and the number of days free of  penalty.</p>
+            <p>4. Profit &amp; Loss categories. (fields THIS.MONTH.ACCR to PENALTY.CATEG)</p>
+            <p>Profit &amp; Loss category codes may be specified for interest accruals in the  current period and adjustments to the prior month and year. A separate category code may also be defined for  penalty interest.</p>
+            <p>5. History processing. (fields DAYS.POST.MATURITY to  BALANCE.HIST.DATE)</p>
+            <p>This group of fields controls the amount of time that data  relating to matured contracts remains on the "live" file and the amount of historical data to be retained on the  MG.BALANCES file.</p>
+            <p>6. Miscellaneous. (field START.OF.DAY.FLAG)</p>
+            <p>This is a system maintained field which simply provides the system with an indicator for split month end  processing.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>PREV.YEAR.ADJUST</field>
+<desc>
+            <p>Defines the Profit &amp; Loss category code to which interest  accrual adjustments for previous years are to be posted.</p>
+            <p>Any adjustments made  to the accrued interest on mortgage contracts in a previous year will be posted to this category code.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 5 numeric characters.  (mandatory input)</p>
+            <p>Must be in the range 50000 - 59999</p>
+            <p>Must be a valid P&amp;L category code on the CATEGORY table.</p>
+        </desc>
+</t>
+<t>
+<field>BROKERAGE.CATEG</field>
+<desc>
+            <p>The profit and loss category that will be used for debit of brokerage to be paid to the broker is  to be input in this field</p>
+            <p />
+            <p>Validation  Rules</p>
+            <p />
+            <p>Should be a valid entry in the  CATEGORY file</p>
+        </desc>
+</t>
+<t>
+<field>START.OF.DAY.FLAG</field>
+<desc>
+            <p>This is a system maintained field that is used to control processing  required during the start of day.</p>
+            <p>This field is used as a flag by the  mortgage module to indicate to the start of day batch routines that a split month end has occurred.</p>
+            <p>This is a system maintained field that cannot be updated by the user.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>COMPANY</field>
+<desc>
+            <p>Key to this application. Should be a valid Company </p>
+        </desc>
+</t>
+<t>
+<field>PAY.IN.ADV.FLAG</field>
+<desc>
+            <p>Defines if  repayments of the additional payment types in field ADD.PAY.TYPE are paid in advance or in arrears.</p>
+            <p>Repayments of additional payment types may be required to be settled either in advance or in  arrears. If a repayment is to be made in advance then it is paid at the beginning of each period (effectively the  end of the previous period).</p>
+            <p>This flag is used by the system when calculating  the final repayment date for an additional payment type. If the flag is set to "Y" then the last repayment will be  on the penultimate contract repayment date. This calculation will only be made if an end date is not entered on the  contract record for the additional type concerned.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The only allowable input is "Y". Multi value field associated with fields ADD.PAY.TYPE  to DR.ACCUMULATOR. (optional input)</p>
+        </desc>
+</t>
+<t>
+<field>PENALTY.CATEG</field>
+<desc>
+            <p>Defines the P&amp;L category code to which penalties interest is to be posted.</p>
+            <p>Profit and Loss entries raised by the collection of penalty interest will be posted to the category code  defined in this field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 5 numeric characters. (mandatory input)</p>
+            <p>Must be in the range 50000 -  59999.</p>
+            <p>Must be a valid P&amp;L category code on the CATEGORY code.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.THIRD.PARTY</field>
+<desc>
+            <p>Identifies specific  third parties normally associated with the additional payment types defined in field ADD.PAY.TYPE. These will be  used as defaults for the ADD.THIRD.PARTY field on the MORTGAGE file.</p>
+            <p>Additional payment types may involve a third party customer or agent of the bank. An example of this might be an  insurance company or pension fund manager. The involvement of any third party can be recorded on each individual  contract with the additional payment details.</p>
+            <p>The third party relating to an  additional type may vary between contracts. However, if an additional type is normally associated with a specific  third party then this relationship may be defined in this field. This will then be used during contract input as a  default value if a third party is not input.</p>
+            <p>If a value is present in this  field then by virtue of the default a third party will always be present on any contract using the associated  additional type.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 -  11 alphanumeric characters. Multi value field associated with fields ADD.PAY.TYPE to PAY.IN.ADV.FLAG. (optional  input)</p>
+            <p>Must be a valid customer on the CUSTOMER file.</p>
+        </desc>
+</t>
+<t>
+<field>THIS.MONTH.ACCR</field>
+<desc>
+            <p>Defines the Profit  &amp; Loss category code to which interest accruals in the current month are to be posted.</p>
+            <p>Interest accruals on mortgage contracts made in the current month will be debited to the Profit &amp;  Loss category code specified in this field.</p>
+            <p>Any adjustments made to accruals  in the current month will also be posted to this category code.</p>
+            <p>Once  authorised this field cannot be changed. However, If it is necessary to change the category code used for current  month accruals this may be done via field NEW.THIS.MTH.ACCR.</p>
+            <p>Validation  Rules</p>
+            <p>1 - 5 numeric characters. (mandatory input)</p>
+            <p>Must be in the range 50000 - 59999</p>
+            <p>Must be a valid P&amp;L category  code on the CATEGORY table.</p>
+        </desc>
+</t>
+<t>
+<field>GRACE.PERIOD</field>
+<desc>
+            <p>Defines the number of  days a client has to settle a mortgage repayment before penalty interest is charged.</p>
+            <p>This field defines the number of days, after a repayment date, that a client has in which to settle the  balance on his mortgage account. At the end of this period a penalty will be charged based on the outstanding debit  balance on the mortgage account.</p>
+            <p>Penalty charges are calculated by applying a  percentage rate to any debit balance on the mortgage account. The calculation and application of the penalty is  made on a monthly basis on the day determined by this field. If a client repays his mortgage on a frequency other  than monthly, ie. quarterly, then penalties will still be applied on each of the intervening months between  repayments.</p>
+            <p>Example:</p>
+            <p>A client has a  mortgage on which he is to repay 1000 on the first day of each month at three monthly intervals, i.e. quarterly.  The grace period allowed is 10 days and the penalty rate is 1%. The following situation arises:                                               Mortgage Date      Event                               account</p>
+            <p>01/03/90  System makes automatic repayment of 1000 to mortgage account. - 1000.00</p>
+            <p>Client does not settle his repayment. - 1000.00</p>
+            <p>11/03/90  Grace  period has expired penalty applied: 1000 x 0.01 = 10 - 1010.00</p>
+            <p>11/04/90   Second penalty date, penalty applied: 1010 x 0.01 = 10.1 - 1020.10</p>
+            <p>25/04/90   Client settles repayment and outstanding penalty 1020.10 0.00</p>
+            <p>11/05/90  Third  penalty date. Zero balance, therefore no penalty. 0.00</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 2 numeric characters. (mandatory input)</p>
+            <p>Must be numeric.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.SUFFIX</field>
+<desc>
+            <p>Defines the  allowable range of suffix codes that may be used as part of a mortgage contract ID.</p>
+            <p>The ID to the MORTGAGE main file is of the standard format. It may however be desirable to group contracts  together under a similar ID. Examples of this might be subsidised or joint mortgages on a single property. By  allowing contract IDs to have user defined suffixes a number of contracts may be grouped under a common root ID.  The existence of these associated contracts is recorded on a "main" contract which has no suffix, but, has the same  root as its associated contracts. It should be noted that this is purely an administrative feature and the  processing of all mortgages remains fully independent.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 alpha character. Multi value field associated with field SUFFIX.DESC. (optional  input)</p>
+            <p>No duplicate entries.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.CR.ACCOUNT</field>
+<desc>
+            <p>Defines default account numbers for the credit entries of repayments of the additional payment types defined  in field ADD.PAY.TYPE.</p>
+            <p>Whenever a repayment of an additional payment type is  processed, two accounting entries will be raised. The debit entry is posted to the mortgage account on the contract  concerned. The credit entry will be posted to the account specified in the ADD.CR.ACCOUNT field on the contract for  the additional type concerned.</p>
+            <p>This credit account number may vary between  contracts for the same additional type. However, if a specific account is normally associated with an additional  payment type then it can be defined as a default in this field. This will then be used during contract input to  default the ADD.CR.ACCOUNT field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard account number format. Multi value field associated with fields ADD.PAY.TYPE to  PAY.IN.ADV.FLAG. (optional input)</p>
+            <p>Must be a valid account on the ACCOUNT  file.</p>
+        </desc>
+</t>
+<t>
+<field>DR.ACCUMULATOR</field>
+<desc>
+            <p>Defines the accumulator code associated with the  additional payment types in field ADD.PAY.TYPE. This is used to accumulate repayment amounts from multiple types  into a single debit entry.</p>
+            <p>Whenever a contract reaches a repayment date each  of the additional types present on the contract will raise two accounting entries. A debit entry is posted to the  mortgage account and a credit entry to the account specified for the additional payment type. Therefore, in the  case of a contract with multiple additional types, a number of debit entries will be posted to the same mortgage  account. In these cases it may be desirable to group one or more of these debit amounts together under a single  entry.</p>
+            <p>This can be done by assigning an accumulator code to each additional  type on the parameter record. If a contract has more than one additional type then those with the same accumulator  code will be combined in a single entry.</p>
+            <p>The available accumulator codes are  held on field ADD.DR.ACCUM. Each accumulator code has an associated transation code. These codes are defined in  field DR.TXN.CODE which is multi valued and associated with field ADD.DR.ACCUM.</p>
+            <p>Example:</p>
+            <p>A contract has three additional payment types as follows:</p>
+            <p>Additional DR Repayment Type Accumulator Amount</p>
+            <p>Life insurance 1 50.00 Health insurance 1 25.00 Pension 2 40.00</p>
+            <p>Repayments  for this contract will produce two debit entries to the mortgage account as follows:</p>
+            <p>Life + Health insurance 75.00 Pension 40.00</p>
+            <p>The two additional types  with the same accumulator code have been combined into a single entry. The transaction code used for each of these  entries will be that defined for the accumulator in field DR.TXN.CODE.</p>
+            <p>The  accumulator code has no effect on credit entries and in this example three individual credit entries for each type  will be posted.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1  numeric character Multi value field associated with fields ADD.PAY.TYPE to PAY.IN.ADV.FLAG. (optional input)</p>
+            <p>Input is mandatory for each additional type in field ADD.PAY.TYPE.</p>
+            <p>Input must be a valid accumulator code defined in fields ADD.DR.ACCUM.</p>
+            <p>The accumulator code for an existing additional payment type cannot be changed.</p>
+        </desc>
+</t>
+<t>
+<field>NEW.THIS.MTH.ACCR</field>
+<desc>
+            <p>This field is used  to change the P&amp;L category code used for current month accruals.</p>
+            <p>The  category code used for interest accruals in the current month is defined in field THIS.MONTH.ACCR. The contents in  field THIS.MONTH.ACCR may not be changed after authorisation. However, if it becomes necessary to change this  category code then this is achieved via this field.</p>
+            <p>The new category code to  be used for current month accruals is entered in this field. During the End Of Day batch processing the new  category code will be transferred to field THIS.MONTH.ACCR and the contents of this field cleared. At the same time  all outstanding accrued interest will be transferred from the old to the new category code within the P&amp;L  base.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 5 numeric  characters. (optional input)</p>
+            <p>Must be in the range 50000 - 5999</p>
+            <p>Must differ from the category code in field THIS.MONTH.ACCR.</p>
+            <p>Must be a valid P&amp;L category on the CATEGORY table.</p>
+        </desc>
+</t>
+<t>
+<field>FIXED.ACCR.CYCLE</field>
+<desc>
+            <p>This field holds the next interest accrual date and the frequency of subsequent accruals for fixed rate  contracts.</p>
+            <p>Interest accruals on all fixed rate contracts will take place at  fixed intervals. This field controls the date of the next accrual and the date and frequency of all subsequent  accruals.</p>
+            <p>Only frequency codes of daily and monthly are allowed. For monthly  frequency, accruals can take place on any day during the month. However, in such a case the system will always  perform an accrual on the last day of each month in addition to the date specified.</p>
+            <p>The following examples illustrate some of the possible inputs.</p>
+            <p>Examples:</p>
+            <p>i)         09 JAN 1990 D</p>
+            <p>The next accrual will be performed on 9th Jan 1990 and accruals will then continue on a daily basis.</p>
+            <p>ii)        31 JAN 1990 M0131</p>
+            <p>The next accrual will  take place on 31st Jan 1990 and subsequent accruals will be made monthly on the last day of each month, i.e. 28th  Feb 1990, 31st Mar 1990 ..etc.</p>
+            <p>iii)       15 JAN 1990 M0115</p>
+            <p>The next accrual will take place on 15th Jan 1990 and subsequent accruals will be made monthly  (M01) on the 15th of each month. However, the system will always accrue at the end of each month by default. The             subsequent accruals will therefore be:</p>
+            <p>31st Jan 1990, 15th Feb 1990,  28th Feb 1990 ...etc.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date/frequency code format. (mandatory input)</p>
+            <p>Only daily and  monthly frequency codes allowed.</p>
+            <p>Next accrual date cannot be backdated.</p>
+        </desc>
+</t>
+<t>
+<field>ROUND.INTEREST</field>
+<desc>
+            <p>It is possible to round interest amounts on mortgage contracts  depending upon the setting in MIN.ROUND.AMOUNT field in CURRENCY record. The options which are available are   (null), U (upper rounding), L (lower rounding), and M (nearest).</p>
+            <p />
+            <p>For example, if the MIN.ROUND.AMOUNT in USD currency record is set to 10, then this means  that rounding will have to take place to values that are multiples of 10. If there is a MG contract with interest  of USD 958.33 for a particular period, then the rounded value of interest under the options available will be :</p>
+            <p />
+            <p>1) Null – no rounding will take place</p>
+            <p />
+            <p>2) U - USD 960</p>
+            <p />
+            <p>3) L - USD 950</p>
+            <p />
+            <p>4) M - USD 960</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Must be ' ', 'U' ,  'L' or 'M'.</p>
+        </desc>
+</t>
+<t>
+<field>DR.TXN.CODE</field>
+<desc>
+            <p>This field contains the transaction codes to be used for the debit  entries generated by repayments of additional payment types. A different code is defined for each debit accumulator  in field ADD.DR.ACCUM.</p>
+            <p>Whenever a repayment of an additional payment type is  made a debit entry will be posted to the mortgage account for the contract concerned. These debit entries may be  combined if required into a single entry through the use of a debit accumulator defined in field ADD.DR.ACCUM.</p>
+            <p>The transaction codes to be used on these debit entries are defined in this field.  A different code is required for each of the accumulator codes in field ADD.DR.ACCUM.</p>
+            <p>At least one transaction code will be required if any additional payment types have been defined in field  ADD.PAY.TYPE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+            <p> Multi value field associated with field ADD.DR.ACCUM. (optional input)</p>
+            <p>Must be in the range 805 to 809</p>
+            <p>Must be a valid transaction code  on the TRANSACTION table.</p>
+            <p>Input is mandatory if an accumulator code is  defined in the associated value of field ADD.DR.ACCUM.</p>
+        </desc>
+</t>
+<t>
+<field>FLOAT.ACCR.CYCLE</field>
+<desc>
+            <p>This field is not  used at present.</p>
+        </desc>
+</t>
+<t>
+<field>DAYS.POST.MATURITY</field>
+<desc>
+            <p>Defines the  number of days after maturity that the contract details are to remain on the "Live" files.</p>
+            <p>It is possible to retain data related to matured contracts on the "Live" files for a given number of  days. This may be desirable for reporting and enquiry functions. The length of time that this information is  retained is determined by this field.</p>
+            <p>Once the allowed time has elapsed then  the contract and all its associated data will be moved to the history files.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 3 numeric characters. (mandatory input)</p>
+            <p>Input must be numeric.</p>
+        </desc>
+</t>
+<t>
+<field>PREV.MONTH.ADJUST</field>
+<desc>
+            <p>Defines the Profit  &amp; Loss category code to which interest accrual adjustments for previous months in the current year are to be  posted.</p>
+            <p>Any adjustments made to the accrued interest on mortgage contracts in  a prior month within the current year will be posted to this category code.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 5 numeric characters. (mandatory input)</p>
+            <p>Must be in the range 50000 - 59999</p>
+            <p>Must be a valid  P&amp;L category code on the CATEGORY table.</p>
+        </desc>
+</t>
+<t>
+<field>CONTRACT.TYPE</field>
+<desc>
+            <p>This field identifies which of the available mortgage products are to be maintained within  the Mortgage module. Each type that is required must be entered in this field before such a contract may be input  to the system.</p>
+            <p>There are four allowable product types which are defined in  relation to their method of repayment. These are:</p>
+            <p>1. ANNUITY This type of  mortgage has a fixed periodic repayment amount (the "annuity") consisting of two variable components of principal  and interest. The repayment amount is calculated at the start of the    contract so that the principal will be  fully repaid after the required    number of repayments. Initially repayments consists mostly of    interest.  However, as the contract progresses the size of the    principal component increases as the accrued interest  reduces.</p>
+            <p>2. LINEAR Linear mortgages also have an interest and a principal  component to their periodic repayments. In this case, however, the principal repayment amount remains fixed over  the lifetime of the contract.    The interest element reduces as the accrued interest on the reducing    balance  decreases. This leads to a repayment scheme whereby the    total periodic repayment reduces over the lifetime of  the contract.</p>
+            <p>3. SAVING With this type of mortgage there are no periodic  repayments of principal, only interest. As the principal balance remains the same throughout the life of the  contract so the accrued interest, and    therefore the periodic interest repayments, remain fixed. The    principal  amount is repaid in full with a single payment on the    contract maturity date.</p>
+            <p>In addition to interest repayments this type of contract can have a regular "savings" or "insurance" premium  associated with it. These premiums may form part of a savings scheme or insurance policy that    will be used to  repay the mortgage at maturity. If required these    additional payments may be made automatically by the mortgage     module. The type of additional payments available is defined on the    parameter record in the group of multi  value fields ADD.PAY.TYPE to    PAY.IN.ADV.FLAG.  Although the processing of these additional payments   may be  performed by the mortgage module, the maintenance of the associated savings scheme or insurance policy is not.</p>
+            <p>It should be noted that although these additional payment types have been  discussed in relation to "saving" mortgages there use is not restricted to this type of contract.</p>
+            <p>4. NONREDEM NONREDEM mortgages are similar to SAVINGS mortgages in that there is no regular  repayment of principal only interest. In practice, however, they differ by not having any savings scheme or  insurance    policy associated with them. The way in which SAVING and    NONREDEM mortgages are processed is  exactly the same and the two    types exist only for classification purposes.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Alpha characters only, must be "ANNUITY", "LINEAR",  "SAVING" or "NONREDEM". Multi value field associated with fields START.CATEGORY to FIRST.PAY.ADV. (mandatory  input)</p>
+            <p>Input must be either "ANNUITY", "LINEAR", "SAVING" or "NONREDEM"</p>
+        </desc>
+</t>
+<t>
+<field>FIRST.PAY.ADV</field>
+<desc>
+            <p>This field contains the default value for the field  FIRST.PAY.IN.ADV on the contract record for each contract type.</p>
+            <p>When entering  a contract to the system it is possible to specify that the first repayment is to be paid in advance on the  drawdown date. This is done via the FIRST.PAY.IN.ADV field on the contract record. A default value for this feature  may be set up for each contract type through this field.</p>
+            <p>This field does not  restrict the input at contract level, but, will provide an override message if for example, the default at the  parameter level is set to "Y" and "N" is specified on the contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 alpha character. Input must be either "Y" (yes) or "N"  (no). Multi value field associated with fields CONTRACT.TYPE to END.CATEGORY. (optional input)</p>
+            <p>Input must be either "Y" or "N".</p>
+        </desc>
+</t>
+<t>
+<field>ROUND.REPAYMENT</field>
+<desc>
+            <p>Help Text for this  field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>ALLOWED.INT.VAR</field>
+<desc>
+            <p>This field will be used to set a variance between system calculated interest and user defined interest.</p>
+            <p>System will generate an override if the difference exceeds the variance.</p>
+            <p />
+            <p>Standard rate type field</p>
+            <p>Must be less than 100</p>
+            <p>Negative value not allowed</p>
+        </desc>
+</t>
+<t>
+<field>ADJ.FINAL.PRIN</field>
+<desc>
+            <p>Annuity  Mortgages, which use an Interest basis of 'B', 'E' or 'F' may have outstanding principal remaining after the final  payment has taken place.</p>
+            <p>Setting this field to 'Y' will ensure that for  annuity mortgages all of the outstanding principal will be repaid, i. e. the remaining principal will be added to  the final repayment. If this situation arises an exception will be raised to indicate the remaining principal.</p>
+            <p>The enquiry MG.FUTURE.BALANCES will show projected repayments up to maturity.</p>
+            <p>IF this field is left blank, or set to 'N' then if any outstanding amounts remain  after the final repayment the contract will run for a further month when the outstandings will be repaid and the  contract will terminate.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be either 'Y', 'N' or blank.</p>
+        </desc>
+</t>
+<t>
+<field>END.CATEGORY</field>
+<desc>
+            <p>This field defines the end of the range of product category codes that can be used with each contract  type defined in field CONTRACT.TYPE.</p>
+            <p>For each type of mortgage product  defined in field CONTRACT.TYPE a range of category codes may be allocated to further subdivide each product type.  This field defines the end category of the range for each contract type. The start of each range is defined in the  associated field START.CATEGORY. These two fields are used to validate the contract category entered during  contract input.</p>
+            <p>Once a category range for a contract type has been  authorised, it cannot be changed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 5 numeric characters. Multi value field associated with fields CONTRACT.TYPE to FIRST.PAY.ADV.  (mandatory input)</p>
+            <p>Must be a valid product category on the CATEGORY table in  the range 25000 to 25499.</p>
+            <p>Must be greater than the START CATEGORY of the same  multi value.</p>
+            <p>Cannot be part of a range of codes defined for another contract  type.</p>
+        </desc>
+</t>
+<t>
+<field>YEARS.ON.LIVE.BAL</field>
+<desc>
+            <p>This  field controls the number of complete years that data is retained on the MG.BALANCES file.</p>
+            <p>Because of the amount of data stored on the MG.BALANCES file and the the length of the term of some  contracts it is necessary to periodically archive data from this file. This is done in such a way that data for a  predefined number of complete years is retained on the "Live" MG.BALANCES file. The remaining data is transferred  to the "History" file MG.BALANCES.HIST.</p>
+            <p>This field controls the number of  complete years data that is to be retained. The date which is considered to be the year end date is defined in the  field LAST.HIST.DATE. This second field also records the the date on which data from this file was last archived.  These two fields are used in combination when the archiving routine is run to determine the prior to which date is  to be archived. This best illustrated by an example:</p>
+            <p>Example</p>
+            <p>If the current system date is 2nd March 1990 and the relevant fields on this record are  defined as:</p>
+            <p>YEARS.ON.LIVE.BAL ......... 1            BALANCE.HIST.DATE  ......... 31/12/87</p>
+            <p>If the archiving routine is now run data prior to 31/12/89  will be archived. This leaves one complete year, in this case 1989, on the MG.BALANCES file. After running the  routine the above fields will be updated as follows:</p>
+            <p>YEARS.ON.LIVE.BAL  ......... 1            BALANCE.HIST.DATE ......... 31/12/88</p>
+            <p>It will now not  be possible to run the archiving routine again until the system date has reached 1991.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 numeric character (mandatory input)</p>
+            <p>Input must be numeric and cannot be negative. Zero is allowed.</p>
+        </desc>
+</t>
+<t>
+<field>ADD.RESERVED</field>
+<desc>
+            <p>This field is not used at present and is reserved for future  expansion.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input is  not allowed to this field.</p>
+        </desc>
+</t>
+<t>
+<field>OVERRIDE</field>
+<desc>
+            <p>OVERRIDE</p>
+        </desc>
+</t>
+<t>
+<field>INT.SMOOTH.ACCR</field>
+<desc>
+            <p>This field holds the category value where the smoothed interest amount, i.e. the difference between the system calculated interest amount and the user defined interest amount, will be posted.·</p>
+            <p />
+            <p>Should be a valid P/L Category</p>
+        </desc>
+</t>
+<t>
+<field>START.CATEGORY</field>
+<desc>
+            <p>This field defines  the start of the range of product category codes that can be used with each contract type defined in field  CONTRACT.TYPE.</p>
+            <p>For each type of mortgage product defined in field  CONTRACT.TYPE a range of category codes may be allocated to further subdivide each product type. This field defines  the start category of the range for each contract type. The end of the range is defined in the associated field  END.CATEGORY. These two fields are used to validate the contract category entered during contract input.</p>
+            <p>Once a category range for a contract type has been authorised, it cannot be changed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 5 numeric characters.  Multi value field associated with fields CONTRACT.TYPE to FIRST.PAY.ADV. (mandatory input)</p>
+            <p>Must be a valid product category on the CATEGORY table in the range 25000 to 25499.</p>
+            <p>Must be less than the END CATEGORY of the same multi value.</p>
+            <p>Cannot be part of a range of codes defined for another contract type.</p>
+        </desc>
+</t>
+<t>
+<field>FIRST.DAY.ACCRUAL</field>
+<desc>
+            <p>Defines whether  interest accrual is computed on a first day or last day basis.</p>
+            <p>This field is  used as the system default for all mortgage contracts.</p>
+            <p>(Y)ES indicated that  the default accruals are to be first day basis. (N)O indicated that the default accruals are to be last day  basis.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 3 type  alpha (Y)es (N)o (Optional input.  Default value = YES)</p>
+            <p>Input must be either  (Y)ES or (N)O.</p>
+            <p>Once the contract has been authorised this field cannot be  changed.</p>
+            <p>Input not allowed.</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.INT.REVIEW</field>
+<desc>
+            <p>Defines the default interest rate review frequency for  mortgage contracts.</p>
+            <p>For each contract entered in the system an interest rate  review date and frequency is required. This can be either manually entered on the contract or defaulted from this  field. If the default is used the next review date will be calculated based on the frequency code in this field and  the value date of the contract.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard 5 character frequency code. (optional input)</p>
+        </desc>
+</t>
+<t>
+<field>BALANCE.HIST.DATE</field>
+<desc>
+            <p>This field defines that the date which details from the MG.BALANCES file have been archived.</p>
+            <p>Because of the amount of data stored on the MG.BALANCES file and the the length of the term of  some contracts it is necessary to periodically archive data from this file. This field records the date up to which  data has been archived to the MG.BALANCES.HIST. Any balance information relating to a date equal to or prior to  this date will be found on the MG.BALANCES.HIST file and not the MG.BALANCES file.</p>
+            <p>This field is also used in combination with the YEARS.ON.LIVE.BAL to control the archiving process. Archiving  cannot be run unless the system date is greater than the date held in this field plus the number of years defined  in the YEARS.ON.LIVE.BAL field plus one additional field. This is illustrated in the following example:</p>
+            <p>Example</p>
+            <p>If the current system date is 2nd March  1990 and the relevant fields on this record are defined as:</p>
+            <p>YEARS.ON.LIVE.BAL  ......... 1            BALANCE.HIST.DATE ......... 31/12/88</p>
+            <p>It will now not  be possible to run the archiving routine again until the system date has reached 1991. When 1991 is reached and the  archiving routine is run this field will be automatically updated as follows:</p>
+            <p>YEARS.ON.LIVE.BAL ......... 1            BALANCE.HIST.DATE ......... 31/12/89</p>
+            <p>Any balance data prior to 31/12/89 will be found on the MG.BALANCES.HIST file and not the MG.BALANCES file.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard date format.  (mandatory input)</p>
+            <p>This field cannot be changed once the record has been  authorised.</p>
+        </desc>
+</t>
+<t>
+<field>SUFFIX.DESC</field>
+<desc>
+            <p>Describes the type of contract associated with the suffix defined  in field CONTRACT.SUFFIX</p>
+            <p>This field contains a description of each contract  suffix defined in field CONTRACT.SUFFIX</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 15 alphanumeric characters. Multi value field associated with field CONTRACT.SUFFIX (optional  input)</p>
+            <p>Mandatory for each suffix defined in field CONTRACT.SUFFIX.</p>
+        </desc>
+</t>
+<t>
+<field>DEFAULT.PENALTY</field>
+<desc>
+            <p>Contains an interest key that is to be used to provide a default penalty interest rate  during contract input.</p>
+            <p>It is possible to define a different rate of penalty  interest for each contract. However, if the majority of contracts have the same penalty rate then this can be  defaulted during contract input via this field.</p>
+            <p>The interest key entered in  this field is used during contract input to access the BASIC.INTEREST table to obtain the current rate for the  specified key. This rate will then be defaulted in the field PENALTY.RATE on the contract record.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 3 numeric characters. (optional  input)</p>
+            <p>Must be a valid interest key on the BASIC.RATE.TEXT table.</p>
+            <p>Must have a rate defined for local currency on the BASIC.INTEREST table.</p>
+        </desc>
+</t>
+<t>
+<field>CR.TXN.CODE</field>
+<desc>
+            <p>Defines the transaction  codes to be used for the credit entries of repayments of the additional payment types defined in field  ADD.PAY.TYPE.</p>
+            <p>Whenever a repayment of an additional payment type is  processed, two accounting entries, one credit and one debit, will be raised. The debit entry is posted to the  mortgage account on the contract. The credit entry is posted to the account specified on the contract for the  additional type concerned.</p>
+            <p>This field defines the transaction codes to be  used for the credit entries raised during the repayment of an additional payment element. Once a transaction code  has been entered in this field it cannot be changed.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+            <p> Multi value field associated with fields ADD.PAY.TYPE to  PAY.IN.ADV.FLAG. (optional input)</p>
+            <p>Must be a valid transaction code on the  TRANSACTION table.</p>
+            <p>Must be in the range 817 to 821</p>
+            <p>A transaction code must be entered for each additional payment type defined in field ADD.PAY.TYPE.</p>
+        </desc>
+</t>
+<t>
+<field>RATE.FIX.DAYS.DEL</field>
+<desc>
+            <p>This field stores the number of days prior to rate fixing for advising  rate change.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2  numeric characters. (Optional input)</p>
+            <p>Default is 0.</p>
+        </desc>
+</t>
+<t>
+<field></field>
+<desc>
+        <p>Defines the allowable range of suffix codes that may be used as part of a mortgage contract ID. The ID to the MORTGAGE main file is of the standard format. It may however be desirable to group contracts together under a similar ID. Examples of this might be subsidised or joint mortgages on a single property. By allowing contract IDs to have user defined suffixes a number of contracts may be grouped under a common root ID. The existence of these associated contracts is recorded on a "main" contract which has no suffix, but, has the same root as its associated contracts. It should be noted that this is purely an administrative feature and the processing of all mortgages remains fully independent. </p>
+        <p>Validation Rules</p>
+        <p> 1 alpha character. Multi value field associated with field SUFFIX.DESC. (optional input) No duplicate entries.</p>
+        <p>CONTRACT.TYPE</p>
+        <p>This field identifies which of the available mortgage products are to be maintained within the Mortgage module. Each type that is required must be entered in this field before such a contract may be input to the system. There are four allowable product types which are defined in relation to their method of repayment. These are: 1. ANNUITY This type of mortgage has a fixed periodic repayment amount (the "annuity") consisting of two variable components of principal and interest. The repayment amount is calculated at the start of the contract so that the principal will be fully repaid after the required number of repayments. Initially repayments consists mostly of interest. However, as the contract progresses the size of the principal component increases as the accrued interest reduces. 2. LINEAR Linear mortgages also have an interest and a principal component to their periodic repayments. In this case, however, the principal repayment amount remains fixed over the lifetime of the contract. The interest element reduces as the accrued interest on the reducing balance decreases. This leads to a repayment scheme whereby the total periodic repayment reduces over the lifetime of the contract. 3. SAVING With this type of mortgage there are no periodic repayments of principal, only interest. As the principal balance remains the same throughout the life of the contract so the accrued interest, and therefore the periodic interest repayments, remain fixed. The principal amount is repaid in full with a single payment on the contract maturity date. In addition to interest repayments this type of contract can have a regular "savings" or "insurance" premium associated with it. These premiums may form part of a savings scheme or insurance policy that will be used to repay the mortgage at maturity. If required these additional payments may be made automatically by the mortgage module. The type of additional payments available is defined on the parameter record in the group of multi value fields ADD.PAY.TYPE to PAY.IN.ADV.FLAG. Although the processing of these additional payments may be performed by the mortgage module, the maintenance of the associated savings scheme or insurance policy is not. It should be noted that although these additional payment types have been discussed in relation to "saving" mortgages there use is not restricted to this type of contract. 4. NONREDEM NONREDEM mortgages are similar to SAVINGS mortgages in that there is no regular repayment of principal only interest. In practice, however, they differ by not having any savings scheme or insurance policy associated with them. The way in which SAVING and NONREDEM mortgages are processed is exactly the same and the two types exist only for classification purposes. </p>
+        <p>Validation Rules</p>
+        <p> Alpha characters only, must be "ANNUITY", "LINEAR", "SAVING" or "NONREDEM". Multi value field associated with fields START.CATEGORY to FIRST.PAY.ADV. (mandatory input) Input must be either "ANNUITY", "LINEAR", "SAVING" or "NONREDEM.</p>
+        <p>CR.TXN.CODE</p>
+        <p>Defines the transaction codes to be used for the credit entries of repayments of the additional payment types defined in field ADD.PAY.TYPE. Whenever a repayment of an additional payment type is processed, two accounting entries, one credit and one debit, will be raised. The debit entry is posted to the mortgage account on the contract. The credit entry is posted to the account specified on the contract for the additional type concerned. This field defines the transaction codes to be used for the credit entries raised during the repayment of an additional payment element. Once a transaction code has been entered in this field it cannot be changed. </p>
+        <p>Validation Rules</p>
+        <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+        <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        <p> Multi value field associated with fields ADD.PAY.TYPE to PAY.IN.ADV.FLAG. (optional input) Must be a valid transaction code on the TRANSACTION table. Must be in the range 817 to 821 A transaction code must be entered for each additional payment type defined in field ADD.PAY.TYPE.</p>
+        <p>DAYS.POST.MATURITY</p>
+        <p>Defines the number of days after maturity that the contract details are to remain on the "Live" files. It is possible to retain data related to matured contracts on the "Live" files for a given number of days. This may be desirable for reporting and enquiry functions. The length of time that this information is retained is determined by this field. Once the allowed time has elapsed then the contract and all its associated data will be moved to the history files. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 3 numeric characters. (mandatory input) Input must be numeric.</p>
+        <p>DEF.CR.ACCOUNT</p>
+        <p>Defines default account numbers for the credit entries of repayments of the additional payment types defined in field ADD.PAY.TYPE. Whenever a repayment of an additional payment type is processed, two accounting entries will be raised. The debit entry is posted to the mortgage account on the contract concerned. The credit entry will be posted to the account specified in the ADD.CR.ACCOUNT field on the contract for the additional type concerned. This credit account number may vary between contracts for the same additional type. However, if a specific account is normally associated with an additional payment type then it can be defined as a default in this field. This will then be used during contract input to default the ADD.CR.ACCOUNT field. </p>
+        <p>Validation Rules</p>
+        <p> Standard account number format. Multi value field associated with fields ADD.PAY.TYPE to PAY.IN.ADV.FLAG. (optional input) Must be a valid account on the ACCOUNT file.</p>
+        <p>DEF.THIRD.PARTY</p>
+        <p>Identifies specific third parties normally associated with the additional payment types defined in field ADD.PAY.TYPE. These will be used as defaults for the ADD.THIRD.PARTY field on the MORTGAGE file. Additional payment types may involve a third party customer or agent of the bank. An example of this might be an insurance company or pension fund manager. The involvement of any third party can be recorded on each individual contract with the additional payment details. The third party relating to an additional type may vary between contracts. However, if an additional type is normally associated with a specific third party then this relationship may be defined in this field. This will then be used during contract input as a default value if a third party is not input. If a value is present in this field then by virtue of the default a third party will always be present on any contract using the associated additional type. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 11 alphanumeric characters. Multi value field associated with fields ADD.PAY.TYPE to PAY.IN.ADV.FLAG. (optional input) Must be a valid customer on the CUSTOMER file.</p>
+        <p>DEFAULT.INT.REVIEW</p>
+        <p>Defines the default interest rate review frequency for mortgage contracts. For each contract entered in the system an interest rate review date and frequency is required. This can be either manually entered on the contract or defaulted from this field. If the default is used the next review date will be calculated based on the frequency code in this field and the value date of the contract. </p>
+        <p>Validation Rules</p>
+        <p> Standard 5 character frequency code. (optional input.</p>
+        <p>DEFAULT.PENALTY</p>
+        <p>Contains an interest key that is to be used to provide a default penalty interest rate during contract input. It is possible to define a different rate of penalty interest for each contract. However, if the majority of contracts have the same penalty rate then this can be defaulted during contract input via this field. The interest key entered in this field is used during contract input to access the BASIC.INTEREST table to obtain the current rate for the specified key. This rate will then be defaulted in the field PENALTY.RATE on the contract record. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 3 numeric characters. (optional input) Must be a valid interest key on the BASIC.RATE.TEXT table. Must have a rate defined for local currency on the BASIC.INTEREST table.</p>
+        <p>DR.ACCUMULATOR</p>
+        <p>Defines the accumulator code associated with the additional payment types in field ADD.PAY.TYPE. This is used to accumulate repayment amounts from multiple types into a single debit entry. Whenever a contract reaches a repayment date each of the additional types present on the contract will raise two accounting entries. A debit entry is posted to the mortgage account and a credit entry to the account specified for the additional payment type. Therefore, in the case of a contract with multiple additional types, a number of debit entries will be posted to the same mortgage account. In these cases it may be desirable to group one or more of these debit amounts together under a single entry. This can be done by assigning an accumulator code to each additional type on the parameter record. If a contract has more than one additional type then those with the same accumulator code will be combined in a single entry. The available accumulator codes are held on field ADD.DR.ACCUM. Each accumulator code has an associated transation code. These codes are defined in field DR.TXN.CODE which is multi valued and associated with field ADD.DR.ACCUM. Example: A contract has three additional payment types as follows: Additional DR Repayment Type Accumulator Amount Life insurance 1 50.00 Health insurance 1 25.00 Pension 2 40.00 Repayments for this contract will produce two debit entries to the mortgage account as follows: Life + Health insurance 75.00 Pension 40.00 The two additional types with the same accumulator code have been combined into a single entry. The transaction code used for each of these entries will be that defined for the accumulator in field DR.TXN.CODE. The accumulator code has no effect on credit entries and in this example three individual credit entries for each type will be posted. </p>
+        <p>Validation Rules</p>
+        <p> 1 numeric character Multi value field associated with fields ADD.PAY.TYPE to PAY.IN.ADV.FLAG. (optional input) Input is mandatory for each additional type in field ADD.PAY.TYPE. Input must be a valid accumulator code defined in fields ADD.DR.ACCUM. The accumulator code for an existing additional payment type cannot be changed.</p>
+        <p>DR.TXN.CODE</p>
+        <p>This field contains the transaction codes to be used for the debit entries generated by repayments of additional payment types. A different code is defined for each debit accumulator in field ADD.DR.ACCUM. Whenever a repayment of an additional payment type is made a debit entry will be posted to the mortgage account for the contract concerned. These debit entries may be combined if required into a single entry through the use of a debit accumulator defined in field ADD.DR.ACCUM. The transaction codes to be used on these debit entries are defined in this field. A different code is required for each of the accumulator codes in field ADD.DR.ACCUM. At least one transaction code will be required if any additional payment types have been defined in field ADD.PAY.TYPE. </p>
+        <p>Validation Rules</p>
+        <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+        <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        <p> Multi value field associated with field ADD.DR.ACCUM. (optional input) Must be in the range 805 to 809 Must be a valid transaction code on the TRANSACTION table. Input is mandatory if an accumulator code is defined in the associated value of field ADD.DR.ACCUM.</p>
+        <p>ADD.CALC.FLAG</p>
+        <p>This field controls whether or not the repayment amount of an additional payment element is to be automatically calculated. This field determines whether or not the repayment amount for the related additional payment type is to be automatically calculated during contract input. If automatic calculation is required then this will be performed on a savings scheme basis. The resulting repayment amount if paid for the life of the contract at the frequency of interest payments will, at contract maturity, provide a fund equal to the principal amount of the contract. The use of this field is therefore primarily associated with additional types relating to "saving" mortgages. </p>
+        <p>Validation Rules</p>
+        <p> The only allowable input is "Y". Multi value field associated with field ADD.PAY.TYPE to PAY.IN.ADV.FLAG. (optional input.</p>
+        <p>END.CATEGORY</p>
+        <p>This field defines the end of the range of product category codes that can be used with each contract type defined in field CONTRACT.TYPE. For each type of mortgage product defined in field CONTRACT.TYPE a range of category codes may be allocated to further subdivide each product type. This field defines the end category of the range for each contract type. The start of each range is defined in the associated field START.CATEGORY. These two fields are used to validate the contract category entered during contract input. Once a category range for a contract type has been authorised, it cannot be changed. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 5 numeric characters. Multi value field associated with fields CONTRACT.TYPE to FIRST.PAY.ADV. (mandatory input) Must be a valid product category on the CATEGORY table in the range 25000 to 25499. Must be greater than the START CATEGORY of the same multi value. Cannot be part of a range of codes defined for another contract type.</p>
+        <p>FIRST.DAY.ACCRUAL</p>
+        <p>Defines whether interest accrual is computed on a first day or last day basis. This field is used as the system default for all mortgage contracts. (Y)ES indicated that the default accruals are to be first day basis. (N)O indicated that the default accruals are to be last day basis. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 3 type alpha (Y)es (N)o (Optional input. Default value = YES) Input must be either (Y)ES or (N)O. Once the contract has been authorised this field cannot be changed. Input not allowed.</p>
+        <p>FIRST.PAY.ADV</p>
+        <p>This field contains the default value for the field FIRST.PAY.IN.ADV on the contract record for each contract type. When entering a contract to the system it is possible to specify that the first repayment is to be paid in advance on the drawdown date. This is done via the FIRST.PAY.IN.ADV field on the contract record. A default value for this feature may be set up for each contract type through this field. This field does not restrict the input at contract level, but, will provide an override message if for example, the default at the parameter level is set to "Y" and "N" is specified on the contract. </p>
+        <p>Validation Rules</p>
+        <p> 1 alpha character. Input must be either "Y" (yes) or "N" (no). Multi value field associated with fields CONTRACT.TYPE to END.CATEGORY. (optional input) Input must be either "Y" or "N".</p>
+        <p>FIXED.ACCR.CYCLE</p>
+        <p>This field holds the next interest accrual date and the frequency of subsequent accruals for fixed rate contracts. Interest accruals on all fixed rate contracts will take place at fixed intervals. This field controls the date of the next accrual and the date and frequency of all subsequent accruals. Only frequency codes of daily and monthly are allowed. For monthly frequency, accruals can take place on any day during the month. However, in such a case the system will always perform an accrual on the last day of each month in addition to the date specified. The following examples illustrate some of the possible inputs. Examples: i) 09 JAN 1990 D The next accrual will be performed on 9th Jan 1990 and accruals will then continue on a daily basis. ii) 31 JAN 1990 M0131 The next accrual will take place on 31st Jan 1990 and subsequent accruals will be made monthly on the last day of each month, i.e. 28th Feb 1990, 31st Mar 1990 ..etc. iii) 15 JAN 1990 M0115 The next accrual will take place on 15th Jan 1990 and subsequent accruals will be made monthly (M01) on the 15th of each month. However, the system will always accrue at the end of each month by default. The subsequent accruals will therefore be: 31st Jan 1990, 15th Feb 1990, 28th Feb 1990 ...etc. </p>
+        <p>Validation Rules</p>
+        <p> Standard date/frequency code format. (mandatory input) Only daily and monthly frequency codes allowed. Next accrual date cannot be backdated.</p>
+        <p>FLOAT.ACCR.CYCLE</p>
+        <p>This field is not used at present.</p>
+        <p>GRACE.PERIOD</p>
+        <p>Defines the number of days a client has to settle a mortgage repayment before penalty interest is charged. This field defines the number of days, after a repayment date, that a client has in which to settle the balance on his mortgage account. At the end of this period a penalty will be charged based on the outstanding debit balance on the mortgage account. Penalty charges are calculated by applying a percentage rate to any debit balance on the mortgage account. The calculation and application of the penalty is made on a monthly basis on the day determined by this field. If a client repays his mortgage on a frequency other than monthly, ie. quarterly, then penalties will still be applied on each of the intervening months between repayments. Example: A client has a mortgage on which he is to repay 1000 on the first day of each month at three monthly intervals, i.e. quarterly. The grace period allowed is 10 days and the penalty rate is 1%. The following situation arises: Mortgage Date Event account 01/03/90 System makes automatic repayment of 1000 to mortgage account. - 1000.00 Client does not settle his repayment. - 1000.00 11/03/90 Grace period has expired penalty applied: 1000 x 0.01 = 10 - 1010.00 11/04/90 Second penalty date, penalty applied: 1010 x 0.01 = 10.1 - 1020.10 25/04/90 Client settles repayment and outstanding penalty 1020.10 0.00 11/05/90 Third penalty date. Zero balance, therefore no penalty. 0.00 </p>
+        <p>Validation Rules</p>
+        <p> 1 - 2 numeric characters. (mandatory input) Must be numeric.</p>
+        <p>INT.SMOOTH.ACCR</p>
+        <p>This field holds the category value where the smoothed interest amount, i.e. the difference between the system calculated interest amount and the user defined interest amount, will be posted.· Should be a valid P/L Categor.</p>
+        <p>NEW.THIS.MTH.ACCR</p>
+        <p>This field is used to change the P&amp;L category code used for current month accruals. The category code used for interest accruals in the current month is defined in field THIS.MONTH.ACCR. The contents in field THIS.MONTH.ACCR may not be changed after authorisation. However, if it becomes necessary to change this category code then this is achieved via this field. The new category code to be used for current month accruals is entered in this field. During the End Of Day batch processing the new category code will be transferred to field THIS.MONTH.ACCR and the contents of this field cleared. At the same time all outstanding accrued interest will be transferred from the old to the new category code within the P&amp;L base. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 5 numeric characters. (optional input) Must be in the range 50000 - 5999 Must differ from the category code in field THIS.MONTH.ACCR. Must be a valid P&amp;L category on the CATEGORY table.</p>
+        <p>OVERRIDE</p>
+        <p>OVERRID.</p>
+        <p>PAY.IN.ADV.FLAG</p>
+        <p>Defines if repayments of the additional payment types in field ADD.PAY.TYPE are paid in advance or in arrears. Repayments of additional payment types may be required to be settled either in advance or in arrears. If a repayment is to be made in advance then it is paid at the beginning of each period (effectively the end of the previous period). This flag is used by the system when calculating the final repayment date for an additional payment type. If the flag is set to "Y" then the last repayment will be on the penultimate contract repayment date. This calculation will only be made if an end date is not entered on the contract record for the additional type concerned. </p>
+        <p>Validation Rules</p>
+        <p> The only allowable input is "Y". Multi value field associated with fields ADD.PAY.TYPE to DR.ACCUMULATOR. (optional input.</p>
+        <p>ADD.DR.ACCUM</p>
+        <p>Defines the allowable accumulator codes for combining additional type repayment entries. Debit entries to the mortgage account raised by repayments of additional payment types may, if required, be combined into a single entry. This is done by assigning an accumulator code, via field DR.ACCUMULATOR, to each available additional payment type. This field defines the available accumulator codes. At least one accumulator code must be defined if any additional payment types are defined in field ADD.PAY.TYPE. Each accumulator has a transaction code associated with it. This transaction code is used on all debit repayment entries relating to that accumulator code. These transaction codes are stored in the associated multi value field DR.TXN.CODE. </p>
+        <p>Validation Rules</p>
+        <p> 1 Alpha character. Multi value field associated with field DR.TXN.CODE. (optional input) No duplicate entries allowed.</p>
+        <p>PENALTY.CATEG</p>
+        <p>Defines the P&amp;L category code to which penalties interest is to be posted. Profit and Loss entries raised by the collection of penalty interest will be posted to the category code defined in this field. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 5 numeric characters. (mandatory input) Must be in the range 50000 - 59999. Must be a valid P&amp;L category code on the CATEGORY code.</p>
+        <p>PREV.MONTH.ADJUST</p>
+        <p>Defines the Profit &amp; Loss category code to which interest accrual adjustments for previous months in the current year are to be posted. Any adjustments made to the accrued interest on mortgage contracts in a prior month within the current year will be posted to this category code. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 5 numeric characters. (mandatory input) Must be in the range 50000 - 59999 Must be a valid P&amp;L category code on the CATEGORY table.</p>
+        <p>PREV.YEAR.ADJUST</p>
+        <p>Defines the Profit &amp; Loss category code to which interest accrual adjustments for previous years are to be posted. Any adjustments made to the accrued interest on mortgage contracts in a previous year will be posted to this category code. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 5 numeric characters. (mandatory input) Must be in the range 50000 - 59999 Must be a valid P&amp;L category code on the CATEGORY table.</p>
+        <p>RATE.FIX.DAYS.DEL</p>
+        <p>This field stores the number of days prior to rate fixing for advising rate change. </p>
+        <p>Validation Rules</p>
+        <p> 1-2 numeric characters. (Optional input) Default is 0.</p>
+        <p>ROUND.INTEREST</p>
+        <p>It is possible to round interest amounts on mortgage contracts depending upon the setting in MIN.ROUND.AMOUNT field in CURRENCY record. The options which are available are (null), U (upper rounding), L (lower rounding), and M (nearest). For example, if the MIN.ROUND.AMOUNT in USD currency record is set to 10, then this means that rounding will have to take place to values that are multiples of 10. If there is a MG contract with interest of USD 958.33 for a particular period, then the rounded value of interest under the options available will be : 1) Null – no rounding will take place 2) U - USD 960 3) L - USD 950 4) M - USD 960 </p>
+        <p>Validation Rules</p>
+        <p> Must be ' ', 'U' , 'L' or 'M'.</p>
+        <p>ROUND.REPAYMENT</p>
+        <p>Help Text for this field is unavailable. Please refer to the T24 User Guides for further information.</p>
+        <p>START.CATEGORY</p>
+        <p>This field defines the start of the range of product category codes that can be used with each contract type defined in field CONTRACT.TYPE. For each type of mortgage product defined in field CONTRACT.TYPE a range of category codes may be allocated to further subdivide each product type. This field defines the start category of the range for each contract type. The end of the range is defined in the associated field END.CATEGORY. These two fields are used to validate the contract category entered during contract input. Once a category range for a contract type has been authorised, it cannot be changed. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 5 numeric characters. Multi value field associated with fields CONTRACT.TYPE to FIRST.PAY.ADV. (mandatory input) Must be a valid product category on the CATEGORY table in the range 25000 to 25499. Must be less than the END CATEGORY of the same multi value. Cannot be part of a range of codes defined for another contract type.</p>
+        <p>START.OF.DAY.FLAG</p>
+        <p>This is a system maintained field that is used to control processing required during the start of day. This field is used as a flag by the mortgage module to indicate to the start of day batch routines that a split month end has occurred. This is a system maintained field that cannot be updated by the user. </p>
+        <p>Validation Rules</p>
+        <p> This is a NOINPUT field.</p>
+        <p>SUFFIX.DESC</p>
+        <p>Describes the type of contract associated with the suffix defined in field CONTRACT.SUFFIX This field contains a description of each contract suffix defined in field CONTRACT.SUFFIX </p>
+        <p>Validation Rules</p>
+        <p> 1 - 15 alphanumeric characters. Multi value field associated with field CONTRACT.SUFFIX (optional input) Mandatory for each suffix defined in field CONTRACT.SUFFIX.</p>
+        <p>THIS.MONTH.ACCR</p>
+        <p>Defines the Profit &amp; Loss category code to which interest accruals in the current month are to be posted. Interest accruals on mortgage contracts made in the current month will be debited to the Profit &amp; Loss category code specified in this field. Any adjustments made to accruals in the current month will also be posted to this category code. Once authorised this field cannot be changed. However, If it is necessary to change the category code used for current month accruals this may be done via field NEW.THIS.MTH.ACCR. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 5 numeric characters. (mandatory input) Must be in the range 50000 - 59999 Must be a valid P&amp;L category code on the CATEGORY table.</p>
+        <p>ADD.PAY.TYPE</p>
+        <p>Defines the additional payment elements that are available within the mortgage module. In addition to regular repayments of principal and interest, it is possible to have additional types of scheduled payments within the mortgage module. Examples of this might be insurance premiums or contributions to a pension or savings scheme. These "additional payment types" are defined in this field. The remaining fields of this multi value set (ADD.CALC.FLAG to PAY.IN.ADV.FLAG) further define and control the processing of each of these additional types. The maximum number of additional elements allowed is five. Details of individual payments, and totals of all payments made for each additional type, are held on the MG.BALANCES file. The details for each type are stored in the same way as those for interest and principal. Two fields are reserved for each additional type. One contains the total amount paid and a second multi valued field records each individual payment amount. The order in which these details are stored on the MG.BALANCES file is controlled by the order in which they are entered in this field. For this reason once an additional type has been defined it cannot be removed or its multi value position changed. However, new elements can be added as required up to the maximum of five. </p>
+        <p>Validation Rules</p>
+        <p> 1 - 7 alpha numeric characters. Multi value field associated with fields ADD.CALC.FLAG to PAY.IN.ADV.FLAG. (optional input) A maximum of five multi values are allowed. No duplicates types are allowed. Once authorised, a multi value may be neither deleted nor its position in the multi value set changed.</p>
+        <p>YEARS.ON.LIVE.BAL</p>
+        <p>This field controls the number of complete years that data is retained on the MG.BALANCES file. Because of the amount of data stored on the MG.BALANCES file and the the length of the term of some contracts it is necessary to periodically archive data from this file. This is done in such a way that data for a predefined number of complete years is retained on the "Live" MG.BALANCES file. The remaining data is transferred to the "History" file MG.BALANCES.HIST. This field controls the number of complete years data that is to be retained. The date which is considered to be the year end date is defined in the field LAST.HIST.DATE. This second field also records the the date on which data from this file was last archived. These two fields are used in combination when the archiving routine is run to determine the prior to which date is to be archived. This best illustrated by an example: Example If the current system date is 2nd March 1990 and the relevant fields on this record are defined as: YEARS.ON.LIVE.BAL ......... 1 BALANCE.HIST.DATE ......... 31/12/87 If the archiving routine is now run data prior to 31/12/89 will be archived. This leaves one complete year, in this case 1989, on the MG.BALANCES file. After running the routine the above fields will be updated as follows: YEARS.ON.LIVE.BAL ......... 1 BALANCE.HIST.DATE ......... 31/12/88 It will now not be possible to run the archiving routine again until the system date has reached 1991. </p>
+        <p>Validation Rules</p>
+        <p> 1 numeric character (mandatory input) Input must be numeric and cannot be negative. Zero is allowed.</p>
+        <p>ADD.RESERVED</p>
+        <p>This field is not used at present and is reserved for future expansion. </p>
+        <p>Validation Rules</p>
+        <p> Input is not allowed to this field.</p>
+        <p>ADJ.FINAL.PRIN</p>
+        <p>Annuity Mortgages, which use an Interest basis of 'B', 'E' or 'F' may have outstanding principal remaining after the final payment has taken place. Setting this field to 'Y' will ensure that for annuity mortgages all of the outstanding principal will be repaid, i. e. the remaining principal will be added to the final repayment. If this situation arises an exception will be raised to indicate the remaining principal. The enquiry MG.FUTURE.BALANCES will show projected repayments up to maturity. IF this field is left blank, or set to 'N' then if any outstanding amounts remain after the final repayment the contract will run for a further month when the outstandings will be repaid and the contract will terminate. </p>
+        <p>Validation Rules</p>
+        <p> Must be either 'Y', 'N' or blank.</p>
+        <p>ALLOWED.INT.VAR</p>
+        <p>This field will be used to set a variance between system calculated interest and user defined interest. System will generate an override if the difference exceeds the variance. Standard rate type field Must be less than 100 Negative value not allowe.</p>
+        <p>BALANCE.HIST.DATE</p>
+        <p>This field defines that the date which details from the MG.BALANCES file have been archived. Because of the amount of data stored on the MG.BALANCES file and the the length of the term of some contracts it is necessary to periodically archive data from this file. This field records the date up to which data has been archived to the MG.BALANCES.HIST. Any balance information relating to a date equal to or prior to this date will be found on the MG.BALANCES.HIST file and not the MG.BALANCES file. This field is also used in combination with the YEARS.ON.LIVE.BAL to control the archiving process. Archiving cannot be run unless the system date is greater than the date held in this field plus the number of years defined in the YEARS.ON.LIVE.BAL field plus one additional field. This is illustrated in the following example: Example If the current system date is 2nd March 1990 and the relevant fields on this record are defined as: YEARS.ON.LIVE.BAL ......... 1 BALANCE.HIST.DATE ......... 31/12/88 It will now not be possible to run the archiving routine again until the system date has reached 1991. When 1991 is reached and the archiving routine is run this field will be automatically updated as follows: YEARS.ON.LIVE.BAL ......... 1 BALANCE.HIST.DATE ......... 31/12/89 Any balance data prior to 31/12/89 will be found on the MG.BALANCES.HIST file and not the MG.BALANCES file. </p>
+        <p>Validation Rules</p>
+        <p> Standard date format. (mandatory input) This field cannot be changed once the record has been authorised.</p>
+        <p>BROKERAGE.CATEG</p>
+        <p>The profit and loss category that will be used for debit of brokerage to be paid to the broker is to be input in this field </p>
+        <p>Validation Rules</p>
+        <p> Should be a valid entry in the CATEGORY fil.</p>
+        <p>COMPANY</p>
+        <p>Key to this application. Should be a valid Company</p>
+    </desc>
+</t>
+<t>
+<field>ADD.CALC.FLAG</field>
+<desc>
+            <p>This field controls whether or not the repayment amount of an additional payment element is  to be automatically calculated.</p>
+            <p>This field determines whether or not the  repayment amount for the related additional payment type is to be automatically calculated during contract  input.</p>
+            <p>If automatic calculation is required then this will be performed on a  savings scheme basis. The resulting repayment amount if paid for the life of the contract at the frequency of  interest payments will, at contract maturity, provide a fund equal to the principal amount of the contract. The use  of this field is therefore primarily associated with additional types relating to "saving" mortgages.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>The only allowable input is "Y".  Multi value field associated with field ADD.PAY.TYPE to PAY.IN.ADV.FLAG. (optional input)</p>
+        </desc>
+</t>
+<t>
+<field>ADD.DR.ACCUM</field>
+<desc>
+            <p>Defines the allowable accumulator codes for combining additional type repayment entries.</p>
+            <p>Debit entries to the mortgage account  raised by repayments of additional payment types may, if  required, be combined into a single entry. This is done by assigning an accumulator code, via field DR.ACCUMULATOR,  to each available additional payment type. This field defines the available accumulator codes.</p>
+            <p>At least one accumulator code must be defined if any additional payment types are defined in field  ADD.PAY.TYPE.</p>
+            <p>Each accumulator has a transaction code associated with it.  This transaction code is used on all debit repayment entries relating to that accumulator code. These transaction  codes are stored in the associated multi value field DR.TXN.CODE.</p>
+            <p>Validation  Rules</p>
+            <p>1 Alpha character. Multi value field associated with field DR.TXN.CODE.  (optional input)</p>
+            <p>No duplicate entries allowed.</p>
+        </desc>
+</t>
+<t>
+<field>ADD.PAY.TYPE</field>
+<desc>
+            <p>Defines the additional payment elements that are available within the  mortgage module.</p>
+            <p>In addition to regular repayments of principal and interest,  it is possible to have additional types of scheduled payments within the mortgage module. Examples of this might be  insurance premiums or contributions to a pension or savings scheme. These "additional payment types" are defined in  this field.</p>
+            <p>The remaining fields of this multi value set (ADD.CALC.FLAG to  PAY.IN.ADV.FLAG) further define and control the processing of each of these additional types.</p>
+            <p>The maximum number of additional elements allowed is five.</p>
+            <p>Details of individual payments, and totals of all payments made for each additional type, are held on the  MG.BALANCES file. The details for each type are stored in the same way as those for interest and principal. Two  fields are reserved for each additional type. One contains the total amount paid and a second multi valued field  records each individual payment amount. The order in which these details are stored on the MG.BALANCES file is  controlled by the order in which they are entered in this field. For this reason once an additional type has been  defined it cannot be removed or its multi value position changed. However, new elements can be added as required up  to the maximum of five.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 7 alpha numeric characters. Multi value field associated with fields ADD.CALC.FLAG to PAY.IN.ADV.FLAG.  (optional input)</p>
+            <p>A maximum of five multi values are allowed.</p>
+            <p>No duplicates types are allowed.</p>
+            <p>Once authorised, a  multi value may be neither deleted nor its position in the multi value set changed.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

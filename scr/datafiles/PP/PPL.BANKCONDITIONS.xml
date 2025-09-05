@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>PP</product>
+        <title>PPL.BANKCONDITIONS</title>
+        <table>PPL.BANKCONDITIONS</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>Bank Conditions or Correspondent bank conditions, define the way in which a payment should be processed in the payment engine for a</p>
+            <p>correspondent bank. Bank conditions of the correspondent bank involved in the payment will influence mainly Straight through processing of the</p>
+            <p>payment in the payment engine. This will also allow customising banks’ charge account, statements and advices.</p>
+            <p>The Bank conditions component allows the behaviour of the payment engine to configure at a flexible level where debit or credit party (or both parties) in the payment is a bank. Similar flexibility is provided by the client condition component where one side of the payment or both involves the customer and is used to control the customer processing conditions. Bank and Client conditions are handled by separate components due to the different criteria (input and output parameters) required for banks and customers.</p>
+        </ovdesc>
+    </overview>
+    <menu>
+	    <t>
+            <field>ID</field>
+			<desc>
+				<p>Combination of Primary key values.</p>
+				<p>255 alphanumeric characters.</p>
+			</desc>	
+        </t>
+	    <t>
+            <field>BankConditionsID</field>
+            <desc>
+                <p>System Generated Key of Bank Conditions. </p>
+                <p>One Bank conditions id can be linked with multiple records of tables PPL_BankCondChargeAccount &amp; PPL_BankConditionsAdvice.</p>
+                <p>35 alphanumeric characters; >Mandatory field</p>           
+		   </desc>
+        </t>
+	    <t>
+            <field>CompanyID</field>
+            <desc>
+                <p>Indicates the company ID for which the record is created. </p>
+                <p>Example : BNK,GB1</p>
+				<p>3 alphanumeric characters.</p>
+                <p>Validation Rules:</p>
+                <p>1. The value links to the field ‘CompanyID’ in PPT.COMPANY</p>
+            </desc>
+        </t>
+		<t>
+            <field>CorrespondentBIC</field>
+            <desc>
+                <p>35 characters (alphanumeric). </p>
+                <p>BIC can be defined at different levels (BIC 11, 8 , 6, 4 , 2). </p>
+                <p>Default value defined as “*”. </p>
+                <p>Example</p>
+                <p>CITIUS33CH1 ( BIC11)</p>
+                <p>CITIUS33 ( BIC8)</p>
+                <p>CITIUS</p>
+                <p>CITI</p>
+                <p>US</p>
+                <p>* (default Value)</p>
+                <p>No BIC should start with * (Eg. ****US33) </p>                
+                <p>Validation Rules:</p>
+                <p>1. Valid BIC from PPT_BICTable of the selected company</p>
+                <p>2. Only the 11/ 8/ 6/ 4 and 2 BIC values are permissible along with the default value ‘*’</p>
+            </desc>
+        </t>
+		<t>
+            <field>SLAID</field>
+            <desc>
+                <p>Indicates Service level agreement with the other bank. 10 characters allowed to input. </p>   
+                <p>10 characters (alphanumeric). </p>				
+                <p>Validation Rules:</p>
+                <p>Valid value for this comes from the SLA table or wildcarded * ( Default Value)</p>
+                <p>1. If SLA is * then currency has to be *.</p>
+                <p>2. Currency code can only be entered if SLA is entered.</p>                
+            </desc>
+        </t>
+		<t>
+            <field>CurrencyCode</field>
+            <desc>
+                <p>Holds a 3 character unique code which denotes a specific currency used in the system. It can also be a “*”.</p>                
+                <p>Validation Rules:</p>
+                <p>1. If SLA is * then currency has to be *.</p>
+                <p>2. Currency code can only be entered if SLA is entered.</p>
+                <p>3. Currency should be a valid entry in Currency Table (PPT.CURRENCY). </p>
+            </desc>
+        </t>
+		<t>
+            <field>StartDateBankConditions</field>
+            <desc>
+                <p>Specifies the date on which the record is to be considered active by the payments hub.</p>  
+                <p>11 characters DATE type </p>				
+                <p>Validation Rules:</p>
+                <p>1. Start Date should be &gt; Today and &lt;= End Date</p>
+            </desc>
+        </t>
+		<t>
+            <field>CTRNonSTPIndicator</field>
+            <desc>
+                <p>Indicates Payment on behalf of customer is STP or NON STP.</p>                
+                <p>1 character (alphanumeric). </p>
+                <p>Possible Values – Y (Yes) or N (No). </p>
+                <p>Default Value is No</p>               
+                <p>Validation Rules:</p>
+                <p>1. Mandatory Input</p>
+                <p>2. If CTRBTRIndicator is 'Yes' then CreditInstruction should be input.</p>
+            </desc>
+        </t>
+		<t>
+            <field>BTRNonSTPIndicator</field>
+            <desc>
+                <p>Indicates Payment on behalf of bank (BTR) is STP or NON STP.</p>
+                <p>1 character (alphanumeric). </p>
+                <p>Possible Values – Y (Yes) or N (No). Default Value is No.</p>                
+                <p>Validation Rules:</p>
+                <p>1. Mandatory field</p>
+            </desc>
+        </t>
+		    <t>
+            <field>DebitInstruction</field>
+            <desc>
+                <p>Debit instructions are allowed only if Non STP for BTR is Yes. This field can hold upto 128 alphanumeric characters</p>
+                <p>128 characters (alphanumeric). </p>
+			</desc>
+        </t>
+		<t>
+            <field>CreditInstruction</field>
+            <desc>
+                <p>Credit instructions are allowed only if Non STP for CTR is Yes.This field can hold upto 128 alphanumeric characters</p>
+                <p>128 characters (alphanumeric). </p>
+			</desc>
+        </t>
+		    <t>
+            <field>WareHouseFlag</field>
+            <desc>
+                <p>Indicates Payment can be moved to Warehouse or not.</p>
+                <p>1 character (alphanumeric). </p>
+                <p>Possible Values:</p>
+                <p>Y - Yes</p>
+                <p>J - Just in Time (JIT)</p>
+                <p>N - No</p>                
+                <p>Default Value is J (JIT)</p>
+            </desc>
+        </t>
+		    <t>
+            <field>WareHouseReleaseTime</field>
+            <desc>
+                <p>Indicates at what time payment to be released from Warehouse.</p>   
+                <p>5 characters. </p>				
+                <p>Time in HH:MM format. Default value is blank.</p>
+                <p>Validation Rules:</p>
+                <p>1.Warehouse release time is allowed only when Warehouse Indicator is set Yes/JIT</p>                
+                <p>NOTE: Currently it is not in use reserved for future use.</p>
+            </desc>
+        </t>
+		<t>
+            <field>PSDECChargeCompliant</field>
+            <desc>
+                <p>1 character (alphanumeric). </p>
+                <p>It is Dropdown field having values Y(Yes) and N(No).  </p>
+                <p>Default Value  is  No.</p>                
+                <p>NOTE: Currently it is not in use reserved for future use.</p>
+            </desc>
+        </t>
+		<t>
+            <field>LanguageID</field>
+            <desc>
+                <p>2 characters (alphanumeric). </p>
+                <p>Valid Entry in Language table (PPT.LANGUAGE). Can be blank.</p>
+            </desc>
+        </t>
+		<t>
+            <field>CreditStmtFormatName</field>
+            <desc>
+                <p>15 characters (alphanumeric). </p>
+                <p>Optional field.</p>                
+                <p>Validation Rules:</p>
+                <p>1. Value should be valid entry in Statement Format table(PPT.STATEMENTFORMAT). </p>
+            </desc>
+        </t>		
+        <t>
+            <field>DebitStmtFormatName</field>
+            <desc>
+                <p>15 characters (alphanumeric).</p>
+                <p>Value should be valid entry in Statement Format table. It can also be blank</p>
+            </desc>
+        </t>
+		        <t>
+            <field>FXSpread</field>
+            <desc>
+                <p>Providing preferential exchange rate spread when debit / credit accounts are different from to the payment currency.</p>                
+                <p>3 characters (alphanumeric).</p>
+				<p>NOTE: Currently it is not in use reserved for future use.</p>
+            </desc>
+        </t>
+		<t>
+            <field>EndDateBankConditions</field>
+            <desc>
+                <p>Specifies the date until which the record is to be considered as active for payments processing.Post this date, the record will be set as Inactive by the payments hub.</p>
+                <p>11 characters DATE format. </p>
+				<p>Validation Rules:</p>
+                <p>1. End Date &gt;= Start Date</p>
+            </desc>
+        </t>			
+        <t>
+            <field>RACBankConditions</field>
+            <desc>
+                <p>Record Activation Code generated for the record by the payment's hub. </p>
+				<p>19 characters (alphanumeric).</p>
+                <p>Possible values:</p>
+                <p>N - Not active</p>
+                <p>A -  Active</p>
+                <p>H-YYYYMMDDHHMMSSsss - History. Where: YYYY - year, MM - month, DD - day, HH - hour, MM - minutes, SS - seconds and sss - miliseconds</p>
+                <p>F - Future</p>
+                <p>C - Not active future</p>
+                <p>Validation Rules:</p>
+                <p>19 alphanumeric characters.</p>
+            </desc>
+        </t>
+        <t>
+            <field>RSCBankConditions</field>
+            <desc>
+                <p>Record Status Code generated for the record by the payments hub.</p>
+				<p>1 character. </p>
+                <p>Possible values:</p>
+                <p>L - Live</p>
+                <p>U - Unapproved</p>
+                <p>R - Reversed</p>
+                <p>MF - Modified future</p>
+                <p>Validation Rules:</p>
+                <p>1 alphanumeric character.</p>
+            </desc>
+        </t>
+		<t>
+            <field>EntryUserID</field>
+            <desc>
+                <p>Indicates the user that initiated the acceptance of the payment.</p>
+                <p>30 alphanumeric characters.</p>
+            </desc>
+        </t>
+		<t>
+            <field>EntryDateTime</field>
+            <desc>
+                <p>Timestamp of the record entry or change.</p>
+				<p>17 characters DateTime</p>
+            </desc>
+        </t>
+		<t>
+            <field>ApproverUserID</field>
+            <desc>
+                <p>UserID who approved the entry.</p>
+                <p>30 alphanumeric characters.</p>
+            </desc>
+        </t>
+        <t>
+            <field>ApprovedDateTime</field>
+            <desc>
+                <p>Timestamp of the record approved.</p>
+				<p>17 characters Datetime</p>
+            </desc>
+        </t>
+    </menu>
+</t24help>

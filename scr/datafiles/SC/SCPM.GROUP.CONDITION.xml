@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>SC</product>
+<table>SCPM.GROUP.CONDITION</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>SCPM.GROUP.CONDITION </p>
+            <p> PORTFOLIO MANAGEMENT GROUP CONDITIONS </p>
+            <p> This module defines the specific charge details for each customer group.</p>
+            <p>ID format for the group condition can be "NNN.DDMMYYYY" ,"C-NNNNNN.DDMMYYYY" or "P-NNNNNN-N.DDMMYYYY" where NNNNNN is the customer ID and NNNNNN-N denotes the portfolio ID and DDMMYYYY represent date </p>
+            <p>On authorization of the customer level record, the ID (C-NNNNNN) will update the ACTUAL.GROUP in CUSTOMER.CHARGE to be used as the default condition for the charge type.</p>
+            <p>If a Portfolio level record exists, the ACTUAL.GROUP (for the portfolio) in CUSTOMER.CHARGE, for the charge type, will be updated with the portfolio record ID.</p>
+            <p>  The following data will be recorded on this file:- </p>
+            <p>       Calculation Method                "DETAIL" or "TOTAL" </p>
+            <p>       Security Type                     Multi-valued which must exist on the                                   Portfolio Management charge                                   parameters. </p>
+            <p>       Detail Commission Code            Valid FT.COMMISSION.TYPE codes. </p>
+            <p>       Detail Percentage                 Percentages applied to the charge                                   calculated for each commission type. </p>
+            <p>       Total Commission Code             Valid FT.COMMISSION.TYPE code. </p>
+            <p>       Total Percentage                  Percentage applied to the total charge                                   calculated using the Total Commission                                   Code. </p>
+            <p>       Global Code                       Valid FT.Commission.Type Code. </p>
+            <p>       When Management fees are processed, each security in the portfolio is processed in turn.  There are two possible ways of calculating the total commission for the portfolio. </p>
+            <p>       The table below shows how the two methods work and the different results achieved: </p>
+            <p>                 PARAMETER FILE DEFINITION                                        GROUP CONDITION FILE DEFINITIONS </p>
+            <p>       SEC.NO. SEC.TYPE    RULE       BASE                                 AMT     COMM/CHG                                           CODE       CUST.                                                      PERC.      CHG.AMT 111111-111 </p>
+            <p>       855555-555 </p>
+            <p>       999999-999SHARES </p>
+            <p>                BONDS </p>
+            <p>                FUND 1                    NOMINAL                    (100%) </p>
+            <p>                           VALUE                    (100%) </p>
+            <p>                           VALUE                    (100%)                                 XXX </p>
+            <p>                                       YYY </p>
+            <p>                                       ZZZSCSK 0122 </p>
+            <p>       SCSK 04321 </p>
+            <p>       SCSK 119902                                            90 </p>
+            <p>                                                             100 </p>
+            <p>                                                              50       NNN.NN </p>
+            <p>                                                                       NNN.NN </p>
+            <p>                                                                       NNN.NN </p>
+            <p>                                                                          TOTALSTOTAL 2TOTAL 1 </p>
+            <p>       Method 1 </p>
+            <p>       This is to take the total "TOTAL 1" as the total charge amount for the portfolio.  In this way different commission codes can be used and the band and level processing be applied for each security. </p>
+            <p>       Method 2 </p>
+            <p>       This is to take the total "TOTAL 2" and then apply the TOT.COMMISSION.CODE and percentage to that total.  In this way only one FT.COMMISSION.TYPE is applied to the total base amount for the portfolio. </p>
+            <p>       The use of either method 1 or 2 will be controlled at level of each charge condition record. </p>
+            <p>       Therefore if the calculation Method is "DETAIL" then Method 1 is used and for "TOTAL" Method 2 is used. </p>
+            <p>       Finally the total Commission the GLOBAL.CODE if required needs to be applied. </p>
+            <p>       If say the total fees was 129.5 and the global code takes 90% of the total fees then the final fees to be applied to the customer is 116.55 plus the depository charges. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>TOT.COMM.CODE</field>
+<desc>
+            <p>Defines the Commission type to calculate the management fees. </p>
+            <p>       This field relates to a record on the FT.COMMISSION.TYPE table which will be used to calculate the management fees based on the total of the base amounts for each portfolio. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       To be entered only if the calculation method is "TOTAL". Upto 11 alphanumeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>DET.COMM.CODE</field>
+<desc>
+            <p>Identifies the Commission type used to calculate the management fees relating to the security type. </p>
+            <p>       The Commission Code is predefined on the FT.COMMISSION.TYPE table which will be used to calculate the management fees for the portfolio. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Input is Mandatory of upto 11 alphanumeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>MIN.AMOUNT</field>
+<desc>
+            <p>Specifies the minimum advisory charge amount in the associated MIN.MAX.CCY.</p>
+            <p> When the Advisory charges are calculated, less any discount amount, a minimum and maximum value can be specified. This value can be specified in any currency.</p>
+            <p> The system will first attempt to determine if the min/max is specified in the currency of the account that the charge (field ACCOUNT.CCY in the file SC.ADVISORY.CHG) will be posted to, if not found the value defined for the DEF.MIN.MAX.CCY will be used and converted at mid rate to the account currency.</p>
+            <p> For non DAILY accruals this value represents the minimum amount to be charged to the customer for the charge period. For DAILY accruals this value represents the minimum annual charge and so will be adjusted in relation to the charge period length, for example $1000 will be adjusted to $250 for a quarterly charge period.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional Input</p>
+            <p> Input only allowed with associated MIN.MAX.CCY</p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.START</field>
+<desc>
+            <p>Field allowing the user to specify the start of the fee charging period for the period type defined in the associated CALC.TYPE field. This is done using the characters -,+,L,C and O together with numeric input where; O represents the date of the portfolio opening. L represents the date of the Last Fees Run. C represents todays system date. </p>
+            <p>       Thus C-1 is the calendar date before today.      O+1 is the calendar date after the opening date of the          portfolio. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Only input of a number or the characters -,+,L,C or O allowed.</p>
+            <p>       If the SAFECUSTODY.VALUES field COMPANY.CALC is set to 'Y' this field is a no input field that will default from SAFECUSTODY.VALUES.</p>
+        </desc>
+</t>
+<t>
+<field>GROUP.NO.DATE</field>
+<desc>
+            <p>This is the key to the SCPM.GROUP.CONDITION file. It consists of two parts. The first part is the fee scale and the second the effective date that the fee scale is to be applied from. </p>
+            <p> The fees scale is either a single customer fee scale, where the scale will be of the form C-########## where ########## is the customer number or a fee scale that will be validated against the SCPM.GEN.CONDITION file. If the fee scale is on the SCPM.GEN.CONDITION file it can be applied to many customers. </p>
+            <p>       The second part of the key is the date the scale is applied from. When deciding which scale to use T24 uses the SCPM.GROUP.CONDITION applicable at the start of the date range when the Advisory Fees are to be calculated from. </p>
+            <p>       The two parts are separated by a '.'. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       The date will default to the current system date.</p>
+            <p>       The date cannot be in the past is the user is copying SCPM.GROUP.CONDITION records.</p>
+        </desc>
+</t>
+<t>
+<field>MAX.AMOUNT</field>
+<desc>
+            <p>Specifies the maximum advisory charge amount in the associated MIN.MAX.CCY.</p>
+            <p> When the Advisory charges are calculated, less any discount amount, a minimum and maximum value can be specified. This value can be specified in any currency.</p>
+            <p> The system will first attempt to determine if the min/max is specified in the currency of the account that the charge (field ACCOUNT.CCY in the file SC.ADVISORY.CHG) will be posted to, if not found the value defined for the DEF.MIN.MAX.CCY will be used and converted at mid rate to the account currency.</p>
+            <p> For non DAILY accruals this value represents the maximum amount to be charged to the customer for the charge period. For DAILY accruals this value represents the maximum annual charge and so will be adjusted in relation to the charge period length, for example $1000 will be adjusted to $250 for a quarterly charge period.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional Input</p>
+            <p> Input only allowed with associated MIN.MAX.CCY</p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.END</field>
+<desc>
+            <p>Field allowing the user to specify the end of the fee charging period for the period type defined in the associated CALC.TYPE field. This is done using the characters -,+,L,C and O together with numeric input where; O represents the date of the portfolio opening. L represents the date of the Last Fees Run. C represents todays system date. </p>
+            <p>       Thus C-1 is the calendar date before today.      O+1 is the calendar date after the opening date of the          portfolio. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Only input of a number or the characters -,+,L,C or O allowed.</p>
+            <p>       If the SAFECUSTODY.VALUES field COMPANY.CALC is set to 'Y' this field is a no input field that will default from SAFECUSTODY.VALUES.</p>
+        </desc>
+</t>
+<t>
+<field>NO.OF.MONTHS</field>
+<desc>
+            <p>Field allowing the user to specify the number of months in the period for the period type defined in the associated CALC.TYPE field. This is done using the characters -,+,L,C and O together with numeric input where; O represents the date of the portfolio opening. L represents the date of the Last Fees Run. C represents todays system date. </p>
+            <p>       Thus C-1 is the calendar date before today.      O+1 is the calendar date after the opening date of the          portfolio. </p>
+            <p>       e.g. for PERIODIC.NORMAL this field will typically contain C-L. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Only input of a number or the characters -,+,L,C or O allowed.</p>
+            <p>       If the SAFECUSTODY.VALUES field COMPANY.CALC is set to 'Y' this field is a no input field that will default from SAFECUSTODY.VALUES.</p>
+        </desc>
+</t>
+<t>
+<field>GLOBAL.CODE</field>
+<desc>
+            <p>Standard T24 alphanumeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       A maximum of 11 characters may be entered.</p>
+            <p>       Must be the key to a valid entry on the FT.COMMISSION.TYPE file.</p>
+        </desc>
+</t>
+<t>
+<field>SECURITY.TYPE</field>
+<desc>
+            <p>Identifies the level for calculating the basis amount. </p>
+            <p>       This field will be used to decide on the Commission type to calculate the management fees based on the holdings of the portfolio. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       1.      Security Number : 6N-3N or             2.      Sub-Asset type prefixed with "S-". or             3.      Asset Type prefixed with "A-". or             4.      "ALL" - all others Input is Mandatory</p>
+        </desc>
+</t>
+<t>
+<field>TAX.COMM.CODE</field>
+<desc>
+            <p>Identifies the the Charge Code or Group to determine the TAX code to be used for Advisory Charges. </p>
+            <p>       This field will be used to calculate the Tax Amount for resultant Advisory charge. </p>
+            <p>       Optional Input. </p>
+        </desc>
+</t>
+<t>
+<field>DET.PERCENTAGE</field>
+<desc>
+            <p>Defines a percentage to be applied to the charge amount calculated. </p>
+            <p>       When the basis amount is calculated then this percentage together with the charge rate is used to calculate the final management fees. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Input must be numeric and positive.</p>
+        </desc>
+</t>
+<t>
+<field>DELIV.START</field>
+<desc>
+            <p>Field allowing the user to specify the start date printed on any delivery produced by fees charged for the period type defined in the associated CALC.TYPE field. </p>
+            <p>       This is done using the characters -,+,L,C and O together with numeric input where; O represents the date of the portfolio opening. L represents the date of the Last Fees Run. C represents todays system date. </p>
+            <p>       Thus C-1 is the calendar date before today.      O+1 is the calendar date after the opening date of the          portfolio. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Only input of a number or the characters -,+,L,C or O allowed.</p>
+            <p>       If the SAFECUSTODY.VALUES field COMPANY.CALC is set to 'Y' this field is a no input field that will default from SAFECUSTODY.VALUES.</p>
+        </desc>
+</t>
+<t>
+<field>SECOND.FEE.CODE</field>
+<desc>
+            <p>Identifies the Commission Type used to perform a secondary calculation on the result of the primary management fee calculation. This 'fee-on-fee' method is only supported for daily accrual, i.e. where SAFECUSTODY.VALUES&gt;PERFORM.ACCRUAL for CHARGE.TYPE 'IC' is set to 'DAILY', and where SCPM.CHARGE.PARAMETER&gt;AVERAGE.CLOSING is set to 'PREV.MONTH.CLOSE' for all records.</p>
+            <p>   Validation rules</p>
+            <p>    If used, must be entered in conjunction with a SECOND.FEE.PERC.</p>
+        </desc>
+</t>
+<t>
+<field>MIN.MAX.CCY</field>
+<desc>
+            <p>Specifies the currency in which the associated minimum and maximum amount fields are defined.</p>
+            <p> When the advisory charges are calculated, less any discount amount, a minimum and maximum value can be specified. This value can be specified in any currency.</p>
+            <p> The system will first attempt to determine if the min/max is specified in the currency of the account that the charge (field ACCOUNT.CCY in the file SC.ADVISORY.CHG) will be posted to, if not found the value defined for the DEF.MIN.MAX.CCY will be used and converted at mid rate to the account currency.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> Optional Input</p>
+            <p> Must be a valid CURRENCY code</p>
+            <p> No duplicates allowed</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.DETAILS</field>
+<desc>
+            <p>This field will only have an effect if the CALC.METHIOD is set to 'DETAIL'. </p>
+            <p>       YES / NO field to allow the user to calculate fees on the total value of the portfolio remaining after the percentages entered in the DET.PERCENTAGE fields have been taken into account. </p>
+            <p>       If this field is set to 'NO' (or left blank) then the commission code used in the calculation of fees will be those entered in the DET.COMM.CODE field. </p>
+            <p>       If this field is set to 'YES' then the commission code entered into the TOT.COMM.CODE field will be used on the total remaining value of the portfolio after the DET.PERCENTAGE fields have been taken into account. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Only input of YES or NO allowed.</p>
+            <p>       If this field is blank it will be treated as NO by the system.</p>
+            <p>       Optional Input.</p>
+            <p>       NOTE: For daily accruals this field is ignored and not supported. In this case it is always assumed to be NO.</p>
+        </desc>
+</t>
+<t>
+<field>SECOND.FEE.PERC</field>
+<desc>
+            <p>Defines the percentage to be applied when performing a secondary calculation on the result of the primary management fee calculation. This 'fee-on-fee' method is only supported for daily accrual, i.e. where SAFECUSTODY.VALUES&gt;PERFORM.ACCRUAL for CHARGE.TYPE 'IC' is set to 'DAILY', and where SCPM.CHARGE.PARAMETER&gt;AVERAGE.CLOSING is set to 'PREV.MONTH.CLOSE' for all records.</p>
+            <p>   Validation rules</p>
+            <p>    If used, must be entered in conjunction with a SECOND.FEE.CODE.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.PERCENT</field>
+<desc>
+            <p>Percentage to be applied to the charge calculated. </p>
+            <p>       Defines a percentage to be applied to the total fees calculated using the commission type from the previous field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Optional input unless the calculation method is "TOTAL" Must be numeric</p>
+        </desc>
+</t>
+<t>
+<field>CALC.METHOD</field>
+<desc>
+            <p>Identifies the method for calculating the basis amount to calculate the management fees charges. </p>
+            <p>       This field will be used to determine the method for calculating the management fees charges: </p>
+            <p>       i.e.  If "TOTAL" then a total base amount for the portfolio's holdings will be used to calculate the fees.  If "DETAIL" then for each "SEC.TYPE", individual fees will be calculated for each portfolio, based on the base amount for each security and then accumulated to determine the total charge. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Input is Mandatory Enter "TOTAL" or "DETAIL"</p>
+        </desc>
+</t>
+<t>
+<field>CALC.TYPE</field>
+<desc>
+            <p>Multi-valued field associated with all the field down to DELIV.END to form a group of fields that indicate the dates to be used in calculating the portfolio advisory charges for portfolios connected with this charging group. </p>
+            <p>       This field along with its associated multi-valued fields allow the user to specify the different date ranges for the four different types of date range that can occur when calculating Management Fees. </p>
+            <p>       These four ranges are; PERIODIC.OPEN   Used when the Charges run is an automatic                 charging run controlled by the ADVISORY.FREQ field                 on the SEC.ACC.MASTER record for the portfolio and                 this is the first automatic run for the portfolio. PERIODIC.NORMAL Used when the charges run is an automatic charging                 controlled by the ADVISORY.FREQ field on the                 SEC.ACC.MASTER record for the portfolio and the                 portfolio has previously had Advisory Fees                 calculated for it. CLOSURE.NORMAL  Used when the fees are being calculated because                 a portfolio is being closed and the portfolio has                 previously had Advisory Fees calculated on it. CLOSURE.OPEN    Used when the fees are being calculated because                 a portfolio is being closed and the portfolio has                 never had Advisory Fees calculated on it. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Input must be PERIODIC.NORMAL, PERIODIC.OPEN, CLOSURE.NORMAL or CLOSURE.OPEN.</p>
+            <p>       Mandatory Input.</p>
+            <p>       If the SAFECUSTODY.VALUES field COMPANY.CALC is set to 'Y' this field is a no input field that will default from SAFECUSTODY.VALUES.</p>
+        </desc>
+</t>
+<t>
+<field>DEF.MIN.MAX.CCY</field>
+<desc>
+            <p>Specifies the currency code that will contain the default minimum / maximum values for advisory charges.</p>
+            <p />
+            <p>     If the system cannot find a definition in the currency in which the charges are calculated, the definitions for this currency will be taken and will be converted at mid-rate to the charge account currency.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>     Mandatory if MIN.MAX.CCY is specified </p>
+            <p>     Value must be defined in MIN.MAX.CCY</p>
+        </desc>
+</t>
+<t>
+<field>DELIV.END</field>
+<desc>
+            <p>Field allowing the user to specify the end date printed on any delivery produced by fees charged for the period type defined in the associated CALC.TYPE field. </p>
+            <p>       This is done using the characters -,+,L,C and O together with numeric input where; O represents the date of the portfolio opening. L represents the date of the Last Fees Run. C represents todays system date. </p>
+            <p>       Thus C-1 is the calendar date before today.      O+1 is the calendar date after the opening date of the          portfolio. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>       Only input of a number or the characters -,+,L,C or O allowed.</p>
+            <p>       If the SAFECUSTODY.VALUES field COMPANY.CALC is set to 'Y' this field is a no input field that will default from SAFECUSTODY.VALUES.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

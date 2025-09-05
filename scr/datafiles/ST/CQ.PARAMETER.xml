@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>ST</product>
+<table>CQ.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+<p>In this file we specify all the parameters related to CHEQUE.COLLECTION application like transaction codes for Deposit, Collection, return and respective category codes.</p><p /><p>When trying to create a CHEQUE.COLLECTION record the system will first look into CQ.PARAMETER and if the transaction code is not found then it will look into ACCOUNT.PARAMETER.</p><p /><p>Similarly when marking the CHEQUE.COLLECTION record as CLEARED or RETURNED, the system will first look into CQ.PARAMETER and if the transaction code is not defined then it will look into ACCOUNT.PARAMETER to generate the entries.</p><p /><p /></ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>CURR.NO</field>
+<desc></desc>
+</t>
+<t>
+<field>KEY</field>
+<desc><p>The id to CQ.Parameter application is "SYSTEM".</p></desc>
+</t>
+<t>
+<field>DEPT.CODE</field>
+<desc></desc>
+</t>
+<t>
+<field>RECORD.STATUS</field>
+<desc></desc>
+</t>
+<t>
+<field>DAO.ID</field>
+<desc><p>For Future Use.</p></desc>
+</t>
+<t>
+<field>RETURN.SUSP.CAT</field>
+<desc><p>This field is used to default a suspense account when you want to perform the automatic return cheque process on the FUNDS.TRANSFER application. The field is mandatory if the CHEQUE.REGISTER field has been entered otherwise it must not be entered.</p><p /><p><p>Validation Rules:</p>.</p><p>Must be a valid CATEGORY code.</p><p>Currently noinput field.</p></desc>
+</t>
+<t>
+<field>RESERVED4</field>
+<desc></desc>
+</t>
+<t>
+<field>IGNOR.CHQ.REG.UPD</field>
+<desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc>
+</t>
+<t>
+<field>RESERVED1</field>
+<desc></desc>
+</t>
+<t>
+<field>RESERVED8</field>
+<desc></desc>
+</t>
+<t>
+<field>TELLER.ID</field>
+<desc><p>If entered as "Y", then building the collection suspense internal account number in Cheque Collection application the appropriate teller id record will be used instead of default teller id as '0001'.</p><p /><p><p>Validation Rules:</p></p><p>Optional field</p><p>Yes or No or NULL.</p></desc>
+</t>
+<t>
+<field>CB.POST.HIST</field>
+<desc><p>No of days after which the CHEQUE.BATCH will be moved to history if all the cheques of the BATCH are either cleared or in returned status. ie FINAL.DATE is reached.</p></desc>
+</t>
+<t>
+<field>DEF.RET.SUSP</field>
+<desc><p>This field is used to specify a suspense category that will be used in the processing related to the process of returning an out clearing cheque. This field can be specified only if the fields CHQ.DEP.TXN, CHQ.COL.TXN, CHQ.RET.TXN and DEF.COLL.SUSP have been specified.</p><p /><p>By specifying a transaction code the accounting module will detect this situation and do the following processing:</p><p /><p>Change the status on the CHEQUE.COLLECTION record to 'RETURNED'</p><p>Delete the forward entries created on client account</p><p>Raise real entries to credit the return suspense with the cheque amount and debit the collection suspense account with the cheque amount</p><p>Raise any charges and/or tax entries specified on the CHEQUE.COLLECTION record</p><p /><p><p>Validation Rules:</p></p><p>Optional input</p><p>CHQ.DEP.TXN, CHQ.COL.TXN, CHQ.RET.TXN &amp; DEF.COLL.SUSP must also be specified</p><p>If entered must be an ID to a valid CATEGORY record.</p></desc>
+</t>
+<t>
+<field>RESERVED3</field>
+<desc></desc>
+</t>
+<t>
+<field>CO.CODE</field>
+<desc></desc>
+</t>
+<t>
+<field>RETURN.TXNS</field>
+<desc><p>This is a multi-valued field that is used to trigger the update to the CHEQUE.REGISTER record when cheques issued to the bank&amp;#146;s clients are being returned. If entered it must not have been specified in any of the field</p><p>CHQ.DEP.TXN CHQ.COL.TXN</p><p>CHQ.RET.TXN.</p><p>The field is mandatory if the CHEQUE.REGISTER field has been entered otherwise it must be left blank.</p><p /><p>In a multi-company environment, if you have separate TRANSACTION files for each company and you want to use CHEQUE.REGISTER then you must set up the same transaction code for returned cheques in each company.</p><p /><p><p>Validation Rules:</p></p><p>Must be a valid TRANSACTION code</p><p>Currently noinput field.</p></desc>
+</t>
+<t>
+<field>RESERVED6</field>
+<desc></desc>
+</t>
+<t>
+<field>RESERVED5</field>
+<desc></desc>
+</t>
+<t>
+<field>CC.POST.HIST</field>
+<desc><p>This field specifies the no of days after which the records in CHEQUE.COLLECTION with status as "CLEARED" or "RETURNED" will be moved to history file.</p><p /><p><p>Validation Rules:</p></p><p>Optional field</p><p>Accept Numeric value</p></desc>
+</t>
+<t>
+<field>RESERVED7</field>
+<desc></desc>
+</t>
+<t>
+<field>CHQ.DEP.TXN</field>
+<desc><p>This field is used to specify a list of transaction codes that must invoke the processing related to the process of depositing an out clearing cheque into a client's account. This field can be specified only if the fields DEF.COLL.SUSP, CHQ.COL.TXN, CHQ.RET.TXN &amp; DEF.RET.SUSP have been specified.</p><p>By specifying a transaction here the accounting module will detect this situation and do the following processing:</p><p /><p>Change the underlying client account to which the funds are being deposited to a suspense account (constructed using the CHQ.COLL.SUSP field on the BC.SORT.CODE file or the DEF.COLL.SUSP on this file)</p><p>Create a CHEQUE.COLLECTION record with an initial status of 'DEPOSITED'</p><p>The CHEQUE.COLLECTION record can further be batched by using the CHEQUE.BATCH application. Refer to helptext for the CHEQUE.BATCH application.</p><p>In a multi-company environment, if you have separate TRANSACTION files for each company and you want to use CHEQUE.COLLECTION then you must set up the same transaction codes for it in each company.</p><p /><p><p>Validation Rules:</p></p><p>Mandatory input</p><p>Transaction code entered here must not be specified in the Account Parameter</p><p>DEF.COLL.SUSP, CHQ.COL.TXN, CHQ.RET.TXN &amp; DEF.RET.SUSP must also be specified</p><p>If entered must not contain duplicates</p><p>If entered must not be specified in the CHQ.COL.TXN or CHQ.RET.TXN fields</p><p>If entered must be an ID to a valid TRANSACTION record.</p></desc>
+</t>
+<t>
+<field>CHQ.RET.TXN</field>
+<desc><p>This field is used to specify a list of transaction codes that must invoke the processing related to the process of returning out clearing cheque. This field can be specified only if the fields DEF.COLL.SUSP, CHQ.DEP.TXN, CHQ.COL.TXN &amp; DEF.RET.SUSP have been specified.</p><p>By specifying a transaction here the accounting module will detect this situation and do the following processing:</p><p /><p /><p>Change the status on the CHEQUE.COLLECTION record to 'RETURNED'</p><p>Delete the forward entries created on client account</p><p>Raise real entries to credit the return suspense with the cheque amount and debit the collection suspense account with the cheque amount</p><p>Raise any charges and/or tax entries specified on the CHEQUE.COLLECTION record</p><p>In a multi-company environment, if you have separate TRANSACTION files for each company and you want to use CHEQUE.COLLECTION then you must set up the same transaction codes for it in each company.</p><p /><p><p>Validation Rules:</p></p><p>Must be a valid TRANSACTION code.</p></desc>
+</t>
+<t>
+<field>RESERVED2</field>
+<desc></desc>
+</t>
+<t>
+<field>INPUTTER</field>
+<desc></desc>
+</t>
+<t>
+<field>DEF.COLL.SUSP</field>
+<desc><p>This code is used for the suspense category and is used for processing cheque collection.</p><p /><p>If defined then the system would create a CHEQUE.COLLECTION record with the suspense account, i.e., Indirect Credit.</p><p /><p>If not defined then the system would credit the account directly, i.e., Direct Credit.</p><p /><p><p>Validation Rules:</p></p><p>Should be a valid category code</p></desc>
+</t>
+<t>
+<field>CHEQUE.REGISTER</field>
+<desc><p>This field is used to indicate whether the cheque issue &amp; management functionality within T24 has been activated or not.</p><p>If Yes then return transaction code and suspense category code to be entered.</p><p /><p><p>Validation Rules:</p></p><p>Valid values are 'Yes' or 'No'</p><p>Optional Input.</p></desc>
+</t>
+<t>
+<field>CHEQUE.NUM.LEN</field>
+<desc><p>This field defines the length of the cheque number.</p><p /><p>Leading zeros will be prefixed to the cheque number if the length of teh cheque number is less than the one defined here.</p><p /><p>If not defined then any leading zeros will be trimmed.</p><p /><p><p>Validation Rules:</p></p><p>Optional field.</p><p>Accept Numeric value.</p></desc>
+</t>
+<t>
+<field>DATE.TIME</field>
+<desc></desc>
+</t>
+<t>
+<field>CHQ.COL.TXN</field>
+<desc><p>This field is used to specify a list of transaction codes that must invoke the processing related to the process of realising clearing cheques. This field can be specified only if the fields DEF.COLL.SUSP, CHQ.DEP.TXN, CHQ.COL.TXN &amp; DEF.RET.SUSP have been specified.</p><p>This transaction code is used while realising a collection cheque.</p><p>In a multi-company environment, if you have separate TRANSACTION files for each company and you want to use CHEQUE.COLLECTION then you must set up the same transaction codes for it in each company.</p><p /><p><p>Validation Rules:</p></p><p>Must be a valid TRANSACTION code.</p></desc>
+</t>
+<t>
+<field>AUDIT.DATE.TIME</field>
+<desc></desc>
+</t>
+<t>
+<field>AUDITOR.CODE</field>
+<desc></desc>
+</t>
+<t>
+<field>AUTHORISER</field>
+<desc></desc>
+</t>
+<t>
+<field>AUTO.CLEAR</field>
+<desc><p>This field is used to trigger automatic actioning of CHEQUE.COLLECTION records to CLEARED status during COB.</p><p /><p>Allowed values are 'Y', 'N' and ''. 'N' and '' are treated same.</p><p /><p>When setup as 'Y', during COB the system will try to read the CHEQUE.CHANGE application with id as 'AUTO.CLEAR'.</p><p /><p>If found the system would perform the select defined in that record, else the system would select all the CHEQUE.COLLECTION records whose ORIG.VALUE.DATE is less than equal to TODAY and CHQ.STATUS not equal to CLEARED and RETURNED.</p><p /><p>Action all the selected CHEQUE.COLLECTION records to CLEARED status.</p></desc>
+</t>
+</menu>
+</t24help>
+

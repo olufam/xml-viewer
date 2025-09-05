@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>EB</product>
+<table>SIGNATURE</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This file contains the signature cards stored on the system. Fields 1 to 4 form a multivalue set for each signature stored on the card. The order in which the multivalue sets are defined will determine which of the available signature boxes they will be displayed in. For example if a signature card contains two signatures, one in multivalue set 1 and one in multivalue set 3, with a blank multivalue set between them then signature 1 will be displayed in box 1 as defined in SIGNATURE.PARM and signature two will be displayed in box 3. Box 2 will appear on screen but will be blank. Thus to move signature 2 to box 2 one would simply remove the blank set between them. </p>
+            <p>Along with each signature saved field 1 defines a name, field 2 defines the date the signature was captured and field 4 contains a pointer to the actual signature code stored in a separate file. Field 3 specifies whether a new signature is to be captured for any box when a card record is validated on a capture terminal. </p>
+            <p>Each signature card can have a card mandate assigned in field 5. The mandates may be entered numerically and selected from the multivalue multilanguage list defined in SIGNATURE.PARM or alternatively a text mandate may be entered for special conditions. </p>
+            <p>The file follows normal T24 functionality and supports all the normal functions such as 'I', 'A' and 'S'. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>NAME</field>
+<desc>
+            <p>Defines a name for each signature on the card. </p>
+            <p>Non mandatory name for each signature. This name will be appended to the SIGNATURE.BOX label in the SIGNATURE.PARM file for display on screen if the DISPLAY.NAME flag is set for this signature box. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 20 alphanumeric Signifies the beginning of the multivalue set of fields 1 to 4.</p>
+            <p>May not be entered for a signature box number greater than the number defined in SIGNATURE.PARM.</p>
+        </desc>
+</t>
+<t>
+<field>SIGNATURE</field>
+<desc>
+            <p>Defines the location of the signature stored in this box. </p>
+            <p>Signature codes are held on a separate file for security reasons. This field is updated automatically when a signature is captured and holds a pointer to the actual signature code location. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input Multivalue associated with fields 1 to 4.</p>
+        </desc>
+</t>
+<t>
+<field>CARD.ID</field>
+<desc>
+            <p>The key to the file </p>
+            <p>Signature cards may be entered at customer or account level. When the display of a signature card is requested by a calling application with an account number SIGNATURE.CONTROL will look first for an account signature card for the account number entered. If this cannot be located the customer for the account will be used and the customer signature card will be displayed if it exists. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>For customer signature cards "C-nnnnn" For account  signature cards "A-nnnnn" where "nnnnn" is a valid customer or account number or mnemonic.</p>
+            <p>ID must begin "C-" or "A-"</p>
+            <p>The account or customer number entered must be valid (mnemonics allowed).</p>
+            <p>Mnemonics are translated.</p>
+        </desc>
+</t>
+<t>
+<field>CONDITION</field>
+<desc>
+            <p>Defines the card mandate assigned. </p>
+            <p>Each signature card may be assigned a mandate condition. A numeric input will look in the STORAGE.CONDS field of the SIGNATURE.PARM record to see if a storage condition is defined for the number entered. If so the multilanguage translation for the condition is enriched on screen and will be displayed on the signature card at the position defined by CONDITION.POSN in the parameter file. Any other text entered here will be used as the condition if not numeric. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 - 50 alphanumeric</p>
+            <p>If numeric the entry will be enriched with the multilanguage value stored in STORAGE.CONDS in the SIGNATURE.PARM record.</p>
+            <p>If no storage condition is defined for a numeric entry the input is assumed to be free text and held as such in this field.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.CAPTURED</field>
+<desc>
+            <p>Defines the last date the signature was captured. </p>
+            <p>Whenever a new signature is captured for any box on the card this field is automatically updated with the current bank date. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>No input Multivalue associated with fields 1 to 4.</p>
+        </desc>
+</t>
+<t>
+<field>GET.NEW.SIG</field>
+<desc>
+            <p>Specifies whether a new signature is to be captured for this signature box. </p>
+            <p>If this field is changed to 'Y' for one or more signature boxes on a card then signatures will be captured when the record is validated. The signature image will be placed into each box flagged 'Y' in turn. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 alphanumeric Multivalue associated with fields 1 to 4.</p>
+            <p>Cannot be changed to 'Y' unless operating on a valid capture terminal as defined in the SIGNATURE.PARM file.</p>
+            <p>Entry must be 'Y' or 'N'</p>
+            <p>Default is 'N' if not entered.</p>
+            <p>On entering a new signature card defaults to 'Y' for box 1.</p>
+            <p>No input allowed for a box number greater than the number defined in SIGNATURE.PARM.</p>
+            <p>For the history restore function defaults to 'Y' for each box which contained a signature when the record was reversed.</p>
+            <p>Cannot be changed to 'Y' on a non-display station whilst within a zero authorisers version of SIGNATURE.</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+

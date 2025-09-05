@@ -1,0 +1,1673 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>IC</product>
+<table>ACCR.ACCT.CH</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This is an internal file containing details of the calculation of Account Charges which have been accrued (booked to Profit and Loss) but not yet capitalised (booked to the Customer's Account). </p>
+            <p>Account Charges are capitalised Monthly, Quarterly or Six-monthly, as specified in the CHARGE.CALCULATION field in the COMPANY record, always at the end of a calendar month. If Quarterly is specified, the Quarters begin on the 1st of January, April, July and October. If Six-monthly is specified, these begin on the 1st of January and July. </p>
+            <p>If the INCLUDE.CHARGES field in the ACCOUNT.ACCRUAL table contains 'Y', Account Charges are accrued at end of every month. At each month end the charges accrued since the last capitalisation are recalculated, the appropriate Profit and Loss entries are generated and a new ACCR.ACCT.CH record is written, replacing the one generated the previous month. </p>
+            <p>When the charges are capitalised, a STMT.ACCT.CH record is written and the ACCR.ACCT.CH record is deleted. </p>
+            <p>Charges are calculated on the value dated balances and account activity statistics stored in the ACCT.ACTIVITY file, taking into account all entries over the Account up to and including the day of processing. </p>
+            <p>The charges are calculated from the date of the last charges capitalisation, as stored in the ACCOUNT record (in the CAP.DATE.CHARGE field), up to the end of the current month. </p>
+            <p>Note: When new Accounts are loaded, the last charge date (CAP.DATE.CHARGE)is set to the end of the month in which they are loaded, unless CHARGE.FIRST.MONTH is set to YES on ACCOUNT.PARAMETER, otherwise No charges are processed automatically in the first month. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>TOTAL.CHARGE</field>
+<desc>
+            <p>The total amount of account maintenance charges calculated, after offsetting with notional credit interest if applicable. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format.</p>
+        </desc>
+</t>
+<t>
+<field>TRCHARGE.AMT</field>
+<desc>
+            <p>Shows the calculated Charge for the period shown in PERIOD.YEARM.FROM and PERIOD.YEARM.TO or, if monthly calculations have been made, for the month shown in associated field TRCHARGE.YR.MTH. </p>
+            <p>If TOTAL.CH.AMT or COMTRS.AMT are used, this field appears for information purposes only. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Subvalue field associated with field range TRCH.CODE to TRCH.TRSCR and multivalue field TRCHARGE.YR.MTH.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.CH.TAX.RATE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>COMTRS.CHARGE.CODE</field>
+<desc>
+            <p>Where charges for all different types of Transaction are to be combined into a single charge, this field identifies the relevant Transaction charge record to be used. </p>
+            <p>Gross charge calculations are made for each type of Transaction.  The Free, Minimum and Maximum amounts, from the Transaction Charge record specified by this field, are then applied to the sum of the gross calculations to arrive at the actual charge. </p>
+            <p>Note: The Transaction Charge details used are those applicable at the end       of the month specified in field PERIOD.YEARM.TO. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  1-10(Max Value) numeric characters Transaction Code. </p>
+            <p>  The Maximum value is specified in EB.OBJECT for TRANSACTION. </p>
+        </desc>
+</t>
+<t>
+<field>NO.DEBIT.TRSDR</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Account entries generated for Number of Debit charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>  1-10(Max Value) numeric characters Transaction Code. </p>
+            <p>  The Maximum value is specified in EB.OBJECT for TRANSACTION. </p>
+        </desc>
+</t>
+<t>
+<field>MIN.MAX.CHG</field>
+<desc>
+            <p>Fields STMT.CHG.YR.MTH to STMT.CHG.AMT form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 7 characters may be entered.</p>
+            <p>The following values are permitted:       MAXIMUM      MINIMUM</p>
+        </desc>
+</t>
+<t>
+<field>LIQUIDITY.ACCOUNT</field>
+<desc>
+            <p>Where Account charges are to be passed to an alternative Account, the number of the  alternative Account is shown by this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard account format.</p>
+        </desc>
+</t>
+<t>
+<field>BAL.REQU.YR.MTH</field>
+<desc>
+            <p>Holds the Year and Month of the calculation where charges are to be applied to an account on a periodical (3 or 6 month) basis but calculations are to be made on a monthly basis. Multivalue occurrences allow each month's calculation to be recorded separately. Where 1 calculation is made for an entire period, this field is left blank. </p>
+            <p>Highest Debit charges are applied to Accounts on the same day as other Account Maintenance charges, which may be monthly, quarterly or six monthly as specified in the CHARGE.CALCULATION field in the COMPANY record (ref: General Tables). </p>
+            <p>If the associated GENERAL.CHARGE record has CALCUL.STEP.PERIOD = 'M', the charge is calculated in separate steps for each month within the period, charging the appropriate amount for each month. Otherwise, the charge is calculated in one step for the whole period as specified in the COMPANY record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>6 numeric characters YYYY MM. Multivalue field associated         with field range HI.DR.YR.MTH to HIGHEST.DR.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>TRCH.TRSDR</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Account entries generated for Transaction charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+            <p> Subvalue field associated with field range TRCH.CODE to TRCH.TRSCR and multivalue field TRCHARGE.YR.MTH.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.DR.FREE</field>
+<desc>
+            <p>Shows the free amount by which the calculated turnover debit charge will be reduced in each calculation period. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range TURN.DR.YR.MTH to TURN.DEBIT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>NO.CR.TAX.CODE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>NO.DR.AMT</field>
+<desc>
+            <p>Shows the final calculated Number of Debit Charge for the period shown in fields PERIOD.YEARM.FROM and PERIOD.YEARM.TO or, if monthly calculations have been made, for the month shown in associated field NO.DEBIT.YR.MTH. </p>
+            <p>If field TOTAL.CH.AMT is used, NO.DR.AMT appears for information purposes only. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range NO.DEBIT.YR.MTH to NO.DR.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>HI.DR.YR.MTH</field>
+<desc>
+            <p>The year and month relevant to the highest debit charge</p>
+        </desc>
+</t>
+<t>
+<field>HIGH.DR.CATEG</field>
+<desc>
+            <p>The P&amp;L category code related to the highest debit charge.</p>
+        </desc>
+</t>
+<t>
+<field>INT.NO.BOOKING</field>
+<desc>
+            <p>If Account Maintenance charges are to be 'WAIVED', or if interest and charges are to be calculated for information purposes only and not passed to the account, or if accrued interest and charges are to be suspended and not posted to Profit and Loss, this is shown by this field. </p>
+            <p>The information in this field comes from the equivalent field in the ACCOUNT record or from the WAIVE.LEDGER.FEE field. </p>
+            <p>If debit interest and interest related charges are to be calculated according to rules specified in the appropriate GROUP.DEBIT.INT record, but Account Maintenance charges specified for the Group are not applicable, 'Y' is entered in the WAIVE.LEDGER.FEE field in the ACCOUNT record. The charges are calculated as shown in this record, but 'WAIVED' is shown in this field and no accounting entries are generated. </p>
+            <p>If this field contains 'SUSPENSE', interest and charges will be booked to the Customer's Account but no Profit and Loss entries will be generated, instead, the amount which would have been accrued will be stored in a Suspense Amount field in the Account record. If this field contains 'Y', interest and charges are calculated for information only, no entries will be posted either to Profit and Loss or to the Customer's Account.  e.g. for Nostro Accounts. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'WAIVED', 'Y', 'SUSPENSE' or nothing.</p>
+        </desc>
+</t>
+<t>
+<field>COMTRANSACT.CATEG</field>
+<desc>
+            <p>Identifies the Category code to be assigned to Profit and Loss entries generated for Combined Transaction charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4 or 5 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.DEBIT.CATEG</field>
+<desc>
+            <p>Identifies the Category code to be assigned to Profit and Loss entries generated for Debit Turnover charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4 or 5 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>HIGHEST.DR.PERC</field>
+<desc>
+            <p>Indicates the percentage of the highest debit balance used to calculate the highest debit charge it relevant.</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.CH.TRSCR</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Profit and Loss entries generated for Combined Total charges. </p>
+            <p>Field range TOTAL.CH.YR.MTH to TOT.CH.TAXTRSCR are used when all individual charges are Combined into a single Charge.  Combined charges are specified by CHARGE.CODE.LEVEL of the GENERAL.CHARGE record and indicated in CHARGE.CODE.LEVEL of this record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        </desc>
+</t>
+<t>
+<field>COMTRANSACT.TRSCR</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Profit and Loss entries generated for Combined Transaction charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        </desc>
+</t>
+<t>
+<field>NO.DR.TAXTRSDR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>HIGH.DR.TRSCR</field>
+<desc>
+            <p>The credit transaction code related to the highest debit charge.</p>
+        </desc>
+</t>
+<t>
+<field>B.REQU.TAXTRSCR</field>
+<desc>
+            <p>Identifies the transaction code to be assigned to Tax Provision entries generated as a result of tax calculations on the Highest Debit charge.</p>
+        </desc>
+</t>
+<t>
+<field>HI.DR.TAX.TRSCR</field>
+<desc>
+            <p>The tax credit transaction code related to the highest debit charge.</p>
+        </desc>
+</t>
+<t>
+<field>TRCH.MIN.MAX</field>
+<desc>
+            <p>After calculating the gross Transaction charge and subtracting the Free Amount, comparison is made with Minimum and Maximum charge amounts from the TRANSACTION.CHARGE record.  If either the Minimum charge or the Maximum charge is substituted for the calculated charge, 'MINIMUM' or 'MAXIMUM' is recorded in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'MINIMUM', 'MAXIMUM' or nothing. Subvalue field associated with field range TRCH.CODE to TRCH.TRSCR and multivalue field TRCHARGE.YR.MTH.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.CH.TAX.AMT</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>BAL.REQU.CODE</field>
+<desc>
+            <p>Where a Highest Debit charge is to be made on an Account, this code specifies the HIGHEST.DEBIT record containing details of the calculation and processing of the Highest Debit charge. </p>
+            <p>The Highest Debit details used are those applicable at the end of the month specified in PERIOD.YEARM.TO. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>1-2 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.CH.TAXTRSCR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.DEBIT.TRSCR</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Profit and Loss entries generated for Debit Turnover charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        </desc>
+</t>
+<t>
+<field>NO.CR.TAXCATEG</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>B.REQU.TAXTRSDR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>none.</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.CH.TRSDR</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Account entries generated for Combined Total charges. </p>
+            <p>Field range TOTAL.CH.YR.MTH to TOT.CH.TAXTRSCR are used when all individual charges are Combined into a single Charge.  Combined charging is specified by CHARGE.CODE.LEVEL of the GENERAL.CHARGE record and indicated in CHARGE.CODE.LEVEL of this record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        </desc>
+</t>
+<t>
+<field>BALANCE.OFFSET</field>
+<desc>
+            <p>Shows the amount of the minimum or average credit balance which has been used for calculating notional credit interest to offset against charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range OFFSET.YR.MTH to AMOUNT.OFFSET.</p>
+        </desc>
+</t>
+<t>
+<field>TRN.CR.TAXCATEG</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>NO.STATEMENTS</field>
+<desc>
+            <p>If Account Maintenance charges are to be 'WAIVED', or if interest and charges are to be calculated for information purposes only and not passed to the account, or if accrued interest and charges are to be suspended and not posted to Profit and Loss, this is shown by this field. </p>
+            <p>The information in this field comes from the equivalent field in the ACCOUNT record or from the WAIVE.LEDGER.FEE field. </p>
+            <p>If debit interest and interest related charges are to be calculated according to rules specified in the appropriate GROUP.DEBIT.INT record, but Account Maintenance charges specified for the Group are not applicable, 'Y' is entered in the WAIVE LEDGER FEE field in the Account record. The charges are calculated as shown in this record, but 'WAIVED' is shown in this field and no accounting entries are generated. </p>
+            <p>If this field contains 'SUSPENSE', interest and charges will be booked to the Customer's Account but no Profit and Loss entries will be generated, instead, the amount which would have been accrued will be stored in a Suspense Amount field in the Account record. If this field contains 'Y', interest and charges are calculated for information only, no entries will be posted either to Profit and Loss or to the Customer's Account.  e.g. for Nostro Accounts. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'WAIVED', 'Y', 'SUSPENSE' or nothing.</p>
+        </desc>
+</t>
+<t>
+<field>NO.CRED.CATEG</field>
+<desc>
+            <p>Identifies the Category code to be assigned to Profit and Loss entries generated for Number of Credit charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4 or 5 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>NO.TRANSACT</field>
+<desc>
+            <p>Where a flat Transaction Charge is to be made on each Transaction passing across an account, this field records the number of Transactions during the calculation period. </p>
+            <p>This is the total number of all transactions for which the Transaction Charge specified in field 81 is applicable. </p>
+            <p>If a flat charge is made for each Transaction, the details are shown in NO.TRANSACT and TRANS.CHARGE.  If the charge is a percentage of the value of Transactions, TRCH.PERCTG and TRANS.TURNOV are used. </p>
+            <p>Note: (i)  The TRANSACTION table specifies which Transaction Charge is            applicable for each Transaction Code. </p>
+            <p>      (ii) The same Transaction Charge may be applicable to several            different Transaction Codes. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-6 numeric characters. Subvalue field associated with field range TRCH.CODE to TRCH.TRSCR and multivalue field TRCHARGE.YR.MTH.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.CH.TAXTRSDR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>COMPENS.ACCOUNT</field>
+<desc>
+            <p>Where 2 or more Accounts are to be netted for the purpose of calculating charges, the sub-account numbers are shown by this multivalue field. The Account Number shown in the Record Id of this file is the major Account number of the group. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard account format. Multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>TRCH.CATEG</field>
+<desc>
+            <p>Identifies the Category code to be assigned to Profit and Loss entries generated for Transaction charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4 or 5 numeric characters. Subvalue field associated with field range TRCH.CODE to TRCH.TRSCR and multivalue field TRCHARGE.YR.MTH.</p>
+        </desc>
+</t>
+<t>
+<field>TRN.CR.TAXTRSCR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>HI.DR.TAX.AMT</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>HI.DR.TAX.TRSDR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>NO.CRED.TRSCR</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Profit and Loss entries generated for Number of Credit charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        </desc>
+</t>
+<t>
+<field>TURN.DR.PERCT</field>
+<desc>
+            <p>Shows the Percentage which will be applied to the Debit Turnover amount to calculate the gross Debit Turnover charge. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 numeric characters plus a decimal point. Up to 6 integers. Up to 9 decimals. Standard rate format. Multivalue field associated with field range TURN.DR.YR.MTH to TURN.DEBIT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>DEFERRED.DATE</field>
+<desc>
+            <p>This field will hold the deferred application date of the charges in case pending charges processing was being performed on this account. </p>
+        </desc>
+</t>
+<t>
+<field>NO.CR.TAXTRSCR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>HIGH.DR.TRSDR</field>
+<desc>
+            <p>The debit transaction code related to the highest debit charge.</p>
+        </desc>
+</t>
+<t>
+<field>NO.DR.TAXTRSCR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.CR.TAX.RTE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>COMTRANSACT.TRSDR</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Account entries generated for Combined Transaction charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        </desc>
+</t>
+<t>
+<field>NO.CRED.YR.MTH</field>
+<desc>
+            <p>Where Number of Credit charges are to be applied to an account on a periodical (3 or 6 month) basis, but calculations are to be made on a monthly basis, this field holds the Year and Month of the calculation. Multivalue occurrences allow each month's calculation to be recorded separately. Where 1 calculation is made for an entire period, this field is left blank. </p>
+            <p>Number of Credit charges are applied to Accounts on the same day as other Account Maintenance charges, which may be monthly, quarterly or six monthly as specified in the CHARGE.CALCULATION field in the COMPANY record. </p>
+            <p>If the associated GENERAL.CHARGE record has CALCUL.STEP.PERIOD = 'M', the charge is calculated in separate steps for each month within the period, charging the appropriate amount for each month.  Otherwise, the charge is calculated in one step for the whole period as specified in the COMPANY record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>6 numeric characters YYYY MM. Multivalue field associated with field range NO.CRED.YR.MTH to NO.CR.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>STMT.CHG.TRSDR</field>
+<desc>
+            <p>Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+            <p>Must be the key to a valid entry on the TRANSACTION file.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.DEBIT.TRSDR</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Account entries generated for Debit Turnover charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        </desc>
+</t>
+<t>
+<field>COMTRS.AMT</field>
+<desc>
+            <p>Shows the calculated Combined Transaction Charge for the period shown in PERIOD.YEARM.FROM and PERIOD.YEARM.TO or, if monthly calculations have been made, for the month shown in associated field COMTRS.YR.MTH. </p>
+            <p>If field TOTAL.CH.AMT is used, COMTRS.AMT appears for information purposes only. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range COMTRS.YR.MTH to COMTRS.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>TURNOVER.DR.CODE</field>
+<desc>
+            <p>Where a Debit Turnover charge is to be made on an Account, this code specifies the TURNOVER.DEBIT record containing the details of the calculation and processing the Debit Turnover charge. </p>
+            <p>The Turnover Debit details to be used are those applicable at the end of the month specified in PERIOD.YEARM.TO. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>NO.DEBIT.CATEG</field>
+<desc>
+            <p>Identifies the Category code to be assigned to Profit and Loss entries generated for Number of Debit charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4 or 5 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.DR.TAX.CODE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>NO.CR.TAX.RATE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>NO.DR.FREE</field>
+<desc>
+            <p>Shows the free amount by which the calculated highest debit charge will be reduced in each calculation period. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 14 numeric characters plus a decimal point.         Standard amount format. </p>
+        </desc>
+</t>
+<t>
+<field>TRCH.TRSCR</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Profit and Loss entries generated for Transaction charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+            <p> Subvalue field associated with field range TRCH.CODE to TRCH.TRSCR and multivalue field TRCHARGE.YR.MTH.</p>
+        </desc>
+</t>
+<t>
+<field>OFFSET.RATE</field>
+<desc>
+            <p>Where notional credit interest is to be calculated for offsetting against charges, the rate is given by this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 numeric characters plus a decimal point. Up to 6 integers. Up to 9 decimals. Standard rate format.</p>
+        </desc>
+</t>
+<t>
+<field>COMTRS.MIN.MAX</field>
+<desc>
+            <p>After calculating the total of gross Transaction charges and subtracting the Free Amount, comparison is made with Minimum and Maximum charge amounts from the TRANSACTION.CHARGE record.  If either the Minimum charge or the Maximum charge is substituted for the calculated charge, 'MINIMUM' or 'MAXIMUM' is recorded in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'MINIMUM', 'MAXIMUM' or nothing. Multivalue field associated with field range CONTRS.YR.MTH to COMTRS.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>TRN.DR.TAXTRSCR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>TRCH.PERCTG</field>
+<desc>
+            <p>Records the Percentage which will be applied to the total value of Transactions to calculate the gross Transaction charge. </p>
+            <p>If a flat charge is to be made for each Transaction, field range NO.TRANSACT and TRANS.CHARGE are used.  If the charge is a percentage of the value of Transactions, fields TRCH.PERCTG and TRANS.TURNOV are used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 numeric characters plus a decimal point. Up to 6 integers. Up to 9 decimals. Standard rate format. Subvalue field associated with field range TRCH.CODE to TRCH.TRSCR and multivalue field TRCHARGE.YR.MTH.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.CR.TOTAL</field>
+<desc>
+            <p>The total turnover of chargeable credit transactions for the period specified in PERIOD.YEARM.FROM and PERIOD.YEARM.TO, or, if entered, the month shown in corresponding field TURN.CR.YR.MTH, on which the Credit Turnover charge will be calculated. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric digits plus a decimal point. Standard amount format. Multivalue field associated with field range TURN.CR.YR.MTH to TURN.CREDIT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>NO.CR.FREE</field>
+<desc>
+            <p>Shows the free amount by which the calculated credit transaction charge will be reduced in each calculation period. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range NO.CRED.YR.MTH to NO.CR.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>HI.DR.TAXCATEG</field>
+<desc>
+            <p>The tax category code related to the highest debit charge.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.CR.TAX.CODE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.DEBIT.AMT</field>
+<desc>
+            <p>Shows the final calculated Debit Turnover Charge for the period shown in PERIOD.YEARM.FROM and PERIOD.YEARM.TO or, if monthly calculations have been made, for the month shown in associated field TURN.DR.YR.MTH. </p>
+            <p>If TOTAL.CH.AMT is used, TURN.DEBIT.AMT appears for information purposes only. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range TURN.DR.YR.MTH to TURN.DEBIT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>NO.DEBIT.TRSCR</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Profit and Loss entries generated for Number of Debit charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        </desc>
+</t>
+<t>
+<field>TOTAL.CH.CATEG</field>
+<desc>
+            <p>Identifies the Category code to be assigned to Profit and Loss entries generated for Combined Total charges. </p>
+            <p>Field range TOTAL.CH.YR.MTH to TOT.CH.TAXTRSCR are used when all individual charges are combined into a single charge.  Combined charging is specified by CHARGE.CODE.LEVEL of the GENERAL.CHARGE record and indicated in CHARGE.CODE.LEVEL of this record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4 or 5 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>COMTRS.FREE</field>
+<desc>
+            <p>Shows the free amount by which the total calculated transaction charge will be reduced in each calculation period. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range COMTRS.YR.MTH to COMTRS.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.DR.TOTAL</field>
+<desc>
+            <p>The total turnover of chargeable debit transactions for the period specified in PERIOD.YEARM.FROM and PERIOD.YEARM.TO, or, if entered, the month shown in corresponding field TURN.DR.YR.MTH, on which the Debit Turnover charge will be calculated. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric digits plus a decimal point. Standard amount format. Multivalue field associated with field range TURN.DR.YR.MTH to TURN.DEBIT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.CR.TAX.AMT</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>BAL.REQU.TRSDR</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Customer Account entries generated for Highest Debit charges, as a result of tax calculations on the Highest Debit charge.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        </desc>
+</t>
+<t>
+<field>TURN.CREDIT.CATEG</field>
+<desc>
+            <p>Identifies the Category code to be assigned to Profit and Loss entries generated for Credit Turnover charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>4 or 5 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>BAL.REQU.TRSCR</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Profit and Loss entries generated for Highest Debit charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        </desc>
+</t>
+<t>
+<field>TR.TAXTRSCR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>HIGH.DR.MIN.MAX</field>
+<desc>
+            <p>Indicates whether the amount charged has been set to the minimum or maximum value. Can contain "MINIMUM" or "MAXIMUM" if either of them has been applied.</p>
+        </desc>
+</t>
+<t>
+<field>NO.OF.DEBIT.CODE</field>
+<desc>
+            <p>Where a Number of Debit charge is to be made on an Account, this code specifies the NUMBER.OF.DEBIT record containing the details of the calculation and processing the Number of Debit charge. </p>
+            <p>The Number of Debit charge details to be used are those applicable at the end of the month specified in PERIOD.YEARM.TO. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>TRCHARGE.YR.MTH</field>
+<desc>
+            <p>Where charges determined by the Transaction Code are to be applied to an Account on a periodical (3 or 6 month) basis, but calculations are to be made on a monthly basis, this field holds the Year and Month of the calculation.  Multivalue occurrences allow each month's calculation to be recorded separately. Where 1 calculation is made for an entire period, this field is left blank. </p>
+            <p>Transaction Code charges are applied to Accounts on the same day as other Account Maintenance Charges, which may be monthly, quarterly or six monthly as specified in the CHARGE.CALCULATION field in the COMPANY record. </p>
+            <p>If the associated GENERAL.CHARGE record has CALCUL.STEP.PERIOD = 'M', the charge is calculated in separate steps for each month within the period, charging the appropriate amount for each month. Otherwise, the charge is calculated in one step for the whole period as specified in the COMPANY record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>6 numeric characters YYYY MM. Multivalue field associated with sub-value field range TRCH.CODE to TRCH.TRSCR.</p>
+        </desc>
+</t>
+<t>
+<field>STMT.CHG.CATEG</field>
+<desc>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 6 characters may be entered.</p>
+            <p>Must be the key to a valid entry on the CATEGORY file.</p>
+        </desc>
+</t>
+<t>
+<field>BAL.REQU.BAL</field>
+<desc>
+            <p>Shows the Highest Debit Balance found during the application period and on which the Highest Debit Balance charge is based.</p>
+            <p>The field is multivalue to cater for a situation where charges are being calculated for several months on a monthly basis. In this case, the balance for each month in which a charge is incurred is shown as a separate entry. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 14 numeric characters plus a decimal point.         Standard amount format. Multivalue field associated with         field range HI.DR.YR.MTH to HIGHEST.DR.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>HIGHEST.DR.AMT</field>
+<desc>
+            <p>The amount of the highest debit charge.</p>
+        </desc>
+</t>
+<t>
+<field>BAL.REQU.CATEG</field>
+<desc>
+            <p>Identifies the Category code to be assigned to Profit and Loss entries generated for Highest Debit charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>4 or 5 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>NO.CR.TAX.AMT</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.DR.MIN.MAX</field>
+<desc>
+            <p>After calculating the gross Debit Turnover charge and subtracting the Free Amount, comparison is made with Minimum and Maximum charge amounts from the TURNOVER.DEBIT record.  If either the Minimum charge or the Maximum charge is substituted for the calculated charge, 'MINIMUM' or 'MAXIMUM' is recorded in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'MINIMUM', 'MAXIMUM' or nothing. Multivalue field associated with field range TURN.DR.YR.MTH to TURN.DEBIT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>USED.MIDDLE.RATE</field>
+<desc>
+            <p>The exchange rate used to convert the Account Currency into Local Currency during the Charge calculation process. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 numeric characters plus a deciaml point. Up to 6 integers. Up to 9 decimals. Standard rate format.</p>
+        </desc>
+</t>
+<t>
+<field>BAL.REQU.AMT</field>
+<desc>
+            <p>Shows the calculated Highest Debit Charge for the period shown in fields PERIOD.YEARM.FROM and PERIOD.YEARM.TO or, if monthly calculations have been made, for the month shown in associated field HI.DR.YR.MTH. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Up to 14 numeric characters plus a decimal point.         Standard amount format. Multivalue field associated with         field range HI.DRYR.MTH to HIGHEST.DR.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>NO.CR.TAXTRSDR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>TR.TAX.AMT</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>HI.DR.TAX.RATE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>NO.DR.MIN.MAX</field>
+<desc>
+            <p>After calculating the gross number of Debit charge and subtracting the Free Amount, comparison is made with Minimum and Maximum charge amounts from the Highest Debit record. If either the Minimum charge or the Maximum charge is substituted for the calculated charge, 'MINIMUM' or 'MAXIMUM' is recorded in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>'MINIMUM', 'MAXIMUM' or nothing. Multivalue field         associated with field range NO.DR.YR.MTH to NO.DR.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.CH.YR.MTH</field>
+<desc>
+            <p>Where a total charge is to be applied to an Account on a periodical (3 or 6 month) basis, but calculations are to be made on a monthly basis, this field holds the Year and Month of the calculation.  Multivalue occurrences allow each month's calculation to be recorded separately. Where 1 calculation is made for an entire period, this field is left blank. </p>
+            <p>Field range TOTAL.CH.YR.MTH to TOT.CH.TAXTRSCR are used when all individual charges are amalgamated into a single combined charge. Combined charging is specified by CHARGE.CODE.LEVEL) of the GENERAL.CHARGE record and indicated in CHARGE.CODE.LEVEL of this record. </p>
+            <p>Account Maintenance charges are applied to Accounts monthly, quarterly or six monthly as specified in the CHARGE.CALCULATION field in the COMPANY record. </p>
+            <p>If the associated GENERAL.CHARGE record has CALCUL.STEP.PERIOD = 'M', the Charges are calculated in separate steps for each month within the period, charging the appropriate amount for each month. Otherwise, the charges are calculated in one step for the whole period as specified in the COMPANY record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>6 Numeric characters YYYY MM. Multivalue field associated with field range TOTAL.CH.YR.MTH to TOTAL.CH.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.DR.TAX.RTE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.CR.PERCT</field>
+<desc>
+            <p>Shows the Percentage which will be applied to the Credit Turnover amount to calculated the gross Credit Turnover charge. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 numeric characters plus a decimal point. Up to 6 integers. Up to 9 decimals. Standard rate format. Multivalue field associated with field range TURN.CR.YR.MTH to TURN.CREDIT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>CHARGE.CODE.LEVEL</field>
+<desc>
+            <p>Used to indicate whether a Combined total of charges has been calculated or if charges have been calculated independently of one another. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'COM' or 'IND' or nothing.</p>
+        </desc>
+</t>
+<t>
+<field>STMT.CHG.TRSCR</field>
+<desc>
+            <p>Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        </desc>
+</t>
+<t>
+<field>NO.DR.TAX.CODE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>HIGHEST.DR.BAL</field>
+<desc>
+            <p>The highest debit balance to which the highest debit charge has been applied.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.CR.MIN.MAX</field>
+<desc>
+            <p>After calculating the gross Credit Turnover charge and subtracting the Free Amount, comparison is made with Minimum and Maximum charge amounts from the TURNOVER.CREDIT record.  If either the Minimum charge or the Maximum charge is substituted for the calculated charge, 'MINIMUM' or 'MAXIMUM' is recorded in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'MINIMUM', 'MAXIMUM' or nothing. Multivalue field associated with field range TURN.CR.YR.MTH to TURN.CREDIT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>NO.CR.TRANSACT</field>
+<desc>
+            <p>A count of the number of credit transactions which are going to be charged. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-6 numeric characters. Multivalue field associated with field range NO.CRED.YR.MTH to NO.CR.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.CREDIT.TRSCR</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Profit and Loss entries generated for Credit Turnover charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        </desc>
+</t>
+<t>
+<field>TRN.CR.TAXTRSDR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>B.REQU.TAX.RATE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>none.</p>
+        </desc>
+</t>
+<t>
+<field>NO.STMTS.FREE</field>
+<desc>
+            <p>The total amount of account maintenance charges calculated, after offsetting with notional credit interest if applicable. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format.</p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.YEARM.FROM</field>
+<desc>
+            <p>Specifies the beginning Year and Month for which the information, in the remainder of the record, has been calculated. </p>
+            <p>This is the month after the last charges application as stored in the CAP.DATE.CHARGE field in the ACCOUNT record. For new accounts which have not yet had a charges application, it is the month after the month in which they were loaded. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>6 numeric characters YYYY MM.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.DR.YR.MTH</field>
+<desc>
+            <p>Where Debit Turnover charges are to be applied to an account on a periodical (3 or 6 month) basis, but calculations are to be made on a monthly basis, this field holds the Year and Month of the calculation. Multivalue occurrences allow each month's calculation to be recorded separately. Where 1 calculation is made for a whole period, this field is left blank. </p>
+            <p>Turnover Debit charges are applied to Accounts on the same day as other Account Maintenance charges, which may be monthly, quarterly or six monthly as specified in the CHARGE.CALCULATION field in the COMPANY record. </p>
+            <p>If the associated GENERAL.CHARGE record has CALCUL.STEP.PERIOD = 'M', the charge is calculated in separate steps for each month within the period, charging the appropriate amount for each month. Otherwise, the charge is calculated in one step for the whole period as specified in the COMPANY record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>6 numeric characters YYYY MM. Multivalue field associated with field range TURN.DR.YR.MTH to TURN.DEBIT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>NO.STMT.COPY</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>TRCH.TAX.CODE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.CR.YR.MTH</field>
+<desc>
+            <p>Where Credit Turnover charges are to be applied to an account on a periodical (3 or 6 month) basis, but calculations are to be made on a monthly basis, this field holds the Year and Month of the calculation. Multivalue occurrences allow each month's calculation to be recorded separately. Where 1 calculation is made for a whole period, this field is left blank. </p>
+            <p>Turnover Credit charges are applied to Accounts on the same day as other Account Maintenance charges, which may be monthly, quarterly or six monthly as specified in the CHARGE.CALCULATION field in the COMPANY record. </p>
+            <p>If the associated GENERAL.CHARGE record has CALCUL.STEP.PERIOD = 'M', the charge is calculated in separate steps for each month within the period, charging the appropriate amount for each month. Otherwise, the charge is calculated in one step for the whole period as specified in the COMPANY record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>6 numeric characters YYYY MM. Multivalue field associated with field range TURN.CR.YR.MTH to TURN.CREDIT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.CR.FREE</field>
+<desc>
+            <p>Shows the free amount by which the calculated credit turnover charge will be reduced in each calculation period. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range TURN.CR.YR.MTH to TURN.CREDIT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>TOT.CH.TAXCATEG</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>TRN.DR.TAXTRSDR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>OFFSET.YR.MTH</field>
+<desc>
+            <p>Where Account Maintenance charges are to be made on a periodical (3 or 6 month) basis, but calculations are to be made on a monthly basis, notional credit interest to be offset against charges is also calculated on a monthly basis. This field holds the Year and Month of the the calculation. Multivalue occurrences allow each month's calculation to be recorded separately. Where 1 calculation is made for an entire period, this field is left blank. </p>
+            <p>Account Maintenance charges are applied to Accounts monthly, quarterly or six monthly as specified in the CHARGE.CALCULATION field in the COMPANY record. </p>
+            <p>If the associated GENERAL.CHARGE record has CALCUL.STEP.PERIOD = 'M', the charge is calculated in separate steps for each month within the period, charging the appropriate amount for each month. Otherwise, the charge is calculated in one step for the whole period as specified in the COMPANY record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>6 numeric characters YYYY MM. Multivalue field associated with field range OFFSET.YR.MTH to AMOUNT.OFFSET.</p>
+        </desc>
+</t>
+<t>
+<field>NO.DEBIT.YR.MTH</field>
+<desc>
+            <p>Where Number of Debit charges are to be applied to an account on a periodical (3 or 6 month) basis, but calculations are to be made on a monthly basis, this field holds the Year and Month of the calculation. Multivalue occurrences allow each month's calculation to be recorded separately. Where 1 calculation is made for a whole period, this field is left blank. </p>
+            <p>Number of Debit charges are applied to Accounts on the same day as other Account Maintenance charges, which may be monthly, quarterly or six monthly as specified in the CHARGE.CALCULATION field in the COMPANY record. </p>
+            <p>If the associated GENERAL.CHARGE record has CALCUL.STEP.PERIOD = 'M', the charge is calculated in separate steps for each month within the period, charging the appropriate amount for each month.  Otherwise, the charge is calculated in one step for the whole period as specified in the COMPANY record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>6 numeric characters YYYY MM. Multivalue field associated with field range NO.DEBIT.YR.MTH to NO.DR.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>GRAND.TOTAL</field>
+<desc>
+            <p>The net total of account maintenance charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format.</p>
+        </desc>
+</t>
+<t>
+<field>TR.TAX.RATE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>TRANS.CHARGE</field>
+<desc>
+            <p>Where a flat Transaction Charge is to be made on each transaction passing across an  Account, this field records the charge to be made per transaction. </p>
+            <p>If a flat charge is made for each Transaction, details are shown in NO.TRANSACT and TRANS.CHARGE.  If the charge is a percentage of the value of Transactions, TRCH.PERCTG and TRANS.TURNOV are used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Subvalue field associated with field range TRCH.CODE to TRCH.TRSCR and multivalue field TRCHARGE.YR.MTH.</p>
+        </desc>
+</t>
+<t>
+<field>NO.CRED.TRSDR</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Account entries generated for Number of Credit charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        </desc>
+</t>
+<t>
+<field>K.GRAND.TOTAL</field>
+<desc>
+            <p>The net total of account maintenance charges. </p>
+        </desc>
+</t>
+<t>
+<field>STMT.SHEET.CHG</field>
+<desc>
+            <p>Fields STMT.CHG.YR.MTH to STMT.CHG.AMT form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 18 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>PERIOD.YEARM.TO</field>
+<desc>
+            <p>Specifies the end Year and Month up to which the charges have been calculated. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>6 numeric characters YYYY MM.</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.TAX</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>TRCH.FREE</field>
+<desc>
+            <p>Shows the free amount by which the calculated transaction charge will be reduced in each calculation period. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Subvalue field associated with field range TRCH.CODE and TRCH.TRSCR and multivalue field TRCHARGE.YR.MTH.</p>
+        </desc>
+</t>
+<t>
+<field>HIGHEST.DR.CODE</field>
+<desc>
+            <p>Identifies the HIGHEST.DEBIT record that has been used to define the highest debit charge that has been applied. NB: the date component of the key will not be shown</p>
+        </desc>
+</t>
+<t>
+<field>STMT.CHG.AMT</field>
+<desc>
+            <p>Fields STMT.CHG.YR.MTH to STMT.CHG.AMT form a related multi value set. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 19 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.CH.AMT</field>
+<desc>
+            <p>Shows the total combined charge for the period defined by PERIOD.YEARM.FROM and PERIOD.YEARM.TO or, if monthly calculations have been made, for the month shown in associated field TOTAL.CH.YR.MTH. </p>
+            <p>Field range TOTAL.CH.YR.MTH to TOT.CH.TAXTRSCR are used when all individual charges are amalgamated into a single combined charge. Combined charging is specified by CHARGE.CODE.LEVEL of the GENERAL.CHARGE record and indicated in CHARGE.CODE.LEVEL of this record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range TOTAL.CH.YR.MTH to TOTAL.CH.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>STMT.CHG.YR.MTH</field>
+<desc>
+            <p>Where 2 or more Accounts are to be netted for the purpose of calculating charges, the sub-account numbers are shown by this multivalue field.  The Account Number shown in the Record id of this file is the major Account number of the group. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard account format. Multivalue field.</p>
+        </desc>
+</t>
+<t>
+<field>ACCOUNT.NUMBER</field>
+<desc>
+            <p>Specifies the account on which the charges have been calculated (or the main account of a combined group, see details). </p>
+            <p>When the balances of two or more accounts are to be consolidated for interest purposes, their balances and activity are also consolidated for the calculation of account charges. (The main account number is entered in the INTEREST.COMP.ACCT field in the ACCOUNT records of each of the 'sub' accounts). </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard account format.</p>
+        </desc>
+</t>
+<t>
+<field>AMOUNT.OFFSET</field>
+<desc>
+            <p>Shows the amount of notional credit interest which will be offset against total charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range OFFSET.YR.MTH to AMOUNT.OFFSET.</p>
+        </desc>
+</t>
+<t>
+<field>B.REQU.TAX.AMT</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>none.</p>
+        </desc>
+</t>
+<t>
+<field>B.REQU.TAX.CODE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>none.</p>
+        </desc>
+</t>
+<t>
+<field>B.REQU.TAXCATEG</field>
+<desc>
+            <p>Identifies the tax category code that determines the Internal Account to be updated with Tax Provision entries generated as a result of tax calculations on the Highest Debit charge.</p>
+        </desc>
+</t>
+<t>
+<field>NO.STMT.SHEETS</field>
+<desc>
+            <p>Fields STMT.CHG.YR.MTH to STMT.CHG.AMT form a related multi value set. Standard T24 numeric field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>A maximum of 2 characters may be entered.</p>
+        </desc>
+</t>
+<t>
+<field>TOTAL.CH.TAX.CODE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>NO.DR.CHARGE</field>
+<desc>
+            <p>Shows the amount which is to be charged for each debit transaction. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range NO.DEBIT.YR.MTH to NO.DR.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>STMT.CHG.CODE</field>
+<desc>
+            <p>Where Account charges are to be passed to an alternative Account, the number of the  alternative Account is shown by this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Standard account format.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.DR.TAX.AMT</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>STMT.COPY.CHG</field>
+<desc>
+            <p>The net total of account maintenance charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.CREDIT.AMT</field>
+<desc>
+            <p>Shows the final calculated Credit Turnover Charge for the period shown in Fields 1 and 2 or, if monthly calculations have been made, for the month shown in associated field TURN.CR.YR.MTH. </p>
+            <p>If TOTAL.CH.AMT is used, TURN.CREDIT.AMT appears for information purposes only. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range TURN.CR.YR.MTH to TURN.CREDIT.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>NO.CR.MIN.MAX</field>
+<desc>
+            <p>After calculating the gross Number of Credit charge and subtracting the Free Amount, comparison is made with Minimum and Maximum charge amounts from the NUMBER.OF.CREDIT record.  If either the Minimum charge or the Maximum charge is substituted for the calculated charge, 'MINIMUM' or 'MAXIMUM' is recorded in this field. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>'MINIMUM', 'MAXIMUM' or nothing. Multivalue field associated with field range NO.CRED.YR.MTH to NO.CR.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>NO.CR.AMT</field>
+<desc>
+            <p>Shows the final calculated Number of Credit Charge for the period shown in fields PERIOD.YEARM.FROM and PERIOD.YEARM.TO or, if monthly calculations have been made, for the month shown in associated field NO.CRED.YR.MTH. </p>
+            <p>If TOTAL.CH.AMT is used, NO.CR.AMT appears for information purposes only. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range NO.CRED.YR.MTH to NO.CR.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>HI.DR.TAX.CODE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>TURNOVER.CR.CODE</field>
+<desc>
+            <p>Where a Credit Turnover charge is to be made on an Account, this code specifies the TURNOVER.CREDIT record containing the details of the calculation and processing the Credit Turnover charge. </p>
+            <p>The Turnover Credit details to be used are those applicable at the end of the month specified in PERIOD.YEARM.TO. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>NO.OF.CREDIT.CODE</field>
+<desc>
+            <p>Where a Number of Credit charge is to be made on an Account, this code specifies the NUMBER.OF.CREDIT record containing the details of the calculation and processing the Number of Credit charge. </p>
+            <p>The Number of Credit charge details to be used are those applicable at the end of the month specified in PERIOD.YEARM.TO. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 numeric characters.</p>
+        </desc>
+</t>
+<t>
+<field>TRCH.CODE</field>
+<desc>
+            <p>Where a charge is to be made on the number or value of transactions of a specific type passing across an Account, this code specifies the TRANSACTION.CHARGE record containing details of the calculation and processing of the Transaction Charge. Each different applicable Transaction Charge will be represented by a separate occurrence of sub-value field range TRCH.CODE to TRCH.TRSCR. </p>
+            <p>Note: (i)  The TRANSACTION table specifies which Transaction Charge is            applicable for each Transaction Code. </p>
+            <p>      (ii) The same Transaction Charge may be applicable to several            different Transaction Codes. </p>
+            <p>      (iii)The Transaction Charge details used are those applicable at the            end of the month specified in PERIOD.YEARM.TO. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-2 numeric characters. Subvalue field associated with field range TRCH.CODE to TRCH.TRSCR and multivalue field TRCHARGE.YR.MTH.</p>
+        </desc>
+</t>
+<t>
+<field>LIQUIDITY.CCY</field>
+<desc>
+            <p>Identifies the currency of the liquidity account which may be present on this file. </p>
+            <p>The currency may not necessarily be the currency of the main account. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 type SSS (uppercase alpha) character   or 1-3 numeric character currency code.</p>
+        </desc>
+</t>
+<t>
+<field>COMTRS.YR.MTH</field>
+<desc>
+            <p>Where Combined Transaction charges are to be applied to an account on a periodical (3 or 6 month) basis, but calculations are to be made on a monthly basis, this field holds the Year and Month of the calculation. Multivalue occurrences allow each month's calculation to be recorded separately.  Where 1 calculation is made for a whole period, this field is left blank. </p>
+            <p>Transaction Code charges are applied to Accounts on the same day as other Account Maintenance charges, which may be monthly, quarterly or six monthly as specified in the CHARGE.CALCULATION field on the COMPANY record. </p>
+            <p>If the associated GENERAL.CHARGE record has CALCUL.STEP.PERIOD = 'M', the charge is calculated in separate steps for each month within the period, charging the appropriate amount for each month.  Otherwise, the charge is calculated in one step for the whole period as specified in the COMPANY record. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>6 numeric characters YYYY MM. Multivalue field associated with field range COMTRS.YR.MTH to COMTRS.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>TR.TAXCATEG</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>NO.DR.TAX.RATE</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>TRN.DR.TAXCATEG</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>NO.CR.CHARGE</field>
+<desc>
+            <p>Shows the amount which is to be charged for each credit transaction. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Multivalue field associated with field range NO.CRED.YR.MTH to NO.CR.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>STMTS.CHG</field>
+<desc>
+            <p>The exchange rate used to convert the Account Currency into Local Currency during the Charge calculation process. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 10 numeric characters plus a decimal point. Up to 6 integers. Up to 9 decimals. Standard rate format.</p>
+        </desc>
+</t>
+<t>
+<field>NO.DR.TAX.AMT</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>TRANS.TURNOV</field>
+<desc>
+            <p>If a Transaction Charge is to be made on the total value of Transactions, the total value is recorded in this field. </p>
+            <p>This is the total value of all transactions for which the Transaction Charge specified in TRCH.CODE is applicable. </p>
+            <p>If a flat charge is made for each Transaction, the details are shown in NO.TRANSACT and TRANS.CHARGE.  If the charge is a percentage of the value of Transactions, TRCH.PERCTG and TRANS.TURNOV are used. </p>
+            <p>Note: (i)  The TRANSACTION table specifies which Transaction Charge is            applicable for each Transaction Code. </p>
+            <p>      (ii) The same Transaction Charge may be applicable to several            different Transaction Codes. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Up to 14 numeric characters plus a decimal point. Standard amount format. Subvalue field associated with field range TRCH.CODE to TRCH.TRSCR and multivalue field TRCHARGE.YR.MTH.</p>
+        </desc>
+</t>
+<t>
+<field>NO.DR.TAXCATEG</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>TR.TAXTRSDR</field>
+<desc>
+            <p>Not used in ACCR.ACCT.CH records. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Null.</p>
+        </desc>
+</t>
+<t>
+<field>NO.DR.TRANSACT</field>
+<desc>
+            <p>A count of the number of debit transactions which are going to be charged. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-6 numeric characters. Multivalue field associated with field range NO.DEBIT.YR.MTH to NO.DR.AMT.</p>
+        </desc>
+</t>
+<t>
+<field>HIGHEST.DR.FREE</field>
+<desc>
+            <p>The free amount of the highest debit charge will be shown here if  relevant.</p>
+        </desc>
+</t>
+<t>
+<field>TURN.CREDIT.TRSDR</field>
+<desc>
+            <p>Identifies the Transaction code to be assigned to Account entries generated for Credit Turnover charges. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p> 1-10(Max Value) numeric characters Transaction Code. </p>
+            <p> The Maximum value is specified in EB.OBJECT for TRANSACTION. </p> 
+        </desc>
+</t>
+</menu>
+</t24help>
+

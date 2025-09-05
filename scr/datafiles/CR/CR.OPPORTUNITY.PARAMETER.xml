@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>CR</product>
+<table>CR.OPPORTUNITY.PARAMETER</table>
+</header>
+<overview>
+<ovdesc>
+
+ 
+ CR
+ CR.OPPORTUNITY.PARAMETER
+ CR.OPPORTUNITY.PARAMETER
+ 
+ 
+ 
+ The opportunity parameter defines high-level rules about handling of opportunities. The principle role of this table is to define the actions that should be done if the system is looking to raise a new opportunity for an existing product, but an existing opportunity through either a campaign or a propensity, and there is already an opportunity stored for that customer for that product. In this case, the actions the system could follow are:
+ 
+ • skip this record (leave the existing opportunity intact)
+ • replace this record (close the existing opportunity, add a new opportunity)
+ • duplicate the opportunity (leave the existing opportunity intact, raise a new opportunity). 
+ 
+ However, the decision about whether a new opportunity should skip/replace/duplicate an existing opportunity may depend on the status of the existing opportunity – if an opportunity already exists, has been communicated with the client and they have requested additional documentation, the response from the system may be very different to if the opportunity exists, but has not yet been communicated to the client, or if the opportunity exists, some documentation has been sent to the client but no further response has been forthcoming.
+ 
+ For each different status of the existing opportunity, one of these actions could be chosen for the potential new opportunity. 
+ 
+ As a further complication, we may need to define different rules if the new opportunity is generated through a campaign or a propensity (or, for phase 2, an event or even another potential source). Therefore, there will be different rules depending on the source of the new opportunity.
+ In addition to this, the Opportunity Parameter will hold a high-level setting for how long a ‘rejected’ opportunity should cause any new opportunity for the same product to be blocked, and also will hold a setting to determine the maximum number of Outbound Opportunities should be raised for a single customer in a set period, to prevent the same customers from being ‘spammed’ by the bank.
+ 
+ 
+ 
+</ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>PROP.ACTION</field>
+<desc>
+        <p>
+ Action to be done for above Opportunity Status
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ Potential choices are : 
+ Skip 
+ Overwrite
+ Duplicate
+ 
+ 
+
+</p>
+    </desc>
+</t>
+<t>
+<field>PERIOD</field>
+<desc>
+
+ Multivalue set linked to Max Outbond Opportunities, where user can specify the maximum number of outbound opportunities that can be sent in a single month.
+ 
+ Period field indicates duration of time over which the number of outbound opportunities should be measured . 
+ Note, outbound opportunities which are generated as a result of customers responding positively to an inbound opportunity should not be counted in this period.
+ 
+</desc>
+</t>
+<t>
+<field>REJECTED.PERIOD</field>
+<desc>
+        <p>
+ For this source of opportunity, period during which the customer should not have a new opportunity raised, even if they have a propensity or are a suitable candidate for a campaign, if a previous opportunity for the same product has already been declined . 
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> : 
+ Standard Duration values : a numeric, 1-99, followed by :
+ C = Calendar Days
+ D = Working Days
+ W = Weeks
+ M = Months 
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>CUSTOMER.FIELD</field>
+<desc>
+        <p>Valid customer code holding field in given Application/ Version. It is mutually exclusive to Account field. . 
+ 
+ </p>
+        <p><![CDATA[  
+ 
+ 
+]]></p>
+    </desc>
+</t>
+<t>
+<field>CR.OPPOR.PARAM.ID</field>
+<desc>
+
+ Must be SYSTEM.
+ 
+ FIN Level file, to coordinate with AA Product tables.
+ 
+</desc>
+</t>
+<t>
+<field>OPPOR.STATUS</field>
+<desc>
+
+ Status of opportunities that are to be archived after the PERIOD specified in
+ DAYS.PAST.EXPIRY
+ 
+</desc>
+</t>
+<t>
+<field>PROP.OVERWRITE</field>
+<desc>
+        <p>
+ First field in multivalue set. This multivalue set describes what will be done when there is an existing campaign/propensity/customer initiated opportunity (depending on the selection in this field) for a particular product, and the sales opportunity functionality is proposing to overwrite it with a propensity-generated opportunity for the same product..
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ 
+ Options are : Propensity, Campaign. 
+ May be enhanced to include other potential sources of opportunity, for example Customer Initiation,Event, in Phase 2.
+ 
+ If left blank, this defines the ‘catchall’ setting for all products not defined.
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>RT.OPP.COS</field>
+<desc>
+        <p>Name of Composite screen to be displayed when the real-time opportunities are generated. 
+ 
+ </p>
+        <p class="Heading5">Validation Rules</p>
+        <p>Mandatory for Real Time</p>
+        <p><![CDATA[  
+ 
+ 
+]]></p>
+    </desc>
+</t>
+<t>
+<field>MAX.OB.OPPOR</field>
+<desc>
+        <p>
+ Number of opportunities that can be defined in the above period.
+ As mentioned above, outbound opportunities which are raised as a result of the conversion of an inbound opportunity into an outbound opportunity is not counted towards this total. 
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 
+ Input must be numeric
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>OPPOR.ID</field>
+<desc>
+        <p>Opportunity Definition ID which gets triggered on committing.
+ 
+ </p>
+        <p class="Heading5">Validation Rules</p>
+        <p>Mandatory when application/version is defined.</p>
+        <p><![CDATA[  
+ 
+ 
+]]></p>
+    </desc>
+</t>
+<t>
+<field>PROP.PRIOR.OP.STATUS</field>
+<desc>
+        <p>
+ The above field Propensity Overwriting establishes the relationship between an incoming Propensity opportunity for a particular product, and an existing opportunity for that same product. When a match is made (system looking to generate propensity for a product where there is already an opportunity), the status of the existing opportunity is taken into account.
+ This field contains every possible status that a pre-existing opportunity could hold. The next field indicates the action that should be taken when the existing status is present.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 
+ Linked to CR.OPPORTUNITY.STATUS table
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>VERSION</field>
+<desc>
+        <p>Name of versions for which real-time opportunities to be generated. It is mutually exclusive to APPLICATION name field. All sub value field should contains versions belongs to one application. 
+ 
+ </p>
+        <p><![CDATA[  
+ 
+ 
+]]></p>
+    </desc>
+</t>
+<t>
+<field>CAMP.PRIOR.OP.STATUS</field>
+<desc>
+        <p>
+ The above field Campaign Overwriting establishes the relationship between an incoming Propensity opportunity for a particular product, and an existing opportunity for that same product. When a match is made (system looking to generate propensity for a product where there is already an opportunity), the status of the existing opportunity is taken into account.
+ This field contains every possible status that a pre-existing opportunity could hold. The next field indicates the action that should be taken when the existing status is present.
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ 
+ Linked to CR.OPPORTUNITY.STATUS table
+ Status ‘Null’ acts as a catchall for any undefined statuses.
+ 
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>DAYS.PAST.EXPIRY</field>
+<desc>
+        <p>
+      Period after which opportunities needs to be purged
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p>:
+ 
+        Only a valid period will be allowed for input
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>ACCOUNT.FIELD</field>
+<desc>
+        <p>Valid Account id holding field in given application. It is mutually exclusive to Customer id field.  <![CDATA[
+ 
+ ]]></p>
+        <p><![CDATA[  
+ 
+ 
+]]></p>
+    </desc>
+</t>
+<t>
+<field>APPLICATION</field>
+<desc>
+        <p>Name of T24 application for which real-time opportunities to be triggered. Mutually exclusive with the VERSION field. 
+ 
+ </p>
+        <p><![CDATA[  
+ 
+ 
+]]></p>
+    </desc>
+</t>
+<t>
+<field>CAMP.ACTION</field>
+<desc>
+        <p>
+ Action to be done for Opportunity Status specified in PROP.PRIOR.OP.STATUS field
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ 
+ Potential choices are : 
+ Skip 
+ Overwrite
+ Duplicate
+ 
+</p>
+    </desc>
+</t>
+<t>
+<field>CAMP.OVERWRITE</field>
+<desc>
+        <p>
+ First field in multivalue set. This multivalue set describes what will be done when there is an existing campaign/propensity/customer initiated opportunity (depending on the selection in this field) for a particular product, and the sales opportunity functionality is proposing to overwrite it with a campaign-generated opportunity for the same product..
+ 
+ </p>
+        <p>Validation Rules</p>
+        <p> :
+ 
+ Options are : Propensity, Campaign. 
+ May be enhanced to include other potential sources of opportunity, for example Customer Initiation,Event, in Phase 2.
+ 
+ If left blank, this defines the ‘catchall’ setting for all products not defined
+ 
+ 
+</p>
+    </desc>
+</t>
+</menu>
+</t24help>

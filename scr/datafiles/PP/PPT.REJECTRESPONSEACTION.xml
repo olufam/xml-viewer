@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <header>
+        <product>PP</product>
+        <title>PPT.REJECTRESPONSEACTION</title>
+        <table>PPT.REJECTRESPONSEACTION</table>
+    </header>
+    <overview>
+        <ovdesc>
+            <p>This screen is used to define parameters for determination of Reject Response Action Flag in the payments hub. The determination process is based on the characteristics of the payment such as Business Line, Originating Workflow, Originating Source, Message Priority, Banking Priority, Transaction Amount Limit, Incoming Message Type and Clearing Nature Code.</p>
+            <p>The Reject Response Action flag is not checked for the responses received against a Funds Authorization requests with a Pre-Authorization key.</p>
+            <p>If this flag is set to "R" then the payment for which a Funds Authorization response of "Rejected" is received is to be sent to Repair.</p>
+            <p>If this flag is set to "C" then the payment for which a Funds Authorization response of "Rejected" is received is to be sent for Cancellation.</p>
+            <p>The entries in this table are searched for a match in the order of its Ranking. The Reject Response Action flag is retrieved from the first entry that</p>
+            <p>matches the payment characteristics. If no entry meets the match criteria then a default value of ‘R’ is considered.</p>
+            <p>A record authorised in this screen will create or amend or delete a record in store table, PPT.REJECTRESPONSEACTION.</p>
+            <p>Fields in this table are the same as the entries for the Manual Authorization Required table. Defining a new table for Reject</p>
+            <p>Response action (and not using the same as Manual Authorization Required) gives the user an ease in operationally maintaining the tables.</p>
+        </ovdesc>
+    </overview>
+    <menu>
+		<t>
+            <field>ID</field>
+            <desc>
+                <p>Standard T24 alphanumeric field.</p>
+                <p>Validation Rules:</p>
+                <p>A maximum of 50 characters may be entered.</p>
+            </desc>
+        </t>
+		<t>
+            <field>CompanyID</field>
+            <desc>
+                <p>Indicates the company ID for which the record is created. </p>
+                <p>Example : BNK,GB1</p>
+                <p>Validation Rules:</p>
+                <p>3 alphanumeric characters.</p>
+                <p>The value links to the field ‘CompanyID’ in PPT.COMPANY</p>
+            </desc>
+        </t>
+		<t>
+            <field>Ranking</field>
+            <desc>
+                <p>Specifies the order (sequence) of the record in the application. Based on the value, a record is prioritised in such a way that, it is given higher preference for selection under peeling logic applied in the payments hub.</p>
+                <p>Validation Rules:</p>
+                <p>Mandatory field. 8 numeric characters.</p>
+            </desc>
+        </t>
+        <t>
+            <field>BusinessLine</field>
+            <desc>
+                <p>Differentiates between a Retail and Corporate payment. It is derived from the accounts data retrieved from the DDA. </p>
+                <p>If it is set to *, then the Business Line is not used in the match criteria.</p>
+            </desc>
+        </t>
+		<t>
+            <field>OriginatingSource</field>
+            <desc>
+                <p>Specifies the source through which the payment hub receives a message.</p>
+                <p>Validation Rules:</p>
+                <p>10 alphabetic characters.</p>
+                <p>The value links to the field 'OriginatingSource' in PPT.SOURCE.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>OriginatingWorkflow</field>
+            <desc>
+                <p>Indicates the flow from which the payment has originated.</p>
+                <p/>
+                <p>Possible values:</p>
+                <p>STP - Straight Through Processing </p>
+                <p>OE - Order Entry</p>
+                <p>RPR - Repair  </p>
+                <p>CD - Cheque Deposit</p>
+                <p>DD - Demand Deposit</p>
+                <p>WFM - Workflow Manager</p>
+                <p>* - Others</p>
+                <p>Validation Rules:</p>
+                <p>3 alphanumeric characters.</p>
+            </desc>
+        </t>
+		<t>
+            <field>MessagePriority</field>
+            <desc>
+                <p>Indicates the priority of the message.</p>
+                <p>Possible values:</p>
+                <p>Values ranging from 1 to 9. * is allowed too. </p>
+                <p>Validation Rules:</p>
+                <p>Mandatory fields. 2 alphanumeric characters.</p>
+            </desc>
+        </t>
+		<t>
+            <field>TransactionAmountUpperLimit</field>
+            <desc>
+                <p>Indicates the upper limit(maximum) of the amount for a payment.</p>
+                <p>Validation Rules:</p>
+                <p>Mandatory fields. 17 alphanumeric characters.</p>
+            </desc>
+        </t>
+        <t>
+            <field>BankingPriority</field>
+            <desc>
+                <p>Indicates the priority of the message. This information is retrieved from the header ((field 113) from "User Header Block” (Block 3))of the swift message.</p>
+                <p>The value in the message is validated against the value of this field.</p>
+                <p>If it is set to * then the Banking Priority is not used in the match criteria.</p>
+                <p>Validation Rules:</p>
+                <p>Mandatory field. 3 alphanumeric characters.</p>
+            </desc>
+        </t>
+		<t>
+            <field>IncomingMessageType</field>
+            <desc>
+                <p>Specifies the type of the incoming message from a channel.</p>
+                <p>Example:</p>
+                <p>For channel, SWIFT</p>
+                <p>MT101</p>
+                <p>MT103</p>
+                <p/>
+                <p>For channel, PMTROUTER</p>
+                <p>ATABE</p>
+                <p>ATADE</p>
+                <p>Example : BNK,GB1</p>
+                <p>Validation Rules:</p>
+                <p>Mandatory field. 10 alphanumeric characters.</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>ClearingNatureCode</field>
+            <desc>
+                <p>Differentiates between the different types of local clearing payments with a unique code.</p>
+                <p>Validation Rules:</p>
+                <p>Mandatory field. 20 alphanumeric characters.</p>
+                <p>Value links to field, 'ClearingNatureCode' in PPT.CLEARINGNATURECODE.</p>
+                <p>If it is set to * then the clearing nature code is not used in the match criteria.</p>
+                <p/>
+            </desc>
+        </t>
+		<t>
+            <field>ManualRejectResponseAction</field>
+            <desc>
+                <p>Specifies the reject response action to be taken by the payments hub for a payment of the specified characteristics.</p>
+                <p/>
+                <p>Possible values:</p>
+                <p>R – Reject the payment</p>
+                <p>C – Cancel the payment</p>
+                <p/>
+            </desc>
+        </t>
+        <t>
+            <field>StartDateRejectResponseAction</field>
+            <desc>
+                <p>Specifies the date on which the record is to be considered active by the payments hub.</p>
+            </desc>
+        </t>
+        <t>
+            <field>EndDateRejectResponseAction</field>
+            <desc>
+                <p>Specifies the date on which the record is to be considered inactive by the payments hub.</p>
+            </desc>
+        </t>
+		<t>
+            <field>RAC</field>
+            <desc>
+                <p>Record Activation Code generated for the record by the payment's hub. </p>
+                <p>Possible values:</p>
+                <p>N - Not active</p>
+                <p>A -  Active</p>
+                <p>H - History</p>
+                <p>F - Future</p>
+                <p>C - Not active future</p>
+                <p>Validation Rules:</p>
+                <p>19 alphanumeric characters.</p>
+                <p>The value is not editable by the user.</p>
+            </desc>
+        </t>        
+        <t>
+            <field>RSC</field>
+            <desc>
+                <p>Record Status Code generated for the record by the payments hub.</p>
+                <p>Possible values:</p>
+                <p>L - Live</p>
+                <p>U - Unapproved</p>
+                <p>R - Reversed</p>
+                <p>Validation Rules:</p>
+                <p>1 alphanumeric character.</p>
+                <p>The value is not editable by the user.</p>
+            </desc>
+        </t>
+    </menu>
+</t24help>

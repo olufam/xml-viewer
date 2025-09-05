@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>PO</product>
+<table>AC.CP.GROUP.PARAM</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>The AC.CP.GROUP.PARAM defines the basic details of a group. A group is a collection of Accounts that are linked for Cash Pooling purposes. The Accounts need to be of the same Currency but can be owned by different customers.</p>
+            <p>The group concept has a main Account and is usually a pyramid type structure where lower level accounts feed funds to/from higher level accounts until the main Account rules are run.</p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>SWEEP.CHG.CODE</field>
+<desc>
+            <p>This field holds the default charge/commission code for the group. Charge is collected for each sweep that falls under the group. Field accepts input of valid record ID of FT.CHARGE.TYPE / FT.COMMISSION.TYPE. This value is defaulted to AC.CASH.POOL record created under the group.</p>
+            <p>Optional field.</p>
+        </desc>
+</t>
+<t>
+<field>MULTI.RULE</field>
+<desc>
+            <p>Multi rule can be set to YES where there is restrictions on number of debits to the link account and hence to be processed differently.</p>
+            <p>For more details see AI User guide related to cash pool.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid values YES or Null</p>
+            <p>If MULTI.RULE is set to YES, BALANCE.TO.USE must be VALUE.DATED, BACK.VALUE.ADJ should be as YES and RULE.PRIORITY should be as PRIORITY.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>MAIN.DEPOSIT</field>
+<desc>
+            <p>NOINPUT field. This field is not used at present.</p>
+        </desc>
+</t>
+<t>
+<field>INTRA.DAY</field>
+<desc>
+            <p>The settings here dictate whether the group sweep can be performed just once during the on-line session (set as SINGLE), or if it can be run many times (set as MULTIPLE).</p>
+            <p>On-line sweeps are run using the INTRA.DAY.SWEEP application.</p>
+            <p>If BALANCE.TO.USE is set as VALUE.DATED then this field must be set to SINGLE</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Value may be either SINGLE or MULTIPLE.</p>
+            <p>Default is SINGLE</p>
+        </desc>
+</t>
+<t>
+<field>OFS.SOURCE</field>
+<desc>
+            <p>NOINPUT field. This field is not used at present.</p>
+        </desc>
+</t>
+<t>
+<field>EUCC.PROCESS</field>
+<desc>
+            <p>System field containing "YES", if the cash pool group is in the Euro currency conversion process.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field. No user input.</p>
+        </desc>
+</t>
+<t>
+<field>MM.OFS.VERSION</field>
+<desc>
+            <p>NOINPUT field. This field is not used at present.</p>
+        </desc>
+</t>
+<t>
+<field>RULE.PRIORITY</field>
+<desc>
+            <p>When an account has been set up via cash pooling to debit or credit two other accounts on the same processing date then only one update can take place. By setting this field to PRIORITY the user can set priorities to each link. If set to FREQUENCY then Daily has presidence over weekly , weekly over monthly and so on.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be either Priority or Frequency</p>
+            <p>Defaults to frequency</p>
+        </desc>
+</t>
+<t>
+<field>BALANCE.TO.USE</field>
+<desc>
+            <p>When calculating the amount that needs to be transferred to/from an Account the Cash Pool rules can use one of three possible values as the Account balance.</p>
+            <p />
+            <p>1. ONLINE CLEARED</p>
+            <p>The balance will be based on the Account cleared balance. This balance will not include any uncleared items (for example cheques deposited with a future exposure date).</p>
+            <p />
+            <p>2. ONLINE ACTUAL</p>
+            <p>The balance will be based on the Account uncleared balance. This balance will include uncleared items (for example cheques deposited with a future exposure date).</p>
+            <p />
+            <p>3. WORKING</p>
+            <p>This is the 'worst case' scenario balance as it will be impacted by unauthorised debits and would show a lower balance than the actual balance if there were entries due to be passed to this account. This balance type is more critical for on-line sweeps since during the eod any unauthorised items are placed on hold and the working balance adjusted accordingly.</p>
+            <p />
+            <p>4.VALUE.DATED</p>
+            <p>This balance reflects the current balance after excluding any forward dated FT, Teller or DC entries. If back value dated adjustment is required then the balance to use can be only Value.dated.</p>
+            <p />
+            <p>5. USER DEFINED</p>
+            <p>To arrive Account balance for sweeping purpose based on Bank's requirement instead of any of the above Balance to use option, it can be defined as USER.DEFINED and a valid "S" type of routine from PGM.FILE can be specified in BALANCE.ROUTINE. The balance as arrived by this routine will be used and checked against the Condition as defined in AC.CASH.POOL. To invoke user defined Balances,  the rule should have NULL value in BALANCE.TO.USE for the corresponding record in AC.SWEEP.TYPE.</p>
+            <p />
+	        <p>6.WORKING LESS LOCKED AMT</p>
+	        <p>This option will bring the balance of Working balance less of Locked amount in the account record.</p>
+            <p />
+            <p>The user must enter one of the ABOVE possible values, there is no default.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Values allowed are ONLINE CLEARED, ONLINE ACTUAL, VALUE.DATED ,WORKING LESS LOCKED AMT or WORKING or USER DEFINED.</p>
+            <p>When using SHARED.BALANCES,BALANCES.TO.USE must be WORKING.</p>
+            <p>When BACK.VALUE.ADJ is set to YES, BALANCE.TO.USE must be VALUE.DATED</p>
+        </desc>
+</t>
+<t>
+<field>MAIN.GROUP.ID</field>
+<desc>
+            <p>This is the main group id that this group being entered is to be a sub group of.  Used in conjunction with the field SUB.GROUP</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must exist on AC.CP.GROUP.PARAM file.</p>
+            <p>Value must not be a sub group itself.</p>
+        </desc>
+</t>
+<t>
+<field>GROUP.BALANCE</field>
+<desc>
+            <p>A no input , system updated field showing the main master account balance as specified in the BALANCE.TO.USE field . The balance is the balance of the main master after either last cash pool sweep , whether it occurred on line or during the end of day.</p>
+            <p />
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>SHARED.BALANCES</field>
+<desc>
+            <p>Specify whether the balances in the Cash pool accounts are to be grouped or not.</p>
+            <p>If SHARED.BALANCES is set as YES, then all the accounts in Cash Pool link will be updated with the cash pool group id in SB.GROUP.ID field in their respective Account and their total available balances will be considered in case of Overdraft during the Maintenance sweep. The balance to use in this case can only be WORKING.</p>
+            <p>When SHARED.BALANCES is "PARTIAL" balances will be grouped and BALANCE.TO.USE can be other than Working balance.</p>
+            <p>Above two cases system creates a record in AC.SHARED.ACCOUNT with ID as Group id and with all accounts involved in the group.</p>
+            <p>Option "NO" can be given when the Balances in Cash pool accounts not to be grouped.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid Values Yes or No or Partial</p>
+            <p>SHARED.BALANCES is Yes, then  Balance.to.Use should be "Working"</p>
+        </desc>
+</t>
+<t>
+<field>MAX.NUMBER</field>
+<desc>
+            <p>NOINPUT field. This field is not used at present.</p>
+        </desc>
+</t>
+<t>
+<field>SEQUENCING</field>
+<desc>
+            <p>Defines whether the user may enter the sequence that the cash pool is to run. If AUTO then the sequence is worked out automatically from the bottom of the pyramid upwards, if MANUAL then the user can enter a sequence on the AC.CASH.POOL records.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be either AUTO or MANUAL .</p>
+        </desc>
+</t>
+<t>
+<field>CURRENCY</field>
+<desc>
+            <p>System field containing the Currency of the MAIN.MASTER Account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field. No user input.</p>
+        </desc>
+</t>
+<t>
+<field>BUILD.SEQUENCE</field>
+<desc>
+            <p>System field.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>System field. No user input.</p>
+        </desc>
+</t>
+<t>
+<field>SUB.GROUP</field>
+<desc>
+            <p>Indicates whether the group is defined as a sub group within the main group. If so then the main group must also be entered.</p>
+            <p>Entering YES defines this as a sub-group of the group entered in the field MAIN.GROUP.ID If not entered then it is assumed to be NO</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Options are YES, NO or blank</p>
+        </desc>
+</t>
+<t>
+<field>ACC.IN.MUL.POOL</field>
+<desc>
+            <p> This field specifies whether to allow same account in multiple pools or not.</p>
+            <p>By default, system allows same account to be repeated in multiple pools </p>
+            <p>If this field is set as "NO", system throws error while adding an account to new group, which is already part of another pool</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Options are YES, NO or blank</p>
+        </desc>
+</t>
+<t>
+<field>BACK.VALUE.ADJ</field>
+<desc>
+            <p>Setting this flag to YES, will allow back value dated adjustment entries to be passed, if any back value dated transaction is done to the cash pool account, which would affect the sweeps already done to that account.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Valid values YES or Null</p>
+            <p>If this field is set to YES, then BALANCE.TO.USE must be VALUE.DATED and field BACK.VALUE.CAP will default to setting of 31 - which can be amended if required.</p>
+        </desc>
+</t>
+<t>
+<field>BACK.VALUE.CAP</field>
+<desc>
+            <p>The number of days up to which back value dated transaction can be processed, this is applicable for all Cash pool links using this Group id.</p>
+            <p>The start date for back value process is arrived from the latest among the following:</p>
+            <p>LAST.MAINTENANCE.DATE, which is available in AC.CASH.POOL Cap Back value date arrived using BACK.VALUE.CAP from AC.CP.GROUP.PARAM and Actual oldest back value dated transaction entered for the ACCOUNT.</p>
+            <p>For example</p>
+            <p>Cash pool record got created on 05-12-2005</p>
+            <p>Then start date for back value adjustment start from the latest of the above i.e. 05-12-2005</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Defaults to 31 if the previous field, BACK.VALUE.ADJ is set to YES otherwise not allowed.</p>
+            <p>2 digit Numeric field determined in units of days.</p>
+            <p>Defaulted values can be changed - But must be between 1 to 31.</p>
+        </desc>
+</t>
+<t>
+<field>BALANCE.ROUTINE</field>
+<desc>
+            <p>If a user defined balance is required for sweeping purposes, specify a routine here which will supply the Account balance.</p>
+            <p>An "S" type PGM.FILE of the same name as specified here must exist. Instead of using the standard account balances, the balance to be used is supplied by the routine will be considered and checked against the Rule as defined in AC.CASH.POOL.</p>
+            <p>The routine should be called with 2 parameters, namely the cash pool id (In-Parameter) and  the resultant Current Balance (Out-Parameter)</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Input allowed only when BALANCE.TO.USE is USER.DEFINED</p>
+            <p>Should be a valid "S" type of record in PGM.FILE</p>
+        </desc>
+</t>
+<t>
+<field>MAIN.MASTER</field>
+<desc>
+            <p>Within the concept of Cash Pooling there is a top level account. This master account is at the top of the pyramid of any sweep rules.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>Must be an existing ACCOUNT</p>
+            <p>Mandatory value, no default</p>
+        </desc>
+</t>
+<t>
+<field>DESCRIPTION</field>
+<desc>
+            <p>The description of the group used for enrichment and reporting purposes and therefore set as a mandatory input.</p>
+            <p>Standard T24 text field</p>
+        </desc>
+</t>
+<t>
+<field>BV.SWEEP.TYPE</field>
+<desc>
+            <p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p>
+        </desc>
+</t>
+<t>
+<field>EXCH.RATE.TYPE</field>
+<desc>
+            <p>This field  specifies whether Mid or Buy/Sell rate to be  applied when the currencies of link and master accounts are different.</p>
+	        <p>Validation Rules:</p>
+                <p>Values allowed are - Mid or Buy/Sell.</p>
+		<p>Default value - Mid.</p>
+        </desc>
+</t>
+<t>
+<field>EXCH.RATE.SPREAD</field>
+<desc>
+            <p>This field specifies the spread to be applied on the exchange rate</p>
+        </desc>
+</t>
+<t><field>EXCH.RATE.SPR</field><desc><p>Help Text for this field is unavailable.  Please refer to the T24 User Guides for further information.</p></desc></t></menu>
+</t24help>

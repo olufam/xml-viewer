@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>TX</product>
+<table>TX.CONDITION</table>
+</header>
+<overview>
+<ovdesc>
+
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>DECISION</field>
+<desc>
+            <p>Defines the Operator  to be used for the Condition defined.  Also accepts a valid</p>
+            <p>user defined routine  which returns a  True / False value. </p>
+            <p />
+            <p>Validations</p>
+            <p />
+            <p>a. The following are the valid operators that can be defined : </p>
+            <p>    EQ -  Equal.</p>
+            <p>    NE -  Not Equal.</p>
+            <p>    LE  -  Less than or Equal to.</p>
+            <p>    LT  -  Less than.</p>
+            <p>    GE  - Greater than or Equal to.</p>
+            <p>    GT  - Greater than.</p>
+            <p>    RG  - Range values.</p>
+            <p>    IN   - Match values which are comma separated in Decision.Frm</p>
+            <p />
+            <p>b. </p>
+            <p>It can also accept a valid routine in the format  @ROUTINE .</p>
+            <p />
+            <p />
+            <p />
+            <p>The routine should have a valid PGM.FILE entry with TYPE = S.</p>
+            <p />
+            <p />
+            <p>    The routine should return a value 1</p>
+            <p />- for<p />True (or)<p />0<p />- for<p />False.<p /><p /><p /><p>The routine should accept the following parameters :</p><p /><p>     CONTRACT.ID</p><p>,  </p><p>APPL.RECORD,</p><p />DECISION.FLD.NAME, RETURN.VALUE  <p /><p>     Where  Contract.Id,  Appl.Record, Decision.Fld.Name  are  IN parameters.</p><p>                  Return.Value  is the OUT parameter. </p><p /><p>     Contract  Id   -   The Id of the Application record, for which the condition checked. </p><p>     Appl.Record  -   The Application record for which the condition is checked. </p><p>     Decision.Fld.Name   -   The Field name of the Application for which this Routine is called. </p><p>     Return.Value            -    The value returned by routine - either 1 for True / 0 for False. </p><p /></desc>
+</t>
+<t>
+<field>DECISION.TO</field>
+<desc>
+            <p>Specifies the End value when the Decision = 'RG' ( Range) has been provided. </p>
+            <p />
+            <p>Validations</p>
+            <p />
+            <p>a.  Input is mandatory when Decision is 'RG'. </p>
+            <p>b.  For evaluation of the condition, the values inclusive between Decision.Frm and </p>
+            <p>     Decision.To  are taken.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>ID</field>
+<desc>
+            <p>Specifies the valid Application name for which the Conditions / Events are defined. Also accepts CLASS-APPLICATION ID format </p>
+            <p>Validations</p>
+            <p>a)  Should be a valid T24 Application or in the format of CLASS-APPLICATION. </p>
+            <p>b)  in case of CLASS id, the valid applications allowed are: </p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>CUSTOMER</p>
+            <p />
+            <p />
+            <p />
+            <p>SC.TRANS.NAME</p>
+            <p />
+            <p />
+            <p />
+            <p>SECURITY.MASTER</p>
+            <p />
+            <p />
+            <p>DIARY.TYPE</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DECIS.CONV</field>
+<desc>
+            <p>This field specifies a valid routine which does some conversion on the Decision data.The routine returns the converted data based on which Decision is made.</p>
+            <p>Validations :</p>
+            <p />
+            <p>1. The routine should have a valid PGM.FILE entry with TYPE = S.</p>
+            <p />
+            <p />
+            <p>2. The routine should be written with the following arguments,</p>
+            <p />
+            <p>         IN.DECISION  ,  OUT.DECISION</p>
+            <p />
+            <p>IN.DECISION      -  In parameter, It has the value of the decision data on which conversion is done.</p>
+            <p />
+            <p>OUT.DECISION -  Out parameter.The Converted data returned from the routine.</p>
+            <p />
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>LEVEL</field>
+<desc>
+            <p>Specifies the level of grouping of the conditions. In a particular event,  the conditions are </p>
+            <p>evaluated sequentially or can be formed into different levels depending on the complexity.</p>
+            <p />
+            <p>When conditions are evaluated sequentially, then the result of one condition is combined </p>
+            <p>with that of the next condition with the intervening operator. This is continued till the last</p>
+            <p>condition. The final result specifies whether the  Event is  satisfied or not. </p>
+            <p />
+            <p>When levels are defined,  then  within each level the conditions are evaluated sequentially</p>
+            <p>as above. Then results of all the levels  are evaluated sequentially to form the final result.</p>
+            <p />
+            <p>To specify  a  level  for  conditions,  a numeric value  is  provided.  To  classify  different </p>
+            <p>conditions as same level,  either the LEVEL is left blank  or  given the  same  number as </p>
+            <p>that of  the  previous condition.   To  specify a different level, a higher numeric value  is </p>
+            <p>provided for the next level. </p>
+            <p />
+            <p>Eg.  For a MM transaction, to specify a condition  as :  </p>
+            <p>       ( Interest.Rate = 10  and  Principal  &gt; 10000 )  OR  ( Interest.Rate = 12  and Principal &gt; 20000)</p>
+            <p>                            Level 1                                                                    Level 2 </p>
+            <p />
+            <p>Eg. </p>
+            <p>1. 1. 1     DECISION.FLD              INTEREST.RATE</p>
+            <p />
+            <p>        2. 1. 1     DECISION....                  EQ                                        </p>
+            <p />
+            <p>        3. 1. 1     DECISION.FRM            10                                            ( LEVEL  1 )</p>
+            <p />
+            <p>        5. 1. 1     LEVEL.......                      1</p>
+            <p />
+            <p>        6. 1. 1     OPERAND.....                AND</p>
+            <p />
+            <p />
+            <p>        1. 1. 2     DECISION.FLD             PRINCIPAL</p>
+            <p />
+            <p>        2. 1. 2     DECISION....                  GT</p>
+            <p />
+            <p>        3. 1. 2     DECISION.FRM            10000                                      ( LEVEL 1 )</p>
+            <p />
+            <p />
+            <p>        6. 1. 2     OPERAND.....                OR </p>
+            <p />
+            <p />
+            <p>        1. 1. 3     DECISION.FLD             INTEREST.RATE</p>
+            <p />
+            <p>        2. 1. 3     DECISION....                  EQ</p>
+            <p />
+            <p>        3. 1. 3     DECISION.FRM            12                                            ( LEVEL 2 )</p>
+            <p />
+            <p>        5. 1. 3     LEVEL.......                      2</p>
+            <p />
+            <p>        6. 1. 3     OPERAND.....                AND</p>
+            <p />
+            <p />
+            <p>        1. 1. 4     DECISION.FLD             PRINCIPAL</p>
+            <p />
+            <p>        2. 1. 4     DECISION....                  GT         </p>
+            <p />
+            <p>        3. 1. 4     DECISION.FRM            20000                                      ( LEVEL 2 )</p>
+            <p />
+            <p />
+            <p>        7. 1. 1     TXN.BASE.ID.              TAXDB</p>
+            <p />
+            <p>        9. 1         EVENT.ID.......               EVENT#1</p>
+            <p />
+            <p>In the above example,  the conditions at Level 1 is evaluated first  and then  at  Level 2.</p>
+            <p>The event is said to be satisfied  when  the final result  of   ( Level 1  OR  Level 2)  is  true.  </p>
+            <p>This can be extended to various levels.  </p>
+            <p />
+            <p>Validations</p>
+            <p />
+            <p>a) Input to this field is optional.  Should be a valid number value.</p>
+            <p>b) Within an Event,  the  levels  are to be specified in ascending order.  If blank, then it </p>
+            <p>     is treated to be at same level as the previous.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TE.MAPPING.ID</field>
+<desc>
+            <p>Specifies the Id of the Mapping file,  used for passing the data to external routine,  for Tax calculation</p>
+            <p>purposes.  Ref.  Calc.Routine in  Tax application.</p>
+            <p />
+            <p>Validations</p>
+            <p />
+            <p>a) Should be a valid key held on the TX.MAPPING table.</p>
+            <p>b) Only  OUT  mapping details to be given.   Eg.  MM*OUT, </p>
+            <p>c) The TRANSACTION.FILE  of the above mapping file in TX.MAPPING  should be the </p>
+            <p>    Application for which the Tx.condition is defined.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>EVENT.ID</field>
+<desc>
+            <p>Specifies a brief description of the Condition or the Event.  The value of this field is </p>
+            <p>updated as EVENT.ID in the Transaction base file.  ( Ref. TX.TXN.BASE.PARMS)</p>
+            <p />
+            <p>Validations</p>
+            <p>a)  Input is optional.  </p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>TXN.BASE.ID</field>
+<desc>
+            <p>Specifies the ID of the Transaction Base file,  to be updated when the condition is satisfied.</p>
+            <p />
+            <p>Validations</p>
+            <p />
+            <p>a. Input to  this field  or  MAPPING.ID  is mandatory.</p>
+            <p>b. Accepts the valid key held on the TX.TXN.BASE.PARMS table.</p>
+            <p />
+        </desc>
+</t>
+<t>
+<field>OPERAND</field>
+<desc>
+            <p>Specifies the Operand to be used for evaluating the conditions.</p>
+            <p />
+            <p>Validations</p>
+            <p />
+            <p>a) The valid values are 'OR' / 'AND'.</p>
+            <p>b) Input is mandatory when multiple conditions are provided for an Event. </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>SEARCH.TYPE</field>
+<desc>
+            <p>Specifies the method of evaluating the events.  When Search.Type is  'Best Fit',  then the </p>
+            <p>Events having maximum number of conditions in them are evaluated first,  and then in that </p>
+            <p>order. When the Search.Type  is   'First Fit',   then  the  events  are  evaluated in the order </p>
+            <p>provided. In both the cases,  which ever event is satisfied first, the TXN.BASE.ID / MAPPING.ID </p>
+            <p>of that event is used.</p>
+            <p />
+            <p>Validations</p>
+            <p />
+            <p>a.  Input to this field is optional.  </p>
+            <p>b.  The valid input to this field are  'B' for Best Fit  /  'F'  for First fit.</p>
+            <p>c.  When no input is provided,  then the default value of  'F' - First fit is used.</p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>DECISION.FRM</field>
+<desc>
+            <p>Specifies the values to be checked for the Decision Field based on the Decision operator,</p>
+            <p>for the condition to be satisfied.</p>
+            <p />
+            <p>Validations</p>
+            <p />
+            <p>a. Input mandatory when the Decision has been specified as any operator. </p>
+            <p>b. Input should not be provided when a decision routine has been attached in Decision field.</p>
+            <p>c. When the Decision is  'IN',  then the values are  comma separated i.e.  val1, val2, ...</p>
+        </desc>
+</t>
+<t>
+<field>DECISION.FLD</field>
+<desc>
+            <p>Defines the Operator  to be used for the Condition defined.  Accepts CLASS TX condition record ids with a valid EVENT.ID. Also accepts a valid</p>
+            <p>user defined routine  which returns a  True / False value.</p>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+            <p>The following are the valid operators that can be     defined :</p>
+            <p>    EQ -  Equal.</p>
+            <p>    NE -  Not Equal.</p>
+            <p>    LE  -  Less than or Equal     to.</p>
+            <p>    LT  -  Less than.</p>
+            <p>    GE  - Greater than or Equal to.</p>
+            <p>    GT  - Greater than.</p>
+            <p>    RG  - Range values.</p>
+            <p>    IN   - Match values which     are comma separated in Decision.Frm</p>
+            <p />
+            <p />
+            <p>The CLASS ID record of the TX.CONDITION is also a valid     input. This CLASS ID record is input along with an EVENT.ID</p>
+            <p>           eg:- CLASS-CUSTOMER*GBFCPNBUY.</p>
+            <p>            where,</p>
+            <p>                    CLASS-CUSTOMER is a valid CLASS-ID in TX.CONDITION.</p>
+            <p>                    GBFCPNBUY is an EVENT.ID of the above record.</p>
+            <p />
+            <p />
+            <p />
+            <p>It can also accept a valid     routine in the format  @ROUTINE .</p>
+            <p />
+            <p />
+            <p />
+            <p />
+            <p />
+            <p>The routine should have a valid PGM.FILE entry         with TYPE = S.</p>
+            <p />
+            <p />
+            <p />
+            <p>    The routine         should return a value 1</p>
+            <p />-         for<p />True (or)<p />0<p />- for<p />False.<p /><p /><p /><p /><p>The routine should accept the following         parameters :</p><p /><p>         CONTRACT.ID</p><p>,  </p>APPL.RECORD,<p />DECISION.FLD.NAME, RETURN.VALUE     <p /><p>         Where  Contract.Id,  Appl.Record, Decision.Fld.Name  are      IN parameters.</p><p>                      Return.Value  is the OUT parameter.</p><p /><p>         Contract  Id   -   The Id of the Application     record, for which the condition checked.</p><p>         Appl.Record  -   The Application record for which the     condition is checked.</p><p>         Decision.Fld.Name   -   The Field name of the     Application for which this Routine is called.</p><p>         Return.Value                -    The value returned by routine - either 1 for True / 0     for False.</p><p /></desc>
+</t>
+<t>
+<field>MSG.NUMBER</field>
+<desc>
+            <p />
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p />
+        </desc>
+</t>
+<t>
+<field>AUTH.FILE.ID</field>
+<desc>
+            <p>Specifies the ID format for the AUTH.WRITE.FILE.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Can have the following values,</p>
+            <p>                        a) string - any string within "" or ''</p>
+            <p>                        b) DATETIME</p>
+            <p>                        c) TXNREF - Transaction Reference</p>
+            <p>                        d) COMPANY</p>
+            <p />
+            <p>Example:- AUTHORISED*SCTR100000010*20030303100.</p>
+        </desc>
+</t>
+<t>
+<field>AUTH.WRITE.FILE</field>
+<desc>
+            <p>Indicates the Local Tax Key File. The corresponding file will get updates with the Transaction authorised message at the time of authorisation of the contract.  </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>The field should have a valid File Control.</p>
+        </desc>
+</t>
+<t>
+<field>BATCH.UPDATE</field>
+<desc>
+            <p>Specifies whether the Transaction base file, is to be updated even during End of day Processing. </p>
+            <p>The transaction base file is maintained,  whenever any  interest  movements takes place for any </p>
+            <p>transaction. During online transactions,  always  the Transaction  base  file given in Txn.Base.Id </p>
+            <p>is updated, based on the conditions provided in Tx.condition.</p>
+            <p>When the flag is set to 'YES',  then during End of day processing,  the Transaction base file is </p>
+            <p>updated whenever the Interest movements takes place. </p>
+            <p>When the flag is set to 'NO',  then during  End of day processing, the Transaction base file is not</p>
+            <p>updated,  but the details are recorded.  For these transactions,  the Transaction base file can be </p>
+            <p>updated in a Batch, by running the program TX.UPDATE.TXN.BASE.</p>
+            <p />
+            <p>Validations </p>
+            <p />
+            <p>a)  Valid inputs to this field  are  'YES' / 'NO'.  Input is optional.</p>
+            <p>b)  When no input is provided, then the Default value of 'NO'  is  used.</p>
+        </desc>
+</t>
+<t>
+<field>DE.PROCESS</field>
+<desc>
+            <p>Indicates the Delivery Process that is to be carried out for the respective message after Condition Satisfies. If the value is HOLD then the Delivery Process is held and the details are written to TI.TRANS.DETAILS. If the value is DELETE no delivery process occurs. Normal Delivery process happens if the value of this field is ONLINE</p>
+            <p>If not input and Message Number exist then Defaulted to 'ONLINE'.</p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p />
+            <p>Input to this field is optional.</p>
+            <p>The valid input to this field are "HOLD' , 'DELETE' or 'ONLINE'.</p>
+            <p>If not input and if corresponding Message Number exist then Defaulted to 'ONLINE'.</p>
+        </desc>
+</t>
+<t>
+<field>LOCAL.REF</field>
+<desc>
+        <p>This is a multi valued field. Standard T24 alphanumeric field. </p>
+        <p>
+           <p>Validation Rules:</p>
+        </p>
+        <p> A maximum of 35 characters may be entered.</p>
+    </desc>
+</t>
+</menu>
+</t24help>
+

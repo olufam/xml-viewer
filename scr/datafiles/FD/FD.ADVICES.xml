@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<t24help>
+<header>
+<product>FD</product>
+<table>FD.ADVICES</table>
+</header>
+<overview>
+<ovdesc>
+
+            <p>This application controls the production of messages, formats of messages, and deal slip formats, in the Fiduciary System. </p>
+            <p>The system generates pre-determined activity codes when an event takes place in the life of a contract. For each activity code an associated message and format can be produced if required, or can alternatively be suppressed. An optional deal slip can be produced in addition to, or instead of, an advice. The routing of the message generated is handled in the standard manner by the delivery system. </p>
+            <p>Messages are controlled at the level of Fiduciary Type, whether Order or Placement, and the activity code.  An optional category code can also be specified if required. </p>
+        </ovdesc>
+<ovimage></ovimage>
+</overview>
+<menu>
+<t>
+<field>USED.BY</field>
+<desc>
+            <p>Specifies which FD.ADVICES records use this record for their definitions. </p>
+            <p>This record cannot be reversed if this field is used. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT, external field.</p>
+        </desc>
+</t>
+<t>
+<field>PRINT.FORMAT</field>
+<desc>
+            <p>Specifies the application format for the message required for the activity. </p>
+            <p>This field allows the user to define different formats of the same basic message type for different activities.  The element defined will become the second element of the resultant DE.FORMAT.PRINT record key. </p>
+            <p>It is recommended that each activity code should use a different value where the same message type is used for different activities.  This will allow different advices to be produced specific to the activity. </p>
+            <p>Note that this field has NO effect or SWIFT output. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1-4 numeric code or 'FD' followed by 4 numeric characters. (Optional input)</p>
+        </desc>
+</t>
+<t>
+<field>RECORD.STATUS</field>
+<desc>
+            <p>The maximum amount of funds in local currency the customer may have placed with the associated LIMIT.BANK. </p>
+            <p>This field is currently used for information only and will not be checked by the system. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 6 numeric customer number or         3 to 10 alphanumeric customer mnemonic (Optional Input)</p>
+            <p>Mandatory if the associated LIMIT.BANK is present.</p>
+            <p>Not allowed if there is no LIMIT.BANK specified.</p>
+        </desc>
+</t>
+<t>
+<field>DATE.TIME</field>
+<desc>
+            <p>The current amount of funds placed in the associated OS.CCY with the associated LIMIT.BANK. For future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 numeric amount. (System Field - No Input)</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED2</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>DEAL.SLIP</field>
+<desc>
+            <p>Defines the name(s) of the deal slip(s) to be produced for the given activity. </p>
+            <p>This field is sub valued to allow deal slips to be combined to produce a single deal slip.  Multiple deal slips may be produced by expanding the multi values. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 25 deal slip format ID. (Optional input)</p>
+            <p>Must exist on DEAL.SLIP.PARAMETER.</p>
+        </desc>
+</t>
+<t>
+<field>RESERVED1</field>
+<desc>
+            <p>This field is reserved for future expansion. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>This is a NOINPUT field.</p>
+        </desc>
+</t>
+<t>
+<field>USE.RECORD</field>
+<desc>
+            <p>Specifies the FD.ADVICES definition already present which is to be used. </p>
+            <p>This field allows an existing definition to be utilised without any further definition. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>"F" or "N", followed by "O" or "P" followed by 3-digit activity code.</p>
+            <p>The ID entered must exist on FD.ADVICES.</p>
+            <p>Payment message types (202 or 210) cannot be specified.</p>
+            <p>No input allowed if the record is USED.BY another FD.ADVICE record.</p>
+        </desc>
+</t>
+<t>
+<field>MESSAGE.TYPE</field>
+<desc>
+            <p>Specifies which message type, if any is to be produced for the Activity. </p>
+            <p>Message types allowed are linked to the activity code and only certain types may be defined.  If no message is required the user may enter the value 'NONE' to supress any output.  If a USE.RECORD is specified the contents of the MESSAGE.TYPE field in the USE.RECORD will be used.  A series of default messages is defined for each activity code, and will be produced if ALL is specified. </p>
+            <p>Default Values if ALL specified: </p>
+            <p>Event               Type                    Message =====               ====                    ======= New Contract    )   FIXED ORDER             3320 Start Contract  )   FIXED PLACEMENT         320 Change Contract )   NOTICE ORDER            3330 Amend Contract  )}  NOTICE PLACEMENT        330 Reimbursement   )      Request    ) </p>
+            <p>Interest Payment    NOTICE ORDER            3350                     NOTICE PLACEMENT        350 </p>
+            <p>Contract Maturity   FIXED ORDER             3324                     FIXED PLACEMENT         324                     NOTICE ORDER            3330                     NOTICE PLACEMENT        330 </p>
+            <p>Contract Reversal   FIXED ORDER             3320                     FIXED PLACEMENT         320                     NOTICE ORDER            3330                     NOTICE PLACEMENT        330 </p>
+            <p>Rate Change         FIXED ORDER             3320                     FIXED PLACEMENT         320                     NOTICE ORDER            3335                     NOTICE PLACEMENT        NONE </p>
+            <p>Payment             FIXED NOTICE PLACEMENT  202 </p>
+            <p>Advice to Receive   FIXED NOTICE PLACEMENT  210 </p>
+            <p>All Other Cases                             NONE </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+                <p value="1">3 or 4 numeric DE.MESSAGE type. or NONE or ALL. (Optional field)</p>
+                <p value="2">Mandatory input when USE.RECORD is null.</p>
+                <p value="3">For Order related activities message type must be in the range 3000-3100, NONE or ALL.</p>
+                <p value="4">For payment activity codes (202 or 210), the only acceptable value is the same as the activity code.</p>
+                <p value="5">Message type 320 or 3320 is only allowed for Fixed Orders/ Placements.</p>
+                <p value="6">Message type 324 or 3324 is only allowed for Fixed Orders/ Placements.</p>
+                <p value="7">Message type 330 or 3330 is only allowed for Notice Orders/ Placements.</p>
+                <p value="8">Message type 350 or 3350 is only allowed for Notice Orders/ Placements interest payment activity.</p>
+                <p value="9">Message type 335 or 3335 is only allowed for Notice Orders/ Placements rate change activity.</p>
+                <p value="10">Input must exist on DE.MESSAGE if numeric.</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>ACTIVITY.CATEG</field>
+<desc>
+            <p>Description</p>
+            <p>The activity code with optional category used to form the unique key to the FD.ADVICES file. </p>
+            <p>The ID of the FD.ADVICES record is constructed as follows: </p>
+            <p style="list-style-type: lower-alpha;">
+                <p value="1">"F"ixed or "N"otice fiduciary</p>
+                <p value="2">        "O"rder ir "P"lacement </p>
+                <p value="3">        3-digit Activity code defined on FD.ACTIVITY </p>
+                <p value="4">        "-" Category code (optional </p>
+            </p>
+            <p>The system will check for the presence of a record with a specific category code and use that record before using the activity code.  If no record is defined, no message will be produced, unless the activity code is 202 or 210, when the default is to produce the payment message. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+                <p value="1">"F" or "N" followed by "O" or "P" followed by 3 digit activity code followed by 5 digit category code.</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>AUTHORISER</field>
+<desc>
+            <p>Description</p>
+            <p>Reserved for future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+                <p value="1">System field no input allowed.</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>CO.CODE</field>
+<desc>
+            <p>Reserved for future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>
+                <p value="1">System field no input allowed.</p>
+            </p>
+        </desc>
+</t>
+<t>
+<field>CURR.NO</field>
+<desc>
+            <p>The current amount of funds placed with the associated LIMIT.BANK in local currency. For future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>1 to 14 numeric amount in local currency. (System field No input)</p>
+        </desc>
+</t>
+<t>
+<field>INPUTTER</field>
+<desc>
+            <p>The currency of funds currently placed with the associated LIMIT.BANK. For future use. </p>
+            <p>
+                <p>Validation Rules:</p>
+            </p>
+            <p>3 character standard SWIFT currency code. (System Field No input allowed)</p>
+        </desc>
+</t>
+</menu>
+</t24help>
+
