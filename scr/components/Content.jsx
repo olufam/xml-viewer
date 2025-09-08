@@ -22,6 +22,141 @@ function renderParagraphs(paragraphs, query) {
   return nodes;
 }
 
+// New block-aware renderer
+function renderBlocks(blocks, query) {
+  // --- helpers
+  const H = ({children}) => <h4 className="text-[13px] font-semibold mt-4 mb-2 text-slate-200">{children}</h4>;
+  const Callout = ({tone="info", title, children}) => {
+    const tones = {
+      info:    "border-sky-500 bg-sky-500/5",
+      note:    "border-amber-500 bg-amber-500/5",
+      warn:    "border-rose-500 bg-rose-500/5",
+      muted:   "border-slate-500 bg-slate-500/5"
+    };
+    return (
+      <div className={`not-prose my-3 rounded-lg border-l-4 p-3 text-[13px] ${tones[tone]}`}>
+        {title && <div className="font-medium mb-1">{title}</div>}
+        <div className="prose prose-sm dark:prose-invert max-w-none">
+          {children}
+        </div>
+      </div>
+    );
+  };
+  const isListItem = (s) =>
+    /^(\(?\d+\)?[.)]|[A-Z][.)]|[-–•*])\s+/.test(s);
+  const isRuleHeading = (s) => /^\s*validation rules\s*:?\s*$/i.test(s);
+  const isNote = (s) => /^\s*note\s*[:\-–]/i.test(s);
+  const isExample = (s) => /^\s*example\s*[:\-–]/i.test(s);
+  const isUnavailable = (s) => /help text .*unavailable/i.test(s);
+  const isNotUsed = (s) => /not used at present/i.test(s);
+  const isShort = (s) => s.length < 60;
+
+  // Merge "broken" paragraphs: if previous didn't end a sentence and next looks like a continuation
+  const merged = [];
+  for (const b of blocks) {
+    if (b.type !== "p") { merged.push(b); continue; }
+    const s = b.text;
+    const prev = merged[merged.length - 1];
+    const endsSentence = /[.!?]"?$/.test(prev?.text || "");
+    const looksCont = /^[a-z(]/.test(s) || /^(and|or|but|so|to|of|for|with|in|on|at|by|the)\b/i.test(s);
+    if (prev && prev.type === "p" && !endsSentence && looksCont) {
+      prev.text = (prev.text + " " + s).replace(/\s+/g, " ").trim();
+    } else {
+      merged.push({ ...b, text: s });
+    }
+  }
+
+  // Tokenize into blocks: paragraphs, lists, headings, callouts, tables
+  const out = [];
+  let i = 0;
+  while (i < merged.length) {
+    const b = merged[i];
+
+    if (b.type === "table") {
+      out.push(<div key={`tb-${i}`} className="my-3 overflow-auto"
+        dangerouslySetInnerHTML={{ __html: b.html.replace(/<table/g, '<table class="table-auto border-collapse w-full text-xs"') }} />);
+      i++; continue;
+    }
+
+    const s = b.text;
+
+    // 2.1 Rule heading
+    if (isRuleHeading(s)) {
+      out.push(<H key={`h-${i}`}>Validation Rules</H>);
+      i++;
+      // Gather following list-ish lines into bullets until the pattern breaks
+      const items = [];
+      while (i < merged.length && merged[i].type === "p" && (isListItem(merged[i].text) || isShort(merged[i].text))) {
+        items.push(merged[i].text.replace(/^(\(?\d+\)?[.)]|[A-Z][.)]|[-–•*])\s+/, "").trim());
+        i++;
+      }
+      if (items.length) {
+        out.push(<ul key={`ul-rules-${i}`} className="list-disc pl-6 my-2">
+          {items.map((t, k) => <li key={k}><HighlightedText text={t} query={query} /></li>)}
+        </ul>);
+      }
+      continue;
+    }
+
+    // 2.2 Callouts
+    if (isNote(s)) {
+      out.push(
+        <Callout key={`note-${i}`} tone="note" title="Note">
+          <p><HighlightedText text={s.replace(/^note\s*[:\-–]\s*/i, "")} query={query} /></p>
+        </Callout>
+      );
+      i++; continue;
+    }
+    if (isExample(s)) {
+      out.push(
+        <Callout key={`ex-${i}`} tone="info" title="Example">
+          <p><HighlightedText text={s.replace(/^example\s*[:\-–]\s*/i, "")} query={query} /></p>
+        </Callout>
+      );
+      i++; continue;
+    }
+    if (isUnavailable(s)) {
+      out.push(
+        <Callout key={`un-${i}`} tone="warn">
+          <p><HighlightedText text={s} query={query} /></p>
+        </Callout>
+      );
+      i++; continue;
+    }
+    if (isNotUsed(s)) {
+      out.push(
+        <Callout key={`nu-${i}`} tone="muted">
+          <p><HighlightedText text={s} query={query} /></p>
+        </Callout>
+      );
+      i++; continue;
+    }
+
+    // 2.3 Lists: consume consecutive list-items
+    if (isListItem(s)) {
+      const items = [];
+      while (i < merged.length && merged[i].type === "p" && isListItem(merged[i].text)) {
+        items.push(merged[i].text.replace(/^(\(?\d+\)?[.)]|[A-Z][.)]|[-–•*])\s+/, "").trim());
+        i++;
+      }
+      out.push(<ul key={`ul-${i}`} className="list-disc pl-6 my-2">
+        {items.map((t, k) => <li key={k}><HighlightedText text={t} query={query} /></li>)}
+      </ul>);
+      continue;
+    }
+
+    // 2.4 Plain paragraph
+    out.push(
+      <p key={`p-${i}`} className="text-slate-200/90">
+        <HighlightedText text={s} query={query} />
+      </p>
+    );
+    i++;
+  }
+
+  return out;
+}
+
 export default function Content({ xmlModel, sectionRefs, contentRef, query, widthClass = "max-w-4xl", compact = false, fontSize = "m" }) {
   if (!xmlModel) return null;
   const cardPad = compact ? "p-3" : "p-4";
@@ -77,7 +212,7 @@ export default function Content({ xmlModel, sectionRefs, contentRef, query, widt
                 </div>
 
                 <div className={`${proseSize} dark:prose-invert max-w-none`}>
-                  {renderParagraphs(e.paragraphs, query)}
+                  {e.blocks ? renderBlocks(e.blocks, query) : renderParagraphs(e.paragraphs, query)}
                 </div>
               </div>
             </section>

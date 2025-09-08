@@ -23,14 +23,48 @@ export function parseT24HelpXML(xmlText) {
   const entries = tNodes
     .map((t) => {
       const field = getText("field", t);
-      let paras = Array.from(t.querySelectorAll("desc p")).map((p) => p.textContent.trim());
-      paras = paras.filter((x) => x && x !== "/");
-      const obsolete = paras.some((x) => /\bobsolete\b/i.test(x));
+      
+      // Parse description blocks (paragraphs and tables)
+      function getDescBlocks(t) {
+        const desc = t.querySelector("desc");
+        if (!desc) return [];
+        const blocks = [];
+        desc.childNodes.forEach((node) => {
+          if (node.nodeType !== 1) return; // element only
+          const tag = node.tagName.toLowerCase();
+          if (tag === "p") {
+            const txt = (node.textContent || "")
+              .replace(/\s+/g, " ")      // collapse big gaps
+              .replace(/\s+([,.:%);])/g, "$1") // tidy spaces before punctuation
+              .trim();
+            if (txt) blocks.push({ type: "p", text: txt });
+          } else if (tag === "table") {
+            blocks.push({ type: "table", html: node.outerHTML });
+          }
+        });
+        // Fallback: if no direct <p>, pull nested <p> (badly embedded XML)
+        if (blocks.length === 0) {
+          Array.from(desc.querySelectorAll("p")).forEach(p => {
+            const txt = (p.textContent || "").replace(/\s+/g, " ").trim();
+            if (txt) blocks.push({ type: "p", text: txt });
+          });
+          Array.from(desc.querySelectorAll("table")).forEach(tb => {
+            blocks.push({ type: "table", html: tb.outerHTML });
+          });
+        }
+        return blocks;
+      }
+
+      const blocks = getDescBlocks(t);
+      let paras = blocks.filter(b => b.type === "p").map(b => b.text);
+      // keep your existing filters:
+      paras = paras.filter(x => x && x !== "/");
+      const obsolete = paras.some(x => /\bobsolete\b/i.test(x));
       const ruleIdxs = [];
       paras.forEach((val, idx) => {
         if (/^\s*validation rules\s*:*/i.test(val)) ruleIdxs.push(idx);
       });
-      return { field, anchor: slugify(field), paragraphs: paras, obsolete, ruleIdxs };
+      return { field, anchor: slugify(field), paragraphs: paras, blocks, obsolete, ruleIdxs };
     })
     .filter((e) => e.field);
 
